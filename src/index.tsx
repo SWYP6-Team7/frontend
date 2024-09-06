@@ -2,10 +2,20 @@ import React from 'react'
 import reactDOM from 'react-dom/client'
 import App from './App'
 
-import worker from './mocks/browser'
 const reactRoot = document.querySelector('div#root')
-if (process.env.NODE_ENV === 'development') {
-  worker.start()
+
+const prepare = async (): Promise<void> => {
+  if (process.env.NODE_ENV === 'development') {
+    const { worker } = await import('./mocks/browser')
+
+    worker.start({
+      serviceWorker: {
+        url: '/mockServiceWorker.js'
+      }
+    })
+  }
 }
 
-reactDOM.createRoot(reactRoot as HTMLElement).render(<App />)
+prepare().then(() => {
+  reactDOM.createRoot(reactRoot as HTMLElement).render(<App />)
+})

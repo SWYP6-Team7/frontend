@@ -2,7 +2,7 @@
   "name": "swyp-frontend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "start": "npx vite dev",
     "build": "npx vite optimize & npx vite build"
