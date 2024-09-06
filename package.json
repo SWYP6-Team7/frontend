@@ -16,6 +16,7 @@
     "@tanstack/react-query": "^5.53.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "rest": "^2.0.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.2",
     "zustand": "^4.5.5"
@@ -31,6 +32,12 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.35.0",
+    "msw": "^2.4.2",
     "prettier": "^3.3.3"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
