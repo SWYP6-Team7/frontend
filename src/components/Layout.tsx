@@ -1,12 +1,13 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Header from './Header'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useMatch } from 'react-router-dom'
 const Layout = () => {
+  const isSignup = useMatch('/signup')
   return (
     <Container>
       <Body>
-        <Header />
+        {isSignup && <Header />}
         <Outlet />
       </Body>
     </Container>
