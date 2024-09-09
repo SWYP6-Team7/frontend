@@ -3,11 +3,11 @@ import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/userStore'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'
 import { isValid, z } from 'zod'
 import InfoText from '@/components/designSystem/text/InfoText'
-import { Link, Outlet } from 'react-router-dom'
+
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
@@ -15,12 +15,25 @@ const koreanOnly = z
   .max(10, { message: '최대 10자까지 입력 가능합니다.' })
 
 const RegisterName = () => {
+  const location = useLocation()
+
   const navigate = useNavigate()
   const { name, addName } = userStore()
   const [userName, setUserName] = useState(name)
+  const [genderCheck, setGenderCheck] = useState(false)
+
   const handleRemoveValue = () => setUserName('')
   const nextStepClickHandler = () => {
-    if (userName.length > 0) navigate('/registerName/registerGender')
+    if (userName.length > 0) {
+      if (location.pathname == '/registerName') {
+        navigate('/registerName/registerGender')
+      } else if (
+        genderCheck &&
+        location.pathname == '/registerName/registerGender'
+      ) {
+        navigate('/registerPhoneNumber')
+      }
+    }
   }
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,22 +66,38 @@ const RegisterName = () => {
           handleRemoveValue={handleRemoveValue}
         />
       </div>
-      <Outlet />
-      <ButtonWrapper>
+      <Outlet context={{ setGenderCheck }} />
+      <ButtonWrapper
+        css={
+          location.pathname == '/registerName'
+            ? { marginTop: '434px' }
+            : { marginTop: '119px' }
+        }>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
           addStyle={
-            userName.length > 0 && !nameValidError
-              ? {
-                  backgroundColor: 'rgba(62, 141, 0, 1)',
-                  color: 'rgba(240, 240, 240, 1)',
-                  boxShadow: 'rgba(170, 170, 170, 0.1)'
-                }
-              : {
-                  backgroundColor: 'rgba(220, 220, 220, 1)',
-                  color: 'rgba(132, 132, 132, 1)'
-                }
+            location.pathname == '/registerName'
+              ? userName.length > 0 && !nameValidError
+                ? {
+                    backgroundColor: 'rgba(62, 141, 0, 1)',
+                    color: 'rgba(240, 240, 240, 1)',
+                    boxShadow: 'rgba(170, 170, 170, 0.1)'
+                  }
+                : {
+                    backgroundColor: 'rgba(220, 220, 220, 1)',
+                    color: 'rgba(132, 132, 132, 1)'
+                  }
+              : genderCheck && userName.length > 0 && !nameValidError
+                ? {
+                    backgroundColor: 'rgba(62, 141, 0, 1)',
+                    color: 'rgba(240, 240, 240, 1)',
+                    boxShadow: 'rgba(170, 170, 170, 0.1)'
+                  }
+                : {
+                    backgroundColor: 'rgba(220, 220, 220, 1)',
+                    color: 'rgba(132, 132, 132, 1)'
+                  }
           }
         />
       </ButtonWrapper>
@@ -100,5 +129,4 @@ const StepContent = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 434px;
 `
