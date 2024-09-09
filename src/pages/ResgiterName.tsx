@@ -3,10 +3,35 @@ import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/userStore'
 import { useState } from 'react'
-const RegisterName = () => {
-  const { name, addName } = userStore()
-  const [userName, setUserName] = useState('')
+import { useNavigate } from 'react-router-dom'
+import InputField from '@/components/designSystem/input/InputField'
+import { z } from 'zod'
+import InfoText from '@/components/designSystem/text/InfoText'
+// 한글만 허용하고 최대 10자로 제한.
+const koreanOnly = z
+  .string()
+  .regex(/^[ㄱ-ㅎ|가-힣]+$/, { message: '한글만 입력 가능합니다.' })
+  .max(10, { message: '최대 10자까지 입력 가능합니다.' })
 
+const RegisterName = () => {
+  const navigate = useNavigate()
+  const { name, addName } = userStore()
+  const [userName, setUserName] = useState(name)
+  const handleRemoveValue = () => setUserName('')
+  const nextStepClickHandler = () => {
+    if (userName.length > 0) navigate('/registerGender')
+  }
+
+  const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value)
+    if (koreanOnly.safeParse(e.target.value).success) {
+      addName(e.target.value)
+      setNameValidError(false)
+    } else {
+      setNameValidError(true)
+    }
+  }
+  const [nameValidError, setNameValidError] = useState(false)
   return (
     <RegisterNameWrapper>
       <StepIconContainer>
@@ -17,18 +42,22 @@ const RegisterName = () => {
         이름을 설정해주세요.
       </StepContent>
       <div css={{ marginTop: '14px' }}>
-        <input
-          type="text"
+        <InputField
+          success={userName.length > 0 && !nameValidError}
+          hasError={nameValidError}
+          placeholder="이름 입력(최대 10자)"
           value={userName}
-          onChange={e => setUserName(e.target.value)}
-          css={{ width: '100%' }}
+          onChange={e => inputChangeHandler(e)}
+          handleRemoveValue={handleRemoveValue}
         />
       </div>
+
       <ButtonWrapper>
         <Button
           text="다음"
+          onClick={nextStepClickHandler}
           addStyle={
-            userName.length > 0
+            userName.length > 0 && !nameValidError
               ? {
                   backgroundColor: 'rgba(62, 141, 0, 1)',
                   color: 'rgba(240, 240, 240, 1)',
@@ -37,7 +66,7 @@ const RegisterName = () => {
               : {
                   backgroundColor: 'rgba(220, 220, 220, 1)',
                   color: 'rgba(132, 132, 132, 1)'
-                } // 조건이 맞지 않을 때의 스타일
+                }
           }
         />
       </ButtonWrapper>
