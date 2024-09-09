@@ -5,7 +5,7 @@ import NotFound from './components/NotFound'
 import Login from './pages/Login'
 
 import RegisterForm from './pages/RegisterForm'
-import RegisterName from './pages/ResgiterName'
+import RegisterName from './pages/RegisterName'
 import RegisterPhoneNumber from './pages/RegisterPhoneNumber'
 import RegisterTripStyle from './pages/RegisterTripStyle'
 
