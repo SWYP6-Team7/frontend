@@ -34,8 +34,10 @@ const RegisterGender = () => {
       addSex('여자')
     }
   }
+  // 이전 화면으로 돌아왔을 때, 이미 체크 했다면, true값을 할당해주기.
   useEffect(() => {
     if (!maleClicked && !femaleClicked) setGenderCheck(false)
+    else setGenderCheck(true)
   }, [])
   return (
     <div css={{ position: 'relative' }}>
