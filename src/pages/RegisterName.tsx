@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'
 import { isValid, z } from 'zod'
 import InfoText from '@/components/designSystem/text/InfoText'
+import { Link, Outlet } from 'react-router-dom'
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
@@ -19,7 +20,7 @@ const RegisterName = () => {
   const [userName, setUserName] = useState(name)
   const handleRemoveValue = () => setUserName('')
   const nextStepClickHandler = () => {
-    if (userName.length > 0) navigate('/registerGender')
+    if (userName.length > 0) navigate('/registerName/registerGender')
   }
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +53,7 @@ const RegisterName = () => {
           handleRemoveValue={handleRemoveValue}
         />
       </div>
-
+      <Outlet />
       <ButtonWrapper>
         <Button
           text="다음"

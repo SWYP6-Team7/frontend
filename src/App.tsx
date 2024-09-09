@@ -8,7 +8,7 @@ import RegisterForm from './pages/RegisterForm'
 import RegisterName from './pages/RegisterName'
 import RegisterPhoneNumber from './pages/RegisterPhoneNumber'
 import RegisterTripStyle from './pages/RegisterTripStyle'
-
+import RegisterGender from './pages/RegisterGender'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -30,8 +30,15 @@ export const router = createBrowserRouter([
       },
       {
         path: 'registerName',
-        element: <RegisterName />
+        element: <RegisterName />,
+        children: [
+          {
+            path: 'RegisterGender',
+            element: <RegisterGender />
+          }
+        ]
       },
+
       {
         path: 'registerPhoneNumber',
         element: <RegisterPhoneNumber />
