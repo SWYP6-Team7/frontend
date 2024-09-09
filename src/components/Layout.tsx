@@ -19,16 +19,20 @@ const Layout = () => {
 const Body = styled.div`
   width: 100svw;
   height: 100%;
-
+  position: relative;
   background-color: #fffff6;
+  @media (max-width: 440px) {
+    width: 100svw;
+  }
   @media (min-width: 440px) {
-    max-width: 390px;
+    width: 390px;
+    overflow-x: hidden;
   }
 `
 // pc환경에서 화면을 가운데 정렬하기 위한 레이아웃 스타일
 const Container = styled.div`
   height: 100svh;
-  width: 100sv;
+  width: 100svw;
   overflow-x: hidden;
   display: flex;
   justify-content: center;
