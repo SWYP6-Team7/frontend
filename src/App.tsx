@@ -3,8 +3,11 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import NotFound from './components/NotFound'
 import Login from './pages/Login'
-import SignIn from './pages/SignUp'
-import SignUp from './pages/SignUp'
+
+import RegisterForm from './pages/RegisterForm'
+import RegisterName from './pages/ResgiterName'
+import RegisterPhoneNumber from './pages/RegisterPhoneNumber'
+import RegisterTripStyle from './pages/RegisterTripStyle'
 
 export const router = createBrowserRouter([
   {
@@ -22,8 +25,20 @@ export const router = createBrowserRouter([
         element: <Login />
       },
       {
-        path: 'signup',
-        element: <SignUp />
+        path: 'registerForm',
+        element: <RegisterForm />
+      },
+      {
+        path: 'registerName',
+        element: <RegisterName />
+      },
+      {
+        path: 'registerPhoneNumber',
+        element: <RegisterPhoneNumber />
+      },
+      {
+        path: 'registerTripStyle',
+        element: <RegisterTripStyle />
       }
     ]
   }
