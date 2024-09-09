@@ -2,6 +2,7 @@ import { css } from '@emotion/react'
 
 // css reset 및 추후 color palette나 글자 규격 정해지면 아래에 추가
 export default css`
+  @import url('https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap');
   @font-face {
     font-family: 'Pretendard-Regular';
     src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
