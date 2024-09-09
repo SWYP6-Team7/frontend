@@ -26,6 +26,13 @@ interface InputProps {
 // forwardRef : 부모 컴포넌트에서 자식 컴포넌트 안의 DOM element에 접근하고 싶을 때 사용한다.
 // 첫번째 generic으로 ref type, 두번째로 지정한 props type
 // React.InputHTMLAttributes<HTMLInputElement> 이걸 줬기 때문에 input의 프로퍼티들도 props로 내려줄 수 있음
+
+// 사용방법
+// 기본적으로 input 사용하듯이 props 사용하면 됨
+// onBlur와 onFocus 함수 추가 가능
+// hasError: error 상태인지
+// success: 검증을 통과한 상태인지
+// shake: true로 바뀌면 0.3초동안 애니메이션 실행 (처음 true인채로 렌더링 되거나 false에서 true가 되는 순간에만 실행)
 const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
     {

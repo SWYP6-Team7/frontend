@@ -12,6 +12,10 @@ interface ContainerProps {
   color: string
 }
 
+// 사용법
+// hasError: error 상태인지
+// success: 검증을 통과한 상태인지
+// children: text 부분
 const InfoText = ({
   hasError = false,
   success = false,
