@@ -78,12 +78,7 @@ const RegisterName = () => {
         </div>
       </div>
       <Outlet context={{ setGenderCheck }} />
-      <ButtonWrapper
-        css={
-          location.pathname == '/registerName'
-            ? { marginTop: '404px' }
-            : { marginTop: '89px' }
-        }>
+      <ButtonWrapper>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -131,7 +126,6 @@ const StepContent = styled.div`
   width: 343px;
   height: 68px;
   padding: 0px 6px 0px 6px;
-  font-family: Pretendard;
   font-size: 24px;
   font-weight: 600;
   line-height: 33.6px;
@@ -139,6 +133,6 @@ const StepContent = styled.div`
   text-align: left;
 `
 const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  bottom: 4.7svh;
 `

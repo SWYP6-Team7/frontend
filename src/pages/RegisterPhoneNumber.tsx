@@ -102,7 +102,7 @@ const RegisterPhoneNumber = () => {
           </div>
         </DropdownContainer>
       </AgeStep>
-      <ButtonWrapper css={{ marginTop: '268px' }}>
+      <ButtonWrapper>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -139,7 +139,6 @@ const PhoneNumberStep = styled.div`
   width: 343px;
   height: 68px;
   padding: 0px 6px 0px 6px;
-  font-family: Pretendard;
   font-size: 24px;
   font-weight: 600;
   line-height: 33.6px;
@@ -162,7 +161,7 @@ const DropdownContainer = styled.div`
   align-items: center;
 `
 const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  bottom: 4.7svh;
 `
 // 년생 드롭다운
