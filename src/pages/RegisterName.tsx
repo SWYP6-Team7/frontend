@@ -65,13 +65,22 @@ const RegisterName = () => {
           onChange={e => inputChangeHandler(e)}
           handleRemoveValue={handleRemoveValue}
         />
+        <div css={{ marginTop: 14, padding: '0 6px' }}>
+          {nameValidError && userName.length > 0 ? (
+            <InfoText hasError={userName.length > 0 && nameValidError}>
+              최대 10자의 한글만 입력할 수 있습니다.(띄어쓰기 불가)
+            </InfoText>
+          ) : (
+            <EmptyArea></EmptyArea>
+          )}
+        </div>
       </div>
       <Outlet context={{ setGenderCheck }} />
       <ButtonWrapper
         css={
           location.pathname == '/registerName'
-            ? { marginTop: '434px' }
-            : { marginTop: '119px' }
+            ? { marginTop: '404px' }
+            : { marginTop: '89px' }
         }>
         <Button
           text="다음"
@@ -129,4 +138,7 @@ const StepContent = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+`
+const EmptyArea = styled.div`
+  height: 16px;
 `

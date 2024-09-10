@@ -123,9 +123,6 @@ const RegisterPhoneNumber = () => {
 
 export default RegisterPhoneNumber
 
-const errorExist = ({ notValid = false }) => {
-  return `margin-top: ${!notValid ? '64px' : '34px'}`
-}
 const RegisterPhoneNumberWrapper = styled.div`
   padding: 0px 24px;
 `
@@ -149,13 +146,13 @@ const PhoneNumberStep = styled.div`
   text-align: left;
 `
 const AgeStep = styled.div`
-  margin-top: 64px;
-  ${errorExist};
+  margin-top: 34px;
 `
 const Content = styled.div`
   font-size: 24px;
   font-weight: 600;
-  padding: 10px 6px;
+  padding: 0px 6px;
+  padding-bottom: 10px;
 `
 const DropdownContainer = styled.div`
   display: flex;
