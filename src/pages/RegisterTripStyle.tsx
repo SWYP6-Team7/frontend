@@ -182,7 +182,7 @@ const RegisterTripStyle = () => {
         </StyleBtns>
       </TripThemeContainer>
 
-      <ButtonWrapper css={{ marginTop: '144px', marginBottom: '38px' }}>
+      <ButtonWrapper>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -200,8 +200,8 @@ const RegisterTripStyle = () => {
 export default RegisterTripStyle
 
 const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  bottom: 4.7svh;
 `
 
 const RegisterTripStyleWrapper = styled.div`

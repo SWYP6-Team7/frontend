@@ -102,7 +102,7 @@ const RegisterPhoneNumber = () => {
           </div>
         </DropdownContainer>
       </AgeStep>
-      <ButtonWrapper css={{ marginTop: '268px' }}>
+      <ButtonWrapper>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -162,7 +162,7 @@ const DropdownContainer = styled.div`
   align-items: center;
 `
 const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  bottom: 4.7svh;
 `
 // 년생 드롭다운
