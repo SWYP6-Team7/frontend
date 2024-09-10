@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'
 import InfoText from '@/components/designSystem/text/InfoText'
 import Dropdown from '@/components/Dropdown'
+import Spacing from '@/components/Spacing'
 import { z } from 'zod'
 // 전화번호 유효성 검사.
 const phoneNumberValid = z
@@ -77,11 +78,13 @@ const RegisterPhoneNumber = () => {
         />
         <div css={{ marginTop: 16, padding: '0 6px' }}>
           {phoneNumberValidError && phone.length >= 10 ? (
-            <InfoText hasError={phone.length >= 10 && phoneNumberValidError}>
+            <InfoText
+              shake={phone.length >= 10 && phoneNumberValidError}
+              hasError={phone.length >= 10 && phoneNumberValidError}>
               숫자만 입력할 수 있습니다.(10~11자리)
             </InfoText>
           ) : (
-            <EmptyArea></EmptyArea>
+            <Spacing size={16} />
           )}
         </div>
       </div>
@@ -103,6 +106,7 @@ const RegisterPhoneNumber = () => {
         <Button
           text="다음"
           onClick={nextStepClickHandler}
+          disabled={!(phone.length >= 10 && !phoneNumberValidError)}
           addStyle={
             phone.length >= 10 && !phoneNumberValidError
               ? {
@@ -128,9 +132,6 @@ const RegisterPhoneNumberWrapper = styled.div`
 `
 const StepIconContainer = styled.div`
   margin-top: 30px;
-`
-const EmptyArea = styled.div`
-  height: 16px;
 `
 
 const PhoneNumberStep = styled.div`

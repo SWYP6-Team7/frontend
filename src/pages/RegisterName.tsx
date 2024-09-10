@@ -7,7 +7,7 @@ import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'
 import { isValid, z } from 'zod'
 import InfoText from '@/components/designSystem/text/InfoText'
-
+import Spacing from '@/components/Spacing'
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
@@ -67,11 +67,13 @@ const RegisterName = () => {
         />
         <div css={{ marginTop: 14, padding: '0 6px' }}>
           {nameValidError && userName.length > 0 ? (
-            <InfoText hasError={userName.length > 0 && nameValidError}>
+            <InfoText
+              shake={userName.length > 0 && nameValidError}
+              hasError={userName.length > 0 && nameValidError}>
               최대 10자의 한글만 입력할 수 있습니다.(띄어쓰기 불가)
             </InfoText>
           ) : (
-            <EmptyArea></EmptyArea>
+            <Spacing size={16} />
           )}
         </div>
       </div>
@@ -85,6 +87,7 @@ const RegisterName = () => {
         <Button
           text="다음"
           onClick={nextStepClickHandler}
+          disabled={!(userName.length > 0 && !nameValidError)}
           addStyle={
             location.pathname == '/registerName'
               ? userName.length > 0 && !nameValidError
@@ -138,7 +141,4 @@ const StepContent = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
-`
-const EmptyArea = styled.div`
-  height: 16px;
 `
