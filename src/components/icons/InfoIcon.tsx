@@ -10,7 +10,7 @@ const InfoIcon = ({ color = '#ABABAB' }: InfoIconProps) => {
       viewBox="0 0 14 14"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_7_343)">
+      <g clipPath="url(#clip0_7_343)">
         <circle
           cx="7"
           cy="7"

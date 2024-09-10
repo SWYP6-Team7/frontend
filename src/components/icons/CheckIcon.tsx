@@ -12,8 +12,8 @@ const CheckIcon = ({ status = 'default', size = 18 }: CheckIconProps) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
       <rect
-        width={size}
-        height={size}
+        width="18"
+        height="18"
         rx="9"
         fill={status === 'default' ? '#CDCDCD' : '#3E8D00'}
       />
