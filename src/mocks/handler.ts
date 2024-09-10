@@ -1,17 +1,29 @@
 import { http, HttpResponse } from 'msw'
 
 export const handlers = [
-  http.post('/api/login', () => {
-    const user = {
-      name: '박건상',
-      gender: 'male',
-      likeTheme: ['healing', 'activity']
+  http.post('/api/login', async ({ request }) => {
+    try {
+      console.log('requeset', request)
+      const formData = await request.json()
+      console.log('formData', formData)
+
+      return HttpResponse.json(
+        { error: 'Internal Server Error' },
+        { status: 500 }
+      )
+
+      return HttpResponse.json(formData, {
+        headers: {
+          'Set-Cookie': 'connect.sid=msw-cookie; HttpOnly; Path=/'
+        }
+      })
+    } catch (error) {
+      console.error('Error handling request:', error)
+      return HttpResponse.json(
+        { error: 'Internal Server Error' },
+        { status: 500 }
+      )
     }
-    return HttpResponse.json(user, {
-      headers: {
-        'Set-Cookie': 'connect.sid=msw-cookie;HttpOnly;Path=/'
-      }
-    })
   }),
   http.post('/api/logout', () => {
     console.log('로그아웃')

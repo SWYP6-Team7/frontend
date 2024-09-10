@@ -6,6 +6,7 @@ interface ButtonProps {
     color?: string
     boxShadow?: string
   }
+  disabled?: boolean
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 // 사용 방식
@@ -24,10 +25,12 @@ const Button = ({
     color: 'white',
     boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)'
   },
-  onClick
+  onClick = () => {},
+  disabled = false
 }: ButtonProps) => {
   return (
     <ButtonContainer
+      disabled={disabled}
       onClick={onClick}
       css={addStyle}>
       {text}

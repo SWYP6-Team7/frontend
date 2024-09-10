@@ -3,6 +3,7 @@ import XIcon from '@/components/icons/XIcon'
 import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import React, { FocusEventHandler, forwardRef, useState } from 'react'
+import RemoveButton from './RemoveButton'
 
 // React.InputHTMLAttributes<HTMLInputElement
 // input element의 property 타입들도 상속받아서 사용할 수 있음
@@ -49,7 +50,11 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
     const [focused, setFocused] = useState(false)
 
     // 우선순위 1.에러가 있는지? 2. 포커싱 되어있는지
-    const borderColor = hasError ? '#ED1E1E' : focused ? '#1A1A1A' : '#CDCDCD'
+    const borderColor = hasError
+      ? '#ED1E1E'
+      : focused || props.value !== ''
+        ? '#1A1A1A'
+        : '#CDCDCD'
     const bgColor = hasError ? '#FFF7F7' : '#FFFFFF'
 
     const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
@@ -78,14 +83,14 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
         <div>
           {success ? (
             focused ? (
-              <RemoveBUtton onClick={handleRemoveValue} />
+              <RemoveButton onClick={handleRemoveValue} />
             ) : (
               <CheckIcon status="done" />
             )
           ) : props.value === '' ? (
             <CheckIcon />
           ) : (
-            <RemoveBUtton onClick={handleRemoveValue} />
+            <RemoveButton onClick={handleRemoveValue} />
           )}
         </div>
       </Container>
@@ -93,20 +98,6 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
   }
 )
 
-const RemoveBUtton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <XIconButton onClick={onClick}>
-      <XIcon />
-    </XIconButton>
-  )
-}
-
-const XIconButton = styled.button`
-  cursor: pointer;
-  display: flex;
-  justify-items: center;
-  align-items: center;
-`
 const shake = keyframes`
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
