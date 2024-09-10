@@ -243,7 +243,7 @@ const RegisterForm = () => {
 const Container = styled.form`
   width: 100%;
   padding: 0 24px;
-  margin-top: 7.1svh;
+  padding-top: 7.1svh;
 `
 
 const FieldContainer = styled.div`
