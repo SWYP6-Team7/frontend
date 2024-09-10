@@ -131,7 +131,6 @@ const StepContent = styled.div`
   width: 343px;
   height: 68px;
   padding: 0px 6px 0px 6px;
-  font-family: Pretendard;
   font-size: 24px;
   font-weight: 600;
   line-height: 33.6px;
@@ -139,6 +138,8 @@ const StepContent = styled.div`
   text-align: left;
 `
 const ButtonWrapper = styled.div`
+  // position: absolute;
+  // bottom: 4.7svh;
   display: flex;
   justify-content: center;
 `
