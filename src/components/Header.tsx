@@ -1,10 +1,11 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import BackIcon from './icons/BackIcon'
-import { Link, useMatch, useNavigate } from 'react-router-dom'
+import { useMatch, useNavigate, useLocation } from 'react-router-dom'
 
 const Header = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const isSignup = useMatch('/signup')
   const handleBack = () => {
     navigate(-1)
@@ -16,7 +17,10 @@ const Header = () => {
       </ButotnContainer>
 
       <Title>회원가입</Title>
-      <VoidArea />
+      {location.pathname == '/registerTripStyle' && (
+        <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
+      )}
+      {location.pathname != '/registerTripStyle' && <VoidArea />}
     </HeaderContainer>
   )
 }
@@ -48,5 +52,14 @@ const Title = styled.h2`
 const VoidArea = styled.div`
   size: 24px;
 `
-
+// skip
+const Skip = styled.div`
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(155, 155, 155, 1);
+  text-decoration: underline;
+  &:hover {
+    cursor: pointer;
+  }
+`
 export default Header
