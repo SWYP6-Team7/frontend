@@ -132,6 +132,8 @@ const Container = styled.div`
   position: fixed;
   z-index: 9999;
   width: 100%;
+  top: 0;
+  left: 0;
 
   @media (min-width: 440px) {
     width: 390px;
@@ -153,7 +155,7 @@ const slideUp = keyframes`
     opacity: 0;
   }
   to {
-    transform: translateY(-48px);
+    transform: translateY(9);
     opacity: 1;
   }
 `
