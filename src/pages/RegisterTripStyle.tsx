@@ -20,7 +20,7 @@ const RegisterTripStyle = () => {
 
   const categoryButtonTextArray = ['즉흥', '계획적인', '힐링']
 
-  new Array(17).fill('항목').forEach(v => categoryButtonTextArray.push(v))
+  new Array(15).fill('항목').forEach(v => categoryButtonTextArray.push(v))
 
   // 최종적으로 선택된 여행 스타일 담은 배열
   const tripStyleArray = categoryButtonTextArray.filter(
@@ -138,14 +138,14 @@ const RegisterTripStyle = () => {
               active={activeStates[11]}
               onClick={handleButtonClick}
             />
+          </Row>
+          <Row>
             <CategoryButton
               id={12}
               text={categoryButtonTextArray[12]}
               active={activeStates[12]}
               onClick={handleButtonClick}
             />
-          </Row>
-          <Row>
             <CategoryButton
               id={13}
               text={categoryButtonTextArray[13]}
@@ -158,6 +158,8 @@ const RegisterTripStyle = () => {
               active={activeStates[14]}
               onClick={handleButtonClick}
             />
+          </Row>
+          <Row>
             <CategoryButton
               id={15}
               text={categoryButtonTextArray[15]}
@@ -170,31 +172,17 @@ const RegisterTripStyle = () => {
               active={activeStates[16]}
               onClick={handleButtonClick}
             />
-          </Row>
-          <Row>
             <CategoryButton
               id={17}
               text={categoryButtonTextArray[17]}
               active={activeStates[17]}
               onClick={handleButtonClick}
             />
-            <CategoryButton
-              id={18}
-              text={categoryButtonTextArray[18]}
-              active={activeStates[18]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={19}
-              text={categoryButtonTextArray[19]}
-              active={activeStates[19]}
-              onClick={handleButtonClick}
-            />
           </Row>
         </StyleBtns>
       </TripThemeContainer>
 
-      <ButtonWrapper css={{ marginTop: '144px' }}>
+      <ButtonWrapper css={{ marginTop: '144px', marginBottom: '38px' }}>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
