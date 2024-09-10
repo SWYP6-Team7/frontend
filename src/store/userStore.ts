@@ -4,6 +4,10 @@ import { create } from 'zustand'
 type Gender = '여자' | '남자' | null
 
 interface userState {
+  email: string
+  addEmail: (email: string) => void
+  password: string
+  addPassword: (password: string) => void
   name: string
   addName: (name: string) => void
   sex: Gender
@@ -42,5 +46,13 @@ export const userStore = create<userState>(set => ({
   tripTheme: [],
   addTripTheme: theme => {
     set(state => ({ tripTheme: [...state.tripTheme, theme] }))
+  },
+  email: '',
+  addEmail: email => {
+    set(state => ({ email: email }))
+  },
+  password: '',
+  addPassword: password => {
+    set(state => ({ password: password }))
   }
 }))

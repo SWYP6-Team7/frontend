@@ -34,10 +34,11 @@ const ButotnContainer = styled.button`
 // 상단 헤더 스타일
 const HeaderContainer = styled.header`
   width: 100%;
-
+  height: 68px;
   padding: 20px 24px;
   background-color: transparent;
   display: flex;
+
   justify-content: space-between;
   align-items: center;
 `
