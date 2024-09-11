@@ -2,6 +2,7 @@ import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
+import { authStore } from '@/store/client/authStore'
 import { useState } from 'react'
 import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'
@@ -18,7 +19,9 @@ const RegisterName = () => {
   const location = useLocation()
 
   const navigate = useNavigate()
-  const { name, addName } = userStore()
+  const { name, addName, email, password } = userStore()
+  const { userId, accessToken } = authStore()
+  console.log(userId, accessToken, email, password, name, '~~')
   const [userName, setUserName] = useState(name)
   const [genderCheck, setGenderCheck] = useState(false)
 
@@ -78,36 +81,35 @@ const RegisterName = () => {
         </div>
       </div>
       <Outlet context={{ setGenderCheck }} />
-      <ButtonWrapper>
-        <Button
-          text="다음"
-          onClick={nextStepClickHandler}
-          disabled={!(userName.length > 0 && !nameValidError)}
-          addStyle={
-            location.pathname == '/registerName'
-              ? userName.length > 0 && !nameValidError
-                ? {
-                    backgroundColor: 'rgba(62, 141, 0, 1)',
-                    color: 'rgba(240, 240, 240, 1)',
-                    boxShadow: 'rgba(170, 170, 170, 0.1)'
-                  }
-                : {
-                    backgroundColor: 'rgba(220, 220, 220, 1)',
-                    color: 'rgba(132, 132, 132, 1)'
-                  }
-              : genderCheck && userName.length > 0 && !nameValidError
-                ? {
-                    backgroundColor: 'rgba(62, 141, 0, 1)',
-                    color: 'rgba(240, 240, 240, 1)',
-                    boxShadow: 'rgba(170, 170, 170, 0.1)'
-                  }
-                : {
-                    backgroundColor: 'rgba(220, 220, 220, 1)',
-                    color: 'rgba(132, 132, 132, 1)'
-                  }
-          }
-        />
-      </ButtonWrapper>
+
+      <Button
+        text="다음"
+        onClick={nextStepClickHandler}
+        disabled={!(userName.length > 0 && !nameValidError)}
+        addStyle={
+          location.pathname == '/registerName'
+            ? userName.length > 0 && !nameValidError
+              ? {
+                  backgroundColor: 'rgba(62, 141, 0, 1)',
+                  color: 'rgba(240, 240, 240, 1)',
+                  boxShadow: 'rgba(170, 170, 170, 0.1)'
+                }
+              : {
+                  backgroundColor: 'rgba(220, 220, 220, 1)',
+                  color: 'rgba(132, 132, 132, 1)'
+                }
+            : genderCheck && userName.length > 0 && !nameValidError
+              ? {
+                  backgroundColor: 'rgba(62, 141, 0, 1)',
+                  color: 'rgba(240, 240, 240, 1)',
+                  boxShadow: 'rgba(170, 170, 170, 0.1)'
+                }
+              : {
+                  backgroundColor: 'rgba(220, 220, 220, 1)',
+                  color: 'rgba(132, 132, 132, 1)'
+                }
+        }
+      />
     </RegisterNameWrapper>
   )
 }
@@ -116,6 +118,9 @@ export default RegisterName
 
 const RegisterNameWrapper = styled.div`
   padding: 0px 24px;
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 88px;
 `
 const StepIconContainer = styled.div`
   margin-top: 30px;
@@ -133,6 +138,7 @@ const StepContent = styled.div`
   text-align: left;
 `
 const ButtonWrapper = styled.div`
+  width: 100%;
   position: absolute;
   bottom: 4.7svh;
 `

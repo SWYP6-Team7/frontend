@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Header from './Header'
-import { Outlet, useLocation, useMatch } from 'react-router-dom'
+import { Outlet, useMatch } from 'react-router-dom'
 const Layout = () => {
-  const location = useLocation()
-  const isSignup = location.pathname.startsWith('/register')
+  const isSignup = useMatch('/signup')
   return (
     <Container>
       <Body>
-        {isSignup && <Header />}
+        {/* {isSignup && <Header />} */}
+        <Header />
         <Outlet />
       </Body>
     </Container>
@@ -22,6 +22,7 @@ const Body = styled.div`
   height: 100%;
   position: relative;
   background-color: #fffff6;
+  padding-bottom: 88px;
   @media (max-width: 440px) {
     width: 100svw;
   }
@@ -41,6 +42,9 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export default Layout

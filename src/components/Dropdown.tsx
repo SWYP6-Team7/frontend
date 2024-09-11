@@ -57,10 +57,32 @@ export const StyledOptionItem = styled.li`
 
 // max-height를 통해 드롭다운이 열렸을 때 보이는 길이와 닫혔을때 안보이는 효과
 const activeExist = ({ active = true }) => {
-  return `max-height: ${active ? '241px' : '0'}`
+  return `${
+    active
+      ? `@media (max-height: 777px) {
+    // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
+    height: 100px;
+  }
+  @media (min-height: 777px) {
+    // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
+    height: 241px;
+  }`
+      : 'height:0'
+  }`
 }
 const activeContainer = ({ active = true }) => {
-  return `height: ${active ? '300px' : '52px'}`
+  return `${
+    active
+      ? `@media (max-height: 777px) {
+    // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
+    height: 160px;
+  }
+  @media (min-height: 777px) {
+    // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
+    height: 300px;
+  }`
+      : 'height: 52px'
+  }`
 }
 const OptionListContainer = styled.div`
   transition: 0.2s ease-in-out;
@@ -73,6 +95,14 @@ const OptionListContainer = styled.div`
   background-color: white;
   padding-right: 19px;
   ${activeContainer};
+  // @media (max-height: 777px) {
+  //   // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
+  //   height: 160px;
+  // }
+  // @media (min-height: 777px) {
+  //   // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
+  //   height: 300px;
+  // }
 `
 export const StyledOptionList = styled.ul`
   position: absolute; // absolute로 원하는 위치로.
@@ -107,6 +137,14 @@ export const StyledOptionList = styled.ul`
     width: 0;
     height: 0;
   }
+  // @media (max-height: 777px) {
+  //   // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
+  //   height: 100px;
+  // }
+  // @media (min-height: 777px) {
+  //   // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
+  //   height: 119px;
+  // }
 `
 
 export const StyledSelectedLabel = styled.button`

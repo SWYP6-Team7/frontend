@@ -3,14 +3,15 @@ import useUser from './useUser'
 import { axiosInstance } from '@/api'
 
 interface IRegisterEmail {
-  email: 'string'
-  password: 'string'
-  name: 'string'
-  gender: 'string'
-  phone: 'string'
-  birthYear: 'string'
-  introduce: 'string'
-  tags: { tagName: 'string' }[]
+  email: string
+  password: string
+  name: string
+  gender: string
+  phone: string
+  birthYear: string
+  // DB에서 현재 제외된 상태.
+  // introduce: 'string'
+  // tags: { tagName: 'string' }[]
 }
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
