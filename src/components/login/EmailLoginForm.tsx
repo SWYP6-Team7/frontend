@@ -6,6 +6,7 @@ import Spacing from '../Spacing'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../Button'
 import InfoText from '../designSystem/text/InfoText'
+import useAuth from '@/hooks/user/useAuth'
 
 export const emailSchema = z
   .string()
@@ -22,6 +23,7 @@ export const passwordSchema = z
 
 const EmailLoginForm = () => {
   const navigate = useNavigate()
+  const { loginEmail } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -45,31 +47,8 @@ const EmailLoginForm = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-
-      if (!response.ok) {
-        setError('로그인 정보를 다시 확인해주세요.')
-        setShake(true)
-        setTimeout(() => {
-          setShake(false)
-        }, 500)
-      } else {
-        navigate('/')
-      }
-    } catch (error) {
-      setError('로그인 정보를 다시 확인해주세요.')
-      setShake(true)
-      setTimeout(() => {
-        setShake(false)
-      }, 500)
-    }
+    loginEmail(formData)
+    navigate('/')
   }
 
   const changeValue = (e: ChangeEvent<HTMLInputElement>) => {

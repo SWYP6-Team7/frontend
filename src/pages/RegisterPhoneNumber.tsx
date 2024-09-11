@@ -1,7 +1,7 @@
 import SecondStepIcon from '@/components/icons/SecondStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
-import { userStore } from '@/store/userStore'
+import { userStore } from '@/store/client/userStore'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'

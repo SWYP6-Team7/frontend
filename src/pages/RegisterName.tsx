@@ -1,7 +1,7 @@
 import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
-import { userStore } from '@/store/userStore'
+import { userStore } from '@/store/client/userStore'
 import { useState } from 'react'
 import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'

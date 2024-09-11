@@ -4,7 +4,7 @@ import InfoText from '@/components/designSystem/text/InfoText'
 import { emailSchema, passwordSchema } from '@/components/login/EmailLoginForm'
 import Spacing from '@/components/Spacing'
 import Terms from '@/components/Terms'
-import { userStore } from '@/store/userStore'
+import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -241,7 +241,7 @@ const RegisterForm = () => {
 
 const Container = styled.form`
   padding: 0 24px;
-  margin-top: 7.1svh;
+  padding-top: 7.1svh;
 `
 
 const FieldContainer = styled.div`

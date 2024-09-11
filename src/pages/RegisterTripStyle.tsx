@@ -1,7 +1,7 @@
 import ThirdStepIcon from '@/components/icons/ThirdStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
-import { userStore } from '@/store/userStore'
+import { userStore } from '@/store/client/userStore'
 import { MouseEventHandler, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CategoryButton from '@/components/CategoryButton'
