@@ -1,5 +1,6 @@
 import { authStore } from '@/store/client/authStore'
 import useUser from './useUser'
+import { axiosInstance } from '@/api'
 
 interface IRegisterEmail {
   email: 'string'
@@ -26,15 +27,11 @@ const useAuth = () => {
     password: string
   }): Promise<void> {
     try {
-      const response = await fetch('/api/users/new', {
-        body: JSON.stringify({ email, password }),
-        method: 'POST'
+      const response = await axiosInstance.post('/api/users/new', {
+        email,
+        password
       })
-
-      if (!response.ok) {
-        throw new Error('서버 응답 오류: ' + response.statusText)
-      }
-      const data = await response.json()
+      const data = response.data
 
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
@@ -43,15 +40,8 @@ const useAuth = () => {
   }
   async function registerEmail(formData: IRegisterEmail): Promise<void> {
     try {
-      const response = await fetch('/api/users/new', {
-        body: JSON.stringify(formData),
-        method: 'POST'
-      })
-
-      if (!response.ok) {
-        throw new Error('서버 응답 오류: ' + response.statusText)
-      }
-      const data = await response.json()
+      const response = await axiosInstance.post('/api/users/new', formData)
+      const data = response.data
 
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
