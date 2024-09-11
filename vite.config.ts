@@ -19,6 +19,7 @@ export default defineConfig({
     port: 9999,
     open: true
   },
+  envDir: '../',
   resolve: {
     alias: [
       { find: '@', replacement: path.resolve(__dirname, 'src') },
