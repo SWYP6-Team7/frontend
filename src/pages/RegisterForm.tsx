@@ -138,7 +138,6 @@ const RegisterForm = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (allSuccess) {
-      loginEmail(formData)
       addEmail(formData.email)
       addPassword(formData.password)
       navigate('/registerName')
