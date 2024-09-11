@@ -220,28 +220,26 @@ const RegisterForm = () => {
             <Spacing size={16} />
           )}
         </FieldContainer>
-        <ButtonContainer>
-          {allSuccess ? (
-            <Button text="다음" />
-          ) : (
-            <Button
-              text="다음"
-              addStyle={{
-                backgroundColor: 'rgba(220, 220, 220, 1)',
-                color: 'rgba(132, 132, 132, 1)',
-                boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.1)'
-              }}
-              disabled={true}
-            />
-          )}
-        </ButtonContainer>
+
+        {allSuccess ? (
+          <Button text="다음" />
+        ) : (
+          <Button
+            text="다음"
+            addStyle={{
+              backgroundColor: 'rgba(220, 220, 220, 1)',
+              color: 'rgba(132, 132, 132, 1)',
+              boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.1)'
+            }}
+            disabled={true}
+          />
+        )}
       </Container>
     </>
   )
 }
 
 const Container = styled.form`
-  width: 100%;
   padding: 0 24px;
   margin-top: 7.1svh;
 `

@@ -102,25 +102,24 @@ const RegisterPhoneNumber = () => {
           </div>
         </DropdownContainer>
       </AgeStep>
-      <ButtonWrapper>
-        <Button
-          text="다음"
-          onClick={nextStepClickHandler}
-          disabled={!(phone.length >= 10 && !phoneNumberValidError)}
-          addStyle={
-            phone.length >= 10 && !phoneNumberValidError
-              ? {
-                  backgroundColor: 'rgba(62, 141, 0, 1)',
-                  color: 'rgba(240, 240, 240, 1)',
-                  boxShadow: 'rgba(170, 170, 170, 0.1)'
-                }
-              : {
-                  backgroundColor: 'rgba(220, 220, 220, 1)',
-                  color: 'rgba(132, 132, 132, 1)'
-                }
-          }
-        />
-      </ButtonWrapper>
+
+      <Button
+        text="다음"
+        onClick={nextStepClickHandler}
+        disabled={!(phone.length >= 10 && !phoneNumberValidError)}
+        addStyle={
+          phone.length >= 10 && !phoneNumberValidError
+            ? {
+                backgroundColor: 'rgba(62, 141, 0, 1)',
+                color: 'rgba(240, 240, 240, 1)',
+                boxShadow: 'rgba(170, 170, 170, 0.1)'
+              }
+            : {
+                backgroundColor: 'rgba(220, 220, 220, 1)',
+                color: 'rgba(132, 132, 132, 1)'
+              }
+        }
+      />
     </RegisterPhoneNumberWrapper>
   )
 }
@@ -129,6 +128,9 @@ export default RegisterPhoneNumber
 
 const RegisterPhoneNumberWrapper = styled.div`
   padding: 0px 24px;
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 88px;
 `
 const StepIconContainer = styled.div`
   margin-top: 30px;
@@ -161,6 +163,7 @@ const DropdownContainer = styled.div`
   align-items: center;
 `
 const ButtonWrapper = styled.div`
+  width: 100%;
   position: absolute;
   bottom: 4.7svh;
 `

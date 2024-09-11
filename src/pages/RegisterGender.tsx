@@ -101,7 +101,6 @@ const fadeIn = keyframes`
   }
 `
 const GenderContainer = styled.div`
-  width: 342px;
   height: 281px;
   margin-top: 34px;
   animation: ${fadeIn} 0.5s;
@@ -141,9 +140,9 @@ const FemaleBox = styled.div`
 
 const Male = styled.img`
   width: 102px;
-  height: 102px;
+  // height: 102px;
 `
 const Female = styled.img`
   width: 102px;
-  height: 102px;
+  // height: 102px;
 `
