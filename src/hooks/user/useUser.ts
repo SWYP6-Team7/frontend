@@ -1,20 +1,8 @@
+import { getUser } from '@/api/user'
 import { authStore } from '@/store/client/authStore'
 import { generateUserKey, getJWTHeader } from '@/utils/user'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-
-// user 정보 호출
-//
-async function getUser(userId: number, accessToken: string) {
-  const response = await fetch(`/api/user/${userId}`, {
-    headers: getJWTHeader(accessToken),
-    method: 'GET'
-  })
-  if (!response.ok) {
-    throw new Error('유저 정보를 가져오는데 실패했습니다.')
-  }
-  const result = response.json()
-  return result
-}
+import axios from 'axios'
 
 // reqct-query를 통해 user정보가 필요한 곳에서 호출할 수 있는 커스텀 훅
 const useUser = () => {

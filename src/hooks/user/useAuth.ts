@@ -1,6 +1,6 @@
 import { authStore } from '@/store/client/authStore'
-import { userStore } from '@/store/client/userStore'
 import useUser from './useUser'
+import { axiosInstance } from '@/api'
 
 interface IRegisterEmail {
   email: string
@@ -8,9 +8,10 @@ interface IRegisterEmail {
   name: string
   gender: string
   phone: string
-  // introduce: string
   birthYear: string
-  // tags: { tagName: string }[] | []
+  // DB에서 현재 제외된 상태.
+  // introduce: 'string'
+  // tags: { tagName: 'string' }[]
 }
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
@@ -18,7 +19,7 @@ interface IRegisterEmail {
 const useAuth = () => {
   const { updateUser, clearUser } = useUser()
   const { setLoginData, clearLoginData } = authStore()
-  const { addEmail, addPassword } = userStore()
+
   async function loginEmail({
     email,
     password
@@ -26,17 +27,12 @@ const useAuth = () => {
     email: string
     password: string
   }): Promise<void> {
-    console.log(email, password, '!')
     try {
-      const response = await fetch('/api/users/new', {
-        body: JSON.stringify({ email, password }),
-        method: 'POST'
+      const response = await axiosInstance.post('/api/users/new', {
+        email,
+        password
       })
-
-      if (!response.ok) {
-        throw new Error('서버 응답 오류: ' + response.statusText)
-      }
-      const data = await response.json()
+      const data = response.data
 
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
@@ -45,18 +41,9 @@ const useAuth = () => {
   }
   async function registerEmail(formData: IRegisterEmail): Promise<void> {
     try {
-      const response = await fetch('/api/users/new', {
-        body: JSON.stringify(formData),
-        method: 'POST'
-      })
+      const response = await axiosInstance.post('/api/users/new', formData)
+      const data = response.data
 
-      if (!response.ok) {
-        throw new Error('서버 응답 오류: ' + response.statusText)
-      }
-      const data = await response.json()
-      console.log(formData, '~~~~!!')
-      addEmail(formData.email)
-      addPassword(formData.password)
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
       console.error(error)

@@ -65,9 +65,7 @@ const RegisterTripStyle = () => {
       name,
       gender: sex,
       phone: phoneNumber,
-      // introduce: '',
       birthYear: yearOfBirth.toString()
-      // tags: tags
     })
   }
   return (
