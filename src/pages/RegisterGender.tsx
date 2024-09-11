@@ -2,7 +2,7 @@ import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { userStore } from '@/store/userStore'
+import { userStore } from '@/store/client/userStore'
 
 interface ContextType {
   setGenderCheck: React.Dispatch<React.SetStateAction<boolean>>
