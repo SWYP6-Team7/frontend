@@ -4,10 +4,9 @@ import App from './App'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Global } from '@emotion/react'
 import globalStyle from '@/styles/globalStyle'
-
+import { client } from './store/server/queryClient'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 const reactRoot = document.querySelector('div#root')
-
-const client = new QueryClient()
 
 const prepare = async (): Promise<void> => {
   if (process.env.NODE_ENV === 'development') {
@@ -27,6 +26,7 @@ prepare().then(() => {
       {/* globalstyle 적용  */}
       <Global styles={globalStyle} />
       <App />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 })
