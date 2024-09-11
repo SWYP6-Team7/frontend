@@ -6,13 +6,34 @@ import { MouseEventHandler, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CategoryButton from '@/components/CategoryButton'
 import Spacing from '@/components/Spacing'
+import useAuth from '@/hooks/user/useAuth'
+
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
-  const { name, tripStyle, addTripStyle } = userStore()
+  const { registerEmail } = useAuth()
 
-  const nextStepClickHandler = () => {
-    navigate('/')
-  }
+  const {
+    name,
+    email,
+    password,
+    sex,
+    phoneNumber,
+    yearOfBirth,
+    tripStyle,
+    addTripStyle
+  } = userStore()
+
+  console.log(
+    name,
+    email,
+    password,
+    sex,
+    phoneNumber,
+    yearOfBirth,
+    tripStyle,
+    addTripStyle
+  )
+
   // 버튼 활성화상태.
   const [activeStates, setActiveStates] = useState<boolean[]>(
     new Array(20).fill(false)
@@ -26,7 +47,8 @@ const RegisterTripStyle = () => {
   const tripStyleArray = categoryButtonTextArray.filter(
     (btnTxt, idx) => activeStates[idx]
   )
-  console.log(tripStyleArray)
+  const tags: { tagName: string }[] = tripStyleArray.map(v => ({ tagName: v }))
+
   // 버튼 클릭 핸들러
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = e => {
     const newActiveStates = [...activeStates]
@@ -35,7 +57,19 @@ const RegisterTripStyle = () => {
 
     setActiveStates(newActiveStates) // 상태 업데이트
   }
-
+  const nextStepClickHandler = () => {
+    navigate('/')
+    registerEmail({
+      email,
+      password,
+      name,
+      gender: sex,
+      phone: phoneNumber,
+      // introduce: '',
+      birthYear: yearOfBirth.toString()
+      // tags: tags
+    })
+  }
   return (
     <RegisterTripStyleWrapper>
       <StepIconContainer>

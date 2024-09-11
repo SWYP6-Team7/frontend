@@ -1,7 +1,7 @@
 // src/userStore.ts
 import { create } from 'zustand'
 
-type Gender = '여자' | '남자' | null
+type Gender = 'F' | 'M' | ''
 
 interface userState {
   email: string
@@ -27,7 +27,7 @@ export const userStore = create<userState>(set => ({
   addName: name => {
     set(state => ({ name: name }))
   },
-  sex: null,
+  sex: '',
   addSex: sex => {
     set(state => ({ sex: sex }))
   },

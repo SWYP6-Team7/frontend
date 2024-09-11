@@ -32,7 +32,7 @@ const RegisterPhoneNumber = () => {
     const withoutHypen = e.target.value.replace(/-/g, '')
     if (e.target.value.length >= 10) {
       if (phoneNumberValid.safeParse(withoutHypen).success) {
-        addPhoneNumber(e.target.value)
+        addPhoneNumber(withoutHypen)
         setPhoneNumberValidError(false)
       } else {
         setPhoneNumberValidError(true)

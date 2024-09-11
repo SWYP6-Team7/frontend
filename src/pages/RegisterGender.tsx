@@ -13,17 +13,15 @@ const RegisterGender = () => {
   // Outlet으로 렌더링 될 하위 컴포넌트에 Props로 성별 선택확인 변수 전달.
   const { setGenderCheck } = useOutletContext<ContextType>()
   const { sex, addSex } = userStore()
-  const [maleClicked, setMaleClicked] = useState(sex == '남자' ? true : false)
-  const [femaleClicked, setFemaleClicked] = useState(
-    sex == '여자' ? true : false
-  )
+  const [maleClicked, setMaleClicked] = useState(sex == 'M' ? true : false)
+  const [femaleClicked, setFemaleClicked] = useState(sex == 'F' ? true : false)
 
   const clickedMale = () => {
     if (!maleClicked) {
       setMaleClicked(true)
       setFemaleClicked(false)
       setGenderCheck(true)
-      addSex('남자')
+      addSex('M')
     }
   }
   const clickedFemale = () => {
@@ -31,7 +29,7 @@ const RegisterGender = () => {
       setFemaleClicked(true)
       setMaleClicked(false)
       setGenderCheck(true)
-      addSex('여자')
+      addSex('F')
     }
   }
   // 이전 화면으로 돌아왔을 때, 이미 체크 했다면, true값을 할당해주기.
@@ -140,9 +138,9 @@ const FemaleBox = styled.div`
 
 const Male = styled.img`
   width: 102px;
-  // height: 102px;
+  height: 102px;
 `
 const Female = styled.img`
   width: 102px;
-  // height: 102px;
+  height: 102px;
 `

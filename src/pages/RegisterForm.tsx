@@ -9,7 +9,7 @@ import styled from '@emotion/styled'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useStore } from 'zustand'
-
+import useAuth from '@/hooks/user/useAuth'
 interface ErrorProps {
   email: undefined | string
   password: undefined | string
@@ -17,6 +17,7 @@ interface ErrorProps {
 }
 
 const RegisterForm = () => {
+  const { loginEmail } = useAuth()
   const [showTerms, setShowTerms] = useState(true)
   const [formData, setFormData] = useState({
     email: '',
@@ -137,6 +138,7 @@ const RegisterForm = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (allSuccess) {
+      loginEmail(formData)
       addEmail(formData.email)
       addPassword(formData.password)
       navigate('/registerName')

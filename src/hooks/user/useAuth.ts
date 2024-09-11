@@ -1,15 +1,16 @@
 import { authStore } from '@/store/client/authStore'
+import { userStore } from '@/store/client/userStore'
 import useUser from './useUser'
 
 interface IRegisterEmail {
-  email: 'string'
-  password: 'string'
-  name: 'string'
-  gender: 'string'
-  phone: 'string'
-  birthYear: 'string'
-  introduce: 'string'
-  tags: { tagName: 'string' }[]
+  email: string
+  password: string
+  name: string
+  gender: string
+  phone: string
+  // introduce: string
+  birthYear: string
+  // tags: { tagName: string }[] | []
 }
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
@@ -17,7 +18,7 @@ interface IRegisterEmail {
 const useAuth = () => {
   const { updateUser, clearUser } = useUser()
   const { setLoginData, clearLoginData } = authStore()
-
+  const { addEmail, addPassword } = userStore()
   async function loginEmail({
     email,
     password
@@ -25,6 +26,7 @@ const useAuth = () => {
     email: string
     password: string
   }): Promise<void> {
+    console.log(email, password, '!')
     try {
       const response = await fetch('/api/users/new', {
         body: JSON.stringify({ email, password }),
@@ -52,7 +54,9 @@ const useAuth = () => {
         throw new Error('서버 응답 오류: ' + response.statusText)
       }
       const data = await response.json()
-
+      console.log(formData, '~~~~!!')
+      addEmail(formData.email)
+      addPassword(formData.password)
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
       console.error(error)

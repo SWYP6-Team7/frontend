@@ -2,6 +2,7 @@ import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
+import { authStore } from '@/store/client/authStore'
 import { useState } from 'react'
 import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'
@@ -18,7 +19,9 @@ const RegisterName = () => {
   const location = useLocation()
 
   const navigate = useNavigate()
-  const { name, addName } = userStore()
+  const { name, addName, email, password } = userStore()
+  const { userId, accessToken } = authStore()
+  console.log(userId, accessToken, email, password, name, '~~')
   const [userName, setUserName] = useState(name)
   const [genderCheck, setGenderCheck] = useState(false)
 
