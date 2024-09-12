@@ -81,41 +81,48 @@ const RegisterName = () => {
         </div>
       </div>
       <Outlet context={{ setGenderCheck }} />
-
-      <Button
-        text="다음"
-        onClick={nextStepClickHandler}
-        disabled={!(userName.length > 0 && !nameValidError)}
-        addStyle={
-          location.pathname == '/registerName'
-            ? userName.length > 0 && !nameValidError
-              ? {
-                  backgroundColor: 'rgba(62, 141, 0, 1)',
-                  color: 'rgba(240, 240, 240, 1)',
-                  boxShadow: 'rgba(170, 170, 170, 0.1)'
-                }
-              : {
-                  backgroundColor: 'rgba(220, 220, 220, 1)',
-                  color: 'rgba(132, 132, 132, 1)'
-                }
-            : genderCheck && userName.length > 0 && !nameValidError
-              ? {
-                  backgroundColor: 'rgba(62, 141, 0, 1)',
-                  color: 'rgba(240, 240, 240, 1)',
-                  boxShadow: 'rgba(170, 170, 170, 0.1)'
-                }
-              : {
-                  backgroundColor: 'rgba(220, 220, 220, 1)',
-                  color: 'rgba(132, 132, 132, 1)'
-                }
-        }
-      />
+      <ButtonWrapper>
+        <Button
+          text="다음"
+          onClick={nextStepClickHandler}
+          disabled={!(userName.length > 0 && !nameValidError)}
+          addStyle={
+            location.pathname == '/registerName'
+              ? userName.length > 0 && !nameValidError
+                ? {
+                    backgroundColor: 'rgba(62, 141, 0, 1)',
+                    color: 'rgba(240, 240, 240, 1)',
+                    boxShadow: 'rgba(170, 170, 170, 0.1)'
+                  }
+                : {
+                    backgroundColor: 'rgba(220, 220, 220, 1)',
+                    color: 'rgba(132, 132, 132, 1)'
+                  }
+              : genderCheck && userName.length > 0 && !nameValidError
+                ? {
+                    backgroundColor: 'rgba(62, 141, 0, 1)',
+                    color: 'rgba(240, 240, 240, 1)',
+                    boxShadow: 'rgba(170, 170, 170, 0.1)'
+                  }
+                : {
+                    backgroundColor: 'rgba(220, 220, 220, 1)',
+                    color: 'rgba(132, 132, 132, 1)'
+                  }
+          }
+        />
+      </ButtonWrapper>
     </RegisterNameWrapper>
   )
 }
 
 export default RegisterName
 
+const ButtonWrapper = styled.div`
+  right: 24px;
+  left: 24px;
+  position: absolute;
+  bottom: 4.7svh;
+`
 const RegisterNameWrapper = styled.div`
   padding: 0px 24px;
   position: relative;
@@ -136,9 +143,4 @@ const StepContent = styled.div`
   line-height: 33.6px;
   letter-spacing: -0.025em;
   text-align: left;
-`
-const ButtonWrapper = styled.div`
-  width: 100%;
-  position: absolute;
-  bottom: 4.7svh;
 `
