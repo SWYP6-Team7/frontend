@@ -10,6 +10,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useStore } from 'zustand'
 import useAuth from '@/hooks/user/useAuth'
+import { checkEmail } from '@/api/user'
 interface ErrorProps {
   email: undefined | string
   password: undefined | string
@@ -97,7 +98,7 @@ const RegisterForm = () => {
         if (passwordError) {
           setError(prev => ({
             ...prev,
-            password: '이메일과 동일한 형식의 비밀번호'
+            password: '이메일과 동일한 형식의 비밀번호는 사용할 수 없습니다.'
           }))
         } else {
           setError(prev => ({
@@ -135,9 +136,22 @@ const RegisterForm = () => {
     }
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (allSuccess) {
+      const checkingEmail = await checkEmail(formData.email)
+      if (!checkingEmail) {
+        setShake(prev => ({
+          ...prev,
+          email: true
+        }))
+        setError(prev => ({ ...prev, email: '이미 사용중인 이메일입니다.' }))
+        setTimeout(() => {
+          setShake({ email: false, password: false, confirmPassword: false })
+        }, 500)
+        return
+      }
+
       addEmail(formData.email)
       addPassword(formData.password)
       navigate('/registerName')

@@ -9,6 +9,7 @@ import RegisterName from './pages/RegisterName'
 import RegisterPhoneNumber from './pages/RegisterPhoneNumber'
 import RegisterTripStyle from './pages/RegisterTripStyle'
 import RegisterGender from './pages/RegisterGender'
+import OauthKakao from './pages/OauthKakao'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: '',
         element: <Home />
+      },
+      {
+        path: 'login/oauth/kakao',
+        element: <OauthKakao />
       },
       {
         // url 아직 안정해진건가요?
