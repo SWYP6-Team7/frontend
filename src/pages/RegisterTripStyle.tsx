@@ -225,16 +225,17 @@ const RegisterTripStyle = () => {
           </Row>
         </StyleBtns>
       </TripThemeContainer>
-
-      <Button
-        text="다음"
-        onClick={nextStepClickHandler}
-        addStyle={{
-          backgroundColor: 'rgba(62, 141, 0, 1)',
-          color: 'rgba(240, 240, 240, 1)',
-          boxShadow: 'rgba(170, 170, 170, 0.1)'
-        }}
-      />
+      <ButtonWrapper>
+        <Button
+          text="다음"
+          onClick={nextStepClickHandler}
+          addStyle={{
+            backgroundColor: 'rgba(62, 141, 0, 1)',
+            color: 'rgba(240, 240, 240, 1)',
+            boxShadow: 'rgba(170, 170, 170, 0.1)'
+          }}
+        />
+      </ButtonWrapper>
     </RegisterTripStyleWrapper>
   )
 }

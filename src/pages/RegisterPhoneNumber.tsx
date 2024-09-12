@@ -102,24 +102,25 @@ const RegisterPhoneNumber = () => {
           </div>
         </DropdownContainer>
       </AgeStep>
-
-      <Button
-        text="다음"
-        onClick={nextStepClickHandler}
-        disabled={!(phone.length >= 10 && !phoneNumberValidError)}
-        addStyle={
-          phone.length >= 10 && !phoneNumberValidError
-            ? {
-                backgroundColor: 'rgba(62, 141, 0, 1)',
-                color: 'rgba(240, 240, 240, 1)',
-                boxShadow: 'rgba(170, 170, 170, 0.1)'
-              }
-            : {
-                backgroundColor: 'rgba(220, 220, 220, 1)',
-                color: 'rgba(132, 132, 132, 1)'
-              }
-        }
-      />
+      <ButtonWrapper>
+        <Button
+          text="다음"
+          onClick={nextStepClickHandler}
+          disabled={!(phone.length >= 10 && !phoneNumberValidError)}
+          addStyle={
+            phone.length >= 10 && !phoneNumberValidError
+              ? {
+                  backgroundColor: 'rgba(62, 141, 0, 1)',
+                  color: 'rgba(240, 240, 240, 1)',
+                  boxShadow: 'rgba(170, 170, 170, 0.1)'
+                }
+              : {
+                  backgroundColor: 'rgba(220, 220, 220, 1)',
+                  color: 'rgba(132, 132, 132, 1)'
+                }
+          }
+        />
+      </ButtonWrapper>
     </RegisterPhoneNumberWrapper>
   )
 }
@@ -162,9 +163,10 @@ const DropdownContainer = styled.div`
   margin-top: 14px;
   align-items: center;
 `
+
 const ButtonWrapper = styled.div`
-  width: 100%;
+  right: 24px;
+  left: 24px;
   position: absolute;
   bottom: 4.7svh;
 `
-// 년생 드롭다운

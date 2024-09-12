@@ -29,14 +29,12 @@ const Button = ({
   disabled = false
 }: ButtonProps) => {
   return (
-    <ButtonWrapper>
-      <ButtonContainer
-        disabled={disabled}
-        onClick={onClick}
-        css={addStyle}>
-        {text}
-      </ButtonContainer>
-    </ButtonWrapper>
+    <ButtonContainer
+      disabled={disabled}
+      onClick={onClick}
+      css={addStyle}>
+      {text}
+    </ButtonContainer>
   )
 }
 
@@ -48,10 +46,5 @@ const ButtonContainer = styled.button`
   font-size: 18px;
   padding: 10px 20px 10px 20px;
 `
-const ButtonWrapper = styled.div`
-  right: 24px;
-  left: 24px;
-  position: absolute;
-  bottom: 4.7svh;
-`
+
 export default Button

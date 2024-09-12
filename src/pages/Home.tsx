@@ -11,6 +11,7 @@ const Home = () => {
     logout()
   }
   console.log(user, userId, accessToken)
+
   return (
     <div>
       <div>{JSON.stringify(user)}</div>
