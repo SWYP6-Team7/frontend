@@ -143,6 +143,7 @@ const EmailLoginForm = () => {
 const Container = styled.form`
   padding: 0 24px;
   display: flex;
+  width: 100%;
   font-size: 14px;
   flex-direction: column;
   line-height: 16px;

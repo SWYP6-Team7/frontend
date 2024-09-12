@@ -16,3 +16,30 @@ export async function getUser(userId: number, accessToken: string) {
     console.error(error)
   }
 }
+
+export async function checkEmail(email: string) {
+  try {
+    const response = await axiosInstance.get('/api/users-email', {
+      params: { email: email }
+    })
+    console.log('response', response)
+    return true
+  } catch (error: any) {
+    console.log(error)
+    return false
+  }
+}
+
+export const getKakaoToken = async (code: string) => {
+  try {
+    const response = await axios.post('/api/kakao/oauth', {
+      code
+    })
+
+    const user = response.data
+
+    return user
+  } catch (error) {
+    console.error('토큰 요청 실패:', error)
+  }
+}

@@ -7,8 +7,17 @@ import EmailLoginForm from '@/components/login/EmailLoginForm'
 import Spacing from '@/components/Spacing'
 import styled from '@emotion/styled'
 import React, { ChangeEvent, useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
+
+const redirectUri = 'http://localhost:9999/login/oauth/kakao'
+
+const KAKAO_LINK = `http://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code`
 
 const Login = () => {
+  const handleKakao = () => {
+    window.location.href = KAKAO_LINK
+  }
+
   return (
     <Container>
       <TopArea>
@@ -31,7 +40,9 @@ const Login = () => {
         <Spacing size="2.3svh" />
         <LoginIconContainer>
           <NaverIcon />
-          <KakaoIcon />
+          <button onClick={handleKakao}>
+            <KakaoIcon />
+          </button>
           <GoogleIcon />
         </LoginIconContainer>
       </BottomArea>
@@ -65,6 +76,7 @@ const TopArea = styled.div`
 
 const BottomArea = styled.div`
   padding: 0 24px;
+
   padding-top: 6.3svh;
   flex: 1;
   display: flex;

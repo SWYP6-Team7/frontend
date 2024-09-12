@@ -62,5 +62,58 @@ export const handlers = [
         }
       }
     )
+  }),
+  http.get('/api/users-email', async ({ request }) => {
+    const url = new URL(request.url)
+
+    const email = url.searchParams.get('email')
+    console.log('email', email)
+    return HttpResponse.json(null, { status: 409 })
+  }),
+  http.post('/api/kakao/oauth', async ({ request: req }) => {
+    const data = (await req.json()) as unknown as { code: string }
+    console.log('data', data, import.meta.env.VITE_KAKAO_CLIENT_ID)
+    try {
+      // 1. code로 카카오 API에 액세스 토큰 요청
+      const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          client_id: import.meta.env.VITE_KAKAO_CLIENT_ID,
+          redirect_uri: 'http://localhost:9999/login/oauth/kakao',
+          code: data!.code // 프론트에서 받은 code
+        })
+      })
+      const tokenData = await tokenResponse.json()
+      const { access_token } = tokenData
+      console.log('tokenData', access_token, tokenData)
+      // 2. 액세스 토큰을 사용해 사용자 정보 요청
+      const userInfoResponse = await fetch(
+        'https://kapi.kakao.com/v2/user/me',
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      )
+      console.log('userInfoResponse', userInfoResponse)
+      const user = await userInfoResponse.json()
+      console.log(user, 'user')
+      // 3. 사용자 정보 반환
+      return HttpResponse.json({
+        id: user.id,
+        accessToken: access_token
+      })
+    } catch (error) {
+      // 에러가 발생했을 경우
+      return HttpResponse.json(
+        { error: 'Failed to authenticate with Kakao' },
+        { status: 500 }
+      )
+    }
   })
 ]
