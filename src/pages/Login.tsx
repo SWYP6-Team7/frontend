@@ -5,17 +5,19 @@ import KakaoIcon from '@/components/icons/KakaoIcon'
 import NaverIcon from '@/components/icons/NaverIcon'
 import EmailLoginForm from '@/components/login/EmailLoginForm'
 import Spacing from '@/components/Spacing'
+import { KAKAO_LINK, NAVER_AUTH_URL } from '@/utils/constants'
 import styled from '@emotion/styled'
-import React, { ChangeEvent, useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
-
-const redirectUri = 'http://localhost:9999/login/oauth/kakao'
-
-const KAKAO_LINK = `http://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code`
 
 const Login = () => {
-  const handleKakao = () => {
-    window.location.href = KAKAO_LINK
+  const handleSimpleLogin = (domain: 'naver' | 'kakao' | 'google') => {
+    switch (domain) {
+      case 'naver':
+        window.location.href = NAVER_AUTH_URL
+        return
+      case 'kakao':
+        window.location.href = KAKAO_LINK
+        return
+    }
   }
 
   return (
@@ -39,8 +41,11 @@ const Login = () => {
         </SimpleLoginText>
         <Spacing size="2.3svh" />
         <LoginIconContainer>
-          <NaverIcon />
-          <button onClick={handleKakao}>
+          <button onClick={() => handleSimpleLogin('naver')}>
+            <NaverIcon />
+          </button>
+
+          <button onClick={() => handleSimpleLogin('kakao')}>
             <KakaoIcon />
           </button>
           <GoogleIcon />

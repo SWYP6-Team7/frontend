@@ -3,17 +3,17 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { getToken } from '@/api/user'
 
-const OauthKakao = () => {
+const OauthNaver = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
-  const code = searchParams.get('code') // 카카오에서 받은 인증 코드
+  const code = searchParams.get('code') // 네이버에서 받은 인증 코드
 
   useEffect(() => {
     if (code) {
-      // 카카오 인증 코드를 이용해 서버에서 토큰을 요청
+      // 네이버 인증 코드를 이용해 서버에서 토큰을 요청
 
-      getToken('kakao', code)
+      getToken('naver', code)
         .then(user => {
           console.log('user client', user)
           if (user.id) {
@@ -33,4 +33,4 @@ const OauthKakao = () => {
   return null
 }
 
-export default OauthKakao
+export default OauthNaver

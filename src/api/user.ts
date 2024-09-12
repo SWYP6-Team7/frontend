@@ -30,9 +30,10 @@ export async function checkEmail(email: string) {
   }
 }
 
-export const getKakaoToken = async (code: string) => {
+export const getToken = async (domain: 'naver' | 'kakao', code: string) => {
   try {
-    const response = await axios.post('/api/kakao/oauth', {
+    const url = domain === 'kakao' ? '/api/kakao/oauth' : '/api/naver/oauth'
+    const response = await axios.post(url, {
       code
     })
 

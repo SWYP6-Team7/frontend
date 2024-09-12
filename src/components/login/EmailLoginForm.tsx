@@ -47,8 +47,19 @@ const EmailLoginForm = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    loginEmail(formData)
-    navigate('/')
+    try {
+      await loginEmail(formData)
+      navigate('/')
+      return
+    } catch (error: any) {
+      setError('로그인 정보를 다시 확인해주세요.')
+      setShake(true)
+
+      setTimeout(() => {
+        setShake(false)
+      }, 500)
+      return
+    }
   }
 
   const changeValue = (e: ChangeEvent<HTMLInputElement>) => {

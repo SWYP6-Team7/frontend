@@ -6,6 +6,10 @@ export const handlers = [
       console.log('requeset', request)
       const formData = await request.json()
       console.log('formData', formData)
+      return HttpResponse.json(
+        { error: 'Internal Server Error' },
+        { status: 500 }
+      )
 
       return HttpResponse.json(
         { userId: 1, accessToken: 'dalkejoiauetaenaltkenl1j2an' },
@@ -112,6 +116,35 @@ export const handlers = [
       // 에러가 발생했을 경우
       return HttpResponse.json(
         { error: 'Failed to authenticate with Kakao' },
+        { status: 500 }
+      )
+    }
+  }),
+  http.post('/api/naver/oauth', async ({ request: req }) => {
+    const data = (await req.json()) as unknown as { code: string }
+    console.log(
+      'data',
+      data,
+      import.meta.env.VITE_NAVER_CLIENT_ID,
+      import.meta.env.VITE_NAVER_CLIENT_SECRET
+    )
+    try {
+      const params = new URLSearchParams({
+        grant_type: 'authorization_code',
+        client_id: import.meta.env.VITE_NAVER_CLIENT_ID as string,
+        client_secret: import.meta.env.VITE_NAVER_CLIENT_SECRET as string,
+        redirect_uri: 'http://localhost:9999/login/oauth/naver',
+        code: data.code // 프론트에서 받은 code
+      })
+      console.log(`https://nid.naver.com/oauth2.0/token?${params.toString()}`)
+
+      return HttpResponse.json({
+        id: 1,
+        accessToken: '123124252523123'
+      })
+    } catch (error) {
+      return HttpResponse.json(
+        { error: 'Failed to authenticate with Naver' },
         { status: 500 }
       )
     }
