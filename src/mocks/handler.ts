@@ -115,5 +115,60 @@ export const handlers = [
         { status: 500 }
       )
     }
+  }),
+  http.post('/api/naver/oauth', async ({ request: req }) => {
+    const data = (await req.json()) as unknown as { code: string }
+    console.log(
+      'data',
+      data,
+      import.meta.env.VITE_NAVER_CLIENT_ID,
+      import.meta.env.VITE_NAVER_CLIENT_SECRET
+    )
+    try {
+      const params = new URLSearchParams({
+        grant_type: 'authorization_code',
+        client_id: import.meta.env.VITE_NAVER_CLIENT_ID as string,
+        client_secret: import.meta.env.VITE_NAVER_CLIENT_SECRET as string,
+        redirect_uri: 'http://localhost:9999/login/oauth/naver',
+        code: data.code // 프론트에서 받은 code
+      })
+      console.log(`https://nid.naver.com/oauth2.0/token?${params.toString()}`)
+
+      const tokenResponse = await fetch(
+        `https://nid.naver.com/oauth2.0/token?${params.toString()}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      )
+
+      const tokenData = await tokenResponse.json()
+      const { access_token } = tokenData
+      console.log('tokenData', access_token, tokenData)
+
+      const userInfoResponse = await fetch(
+        'https://openapi.naver.com/v1/nid/me',
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        }
+      )
+      console.log('userInfoResponse', userInfoResponse)
+      const userInfoData = await userInfoResponse.json()
+      console.log(userInfoData, 'userInfoData')
+
+      return HttpResponse.json({
+        id: userInfoData.response.id,
+        accessToken: access_token
+      })
+    } catch (error) {
+      return HttpResponse.json(
+        { error: 'Failed to authenticate with Naver' },
+        { status: 500 }
+      )
+    }
   })
 ]
