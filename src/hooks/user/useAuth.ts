@@ -28,7 +28,7 @@ const useAuth = () => {
     password: string
   }): Promise<void> {
     try {
-      const response = await axiosInstance.post('/api/users/new', {
+      const response = await axiosInstance.post('/api/login', {
         email,
         password
       })
@@ -37,6 +37,7 @@ const useAuth = () => {
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
       console.error(error)
+      throw new Error(error)
     }
   }
   async function registerEmail(formData: IRegisterEmail): Promise<void> {
@@ -47,6 +48,7 @@ const useAuth = () => {
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
       console.error(error)
+      throw new Error(error)
     }
   }
 

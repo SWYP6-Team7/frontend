@@ -235,20 +235,21 @@ const RegisterForm = () => {
             <Spacing size={16} />
           )}
         </FieldContainer>
-
-        {allSuccess ? (
-          <Button text="다음" />
-        ) : (
-          <Button
-            text="다음"
-            addStyle={{
-              backgroundColor: 'rgba(220, 220, 220, 1)',
-              color: 'rgba(132, 132, 132, 1)',
-              boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.1)'
-            }}
-            disabled={true}
-          />
-        )}
+        <ButtonContainer>
+          {allSuccess ? (
+            <Button text="다음" />
+          ) : (
+            <Button
+              text="다음"
+              addStyle={{
+                backgroundColor: 'rgba(220, 220, 220, 1)',
+                color: 'rgba(132, 132, 132, 1)',
+                boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.1)'
+              }}
+              disabled={true}
+            />
+          )}
+        </ButtonContainer>
       </Container>
     </>
   )
@@ -256,6 +257,7 @@ const RegisterForm = () => {
 
 const Container = styled.form`
   padding: 0 24px;
+
   padding-top: 7.1svh;
 `
 
@@ -269,6 +271,8 @@ const FieldContainer = styled.div`
 `
 
 const ButtonContainer = styled.div`
+  right: 24px;
+  left: 24px;
   position: absolute;
   bottom: 4.7svh;
 `

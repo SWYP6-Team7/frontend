@@ -6,6 +6,10 @@ export const handlers = [
       console.log('requeset', request)
       const formData = await request.json()
       console.log('formData', formData)
+      return HttpResponse.json(
+        { error: 'Internal Server Error' },
+        { status: 500 }
+      )
 
       return HttpResponse.json(
         { userId: 1, accessToken: 'dalkejoiauetaenaltkenl1j2an' },
@@ -134,35 +138,9 @@ export const handlers = [
       })
       console.log(`https://nid.naver.com/oauth2.0/token?${params.toString()}`)
 
-      const tokenResponse = await fetch(
-        `https://nid.naver.com/oauth2.0/token?${params.toString()}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        }
-      )
-
-      const tokenData = await tokenResponse.json()
-      const { access_token } = tokenData
-      console.log('tokenData', access_token, tokenData)
-
-      const userInfoResponse = await fetch(
-        'https://openapi.naver.com/v1/nid/me',
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`
-          }
-        }
-      )
-      console.log('userInfoResponse', userInfoResponse)
-      const userInfoData = await userInfoResponse.json()
-      console.log(userInfoData, 'userInfoData')
-
       return HttpResponse.json({
-        id: userInfoData.response.id,
-        accessToken: access_token
+        id: 1,
+        accessToken: '123124252523123'
       })
     } catch (error) {
       return HttpResponse.json(
