@@ -5,7 +5,7 @@ import KakaoIcon from '@/components/icons/KakaoIcon'
 import NaverIcon from '@/components/icons/NaverIcon'
 import EmailLoginForm from '@/components/login/EmailLoginForm'
 import Spacing from '@/components/Spacing'
-import { KAKAO_LINK, NAVER_AUTH_URL } from '@/utils/constants'
+import { GOOGLE_LINK, KAKAO_LINK, NAVER_AUTH_URL } from '@/utils/constants'
 import styled from '@emotion/styled'
 
 const Login = () => {
@@ -17,6 +17,8 @@ const Login = () => {
       case 'kakao':
         window.location.href = KAKAO_LINK
         return
+      case 'google':
+        window.location.href = GOOGLE_LINK
     }
   }
 
@@ -48,7 +50,9 @@ const Login = () => {
           <button onClick={() => handleSimpleLogin('kakao')}>
             <KakaoIcon />
           </button>
-          <GoogleIcon />
+          <button onClick={() => handleSimpleLogin('google')}>
+            <GoogleIcon />
+          </button>
         </LoginIconContainer>
       </BottomArea>
     </Container>
