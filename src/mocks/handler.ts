@@ -148,5 +148,22 @@ export const handlers = [
         { status: 500 }
       )
     }
+  }),
+  http.post('/api/google/oauth', async ({ request: req }) => {
+    const data = (await req.json()) as unknown as { code: string }
+
+    try {
+      console.log('google code', data.code)
+
+      return HttpResponse.json({
+        id: 1,
+        accessToken: '123124252523123'
+      })
+    } catch (error) {
+      return HttpResponse.json(
+        { error: 'Failed to authenticate with Naver' },
+        { status: 500 }
+      )
+    }
   })
 ]
