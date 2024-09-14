@@ -253,7 +253,7 @@ const RegisterTripStyleWrapper = styled.div`
   padding: 0px 24px;
   position: relative;
   min-height: 100%;
-  padding-bottom: 88px;
+  padding-bottom: 130px;
 `
 const StepIconContainer = styled.div`
   margin-top: 30px;

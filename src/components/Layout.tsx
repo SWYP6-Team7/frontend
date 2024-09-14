@@ -22,7 +22,7 @@ const Body = styled.div`
   height: 100%;
   position: relative;
   background-color: #fffff6;
-  padding-bottom: 88px;
+  padding-bottom: 130px; // 회원가입 시, 여행 스타일 페이지 다음 버튼이 태그와 가까이 있어서 padding 할당.
   @media (max-width: 440px) {
     width: 100svw;
   }
