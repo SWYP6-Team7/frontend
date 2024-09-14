@@ -125,16 +125,18 @@ const ButtonWrapper = styled.div`
 `
 const RegisterNameWrapper = styled.div`
   padding: 0px 24px;
-  position: relative;
-  min-height: 100%;
-  padding-bottom: 130px;
+
+  min-height: calc(
+    100svh - 68px - 30px
+  ); // TO DO: 헤더 68px, 30px은 헤더와 내용 사이 마진. 변수만들어사용.
+
+  margin-top: 30px;
 `
 const StepIconContainer = styled.div`
   margin-top: 30px;
 `
 
 const StepContent = styled.div`
-  margin-top: 30px;
   width: 343px;
   height: 68px;
   padding: 0px 6px 0px 6px;
