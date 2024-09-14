@@ -2,7 +2,7 @@ import useAuth from '@/hooks/user/useAuth'
 import useUser from '@/hooks/user/useUser'
 import { authStore } from '@/store/client/authStore'
 import React from 'react'
-
+import Badge from '@/components/designSystem/Badge'
 const Home = () => {
   const { user } = useUser()
   const { userId, accessToken } = authStore()
@@ -14,6 +14,7 @@ const Home = () => {
 
   return (
     <div>
+      <Badge daysLeft={40} />
       <div>{JSON.stringify(user)}</div>
       <button onClick={handleLogout}>로그아웃</button>
     </div>
