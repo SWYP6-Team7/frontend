@@ -22,7 +22,6 @@ const Body = styled.div`
   height: 100%;
   position: relative;
   background-color: #fffff6;
-  padding-bottom: 88px;
   @media (max-width: 440px) {
     width: 100svw;
   }

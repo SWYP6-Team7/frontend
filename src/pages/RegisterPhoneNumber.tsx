@@ -129,9 +129,7 @@ export default RegisterPhoneNumber
 
 const RegisterPhoneNumberWrapper = styled.div`
   padding: 0px 24px;
-  position: relative;
-  min-height: 100%;
-  padding-bottom: 88px;
+  min-height: calc(100svh - 68px - 30px);
 `
 const StepIconContainer = styled.div`
   margin-top: 30px;

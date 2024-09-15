@@ -81,7 +81,6 @@ const RegisterTripStyle = () => {
         <ContentText>어떤 여행을 선호하세요?</ContentText>
       </TripStyleStep>
       <MultipleSelectionText>중복 선택 가능</MultipleSelectionText>
-
       <TripStyleContainer>
         <Title>✈️ 여행 스타일</Title>
         <StyleBtns>
@@ -147,7 +146,6 @@ const RegisterTripStyle = () => {
           </Row>
         </StyleBtns>
       </TripStyleContainer>
-
       <TripThemeContainer>
         <Title>🌊 테마</Title>
         <StyleBtns>
@@ -225,6 +223,8 @@ const RegisterTripStyle = () => {
           </Row>
         </StyleBtns>
       </TripThemeContainer>
+      {/* fixed된 다음 버튼 아래에도 컨텐츠가 있다는 것을 보이기 위한 Spacing */}
+      <Spacing size={100} />
       <ButtonWrapper>
         <Button
           text="다음"
@@ -236,6 +236,7 @@ const RegisterTripStyle = () => {
           }}
         />
       </ButtonWrapper>
+      <BlurSpacing size={40} />
     </RegisterTripStyleWrapper>
   )
 }
@@ -243,17 +244,27 @@ const RegisterTripStyle = () => {
 export default RegisterTripStyle
 
 const ButtonWrapper = styled.div`
-  right: 24px;
-  left: 24px;
-  position: absolute;
+  width: calc(100% - 48px);
+  position: fixed;
   bottom: 4.7svh;
+  z-index: 10;
+`
+
+const BlurSpacing = styled(Spacing)`
+  backdrop-filter: blur(
+    1.5px
+  ); // fixed된 다음버튼 아래 보이는 항목 태그들을 살짝 blur처리.
+  position: fixed;
+  width: 100vw;
+
+  left: 0;
+  bottom: 0;
 `
 
 const RegisterTripStyleWrapper = styled.div`
   padding: 0px 24px;
-  position: relative;
-  min-height: 100%;
-  padding-bottom: 88px;
+
+  min-height: calc(100svh - 68px - 30px);
 `
 const StepIconContainer = styled.div`
   margin-top: 30px;

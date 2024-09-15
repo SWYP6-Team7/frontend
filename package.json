@@ -5,6 +5,7 @@
   "main": "index.tsx",
   "scripts": {
     "start": "npx vite dev",
+    "start:host": "npx vite dev --host",
     "build": "npx vite optimize & npx vite build"
   },
   "keywords": [],
