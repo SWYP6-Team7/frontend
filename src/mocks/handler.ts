@@ -72,7 +72,7 @@ export const handlers = [
 
     const email = url.searchParams.get('email')
     console.log('email', email)
-    return HttpResponse.json(null, { status: 409 })
+    return HttpResponse.json(null, { status: 404 })
   }),
   http.post('/api/kakao/oauth', async ({ request: req }) => {
     const data = (await req.json()) as unknown as { code: string }
