@@ -10,6 +10,7 @@ interface HorizonBoxProps {
   description: string
   userName: string
   daysAgo: number
+  imgSrc?: string // 이미지 없는 경우 대비.
   tags: string[]
 }
 // 사용 방식
@@ -19,13 +20,13 @@ interface HorizonBoxProps {
         title="먹고죽는 유럽여행"
         recruits={2}
         total={5}
+        imgSrc="/경로"
         description="바게트만 부시는 테마 여행 갈사람 여기..."
         userName="김모잉"
         daysAgo={3}
         tags={array}
       /> */
 }
-// Dday에 쓰임.
 
 const HorizonBoxLayout = ({
   daysLeft,
@@ -35,16 +36,13 @@ const HorizonBoxLayout = ({
   description,
   userName,
   daysAgo,
+  imgSrc = '',
   tags
 }: HorizonBoxProps) => {
   return (
     <HorizonBoxContainer>
       <Thumbnail>
-        {/* <img 이미지가 들어가는 부분.
-          src="/images/defaultGender.png"
-          alt=""
-        /> */}
-        <img />
+        <img src={imgSrc} />
       </Thumbnail>
 
       <PostInfo>
