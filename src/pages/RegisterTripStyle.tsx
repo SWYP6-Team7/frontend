@@ -75,7 +75,7 @@ const RegisterTripStyle = () => {
       </StepIconContainer>
       <TripStyleStep>
         <ContentName>
-          <UserName>{name}</UserName> 님은 어떤
+          <UserName>{name}님은 어떤</UserName>
         </ContentName>
 
         <ContentText>어떤 여행을 선호하세요?</ContentText>
@@ -305,10 +305,8 @@ const Row = styled.div`
     margin-right: 0;
   }
 `
-const UserName = styled.span`
+const UserName = styled.div`
   min-width: 64px;
-  border-bottom: 3px solid black;
-  display: inline-block;
   text-align: center;
   height: 26px;
 `
