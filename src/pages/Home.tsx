@@ -15,11 +15,9 @@ const Home = () => {
   const handleLogout = () => {
     logout()
   }
-  console.log(user, userId, accessToken)
 
   return (
     <div>
-      <div>{JSON.stringify(user)}</div>
       <button onClick={handleLogout}>로그아웃</button>
       <Spacing size={40} />
       <VerticalBoxLayout
