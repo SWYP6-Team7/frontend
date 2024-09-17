@@ -24,7 +24,7 @@ const Badge = ({
     color: 'rgba(255, 255, 255, 1)'
   }
 }: BadgeProps) => {
-  return <BadgeContainer css={addStyle}>D-{daysLeft}</BadgeContainer>
+  return <BadgeContainer css={addStyle}>마감 D-{daysLeft}</BadgeContainer>
 }
 
 const BadgeContainer = styled.div`

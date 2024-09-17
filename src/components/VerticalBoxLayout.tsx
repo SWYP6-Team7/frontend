@@ -2,11 +2,13 @@ import styled from '@emotion/styled'
 import Badge from './designSystem/Badge'
 import Spacing from './Spacing'
 import BoxLayoutTag from './BoxLayoutTag'
+import PersonIcon from './icons/PersonIcon'
 
 interface HorizonBoxProps {
   daysLeft: number
   title: string
-
+  recruits: number
+  total: number
   description: string
   userName: string
   daysAgo: number
@@ -17,7 +19,8 @@ interface HorizonBoxProps {
 const VerticalBoxLayout = ({
   daysLeft,
   title,
-
+  recruits,
+  total,
   description,
   userName,
   daysAgo,
@@ -34,7 +37,15 @@ const VerticalBoxLayout = ({
       </Image>
       <Spacing size={10} />
       <TextContainer>
-        <Title>{title}</Title>
+        <TitleContainer>
+          <Title>{title}</Title>
+          <PersonContainer>
+            <PersonIcon />
+            <span>
+              {recruits}/{total}
+            </span>
+          </PersonContainer>
+        </TitleContainer>
         <Spacing size={8} />
         <Description>{description}</Description>
         <Spacing size={7} />
@@ -77,6 +88,12 @@ const BadgeContainer = styled.div`
   left: 12px;
 `
 
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
 const Title = styled.h4`
   font-weight: 700;
   font-size: 18px;
@@ -101,6 +118,12 @@ const TagList = styled.div`
   display: flex;
 
   align-items: center;
+`
+
+const PersonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `
 
 const Info = styled.div`
