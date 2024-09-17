@@ -7,6 +7,7 @@ export const handlers = [
         email: string
         password: string
       }
+      console.log('login formdata: ', formData)
       if (
         formData?.email === 'aaa123@naver.com' &&
         formData?.password === 'Qwer1234!'
@@ -35,7 +36,7 @@ export const handlers = [
   }),
   http.post('/api/users/new', async ({ request }) => {
     const formData: any = await request.json()
-
+    console.log('register formdata: ', formData)
     return HttpResponse.json(
       { userId: 1, accessToken: 'dalkejoiauetaenaltkenl1j2an' },
       {
