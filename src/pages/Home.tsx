@@ -22,6 +22,8 @@ const Home = () => {
       <Spacing size={40} />
       <VerticalBoxLayout
         daysLeft={40}
+        recruits={2}
+        total={5}
         title="먹고죽는 유럽여행"
         imgSrc="https://cdn.pixabay.com/photo/2015/03/12/04/43/landscape-669619_1280.jpg"
         description="바게트만 부시는 테마 여행 갈사람 여기..."
