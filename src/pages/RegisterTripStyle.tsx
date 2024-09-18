@@ -2,16 +2,17 @@ import ThirdStepIcon from '@/components/icons/ThirdStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
-import { MouseEventHandler, useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CategoryButton from '@/components/CategoryButton'
 import Spacing from '@/components/Spacing'
 import useAuth from '@/hooks/user/useAuth'
+import { authStore } from '@/store/client/authStore'
 
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
   const { registerEmail } = useAuth()
-
+  const { userId, accessToken } = authStore()
   const {
     name,
     email,
@@ -68,6 +69,7 @@ const RegisterTripStyle = () => {
       birthYear: yearOfBirth.toString()
     })
   }
+
   return (
     <RegisterTripStyleWrapper>
       <StepIconContainer>

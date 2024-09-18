@@ -21,7 +21,7 @@ const RegisterName = () => {
   const navigate = useNavigate()
   const { name, addName, email, password } = userStore()
   const { userId, accessToken } = authStore()
-  console.log(userId, accessToken, email, password, name, '~~')
+
   const [userName, setUserName] = useState(name)
   const [genderCheck, setGenderCheck] = useState(false)
 
