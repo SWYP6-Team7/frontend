@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { homeHandler } from './homeHandler'
 import { SearchData1 } from './data'
 
 export const handlers = [
