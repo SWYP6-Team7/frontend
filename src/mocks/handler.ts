@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { homeHandler } from './homeHandler'
 
 export const handlers = [
   http.post('/api/login', async ({ request }) => {
@@ -175,5 +176,6 @@ export const handlers = [
         { status: 500 }
       )
     }
-  })
+  }),
+  ...homeHandler
 ]
