@@ -41,7 +41,7 @@ const Home = () => {
   const { data } = useBookmark('1')
   const bookmarks = data?.data.bookMarks
 
-  const onFocusHandler = () => navigate('/search') // 검색화면으로 이동.
+  const onFocusHandler = () => navigate('/search/travel') // 검색화면으로 이동.
 
   function daysLeft(dateString: string) {
     // 오늘 날짜

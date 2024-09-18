@@ -1,8 +1,9 @@
 import { http, HttpResponse } from 'msw'
 import { homeHandler } from './homeHandler'
-import { SearchData1 } from './data'
+import { NoSearchData, SearchData1 } from './data'
 
 export const handlers = [
+  ...homeHandler,
   http.post('/api/login', async ({ request }) => {
     try {
       const formData = (await request.json()) as {

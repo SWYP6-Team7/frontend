@@ -12,15 +12,11 @@ import RegisterGender from './pages/RegisterGender'
 import OauthKakao from './pages/OauthKakao'
 import OauthNaver from './pages/OauthNaver'
 import OauthGoogle from './pages/OauthGoogle'
-<<<<<<< HEAD
 import SearchTravel from './pages/SearchTravel'
-=======
 import MyPage from './pages/MyPage/MyPage'
-import Search from './pages/Search/Search'
 import Bookmark from './pages/Bookmark/Bookmark'
 import Community from './pages/Community/Community'
 import CreateTrip from './pages/CreateTrip'
->>>>>>> 2c2db632ffa7ec07eec2a7aa12cfc69833a3907e
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -72,7 +68,6 @@ export const router = createBrowserRouter([
         element: <RegisterTripStyle />
       },
       {
-<<<<<<< HEAD
         path: 'search',
         element: (
           <>
@@ -85,14 +80,12 @@ export const router = createBrowserRouter([
             element: <SearchTravel />
           }
         ]
-=======
+      },
+      {
         path: '/myPage',
         element: <MyPage />
       },
-      {
-        path: '/searchTrip',
-        element: <Search />
-      },
+
       {
         path: '/bookmark',
         element: <Bookmark />
@@ -104,7 +97,6 @@ export const router = createBrowserRouter([
       {
         path: '/createTrip',
         element: <CreateTrip />
->>>>>>> 2c2db632ffa7ec07eec2a7aa12cfc69833a3907e
       }
     ]
   }

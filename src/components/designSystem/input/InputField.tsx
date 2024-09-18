@@ -135,6 +135,7 @@ const Input = styled.input<InputProps>`
   }
   height: 100%;
   outline: none;
+  font-weight: 500;
   border: none;
   background-color: ${props => props.bgColor};
   font-size: 16px;

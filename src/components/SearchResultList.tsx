@@ -21,6 +21,7 @@ const SearchResultList = ({
 
   const handleSort = (value: '추천순' | '최신순' | '등록일순' | '정확도순') => {
     setSort(value)
+    setShowModal(false)
   }
   console.log(searchResult)
   return (
@@ -126,6 +127,7 @@ const Header = styled.div`
 
 const ShowSortButton = styled.div`
   display: flex;
+  cursor: pointer;
   gap: 4px;
   align-items: center;
 `

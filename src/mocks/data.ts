@@ -282,3 +282,32 @@ export const SearchData3 = {
   numberOfElements: 5,
   empty: false
 }
+
+export const NoSearchData = {
+  content: [],
+  pageable: {
+    pageNumber: 0,
+    pageSize: 5,
+    sort: {
+      empty: true,
+      sorted: false,
+      unsorted: true
+    },
+    offset: 0,
+    paged: true,
+    unpaged: false
+  },
+  last: false,
+  totalPages: 0,
+  totalElements: 0,
+  first: true,
+  size: 5,
+  number: 0,
+  sort: {
+    empty: true,
+    sorted: false,
+    unsorted: true
+  },
+  numberOfElements: 5,
+  empty: false
+}

@@ -46,7 +46,10 @@ const HorizonBoxLayout = ({
       </Thumbnail>
 
       <PostInfo>
-        <Badge daysLeft={daysLeft} />
+        <Badge
+          text={'마감'}
+          daysLeft={daysLeft}
+        />
         <div>
           <TitleBox>
             <Title>{title}</Title>
