@@ -50,7 +50,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         id={`${idx}`}
         onClick={onClick}
         css={addStyle}>
-        #{text}
+        {text}
       </SearchFilterTagContainer>
     )
   }

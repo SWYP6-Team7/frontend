@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { SearchData1 } from './data'
 
 export const handlers = [
   http.post('/api/login', async ({ request }) => {
@@ -175,5 +176,13 @@ export const handlers = [
         { status: 500 }
       )
     }
+  }),
+  http.get('/api/travel/search', async ({ request }) => {
+    const url = new URL(request.url)
+
+    const tags = url.searchParams.get('tags')
+    const keyword = url.searchParams.get('keyword')
+
+    return HttpResponse.json(SearchData1)
   })
 ]
