@@ -142,9 +142,9 @@ const HomeHeader = styled.div`
   }
   @media (min-width: 440px) {
     width: 390px;
-    left: 50%;
+    /* left: 50%;
     transform: translateX(-50%);
-    overflow-x: hidden;
+    overflow-x: hidden; */
   }
   height: 100px;
   top: 0;
@@ -159,8 +159,12 @@ const HeaderTitle = styled.div`
   align-items: center;
   height: 60px;
   position: fixed;
-  width: 100%;
-
+  @media (max-width: 440px) {
+    width: 100%;
+  }
+  @media (min-width: 440px) {
+    width: 390px;
+  }
   padding: 0px 24px;
   z-index: 1010;
 `
