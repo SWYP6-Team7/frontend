@@ -87,7 +87,7 @@ const activeContainer = ({ active = true }) => {
 const OptionListContainer = styled.div`
   transition: 0.2s ease-in-out;
 
-  border-radius: 18px;
+  border-radius: 30px;
   border: 1px solid rgba(205, 205, 205, 1);
   width: 150px;
   padding-left: 20px;
@@ -158,7 +158,6 @@ export const StyledSelectedLabel = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
 `
 export const StyledSelectbox = styled.div`
   position: relative;
