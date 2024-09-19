@@ -53,8 +53,12 @@ const TripAvailable = () => {
   return (
     <Container>
       <TitleContainer
-        text={'지금 참가 가능한 여행을 소개해요.'}
-        width="145px"
+        text={
+          <>
+            지금 참가 가능한 <br /> 여행을 소개해요.
+          </>
+        }
+        minWidth="143px"
       />
       <ContentBox>
         {trips &&

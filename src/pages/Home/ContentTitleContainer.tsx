@@ -3,19 +3,19 @@ import ArrowIcon from '@/components/icons/ArrowIcon'
 import { useNavigate } from 'react-router-dom'
 interface TitleContainerProps {
   text: React.ReactNode
-  width?: string
+  minWidth?: string
   detailLink?: string
 }
 const TitleContainer = ({
   text,
-  width = 'auto',
+  minWidth = 'auto',
   detailLink = '/'
 }: TitleContainerProps) => {
   const navigate = useNavigate()
   const clickHandler = () => navigate(`${detailLink}`) // 후에 보여줄 페이지 부분.
   return (
     <ContentTitle>
-      <span css={{ width }}>{text}</span>
+      <span css={{ minWidth }}>{text}</span>
       <More onClick={clickHandler}>
         <ArrowIcon />
       </More>

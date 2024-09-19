@@ -308,11 +308,8 @@ const Row = styled.div`
   }
 `
 const UserName = styled.span`
-  min-width: 64px;
-  border-bottom: 3px solid black;
   display: inline-block;
   text-align: center;
-  height: 26px;
 `
 const ContentText = styled.div`
   margin-top: 10px;
