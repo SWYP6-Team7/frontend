@@ -129,7 +129,6 @@ const Greeting = styled.div`
 const CharacterBox = styled.div`
   width: 100%;
 
-  margin-top: 100px; // 헤더 길이 만큼 마진.
   height: 56px;
   overflow-y: hidden;
   padding-left: 63px;
@@ -148,13 +147,10 @@ const HomeHeader = styled.div`
     overflow-x: hidden;
   }
   height: 100px;
-  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+
   padding-top: 40px;
-  padding-left: 24px;
-  padding-right: 24px;
 `
 
 const HeaderTitle = styled.div`
@@ -162,6 +158,11 @@ const HeaderTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 60px;
+  position: fixed;
+  width: 100%;
+
+  padding: 0px 24px;
+  z-index: 1010;
 `
 const Text = styled.div`
   font-size: 24px;
