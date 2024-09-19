@@ -52,8 +52,12 @@ const TripRecommendation = () => {
   return (
     <Container>
       <TitleContainer
-        text={'이런 여행은 어떠세요?'}
-        width="102px"
+        text={
+          <>
+            이런 여행은 <br /> 어떠세요?
+          </>
+        }
+        minWidth="102px"
       />
       <ContentBox>
         {trips &&
