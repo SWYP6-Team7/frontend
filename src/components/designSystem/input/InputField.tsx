@@ -52,9 +52,11 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
     // 우선순위 1.에러가 있는지? 2. 포커싱 되어있는지
     const borderColor = hasError
       ? '#ED1E1E'
-      : focused || props.value !== ''
-        ? '#1A1A1A'
-        : '#CDCDCD'
+      : success
+        ? 'rgb(62,141,0)'
+        : focused || props.value !== ''
+          ? '#1A1A1A'
+          : '#CDCDCD'
     const bgColor = hasError ? '#FFF7F7' : '#FFFFFF'
 
     const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
@@ -133,6 +135,7 @@ const Input = styled.input<InputProps>`
   }
   height: 100%;
   outline: none;
+  font-weight: 500;
   border: none;
   background-color: ${props => props.bgColor};
   font-size: 16px;

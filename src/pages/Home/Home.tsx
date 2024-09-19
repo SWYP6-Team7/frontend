@@ -41,7 +41,7 @@ const Home = () => {
   const { data } = useBookmark('1')
   const bookmarks = data?.data.bookMarks
 
-  const onFocusHandler = () => navigate('/search') // 검색화면으로 이동.
+  const onFocusHandler = () => navigate('/search/travel') // 검색화면으로 이동.
 
   function daysLeft(dateString: string) {
     // 오늘 날짜
@@ -138,6 +138,15 @@ const CharacterBox = styled.div`
 const HomeHeader = styled.div`
   background-color: #f0f0f0;
   width: 100%;
+  @media (max-width: 440px) {
+    width: 100%;
+  }
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
   height: 100px;
   position: fixed;
   top: 0;

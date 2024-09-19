@@ -35,7 +35,7 @@ const BookmarkContainer = () => {
             <Empty>
               <img
                 // 클릭시,여행 찾기 페이지로 이동 예정
-                onClick={() => navigate('/searchTrip')}
+                onClick={() => navigate('/search/travel')}
                 src="/images/bookmarkPlus.png"
                 alt=""
               />
@@ -49,7 +49,7 @@ const BookmarkContainer = () => {
               <Empty>
                 <img
                   // 클릭시,여행 찾기 페이지로 이동 예정
-                  onClick={() => navigate('/searchTrip')}
+                  onClick={() => navigate('/search/travel')}
                   src="/images/bookmarkPlus.png"
                   alt=""
                 />

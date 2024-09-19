@@ -1,44 +1,43 @@
-import CommnunityIcon from '@/components/icons/CommnunityIcon';
-import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon';
-import HomeIcon from '@/components/icons/HomeIcon';
-import PersonIcon from '@/components/icons/PersonIcon';
-import SearchIcon from '@/components/icons/SearchIcon';
+import CommnunityIcon from '@/components/icons/CommnunityIcon'
+import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
+import HomeIcon from '@/components/icons/HomeIcon'
+import PersonIcon from '@/components/icons/PersonIcon'
+import SearchIcon from '@/components/icons/SearchIcon'
 
-import { palette } from '@/styles/palette';
-import styled from '@emotion/styled';
-import { MouseEventHandler, useState } from 'react';
-import { NavLink, useLocation, useMatch, useNavigate } from 'react-router-dom';
-import Search from '../Search/Search';
+import { palette } from '@/styles/palette'
+import styled from '@emotion/styled'
+import { MouseEventHandler, useState } from 'react'
+import { NavLink, useLocation, useMatch, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
-  const [isHome, setIsHome] = useState(true);
-  const [isTrip, setIsTrip] = useState(false);
-  const [isBookmark, setIsBookmark] = useState(false);
-  const [isCommnunity, setIsCommnunity] = useState(false);
-  const [isMyPage, setIsMyPage] = useState(false);
-  const navigate = useNavigate();
+  const [isHome, setIsHome] = useState(true)
+  const [isTrip, setIsTrip] = useState(false)
+  const [isBookmark, setIsBookmark] = useState(false)
+  const [isCommnunity, setIsCommnunity] = useState(false)
+  const [isMyPage, setIsMyPage] = useState(false)
+  const navigate = useNavigate()
 
-  const { pathname } = useLocation();
-  const pages = ['/', '/searchTrip', '/bookmark', '/community', '/mypage'];
+  const { pathname } = useLocation()
+  const pages = ['/', '/search/travel', '/bookmark', '/community', '/mypage']
   const icons = [
     HomeIcon,
     SearchIcon,
     EmptyHeartIcon,
     CommnunityIcon,
     PersonIcon
-  ];
-  const iconNames = ['홈', '검색', '즐겨찾기', '커뮤니티', 'MY'];
+  ]
+  const iconNames = ['홈', '검색', '즐겨찾기', '커뮤니티', 'MY']
 
   const getIsActive = (page: string) => {
-    return pathname === page;
-  };
+    return pathname === page
+  }
 
   return (
     <Container>
       <Box>
         {pages.map((page, idx) => {
-          const Icon = icons[idx];
-          const isLinkActive = getIsActive(page);
+          const Icon = icons[idx]
+          const isLinkActive = getIsActive(page)
 
           return (
             <NavLink
@@ -63,24 +62,32 @@ const Navbar = () => {
                 {iconNames[idx]}
               </PageName>
             </NavLink>
-          );
+          )
         })}
       </Box>
     </Container>
-  );
-};
-export default Navbar;
+  )
+}
+export default Navbar
 
 const Container = styled.div`
   height: 92px;
-
+  @media (max-width: 440px) {
+    width: 100%;
+  }
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
   position: fixed;
   bottom: 0;
   background-color: white;
   z-index: 1000;
   width: 100%;
   left: 0;
-`;
+`
 const PageName = styled.div<{ color: string }>`
   font-size: 12px;
   font-weight: 600;
@@ -89,9 +96,9 @@ const PageName = styled.div<{ color: string }>`
   width: 100%;
   margin-top: 8.45px;
   color: ${props => props.color};
-`;
+`
 const Box = styled.div`
   display: flex;
   margin-top: 12px;
   justify-content: space-evenly;
-`;
+`

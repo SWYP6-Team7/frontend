@@ -46,7 +46,10 @@ const HorizonBoxLayout = ({
       </Thumbnail>
 
       <PostInfo>
-        <Badge daysLeft={daysLeft} />
+        <Badge
+          text={'마감'}
+          daysLeft={daysLeft}
+        />
         <div>
           <TitleBox>
             <Title>{title}</Title>
@@ -84,7 +87,6 @@ const HorizonBoxContainer = styled.div`
   height: 120px;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 40px;
 `
 const TitleBox = styled.div`
   margin-top: 6px;

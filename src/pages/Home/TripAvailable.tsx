@@ -21,6 +21,7 @@ interface TripsProps {
 const TripAvailable = () => {
   const { data } = useTripAvailable()
   const { name } = userStore()
+
   const trips = data?.data
   // 일단 앞에 몇개만 노출.
   //   const cutTrips = trips.length > 5 ? trips.slice(0, 5) : trips
@@ -57,7 +58,7 @@ const TripAvailable = () => {
       />
       <ContentBox>
         {trips &&
-          trips.map((post: TripsProps) => (
+          trips?.map((post: TripsProps) => (
             <Box key={post.postId}>
               <VerticalBoxLayout
                 key={post.postId}

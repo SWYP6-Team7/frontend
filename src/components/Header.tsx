@@ -6,7 +6,8 @@ import { useMatch, useNavigate, useLocation } from 'react-router-dom'
 const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const isSignup = useMatch('/signup')
+  const isRegister = location.pathname.startsWith('/register')
+  const isSearch = location.pathname === '/search/travel'
   const handleBack = () => {
     navigate(-1)
   }
@@ -16,7 +17,10 @@ const Header = () => {
         <BackIcon />
       </ButotnContainer>
 
-      <Title>회원가입</Title>
+      <Title>
+        {isRegister && '회원가입'}
+        {isSearch && '여행찾기'}
+      </Title>
       {location.pathname == '/registerTripStyle' && (
         <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
       )}

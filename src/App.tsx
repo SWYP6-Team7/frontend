@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home/Home'
 import NotFound from './components/NotFound'
@@ -12,8 +12,8 @@ import RegisterGender from './pages/RegisterGender'
 import OauthKakao from './pages/OauthKakao'
 import OauthNaver from './pages/OauthNaver'
 import OauthGoogle from './pages/OauthGoogle'
+import SearchTravel from './pages/SearchTravel'
 import MyPage from './pages/MyPage/MyPage'
-import Search from './pages/Search/Search'
 import Bookmark from './pages/Bookmark/Bookmark'
 import Community from './pages/Community/Community'
 import CreateTrip from './pages/CreateTrip'
@@ -68,13 +68,24 @@ export const router = createBrowserRouter([
         element: <RegisterTripStyle />
       },
       {
+        path: 'search',
+        element: (
+          <>
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            path: 'travel',
+            element: <SearchTravel />
+          }
+        ]
+      },
+      {
         path: '/myPage',
         element: <MyPage />
       },
-      {
-        path: '/searchTrip',
-        element: <Search />
-      },
+
       {
         path: '/bookmark',
         element: <Bookmark />

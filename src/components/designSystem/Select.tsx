@@ -82,7 +82,6 @@ const OptionList = styled.div<{ active: boolean }>`
 `
 
 const Label = styled.button`
-
   width: 100%;
   font-size: 14px;
   padding: 0 16px;
@@ -93,7 +92,6 @@ const Label = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
 `
 
 const activeExist = ({ active = true }) => {
@@ -124,7 +122,7 @@ const StyledOptionList = styled.ul<{ active: boolean }>`
   overflow-y: scroll;
   ${activeExist};
   transition: 0.2s ease-in-out; // 0.2초를 걸려서 부드럽게 ul이 보이고 사라진다.
-  . &::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     // scrollbar 자체의 설정
     // 너비를 작게 설정
     width: 1px;

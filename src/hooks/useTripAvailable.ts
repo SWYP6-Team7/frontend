@@ -10,5 +10,6 @@ export const useTripAvailable = () => {
       return getAvailableTrips()
     }
   })
+  console.log(data)
   return data
 }
