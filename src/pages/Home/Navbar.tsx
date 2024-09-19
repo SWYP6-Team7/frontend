@@ -6,6 +6,7 @@ import SearchIcon from '@/components/icons/SearchIcon'
 
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import path from 'path'
 import { MouseEventHandler, useState } from 'react'
 import { NavLink, useLocation, useMatch, useNavigate } from 'react-router-dom'
 
@@ -31,8 +32,17 @@ const Navbar = () => {
   const getIsActive = (page: string) => {
     return pathname === page
   }
-
-  return (
+  const condition = () => {
+    if (
+      pathname === '/' ||
+      pathname === '/bookmark' ||
+      pathname === '/community' ||
+      pathname === '/mypage'
+    )
+      return true
+    return false
+  }
+  return condition() ? (
     <Container>
       <Box>
         {pages.map((page, idx) => {
@@ -66,7 +76,7 @@ const Navbar = () => {
         })}
       </Box>
     </Container>
-  )
+  ) : null
 }
 export default Navbar
 
