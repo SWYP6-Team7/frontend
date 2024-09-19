@@ -138,6 +138,15 @@ const CharacterBox = styled.div`
 const HomeHeader = styled.div`
   background-color: #f0f0f0;
   width: 100%;
+  @media (max-width: 440px) {
+    width: 100%;
+  }
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
   height: 100px;
   position: fixed;
   top: 0;

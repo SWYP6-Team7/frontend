@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import React, { useState, MouseEvent } from 'react'
 import SelectArrow from './icons/SelectArrow'
 import Accordion from './Accordion'
 import BottomModal from './BottomModal'
@@ -7,6 +7,7 @@ import SearchFilterTag from './designSystem/tag/SearchFilterTag'
 import ResetIcon from './icons/ResetIcon'
 import Button from './Button'
 import Spacing from './Spacing'
+
 import {
   IPeople,
   IPeriod,
@@ -15,7 +16,8 @@ import {
   searchStore
 } from '@/store/client/searchStore'
 import { palette } from '@/styles/palette'
-import useSearch from '@/hooks/user/useSearch'
+import useSearch from '@/hooks/useSearch'
+import WhiteXIcon from './icons/WhiteXIcon'
 
 const FILTER_LIST = [
   { title: '장소', tags: ['국내', '해외'] as const },
@@ -29,8 +31,22 @@ const FILTER_LIST = [
 
 const FilterList = () => {
   const [showModal, setShowModal] = useState(false)
-  const { setFilter, place, people, period, style, setReset, keyword } =
-    searchStore()
+  const [initialChecked, setInitialChecked] = useState({
+    장소: false,
+    인원: false,
+    기간: false,
+    스타일: false
+  })
+  const {
+    setFilter,
+    place,
+    people,
+    period,
+    style,
+    setReset,
+    keyword,
+    setOneFilterReset
+  } = searchStore()
   const { refetch } = useSearch({ keyword: keyword, tags: [] })
   const getCount = (type: '장소' | '인원' | '기간' | '스타일') => {
     if (type === '장소') return place.length
@@ -49,6 +65,28 @@ const FilterList = () => {
     if (type === '기간') return period?.includes(value as IPeriod)
     if (type === '스타일') return style?.includes(value as IStyle)
     return false
+  }
+
+  const handleShowModal = (
+    e: MouseEvent,
+    title: '장소' | '인원' | '기간' | '스타일'
+  ) => {
+    e.stopPropagation()
+    setShowModal(true)
+    setInitialChecked(prev => ({ ...prev, [title]: true }))
+  }
+
+  const handleCloseModal = () => {
+    setInitialChecked({ 기간: false, 스타일: false, 인원: false, 장소: false })
+    setShowModal(false)
+  }
+
+  const handleOneFilterReset = (
+    e: MouseEvent,
+    type: '장소' | '인원' | '기간' | '스타일'
+  ) => {
+    e.stopPropagation()
+    setOneFilterReset(type)
   }
 
   const clickTag = (
@@ -70,6 +108,18 @@ const FilterList = () => {
     return place.length + period.length + style.length + people.length
   }
 
+  const getFirstTag = (type: '장소' | '인원' | '기간' | '스타일') => {
+    if (type === '장소') {
+      return place[0]
+    } else if (type === '인원') {
+      return people[0]
+    } else if (type === '기간') {
+      return period[0]
+    } else if (type === '스타일') {
+      return style[0]
+    }
+  }
+
   const handleReset = () => {
     setReset()
   }
@@ -82,14 +132,14 @@ const FilterList = () => {
   return (
     <>
       {showModal && (
-        <BottomModal closeModal={() => setShowModal(false)}>
+        <BottomModal closeModal={handleCloseModal}>
           <ModalContainer>
             {FILTER_LIST.map(item => (
               <Accordion
                 count={getCount(item.title)}
                 id={item.title}
                 title={item.title}
-                initialChecked={false}
+                initialChecked={initialChecked[item.title]}
                 key={item.title}>
                 <TagContainer>
                   {item.tags?.map((tag, idx) => (
@@ -134,10 +184,21 @@ const FilterList = () => {
       <Container>
         {FILTER_LIST.map(filter => (
           <FilterContainer
-            onClick={() => setShowModal(true)}
+            active={getCount(filter.title) > 0}
+            onClick={e => handleShowModal(e, filter.title)}
             key={filter.title}>
-            <div>{filter.title}</div>
-            <SelectArrow />
+            <div>
+              {getCount(filter.title) > 0
+                ? getFirstTag(filter.title)
+                : filter.title}
+            </div>
+            {getCount(filter.title) > 0 ? (
+              <button onClick={e => handleOneFilterReset(e, filter.title)}>
+                <WhiteXIcon size={9} />
+              </button>
+            ) : (
+              <SelectArrow />
+            )}
           </FilterContainer>
         ))}
       </Container>
@@ -157,6 +218,15 @@ const ButtonContainer = styled.div`
 
 const Container = styled.div`
   display: flex;
+  position: relative;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  overflow-x: scroll;
   align-items: center;
   gap: 9px;
 `
@@ -168,7 +238,7 @@ const TagContainer = styled.div`
   flex-wrap: wrap;
 `
 
-const FilterContainer = styled.button`
+const FilterContainer = styled.button<{ active: boolean }>`
   transition: 0.2s ease-in-out;
 
   border-radius: 15px;
@@ -180,7 +250,9 @@ const FilterContainer = styled.button`
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  background-color: white;
+  background-color: ${props =>
+    props.active ? `${palette.keycolor}` : 'white'};
+  color: ${props => (props.active ? 'white' : `black`)};
 `
 
 export default FilterList

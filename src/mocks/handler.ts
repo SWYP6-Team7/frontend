@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import { homeHandler } from './homeHandler'
-import { NoSearchData, SearchData1 } from './data'
+import { NoSearchData, SearchData1, SearchData2, SearchData3 } from './data'
 
 export const handlers = [
   ...homeHandler,
@@ -184,7 +184,16 @@ export const handlers = [
 
     const tags = url.searchParams.get('tags')
     const keyword = url.searchParams.get('keyword')
-
-    return HttpResponse.json(SearchData1)
+    const pageParams = url.searchParams.get('page')
+    console.log('pageParams', pageParams)
+    if (Number(pageParams) === 0) {
+      return HttpResponse.json(SearchData1)
+    } else if (Number(pageParams) === 1) {
+      return HttpResponse.json(SearchData2)
+    } else if (Number(pageParams) === 2) {
+      return HttpResponse.json(SearchData3)
+    } else {
+      return HttpResponse.json(NoSearchData)
+    }
   })
 ]

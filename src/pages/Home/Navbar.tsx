@@ -72,7 +72,15 @@ export default Navbar
 
 const Container = styled.div`
   height: 92px;
-
+  @media (max-width: 440px) {
+    width: 100%;
+  }
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
   position: fixed;
   bottom: 0;
   background-color: white;

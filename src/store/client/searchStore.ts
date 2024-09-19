@@ -19,6 +19,7 @@ interface ISearchStore {
     value: IPeople[] | IPeriod[] | IStyle[] | IPlace[]
   ) => void
   setReset: () => void
+  setOneFilterReset: (type: '장소' | '인원' | '기간' | '스타일') => void
 }
 
 // userId와 accessToken을 전역 상태로 관리하는 역할
@@ -60,6 +61,17 @@ export const searchStore = create<ISearchStore>((set, get) => ({
   },
   setReset: () => {
     set({ people: [], period: [], style: [], place: [] })
+  },
+  setOneFilterReset: type => {
+    if (type === '장소') {
+      set({ place: [] })
+    } else if (type === '인원') {
+      set({ people: [] })
+    } else if (type === '기간') {
+      set({ period: [] })
+    } else if (type === '스타일') {
+      set({ style: [] })
+    }
   }
 }))
 

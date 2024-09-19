@@ -3,10 +3,12 @@ import RecommendKeyword from '@/components/RecommendKeyword'
 import SearchFilterTag from '@/components/SearchFilterTag'
 import SearchResultList from '@/components/SearchResultList'
 import Spacing from '@/components/Spacing'
-import useSearch from '@/hooks/user/useSearch'
+import useInfiniteScroll from '@/hooks/useInfiniteScroll'
+import useSearch from '@/hooks/useSearch'
 import { searchStore } from '@/store/client/searchStore'
 import styled from '@emotion/styled'
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 
 const RECOMMEND_TAGS1 = ['유럽', '일본', '제주']
 const RECOMMEND_TAGS2 = ['유럽', '일본']
@@ -15,10 +17,18 @@ const SearchTravel = () => {
   const [keyword, setKeyword] = useState('')
   const { keyword: finalKeyword, setKeyword: setFinalKeyword } = searchStore()
   const [success, setSuccess] = useState(false)
-  const { data, isLoading, refetch } = useSearch({
-    keyword: finalKeyword,
-    tags: ['gksk']
-  })
+  const [ref, inView] = useInView()
+  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
+    useSearch({
+      keyword: finalKeyword,
+      tags: ['gksk']
+    })
+
+  useInfiniteScroll(() => {
+    if (inView) {
+      !isFetching && hasNextPage && fetchNextPage()
+    }
+  }, [inView, !isFetching, fetchNextPage, hasNextPage])
 
   useEffect(() => {
     if (finalKeyword !== '') {
@@ -72,7 +82,15 @@ const SearchTravel = () => {
       {typeof data !== 'undefined' ? (
         <>
           {isLoading && <div>검색 중...</div>}
-          {!isLoading && data && <SearchResultList searchResult={data.pages} />}
+          {!isLoading && data && (
+            <>
+              <SearchResultList searchResult={data.pages} />
+              <div
+                ref={ref}
+                css={{ height: 80 }}
+              />
+            </>
+          )}
           {!isLoading && data?.pages[0].content.length === 0 && (
             <NoDataContainer>
               <Spacing size={'12.3svh'} />
