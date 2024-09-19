@@ -123,6 +123,7 @@ export default css`
   body {
     line-height: 1;
     font-family: 'Pretendard-Regular';
+    letter-spacing: -0.4px !important;
   }
   ol,
   ul {

@@ -223,6 +223,7 @@ const Container = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  padding-bottom: 3px;
   width: 100%;
   overflow-x: auto;
   white-space: nowrap;
