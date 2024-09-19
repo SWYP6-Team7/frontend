@@ -21,7 +21,7 @@ const Layout = () => {
 
         <Outlet />
         {/* 로그인을 해야만 보이는거 처리. */}
-        {(userId || pathname !== '/search/travel') && <Navbar />}
+        <Navbar />
       </Body>
     </Container>
   )
