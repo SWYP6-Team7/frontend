@@ -30,37 +30,39 @@ const SearchResultList = ({
         <BottomModal
           initialHeight={40}
           closeModal={() => setShowModal(false)}>
-          <Spacing size={24} />
-          {['추천순', '최신순', '등록일순', '정확도순'].map(value => (
-            <SortButton
-              selected={sort === value}
-              onClick={() =>
-                handleSort(
-                  value as '추천순' | '최신순' | '등록일순' | '정확도순'
-                )
-              }
-              key={value}>
-              <span>{value}</span>
-              {sort === value && (
-                <svg
-                  css={{ paddingRight: 6 }}
-                  width="21"
-                  height="16"
-                  viewBox="0 0 21 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M2 8L8.375 14L19 2"
-                    stroke="#3E8D00"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
-            </SortButton>
-          ))}
-          <Spacing size={66} />
+          <SortContainer>
+            <Spacing size={24} />
+            {['추천순', '최신순', '등록일순', '정확도순'].map(value => (
+              <SortButton
+                selected={sort === value}
+                onClick={() =>
+                  handleSort(
+                    value as '추천순' | '최신순' | '등록일순' | '정확도순'
+                  )
+                }
+                key={value}>
+                <span>{value}</span>
+                {sort === value && (
+                  <svg
+                    css={{ paddingRight: 6 }}
+                    width="21"
+                    height="16"
+                    viewBox="0 0 21 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M2 8L8.375 14L19 2"
+                      stroke="#3E8D00"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </SortButton>
+            ))}
+            <Spacing size={66} />
+          </SortContainer>
         </BottomModal>
       )}
 
@@ -114,6 +116,9 @@ const CountContainer = styled.div`
   font-weight: 500;
   line-height: 16.71px;
   letter-spacing: -0.025em;
+`
+const SortContainer = styled.div`
+  padding: 0 20px;
 `
 
 const Count = styled.span`

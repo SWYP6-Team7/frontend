@@ -129,15 +129,20 @@ const Container = styled.div`
 
 const ContentContainer = styled.div<{ isClosing: boolean }>`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+
   bottom: 0;
   @media (min-width: 440px) {
     width: 390px;
   }
-  display: block;
+
   z-index: 2000;
   position: fixed;
-  padding: 0 20px;
+  padding: 0;
   padding-top: 0;
+  max-height: 100%;
+
   left: 0;
   @media (min-width: 440px) {
     width: 390px;

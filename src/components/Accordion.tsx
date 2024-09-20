@@ -60,7 +60,7 @@ const Count = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  box-sizing: border-box;
   font-size: 12px;
   font-weight: 600;
   line-height: 14.32px;
@@ -84,9 +84,10 @@ const Tab = styled.label`
 `
 
 const Content = styled.div<{ checked: boolean }>`
-  max-height: ${props => (props.checked ? '16svh' : '0')};
+  max-height: ${props => (props.checked ? '20svh' : '0')};
+
   padding: ${props => (props.checked ? '1.7svh' : '0 1.7svh')};
-  overflow: hidden;
+
   transition:
     max-height 0.3s ease,
     padding 0.3s ease;
