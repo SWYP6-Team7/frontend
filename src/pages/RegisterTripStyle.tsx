@@ -247,9 +247,11 @@ export default RegisterTripStyle
 
 const ButtonWrapper = styled.div`
   width: calc(100% - 48px);
-  position: fixed;
-  bottom: 4.7svh;
+
   z-index: 10;
+  left: 24px;
+  position: absolute;
+  bottom: 4.7svh;
 `
 
 const BlurSpacing = styled(Spacing)`
