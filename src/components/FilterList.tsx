@@ -48,6 +48,7 @@ const FilterList = () => {
     setOneFilterReset
   } = searchStore()
   const { refetch } = useSearch({ keyword: keyword, tags: [] })
+
   const getCount = (type: '장소' | '인원' | '기간' | '스타일') => {
     if (type === '장소') return place.length
     if (type === '인원') return people.length
@@ -157,6 +158,7 @@ const FilterList = () => {
               </Accordion>
             ))}
           </ModalContainer>
+          <Spacing size={'10svh'} />
           <ButtonContainer>
             <button onClick={handleReset}>
               <ResetIcon />
@@ -208,8 +210,9 @@ const FilterList = () => {
 }
 
 const ModalContainer = styled.div`
-  min-height: 60svh;
   position: relative;
+  min-height: 60svh;
+  height: fit-content;
 `
 
 const ButtonContainer = styled.div`
