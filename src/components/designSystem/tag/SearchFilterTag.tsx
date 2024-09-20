@@ -8,6 +8,7 @@ interface SearchFilterTagProps
   addStyle?: {
     backgroundColor?: string
     color?: string
+    border?: string
   }
   disabled?: boolean
   active?: boolean
@@ -38,7 +39,8 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         backgroundColor: active
           ? 'rgba(62, 141, 0, 1)'
           : ' rgba(240, 240, 240, 1)',
-        color: active ? 'rgba(255, 255, 255, 1)' : 'rgba(52, 52, 52, 1)'
+        color: active ? 'rgba(255, 255, 255, 1)' : 'rgba(52, 52, 52, 1)',
+        border: 'none'
       },
       ...props
     },
