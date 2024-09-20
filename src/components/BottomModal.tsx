@@ -4,18 +4,56 @@ import { css, keyframes } from '@emotion/react'
 
 const BottomModal = ({
   children,
-  closeModal
+  closeModal,
+  initialHeight
 }: {
   children: React.ReactNode
   closeModal: () => void
+  initialHeight: number
 }) => {
   const [touchY, setTouchY] = useState(0)
-
+  const [modalHeight, setModalHeight] = useState(initialHeight)
   const [isClosing, setIsClosing] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.style.height = `${modalHeight}%`
+    }
+  }, [modalHeight])
+
+  useEffect(() => {
+    const preventTouchMove = (e: TouchEvent) => {
+      e.preventDefault()
+    }
+
+    if (contentRef.current) {
+      document.body.style.overflow = 'hidden'
+      contentRef.current.addEventListener('touchmove', preventTouchMove, {
+        passive: false
+      })
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+      if (contentRef.current) {
+        contentRef.current.removeEventListener('touchmove', preventTouchMove)
+      }
+    }
+  }, [])
+
   const handleContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const currentY = e.changedTouches[0].pageY
+    const difference = currentY - touchY
+    const newHeight = Math.max(
+      0,
+      Math.min(100, 100 - (difference / window.innerHeight) * 100)
+    )
+    setModalHeight(newHeight)
   }
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -24,12 +62,15 @@ const BottomModal = ({
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     const distanceY = e.changedTouches[0].pageY - touchY
+    const percentMoved = Math.abs(distanceY) / window.innerHeight
 
-    if (Math.abs(distanceY) / window.innerHeight > 0.1) {
+    if (distanceY > 0 && percentMoved > 0.2) {
       setIsClosing(true)
       setTimeout(() => {
         closeModal()
       }, 300)
+    } else {
+      setModalHeight(100)
     }
   }
 
@@ -41,6 +82,7 @@ const BottomModal = ({
         isClosing={isClosing}>
         <BarContainer
           onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}>
           <Bar />
         </BarContainer>
@@ -101,7 +143,7 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
   animation: ${props => (props.isClosing ? slideDown : slideUp)} 0.3s ease-out
     forwards;
 
-  transition: transform 0.3s ease-out;
+  transition: height 0.1s ease-out;
 `
 
 const Bar = styled.div`
