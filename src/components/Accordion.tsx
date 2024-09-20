@@ -79,13 +79,13 @@ const Tab = styled.label`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(240, 240, 240, 1);
-  padding: 20px 0;
+  padding: 2.3svh 0;
   cursor: pointer;
 `
 
 const Content = styled.div<{ checked: boolean }>`
-  max-height: ${props => (props.checked ? '100dvh' : '0')};
-  padding: ${props => (props.checked ? '15px' : '0 15px')};
+  max-height: ${props => (props.checked ? '16svh' : '0')};
+  padding: ${props => (props.checked ? '1.7svh' : '0 1.7svh')};
   overflow: hidden;
   transition:
     max-height 0.3s ease,

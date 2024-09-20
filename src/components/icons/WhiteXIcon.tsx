@@ -12,8 +12,8 @@ const WhiteXIcon = ({ size = 25 }: { size?: number }) => {
         d="M23.2838 2.42793L2.42792 23.2838M23.2838 23.2838L2.42792 2.42793"
         stroke="#F0F0F0"
         stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )
