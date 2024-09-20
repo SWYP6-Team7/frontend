@@ -18,7 +18,7 @@ const BottomModal = ({
 
   useEffect(() => {
     if (contentRef.current) {
-      contentRef.current.style.height = `${modalHeight}%`
+      contentRef.current.style.minHeight = `${modalHeight}%`
     }
   }, [modalHeight])
 
@@ -76,7 +76,8 @@ const BottomModal = ({
   }
 
   return (
-    <Container onClick={closeModal}>
+    <>
+      <Container onClick={closeModal}></Container>
       <ContentContainer
         ref={contentRef}
         onClick={handleContentClick}
@@ -89,7 +90,7 @@ const BottomModal = ({
         </BarContainer>
         {children}
       </ContentContainer>
-    </Container>
+    </>
   )
 }
 
@@ -123,7 +124,7 @@ const Container = styled.div`
     left: 50%;
     transform: translateX(-50%);
   }
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.4);
 `
 
 const ContentContainer = styled.div<{ isClosing: boolean }>`
@@ -134,9 +135,15 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
   }
   display: block;
   z-index: 2000;
-  position: absolute;
+  position: fixed;
   padding: 0 20px;
   padding-top: 0;
+  left: 0;
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
@@ -144,7 +151,7 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
   animation: ${props => (props.isClosing ? slideDown : slideUp)} 0.3s ease-out
     forwards;
 
-  transition: height 0.1s ease-out;
+  transition: min-height 0.1s ease-out;
 `
 
 const Bar = styled.div`
