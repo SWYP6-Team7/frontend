@@ -132,7 +132,9 @@ const FilterList = () => {
   return (
     <>
       {showModal && (
-        <BottomModal closeModal={handleCloseModal}>
+        <BottomModal
+          initialHeight={75}
+          closeModal={handleCloseModal}>
           <ModalContainer>
             {FILTER_LIST.map(item => (
               <Accordion

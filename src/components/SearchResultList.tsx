@@ -27,7 +27,9 @@ const SearchResultList = ({
   return (
     <Container>
       {showModal && (
-        <BottomModal closeModal={() => setShowModal(false)}>
+        <BottomModal
+          initialHeight={40}
+          closeModal={() => setShowModal(false)}>
           <Spacing size={24} />
           {['추천순', '최신순', '등록일순', '정확도순'].map(value => (
             <SortButton
