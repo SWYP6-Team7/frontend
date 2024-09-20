@@ -23,7 +23,7 @@ const SearchResultList = ({
     setSort(value)
     setShowModal(false)
   }
-  console.log(searchResult)
+
   return (
     <Container>
       {showModal && (

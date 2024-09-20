@@ -7,14 +7,12 @@ import { authStore } from '@/store/client/authStore'
 import path from 'path'
 const Layout = () => {
   const { pathname } = useLocation()
-  const isAuth = pathname.startsWith('/register') || pathname === '/login'
+
   const { userId, accessToken } = authStore()
 
   return (
     <Container>
-      <Body
-        pathname={pathname}
-        isAuth={isAuth}>
+      <Body pathname={pathname}>
         {/* {isSignup && <Header />} */}
         {/* 홈 화면 헤더는 다른 형태. */}
         {pathname !== '/' && pathname !== '/login' && <Header />}
@@ -29,12 +27,11 @@ const Layout = () => {
 
 // 대중적인 mobile device는 430px 미만
 // 그렇기 때문에 440px 이상이면 모바일 환경이 아니라고 생각하고 max-width를 figma layout에 맞춤
-const Body = styled.div<{ isAuth: boolean; pathname: string }>`
+const Body = styled.div<{ pathname: string }>`
   width: 100svw;
   height: 100%;
   position: relative;
-  background-color: ${props =>
-    props.pathname === '' ? '#f0f0f0' : props.isAuth ? '#fffff6' : '#fdfdfd'};
+  background-color: ${props => (props.pathname === '' ? '#f0f0f0' : '#fdfdfd')};
   /* background-color: #fffff6; */
   @media (max-width: 440px) {
     width: 100svw;

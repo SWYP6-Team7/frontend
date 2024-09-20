@@ -14,8 +14,8 @@ const SelectArrow = ({ width = 12, height = 7 }: SelectArrowProps) => {
       <path
         d="M11 1.16667L6 5.83334L1 1.16667"
         stroke="#343434"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )
