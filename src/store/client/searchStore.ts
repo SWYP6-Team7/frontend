@@ -1,9 +1,21 @@
 import { create } from 'zustand'
 
 export type IPlace = '국내' | '해외'
-export type IPeriod = '일주일 이하' | '1~4주' | '한달 이상'
-export type IPeople = '2인' | '3인' | '4인' | '5인이상'
-export type IStyle = '여유' | '도시' | '액티비티' | '전통' | '가성비'
+export type IPeriod = '일주일 이하' | '1~2주' | '3~4주' | '한달 이상'
+export type IPeople = '2인' | '3~4명' | '5인이상'
+export type IStyle =
+  | '힐링'
+  | '즉흥적'
+  | '계획적인'
+  | '액티비티'
+  | '먹방'
+  | '예술'
+  | '핫플'
+  | '쇼핑'
+  | '가성비'
+  | '역사'
+  | '자연'
+export type IGender = '혼성' | '여자만' | '남자만'
 
 interface ISearchStore {
   sort: '추천순' | '최신순' | '등록일순' | '정확도순'
@@ -14,12 +26,15 @@ interface ISearchStore {
   people: IPeople[]
   period: IPeriod[]
   style: IStyle[]
+  gender: IGender[]
   setFilter: (
-    type: '장소' | '인원' | '기간' | '스타일',
-    value: IPeople[] | IPeriod[] | IStyle[] | IPlace[]
+    type: '장소' | '인원' | '기간' | '스타일' | '성별',
+    value: IPeople[] | IPeriod[] | IStyle[] | IPlace[] | IGender[]
   ) => void
   setReset: () => void
-  setOneFilterReset: (type: '장소' | '인원' | '기간' | '스타일') => void
+  setOneFilterReset: (
+    type: '장소' | '인원' | '기간' | '스타일' | '성별'
+  ) => void
 }
 
 // userId와 accessToken을 전역 상태로 관리하는 역할
@@ -30,6 +45,7 @@ export const searchStore = create<ISearchStore>((set, get) => ({
   period: [],
   people: [],
   style: [],
+  gender: [],
   setKeyword: keyword => {
     set({ keyword })
   },
@@ -57,6 +73,12 @@ export const searchStore = create<ISearchStore>((set, get) => ({
     } else if (type === '스타일') {
       const updatedStyle = toggleFilter(currentFilters.style, value as IStyle[])
       set({ style: updatedStyle })
+    } else if (type === '성별') {
+      const updatedGender = toggleFilter(
+        currentFilters.gender,
+        value as IGender[]
+      )
+      set({ gender: updatedGender })
     }
   },
   setReset: () => {
@@ -71,6 +93,8 @@ export const searchStore = create<ISearchStore>((set, get) => ({
       set({ period: [] })
     } else if (type === '스타일') {
       set({ style: [] })
+    } else if (type === '성별') {
+      set({ gender: [] })
     }
   }
 }))

@@ -41,9 +41,7 @@ const HorizonBoxLayout = ({
 }: HorizonBoxProps) => {
   return (
     <HorizonBoxContainer>
-      <Thumbnail>
-        <img src={imgSrc} />
-      </Thumbnail>
+      <Thumbnail src={imgSrc}></Thumbnail>
 
       <PostInfo>
         <Badge
@@ -112,17 +110,20 @@ const Description = styled.div`
   margin-bottom: 4px;
   line-height: 16.71px;
 `
-const Thumbnail = styled.div`
+const Thumbnail = styled.div<{ src: string }>`
   margin-right: 12px;
-  width: 35%;
+  width: 100%;
+  max-width: 120px;
+  aspect-ratio: 1/1;
   display: flex;
   align-items: center;
-  img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background-color: rgba(217, 217, 217, 1);
-    border-radius: 20px;
-  }
+  position: relative;
+
+  border-radius: 20px;
+  background-image: url(${props => props.src});
+  background-color: ${props =>
+    props.src === '' ? 'rgba(217, 217, 217, 1)' : 'inherit'};
+  background-size: cover;
 `
 const RecruitingBox = styled.div`
   display: flex;
