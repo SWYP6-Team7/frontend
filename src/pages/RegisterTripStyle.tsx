@@ -8,7 +8,7 @@ import CategoryButton from '@/components/CategoryButton'
 import Spacing from '@/components/Spacing'
 import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
-
+const TAGCOUNT = 18
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
   const { registerEmail } = useAuth()
@@ -31,23 +31,41 @@ const RegisterTripStyle = () => {
     sex,
     phoneNumber,
     yearOfBirth,
-    tripStyle,
-    addTripStyle
+    tripStyle
+    // addTripStyle
   )
 
   // 버튼 활성화상태.
   const [activeStates, setActiveStates] = useState<boolean[]>(
-    new Array(20).fill(false)
+    new Array(TAGCOUNT).fill(false)
   )
 
-  const categoryButtonTextArray = ['즉흥', '계획적인', '힐링']
-
-  new Array(17).fill('항목').forEach(v => categoryButtonTextArray.push(v))
+  const categoryButtonTextArray = [
+    '힐링',
+    '즉흥적',
+    '계획적인',
+    '액티비티',
+    '먹방',
+    '예술',
+    '핫플',
+    '쇼핑',
+    '가성비',
+    '역사',
+    '자연',
+    '단체',
+    '소수',
+    '해외',
+    '국내',
+    '단기',
+    '중장기',
+    '동성선호'
+  ]
 
   // 최종적으로 선택된 여행 스타일 담은 배열
   const tripStyleArray = categoryButtonTextArray.filter(
     (btnTxt, idx) => activeStates[idx]
   )
+  console.log(tripStyleArray)
   const tags: { tagName: string }[] = tripStyleArray.map(v => ({ tagName: v }))
 
   // 버튼 클릭 핸들러
@@ -69,6 +87,8 @@ const RegisterTripStyle = () => {
       birthYear: yearOfBirth.toString()
     })
   }
+  // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
+  const newRightPosition = window.innerWidth.toString() + 'px'
 
   return (
     <RegisterTripStyleWrapper>
@@ -84,150 +104,21 @@ const RegisterTripStyle = () => {
       </TripStyleStep>
       <MultipleSelectionText>중복 선택 가능</MultipleSelectionText>
       <TripStyleContainer>
-        <Title>✈️ 여행 스타일</Title>
         <StyleBtns>
-          <Row>
+          {categoryButtonTextArray.map((text: string, idx) => (
             <CategoryButton
-              id={0}
-              text={categoryButtonTextArray[0]}
-              active={activeStates[0]}
+              id={idx}
+              text={text}
+              active={activeStates[idx]}
               onClick={handleButtonClick}
             />
-            <CategoryButton
-              id={1}
-              text={categoryButtonTextArray[1]}
-              active={activeStates[1]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={2}
-              text={categoryButtonTextArray[2]}
-              active={activeStates[2]}
-              onClick={handleButtonClick}
-            />
-          </Row>
-          <Row>
-            <CategoryButton
-              id={3}
-              text={categoryButtonTextArray[3]}
-              active={activeStates[3]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={4}
-              text={categoryButtonTextArray[4]}
-              active={activeStates[4]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={5}
-              text={categoryButtonTextArray[5]}
-              active={activeStates[5]}
-              onClick={handleButtonClick}
-            />
-          </Row>
-          <Row>
-            <CategoryButton
-              id={6}
-              text={categoryButtonTextArray[6]}
-              active={activeStates[6]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={7}
-              text={categoryButtonTextArray[7]}
-              active={activeStates[7]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={8}
-              text={categoryButtonTextArray[8]}
-              active={activeStates[8]}
-              onClick={handleButtonClick}
-            />
-          </Row>
+          ))}
         </StyleBtns>
       </TripStyleContainer>
-      <TripThemeContainer>
-        <Title>🌊 테마</Title>
-        <StyleBtns>
-          <Row>
-            <CategoryButton
-              id={9}
-              text={categoryButtonTextArray[9]}
-              active={activeStates[9]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={10}
-              text={categoryButtonTextArray[10]}
-              active={activeStates[10]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={11}
-              text={categoryButtonTextArray[11]}
-              active={activeStates[11]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={12}
-              text={categoryButtonTextArray[12]}
-              active={activeStates[12]}
-              onClick={handleButtonClick}
-            />
-          </Row>
-          <Row>
-            <CategoryButton
-              id={13}
-              text={categoryButtonTextArray[13]}
-              active={activeStates[13]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={14}
-              text={categoryButtonTextArray[14]}
-              active={activeStates[14]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={15}
-              text={categoryButtonTextArray[15]}
-              active={activeStates[15]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={16}
-              text={categoryButtonTextArray[16]}
-              active={activeStates[16]}
-              onClick={handleButtonClick}
-            />
-          </Row>
-          <Row>
-            <CategoryButton
-              id={17}
-              text={categoryButtonTextArray[17]}
-              active={activeStates[17]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={18}
-              text={categoryButtonTextArray[18]}
-              active={activeStates[18]}
-              onClick={handleButtonClick}
-            />
-            <CategoryButton
-              id={19}
-              text={categoryButtonTextArray[19]}
-              active={activeStates[19]}
-              onClick={handleButtonClick}
-            />
-          </Row>
-        </StyleBtns>
-      </TripThemeContainer>
+
       {/* fixed된 다음 버튼 아래에도 컨텐츠가 있다는 것을 보이기 위한 Spacing */}
       <Spacing size={100} />
-      <ButtonWrapper>
+      <ButtonWrapper width={newRightPosition}>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -245,10 +136,26 @@ const RegisterTripStyle = () => {
 
 export default RegisterTripStyle
 
-const ButtonWrapper = styled.div`
-  width: calc(100% - 48px);
+const ButtonWrapper = styled.div<{ width: string }>`
+  /* width: calc(100% - 48px);
   position: fixed;
   bottom: 4.7svh;
+  z-index: 10; */
+
+  width: 390px;
+  @media (max-width: 389px) {
+    width: ${props => props.width};
+  }
+  @media (max-width: 450px) {
+    width: ${props => props.width};
+  }
+  /* pointer-events: none; */
+  position: fixed;
+  /* top: 0; */
+  bottom: 4.7svh;
+  /* z-index: 1001; */
+  margin-left: -24px;
+  padding: 0px 24px;
   z-index: 10;
 `
 
@@ -265,19 +172,18 @@ const BlurSpacing = styled(Spacing)`
 
 const RegisterTripStyleWrapper = styled.div`
   padding: 0px 24px;
-
   min-height: calc(100svh - 68px - 30px);
 `
 const StepIconContainer = styled.div`
   margin-top: 30px;
 `
 const TripStyleStep = styled.div`
-  margin-top: 30px;
+  margin-top: 40px;
   font-size: 24px;
   font-weight: 600;
 `
 const TripStyleContainer = styled.div`
-  margin-top: 50px;
+  margin-top: 40px;
   padding: 0px 6px;
 `
 const TripThemeContainer = styled.div`
@@ -293,9 +199,9 @@ const Title = styled.div`
 `
 const StyleBtns = styled.div`
   margin-top: 14px;
-  div:last-child {
-    margin-bottom: 0;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
 `
 const Row = styled.div`
   display: flex;

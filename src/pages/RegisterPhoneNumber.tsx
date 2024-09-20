@@ -140,7 +140,7 @@ const StepIconContainer = styled.div`
 `
 
 const PhoneNumberStep = styled.div`
-  margin-top: 30px;
+  margin-top: 40px;
   width: 343px;
   height: 68px;
   padding: 0px 6px 0px 6px;

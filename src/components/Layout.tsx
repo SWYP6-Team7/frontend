@@ -5,12 +5,14 @@ import { Outlet, useMatch, useLocation } from 'react-router-dom'
 import Navbar from '@/pages/Home/Navbar'
 import { authStore } from '@/store/client/authStore'
 import path from 'path'
+import { palette } from '@/styles/palette'
 const Layout = () => {
   const { pathname } = useLocation()
 
   const { userId, accessToken } = authStore()
 
   return (
+
     <Container>
       <Body pathname={pathname}>
         {/* {isSignup && <Header />} */}
@@ -45,16 +47,16 @@ const Body = styled.div<{ pathname: string }>`
   }
 `
 // pc환경에서 화면을 가운데 정렬하기 위한 레이아웃 스타일
-const Container = styled.div`
-  height: 100svh;
-  width: 100svw;
+const Container = styled.div<{ pathname: string }>`
+  /* height는 홈화면 스크롤을 보기 위해서 auto로 잡아두기. width는 가로스크롤이 생겨서 auto로. */
+  height: ${props => (props.pathname !== '/' ? '100svh' : 'auto')};
+  width: ${props => (props.pathname !== '/' ? '100svw' : 'auto')};
+
   overflow-x: hidden;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `
 
 export default Layout
