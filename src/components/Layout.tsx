@@ -12,8 +12,7 @@ const Layout = () => {
   const { userId, accessToken } = authStore()
 
   return (
-
-    <Container>
+    <Container pathname={pathname}>
       <Body pathname={pathname}>
         {/* {isSignup && <Header />} */}
         {/* 홈 화면 헤더는 다른 형태. */}
@@ -33,8 +32,10 @@ const Body = styled.div<{ pathname: string }>`
   width: 100svw;
   height: 100%;
   position: relative;
-  background-color: ${props => (props.pathname === '' ? '#f0f0f0' : '#fdfdfd')};
-  /* background-color: #fffff6; */
+
+  background-color: ${props =>
+    props.pathname === '/' ? '#f0f0f0' : `${palette.BG}`};
+
   @media (max-width: 440px) {
     width: 100svw;
   }
