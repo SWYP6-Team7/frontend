@@ -256,7 +256,7 @@ const ModalContainer = styled.div`
   flex-grow: 1;
   overflow-y: auto;
   padding: 0 20px;
-  padding-bottom: 80px;
+  padding-bottom: 13svh;
 `
 
 const ButtonContainer = styled.div`
