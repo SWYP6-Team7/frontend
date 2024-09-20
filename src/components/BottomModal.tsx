@@ -23,22 +23,12 @@ const BottomModal = ({
   }, [modalHeight])
 
   useEffect(() => {
-    const preventTouchMove = (e: TouchEvent) => {
-      e.preventDefault()
-    }
-
     if (contentRef.current) {
       document.body.style.overflow = 'hidden'
-      contentRef.current.addEventListener('touchmove', preventTouchMove, {
-        passive: false
-      })
     }
 
     return () => {
       document.body.style.overflow = ''
-      if (contentRef.current) {
-        contentRef.current.removeEventListener('touchmove', preventTouchMove)
-      }
     }
   }, [])
 
@@ -122,7 +112,7 @@ const Container = styled.div`
   @media (min-width: 440px) {
     width: 390px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) !important;
   }
   background-color: rgba(0, 0, 0, 0.4);
 `
@@ -139,15 +129,14 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
 
   z-index: 2000;
   position: fixed;
-  padding: 0;
-  padding-top: 0;
+
   max-height: 100%;
 
   left: 0;
   @media (min-width: 440px) {
     width: 390px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) !important;
   }
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
