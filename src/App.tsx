@@ -1,6 +1,6 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import Layout from './components/Layout'
-import Home from './pages/Home'
+import Home from './pages/Home/Home'
 import NotFound from './components/NotFound'
 import Login from './pages/Login'
 
@@ -12,6 +12,11 @@ import RegisterGender from './pages/RegisterGender'
 import OauthKakao from './pages/OauthKakao'
 import OauthNaver from './pages/OauthNaver'
 import OauthGoogle from './pages/OauthGoogle'
+import SearchTravel from './pages/SearchTravel'
+import MyPage from './pages/MyPage/MyPage'
+import Bookmark from './pages/Bookmark/Bookmark'
+import Community from './pages/Community/Community'
+import CreateTrip from './pages/CreateTrip'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -61,6 +66,37 @@ export const router = createBrowserRouter([
       {
         path: 'registerTripStyle',
         element: <RegisterTripStyle />
+      },
+      {
+        path: 'search',
+        element: (
+          <>
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            path: 'travel',
+            element: <SearchTravel />
+          }
+        ]
+      },
+      {
+        path: '/myPage',
+        element: <MyPage />
+      },
+
+      {
+        path: '/bookmark',
+        element: <Bookmark />
+      },
+      {
+        path: '/community',
+        element: <Community />
+      },
+      {
+        path: '/createTrip',
+        element: <CreateTrip />
       }
     ]
   }

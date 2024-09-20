@@ -9,15 +9,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 const reactRoot = document.querySelector('div#root')
 
 const prepare = async (): Promise<void> => {
-  if (process.env.NODE_ENV === 'development') {
-    const { worker } = await import('./mocks/browser')
+  const { worker } = await import('./mocks/browser')
 
-    await worker.start({
-      serviceWorker: {
-        url: '/mockServiceWorker.js'
-      }
-    })
-  }
+  await worker.start({
+    serviceWorker: {
+      url: '/mockServiceWorker.js'
+    }
+  })
 }
 
 prepare().then(() => {

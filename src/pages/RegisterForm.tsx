@@ -229,6 +229,7 @@ const RegisterForm = () => {
             value={formData.confirmPassword}
             success={success.confirmPassword}
           />
+          <Spacing size={10} />
           {error.confirmPassword ? (
             <InfoText hasError>{error.confirmPassword}</InfoText>
           ) : (

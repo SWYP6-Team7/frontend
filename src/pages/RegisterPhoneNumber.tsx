@@ -9,6 +9,7 @@ import InfoText from '@/components/designSystem/text/InfoText'
 import Dropdown from '@/components/Dropdown'
 import Spacing from '@/components/Spacing'
 import { z } from 'zod'
+import { authStore } from '@/store/client/authStore'
 // 전화번호 유효성 검사.
 const phoneNumberValid = z
   .string() // 문자열로 시작
@@ -20,9 +21,11 @@ const RegisterPhoneNumber = () => {
   const navigate = useNavigate()
   const { phoneNumber, addPhoneNumber, yearOfBirth, addYearOfBirth } =
     userStore()
+
   const [phone, setPhone] = useState(phoneNumber)
   const [bornYear, setBornYear] = useState(yearOfBirth)
   const [phoneNumberValidError, setPhoneNumberValidError] = useState(false)
+  const { userId, accessToken } = authStore()
   const handleRemoveValue = () => setPhone('')
   const nextStepClickHandler = () => {
     navigate('/registerTripStyle')
@@ -57,6 +60,7 @@ const RegisterPhoneNumber = () => {
   useEffect(() => {
     addYearOfBirth(bornYear)
   }, [bornYear])
+
   return (
     <RegisterPhoneNumberWrapper>
       <StepIconContainer>
@@ -136,7 +140,7 @@ const StepIconContainer = styled.div`
 `
 
 const PhoneNumberStep = styled.div`
-  margin-top: 30px;
+  margin-top: 40px;
   width: 343px;
   height: 68px;
   padding: 0px 6px 0px 6px;

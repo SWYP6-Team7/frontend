@@ -1,35 +1,45 @@
 import { http, HttpResponse } from 'msw'
+import { homeHandler } from './homeHandler'
+import { NoSearchData, SearchData1, SearchData2, SearchData3 } from './data'
 
 export const handlers = [
+  ...homeHandler,
   http.post('/api/login', async ({ request }) => {
     try {
-      console.log('requeset', request)
-      const formData = await request.json()
-      console.log('formData', formData)
-      return HttpResponse.json(
-        { error: 'Internal Server Error' },
-        { status: 500 }
-      )
-
-      return HttpResponse.json(
-        { userId: 1, accessToken: 'dalkejoiauetaenaltkenl1j2an' },
-        {
-          headers: {
-            'Set-Cookie': 'connect.sid=msw-cookie; HttpOnly; Path=/'
+      const formData = (await request.json()) as {
+        email: string
+        password: string
+      }
+      console.log('login formdata: ', formData)
+      if (
+        formData?.email === 'aaa123@naver.com' &&
+        formData?.password === 'Qwer1234!'
+      ) {
+        return HttpResponse.json(
+          { userId: 1, accessToken: 'dalkejoiauetaenaltkenl1j2an' },
+          {
+            headers: {
+              'Set-Cookie': 'connect.sid=msw-cookie; HttpOnly; Path=/'
+            }
           }
-        }
-      )
+        )
+      } else {
+        return HttpResponse.json(
+          { error: '로그인 정보를 다시 확인해주세요,' },
+          { status: 405 }
+        )
+      }
     } catch (error) {
       console.error('Error handling request:', error)
       return HttpResponse.json(
-        { error: 'Internal Server Error' },
+        { error: '로그인 정보를 다시 확인해주세요,' },
         { status: 500 }
       )
     }
   }),
   http.post('/api/users/new', async ({ request }) => {
     const formData: any = await request.json()
-    console.log('email register', formData)
+    console.log('register formdata: ', formData)
     return HttpResponse.json(
       { userId: 1, accessToken: 'dalkejoiauetaenaltkenl1j2an' },
       {
@@ -41,7 +51,7 @@ export const handlers = [
   }),
   http.post('/api/logout', () => {
     console.log('로그아웃')
-    // resturn res(ctx.status(204));
+
     return new HttpResponse(null, {
       headers: {
         'Set-Cookie': 'connect.sid=;HttpOnly;Path=/;Max-Age=0'
@@ -71,8 +81,11 @@ export const handlers = [
     const url = new URL(request.url)
 
     const email = url.searchParams.get('email')
-    console.log('email', email)
-    return HttpResponse.json(null, { status: 404 })
+    if (email === 'aaa123@naver.com') {
+      return HttpResponse.json(null, { status: 404 })
+    } else {
+      return HttpResponse.json(null, { status: 200 })
+    }
   }),
   http.post('/api/kakao/oauth', async ({ request: req }) => {
     const data = (await req.json()) as unknown as { code: string }
@@ -104,7 +117,7 @@ export const handlers = [
           }
         }
       )
-      console.log('userInfoResponse', userInfoResponse)
+
       const user = await userInfoResponse.json()
       console.log(user, 'user')
       // 3. 사용자 정보 반환
@@ -164,6 +177,23 @@ export const handlers = [
         { error: 'Failed to authenticate with Naver' },
         { status: 500 }
       )
+    }
+  }),
+  http.get('/api/travel/search', async ({ request }) => {
+    const url = new URL(request.url)
+
+    const tags = url.searchParams.get('tags')
+    const keyword = url.searchParams.get('keyword')
+    const pageParams = url.searchParams.get('page')
+    console.log('pageParams', pageParams)
+    if (Number(pageParams) === 0) {
+      return HttpResponse.json(SearchData1)
+    } else if (Number(pageParams) === 1) {
+      return HttpResponse.json(SearchData2)
+    } else if (Number(pageParams) === 2) {
+      return HttpResponse.json(SearchData3)
+    } else {
+      return HttpResponse.json(NoSearchData)
     }
   })
 ]

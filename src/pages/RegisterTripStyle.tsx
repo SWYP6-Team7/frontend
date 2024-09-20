@@ -2,16 +2,17 @@ import ThirdStepIcon from '@/components/icons/ThirdStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
-import { MouseEventHandler, useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CategoryButton from '@/components/CategoryButton'
 import Spacing from '@/components/Spacing'
 import useAuth from '@/hooks/user/useAuth'
+import { authStore } from '@/store/client/authStore'
 
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
   const { registerEmail } = useAuth()
-
+  const { userId, accessToken } = authStore()
   const {
     name,
     email,
@@ -68,6 +69,7 @@ const RegisterTripStyle = () => {
       birthYear: yearOfBirth.toString()
     })
   }
+
   return (
     <RegisterTripStyleWrapper>
       <StepIconContainer>
@@ -245,9 +247,11 @@ export default RegisterTripStyle
 
 const ButtonWrapper = styled.div`
   width: calc(100% - 48px);
-  position: fixed;
-  bottom: 4.7svh;
+
   z-index: 10;
+  left: 24px;
+  position: absolute;
+  bottom: 4.7svh;
 `
 
 const BlurSpacing = styled(Spacing)`
@@ -305,10 +309,9 @@ const Row = styled.div`
     margin-right: 0;
   }
 `
-const UserName = styled.div`
-  min-width: 64px;
+const UserName = styled.span`
+  display: inline-block;
   text-align: center;
-  height: 26px;
 `
 const ContentText = styled.div`
   margin-top: 10px;

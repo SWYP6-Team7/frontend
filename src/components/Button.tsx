@@ -41,7 +41,7 @@ const Button = ({
 const ButtonContainer = styled.button`
   width: 100%;
   height: 48px;
-  border-radius: 16px;
+  border-radius: 40px;
   font-weight: 700;
   font-size: 18px;
   padding: 10px 20px 10px 20px;
