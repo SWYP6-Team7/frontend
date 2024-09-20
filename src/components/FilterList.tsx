@@ -158,7 +158,7 @@ const FilterList = () => {
               </Accordion>
             ))}
           </ModalContainer>
-          <Spacing size={'10svh'} />
+          <Spacing size={'12svh'} />
           <ButtonContainer>
             <button onClick={handleReset}>
               <ResetIcon />
