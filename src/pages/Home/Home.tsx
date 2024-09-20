@@ -59,9 +59,20 @@ const Home = () => {
     return daysDifference
   }
 
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY >= 56)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
   return (
     <HomeContainer>
-      <HomeHeader>
+      <HomeHeader scrolled={scrolled}>
         <HeaderTitle>
           <Text>홈</Text>
           <Alarm>
@@ -108,7 +119,7 @@ const ContentWrapper = styled.div`
   width: 100%;
   padding: 0px 24px;
   background-color: white;
-  min-height: calc(100svh - 68px - 30px);
+
   border-radius: 30px 30px 0px 0px;
 `
 const SearchBox = styled.div`
@@ -129,28 +140,33 @@ const Greeting = styled.div`
 const CharacterBox = styled.div`
   width: 100%;
 
+  margin-top: 100px; // 헤더 길이 만큼 마진.
   height: 56px;
   overflow-y: hidden;
   padding-left: 63px;
 `
 
-const HomeHeader = styled.div`
-  background-color: #f0f0f0;
-  width: 100%;
+const HomeHeader = styled.div<{ scrolled: boolean }>`
+  background-color: ${({ scrolled }) => (scrolled ? 'white' : '#f0f0f0')};
+  transition: background-color 0.3s ease;
+
   @media (max-width: 440px) {
     width: 100%;
   }
   @media (min-width: 440px) {
     width: 390px;
-    /* left: 50%;
+    left: 50%;
     transform: translateX(-50%);
-    overflow-x: hidden; */
+    overflow-x: hidden;
   }
   height: 100px;
+  position: fixed;
   top: 0;
   left: 0;
-
+  z-index: 1000;
   padding-top: 40px;
+  padding-left: 24px;
+  padding-right: 24px;
 `
 
 const HeaderTitle = styled.div`
@@ -158,15 +174,6 @@ const HeaderTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 60px;
-  position: fixed;
-  @media (max-width: 440px) {
-    width: 100%;
-  }
-  @media (min-width: 440px) {
-    width: 390px;
-  }
-  padding: 0px 24px;
-  z-index: 1010;
 `
 const Text = styled.div`
   font-size: 24px;

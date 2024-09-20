@@ -11,7 +11,7 @@ const Layout = () => {
   const { userId, accessToken } = authStore()
 
   return (
-    <Container>
+    <Container pathname={pathname}>
       <Body
         pathname={pathname}
         isAuth={isAuth}>
@@ -34,7 +34,7 @@ const Body = styled.div<{ isAuth: boolean; pathname: string }>`
   height: 100%;
   position: relative;
   background-color: ${props =>
-    props.pathname === '' ? '#f0f0f0' : props.isAuth ? '#fffff6' : '#fdfdfd'};
+    props.pathname === '/' ? '#f0f0f0' : props.isAuth ? '#fffff6' : '#fdfdfd'};
   /* background-color: #fffff6; */
   @media (max-width: 440px) {
     width: 100svw;
@@ -48,16 +48,15 @@ const Body = styled.div<{ isAuth: boolean; pathname: string }>`
   }
 `
 // pc환경에서 화면을 가운데 정렬하기 위한 레이아웃 스타일
-const Container = styled.div`
-  height: 100svh;
+const Container = styled.div<{ pathname: string }>`
+  /* height: 100svh; */
+  height: ${props => (props.pathname !== '/' ? '100svh' : 'auto')};
   width: 100svw;
   overflow-x: hidden;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `
 
 export default Layout
