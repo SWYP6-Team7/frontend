@@ -48,11 +48,12 @@ const BottomModal = ({
 
   const handleTouchMove = (e: React.TouchEvent) => {
     const currentY = e.changedTouches[0].pageY
-    const difference = currentY - touchY
+
     const newHeight = Math.max(
       0,
-      Math.min(100, 100 - (difference / window.innerHeight) * 100)
+      Math.min(100, 100 - (currentY / window.innerHeight) * 100)
     )
+    console.log(currentY, newHeight)
     setModalHeight(newHeight)
   }
 
