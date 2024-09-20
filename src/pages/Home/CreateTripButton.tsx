@@ -11,6 +11,9 @@ export default function CreateTripButton() {
   const toggleRotation = () => {
     setIsClicked(!isClicked)
   }
+  //가로화면 길이가 좁아질 경우 right 조절.
+  const newRightPosition = (24 + 390 - window.innerWidth).toString() + 'px'
+
   const navigate = useNavigate()
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -37,6 +40,7 @@ export default function CreateTripButton() {
     <CreatedTripWrapper>
       {isClicked && (
         <CreateBtn
+          right={newRightPosition}
           onClick={() => navigate('/createTrip')}
           ref={createButtonRef}>
           <img
@@ -51,28 +55,45 @@ export default function CreateTripButton() {
       <IconContainer
         ref={addRef}
         onClick={toggleRotation}
-        rotated={isClicked}>
+        rotated={isClicked}
+        right={newRightPosition}>
         <AddIcon />
       </IconContainer>
       {isClicked && <Hide></Hide>}
     </CreatedTripWrapper>
   )
 }
+
 const Hide = styled.div`
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 100svh;
   z-index: 1001;
   top: 0;
+  bottom: 0;
   background-color: rgba(26, 26, 26, 0.3);
   opacity: 0.8;
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    height: 100svh;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
 `
-const CreatedTripWrapper = styled.div``
-const CreateBtn = styled.button`
+const CreatedTripWrapper = styled.div`
+  height: 100svh;
+  width: 390px;
+  pointer-events: none;
   position: fixed;
+  top: 0;
+  z-index: 1001;
+`
+const CreateBtn = styled.button<{ right: string }>`
+  position: absolute;
   bottom: 210px;
   right: 24px;
-
+  pointer-events: auto;
   height: 48px;
   padding: 14px 24px;
   border-radius: 20px;
@@ -85,9 +106,13 @@ const CreateBtn = styled.button`
   line-height: 19.09px;
   color: ${palette.기본};
   z-index: 1003;
+  @media (max-width: 390px) {
+    right: ${props => props.right};
+  }
 `
-const IconContainer = styled.button<{ rotated: boolean }>`
-  position: fixed;
+const IconContainer = styled.button<{ rotated: boolean; right: string }>`
+  position: absolute;
+  pointer-events: auto;
   right: 24px;
   bottom: 124px;
   width: 70px;
@@ -100,6 +125,11 @@ const IconContainer = styled.button<{ rotated: boolean }>`
   background-color: ${palette.keycolor};
   z-index: 1003;
   font-size: 32px;
+  @media (max-width: 390px) {
+    right: ${props => props.right};
+  }
   transition: transform 0.3s ease; /* 회전 애니메이션 */
   transform: ${props => (props.rotated ? 'rotate(45deg)' : 'rotate(0deg)')};
+  /* left: calc(80% - 195px); 버튼의 가로 중앙 조정 (390px의 절반) */
+  /* transform: translateY(-50%); 버튼을 정확히 중앙에 위치시킴 */
 `
