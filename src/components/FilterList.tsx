@@ -9,6 +9,7 @@ import Button from './Button'
 import Spacing from './Spacing'
 
 import {
+  IGender,
   IPeople,
   IPeriod,
   IPlace,
@@ -21,11 +22,27 @@ import WhiteXIcon from './icons/WhiteXIcon'
 
 const FILTER_LIST = [
   { title: '장소', tags: ['국내', '해외'] as const },
-  { title: '인원', tags: ['2인', '3인', '4인', '5인이상'] as const },
-  { title: '기간', tags: ['일주일 이하', '1~4주', '한달 이상'] as const },
+  { title: '성별', tags: ['혼성', '여자만', '남자만'] as const },
+  { title: '인원', tags: ['2인', '3~4명', '5인이상'] as const },
+  {
+    title: '기간',
+    tags: ['일주일 이하', '1~2주', '3~4주', '한달 이상'] as const
+  },
   {
     title: '스타일',
-    tags: ['여유', '도시', '액티비티', '전통', '가성비'] as const
+    tags: [
+      '힐링',
+      '즉흥적',
+      '계획적인',
+      '액티비티',
+      '먹방',
+      '예술',
+      '핫플',
+      '쇼핑',
+      '가성비',
+      '역사',
+      '자연'
+    ] as const
   }
 ] as const
 
@@ -35,7 +52,8 @@ const FilterList = () => {
     장소: false,
     인원: false,
     기간: false,
-    스타일: false
+    스타일: false,
+    성별: false
   })
   const {
     setFilter,
@@ -45,32 +63,35 @@ const FilterList = () => {
     style,
     setReset,
     keyword,
+    gender,
     setOneFilterReset
   } = searchStore()
   const { refetch } = useSearch({ keyword: keyword, tags: [] })
 
-  const getCount = (type: '장소' | '인원' | '기간' | '스타일') => {
+  const getCount = (type: '장소' | '인원' | '기간' | '스타일' | '성별') => {
     if (type === '장소') return place.length
     if (type === '인원') return people.length
     if (type === '기간') return period.length
     if (type === '스타일') return style.length
+    if (type === '성별') return gender.length
     return 0
   }
 
   const isActive = (
-    type: '장소' | '인원' | '기간' | '스타일',
-    value: IPeople | IPeriod | IStyle | IPlace
+    type: '장소' | '인원' | '기간' | '스타일' | '성별',
+    value: IPeople | IPeriod | IStyle | IPlace | IGender
   ) => {
     if (type === '장소') return place?.includes(value as IPlace)
     if (type === '인원') return people?.includes(value as IPeople)
     if (type === '기간') return period?.includes(value as IPeriod)
     if (type === '스타일') return style?.includes(value as IStyle)
+    if (type === '성별') return gender?.includes(value as IGender)
     return false
   }
 
   const handleShowModal = (
     e: MouseEvent,
-    title: '장소' | '인원' | '기간' | '스타일'
+    title: '장소' | '인원' | '기간' | '스타일' | '성별'
   ) => {
     e.stopPropagation()
     setShowModal(true)
@@ -78,21 +99,27 @@ const FilterList = () => {
   }
 
   const handleCloseModal = () => {
-    setInitialChecked({ 기간: false, 스타일: false, 인원: false, 장소: false })
+    setInitialChecked({
+      기간: false,
+      스타일: false,
+      인원: false,
+      장소: false,
+      성별: false
+    })
     setShowModal(false)
   }
 
   const handleOneFilterReset = (
     e: MouseEvent,
-    type: '장소' | '인원' | '기간' | '스타일'
+    type: '장소' | '인원' | '기간' | '스타일' | '성별'
   ) => {
     e.stopPropagation()
     setOneFilterReset(type)
   }
 
   const clickTag = (
-    type: '장소' | '인원' | '기간' | '스타일',
-    value: IPeople | IPeriod | IStyle | IPlace
+    type: '장소' | '인원' | '기간' | '스타일' | '성별',
+    value: IPeople | IPeriod | IStyle | IPlace | IGender
   ) => {
     if (type === '장소') {
       setFilter(type, [value] as IPlace[])
@@ -102,6 +129,8 @@ const FilterList = () => {
       setFilter(type, [value] as IPeriod[])
     } else if (type === '스타일') {
       setFilter(type, [value] as IStyle[])
+    } else if (type === '성별') {
+      setFilter(type, [value] as IGender[])
     }
   }
 
@@ -109,7 +138,7 @@ const FilterList = () => {
     return place.length + period.length + style.length + people.length
   }
 
-  const getFirstTag = (type: '장소' | '인원' | '기간' | '스타일') => {
+  const getFirstTag = (type: '장소' | '인원' | '기간' | '스타일' | '성별') => {
     if (type === '장소') {
       return place[0]
     } else if (type === '인원') {
@@ -118,6 +147,8 @@ const FilterList = () => {
       return period[0]
     } else if (type === '스타일') {
       return style[0]
+    } else if (type === '성별') {
+      return gender[0]
     }
   }
 
@@ -136,52 +167,54 @@ const FilterList = () => {
         <BottomModal
           initialHeight={75}
           closeModal={handleCloseModal}>
-          <ModalContainer>
-            {FILTER_LIST.map(item => (
-              <Accordion
-                count={getCount(item.title)}
-                id={item.title}
-                title={item.title}
-                initialChecked={initialChecked[item.title]}
-                key={item.title}>
-                <TagContainer>
-                  {item.tags?.map((tag, idx) => (
-                    <SearchFilterTag
-                      key={tag}
-                      idx={idx}
-                      active={isActive(item.title, tag)}
-                      text={tag}
-                      onClick={() => clickTag(item.title, tag)}
-                    />
-                  ))}
-                </TagContainer>
-              </Accordion>
-            ))}
-          </ModalContainer>
-          <Spacing size={'12svh'} />
-          <ButtonContainer>
-            <button onClick={handleReset}>
-              <ResetIcon />
-            </button>
+          <ModalWrapper>
+            <ModalContainer>
+              {FILTER_LIST.map(item => (
+                <Accordion
+                  count={getCount(item.title)}
+                  id={item.title}
+                  title={item.title}
+                  initialChecked={initialChecked[item.title]}
+                  key={item.title}>
+                  <TagContainer>
+                    {item.tags?.map((tag, idx) => (
+                      <SearchFilterTag
+                        key={tag}
+                        idx={idx}
+                        active={isActive(item.title, tag)}
+                        text={tag}
+                        onClick={() => clickTag(item.title, tag)}
+                      />
+                    ))}
+                  </TagContainer>
+                </Accordion>
+              ))}
 
-            <Button
-              onClick={handleSearch}
-              addStyle={
-                getAllFilterCount() === 0
-                  ? {
-                      backgroundColor: 'rgba(220, 220, 220, 1)',
-                      color: palette.비강조
-                    }
-                  : undefined
-              }
-              disabled={getAllFilterCount() === 0}
-              text={
-                getAllFilterCount() === 0
-                  ? '필터 검색'
-                  : `${getAllFilterCount()}개 필터 검색`
-              }
-            />
-          </ButtonContainer>
+              <ButtonContainer>
+                <button onClick={handleReset}>
+                  <ResetIcon />
+                </button>
+
+                <Button
+                  onClick={handleSearch}
+                  addStyle={
+                    getAllFilterCount() === 0
+                      ? {
+                          backgroundColor: 'rgba(220, 220, 220, 1)',
+                          color: palette.비강조
+                        }
+                      : undefined
+                  }
+                  disabled={getAllFilterCount() === 0}
+                  text={
+                    getAllFilterCount() === 0
+                      ? '필터 검색'
+                      : `${getAllFilterCount()}개 필터 검색`
+                  }
+                />
+              </ButtonContainer>
+            </ModalContainer>
+          </ModalWrapper>
         </BottomModal>
       )}
       <Container>
@@ -191,9 +224,11 @@ const FilterList = () => {
             onClick={e => handleShowModal(e, filter.title)}
             key={filter.title}>
             <div>
-              {getCount(filter.title) > 0
-                ? getFirstTag(filter.title)
-                : filter.title}
+              {getCount(filter.title) === 0
+                ? filter.title
+                : getCount(filter.title) === 1
+                  ? getFirstTag(filter.title)
+                  : `${filter.title} ${getCount(filter.title)}`}
             </div>
             {getCount(filter.title) > 0 ? (
               <button onClick={e => handleOneFilterReset(e, filter.title)}>
@@ -209,19 +244,34 @@ const FilterList = () => {
   )
 }
 
+const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  overflow: hidden;
+`
+
 const ModalContainer = styled.div`
-  position: relative;
-  min-height: 60svh;
-  height: fit-content;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 0 20px;
+  padding-bottom: 80px;
 `
 
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
+  left: 0;
+  bottom: 0;
   position: absolute;
-  bottom: 4.2svh;
-  width: calc(100% - 40px);
+  padding: 0 24px;
+  background-color: white;
+
+  padding-bottom: 4.2svh;
+
+  width: calc(100%);
 `
 
 const Container = styled.div`
