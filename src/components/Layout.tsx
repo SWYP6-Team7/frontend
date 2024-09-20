@@ -49,9 +49,10 @@ const Body = styled.div<{ isAuth: boolean; pathname: string }>`
 `
 // pc환경에서 화면을 가운데 정렬하기 위한 레이아웃 스타일
 const Container = styled.div<{ pathname: string }>`
-  /* height: 100svh; */
+  /* height는 홈화면 스크롤을 보기 위해서 auto로 잡아두기. width는 가로스크롤이 생겨서 auto로. */
   height: ${props => (props.pathname !== '/' ? '100svh' : 'auto')};
-  width: 100svw;
+  width: ${props => (props.pathname !== '/' ? '100svw' : 'auto')};
+
   overflow-x: hidden;
 
   display: flex;
