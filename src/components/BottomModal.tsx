@@ -84,7 +84,7 @@ const BottomModal = ({
   )
 }
 
-const slideUp = keyframes`
+const slideUpMobile = keyframes`
   from {
     transform: translateY(100%);
     opacity: 0;
@@ -95,9 +95,35 @@ const slideUp = keyframes`
   }
 `
 
-const slideDown = keyframes`
+const slideUpDesktop = keyframes`
+  from {
+    transform: translateY(100%) translateX(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(-50%);
+    opacity: 1;
+  }
+`
+
+const slideDownMobile = keyframes`
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
   to {
     transform: translateY(100%);
+    opacity: 0;
+  }
+`
+
+const slideDownDesktop = keyframes`
+  from {
+    transform: translateY(0) translateX(-50%);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%) translateX(-50%);
     opacity: 0;
   }
 `
@@ -112,7 +138,7 @@ const Container = styled.div`
   @media (min-width: 440px) {
     width: 390px;
     left: 50%;
-    transform: translateX(-50%) !important;
+    transform: translateY(0) translateX(-50%);
   }
   background-color: rgba(0, 0, 0, 0.4);
 `
@@ -133,18 +159,18 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
   max-height: 100%;
 
   left: 0;
-  @media (min-width: 440px) {
-    width: 390px;
-    left: 50%;
-    transform: translateX(-50%) !important;
-  }
+
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
 
-  animation: ${props => (props.isClosing ? slideDown : slideUp)} 0.3s ease-out
-    forwards;
-
+  animation: ${props => (props.isClosing ? slideDownMobile : slideUpMobile)}
+    0.3s ease-out forwards;
+  @media (min-width: 440px) {
+    left: 50%;
+    animation: ${props => (props.isClosing ? slideDownDesktop : slideUpDesktop)}
+      0.3s ease-out forwards;
+  }
   transition: min-height 0.1s ease-out;
 `
 
