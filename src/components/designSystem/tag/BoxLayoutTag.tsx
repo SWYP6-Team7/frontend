@@ -1,3 +1,4 @@
+import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 
 interface BoxLayoutTagProps {
@@ -15,15 +16,15 @@ interface BoxLayoutTagProps {
 const BoxLayoutTag = ({
   text,
   addStyle = {
-    backgroundColor: 'rgba(245, 241, 233, 1)',
+    backgroundColor: `${palette.비강조4}`,
     padding: '4px 10px 4px 10px',
-    color: 'rgba(156, 129, 83, 1)',
+    color: `${palette.비강조}`,
     height: '22px',
     borderRadius: '20px',
     fontSize: '12px'
   }
 }: BoxLayoutTagProps) => {
-  return <Tag css={addStyle}>#{text}</Tag>
+  return <Tag css={addStyle}>{text}</Tag>
 }
 
 const Tag = styled.div`
