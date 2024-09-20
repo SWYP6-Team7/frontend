@@ -5,6 +5,7 @@ import { Outlet, useMatch, useLocation } from 'react-router-dom'
 import Navbar from '@/pages/Home/Navbar'
 import { authStore } from '@/store/client/authStore'
 import path from 'path'
+import { palette } from '@/styles/palette'
 const Layout = () => {
   const { pathname } = useLocation()
   const isAuth = pathname.startsWith('/register') || pathname === '/login'
@@ -34,7 +35,11 @@ const Body = styled.div<{ isAuth: boolean; pathname: string }>`
   height: 100%;
   position: relative;
   background-color: ${props =>
-    props.pathname === '/' ? '#f0f0f0' : props.isAuth ? '#fffff6' : '#fdfdfd'};
+    props.pathname === '/'
+      ? '#f0f0f0'
+      : props.isAuth
+        ? `${palette.BG}`
+        : '#fdfdfd'};
   /* background-color: #fffff6; */
   @media (max-width: 440px) {
     width: 100svw;

@@ -1,3 +1,4 @@
+import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 // id 는 어느 버튼을 눌렀는지 확인하기 위한 값.
 interface CategoryButtonProps {
@@ -26,10 +27,9 @@ const CategoryButton = ({
   id,
   active = false,
   addStyle = {
-    backgroundColor: 'white',
-    color: 'black',
-    height: '42px',
-    border: '1px solid var(--3, rgba(205, 205, 205, 1))'
+    backgroundColor: palette.검색창,
+    color: palette.기본,
+    height: '42px'
   },
   onClick
 }: CategoryButtonProps) => {
@@ -55,6 +55,7 @@ const CategoryButtonContainer = styled.button`
   display: flex;
   font-size: 16px;
   font-weight: 500;
+  width: max-content;
   justify-content: center;
   align-items: center;
 `
