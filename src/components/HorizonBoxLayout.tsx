@@ -2,6 +2,8 @@ import styled from '@emotion/styled'
 import Badge from './designSystem/Badge'
 import PersonIcon from './icons/PersonIcon'
 import BoxLayoutTag from './designSystem/tag/BoxLayoutTag'
+import EmptyHeartIcon from './icons/EmptyHeartIcon'
+import { palette } from '@/styles/palette'
 interface HorizonBoxProps {
   daysLeft: number
   title: string
@@ -41,11 +43,13 @@ const HorizonBoxLayout = ({
 }: HorizonBoxProps) => {
   return (
     <HorizonBoxContainer>
-      <Thumbnail src={imgSrc}></Thumbnail>
+      {/* <Thumbnail src={imgSrc}></Thumbnail> */}
 
       <PostInfo>
         <Badge
           text={'마감'}
+          backgroundColor={'rgba(227, 239, 217, 1)'}
+          color={`${palette.keycolor}`}
           daysLeft={daysLeft}
         />
         <div>
@@ -53,20 +57,17 @@ const HorizonBoxLayout = ({
             <Title>{title}</Title>
             <RecruitingBox>
               <div>
-                <PersonIcon />
+                <PersonIcon stroke={`${palette.비강조}`} />
               </div>
               <Recruiting>
                 {recruits}/{total}
               </Recruiting>
             </RecruitingBox>
           </TitleBox>
-          <Description>{description}</Description>
+          {/* <Description>{description}</Description> */}
           <UserBox>
             <UserName>{userName}</UserName>
-            <div
-              css={{ fontWeight: 500, fontSize: '14px', padding: '0px 7px' }}>
-              ·
-            </div>
+            <div css={{ fontWeight: 500, fontSize: '14px' }}>·</div>
             <div css={{ fontSize: '14px', fontWeight: 40 }}>{daysAgo}일전</div>
           </UserBox>
         </div>
@@ -76,21 +77,28 @@ const HorizonBoxLayout = ({
           ))}
         </Tags>
       </PostInfo>
+      <button>
+        <EmptyHeartIcon
+          width={24}
+          height={21.4}
+          stroke={`${palette.비강조3}`}
+        />
+      </button>
     </HorizonBoxContainer>
   )
 }
 
 const HorizonBoxContainer = styled.div`
   width: 100%;
-  height: 120px;
+  /* height: 120px; */
   display: flex;
   justify-content: space-between;
 `
 const TitleBox = styled.div`
-  margin-top: 6px;
+  margin-top: 8px;
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 `
 const Title = styled.div`
   font-size: 18px;
@@ -133,7 +141,7 @@ const RecruitingBox = styled.div`
 const Recruiting = styled.div`
   font-weight: 500;
   font-size: 12px;
-  color: rgba(62, 141, 0, 1);
+  color: ${palette.비강조};
   padding-left: 1.6px;
 `
 const PostInfo = styled.div`
@@ -141,8 +149,8 @@ const PostInfo = styled.div`
 `
 const UserBox = styled.div`
   display: flex;
-
-  margin-bottom: 6px;
+  gap: 4px;
+  margin-bottom: 8px;
 `
 const UserName = styled.div`
   font-size: 14px;

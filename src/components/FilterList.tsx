@@ -187,7 +187,18 @@ const FilterList = () => {
                       <SearchFilterTag
                         key={tag}
                         idx={idx}
-                        active={isActive(item.title, tag)}
+                        addStyle={{
+                          backgroundColor: isActive(item.title, tag)
+                            ? 'rgba(227, 239, 217, 1)'
+                            : ' rgba(240, 240, 240, 1)',
+                          color: isActive(item.title, tag)
+                            ? `${palette.keycolor}`
+                            : 'rgba(52, 52, 52, 1)',
+
+                          border: isActive(item.title, tag)
+                            ? `1px solid ${palette.keycolor}`
+                            : 'none'
+                        }}
                         text={tag}
                         onClick={() => clickTag(item.title, tag)}
                       />
