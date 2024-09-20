@@ -135,7 +135,13 @@ const FilterList = () => {
   }
 
   const getAllFilterCount = () => {
-    return place.length + period.length + style.length + people.length
+    return (
+      place.length +
+      period.length +
+      style.length +
+      people.length +
+      gender.length
+    )
   }
 
   const getFirstTag = (type: '장소' | '인원' | '기간' | '스타일' | '성별') => {
