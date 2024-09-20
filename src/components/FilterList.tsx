@@ -178,7 +178,7 @@ const FilterList = () => {
               }
             />
           </ButtonContainer>
-          <Spacing size={36} />
+          <Spacing size={'4.2svh'} />
         </BottomModal>
       )}
       <Container>
@@ -207,7 +207,7 @@ const FilterList = () => {
 }
 
 const ModalContainer = styled.div`
-  min-height: 600px;
+  min-height: 60svh;
 `
 
 const ButtonContainer = styled.div`
