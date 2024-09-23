@@ -1,4 +1,5 @@
 import InputField from '@/components/designSystem/input/InputField'
+import FilterList from '@/components/FilterList'
 import RecommendKeyword from '@/components/RecommendKeyword'
 import SearchFilterTag from '@/components/SearchFilterTag'
 import SearchResultList from '@/components/SearchResultList'
@@ -78,6 +79,7 @@ const SearchTravel = () => {
         handleRemoveValue={handleRemoveValue}
       />
       <Spacing size={16} />
+      <FilterList />
 
       {typeof data !== 'undefined' ? (
         <>
@@ -92,45 +94,47 @@ const SearchTravel = () => {
             </>
           )}
           {!isLoading && data?.pages[0].content.length === 0 && (
-            <NoDataContainer>
-              <Spacing size={'12.3svh'} />
-              <div
-                css={{
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(217, 217, 217, 1)',
-                  width: 65,
-                  height: 65
-                }}
-              />
-              <Spacing size={16} />
-              <NoDataTitle>
-                원하시는 검색 결과가 없어요.
-                <br />
-                이런 검색어는 어떠세요?
-              </NoDataTitle>
-              <Spacing size={24} />
-              <RecommendList>
-                {RECOMMEND_TAGS1.map((keyword, idx) => (
-                  <SearchFilterTag
-                    idx={idx}
-                    text={keyword}
-                    key={keyword}
-                    onClick={() => handleRecommendKeyword(keyword)}
-                  />
-                ))}
-              </RecommendList>
-              <Spacing size={18} />
-              <RecommendList>
-                {RECOMMEND_TAGS2.map((keyword, idx) => (
-                  <SearchFilterTag
-                    idx={idx}
-                    text={keyword}
-                    key={keyword}
-                    onClick={() => handleRecommendKeyword(keyword)}
-                  />
-                ))}
-              </RecommendList>
-            </NoDataContainer>
+            <>
+              <NoDataContainer>
+                <Spacing size={'12.3svh'} />
+                <div
+                  css={{
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(217, 217, 217, 1)',
+                    width: 65,
+                    height: 65
+                  }}
+                />
+                <Spacing size={16} />
+                <NoDataTitle>
+                  원하시는 검색 결과가 없어요.
+                  <br />
+                  이런 검색어는 어떠세요?
+                </NoDataTitle>
+                <Spacing size={24} />
+                <RecommendList>
+                  {RECOMMEND_TAGS1.map((keyword, idx) => (
+                    <SearchFilterTag
+                      idx={idx}
+                      text={keyword}
+                      key={keyword}
+                      onClick={() => handleRecommendKeyword(keyword)}
+                    />
+                  ))}
+                </RecommendList>
+                <Spacing size={18} />
+                <RecommendList>
+                  {RECOMMEND_TAGS2.map((keyword, idx) => (
+                    <SearchFilterTag
+                      idx={idx}
+                      text={keyword}
+                      key={keyword}
+                      onClick={() => handleRecommendKeyword(keyword)}
+                    />
+                  ))}
+                </RecommendList>
+              </NoDataContainer>
+            </>
           )}
         </>
       ) : (
@@ -138,7 +142,10 @@ const SearchTravel = () => {
           {keyword.length > 0 ? (
             <></>
           ) : (
-            <RecommendKeyword setKeyword={handleRecommendKeyword} />
+            <>
+              <Spacing size={25} />
+              <RecommendKeyword setKeyword={handleRecommendKeyword} />
+            </>
           )}
         </>
       )}

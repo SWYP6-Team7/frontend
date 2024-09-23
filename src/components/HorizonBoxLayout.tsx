@@ -41,6 +41,7 @@ const HorizonBoxLayout = ({
   imgSrc = '',
   tags
 }: HorizonBoxProps) => {
+  const cutTags = tags.length > 5 ? tags.slice(0, 4) : tags
   return (
     <HorizonBoxContainer>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
@@ -72,7 +73,7 @@ const HorizonBoxLayout = ({
           </UserBox>
         </div>
         <Tags>
-          {tags.map((text: string, idx) => (
+          {cutTags.map((text: string, idx) => (
             <BoxLayoutTag text={text} />
           ))}
         </Tags>

@@ -22,7 +22,7 @@ import WhiteXIcon from './icons/WhiteXIcon'
 
 const FILTER_LIST = [
   { title: '장소', tags: ['국내', '해외'] as const },
-  { title: '성별', tags: ['혼성', '여자만', '남자만'] as const },
+  { title: '성별', tags: ['모두', '여자만', '남자만'] as const },
   { title: '인원', tags: ['2인', '3~4명', '5인이상'] as const },
   {
     title: '기간',
