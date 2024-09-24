@@ -34,10 +34,11 @@ const CategoryButton = ({
   onClick
 }: CategoryButtonProps) => {
   const activeStyle = {
-    backgroundColor: 'rgba(62, 141, 0, 1)',
-    color: 'white',
     border: '1px solid rgba(62, 141, 0, 1)',
-    height: '42px'
+    height: '42px',
+    color: palette.keycolor,
+    backgroundColor: palette.keycolorBG,
+    fontWeight: 600
   }
   return (
     <CategoryButtonContainer
@@ -52,7 +53,10 @@ const CategoryButton = ({
 const CategoryButtonContainer = styled.button`
   padding: 10px 20px 10px 20px;
   border-radius: 30px;
+  box-sizing: border-box;
+  border: 1px;
   display: flex;
+  color: rgba(52, 52, 52, 1);
   font-size: 16px;
   font-weight: 500;
   width: max-content;

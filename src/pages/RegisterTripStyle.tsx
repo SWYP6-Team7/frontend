@@ -24,24 +24,24 @@ const RegisterTripStyle = () => {
   )
 
   const categoryButtonTextArray = [
-    { label: '🇰🇷국내', value: '국내' },
-    { label: '즉흥적', value: 'impromptu' },
-    { label: '계획적인', value: 'planned' },
-    { label: '액티비티', value: 'activity' },
-    { label: '먹방', value: 'food' },
-    { label: '예술', value: 'art' },
-    { label: '핫플', value: 'hot_place' },
-    { label: '쇼핑', value: 'shopping' },
-    { label: '가성비', value: 'value_for_money' },
-    { label: '역사', value: 'history' },
-    { label: '자연', value: 'nature' },
-    { label: '단체', value: 'group' },
-    { label: '소수', value: 'few' },
-    { label: '해외', value: 'overseas' },
-    { label: '국내', value: 'domestic' },
-    { label: '단기', value: 'short_term' },
-    { label: '중장기', value: 'long_term' },
-    { label: '동성선호', value: 'same_gender' }
+    { label: '🇰🇷 국내', value: '국내' },
+    { label: '🌎 해외', value: '해외' },
+    { label: '⏱️ 단기', value: '단기' },
+    { label: '✊ 즉흥', value: '즉흥' },
+    { label: '📝 계획', value: '계획' },
+    { label: '🧳 중장기', value: '중장기' },
+    { label: '🏄 액티비티', value: '액티비티' },
+    { label: '☁️ 여유', value: '여유' },
+    { label: '🍔 먹방', value: '먹방' },
+    { label: '💸 가성비', value: '가성비' },
+    { label: '📷 핫플', value: '핫플' },
+    { label: '🛍️ 쇼핑', value: '쇼핑' },
+    { label: '🎨 예술', value: '예술' },
+    { label: '🗿 역사', value: '역사' },
+    { label: '🏔️ 자연', value: '자연' },
+    { label: '🥳 단체', value: '단체' },
+    { label: '🙂 소수', value: '소수' },
+    { label: '⭐️ 동성선호', value: '동선선호' }
   ]
 
   // 최종적으로 선택된 여행 스타일 담은 배열
@@ -67,7 +67,8 @@ const RegisterTripStyle = () => {
       password,
       name,
       gender: sex,
-      agegroup: agegroup as string
+      agegroup: agegroup as string,
+      preferredTags: tripStyleArray
     })
   }
 
@@ -91,7 +92,7 @@ const RegisterTripStyle = () => {
         <StyleBtns>
           {categoryButtonTextArray.map((item, idx) => (
             <CategoryButton
-              id={idx.toString()}
+              id={idx}
               text={item.label}
               active={activeStates[idx]}
               onClick={handleButtonClick}

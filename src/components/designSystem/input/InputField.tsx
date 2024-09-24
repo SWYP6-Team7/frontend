@@ -11,12 +11,14 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   hasError?: boolean
   success?: boolean
   shake?: boolean
+  height?: number
   handleRemoveValue: () => void
 }
 
 interface ContainerProps {
   bgColor: string
   shake: boolean
+  height: number
   borderColor: string
 }
 
@@ -43,6 +45,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
       handleRemoveValue,
       onFocus,
       onBlur,
+      height = 48,
       ...props
     },
     ref
@@ -73,6 +76,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
       <Container
         shake={shake}
         bgColor={bgColor}
+        height={height}
         borderColor={borderColor}>
         <Input
           bgColor={bgColor}
@@ -113,7 +117,7 @@ const Container = styled.div<ContainerProps>`
   align-items: center;
 
   width: 100%;
-  height: 52px;
+  height: ${props => props.height}px;
   padding: 0px 12px;
   border-radius: 18px;
   overflow-x: hidden;
