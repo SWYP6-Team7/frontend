@@ -81,7 +81,6 @@ const TitleContainer = styled.div`
   gap: 8px;
 `
 const TitleTextCreateTrip = styled.div<{ isCreateTripPage: boolean }>`
-  font-family: Pretendard;
   font-size: 18px;
   font-weight: 600;
   line-height: ${props => (props.isCreateTripPage ? '29.2px' : '25.2px')};

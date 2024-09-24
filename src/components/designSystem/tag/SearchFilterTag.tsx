@@ -73,6 +73,5 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   line-height: ${props => (props.isCreateTrip ? '22.4px' : 'auto')};
   padding: 8px 14px;
   border-radius: 16px;
-  font-family: 'Pretendard';
 `
 export default SearchFilterTag

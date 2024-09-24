@@ -27,7 +27,7 @@ export default function DuedateWrapper() {
   const [showModal, setShowModal] = useState(false)
   const [duedate, setDuedate] = useState<DateValue>(today)
 
-  const day = new Date(`${duedate.year}-${duedate.month}-${duedate.day}`)
+  const day = new Date(`${duedate.year}/${duedate.month}/${duedate.day}`)
   const dayOfWeek = WEEKDAY[day.getDay()]
 
   const handleCloseModal = () => {
@@ -97,7 +97,6 @@ export default function DuedateWrapper() {
 const ModalWrapper = styled.div``
 const ModalContainer = styled.div``
 const DetailTitle = styled.div`
-  font-family: Pretendard;
   font-size: 18px;
   font-weight: 600;
   line-height: 25.2px;

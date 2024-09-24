@@ -79,7 +79,6 @@ export default function RecruitingWrapper() {
 const ModalWrapper = styled.div``
 const ModalContainer = styled.div``
 const DetailTitle = styled.div`
-  font-family: Pretendard;
   font-size: 18px;
   font-weight: 600;
   line-height: 25.2px;
