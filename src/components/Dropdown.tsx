@@ -111,7 +111,7 @@ export const StyledOptionList = styled.ul`
   width: 119px; // 크기는 드롭다운 본체의 너비와 동일하게함.
   border-radius: 8px; // 동글동글하게 아래부분을 만들어야해서 border-radius를 줌.
   background: #ffffff; // 배경색
-  ${activeExist};
+  ${activeExist}
   transition: 0.2s ease-in-out; // 0.2초를 걸려서 부드럽게 ul이 보이고 사라진다.
   overflow-y: scroll; // scroll을 통해 리스트 내용들을 보겠다.
   &::-webkit-scrollbar {
