@@ -20,7 +20,7 @@ const Accordion = ({
 }) => {
   const [isChecked, setIsChecked] = useState(initialChecked)
   const { pathname } = useLocation()
-  const isCreateTripPage = pathname === '/CreateTripDetail'
+  const isCreateTripPage = pathname === '/createTripDetail'
 
   return (
     <List>

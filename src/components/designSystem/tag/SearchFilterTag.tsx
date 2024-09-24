@@ -52,7 +52,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
     ref
   ) => {
     const { pathname } = useLocation()
-    const isCreateTrip = pathname === '/CreateTripDetail'
+    const isCreateTrip = pathname === '/createTripDetail'
     return (
       <SearchFilterTagContainer
         isCreateTrip={isCreateTrip}

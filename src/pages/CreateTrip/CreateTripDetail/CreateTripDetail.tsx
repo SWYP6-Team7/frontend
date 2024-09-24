@@ -52,7 +52,7 @@ const CreateTripDetail = () => {
   } = createTripStore()
   const navigate = useNavigate()
   const completeClickHandler = () => {
-    // navigate('/')
+    navigate('/')
     // if (title.length > 0 && location.length > 0 && details.length > 0 && maxPerson > 0 &&genderType.length >0 && dueDate.length > 0 && periodType.length && tags.length > 0){
     //   // api 요청 로직.
     // }

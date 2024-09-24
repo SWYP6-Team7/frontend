@@ -98,6 +98,7 @@ export const router = createBrowserRouter([
         element: <Community />
       },
       {
+        path: '/createTripPlace',
         element: <CreateTripPlace />
       },
       {
