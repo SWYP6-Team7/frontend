@@ -283,6 +283,7 @@ const StepIconContainer = styled.div`
   margin-top: 24px;
 `
 const ContentTitle = styled.div`
+  font-family: 'Pretendard';
   margin-top: 40px;
   font-size: 24px;
   font-weight: 600;

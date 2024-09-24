@@ -36,12 +36,16 @@ const Accordion = ({
         isCreateTripPage={isCreateTripPage && isChecked}>
         <TitleContainer>
           {isCreateTripPage ? (
-            <TitleTextCreateTrip>{title}</TitleTextCreateTrip>
+            <TitleTextCreateTrip isCreateTripPage={isCreateTripPage}>
+              {title}
+            </TitleTextCreateTrip>
           ) : (
             <div>{title}</div>
           )}
 
-          {count > 0 && <Count>{count}</Count>}
+          {count > 0 && (
+            <Count isCreateTripPage={isCreateTripPage}>{count}</Count>
+          )}
         </TitleContainer>
         <div css={{ transform: isChecked ? 'rotate(180deg)' : 'rotate(0)' }}>
           {isCreateTripPage ? (
@@ -76,11 +80,11 @@ const TitleContainer = styled.div`
   align-items: center;
   gap: 8px;
 `
-const TitleTextCreateTrip = styled.div`
+const TitleTextCreateTrip = styled.div<{ isCreateTripPage: boolean }>`
   font-family: Pretendard;
   font-size: 18px;
   font-weight: 600;
-  line-height: 25.2px;
+  line-height: ${props => (props.isCreateTripPage ? '29.2px' : '25.2px')};
   text-align: left;
   color: ${palette.기본};
   height: 25px;
@@ -88,7 +92,7 @@ const TitleTextCreateTrip = styled.div`
   gap: 8px;
   opacity: 0px;
 `
-const Count = styled.div`
+const Count = styled.div<{ isCreateTripPage: boolean }>`
   width: 16px;
   height: 16px;
   padding: 1px 5px 1px 5px;
@@ -102,7 +106,8 @@ const Count = styled.div`
   box-sizing: border-box;
   font-size: 12px;
   font-weight: 600;
-  line-height: 14.32px;
+
+  line-height: ${props => (props.isCreateTripPage ? '0' : '14.32px')};
   color: ${palette.비강조4};
 
   opacity: 0px;
