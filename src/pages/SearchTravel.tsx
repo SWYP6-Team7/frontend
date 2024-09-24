@@ -141,6 +141,7 @@ const SearchTravel = () => {
         <>
           {keyword.length > 0 ? (
             <>
+              <Spacing size={29} />
               <RelationKeywordList keyword={keyword} />
             </>
           ) : (

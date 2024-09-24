@@ -1,15 +1,28 @@
 import styled from '@emotion/styled'
 import SearchIcon from '../icons/SearchIcon'
+import RelationSearchIcon from '../icons/RelationSearchIcon'
+import { splitByKeyword } from '@/utils/search'
+import { palette } from '@/styles/palette'
 
 interface RelationKeyowrdProps {
   data: string
+  keyword: string
 }
 
-const RelationKeyword = ({ data }: RelationKeyowrdProps) => {
+const RelationKeyword = ({ data, keyword }: RelationKeyowrdProps) => {
+  const matchingKeyword = splitByKeyword(keyword, data)
   return (
     <Container>
-      <SearchIcon />
-      <span>{data}</span>
+      <RelationSearchIcon />
+      <span>
+        {matchingKeyword.map((value, idx) => (
+          <Keyword
+            key={idx}
+            match={value.match}>
+            {value.str}
+          </Keyword>
+        ))}
+      </span>
     </Container>
   )
 }
@@ -17,13 +30,15 @@ const RelationKeyword = ({ data }: RelationKeyowrdProps) => {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   padding: 14px 4px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 19.09px;
+`
 
-  text-align: left;
+const Keyword = styled.span<{ match: boolean }>`
+  font-size: 16px;
+  color: ${props => (props.match ? palette.keycolor : palette.기본)};
+  font-weight: ${props => (props.match ? 700 : 500)};
+  line-height: 19.09px;
 `
 
 export default RelationKeyword

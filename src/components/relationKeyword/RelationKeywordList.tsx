@@ -17,6 +17,7 @@ const RelationKeywordList = ({ keyword }: RelationKeywordListProps) => {
         data.length > 0 &&
         data.map(data => (
           <RelationKeyword
+            keyword={keyword}
             key={data}
             data={data}
           />
