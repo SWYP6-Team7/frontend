@@ -101,7 +101,7 @@ export const router = createBrowserRouter([
         element: <CreateTripPlace />
       },
       {
-        path: '/cr4eateIntroduce',
+        path: '/createTripIntroduce',
         element: <CreateTripIntroduce />
       }
     ]

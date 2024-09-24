@@ -58,6 +58,10 @@ const SearchTravel = () => {
     setSuccess(false)
   }
 
+  const onClickRelationKeyword = (keyword: string) => {
+    setFinalKeyword(keyword)
+  }
+
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && keyword !== '') {
       e.preventDefault()
@@ -142,7 +146,10 @@ const SearchTravel = () => {
           {keyword.length > 0 ? (
             <>
               <Spacing size={29} />
-              <RelationKeywordList keyword={keyword} />
+              <RelationKeywordList
+                onClick={onClickRelationKeyword}
+                keyword={keyword}
+              />
             </>
           ) : (
             <>

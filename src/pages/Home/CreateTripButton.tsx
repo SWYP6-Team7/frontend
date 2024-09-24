@@ -41,7 +41,7 @@ export default function CreateTripButton() {
       {isClicked && (
         <CreateBtn
           right={newRightPosition}
-          onClick={() => navigate('/createTrip')}
+          onClick={() => navigate('/createTripPlace')}
           ref={createButtonRef}>
           <img
             src="/images/createTripBtn.png"
