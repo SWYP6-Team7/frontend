@@ -2,6 +2,8 @@ import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import SelectArrow from './icons/SelectArrow'
 import { palette } from '@/styles/palette'
+import { useLocation } from 'react-router-dom'
+import Vector from './icons/Vector'
 
 const Accordion = ({
   id,
@@ -17,6 +19,9 @@ const Accordion = ({
   initialChecked: boolean
 }) => {
   const [isChecked, setIsChecked] = useState(initialChecked)
+  const { pathname } = useLocation()
+  const isCreateTripPage = pathname === '/CreateTripDetail'
+
   return (
     <List>
       <input
@@ -26,19 +31,42 @@ const Accordion = ({
         checked={isChecked}
         onChange={() => setIsChecked(!isChecked)}
       />
-      <Tab htmlFor={id}>
+      <Tab
+        htmlFor={id}
+        isCreateTripPage={isCreateTripPage && isChecked}>
         <TitleContainer>
-          <div>{title}</div>
+          {isCreateTripPage ? (
+            <TitleTextCreateTrip>{title}</TitleTextCreateTrip>
+          ) : (
+            <div>{title}</div>
+          )}
+
           {count > 0 && <Count>{count}</Count>}
         </TitleContainer>
         <div css={{ transform: isChecked ? 'rotate(180deg)' : 'rotate(0)' }}>
-          <SelectArrow
-            width={12}
-            height={6}
-          />
+          {isCreateTripPage ? (
+            <Vector stroke={palette.비강조} />
+          ) : (
+            <SelectArrow
+              width={12}
+              height={6}
+            />
+          )}
         </div>
       </Tab>
-      <Content checked={isChecked}>{children}</Content>
+      <Content
+        checked={isChecked}
+        isCreateTripPage={isCreateTripPage}>
+        {children}
+      </Content>
+      {isCreateTripPage && isChecked && (
+        <div
+          css={{
+            marginTop: '24px',
+            height: '1px',
+            border: '0.5px solid rgba(240, 240, 240, 1)'
+          }}></div>
+      )}
     </List>
   )
 }
@@ -48,7 +76,18 @@ const TitleContainer = styled.div`
   align-items: center;
   gap: 8px;
 `
-
+const TitleTextCreateTrip = styled.div`
+  font-family: Pretendard;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25.2px;
+  text-align: left;
+  color: ${palette.기본};
+  height: 25px;
+  padding: 0px 6px;
+  gap: 8px;
+  opacity: 0px;
+`
 const Count = styled.div`
   width: 16px;
   height: 16px;
@@ -69,7 +108,7 @@ const Count = styled.div`
   opacity: 0px;
 `
 
-const Tab = styled.label`
+const Tab = styled.label<{ isCreateTripPage: boolean }>`
   display: flex;
 
   font-size: 16px;
@@ -78,15 +117,18 @@ const Tab = styled.label`
 
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(240, 240, 240, 1);
+  border-bottom: ${props =>
+    props.isCreateTripPage ? 'none' : '1px solid rgba(240, 240, 240, 1)'};
   padding: 2.3svh 0;
   cursor: pointer;
 `
 
-const Content = styled.div<{ checked: boolean }>`
-  max-height: ${props => (props.checked ? '25svh' : '0')};
+const Content = styled.div<{ checked: boolean; isCreateTripPage: boolean }>`
+  max-height: ${props =>
+    props.checked ? (props.isCreateTripPage ? '55svh' : '25svh') : '0'};
 
-  padding: ${props => (props.checked ? '1.7svh' : '0 1.7svh')};
+  padding: ${props =>
+    props.checked ? (props.isCreateTripPage ? '0' : '1.7svh') : '0 1.7svh'};
 
   transition:
     max-height 0.3s ease,

@@ -134,7 +134,6 @@ const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
                       //   borderTop: selected ? '1px solid black' : 'none',
                       //   borderBottom: selected ? '1px solid black' : 'none'
                     }}>
-                    {date === 'year' ? <PersonIcon /> : <></>}
                     {option}
                   </div>
                 )}
