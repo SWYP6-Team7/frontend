@@ -1,5 +1,5 @@
 import React from 'react'
 
-export default function CreateTrip() {
+export default function CreateTripPlace() {
   return <div>CreateTrip</div>
 }
