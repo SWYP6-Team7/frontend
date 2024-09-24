@@ -13,27 +13,10 @@ const RegisterTripStyle = () => {
   const navigate = useNavigate()
   const { registerEmail } = useAuth()
   const { userId, accessToken } = authStore()
-  const {
-    name,
-    email,
-    password,
-    sex,
-    phoneNumber,
-    yearOfBirth,
-    tripStyle,
-    addTripStyle
-  } = userStore()
+  const { name, email, password, sex, agegroup, tripStyle, addTripStyle } =
+    userStore()
 
-  console.log(
-    name,
-    email,
-    password,
-    sex,
-    phoneNumber,
-    yearOfBirth,
-    tripStyle
-    // addTripStyle
-  )
+  console.log(name, email, password, sex, agegroup, tripStyle)
 
   // 버튼 활성화상태.
   const [activeStates, setActiveStates] = useState<boolean[]>(
@@ -41,30 +24,30 @@ const RegisterTripStyle = () => {
   )
 
   const categoryButtonTextArray = [
-    '힐링',
-    '즉흥적',
-    '계획적인',
-    '액티비티',
-    '먹방',
-    '예술',
-    '핫플',
-    '쇼핑',
-    '가성비',
-    '역사',
-    '자연',
-    '단체',
-    '소수',
-    '해외',
-    '국내',
-    '단기',
-    '중장기',
-    '동성선호'
+    { label: '🇰🇷 국내', value: '국내' },
+    { label: '🌎 해외', value: '해외' },
+    { label: '⏱️ 단기', value: '단기' },
+    { label: '✊ 즉흥', value: '즉흥' },
+    { label: '📝 계획', value: '계획' },
+    { label: '🧳 중장기', value: '중장기' },
+    { label: '🏄 액티비티', value: '액티비티' },
+    { label: '☁️ 여유', value: '여유' },
+    { label: '🍔 먹방', value: '먹방' },
+    { label: '💸 가성비', value: '가성비' },
+    { label: '📷 핫플', value: '핫플' },
+    { label: '🛍️ 쇼핑', value: '쇼핑' },
+    { label: '🎨 예술', value: '예술' },
+    { label: '🗿 역사', value: '역사' },
+    { label: '🏔️ 자연', value: '자연' },
+    { label: '🥳 단체', value: '단체' },
+    { label: '🙂 소수', value: '소수' },
+    { label: '⭐️ 동성선호', value: '동선선호' }
   ]
 
   // 최종적으로 선택된 여행 스타일 담은 배열
-  const tripStyleArray = categoryButtonTextArray.filter(
-    (btnTxt, idx) => activeStates[idx]
-  )
+  const tripStyleArray = categoryButtonTextArray
+    .filter((_, idx) => activeStates[idx])
+    .map(item => item.value)
   console.log(tripStyleArray)
   const tags: { tagName: string }[] = tripStyleArray.map(v => ({ tagName: v }))
 
@@ -76,6 +59,7 @@ const RegisterTripStyle = () => {
 
     setActiveStates(newActiveStates) // 상태 업데이트
   }
+
   const nextStepClickHandler = () => {
     navigate('/')
     registerEmail({
@@ -83,10 +67,11 @@ const RegisterTripStyle = () => {
       password,
       name,
       gender: sex,
-      phone: phoneNumber,
-      birthYear: yearOfBirth.toString()
+      agegroup: agegroup as string,
+      preferredTags: tripStyleArray
     })
   }
+
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'
 
@@ -105,10 +90,10 @@ const RegisterTripStyle = () => {
       <MultipleSelectionText>중복 선택 가능</MultipleSelectionText>
       <TripStyleContainer>
         <StyleBtns>
-          {categoryButtonTextArray.map((text: string, idx) => (
+          {categoryButtonTextArray.map((item, idx) => (
             <CategoryButton
               id={idx}
-              text={text}
+              text={item.label}
               active={activeStates[idx]}
               onClick={handleButtonClick}
             />
@@ -116,7 +101,6 @@ const RegisterTripStyle = () => {
         </StyleBtns>
       </TripStyleContainer>
 
-      {/* fixed된 다음 버튼 아래에도 컨텐츠가 있다는 것을 보이기 위한 Spacing */}
       <Spacing size={100} />
       <ButtonWrapper width={newRightPosition}>
         <Button
@@ -137,11 +121,6 @@ const RegisterTripStyle = () => {
 export default RegisterTripStyle
 
 const ButtonWrapper = styled.div<{ width: string }>`
-  /* width: calc(100% - 48px);
-  position: fixed;
-  bottom: 4.7svh;
-  z-index: 10; */
-
   width: 390px;
   @media (max-width: 389px) {
     width: ${props => props.width};
@@ -149,23 +128,17 @@ const ButtonWrapper = styled.div<{ width: string }>`
   @media (max-width: 450px) {
     width: ${props => props.width};
   }
-  /* pointer-events: none; */
   position: fixed;
-  /* top: 0; */
   bottom: 4.7svh;
-  /* z-index: 1001; */
   margin-left: -24px;
   padding: 0px 24px;
   z-index: 10;
 `
 
 const BlurSpacing = styled(Spacing)`
-  backdrop-filter: blur(
-    1.5px
-  ); // fixed된 다음버튼 아래 보이는 항목 태그들을 살짝 blur처리.
+  backdrop-filter: blur(1.5px);
   position: fixed;
   width: 100vw;
-
   left: 0;
   bottom: 0;
 `
@@ -186,32 +159,11 @@ const TripStyleContainer = styled.div`
   margin-top: 40px;
   padding: 0px 6px;
 `
-const TripThemeContainer = styled.div`
-  margin-top: 50px;
-  padding: 0px 6px;
-`
-const Title = styled.div`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 28px;
-  letter-spacing: -0.025em;
-  text-align: left;
-`
 const StyleBtns = styled.div`
   margin-top: 14px;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-`
-const Row = styled.div`
-  display: flex;
-  margin-bottom: 16px;
-  button {
-    margin-right: 16px;
-  }
-  button:last-child {
-    margin-right: 0;
-  }
 `
 const UserName = styled.span`
   display: inline-block;
@@ -228,6 +180,5 @@ const MultipleSelectionText = styled.div`
   margin-top: 10px;
   font-size: 16px;
   font-weight: 500;
-  line-height: 22.4px;
   color: rgba(171, 171, 171, 1);
 `

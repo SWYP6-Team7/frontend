@@ -100,7 +100,7 @@ const fadeIn = keyframes`
 `
 const GenderContainer = styled.div`
   height: 281px;
-  margin-top: 34px;
+  margin-top: 40px;
   animation: ${fadeIn} 0.5s;
 `
 const StepContent = styled.p`

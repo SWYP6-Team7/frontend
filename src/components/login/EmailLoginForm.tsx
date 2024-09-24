@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../Button'
 import InfoText from '../designSystem/text/InfoText'
 import useAuth from '@/hooks/user/useAuth'
+import InputField from '../designSystem/input/InputField'
 
 export const emailSchema = z
   .string()
@@ -68,42 +69,46 @@ const EmailLoginForm = () => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     if (name === 'email') {
       const emailValidation = emailSchema.safeParse(value)
-
-      setSuccess(prev => ({
-        ...prev,
-        email: emailValidation.success
-      }))
+      if (!emailValidation.success) {
+        setError(emailValidation.error.flatten().formErrors[0])
+      } else {
+        setError(undefined)
+        setSuccess(prev => ({
+          ...prev,
+          email: emailValidation.success
+        }))
+      }
     } else {
       const passwordValidation = passwordSchema.safeParse(value)
-      let passwordError = false
-      const emailLocalPart = formData.email.split('@')[0]
-      if (
-        formData.password === formData.email ||
-        formData.password === emailLocalPart
-      ) {
-        passwordError = true
+
+      if (!passwordValidation.success) {
+        setError(passwordValidation.error!.flatten().formErrors[0])
+      } else {
+        setError(undefined)
       }
       setSuccess(prev => ({
         ...prev,
-        password: passwordValidation.success && !passwordError
+        password: passwordValidation.success
       }))
     }
   }
   return (
     <Container onSubmit={onSubmit}>
-      <LoginInput
+      <InputField
         handleRemoveValue={() => handleRemoveValue('email')}
         type="email"
         value={formData.email}
         placeholder="email"
         name="email"
+        height={54}
         success={success.email}
         onChange={changeValue}
       />
-      <Spacing size={5} />
-      <LoginInput
+      <Spacing size={16} />
+      <InputField
         handleRemoveValue={() => handleRemoveValue('password')}
         type="password"
+        height={54}
         value={formData.password}
         placeholder="password"
         name="password"

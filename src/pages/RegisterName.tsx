@@ -23,19 +23,11 @@ const RegisterName = () => {
   const { userId, accessToken } = authStore()
 
   const [userName, setUserName] = useState(name)
-  const [genderCheck, setGenderCheck] = useState(false)
 
   const handleRemoveValue = () => setUserName('')
   const nextStepClickHandler = () => {
     if (userName.length > 0) {
-      if (location.pathname == '/registerName') {
-        navigate('/registerName/registerGender')
-      } else if (
-        genderCheck &&
-        location.pathname == '/registerName/registerGender'
-      ) {
-        navigate('/registerPhoneNumber')
-      }
+      navigate('/registerAge')
     }
   }
 
@@ -80,7 +72,7 @@ const RegisterName = () => {
           )}
         </div>
       </div>
-      <Outlet context={{ setGenderCheck }} />
+
       <ButtonWrapper>
         <Button
           text="다음"
@@ -98,7 +90,7 @@ const RegisterName = () => {
                     backgroundColor: 'rgba(220, 220, 220, 1)',
                     color: 'rgba(132, 132, 132, 1)'
                   }
-              : genderCheck && userName.length > 0 && !nameValidError
+              : userName.length > 0 && !nameValidError
                 ? {
                     backgroundColor: 'rgba(62, 141, 0, 1)',
                     color: 'rgba(240, 240, 240, 1)',

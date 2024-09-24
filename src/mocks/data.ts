@@ -1,4 +1,6 @@
-export const SearchData1 = {
+import { ISearchData } from '@/model/search'
+
+export const SearchData1: ISearchData = {
   content: [
     {
       travelNumber: 1,
@@ -66,34 +68,15 @@ export const SearchData1 = {
       postStatus: '모집 종료'
     }
   ],
-  pageable: {
-    pageNumber: 0,
-    pageSize: 5,
-    sort: {
-      empty: true,
-      sorted: false,
-      unsorted: true
-    },
-    offset: 0,
-    paged: true,
-    unpaged: false
-  },
-  last: false,
-  totalPages: 3,
-  totalElements: 15,
-  first: true,
-  size: 5,
-  number: 0,
-  sort: {
-    empty: true,
-    sorted: false,
-    unsorted: true
-  },
-  numberOfElements: 5,
-  empty: false
+  page: {
+    size: 5,
+    number: 0,
+    totalElements: 15,
+    totalPages: 3
+  }
 }
 
-export const SearchData2 = {
+export const SearchData2: ISearchData = {
   content: [
     {
       travelNumber: 6,
@@ -161,34 +144,15 @@ export const SearchData2 = {
       postStatus: '모집 중'
     }
   ],
-  pageable: {
-    pageNumber: 1,
-    pageSize: 5,
-    sort: {
-      empty: true,
-      sorted: false,
-      unsorted: true
-    },
-    offset: 5,
-    paged: true,
-    unpaged: false
-  },
-  last: false,
-  totalPages: 3,
-  totalElements: 15,
-  first: false,
-  size: 5,
-  number: 1,
-  sort: {
-    empty: true,
-    sorted: false,
-    unsorted: true
-  },
-  numberOfElements: 5,
-  empty: false
+  page: {
+    size: 5,
+    number: 1,
+    totalElements: 15,
+    totalPages: 3
+  }
 }
 
-export const SearchData3 = {
+export const SearchData3: ISearchData = {
   content: [
     {
       travelNumber: 11,
@@ -256,31 +220,12 @@ export const SearchData3 = {
       postStatus: '모집 중'
     }
   ],
-  pageable: {
-    pageNumber: 2,
-    pageSize: 5,
-    sort: {
-      empty: true,
-      sorted: false,
-      unsorted: true
-    },
-    offset: 10,
-    paged: true,
-    unpaged: false
-  },
-  last: true,
-  totalPages: 3,
-  totalElements: 15,
-  first: false,
-  size: 5,
-  number: 2,
-  sort: {
-    empty: true,
-    sorted: false,
-    unsorted: true
-  },
-  numberOfElements: 5,
-  empty: false
+  page: {
+    size: 5,
+    number: 2,
+    totalElements: 15,
+    totalPages: 3
+  }
 }
 
 export const NoSearchData = {

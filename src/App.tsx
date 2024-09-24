@@ -6,7 +6,6 @@ import Login from './pages/Login'
 
 import RegisterForm from './pages/RegisterForm'
 import RegisterName from './pages/RegisterName'
-import RegisterPhoneNumber from './pages/RegisterPhoneNumber'
 import RegisterTripStyle from './pages/RegisterTripStyle'
 import RegisterGender from './pages/RegisterGender'
 import OauthKakao from './pages/OauthKakao'
@@ -20,6 +19,7 @@ import CreateTripDetail from './pages/CreateTrip/CreateTripDetail/CreateTripDeta
 
 import CreateTripPlace from './pages/CreateTrip/CreateTripPlace'
 import CreateTripIntroduce from './pages/CreateTrip/CreateTripIntroduce'
+import RegisterAge from './pages/RegisterAge'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -53,18 +53,18 @@ export const router = createBrowserRouter([
       },
       {
         path: 'registerName',
-        element: <RegisterName />,
-        children: [
-          {
-            path: 'RegisterGender',
-            element: <RegisterGender />
-          }
-        ]
+        element: <RegisterName />
       },
 
       {
-        path: 'registerPhoneNumber',
-        element: <RegisterPhoneNumber />
+        path: 'registerAge',
+        element: <RegisterAge />,
+        children: [
+          {
+            path: 'registerGender',
+            element: <RegisterGender />
+          }
+        ]
       },
       {
         path: 'registerTripStyle',

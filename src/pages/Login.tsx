@@ -35,7 +35,7 @@ const Login = () => {
         <Title>MOING</Title>
       </TopArea>
       <EmailLoginForm />
-      <BottomArea>
+      {/* <BottomArea>
         <SimpleLoginText>
           <Bar />
           <span>간편 로그인</span>
@@ -54,7 +54,7 @@ const Login = () => {
             <GoogleIcon />
           </button>
         </LoginIconContainer>
-      </BottomArea>
+      </BottomArea> */}
     </Container>
   )
 }
@@ -70,12 +70,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `
 
 const TopArea = styled.div`
-  flex: 1;
   display: flex;
+  margin-top: 13.8svh;
   justify-content: end;
   align-items: center;
   gap: 8px;
