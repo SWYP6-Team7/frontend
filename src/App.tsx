@@ -17,6 +17,7 @@ import MyPage from './pages/MyPage/MyPage'
 import Bookmark from './pages/Bookmark/Bookmark'
 import Community from './pages/Community/Community'
 import CreateTrip from './pages/CreateTrip'
+import CreateTripDetail from './pages/MyPage/CreateTripDetail/CreateTripDetail'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -97,6 +98,10 @@ export const router = createBrowserRouter([
       {
         path: '/createTrip',
         element: <CreateTrip />
+      },
+      {
+        path: '/createTripDetail',
+        element: <CreateTripDetail />
       }
     ]
   }
