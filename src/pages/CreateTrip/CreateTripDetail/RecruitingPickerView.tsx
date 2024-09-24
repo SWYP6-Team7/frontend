@@ -1,4 +1,5 @@
 import PersonIcon from '@/components/icons/PersonIcon'
+import { createTripStore } from '@/store/client/createTripStore'
 import { palette } from '@/styles/palette'
 import React, { useState, useEffect, useRef } from 'react'
 import Picker from 'react-mobile-picker'
@@ -33,6 +34,8 @@ const INITIAL_GENDER = '여자만'
 // const INITIAL_CNT = 1
 
 const RecruitingPickerView = ({ count, setCount }: Props) => {
+  const { maxPerson, addMaxPerson, genderType, addGenderType } =
+    createTripStore()
   const pickerRef = useRef<HTMLDivElement>(null)
   const [value, setValue] = useState({
     gender: INITIAL_GENDER,
@@ -77,6 +80,9 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
 
   useEffect(() => {
     setCount(value.count)
+    // zustand store 저장.
+    addGenderType(value.gender)
+    addMaxPerson(value.count)
   }, [value])
   return (
     <div

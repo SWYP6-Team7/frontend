@@ -1,4 +1,5 @@
 import PersonIcon from '@/components/icons/PersonIcon'
+import { createTripStore } from '@/store/client/createTripStore'
 import React, { useState, useEffect, useRef } from 'react'
 import Picker from 'react-mobile-picker'
 
@@ -32,7 +33,7 @@ interface Props {
 
 const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
   const pickerRef = useRef<HTMLDivElement>(null)
-
+  const { addDueDate } = createTripStore()
   const [value, setValue] = useState(duedate)
   const [dayOptions, setDayOptions] = useState(
     Array.from({ length: 31 }, (v, i) => i + 1)
@@ -55,6 +56,7 @@ const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
   // 날짜가 변경될 때마다 현재 날짜와 비교하여 이전 날짜를 선택하면 일정 시간 후 오늘 날짜로 되돌림
   useEffect(() => {
     setDuedate(value)
+    addDueDate(`${value.year}-${value.month}-${value.day}`)
     const selectedDate = new Date(value.year, value.month - 1, value.day)
     const todayDate = new Date(today.year, today.month - 1, today.day)
 
@@ -72,6 +74,8 @@ const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
     day: dayOptions
   }
   useEffect(() => {
+    // 라이브러리 사용으로, 커스텀 디자인을 위해 만드는 부분.
+    // 위 아래 자동으로 생기는 회색 선을 없애고, 디자인 시안대로 구현.
     if (pickerRef.current) {
       const divs = pickerRef.current.querySelector('div')
       const lastDiv = divs?.lastChild as HTMLDivElement

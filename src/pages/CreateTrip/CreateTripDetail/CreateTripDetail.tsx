@@ -6,15 +6,13 @@ import ThirdStepIcon from '@/components/icons/ThirdStepIcon'
 import { palette } from '@/styles/palette'
 import Button from '@/components/Button'
 import { useNavigate } from 'react-router-dom'
-import CheckIcon from '@/components/icons/CheckIcon'
-import Vector from '@/components/icons/Vector'
-import BottomModal from '@/components/BottomModal'
 import Spacing from '@/components/Spacing'
 import RecruitingWrapper from './RecruitingWrapper'
 import DuedateWrapper from './DuedateWrapper'
 import GreenCheckIcon from '@/components/icons/GreenCheckIcon'
 import Accordion from '@/components/Accordion'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
+import { createTripStore } from '@/store/client/createTripStore'
 
 const TAG_LIST = [
   {
@@ -40,19 +38,36 @@ const TAG_LIST = [
 ]
 
 const CreateTripDetail = () => {
+  const {
+    title,
+    location,
+    details,
+    maxPerson,
+    genderType,
+    dueDate,
+    periodType,
+    addPeriodType,
+    tags,
+    addTags
+  } = createTripStore()
   const navigate = useNavigate()
   const completeClickHandler = () => {
-    navigate('/')
-    // 제출시, zustand에 저장. 후에 코드 추가 및 합치기
-    // ex)
-    //  createTrip({
-    //    recruiting,
-    //    duedate,
-    //    duration,
-    //    tags
-    //  })
+    // navigate('/')
+    // if (title.length > 0 && location.length > 0 && details.length > 0 && maxPerson > 0 &&genderType.length >0 && dueDate.length > 0 && periodType.length && tags.length > 0){
+    //   // api 요청 로직.
+    // }
+    console.log(
+      title,
+      location,
+      details,
+      maxPerson,
+      genderType,
+      dueDate,
+      periodType,
+      tags
+    )
   }
-  const [selectedDuration, setSelectedDuration] = useState(0) // 선택된 기간 인덱스.
+
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
   const [activeDuration, setActiveDuration] = useState<boolean[]>(
     new Array(4).fill(false)
@@ -62,12 +77,12 @@ const CreateTripDetail = () => {
     const newActiveStates = [false, false, false, false]
 
     newActiveStates[parseInt(e.currentTarget.id)] = true
-    setSelectedDuration(parseInt(e.currentTarget.id))
+    addPeriodType(tripDuration[parseInt(e.currentTarget.id)])
     setActiveDuration(newActiveStates) // 상태 업데이트
   }
 
   // 태그
-  const [taggedArray, setTaggedArray] = useState<string[]>([])
+  const [taggedArray, setTaggedArray] = useState<string[]>(tags)
   const getTaggedCount = () => {
     return taggedArray.length
   }
@@ -80,7 +95,7 @@ const CreateTripDetail = () => {
     const newArray = taggedArray.includes(tag)
       ? taggedArray.filter(v => v !== tag)
       : [...taggedArray, tag]
-
+    addTags(newArray)
     setTaggedArray(newArray)
   }
 
@@ -204,27 +219,7 @@ const DurationBtn = styled.button<{ isActive: boolean }>`
       ? `1px solid ${palette.keycolor}`
       : `1px solid ${palette.검색창}`};
 `
-const Count = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 20px;
-  text-align: center;
-  margin-left: 8px;
-`
-const ModalWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 
-  overflow: hidden;
-`
-
-const ModalContainer = styled.div`
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 0 20px;
-  padding-bottom: 13svh;
-`
 const DurationContainer = styled.div`
   margin-top: 24px;
 `
