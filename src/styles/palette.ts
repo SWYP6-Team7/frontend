@@ -3,6 +3,7 @@ export const palette = {
   기본: 'rgba(26, 26, 26, 1)',
   비강조: 'rgba(132, 132, 132, 1)',
   keycolor: 'rgba(62, 141, 0, 1)',
+  keycolorBG: '#E3EFD9',
   비강조2: 'rgba(171, 171, 171, 1)',
   비강조3: 'rgba(205, 205, 205, 1)',
   비강조4: 'rgba(240, 240, 240, 1)',

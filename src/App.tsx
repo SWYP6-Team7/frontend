@@ -16,6 +16,7 @@ import SearchTravel from './pages/SearchTravel'
 import MyPage from './pages/MyPage/MyPage'
 import Bookmark from './pages/Bookmark/Bookmark'
 import Community from './pages/Community/Community'
+import CreateTripDetail from './pages/CreateTrip/CreateTripDetail/CreateTripDetail'
 
 import CreateTripPlace from './pages/CreateTrip/CreateTripPlace'
 import CreateTripIntroduce from './pages/CreateTrip/CreateTripIntroduce'
@@ -103,6 +104,10 @@ export const router = createBrowserRouter([
       {
         path: '/createTripIntroduce',
         element: <CreateTripIntroduce />
+      },
+      {
+        path: 'createTripDetail',
+        element: <CreateTripDetail />
       }
     ]
   }

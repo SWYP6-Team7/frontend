@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { forwardRef } from 'react'
+import { useLocation } from 'react-router-dom'
 
 interface SearchFilterTagProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -9,6 +10,9 @@ interface SearchFilterTagProps
     backgroundColor?: string
     color?: string
     border?: string
+    borderRadius?: string
+    padding?: string
+    fontWeight?: string
   }
   disabled?: boolean
   active?: boolean
@@ -40,14 +44,20 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
           ? 'rgba(62, 141, 0, 1)'
           : ' rgba(240, 240, 240, 1)',
         color: active ? 'rgba(255, 255, 255, 1)' : 'rgba(52, 52, 52, 1)',
-        border: 'none'
+        border: 'none',
+        borderRadius: '16px',
+        padding: '8px 14px',
+        fontWeight: '400'
       },
       ...props
     },
     ref
   ) => {
+    const { pathname } = useLocation()
+    const isCreateTrip = pathname === '/createTripDetail'
     return (
       <SearchFilterTagContainer
+        isCreateTrip={isCreateTrip}
         disabled={disabled}
         id={`${idx}`}
         onClick={onClick}
@@ -58,8 +68,10 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
   }
 )
 
-const SearchFilterTagContainer = styled.button`
+const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
+  height: ${props => (props.isCreateTrip ? '42px' : 'auto')};
+  line-height: ${props => (props.isCreateTrip ? '22.4px' : 'auto')};
   padding: 8px 14px;
-  border-radius: 15px;
+  border-radius: 16px;
 `
 export default SearchFilterTag
