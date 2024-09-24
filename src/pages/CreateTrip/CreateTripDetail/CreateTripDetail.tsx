@@ -163,7 +163,8 @@ const CreateTripDetail = () => {
                         ? `1px solid ${palette.keycolor}`
                         : `1px solid ${palette.검색창}`,
                       borderRadius: '30px',
-                      padding: '10px 20px'
+                      padding: '10px 20px',
+                      fontWeight: isActive(tag) ? '600' : '400'
                     }}
                     text={tag}
                     onClick={() => clickTag(tag)}

@@ -12,6 +12,7 @@ interface SearchFilterTagProps
     border?: string
     borderRadius?: string
     padding?: string
+    fontWeight?: string
   }
   disabled?: boolean
   active?: boolean
@@ -45,7 +46,8 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         color: active ? 'rgba(255, 255, 255, 1)' : 'rgba(52, 52, 52, 1)',
         border: 'none',
         borderRadius: '16px',
-        padding: '8px 14px'
+        padding: '8px 14px',
+        fontWeight: '400'
       },
       ...props
     },
@@ -71,5 +73,6 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   line-height: ${props => (props.isCreateTrip ? '22.4px' : 'auto')};
   padding: 8px 14px;
   border-radius: 16px;
+  font-family: 'Pretendard';
 `
 export default SearchFilterTag
