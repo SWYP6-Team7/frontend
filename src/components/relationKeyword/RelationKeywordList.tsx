@@ -4,9 +4,13 @@ import RelationKeyword from './RelationKeyword'
 
 interface RelationKeywordListProps {
   keyword: string
+  onClick: (keyword: string) => void
 }
 
-const RelationKeywordList = ({ keyword }: RelationKeywordListProps) => {
+const RelationKeywordList = ({
+  keyword,
+  onClick
+}: RelationKeywordListProps) => {
   const { data, isLoading } = useRelationKeyword(keyword)
   if (isLoading) {
     return null
@@ -16,11 +20,15 @@ const RelationKeywordList = ({ keyword }: RelationKeywordListProps) => {
       {data &&
         data.length > 0 &&
         data.map(data => (
-          <RelationKeyword
-            keyword={keyword}
+          <button
+            css={{ display: 'block' }}
             key={data}
-            data={data}
-          />
+            onClick={() => onClick(data)}>
+            <RelationKeyword
+              keyword={keyword}
+              data={data}
+            />
+          </button>
         ))}
     </Contianer>
   )
