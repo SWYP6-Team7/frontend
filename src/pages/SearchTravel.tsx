@@ -5,11 +5,12 @@ import SearchFilterTag from '@/components/SearchFilterTag'
 import SearchResultList from '@/components/SearchResultList'
 import Spacing from '@/components/Spacing'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
-import useSearch from '@/hooks/useSearch'
+import useSearch from '@/hooks/search/useSearch'
 import { searchStore } from '@/store/client/searchStore'
 import styled from '@emotion/styled'
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
+import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
 
 const RECOMMEND_TAGS1 = ['유럽', '일본', '제주']
 const RECOMMEND_TAGS2 = ['유럽', '일본']
@@ -21,8 +22,7 @@ const SearchTravel = () => {
   const [ref, inView] = useInView()
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
     useSearch({
-      keyword: finalKeyword,
-      tags: ['gksk']
+      keyword: finalKeyword
     })
 
   useInfiniteScroll(() => {
@@ -140,7 +140,9 @@ const SearchTravel = () => {
       ) : (
         <>
           {keyword.length > 0 ? (
-            <></>
+            <>
+              <RelationKeywordList keyword={keyword} />
+            </>
           ) : (
             <>
               <Spacing size={25} />
