@@ -66,7 +66,6 @@ const SearchResultList = ({
         </BottomModal>
       )}
 
-      <FilterList />
       <Spacing size={15} />
       <Header>
         <CountContainer>

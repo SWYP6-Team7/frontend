@@ -16,8 +16,16 @@ import SearchTravel from './pages/SearchTravel'
 import MyPage from './pages/MyPage/MyPage'
 import Bookmark from './pages/Bookmark/Bookmark'
 import Community from './pages/Community/Community'
+<<<<<<< HEAD
 import CreateTrip from './pages/CreateTrip'
 import CreateTripDetail from './pages/MyPage/CreateTripDetail/CreateTripDetail'
+import CreateTripPlace from './pages/CreateTrip/CreateTripPlace'
+import CreateTripIntroduce from './pages/CreateTrip/CreateTripIntroduce'
+=======
+
+import CreateTripPlace from './pages/CreateTrip/CreateTripPlace'
+import CreateTripIntroduce from './pages/CreateTrip/CreateTripIntroduce'
+>>>>>>> 855b82f1597e30278e1591fd4ef7b0c6568b36d2
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -96,12 +104,16 @@ export const router = createBrowserRouter([
         element: <Community />
       },
       {
-        path: '/createTrip',
-        element: <CreateTrip />
+        element: <CreateTripPlace />
       },
       {
-        path: '/createTripDetail',
-        element: <CreateTripDetail />
+        path: '/cr4eateIntroduce',
+        element: <CreateTripIntroduce />
+      }
+      ,
+      {
+        path: 'createTripDetail',
+        element: <CreateTripDetail/>
       }
     ]
   }
