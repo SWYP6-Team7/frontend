@@ -14,8 +14,8 @@ interface userState {
   addSex: (sex: Gender) => void
   phoneNumber: string
   addPhoneNumber: (phoneNumber: string) => void
-  yearOfBirth: number
-  addYearOfBirth: (yearOfBirth: number) => void
+  agegroup?: string
+  addAgegroup: (agegroup: string) => void
   tripStyle: string[]
   addTripStyle: (tripStyle: string) => void
   tripTheme: string[]
@@ -35,9 +35,9 @@ export const userStore = create<userState>(set => ({
   addPhoneNumber: phoneNumber => {
     set(state => ({ phoneNumber: phoneNumber }))
   },
-  yearOfBirth: 2000,
-  addYearOfBirth: year => {
-    set(state => ({ yearOfBirth: year }))
+  agegroup: undefined,
+  addAgegroup: age => {
+    set(state => ({ agegroup: age }))
   },
   tripStyle: [],
   addTripStyle: style => {

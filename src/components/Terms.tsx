@@ -21,20 +21,6 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
     navigate(-1)
   }
 
-  const handleAllCheck = () => {
-    if (check.service && check.privacy) {
-      setCheck(prev => ({
-        service: false,
-        privacy: false
-      }))
-    } else {
-      setCheck(prev => ({
-        service: true,
-        privacy: true
-      }))
-    }
-  }
-
   const handleCheck = (item: 'privacy' | 'service') => {
     setCheck(prev => ({
       ...prev,
@@ -48,25 +34,7 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
       </BackButotn>
       <TermsContainer>
         <Title>약관에 동의해주세요.</Title>
-        <Spacing size={40} />
-        <AllContainer>
-          <button onClick={handleAllCheck}>
-            {check.privacy && check.service ? (
-              <CheckIcon
-                status="done"
-                size={24}
-              />
-            ) : (
-              <CheckIcon size={24} />
-            )}
-          </button>
-          <AllText>
-            <AllTitle>전체동의</AllTitle>
-            <AllDescription>
-              서비스 이용을 위해 아래 약관에 모두 동의합니다.
-            </AllDescription>
-          </AllText>
-        </AllContainer>
+
         <Bar />
         <TermContainer>
           <button onClick={() => handleCheck('service')}>
@@ -82,7 +50,7 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
           <TermTitle>(필수) 서비스 이용 약관</TermTitle>
           <TermMore>보기</TermMore>
         </TermContainer>
-        <Spacing size={41} />
+        <Spacing size={24} />
         <TermContainer>
           <button onClick={() => handleCheck('privacy')}>
             {check.privacy ? (
