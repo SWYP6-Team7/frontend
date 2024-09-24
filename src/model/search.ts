@@ -20,20 +20,11 @@ export interface ISort {
 
 export interface ISearchData {
   content: IContent[]
-  pageable: {
-    pageNumber: string
-    pageSize: number
-    sort: ISort
-    offset: number
-    paged: boolean
-    unpaged: boolean
+
+  page: {
+    size: number
+    number: number
+    totalElements: number
+    totalPages: number
   }
-  last: boolean
-  totalElements: number
-  totalPages: number
-  first: boolean
-  size: number
-  sort: ISort
-  numberOfElements: number
-  empty: boolean
 }

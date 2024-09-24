@@ -17,12 +17,12 @@ import {
   searchStore
 } from '@/store/client/searchStore'
 import { palette } from '@/styles/palette'
-import useSearch from '@/hooks/useSearch'
+import useSearch from '@/hooks/search/useSearch'
 import WhiteXIcon from './icons/WhiteXIcon'
 
 const FILTER_LIST = [
   { title: '장소', tags: ['국내', '해외'] as const },
-  { title: '성별', tags: ['혼성', '여자만', '남자만'] as const },
+  { title: '성별', tags: ['모두', '여자만', '남자만'] as const },
   { title: '인원', tags: ['2인', '3~4명', '5인이상'] as const },
   {
     title: '기간',
@@ -66,7 +66,7 @@ const FilterList = () => {
     gender,
     setOneFilterReset
   } = searchStore()
-  const { refetch } = useSearch({ keyword: keyword, tags: [] })
+  const { refetch } = useSearch({ keyword: keyword })
 
   const getCount = (type: '장소' | '인원' | '기간' | '스타일' | '성별') => {
     if (type === '장소') return place.length

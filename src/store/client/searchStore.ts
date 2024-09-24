@@ -15,7 +15,7 @@ export type IStyle =
   | '가성비'
   | '역사'
   | '자연'
-export type IGender = '혼성' | '여자만' | '남자만'
+export type IGender = '모두' | '여자만' | '남자만'
 
 interface ISearchStore {
   sort: '추천순' | '최신순' | '등록일순' | '정확도순'

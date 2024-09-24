@@ -1,9 +1,11 @@
 import { http, HttpResponse } from 'msw'
 import { homeHandler } from './homeHandler'
 import { NoSearchData, SearchData1, SearchData2, SearchData3 } from './data'
+import { searchHandler } from './serachHandler'
 
 export const handlers = [
   ...homeHandler,
+  ...searchHandler,
   http.post('/api/login', async ({ request }) => {
     try {
       const formData = (await request.json()) as {
@@ -177,23 +179,6 @@ export const handlers = [
         { error: 'Failed to authenticate with Naver' },
         { status: 500 }
       )
-    }
-  }),
-  http.get('/api/travel/search', async ({ request }) => {
-    const url = new URL(request.url)
-
-    const tags = url.searchParams.get('tags')
-    const keyword = url.searchParams.get('keyword')
-    const pageParams = url.searchParams.get('page')
-    console.log('pageParams', pageParams)
-    if (Number(pageParams) === 0) {
-      return HttpResponse.json(SearchData1)
-    } else if (Number(pageParams) === 1) {
-      return HttpResponse.json(SearchData2)
-    } else if (Number(pageParams) === 2) {
-      return HttpResponse.json(SearchData3)
-    } else {
-      return HttpResponse.json(NoSearchData)
     }
   })
 ]
