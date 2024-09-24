@@ -57,7 +57,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
         : focused || props.value !== ''
           ? '#1A1A1A'
           : '#CDCDCD'
-    const bgColor = hasError ? '#FFF7F7' : '#FFFFFF'
+    const bgColor = hasError ? '#FFF7F7' : success ? '#FCFFFA' : '#FFFFFF'
 
     const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
       setFocused(true)

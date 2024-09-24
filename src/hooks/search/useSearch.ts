@@ -1,5 +1,7 @@
 import { axiosInstance } from '@/api'
+import { getSearch } from '@/api/search'
 import { ISearchData } from '@/model/search'
+import { searchStore } from '@/store/client/searchStore'
 import {
   InfiniteData,
   QueryFunction,
@@ -11,19 +13,10 @@ interface UseSearchProps {
   keyword: string
   page?: number
   size?: number
-  tags: string[]
 }
 
-async function getSearch(pageParams: number, tags: string[]) {
-  const response = await axiosInstance.get('/api/travel/search', {
-    params: {
-      page: pageParams,
-      tags: tags.join(',')
-    }
-  })
-  return response.data as ISearchData
-}
-const useSearch = ({ keyword, page = 0, size = 5, tags }: UseSearchProps) => {
+const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
+  const { style } = searchStore()
   const {
     data,
     isLoading,
@@ -38,16 +31,16 @@ const useSearch = ({ keyword, page = 0, size = 5, tags }: UseSearchProps) => {
     InfiniteData<ISearchData>,
     [_1: string, _2: string, tags: string[]]
   >({
-    queryKey: ['search', keyword, tags],
+    queryKey: ['search', keyword, style],
     initialPageParam: 0,
     getNextPageParam: lastPage => {
-      if (lastPage && lastPage?.last) {
+      if (lastPage.page.number + 1 === lastPage.page.totalPages) {
         return undefined
       } else {
-        return lastPage?.pageable.pageNumber + 1
+        return lastPage?.page.number + 1
       }
     },
-    queryFn: ({ pageParam }) => getSearch(pageParam as number, tags),
+    queryFn: ({ pageParam }) => getSearch(pageParam as number, keyword, style),
     enabled: Boolean(keyword)
   })
 

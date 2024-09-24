@@ -48,6 +48,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
       <SearchFilterTagContainer
         disabled={disabled}
         id={`${idx}`}
+        active={active}
         onClick={onClick}
         css={addStyle}>
         {text}
@@ -56,8 +57,9 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
   }
 )
 
-const SearchFilterTagContainer = styled.button`
+const SearchFilterTagContainer = styled.button<{ active: boolean }>`
   padding: 8px 14px;
+  font-weight: ${props => (props.active ? '600' : '400')};
   border-radius: 15px;
 `
 export default SearchFilterTag
