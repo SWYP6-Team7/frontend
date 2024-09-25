@@ -1,19 +1,22 @@
 import Button from '@/components/Button'
 import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
+import InputField from '@/components/designSystem/input/InputField'
 import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
 import Spacing from '@/components/Spacing'
+import useRelationKeyword from '@/hooks/search/useRelationKeyword'
 import { createTripStore } from '@/store/client/createTripStore'
 import { searchStore } from '@/store/client/searchStore'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function CreateTripPlace() {
   const [keyword, setKeyword] = useState('')
   const navigate = useNavigate()
   const { addLocation } = createTripStore()
+  const { data, isLoading } = useRelationKeyword(keyword)
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }
@@ -29,6 +32,13 @@ export default function CreateTripPlace() {
     navigate('/createTripIntroduce')
   }
 
+  const isMatchedKeyword = useMemo(() => {
+    if (data) {
+      return data.includes(keyword)
+    } else {
+      return false
+    }
+  }, [keyword, data?.length])
   return (
     <Container>
       <StepIconContainer>
@@ -36,8 +46,10 @@ export default function CreateTripPlace() {
       </StepIconContainer>
       <Title>어디로 떠나볼까요?</Title>
       <Spacing size={8} />
-      <CreateTripInputField
+      <InputField
+        success={!isLoading && isMatchedKeyword}
         value={keyword}
+        hasError={keyword !== '' && !isLoading && !isMatchedKeyword}
         handleRemoveValue={handleRemoveValue}
         onChange={changeKeyword}
         icon={<PlaceIcon />}
@@ -54,9 +66,9 @@ export default function CreateTripPlace() {
       <ButtonContainer>
         <Button
           onClick={handleNext}
-          disabled={keyword === ''}
+          disabled={isLoading || !isMatchedKeyword}
           addStyle={
-            keyword === ''
+            isLoading || !isMatchedKeyword
               ? {
                   backgroundColor: 'rgba(220, 220, 220, 1)',
                   color: 'rgba(132, 132, 132, 1)',

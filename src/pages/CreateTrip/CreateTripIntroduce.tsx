@@ -1,5 +1,6 @@
 import Button from '@/components/Button'
 import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
+import InputField from '@/components/designSystem/input/InputField'
 import SecondStepIcon from '@/components/icons/SecondStepIcon'
 import Spacing from '@/components/Spacing'
 import { createTripStore } from '@/store/client/createTripStore'
@@ -37,7 +38,9 @@ const CreateTripIntroduce = () => {
       </StepIconContainer>
       <Title>여행을 소개해주세요.</Title>
       <Spacing size={8} />
-      <CreateTripInputField
+      <InputField
+        success={title !== ''}
+        hasError={title.length > 20}
         value={title}
         placeholder="제목을 입력해주세요. (최대 20자)"
         handleRemoveValue={handleRemoveValue}
