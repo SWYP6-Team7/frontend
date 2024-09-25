@@ -12,6 +12,7 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   success?: boolean
   shake?: boolean
   height?: number
+  icon?: React.ReactNode
   handleRemoveValue: () => void
 }
 
@@ -42,6 +43,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
       hasError = false,
       success = false,
       shake = false,
+      icon = undefined,
       handleRemoveValue,
       onFocus,
       onBlur,
@@ -78,6 +80,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
         bgColor={bgColor}
         height={height}
         borderColor={borderColor}>
+        {icon && <IconContainer>{icon}</IconContainer>}
         <Input
           bgColor={bgColor}
           ref={ref}
@@ -145,6 +148,10 @@ const Input = styled.input<InputProps>`
   font-size: 16px;
   letter-spacing: -0.04px;
   border: #cdcdcd;
+`
+
+const IconContainer = styled.div`
+  margin-right: 11px;
 `
 
 export default InputField

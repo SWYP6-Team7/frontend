@@ -197,7 +197,7 @@ const FilterList = () => {
 
                           border: isActive(item.title, tag)
                             ? `1px solid ${palette.keycolor}`
-                            : 'none'
+                            : `1px solid ${palette.검색창}`
                         }}
                         text={tag}
                         onClick={() => clickTag(item.title, tag)}

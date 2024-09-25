@@ -72,7 +72,7 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   height: ${props => (props.isCreateTrip ? '42px' : 'auto')};
   line-height: ${props => (props.isCreateTrip ? '22.4px' : 'auto')};
   padding: 8px 14px;
-  border: 1px;
+
   border-radius: 16px;
 `
 export default SearchFilterTag
