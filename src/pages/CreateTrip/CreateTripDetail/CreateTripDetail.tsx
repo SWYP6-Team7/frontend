@@ -13,6 +13,11 @@ import GreenCheckIcon from '@/components/icons/GreenCheckIcon'
 import Accordion from '@/components/Accordion'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 import { createTripStore } from '@/store/client/createTripStore'
+import { useCreateTrip } from '@/hooks/createTrip/useCreateTrip'
+import { useStore } from 'zustand'
+import { userStore } from '@/store/client/userStore'
+import useAuth from '@/hooks/user/useAuth'
+import { authStore } from '@/store/client/authStore'
 
 const TAG_LIST = [
   {
@@ -50,12 +55,37 @@ const CreateTripDetail = () => {
     tags,
     addTags
   } = createTripStore()
+  const { userId, accessToken } = authStore()
   const navigate = useNavigate()
+  let completionStatus = true
+  if (
+    title === '' ||
+    location === '' ||
+    details === '' ||
+    maxPerson === 0 ||
+    genderType === '' ||
+    dueDate === '' ||
+    periodType === '' ||
+    tags.length === 0
+  ) {
+    completionStatus = false
+  }
+  const travelData = {
+    title,
+    location,
+    details,
+    maxPerson,
+    genderType,
+    dueDate,
+    periodType,
+    tags,
+    completionStatus
+  }
+  const { createTripMutate } = useCreateTrip(travelData, accessToken as string) // 여행 생성 api 요청.
   const completeClickHandler = () => {
     navigate('/')
-    // if (title.length > 0 && location.length > 0 && details.length > 0 && maxPerson > 0 &&genderType.length >0 && dueDate.length > 0 && periodType.length && tags.length > 0){
-    //   // api 요청 로직.
-    // }
+
+    createTripMutate()
     console.log(
       title,
       location,
