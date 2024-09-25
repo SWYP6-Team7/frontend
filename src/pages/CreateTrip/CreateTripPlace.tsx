@@ -16,7 +16,7 @@ export default function CreateTripPlace() {
   const [keyword, setKeyword] = useState('')
   const navigate = useNavigate()
   const { addLocation } = createTripStore()
-  const { data, isLoading } = useRelationKeyword(keyword)
+  // const { data, isLoading } = useRelationKeyword(keyword)
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }
@@ -32,13 +32,13 @@ export default function CreateTripPlace() {
     navigate('/createTripIntroduce')
   }
 
-  const isMatchedKeyword = useMemo(() => {
-    if (data) {
-      return data.includes(keyword)
-    } else {
-      return false
-    }
-  }, [keyword, data?.length])
+  // const isMatchedKeyword = useMemo(() => {
+  //   if (data) {
+  //     return data.includes(keyword)
+  //   } else {
+  //     return false
+  //   }
+  // }, [keyword, data?.length])
   return (
     <Container>
       <StepIconContainer>
@@ -46,10 +46,8 @@ export default function CreateTripPlace() {
       </StepIconContainer>
       <Title>어디로 떠나볼까요?</Title>
       <Spacing size={8} />
-      <InputField
-        success={!isLoading && isMatchedKeyword}
+      <CreateTripInputField
         value={keyword}
-        hasError={keyword !== '' && !isLoading && !isMatchedKeyword}
         handleRemoveValue={handleRemoveValue}
         onChange={changeKeyword}
         icon={<PlaceIcon />}
@@ -66,9 +64,9 @@ export default function CreateTripPlace() {
       <ButtonContainer>
         <Button
           onClick={handleNext}
-          disabled={isLoading || !isMatchedKeyword}
+          disabled={keyword === ''}
           addStyle={
-            isLoading || !isMatchedKeyword
+            keyword === ''
               ? {
                   backgroundColor: 'rgba(220, 220, 220, 1)',
                   color: 'rgba(132, 132, 132, 1)',

@@ -5,12 +5,20 @@ import styled from '@emotion/styled'
 import React, { FocusEventHandler, forwardRef, useState } from 'react'
 import RemoveButton from './RemoveButton'
 import { palette } from '@/styles/palette'
+import { BooleanLiteral } from 'typescript'
 
 // React.InputHTMLAttributes<HTMLInputElement
 // input element의 property 타입들도 상속받아서 사용할 수 있음
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   handleRemoveValue: () => void
   icon?: React.ReactNode
+
+  success?: BooleanLiteral
+}
+
+interface ContainerProps {
+  bgColor: string
+  borderColor: string
 }
 
 // forwardRef : 부모 컴포넌트에서 자식 컴포넌트 안의 DOM element에 접근하고 싶을 때 사용한다.
@@ -24,8 +32,26 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 // success: 검증을 통과한 상태인지
 // shake: true로 바뀌면 0.3초동안 애니메이션 실행 (처음 true인채로 렌더링 되거나 false에서 true가 되는 순간에만 실행)
 const CreateTripInputField = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ icon, handleRemoveValue, onFocus, onBlur, ...props }, ref) => {
+  (
+    {
+      icon,
+      handleRemoveValue,
+
+      success = false,
+      onFocus,
+      onBlur,
+      ...props
+    },
+    ref
+  ) => {
     const [focused, setFocused] = useState(false)
+
+    const borderColor = focused ? palette.keycolor : 'none'
+    const bgColor = focused
+      ? '#FCFFFA'
+      : props.value === ''
+        ? palette.검색창
+        : palette.비강조4
 
     const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
       setFocused(true)
@@ -38,7 +64,9 @@ const CreateTripInputField = forwardRef<HTMLInputElement, TextFieldProps>(
     }
 
     return (
-      <Container>
+      <Container
+        bgColor={bgColor}
+        borderColor={borderColor}>
         {icon && <IconContainer>{icon}</IconContainer>}
         <Input
           ref={ref}
@@ -58,7 +86,7 @@ const CreateTripInputField = forwardRef<HTMLInputElement, TextFieldProps>(
   }
 )
 
-const Container = styled.div`
+const Container = styled.div<ContainerProps>`
   display: flex;
   align-items: center;
 
@@ -68,8 +96,8 @@ const Container = styled.div`
   border-radius: 18px;
   overflow-x: hidden;
   box-sizing: border-box;
-  border: 1px solid ${palette.검색창};
-  background-color: ${palette.비강조4};
+  border: 1px solid ${props => props.borderColor};
+  background-color: ${props => props.bgColor};
 `
 
 const IconContainer = styled.div`
@@ -85,7 +113,7 @@ const Input = styled.input`
   outline: none;
   font-weight: 500;
   border: none;
-  background-color: ${palette.비강조4};
+  background-color: transparent;
   font-size: 16px;
   letter-spacing: -0.04px;
   border: #cdcdcd;

@@ -26,6 +26,11 @@ const CreateTripIntroduce = () => {
   const handleRemoveValue = () => setTitle('')
 
   const handleNext = () => {
+    if (title.length > 20 || title === '') {
+      return
+    } else if (details.length > 2000 || details === '') {
+      return
+    }
     addTitle(title)
     addDetails(details)
     navigate('/createTripDetail')
@@ -38,9 +43,7 @@ const CreateTripIntroduce = () => {
       </StepIconContainer>
       <Title>여행을 소개해주세요.</Title>
       <Spacing size={8} />
-      <InputField
-        success={title !== ''}
-        hasError={title.length > 20}
+      <CreateTripInputField
         value={title}
         placeholder="제목을 입력해주세요. (최대 20자)"
         handleRemoveValue={handleRemoveValue}
