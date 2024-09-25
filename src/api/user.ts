@@ -19,7 +19,7 @@ export async function getUser(userId: number, accessToken: string) {
 
 export async function checkEmail(email: string) {
   try {
-    const response = await axiosInstance.get('/api/users/new', {
+    const response = await axiosInstance.get('/api/users-email', {
       params: { email: email }
     })
     console.log('response', response)

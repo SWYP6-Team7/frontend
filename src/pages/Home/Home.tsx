@@ -17,11 +17,19 @@ import Spacing from '@/components/Spacing'
 import Footer from './Footer'
 import Navbar from './Navbar'
 import CreateTripButton from './CreateTripButton'
+import { useUserProfile } from '@/hooks/useUserInfo'
 
 const Home = () => {
   const { user } = useUser()
   const { name } = userStore()
   const { userId, accessToken } = authStore()
+  const [userName, setUserName] = useState(name)
+  // 홈화면 유저 이름 및 정보 get api 백엔드 연결 예정 주석 처리.
+  // 현재 userStore 상태 값이 비어있다면, 로그인을 한 유저 이므로, userProfile api 요청을 할 것임.
+  // if (userName === '' && accessToken) {
+  //   setUserName(useUserProfile(accessToken).data?.data.userName)
+  // }
+
   const { logout } = useAuth()
   const navigate = useNavigate()
   const handleLogout = () => {
@@ -89,7 +97,7 @@ const Home = () => {
       <ContentWrapper>
         <SearchBox>
           <Greeting>
-            <span>{name}</span>님, 반가워요!
+            <span>{userName}</span>님, 반가워요!
           </Greeting>
 
           <HomeInputField
