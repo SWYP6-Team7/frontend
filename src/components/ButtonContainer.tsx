@@ -14,26 +14,14 @@ const ButtonContainer = ({
   paddingTop = 16,
   blur
 }: ButtonContainerProps) => {
-  const [padding, setPadding] = useState({
-    bottom: paddingBottom,
-    top: paddingBottom
-  })
   const [sticky, setSticky] = useState(false)
   let initialHeight = window.innerHeight
 
   useEffect(() => {
     window.addEventListener('resize', () => {
       if (window.innerHeight < initialHeight) {
-        setPadding(prev => ({
-          ...prev,
-          bottom: 16
-        }))
         setSticky(true)
       } else {
-        setPadding(prev => ({
-          ...prev,
-          bottom: paddingBottom
-        }))
         setSticky(false)
       }
     })
@@ -48,16 +36,8 @@ const ButtonContainer = ({
         let windowHeight = window.innerHeight
         let keyboardHeight = windowHeight - visualViewportHeight
         if (keyboardHeight !== 0) {
-          setPadding(prev => ({
-            ...prev,
-            bottom: keyboardHeight + 16
-          }))
           setSticky(true)
         } else {
-          setPadding(prev => ({
-            ...prev,
-            bottom: paddingBottom
-          }))
           setSticky(false)
         }
       })
@@ -92,7 +72,10 @@ const Container = styled.div<{
   padding: 0 24px;
   background-color: white;
   backdrop-filter: ${props => (props.blur ? props.blur : 'none')};
-  padding-top: ${props => Math.abs(props.paddingTop / 844) * 100}svh;
+  padding-top: ${props =>
+    props.sticky
+      ? Math.abs(16 / 844) * 100
+      : Math.abs(props.paddingTop / 844) * 100}svh;
   padding-bottom: ${props => Math.abs(props.paddingBottom / 844) * 100}svh;
 
   width: calc(100%);
