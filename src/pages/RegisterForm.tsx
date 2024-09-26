@@ -261,8 +261,6 @@ const Container = styled.form`
   padding: 0 24px;
 
   padding-top: 7.1svh;
-
-  position: relative;
 `
 
 const FieldContainer = styled.div`
