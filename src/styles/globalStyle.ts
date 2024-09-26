@@ -12,6 +12,32 @@ export default css`
     font-style: normal;
   }
 
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-Regular.woff2') format('woff2'),
+      url('/fonts/Pretendard-Regular.woff') format('woff');
+    font-weight: 500; /* Regular */
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+      url('/fonts/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600; /* Semi-Bold */
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+      url('/fonts/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 700; /* Semi-Bold */
+  }
+
   :root {
     --dimmed-zindex: 10;
     --alert-zindex: 11;
