@@ -6,8 +6,13 @@ import Spacing from '@/components/Spacing'
 import { createTripStore } from '@/store/client/createTripStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import {
+  useInputScroll,
+  useTextAreaScroll
+} from '@/hooks/createTrip/useInputScroll'
 
 const CreateTripIntroduce = () => {
   const {
@@ -19,6 +24,11 @@ const CreateTripIntroduce = () => {
   const [title, setTitle] = useState(initTitle)
   const [details, setDetails] = useState(initDetails)
   const navigate = useNavigate()
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+
+  useTextAreaScroll(textAreaRef)
+
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
   }
@@ -53,6 +63,7 @@ const CreateTripIntroduce = () => {
       <DetailTitle>소개글</DetailTitle>
       <Spacing size={8} />
       <DetailTextArea
+        ref={textAreaRef}
         value={details}
         onChange={e => setDetails(e.target.value)}
         placeholder="어떤 여행을 떠나실 예정인가요?
