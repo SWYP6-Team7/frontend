@@ -19,7 +19,7 @@ const RECOMMEND_TAGS2 = ['유럽', '일본']
 const SearchTravel = () => {
   const [keyword, setKeyword] = useState('')
   const { keyword: finalKeyword, setKeyword: setFinalKeyword } = searchStore()
-
+  const [showRelationKeyword, setShowRelationKeyword] = useState(true)
   const [ref, inView] = useInView()
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
     useSearch({
@@ -31,12 +31,19 @@ const SearchTravel = () => {
       !isFetching && hasNextPage && fetchNextPage()
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage])
-
+  console.log('Data', data, finalKeyword)
   useEffect(() => {
     if (finalKeyword !== '') {
       refetch()
     }
   }, [finalKeyword, refetch])
+
+  useEffect(() => {
+    if (finalKeyword !== '' && data && finalKeyword !== keyword) {
+      setShowRelationKeyword(true)
+      setFinalKeyword('')
+    }
+  }, [finalKeyword, JSON.stringify(data), keyword])
 
   const handleRemoveValue = () => {
     setKeyword('')
@@ -52,7 +59,9 @@ const SearchTravel = () => {
   }
 
   const onClickRelationKeyword = (keyword: string) => {
+    setKeyword(keyword)
     setFinalKeyword(keyword)
+    setShowRelationKeyword(false)
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -135,11 +144,15 @@ const SearchTravel = () => {
         <>
           {keyword.length > 0 ? (
             <>
-              <Spacing size={29} />
-              <RelationKeywordList
-                onClick={onClickRelationKeyword}
-                keyword={keyword}
-              />
+              {showRelationKeyword && (
+                <>
+                  <Spacing size={29} />
+                  <RelationKeywordList
+                    onClick={onClickRelationKeyword}
+                    keyword={keyword}
+                  />
+                </>
+              )}
             </>
           ) : (
             <>

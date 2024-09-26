@@ -8,6 +8,7 @@ import CategoryButton from '@/components/CategoryButton'
 import Spacing from '@/components/Spacing'
 import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
+import ButtonContainer from '@/components/ButtonContainer'
 const TAGCOUNT = 18
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
@@ -101,8 +102,7 @@ const RegisterTripStyle = () => {
         </StyleBtns>
       </TripStyleContainer>
 
-      <Spacing size={100} />
-      <ButtonWrapper width={newRightPosition}>
+      <ButtonContainer blur={'blur(1.5px)'}>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -112,8 +112,7 @@ const RegisterTripStyle = () => {
             boxShadow: 'rgba(170, 170, 170, 0.1)'
           }}
         />
-      </ButtonWrapper>
-      <BlurSpacing size={40} />
+      </ButtonContainer>
     </RegisterTripStyleWrapper>
   )
 }
@@ -145,6 +144,8 @@ const BlurSpacing = styled(Spacing)`
 
 const RegisterTripStyleWrapper = styled.div`
   padding: 0px 24px;
+
+  position: relative;
   min-height: calc(100svh - 68px - 30px);
 `
 const StepIconContainer = styled.div`
