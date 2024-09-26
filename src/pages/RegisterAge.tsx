@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { authStore } from '@/store/client/authStore'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 import { palette } from '@/styles/palette'
+import ButtonContainer from '@/components/ButtonContainer'
 // // 전화번호 유효성 검사.
 // const phoneNumberValid = z
 //   .string() // 문자열로 시작
@@ -75,7 +76,7 @@ const RegisterAge = () => {
         </AgeList>
       </AgeStep>
       <Outlet context={{ setGenderCheck }} />
-      <ButtonWrapper>
+      <ButtonContainer>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -93,7 +94,7 @@ const RegisterAge = () => {
                 }
           }
         />
-      </ButtonWrapper>
+      </ButtonContainer>
     </RegisterAgeWrapper>
   )
 }
@@ -109,6 +110,8 @@ const AgeList = styled.div`
 
 const RegisterAgeWrapper = styled.div`
   padding: 0px 24px;
+
+  position: relative;
   min-height: calc(100svh - 68px - 30px);
 `
 const StepIconContainer = styled.div`

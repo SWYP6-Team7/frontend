@@ -38,11 +38,16 @@ const trips = [
   }
 ]
 export const homeHandler = [
-  http.get('/api/availableTrip', async ({ request }) => {
+  http.get('/api/travels/recent', async ({ request }) => {
     return HttpResponse.json(trips, { status: 200 })
   }),
-  http.get('/api/tripRecommendation', async ({ request }) => {
+  http.get('/api/travels/recommend', async ({ request }) => {
     return HttpResponse.json(trips, { status: 200 })
+  }),
+  http.get(`/api/profile/me`, async ({ request }) => {
+    const url = new URL(request.url)
+    const accessToken = url.searchParams.get('accessToken') as string
+    return HttpResponse.json('모잉', { status: 200 })
   }),
   http.post(`/api/toggleBookmark`, async ({ request }) => {
     const url = new URL(request.url)

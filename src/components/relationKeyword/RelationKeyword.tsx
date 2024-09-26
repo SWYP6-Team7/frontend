@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import SearchIcon from '../icons/SearchIcon'
 import RelationSearchIcon from '../icons/RelationSearchIcon'
 import { splitByKeyword } from '@/utils/search'
 import { palette } from '@/styles/palette'
@@ -11,6 +10,7 @@ interface RelationKeyowrdProps {
 
 const RelationKeyword = ({ data, keyword }: RelationKeyowrdProps) => {
   const matchingKeyword = splitByKeyword(keyword, data)
+
   return (
     <Container>
       <RelationSearchIcon />

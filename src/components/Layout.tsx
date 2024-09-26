@@ -10,7 +10,7 @@ const Layout = () => {
   const { pathname } = useLocation()
 
   const { userId, accessToken } = authStore()
-
+  console.log(userId, accessToken, '!!')
   return (
     <Container pathname={pathname}>
       <Body pathname={pathname}>

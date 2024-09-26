@@ -9,6 +9,7 @@ import InputField from '@/components/designSystem/input/InputField'
 import { isValid, z } from 'zod'
 import InfoText from '@/components/designSystem/text/InfoText'
 import Spacing from '@/components/Spacing'
+import ButtonContainer from '@/components/ButtonContainer'
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
@@ -73,7 +74,7 @@ const RegisterName = () => {
         </div>
       </div>
 
-      <ButtonWrapper>
+      <ButtonContainer>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -102,7 +103,7 @@ const RegisterName = () => {
                   }
           }
         />
-      </ButtonWrapper>
+      </ButtonContainer>
     </RegisterNameWrapper>
   )
 }
