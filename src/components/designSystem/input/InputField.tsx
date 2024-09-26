@@ -4,6 +4,7 @@ import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import React, { FocusEventHandler, forwardRef, useState } from 'react'
 import RemoveButton from './RemoveButton'
+import { palette } from '@/styles/palette'
 
 // React.InputHTMLAttributes<HTMLInputElement
 // input element의 property 타입들도 상속받아서 사용할 수 있음
@@ -12,6 +13,7 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   success?: boolean
   shake?: boolean
   height?: number
+  icon?: React.ReactNode
   handleRemoveValue: () => void
 }
 
@@ -42,6 +44,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
       hasError = false,
       success = false,
       shake = false,
+      icon = undefined,
       handleRemoveValue,
       onFocus,
       onBlur,
@@ -55,12 +58,16 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
     // 우선순위 1.에러가 있는지? 2. 포커싱 되어있는지
     const borderColor = hasError
       ? '#ED1E1E'
-      : success
-        ? 'rgb(62,141,0)'
-        : focused || props.value !== ''
-          ? '#1A1A1A'
-          : '#CDCDCD'
-    const bgColor = hasError ? '#FFF7F7' : success ? '#FCFFFA' : '#FFFFFF'
+      : focused
+        ? palette.keycolor
+        : 'none'
+    const bgColor = hasError
+      ? '#FFF7F7'
+      : focused
+        ? '#FFF7F7'
+        : props.value === ''
+          ? palette.검색창
+          : '#F5F5F5'
 
     const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
       setFocused(true)
@@ -78,6 +85,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
         bgColor={bgColor}
         height={height}
         borderColor={borderColor}>
+        {icon && <IconContainer>{icon}</IconContainer>}
         <Input
           bgColor={bgColor}
           ref={ref}
@@ -145,6 +153,10 @@ const Input = styled.input<InputProps>`
   font-size: 16px;
   letter-spacing: -0.04px;
   border: #cdcdcd;
+`
+
+const IconContainer = styled.div`
+  margin-right: 11px;
 `
 
 export default InputField

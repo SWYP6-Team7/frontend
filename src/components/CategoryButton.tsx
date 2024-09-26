@@ -29,7 +29,8 @@ const CategoryButton = ({
   addStyle = {
     backgroundColor: palette.검색창,
     color: palette.기본,
-    height: '42px'
+    height: '42px',
+    border: `1px solid ${palette.검색창}`
   },
   onClick
 }: CategoryButtonProps) => {
@@ -51,10 +52,10 @@ const CategoryButton = ({
 }
 
 const CategoryButtonContainer = styled.button`
-  padding: 10px 20px 10px 20px;
+  padding: 10px 20px;
   border-radius: 30px;
   box-sizing: border-box;
-  border: 1px;
+
   display: flex;
   color: rgba(52, 52, 52, 1);
   font-size: 16px;

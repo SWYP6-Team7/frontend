@@ -11,6 +11,7 @@ import styled from '@emotion/styled'
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
+import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
 
 const RECOMMEND_TAGS1 = ['유럽', '일본', '제주']
 const RECOMMEND_TAGS2 = ['유럽', '일본']
@@ -18,7 +19,7 @@ const RECOMMEND_TAGS2 = ['유럽', '일본']
 const SearchTravel = () => {
   const [keyword, setKeyword] = useState('')
   const { keyword: finalKeyword, setKeyword: setFinalKeyword } = searchStore()
-  const [success, setSuccess] = useState(false)
+  const [showRelationKeyword, setShowRelationKeyword] = useState(true)
   const [ref, inView] = useInView()
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
     useSearch({
@@ -30,12 +31,19 @@ const SearchTravel = () => {
       !isFetching && hasNextPage && fetchNextPage()
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage])
-
+  console.log('Data', data, finalKeyword)
   useEffect(() => {
     if (finalKeyword !== '') {
       refetch()
     }
   }, [finalKeyword, refetch])
+
+  useEffect(() => {
+    if (finalKeyword !== '' && data && finalKeyword !== keyword) {
+      setShowRelationKeyword(true)
+      setFinalKeyword('')
+    }
+  }, [finalKeyword, JSON.stringify(data), keyword])
 
   const handleRemoveValue = () => {
     setKeyword('')
@@ -50,16 +58,10 @@ const SearchTravel = () => {
     refetch()
   }
 
-  const onFocus = () => {
-    setSuccess(true)
-  }
-
-  const onBlur = () => {
-    setSuccess(false)
-  }
-
   const onClickRelationKeyword = (keyword: string) => {
+    setKeyword(keyword)
     setFinalKeyword(keyword)
+    setShowRelationKeyword(false)
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -72,10 +74,7 @@ const SearchTravel = () => {
   return (
     <Container>
       <Spacing size={'4.2svh'} />
-      <InputField
-        onBlur={onBlur}
-        onFocus={onFocus}
-        success={success}
+      <CreateTripInputField
         value={keyword}
         onChange={changeKeyword}
         onKeyDown={handleKeyDown}
@@ -145,11 +144,15 @@ const SearchTravel = () => {
         <>
           {keyword.length > 0 ? (
             <>
-              <Spacing size={29} />
-              <RelationKeywordList
-                onClick={onClickRelationKeyword}
-                keyword={keyword}
-              />
+              {showRelationKeyword && (
+                <>
+                  <Spacing size={29} />
+                  <RelationKeywordList
+                    onClick={onClickRelationKeyword}
+                    keyword={keyword}
+                  />
+                </>
+              )}
             </>
           ) : (
             <>

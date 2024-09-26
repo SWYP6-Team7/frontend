@@ -1,25 +1,31 @@
 import Button from '@/components/Button'
+import ButtonContainer from '@/components/ButtonContainer'
 import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
 import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
 import Spacing from '@/components/Spacing'
 import { createTripStore } from '@/store/client/createTripStore'
-import { searchStore } from '@/store/client/searchStore'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function CreateTripPlace() {
   const [keyword, setKeyword] = useState('')
+  const [showRelationList, setShowRelationList] = useState(true)
   const navigate = useNavigate()
   const { addLocation } = createTripStore()
+  // const { data, isLoading } = useRelationKeyword(keyword)
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
+    if (!showRelationList) {
+      setShowRelationList(true)
+    }
   }
 
   const clickRelationKeyword = (keyword: string) => {
     setKeyword(keyword)
+    setShowRelationList(false)
   }
 
   const handleRemoveValue = () => setKeyword('')
@@ -29,6 +35,13 @@ export default function CreateTripPlace() {
     navigate('/createTripIntroduce')
   }
 
+  // const isMatchedKeyword = useMemo(() => {
+  //   if (data) {
+  //     return data.includes(keyword)
+  //   } else {
+  //     return false
+  //   }
+  // }, [keyword, data?.length])
   return (
     <Container>
       <StepIconContainer>
@@ -44,11 +57,15 @@ export default function CreateTripPlace() {
       />
       {keyword.length > 0 && (
         <>
-          <Spacing size={16} />
-          <RelationKeywordList
-            onClick={clickRelationKeyword}
-            keyword={keyword}
-          />
+          {showRelationList && (
+            <>
+              <Spacing size={16} />
+              <RelationKeywordList
+                onClick={clickRelationKeyword}
+                keyword={keyword}
+              />
+            </>
+          )}
         </>
       )}
       <ButtonContainer>
@@ -71,18 +88,18 @@ export default function CreateTripPlace() {
   )
 }
 
-const ButtonContainer = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+// const ButtonContainer = styled.div`
+//   position: absolute;
+//   left: 0;
+//   bottom: 0;
+//   width: 100%;
 
-  position: absolute;
-  padding: 0 24px;
-  background-color: white;
-  padding-bottom: 40px;
-  left: 0;
-`
+//   position: absolute;
+//   padding: 0 24px;
+//   background-color: white;
+//   padding-bottom: 40px;
+//   left: 0;
+// `
 
 const StepIconContainer = styled.div`
   margin-top: 24px;
