@@ -111,7 +111,6 @@ const AgeList = styled.div`
 const RegisterAgeWrapper = styled.div`
   padding: 0px 24px;
 
-  position: relative;
   min-height: calc(100svh - 68px - 30px);
 `
 const StepIconContainer = styled.div`

@@ -1,3 +1,4 @@
+import useKeyboardResizeEffect from '@/hooks/useKeyboardResizeEffect'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 
@@ -14,41 +15,9 @@ const ButtonContainer = ({
   paddingTop = 16,
   blur
 }: ButtonContainerProps) => {
-  const [sticky, setSticky] = useState(false)
-  let initialHeight = window.innerHeight
-
-  useEffect(() => {
-    window.addEventListener('resize', () => {
-      if (window.innerHeight < initialHeight) {
-        setSticky(true)
-      } else {
-        setSticky(false)
-      }
-    })
-    return () => {
-      window.removeEventListener('resize', () => {})
-    }
-  }, [])
-  useEffect(() => {
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', () => {
-        let visualViewportHeight = window.visualViewport?.height || 0
-        let windowHeight = window.innerHeight
-        let keyboardHeight = windowHeight - visualViewportHeight
-        if (keyboardHeight !== 0) {
-          setSticky(true)
-        } else {
-          setSticky(false)
-        }
-      })
-    }
-    return () => {
-      window?.visualViewport?.removeEventListener('resize', () => {})
-    }
-  }, [])
+  useKeyboardResizeEffect()
   return (
     <Container
-      sticky={sticky}
       paddingBottom={paddingBottom}
       paddingTop={paddingTop}
       blur={blur}>
@@ -61,21 +30,17 @@ const Container = styled.div<{
   paddingBottom: number
   paddingTop: number
   blur?: string
-  sticky: boolean
 }>`
   display: flex;
   align-items: center;
   gap: 16px;
   left: 0;
   bottom: 0;
-  position: ${props => (props.sticky ? 'sticky' : 'absolute')};
+  position: absolute;
   padding: 0 24px;
   background-color: white;
   backdrop-filter: ${props => (props.blur ? props.blur : 'none')};
-  padding-top: ${props =>
-    props.sticky
-      ? Math.abs(16 / 844) * 100
-      : Math.abs(props.paddingTop / 844) * 100}svh;
+  padding-top: ${props => Math.abs(props.paddingTop / 844) * 100}svh;
   padding-bottom: ${props => Math.abs(props.paddingBottom / 844) * 100}svh;
 
   width: calc(100%);
