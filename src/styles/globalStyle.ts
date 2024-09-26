@@ -12,42 +12,6 @@ export default css`
     font-style: normal;
   }
 
-  @font-face {
-    font-family: 'Pretendard';
-    src:
-      url('/fonts/Pretendard-Medium.woff2') format('woff2'),
-      url('/fonts/Pretendard-Medium.woff') format('woff');
-    font-weight: 500; /* Medium */
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src:
-      url('/fonts/Pretendard-Bold.woff2') format('woff2'),
-      url('/fonts/Pretendard-Bold.woff') format('woff');
-    font-weight: 700; /* Bold */
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src:
-      url('/fonts/Pretendard-Light.woff2') format('woff2'),
-      url('/fonts/Pretendard-Light.woff') format('woff');
-    font-weight: 300; /* Light */
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src:
-      url('/fonts/Pretendard-ExtraBold.woff2') format('woff2'),
-      url('/fonts/Pretendard-ExtraBold.woff') format('woff');
-    font-weight: 800; /* Extra Bold */
-    font-style: normal;
-  }
-
   :root {
     --dimmed-zindex: 10;
     --alert-zindex: 11;
