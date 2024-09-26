@@ -5,10 +5,49 @@ export default css`
   @import url('https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap');
   @font-face {
     font-family: 'Pretendard';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-      format('woff');
+    src:
+      url('/fonts/Pretendard-Regular.woff2') format('woff2'),
+      url('/fonts/Pretendard-Regular.woff') format('woff');
+    font-weight: 400; /* Regular */
     font-style: normal;
   }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-Medium.woff2') format('woff2'),
+      url('/fonts/Pretendard-Medium.woff') format('woff');
+    font-weight: 500; /* Medium */
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-Bold.woff2') format('woff2'),
+      url('/fonts/Pretendard-Bold.woff') format('woff');
+    font-weight: 700; /* Bold */
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-Light.woff2') format('woff2'),
+      url('/fonts/Pretendard-Light.woff') format('woff');
+    font-weight: 300; /* Light */
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-ExtraBold.woff2') format('woff2'),
+      url('/fonts/Pretendard-ExtraBold.woff') format('woff');
+    font-weight: 800; /* Extra Bold */
+    font-style: normal;
+  }
+
   :root {
     --dimmed-zindex: 10;
     --alert-zindex: 11;
@@ -121,7 +160,7 @@ export default css`
   }
   body {
     line-height: 1;
-    font-family: 'Pretendard';
+    font-family: 'Pretendard', sans-serif;
     letter-spacing: -0.4px !important;
   }
   ol,
