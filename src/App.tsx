@@ -20,6 +20,7 @@ import CreateTripDetail from './pages/CreateTrip/CreateTripDetail/CreateTripDeta
 import CreateTripPlace from './pages/CreateTrip/CreateTripPlace'
 import CreateTripIntroduce from './pages/CreateTrip/CreateTripIntroduce'
 import RegisterAge from './pages/RegisterAge'
+import ApplyTrip from './pages/ApplyTrip'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -108,6 +109,10 @@ export const router = createBrowserRouter([
       {
         path: 'createTripDetail',
         element: <CreateTripDetail />
+      },
+      {
+        path: 'trip/apply/:travelNumber',
+        element: <ApplyTrip />
       }
     ]
   }
