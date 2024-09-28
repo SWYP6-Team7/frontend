@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import BackIcon from './icons/BackIcon'
 import { useMatch, useNavigate, useLocation } from 'react-router-dom'
+import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -9,6 +10,7 @@ const Header = () => {
   const isRegister = location.pathname.startsWith('/register')
   const isCreateTrip = location.pathname.startsWith('/createTrip')
   const isSearch = location.pathname === '/search/travel'
+  const isTripDetail = location.pathname.startsWith('/trip/detail')
   const handleBack = () => {
     navigate(-1)
   }
@@ -27,6 +29,7 @@ const Header = () => {
         <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
       )}
       {location.pathname != '/registerTripStyle' && <VoidArea />}
+      {isTripDetail && <TripDetailHeader />}
     </HeaderContainer>
   )
 }
@@ -44,9 +47,9 @@ const HeaderContainer = styled.header`
   padding: 20px 24px;
   background-color: transparent;
   display: flex;
-
   justify-content: space-between;
   align-items: center;
+  margin-top: 32px; // 헤더 높이 100px.
 `
 
 const Title = styled.h2`

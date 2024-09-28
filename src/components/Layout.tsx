@@ -34,7 +34,11 @@ const Body = styled.div<{ pathname: string }>`
   position: relative;
 
   background-color: ${props =>
-    props.pathname === '/' ? '#f0f0f0' : `${palette.BG}`};
+    props.pathname === '/'
+      ? '#f0f0f0'
+      : props.pathname.startsWith('/trip/detail')
+        ? `${palette.검색창}`
+        : `${palette.BG}`};
 
   @media (max-width: 440px) {
     width: 100svw;
