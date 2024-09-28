@@ -2,10 +2,12 @@ import { http, HttpResponse } from 'msw'
 import { homeHandler } from './homeHandler'
 import { NoSearchData, SearchData1, SearchData2, SearchData3 } from './data'
 import { searchHandler } from './serachHandler'
+import { tripDetailHandler } from './tripDetailHandler'
 
 export const handlers = [
   ...homeHandler,
   ...searchHandler,
+  ...tripDetailHandler,
   http.post('/api/login', async ({ request }) => {
     try {
       const formData = (await request.json()) as {
