@@ -5,7 +5,9 @@ interface ButtonProps {
     backgroundColor?: string
     color?: string
     boxShadow?: string
+    fontWeight?: string
   }
+  children?: React.ReactNode
   disabled?: boolean
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
@@ -23,10 +25,12 @@ const Button = ({
   addStyle = {
     backgroundColor: 'rgba(62, 141, 0, 1)',
     color: 'white',
-    boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)'
+    boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
+    fontWeight: '700'
   },
   onClick = () => {},
-  disabled = false
+  disabled = false,
+  children
 }: ButtonProps) => {
   return (
     <ButtonContainer
@@ -34,6 +38,7 @@ const Button = ({
       onClick={onClick}
       css={addStyle}>
       {text}
+      {children}
     </ButtonContainer>
   )
 }
@@ -42,9 +47,11 @@ const ButtonContainer = styled.button`
   width: 100%;
   height: 48px;
   border-radius: 40px;
-  font-weight: 700;
+  justify-content: center;
   font-size: 18px;
   padding: 10px 20px 10px 20px;
+  display: flex;
+  align-items: center;
 `
 
 export default Button
