@@ -377,3 +377,204 @@ export const cities = [
   // 총 300개를 위한 추가 도시
   // (리스트가 너무 길어 생략 가능)
 ]
+export const notificationList1 = {
+  content: [
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-28 18:56',
+      content: '김모잉님이 참가를 희망했어요.\n수락하시려면 눌러주세요.',
+      isRead: false,
+      travelNumber: 10,
+      travelTitle: '이탈리아 여행 갈 사람 구해요',
+      travelDueDate: '2025-03-15'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-28 15:04',
+      content: '여행 신청이 거절되었어요.\n다른 여행을 찾아보세요!',
+      isRead: false,
+      travelNumber: 9,
+      travelTitle: '스페인 같이 여행 갈 사람 구해요',
+      travelDueDate: '2025-03-15'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-28 15:03',
+      content: '여행 신청이 수락되었어요.',
+      isRead: false,
+      travelNumber: 8,
+      travelTitle: '스위스 같이 여행 갈 사람 구해요',
+      travelDueDate: '2025-03-15'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-27 12:34',
+      content: '박모씨가 참가 신청했어요.',
+      isRead: false,
+      travelNumber: 7,
+      travelTitle: '프랑스 여행 동행 찾습니다',
+      travelDueDate: '2025-02-10'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-26 09:00',
+      content: '참가자가 수락되었어요.',
+      isRead: false,
+      travelNumber: 6,
+      travelTitle: '미국 여행 동행 구해요',
+      travelDueDate: '2025-01-20'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-25 15:55',
+      content: '참가자가 거절되었어요.',
+      isRead: true,
+      travelNumber: 5,
+      travelTitle: '캐나다 여행 동행 찾습니다',
+      travelDueDate: '2025-01-15'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-24 10:12',
+      content: '여행 신청이 완료되었습니다.',
+      isRead: true,
+      travelNumber: 4,
+      travelTitle: '호주 여행 동행 구해요',
+      travelDueDate: '2025-01-05'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-23 18:20',
+      content: '참가 신청이 수락되었습니다.',
+      isRead: true,
+      travelNumber: 3,
+      travelTitle: '독일 여행 동행 구합니다',
+      travelDueDate: '2024-12-31'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-22 11:11',
+      content: '여행 신청이 거절되었습니다.',
+      isRead: true,
+      travelNumber: 2,
+      travelTitle: '일본 여행 동행 찾습니다',
+      travelDueDate: '2024-12-15'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-21 08:45',
+      content: '김모영님이 여행에 참가를 신청했어요.',
+      isRead: true,
+      travelNumber: 1,
+      travelTitle: '중국 여행 동행 구합니다',
+      travelDueDate: '2024-12-01'
+    }
+  ],
+  page: {
+    size: 10,
+    number: 0,
+    totalElements: 20,
+    totalPages: 2
+  }
+}
+
+export const notificationList2 = {
+  content: [
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-20 14:30',
+      content: '이모양님이 여행 참가를 신청했습니다.',
+      isRead: true,
+      travelNumber: 11,
+      travelTitle: '인도 여행 동행 구합니다',
+      travelDueDate: '2024-12-20'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-19 17:30',
+      content: '참가 신청이 수락되었습니다.',
+      isRead: true,
+      travelNumber: 12,
+      travelTitle: '태국 여행 동행 찾습니다',
+      travelDueDate: '2024-12-15'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-18 09:30',
+      content: '참가자가 거절되었습니다.',
+      isRead: true,
+      travelNumber: 13,
+      travelTitle: '러시아 여행 동행 구합니다',
+      travelDueDate: '2024-12-10'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-17 11:00',
+      content: '참가 신청이 완료되었습니다.',
+      isRead: true,
+      travelNumber: 14,
+      travelTitle: '필리핀 여행 동행 찾습니다',
+      travelDueDate: '2024-11-30'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-16 18:45',
+      content: '참가자가 수락되었습니다.',
+      isRead: true,
+      travelNumber: 15,
+      travelTitle: '베트남 여행 동행 구합니다',
+      travelDueDate: '2024-11-20'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-15 08:30',
+      content: '참가 신청이 거절되었습니다.',
+      isRead: true,
+      travelNumber: 16,
+      travelTitle: '싱가포르 여행 동행 찾습니다',
+      travelDueDate: '2024-11-15'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-14 15:20',
+      content: '참가 신청이 수락되었습니다.',
+      isRead: true,
+      travelNumber: 17,
+      travelTitle: '말레이시아 여행 동행 구합니다',
+      travelDueDate: '2024-11-10'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-13 10:10',
+      content: '김모철님이 여행에 참가를 신청했습니다.',
+      isRead: true,
+      travelNumber: 18,
+      travelTitle: '인도네시아 여행 동행 찾습니다',
+      travelDueDate: '2024-11-05'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-12 17:40',
+      content: '참가 신청이 거절되었습니다.',
+      isRead: true,
+      travelNumber: 19,
+      travelTitle: '캄보디아 여행 동행 구합니다',
+      travelDueDate: '2024-11-01'
+    },
+    {
+      title: '여행 참가 신청',
+      createdAt: '2024-09-11 09:55',
+      content: '여행 참가 신청이 완료되었습니다.',
+      isRead: true,
+      travelNumber: 20,
+      travelTitle: '라오스 여행 동행 찾습니다',
+      travelDueDate: '2024-10-25'
+    }
+  ],
+  page: {
+    size: 10,
+    number: 1,
+    totalElements: 20,
+    totalPages: 2
+  }
+}
