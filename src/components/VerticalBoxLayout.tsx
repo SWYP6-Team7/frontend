@@ -153,7 +153,7 @@ const Title = styled.h4`
 const Description = styled.p`
   font-size: 14px;
   color: #ababab;
-  line-weight: 16.71px;
+  line-height: 16.71px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

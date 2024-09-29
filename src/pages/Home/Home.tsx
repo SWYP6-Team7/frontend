@@ -51,6 +51,9 @@ const Home = () => {
 
   const onFocusHandler = () => navigate('/search/travel') // 검색화면으로 이동.
 
+  // 이 부분 추후 유저 id로 대채해야함
+  const onClickAlarm = () => navigate(`/notification/1`)
+
   function daysLeft(dateString: string) {
     // 오늘 날짜
     const today = new Date()
@@ -83,7 +86,7 @@ const Home = () => {
       <HomeHeader scrolled={scrolled}>
         <HeaderTitle>
           <Text>홈</Text>
-          <Alarm>
+          <Alarm onClick={onClickAlarm}>
             <AlarmIcon />
           </Alarm>
         </HeaderTitle>
