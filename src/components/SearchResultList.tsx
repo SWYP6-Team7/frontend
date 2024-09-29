@@ -69,7 +69,7 @@ const SearchResultList = ({
       <Spacing size={15} />
       <Header>
         <CountContainer>
-          총&nbsp;<Count>{searchResult[0].totalElements}건</Count>
+          총&nbsp;<Count>{searchResult[0].page.totalElements}건</Count>
         </CountContainer>
         <ShowSortButton onClick={() => setShowModal(true)}>
           <SortIcon />

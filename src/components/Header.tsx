@@ -11,6 +11,7 @@ const Header = () => {
   const isCreateTrip = location.pathname.startsWith('/createTrip')
   const isSearch = location.pathname === '/search/travel'
   const isTripDetail = location.pathname.startsWith('/trip/detail')
+  const isNotification = location.pathname.startsWith('/notification')
   const handleBack = () => {
     navigate(-1)
   }
@@ -24,6 +25,7 @@ const Header = () => {
         {isRegister && '회원가입'}
         {isSearch && '여행찾기'}
         {isCreateTrip && '여행 만들기'}
+        {isNotification && '알림'}
       </Title>
       {location.pathname == '/registerTripStyle' && (
         <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
