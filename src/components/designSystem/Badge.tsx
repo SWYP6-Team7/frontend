@@ -43,7 +43,7 @@ const Badge = ({
             height,
             fontWeight
           }}>
-          {text} D{daysLeft}
+          {text}&nbsp;D-{daysLeft}
         </BadgeContainer>
       ) : (
         <BadgeContainer
@@ -70,6 +70,7 @@ const BadgeContainer = styled.div`
   justify-content: center;
   line-height: 14.32px;
   gap: 10px;
+  text-align: center;
 `
 
 export default Badge

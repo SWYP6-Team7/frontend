@@ -37,7 +37,7 @@ export default function TripDetailHeader() {
   } = tripDetailStore()
 
   const tripInfos = tripDetail.data?.data
-  console.log(tripInfos, '데이터 맞쥬???')
+
   useEffect(() => {
     if (tripDetail.isFetched) {
       const {

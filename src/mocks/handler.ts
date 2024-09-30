@@ -1,13 +1,21 @@
 import { http, HttpResponse } from 'msw'
 import { homeHandler } from './homeHandler'
-import { NoSearchData, SearchData1, SearchData2, SearchData3 } from './data'
+import {
+  NoSearchData,
+  notificationList1,
+  notificationList2,
+  SearchData1,
+  SearchData2,
+  SearchData3
+} from './data'
 import { searchHandler } from './serachHandler'
 import { tripDetailHandler } from './tripDetailHandler'
-
+import { enrollmentListHandler } from './enrollmentList'
 export const handlers = [
   ...homeHandler,
   ...searchHandler,
   ...tripDetailHandler,
+  ...enrollmentListHandler,
   http.post('/api/login', async ({ request }) => {
     try {
       const formData = (await request.json()) as {
@@ -181,6 +189,19 @@ export const handlers = [
         { error: 'Failed to authenticate with Naver' },
         { status: 500 }
       )
+    }
+  }),
+  http.get('/api/notifications/:userId', async ({ request }) => {
+    const url = new URL(request.url)
+
+    const pageParams = url.searchParams.get('page')
+
+    if (Number(pageParams) === 0) {
+      return HttpResponse.json(notificationList1)
+    } else if (Number(pageParams) === 1) {
+      return HttpResponse.json(notificationList2)
+    } else {
+      return HttpResponse.json([])
     }
   })
 ]

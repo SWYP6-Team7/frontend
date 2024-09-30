@@ -34,7 +34,7 @@ const useAuth = () => {
       })
       const data = response.data
 
-      setLoginData({ userId: data.userId, accessToken: data.accessToken })
+      setLoginData({ userId: 1, accessToken: data.accessToken })
     } catch (error: any) {
       console.error(error)
       throw new Error(error)
@@ -45,7 +45,7 @@ const useAuth = () => {
       const response = await axiosInstance.post('/api/users/new', formData)
       const data = response.data
 
-      setLoginData({ userId: data.userId, accessToken: data.accessToken })
+      setLoginData({ userId: 1, accessToken: data.accessToken })
     } catch (error: any) {
       console.error(error)
       throw new Error(error)

@@ -10,7 +10,9 @@ interface BoxLayoutTagProps {
   borderRadius?: string
   padding?: string
   fontSize?: string
+  fontWeight?: string
 }
+
 const BoxLayoutTag = ({
   text,
   backgroundColor = 'rgba(245, 241, 233, 1)',
@@ -18,11 +20,20 @@ const BoxLayoutTag = ({
   color = 'rgba(156, 129, 83, 1)',
   height = '22px',
   borderRadius = '20px',
-  fontSize = '12px'
+  fontSize = '12px',
+  fontWeight = '600'
 }: BoxLayoutTagProps) => {
   return (
     <Tag
-      css={{ backgroundColor, padding, color, height, borderRadius, fontSize }}>
+      css={{
+        fontWeight,
+        backgroundColor,
+        padding,
+        color,
+        height,
+        borderRadius,
+        fontSize
+      }}>
       {text}
     </Tag>
   )

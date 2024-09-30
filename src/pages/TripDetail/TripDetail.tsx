@@ -14,7 +14,8 @@ import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function TripDetail() {
   const {
@@ -32,17 +33,24 @@ export default function TripDetail() {
     maxPerson,
     genderType,
     isOwner,
-    canApply
+    canApply,
+    travelNumber
   } = tripDetailStore()
   // 일시적인 값
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'
   const minPerson = 1
   const isEditing = false
+  const navigate = useNavigate()
   const [year, month, day] = dueDate.split('-')
   const DAY = new Date(`${year}/${month}/${day}`)
   const dayOfWeek = WEEKDAY[DAY.getDay()]
 
+  const buttonClickHandler = () => {
+    if (isOwner) {
+      navigate(`/trip/enrollmentList/${travelNumber}`)
+    }
+  }
   return (
     <TripDetailWrapper>
       <PostWrapper>
@@ -181,7 +189,9 @@ export default function TripDetail() {
         <ArrowIcon />
       </PersonWrapper>
       <Spacing size={100} />
-      <BtnContainer width={newRightPosition}>
+      <BtnContainer
+        onClick={buttonClickHandler}
+        width={newRightPosition}>
         <Button
           addStyle={{
             backgroundColor: isOwner
