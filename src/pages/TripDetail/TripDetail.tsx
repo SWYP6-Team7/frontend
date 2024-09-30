@@ -1,7 +1,9 @@
 import Button from '@/components/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import Badge from '@/components/designSystem/Badge'
+import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
+import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 
 import ArrowIcon from '@/components/icons/ArrowIcon'
 import Calendar from '@/components/icons/Calendar'
@@ -9,14 +11,19 @@ import PersonIcon from '@/components/icons/PersonIcon'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import SearchFilterTag from '@/components/SearchFilterTag'
 import Spacing from '@/components/Spacing'
+import useEnrollment from '@/hooks/enrollment/useEnrollment'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function TripDetail() {
+  const [showApplyModal, setShowApplyModal] = useState(false)
+  const [showCancelModal, setShowCancelModal] = useState(false)
+  const [isApplyToast, setIsApplyToast] = useState(false)
+  const [isCancelToast, setIsCancelToast] = useState(false)
   const {
     location,
     postStatus,
@@ -33,8 +40,17 @@ export default function TripDetail() {
     genderType,
     isOwner,
     canApply,
-    travelNumber
+    travelNumber,
+    applySuccess
   } = tripDetailStore()
+  const { cancel, cancelMutation } = useEnrollment(travelNumber)
+
+  useEffect(() => {
+    if (applySuccess) {
+      setIsApplyToast(true)
+    }
+  }, [applySuccess])
+
   // 일시적인 값
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'
@@ -47,180 +63,232 @@ export default function TripDetail() {
   const buttonClickHandler = () => {
     if (isOwner) {
       navigate(`/trip/enrollmentList/${travelNumber}`)
+    } else {
+      if (canApply) {
+        setShowApplyModal(true)
+      } else {
+        setShowCancelModal(true)
+      }
+    }
+  }
+  const onClickCancelApply = () => {
+    if (canApply) {
+      cancel(canApply)
+      if (cancelMutation.isSuccess) {
+        setIsCancelToast(true)
+      }
     }
   }
   return (
-    <TripDetailWrapper>
-      <PostWrapper>
-        <MainContent>
-          <BadgeContainer>
-            <PlaceBadge>
-              <PlaceIcon width={14} />
-              <div>{location}</div>
-            </PlaceBadge>
-            <Badge
-              isDueDate={false}
-              text={'진행중'}
-              height="22px"
-              backgroundColor={palette.비강조4}
-              color={palette.비강조}
-              fontWeight="600"
-            />
-          </BadgeContainer>
-          <ProfileContainer>
-            {/* 프로필 */}
-            <RoundedImage
-              src={''}
-              size={40}
-            />
-            <div css={{ marginLeft: '8px' }}>
-              <UserName>{userName}</UserName>
-              <div
-                css={{
-                  fontWeight: '400',
-                  fontSize: '14px',
-                  lineHeight: '16.71px',
-                  color: palette.비강조
-                }}>
-                {dayjs().diff(dayjs(createdAt, 'YYYY년MM월DD일'), 'day')}시간 전
-              </div>
-            </div>
-          </ProfileContainer>
-          {/* 제목  */}
-          <Title>{title}</Title>
-          {/* 내용 */}
-          <Details>{details}</Details>
-          {/*태그   */}
-          <TagContainer>
-            {tags.map((tag, idx) => (
+    <>
+      <ResultToast
+        height={80}
+        isShow={isCancelToast}
+        setIsShow={setIsCancelToast}
+        text="여행 신청이 취소 되었어요."
+      />
+      <ResultToast
+        height={80}
+        isShow={isApplyToast}
+        setIsShow={setIsApplyToast}
+        text="여행 신청이 완료 되었어요."
+      />
+      <CheckingModal
+        isModalOpen={showApplyModal}
+        onClick={() => navigate(`/trip/apply/${travelNumber}`)}
+        modalMsg="여행에 참여한 멤버만 볼 수 있어요.
+여행 참가 신청을 할까요?"
+        modalTitle="참가 신청 안내"
+        modalButtonText="신청하기"
+        setModalOpen={setShowApplyModal}
+      />
+      <CheckingModal
+        isModalOpen={showCancelModal}
+        onClick={onClickCancelApply}
+        modalMsg="아쉬워요🥺
+정말 여행을 취소하시겠어요?"
+        modalTitle="참가 취소"
+        modalButtonText="신청하기"
+        setModalOpen={setShowCancelModal}
+      />
+
+      <TripDetailWrapper>
+        <PostWrapper>
+          <MainContent>
+            <BadgeContainer>
+              <PlaceBadge>
+                <PlaceIcon width={14} />
+                <div>{location}</div>
+              </PlaceBadge>
               <Badge
-                key={tag}
                 isDueDate={false}
-                text={tag}
+                text={'진행중'}
                 height="22px"
                 backgroundColor={palette.비강조4}
                 color={palette.비강조}
-                fontWeight="500"
+                fontWeight="600"
               />
-            ))}
-          </TagContainer>
-        </MainContent>
-        <ViewsETC>
-          <div>신청 {applyPerson}</div>
-          <div css={{ margin: '0px 4px' }}> · </div>
-          <div>관심 {interestPerson}</div>
-          <div css={{ margin: '0px 4px' }}> · </div>
-          <div>조회수 {views}</div>
-        </ViewsETC>
-      </PostWrapper>
-      <CommentWrapper>
-        <div css={{ display: 'flex', alignItems: 'center' }}>
-          <img
-            src="/images/createTripBtn.png"
-            alt=""
-            css={{ marginRight: '13px' }}
-          />
-          <div
-            css={{
-              fontSize: '16px',
-              fontWeight: '600',
-              lineHeight: '14px'
-            }}>
-            멤버 댓글
+            </BadgeContainer>
+            <ProfileContainer>
+              {/* 프로필 */}
+              <RoundedImage
+                src={''}
+                size={40}
+              />
+              <div css={{ marginLeft: '8px' }}>
+                <UserName>{userName}</UserName>
+                <div
+                  css={{
+                    fontWeight: '400',
+                    fontSize: '14px',
+                    lineHeight: '16.71px',
+                    color: palette.비강조
+                  }}>
+                  {dayjs().diff(dayjs(createdAt, 'YYYY년MM월DD일'), 'day')}시간
+                  전
+                </div>
+              </div>
+            </ProfileContainer>
+            {/* 제목  */}
+            <Title>{title}</Title>
+            {/* 내용 */}
+            <Details>{details}</Details>
+            {/*태그   */}
+            <TagContainer>
+              {tags.map((tag, idx) => (
+                <Badge
+                  key={tag}
+                  isDueDate={false}
+                  text={tag}
+                  height="22px"
+                  backgroundColor={palette.비강조4}
+                  color={palette.비강조}
+                  fontWeight="500"
+                />
+              ))}
+            </TagContainer>
+          </MainContent>
+          <ViewsETC>
+            <div>신청 {applyPerson}</div>
+            <div css={{ margin: '0px 4px' }}> · </div>
+            <div>관심 {interestPerson}</div>
+            <div css={{ margin: '0px 4px' }}> · </div>
+            <div>조회수 {views}</div>
+          </ViewsETC>
+        </PostWrapper>
+        <CommentWrapper>
+          <div css={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src="/images/createTripBtn.png"
+              alt=""
+              css={{ marginRight: '13px' }}
+            />
+            <div
+              css={{
+                fontSize: '16px',
+                fontWeight: '600',
+                lineHeight: '14px'
+              }}>
+              멤버 댓글
+            </div>
           </div>
-        </div>
-        <div>
-          <ArrowIcon stroke={palette.비강조3} />
-        </div>
-      </CommentWrapper>
-      <DueDateWrapper>
-        <div
-          css={{ display: 'flex', alignItems: 'center', marginRight: '16px' }}>
-          <Calendar />
-          <ContentTitle>모집 마감일</ContentTitle>
-        </div>
-
-        {/* 뱃지 추가 */}
-        <div
-          css={{
-            display: 'flex',
-            alignItems: 'center'
-          }}>
-          <DueDate>
-            {dueDate.replaceAll('-', '.')}({dayOfWeek})
-          </DueDate>
-          <Badge
-            text={''}
-            daysLeft={dayjs().diff(dayjs(dueDate, 'YYYY년MM월DD일'), 'day')}
-          />
-        </div>
-      </DueDateWrapper>
-      <PersonWrapper>
-        <div css={{ display: 'flex' }}>
+          <div>
+            <ArrowIcon stroke={palette.비강조3} />
+          </div>
+        </CommentWrapper>
+        <DueDateWrapper>
           <div
             css={{
               display: 'flex',
               alignItems: 'center',
-              marginRight: '32px'
+              marginRight: '16px'
             }}>
-            <PersonIcon
-              width={20}
-              height={20}
-              stroke={palette.keycolor}
-            />
-            <ContentTitle>모집 인원</ContentTitle>
+            <Calendar />
+            <ContentTitle>모집 마감일</ContentTitle>
           </div>
 
-          <div css={{ display: 'flex', alignItems: 'center' }}>
-            <PersonStatus>
-              {minPerson}/{maxPerson}
-            </PersonStatus>
+          {/* 뱃지 추가 */}
+          <div
+            css={{
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+            <DueDate>
+              {dueDate.replaceAll('-', '.')}({dayOfWeek})
+            </DueDate>
             <Badge
-              isDueDate={false}
-              text={genderType}
-              backgroundColor={palette.검색창}
-              color={palette.keycolor}
-              fontWeight="600"
+              text={''}
+              daysLeft={dayjs().diff(dayjs(dueDate, 'YYYY년MM월DD일'), 'day')}
             />
           </div>
-        </div>
-        <ArrowIcon />
-      </PersonWrapper>
-      <Spacing size={100} />
-      <BtnContainer
-        onClick={buttonClickHandler}
-        width={newRightPosition}>
-        <Button
-          addStyle={{
-            backgroundColor: isOwner
-              ? minPerson > 0
-                ? palette.keycolor
-                : palette.비강조3
-              : canApply
-                ? palette.keycolor
-                : palette.keycolorBG,
-            color: isOwner
-              ? minPerson > 0
-                ? palette.BG
-                : palette.비강조
-              : canApply
-                ? palette.BG
-                : palette.keycolor,
-            fontWeight: '600'
-          }}
-          text={
-            isOwner
-              ? '참가신청목록'
-              : canApply
-                ? '참가신청하기'
-                : '참가신청취소'
-          }>
-          {isOwner && minPerson > 0 && (
-            <AppliedPersonCircle>{minPerson}</AppliedPersonCircle>
-          )}
-        </Button>
-      </BtnContainer>
-    </TripDetailWrapper>
+        </DueDateWrapper>
+        <PersonWrapper>
+          <div css={{ display: 'flex' }}>
+            <div
+              css={{
+                display: 'flex',
+                alignItems: 'center',
+                marginRight: '32px'
+              }}>
+              <PersonIcon
+                width={20}
+                height={20}
+                stroke={palette.keycolor}
+              />
+              <ContentTitle>모집 인원</ContentTitle>
+            </div>
+
+            <div css={{ display: 'flex', alignItems: 'center' }}>
+              <PersonStatus>
+                {minPerson}/{maxPerson}
+              </PersonStatus>
+              <Badge
+                isDueDate={false}
+                text={genderType}
+                backgroundColor={palette.검색창}
+                color={palette.keycolor}
+                fontWeight="600"
+              />
+            </div>
+          </div>
+          <ArrowIcon />
+        </PersonWrapper>
+        <Spacing size={100} />
+        <BtnContainer
+          onClick={buttonClickHandler}
+          width={newRightPosition}>
+          <Button
+            addStyle={{
+              backgroundColor: isOwner
+                ? minPerson > 0
+                  ? palette.keycolor
+                  : palette.비강조3
+                : canApply
+                  ? palette.keycolor
+                  : palette.keycolorBG,
+              color: isOwner
+                ? minPerson > 0
+                  ? palette.BG
+                  : palette.비강조
+                : canApply
+                  ? palette.BG
+                  : palette.keycolor,
+              fontWeight: '600'
+            }}
+            text={
+              isOwner
+                ? '참가신청목록'
+                : canApply
+                  ? '참가신청하기'
+                  : '참가신청취소'
+            }>
+            {isOwner && minPerson > 0 && (
+              <AppliedPersonCircle>{minPerson}</AppliedPersonCircle>
+            )}
+          </Button>
+        </BtnContainer>
+      </TripDetailWrapper>
+    </>
   )
 }
 const AppliedPersonCircle = styled.div`

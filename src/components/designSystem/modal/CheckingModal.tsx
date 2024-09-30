@@ -8,7 +8,8 @@ interface CheckingModalProps {
   modalTitle: string
   modalButtonText: string
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  setIsSelected: React.Dispatch<React.SetStateAction<boolean>>
+  setIsSelected?: React.Dispatch<React.SetStateAction<boolean>>
+  onClick?: () => void
 }
 // setIsSelectd : 수락, 거절 등 버튼을 눌렀을 때, 상위 컴포넌트에서 api요청 해줌.
 export default function CheckingModal({
@@ -17,6 +18,7 @@ export default function CheckingModal({
   modalTitle,
   modalButtonText,
   setIsSelected,
+  onClick,
   setModalOpen
 }: CheckingModalProps) {
   const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
@@ -41,7 +43,12 @@ export default function CheckingModal({
     }
   }, [])
   const clickHandler = () => {
-    setIsSelected(true)
+    if (setIsSelected) {
+      setIsSelected(true)
+    } else if (onClick) {
+      onClick()
+    }
+
     setModalOpen(false)
   }
   return (

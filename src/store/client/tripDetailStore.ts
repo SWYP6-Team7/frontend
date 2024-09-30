@@ -37,11 +37,18 @@ interface tripDetailState {
   addViews: (views: number) => void
   isOwner: boolean
   addIsOwner: (isOwner: boolean) => void
-  canApply: boolean
-  addCanApply: (canApply: boolean) => void
+  canApply: number | null
+  addCanApply: (canApply: number | null) => void
+  applySuccess: boolean
+  setApplySuccess: (status: boolean) => void
 }
 
 export const tripDetailStore = create<tripDetailState>(set => ({
+  applySuccess: false,
+  setApplySuccess: status => {
+    set({ applySuccess: status })
+  },
+
   travelNumber: 0,
   addTravelNumber: (travelNumber: number) => set({ travelNumber }),
 
@@ -93,6 +100,6 @@ export const tripDetailStore = create<tripDetailState>(set => ({
   isOwner: false,
   addIsOwner: (isOwner: boolean) => set({ isOwner }),
 
-  canApply: false,
-  addCanApply: (canApply: boolean) => set({ canApply })
+  canApply: null,
+  addCanApply: canApply => set({ canApply })
 }))

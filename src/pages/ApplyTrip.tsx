@@ -5,6 +5,7 @@ import TextareaField from '@/components/designSystem/input/TextareaField'
 import useEnrollment from '@/hooks/enrollment/useEnrollment'
 import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import { FormEvent, useState } from 'react'
@@ -14,6 +15,7 @@ const ApplyTrip = () => {
   const [message, setMessage] = useState('')
   const { userId } = authStore()
   const { travelNumber } = useParams()
+  const { setApplySuccess } = tripDetailStore()
   const { apply, applyMutation } = useEnrollment(Number(travelNumber))
   const navigate = useNavigate()
   const handleSubmit = (e: FormEvent) => {
@@ -33,7 +35,8 @@ const ApplyTrip = () => {
       }
       apply({ travelNumber: Number(travelNumber), message })
       if (applyMutation.isSuccess) {
-        navigate('/')
+        setApplySuccess(true)
+        navigate(`/trip/detail/${travelNumber}`)
       }
     } catch (err) {
       console.error(err)
