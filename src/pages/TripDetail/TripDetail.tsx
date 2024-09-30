@@ -23,6 +23,7 @@ export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [isApplyToast, setIsApplyToast] = useState(false)
+  const [isCancelToast, setIsCancelToast] = useState(false)
   const {
     location,
     postStatus,
@@ -42,7 +43,7 @@ export default function TripDetail() {
     travelNumber,
     applySuccess
   } = tripDetailStore()
-  const { cancel, applyMutation } = useEnrollment(travelNumber)
+  const { cancel, cancelMutation } = useEnrollment(travelNumber)
 
   useEffect(() => {
     if (applySuccess) {
@@ -71,14 +72,26 @@ export default function TripDetail() {
     }
   }
   const onClickCancelApply = () => {
-    cancel
+    if (canApply) {
+      cancel(canApply)
+      if (cancelMutation.isSuccess) {
+        setIsCancelToast(true)
+      }
+    }
   }
   return (
     <>
       <ResultToast
+        height={80}
+        isShow={isCancelToast}
+        setIsShow={setIsCancelToast}
+        text="여행 신청이 취소 되었어요."
+      />
+      <ResultToast
+        height={80}
         isShow={isApplyToast}
         setIsShow={setIsApplyToast}
-        text="여행 신천이 완료 되었어요."
+        text="여행 신청이 완료 되었어요."
       />
       <CheckingModal
         isModalOpen={showApplyModal}
