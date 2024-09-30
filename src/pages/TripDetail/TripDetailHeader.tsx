@@ -1,17 +1,21 @@
+import EditAndDeleteModal from '@/components/designSystem/modal/EditAndDeleteModal'
 import AlarmIcon from '@/components/icons/AlarmIcon'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import MoreIcon from '@/components/icons/MoreIcon'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
+import { authStore } from '@/store/client/authStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 // 헤더부터 주최자인지에 따라 화면이 달라서, 헤더에서 여행 정보를 들고 오기.
 export default function TripDetailHeader() {
+  const { userId, accessToken } = authStore()
   const { travelNumber } = useParams<{ travelNumber: string }>()
   const { tripDetail } = useTripDetail(parseInt(travelNumber!))
-  console.log(tripDetail, '!!!!!!!!!!!!!!!!?')
+  const navigate = useNavigate()
+  const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
 
   useEffect(() => {}, [])
   const {
@@ -27,13 +31,15 @@ export default function TripDetailHeader() {
     addPeriodType,
     addTags,
     addPostStatus,
-    addApplyPerson,
-    addCanApply,
-    addInterestPerson,
-    addIsOwner,
-    addViews,
+    addNowPerson,
+    addEnrollCount,
+    addBookmarkCount,
+    addHostUserCheck,
+    addViewCount,
     addTravelNumber,
-    isOwner
+    addEnrollmentNumber,
+    hostUserCheck,
+    addAgeGroup
   } = tripDetailStore()
 
   const tripInfos = tripDetail.data?.data
@@ -54,15 +60,17 @@ export default function TripDetailHeader() {
         periodType,
         tags,
         postStatus,
-        applyPerson,
-        interestPerson,
-        views,
-        isOwner,
-        canApply
+        nowPerson,
+        bookmarkCount,
+        viewCount,
+        hostUserCheck,
+        enrollmentNumber,
+        enrollCount,
+        ageGroup
       } = tripInfos
       addTravelNumber(travelNumber)
-      addApplyPerson(applyPerson)
-      addCanApply(canApply)
+      addEnrollmentNumber(enrollmentNumber)
+      addEnrollCount(enrollCount)
       addCreatedAt(createdAt)
       addUserNumber(userNumber)
       addUserName(userName)
@@ -75,44 +83,46 @@ export default function TripDetailHeader() {
       addPeriodType(periodType)
       addTags(tags)
       addPostStatus(postStatus)
-      addInterestPerson(interestPerson)
-      addViews(views)
-      addIsOwner(isOwner)
+      addBookmarkCount(bookmarkCount)
+      addViewCount(viewCount)
+      addHostUserCheck(hostUserCheck)
+      addNowPerson(nowPerson)
+      addAgeGroup(ageGroup)
     }
   }, [tripDetail.isFetched])
 
-  const alarmClickHandler = () => {
-    console.log('알람 화면 이동.')
-  }
-
   return (
-    <Container isOwner={isOwner}>
-      {isOwner && (
-        <div onClick={alarmClickHandler}>
+    <Container hostUserCheck={hostUserCheck}>
+      {hostUserCheck && (
+        <div onClick={() => navigate(`notification/${userId}`)}>
           <AlarmIcon
             size={23}
             stroke={palette.기본}
           />
         </div>
       )}
-      <div>
+      <div onClick={() => navigate('/bookmark')}>
         <EmptyHeartIcon
           width={22}
           stroke={palette.기본}
         />
       </div>
 
-      {isOwner && (
-        <div>
+      {hostUserCheck && (
+        <div onClick={() => setIsEditBtnClicked(true)}>
           <MoreIcon />
         </div>
       )}
+      <EditAndDeleteModal
+        isOpen={isEditBtnClicked}
+        setIsOpen={setIsEditBtnClicked}
+      />
     </Container>
   )
 }
-const Container = styled.div<{ isOwner: boolean }>`
+const Container = styled.div<{ hostUserCheck: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: ${props => (props.isOwner ? '136px' : 'auto')};
+  width: ${props => (props.hostUserCheck ? '136px' : 'auto')};
 `

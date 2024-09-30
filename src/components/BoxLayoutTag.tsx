@@ -43,7 +43,7 @@ const Tag = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 6px;
+  /* margin-right: 6px; */
 `
 
 export default BoxLayoutTag

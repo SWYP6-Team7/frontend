@@ -1,5 +1,6 @@
 import {
   deleteTripDetail,
+  getCompanions,
   getTripDetail,
   updateTripDetail
 } from '@/api/tripDetail'
@@ -12,8 +13,14 @@ const useTripDetail = (travelNumber: number) => {
   const queryClient = useQueryClient()
   const tripDetail = useQuery({
     queryKey: ['tripDetail', travelNumber],
-    queryFn: () => getTripDetail(travelNumber, accessToken)
-    // enabled: !!travelNumber && !!accessToken
+    queryFn: () => getTripDetail(travelNumber, accessToken),
+    enabled: !!travelNumber && !!accessToken
+  })
+
+  const companions = useQuery({
+    queryKey: ['companions', travelNumber],
+    queryFn: () => getCompanions(travelNumber, accessToken),
+    enabled: !!travelNumber && !!accessToken
   })
 
   const { mutateAsync: updateTripDetailMutation } = useMutation({
@@ -38,7 +45,12 @@ const useTripDetail = (travelNumber: number) => {
     }
   })
 
-  return { tripDetail, updateTripDetailMutation, deleteTripDetailMutation }
+  return {
+    tripDetail,
+    updateTripDetailMutation,
+    deleteTripDetailMutation,
+    companions
+  }
 }
 
 export default useTripDetail

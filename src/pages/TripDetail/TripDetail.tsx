@@ -9,13 +9,15 @@ import PersonIcon from '@/components/icons/PersonIcon'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import SearchFilterTag from '@/components/SearchFilterTag'
 import Spacing from '@/components/Spacing'
+import useSearch from '@/hooks/search/useSearch'
 import { authStore } from '@/store/client/authStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import CompanionsView from './CompanionsView'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function TripDetail() {
   const {
@@ -26,30 +28,35 @@ export default function TripDetail() {
     title,
     details,
     tags,
-    interestPerson,
-    applyPerson,
-    views,
+    bookmarkCount,
+    enrollCount,
+    viewCount,
     dueDate,
     maxPerson,
     genderType,
-    isOwner,
-    canApply,
-    travelNumber
+    hostUserCheck,
+    enrollmentNumber,
+    travelNumber,
+    nowPerson,
+    ageGroup
   } = tripDetailStore()
   // 일시적인 값
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'
-  const minPerson = 1
+
   const isEditing = false
   const navigate = useNavigate()
   const [year, month, day] = dueDate.split('-')
   const DAY = new Date(`${year}/${month}/${day}`)
   const dayOfWeek = WEEKDAY[DAY.getDay()]
-
+  const [personViewClicked, setPersonViewClicked] = useState(false)
   const buttonClickHandler = () => {
-    if (isOwner) {
+    if (hostUserCheck) {
       navigate(`/trip/enrollmentList/${travelNumber}`)
     }
+  }
+  const companionsViewHandler = () => {
+    setPersonViewClicked(true)
   }
   return (
     <TripDetailWrapper>
@@ -108,11 +115,11 @@ export default function TripDetail() {
           </TagContainer>
         </MainContent>
         <ViewsETC>
-          <div>신청 {applyPerson}</div>
+          <div>신청 {enrollCount}</div>
           <div css={{ margin: '0px 4px' }}> · </div>
-          <div>관심 {interestPerson}</div>
+          <div>관심 {bookmarkCount}</div>
           <div css={{ margin: '0px 4px' }}> · </div>
-          <div>조회수 {views}</div>
+          <div>조회수 {viewCount}</div>
         </ViewsETC>
       </PostWrapper>
       <CommentWrapper>
@@ -153,11 +160,13 @@ export default function TripDetail() {
           </DueDate>
           <Badge
             text={''}
-            daysLeft={dayjs().diff(dayjs(dueDate, 'YYYY년MM월DD일'), 'day')}
+            daysLeft={
+              dayjs().diff(dayjs(dueDate, 'YYYY년MM월DD일'), 'day') * -1
+            }
           />
         </div>
       </DueDateWrapper>
-      <PersonWrapper>
+      <PersonWrapper onClick={companionsViewHandler}>
         <div css={{ display: 'flex' }}>
           <div
             css={{
@@ -175,7 +184,7 @@ export default function TripDetail() {
 
           <div css={{ display: 'flex', alignItems: 'center' }}>
             <PersonStatus>
-              {minPerson}/{maxPerson}
+              {nowPerson}/{maxPerson}
             </PersonStatus>
             <Badge
               isDueDate={false}
@@ -194,34 +203,38 @@ export default function TripDetail() {
         width={newRightPosition}>
         <Button
           addStyle={{
-            backgroundColor: isOwner
-              ? minPerson > 0
+            backgroundColor: hostUserCheck
+              ? nowPerson > 0
                 ? palette.keycolor
                 : palette.비강조3
-              : canApply
+              : enrollmentNumber
                 ? palette.keycolor
                 : palette.keycolorBG,
-            color: isOwner
-              ? minPerson > 0
+            color: hostUserCheck
+              ? nowPerson > 0
                 ? palette.BG
                 : palette.비강조
-              : canApply
+              : enrollmentNumber
                 ? palette.BG
                 : palette.keycolor,
             fontWeight: '600'
           }}
           text={
-            isOwner
+            hostUserCheck
               ? '참가신청목록'
-              : canApply
+              : enrollmentNumber
                 ? '참가신청하기'
                 : '참가신청취소'
           }>
-          {isOwner && minPerson > 0 && (
-            <AppliedPersonCircle>{minPerson}</AppliedPersonCircle>
+          {hostUserCheck && nowPerson > 0 && (
+            <AppliedPersonCircle>{nowPerson}</AppliedPersonCircle>
           )}
         </Button>
       </BtnContainer>
+      <CompanionsView
+        isOpen={personViewClicked}
+        setIsOpen={setPersonViewClicked}
+      />
     </TripDetailWrapper>
   )
 }
