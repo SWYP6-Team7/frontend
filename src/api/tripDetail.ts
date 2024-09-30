@@ -7,8 +7,7 @@ export async function getTripDetail(
   accessToken: string | null
 ) {
   try {
-    console.log(travelNumber, '요청감')
-    // if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.get(`/api/travel/detail/${travelNumber}`, {
       headers: getJWTHeader('')
     })

@@ -44,6 +44,45 @@ export async function getEnrollments(
     console.log(err)
   }
 }
+// 최근 열람 조회
+export async function getLastViewed(
+  travelNumber: number,
+  accessToken: string | null
+) {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    return axiosInstance.get(
+      `/api/travel/${travelNumber}/enrollments/last-viewed`,
+      {
+        headers: getJWTHeader(accessToken)
+      }
+    )
+  } catch (err) {
+    console.log(err)
+  }
+}
+// 최근 신청 열람 시점 업데이트
+export async function putLastViewed(
+  travelNumber: number,
+  accessToken: string | null,
+  viewedAt: string
+) {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    return axiosInstance.put(
+      `/api/travel/${travelNumber}/enrollments/last-viewed`,
+      {
+        lastViewAt: viewedAt
+      },
+      {
+        headers: getJWTHeader(accessToken)
+      }
+    )
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // 참가 신청 거절
 export async function rejectEnrollment(
   enrollmentNumber: number,
