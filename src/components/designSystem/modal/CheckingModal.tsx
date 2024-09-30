@@ -24,11 +24,12 @@ export default function CheckingModal({
     const handleClickOutside = (event: MouseEvent) => {
       // 만약 클릭한 곳이 모달이 아닌 경우
       if (
-        isModalOpen &&
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-        setModalOpen(false) // 상태를 false로 변경
+        if (isModalOpen) {
+          setModalOpen(false)
+        } // 상태를 false로 변경
       }
     }
     // 문서에 click 이벤트를 등록

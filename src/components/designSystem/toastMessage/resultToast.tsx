@@ -12,7 +12,7 @@ export default function ResultToast({
   setIsShow,
   text
 }: resultToastProps) {
-  // 1초 후 다시 메시지가 아래로 내려감.
+  //   1초 후 다시 메시지가 아래로 내려감.
   useEffect(() => {
     if (isShow) {
       setTimeout(() => {
@@ -38,9 +38,9 @@ export default function ResultToast({
           <path
             d="M5.40039 9.23268L8.33327 12.1656L13.2214 6.2998"
             stroke="#3E8D00"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
         <Text>{text}</Text>
@@ -53,7 +53,7 @@ const Container = styled.div<{ isShow: boolean }>`
   width: 100%;
   bottom: ${({ isShow }) =>
     isShow
-      ? '40px'
+      ? '20px'
       : '-100px'}; /* Toast 위치: 나타날 때는 40px, 사라질 때는 아래로 사라짐 */
   transition:
     bottom 0.4s ease-in-out,
@@ -63,6 +63,7 @@ const Container = styled.div<{ isShow: boolean }>`
   pointer-events: none; /* Toast는 클릭할 수 없도록함 */
   display: flex;
   justify-content: center;
+  left: 0;
 `
 const ToastMsg = styled.div`
   position: absolute;
