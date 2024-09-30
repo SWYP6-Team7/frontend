@@ -39,9 +39,16 @@ interface tripDetailState {
   addIsOwner: (isOwner: boolean) => void
   canApply: boolean
   addCanApply: (canApply: boolean) => void
+  applySuccess: boolean
+  setApplySuccess: (status: boolean) => void
 }
 
 export const tripDetailStore = create<tripDetailState>(set => ({
+  applySuccess: false,
+  setApplySuccess: status => {
+    set({ applySuccess: status })
+  },
+
   travelNumber: 0,
   addTravelNumber: (travelNumber: number) => set({ travelNumber }),
 

@@ -7,11 +7,10 @@ export async function postEnrollment(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.post('/api/enrollment', data, {
-      headers: getJWTHeader('')
-    })
-    return true
+    //if (!accessToken) throw new Error('로그인을 해주세요.')
+    // return axiosInstance.post('/api/enrollment', data, {
+    //   headers: getJWTHeader('')
+    // })
   } catch (err) {
     console.log(err)
   }
