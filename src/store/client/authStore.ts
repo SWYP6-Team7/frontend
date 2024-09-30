@@ -15,8 +15,8 @@ interface IAuthStore {
 
 // userId와 accessToken을 전역 상태로 관리하는 역할
 export const authStore = create<IAuthStore>(set => ({
-  userId: null,
-  accessToken: null,
+  userId: 1,
+  accessToken: '1',
   setLoginData: ({ userId, accessToken }) => {
     set(state => ({ userId, accessToken }))
   },

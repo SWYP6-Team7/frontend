@@ -9,11 +9,12 @@ import PersonIcon from '@/components/icons/PersonIcon'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import SearchFilterTag from '@/components/SearchFilterTag'
 import Spacing from '@/components/Spacing'
+import { authStore } from '@/store/client/authStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React from 'react'
+
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function TripDetail() {
   const {
@@ -41,6 +42,7 @@ export default function TripDetail() {
   const [year, month, day] = dueDate.split('-')
   const DAY = new Date(`${year}/${month}/${day}`)
   const dayOfWeek = WEEKDAY[DAY.getDay()]
+
   return (
     <TripDetailWrapper>
       <PostWrapper>
