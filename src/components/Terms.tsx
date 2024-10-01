@@ -48,7 +48,11 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
             )}
           </button>
           <TermTitle>(필수) 서비스 이용 약관</TermTitle>
-          <TermMore>보기</TermMore>
+          <a
+            href="/pdf/service_terms(241006).pdf"
+            target="_blank">
+            <TermMore>보기</TermMore>
+          </a>
         </TermContainer>
         <Spacing size={24} />
         <TermContainer>
@@ -63,7 +67,11 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
             )}
           </button>
           <TermTitle>(필수) 개인정보 수집, 이용 동의</TermTitle>
-          <TermMore>보기</TermMore>
+          <a
+            href="/pdf/privacy_terms(241006).pdf"
+            target="_blank">
+            <TermMore>보기</TermMore>
+          </a>
         </TermContainer>
         <Spacing size={111} />
         {check.privacy && check.service ? (
