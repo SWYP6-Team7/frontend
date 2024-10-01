@@ -1,5 +1,6 @@
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -7,8 +8,16 @@ const Footer = () => {
       <Box>
         <Team>TEAM 모잉</Team>
         <Policy>
-          <div>서비스이용약관</div>
-          <div>개인정보처리방침</div>
+          <a
+            href={'/pdf/service_terms(241006).pdf'}
+            target="_blank">
+            서비스이용약관
+          </a>
+          <a
+            href={'/pdf/privacy_policy(241006).pdf'}
+            target="_blank">
+            개인정보처리방침
+          </a>
         </Policy>
       </Box>
     </Container>

@@ -6,6 +6,7 @@ import { keyframes } from '@emotion/react'
 import Spacing from './Spacing'
 import CheckIcon from './icons/CheckIcon'
 import Button from './Button'
+import { palette } from '@/styles/palette'
 
 interface TermsProps {
   closeShowTerms: () => void
@@ -33,7 +34,11 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
         <WhiteXIcon />
       </BackButotn>
       <TermsContainer>
-        <Title>약관에 동의해주세요.</Title>
+        <Title>
+          모잉을 이용하기 위해
+          <br />
+          <GreenText>약관에 동의</GreenText>가 필요해요.
+        </Title>
 
         <Bar />
         <TermContainer>
@@ -76,12 +81,12 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
         <Spacing size={111} />
         {check.privacy && check.service ? (
           <Button
-            text="확인"
+            text="동의합니다"
             onClick={closeShowTerms}
           />
         ) : (
           <Button
-            text="확인"
+            text="동의합니다"
             disabled
             addStyle={{
               backgroundColor: 'rgba(220, 220, 220, 1)',
@@ -146,11 +151,19 @@ const TermsContainer = styled.div`
   position: absolute;
   padding: 0 30px;
 
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 33.6px;
+
   padding-top: 48px;
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
   background-color: white;
   animation: ${slideUp} 0.5s ease-out forwards;
+`
+
+const GreenText = styled.span`
+  color: ${palette.keycolor};
 `
 
 const Title = styled.h2`
@@ -178,17 +191,19 @@ const AllTitle = styled.h4`
 `
 
 const TermTitle = styled.h4`
-  font-weight: 500;
   font-size: 16px;
-  letter-spacing: -0.04px;
+  font-weight: 600;
   flex: 1;
+  line-height: 16px;
 `
 
 const TermMore = styled.div`
   color: rgba(171, 171, 171, 1);
+
   font-size: 14px;
+  font-weight: 500;
   line-height: 16px;
-  letter-spacing: -0.04px;
+
   text-decoration: underline;
 `
 
