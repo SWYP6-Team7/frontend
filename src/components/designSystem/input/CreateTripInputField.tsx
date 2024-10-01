@@ -12,7 +12,7 @@ import { BooleanLiteral } from 'typescript'
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   handleRemoveValue: () => void
   icon?: React.ReactNode
-
+  isRemove?: boolean
   success?: BooleanLiteral
 }
 
@@ -36,7 +36,7 @@ const CreateTripInputField = forwardRef<HTMLInputElement, TextFieldProps>(
     {
       icon,
       handleRemoveValue,
-
+      isRemove = true,
       success = false,
       onFocus,
       onBlur,
@@ -78,7 +78,7 @@ const CreateTripInputField = forwardRef<HTMLInputElement, TextFieldProps>(
           {props.value === '' ? (
             <> </>
           ) : (
-            <RemoveButton onClick={handleRemoveValue} />
+            isRemove && <RemoveButton onClick={handleRemoveValue} />
           )}
         </div>
       </Container>
