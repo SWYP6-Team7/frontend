@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { useStore } from 'zustand'
 import useAuth from '@/hooks/user/useAuth'
 import { checkEmail } from '@/api/user'
+import ButtonContainer from '@/components/ButtonContainer'
 interface ErrorProps {
   email: undefined | string
   password: undefined | string
@@ -269,13 +270,6 @@ const FieldContainer = styled.div`
     padding-left: 6px;
   }
   flex-direction: column;
-`
-
-const ButtonContainer = styled.div`
-  right: 24px;
-  left: 24px;
-  position: absolute;
-  bottom: 4.7svh;
 `
 
 const Label = styled.label`

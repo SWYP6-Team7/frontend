@@ -11,15 +11,20 @@ const RelationKeywordList = ({
   keyword,
   onClick
 }: RelationKeywordListProps) => {
-  const { data, isLoading } = useRelationKeyword(keyword)
+  const { data, isLoading, error } = useRelationKeyword(keyword)
+
   if (isLoading) {
     return null
   }
+  if (error) {
+    return null
+  }
+  console.log(data, '관련 키워드.')
   return (
     <Contianer>
       {data &&
         data.length > 0 &&
-        data.map(data => (
+        data?.map(data => (
           <button
             css={{ display: 'block' }}
             key={data}

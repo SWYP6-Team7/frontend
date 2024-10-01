@@ -1,5 +1,6 @@
 import PersonIcon from '@/components/icons/PersonIcon'
 import { createTripStore } from '@/store/client/createTripStore'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
 import React, { useState, useEffect, useRef } from 'react'
 import Picker from 'react-mobile-picker'
 
@@ -35,6 +36,7 @@ const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
   const pickerRef = useRef<HTMLDivElement>(null)
   const { addDueDate } = createTripStore()
   const [value, setValue] = useState(duedate)
+  const { addDueDate: addDueDateForEdit } = tripDetailStore()
   const [dayOptions, setDayOptions] = useState(
     Array.from({ length: 31 }, (v, i) => i + 1)
   )
@@ -55,6 +57,7 @@ const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
 
   // 날짜가 변경될 때마다 현재 날짜와 비교하여 이전 날짜를 선택하면 일정 시간 후 오늘 날짜로 되돌림
   useEffect(() => {
+    addDueDateForEdit(value)
     setDuedate(value)
     addDueDate(`${value.year}-${value.month}-${value.day}`)
     const selectedDate = new Date(value.year, value.month - 1, value.day)

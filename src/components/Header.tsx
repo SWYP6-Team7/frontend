@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import BackIcon from './icons/BackIcon'
 import { useMatch, useNavigate, useLocation } from 'react-router-dom'
+import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -9,6 +10,12 @@ const Header = () => {
   const isRegister = location.pathname.startsWith('/register')
   const isCreateTrip = location.pathname.startsWith('/createTrip')
   const isSearch = location.pathname === '/search/travel'
+  const isTripDetail = location.pathname.startsWith('/trip/detail')
+  const isTripEnrollment = location.pathname.startsWith('/trip/enrollmentList')
+  const isNotification = location.pathname.startsWith('/notification')
+  const isTripDetailEdit = location.pathname.startsWith('/trip/edit')
+  const isTripEditPlace = location.pathname.startsWith('/editPlace')
+  const isTripApply = location.pathname.startsWith('/trip/apply')
   const handleBack = () => {
     navigate(-1)
   }
@@ -21,12 +28,18 @@ const Header = () => {
       <Title>
         {isRegister && '회원가입'}
         {isSearch && '여행찾기'}
-        {isCreateTrip && '여행 만들기'}
+        {(isCreateTrip || isTripEditPlace) && '여행 만들기'}
+
+        {isTripEnrollment && '참가 신청 목록'}
+        {isTripApply && '참가 신청'}
+        {isNotification && '알림'}
+        {isTripDetailEdit && '게시글 수정'}
       </Title>
       {location.pathname == '/registerTripStyle' && (
         <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
       )}
       {location.pathname != '/registerTripStyle' && <VoidArea />}
+      {isTripDetail && <TripDetailHeader />}
     </HeaderContainer>
   )
 }
@@ -44,9 +57,9 @@ const HeaderContainer = styled.header`
   padding: 20px 24px;
   background-color: transparent;
   display: flex;
-
   justify-content: space-between;
   align-items: center;
+  margin-top: 32px; // 헤더 높이 100px.
 `
 
 const Title = styled.h2`

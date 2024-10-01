@@ -20,6 +20,13 @@ import CreateTripDetail from './pages/CreateTrip/CreateTripDetail/CreateTripDeta
 import CreateTripPlace from './pages/CreateTrip/CreateTripPlace'
 import CreateTripIntroduce from './pages/CreateTrip/CreateTripIntroduce'
 import RegisterAge from './pages/RegisterAge'
+import ApplyTrip from './pages/ApplyTrip'
+import TripDetail from './pages/TripDetail/TripDetail'
+import TripEnrollmentList from './pages/TripAcceptance/TripEnrollmentList'
+import Notifications from './pages/Notifications'
+import TripDetailEdit from './pages/TripDetail/TripEdit'
+import TripEdit from './pages/TripDetail/TripEdit'
+import EditTripPlace from './pages/TripDetail/EditTripPlace'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -108,6 +115,30 @@ export const router = createBrowserRouter([
       {
         path: 'createTripDetail',
         element: <CreateTripDetail />
+      },
+      {
+        path: 'trip/apply/:travelNumber',
+        element: <ApplyTrip />
+      },
+      {
+        path: 'trip/detail/:travelNumber',
+        element: <TripDetail />
+      },
+      {
+        path: 'trip/enrollmentList/:travelNumber',
+        element: <TripEnrollmentList />
+      },
+      {
+        path: 'notification/1',
+        element: <Notifications />
+      },
+      {
+        path: 'trip/edit/:travelNumber',
+        element: <TripEdit />
+      },
+      {
+        path: 'editPlace/:travelNumber',
+        element: <EditTripPlace />
       }
     ]
   }

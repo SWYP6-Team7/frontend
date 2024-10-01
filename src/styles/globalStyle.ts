@@ -4,12 +4,40 @@ import { css } from '@emotion/react'
 export default css`
   @import url('https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap');
   @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-      format('woff');
-    font-weight: 400;
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-Regular.woff2') format('woff2'),
+      url('/fonts/Pretendard-Regular.woff') format('woff');
+    font-weight: 400; /* Regular */
     font-style: normal;
   }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-Regular.woff2') format('woff2'),
+      url('/fonts/Pretendard-Regular.woff') format('woff');
+    font-weight: 500; /* Regular */
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+      url('/fonts/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600; /* Semi-Bold */
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src:
+      url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+      url('/fonts/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 700; /* Semi-Bold */
+  }
+
   :root {
     --dimmed-zindex: 10;
     --alert-zindex: 11;
@@ -122,7 +150,7 @@ export default css`
   }
   body {
     line-height: 1;
-    font-family: 'Pretendard-Regular';
+    font-family: 'Pretendard', sans-serif;
     letter-spacing: -0.4px !important;
   }
   ol,

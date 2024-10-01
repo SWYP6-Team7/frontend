@@ -25,9 +25,9 @@ export const searchHandler = [
       return HttpResponse.json(NoSearchData)
     }
   }),
-  http.get('/api/travel/search/relation', async ({ request }) => {
+  http.get('/api/autocomplete', async ({ request }) => {
     const url = new URL(request.url)
-    const keyword = url.searchParams.get('keyword') ?? ''
+    const keyword = url.searchParams.get('location') ?? ''
 
     // keyword를 포함하는 도시만 필터링
     const filteredCities = cities.filter(city =>

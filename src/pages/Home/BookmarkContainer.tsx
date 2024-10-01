@@ -4,27 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import Badge from '@/components/designSystem/Badge'
 import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import TitleContainer from './ContentTitleContainer'
+import { daysLeft } from '@/utils/time'
 const BookmarkContainer = () => {
   const navigate = useNavigate()
   // 북마크 가져오기
   const { data } = useBookmark('1')
   const bookmarks = data?.data.bookMarks
 
-  function daysLeft(dateString: string) {
-    // 오늘 날짜
-    const today = new Date()
-
-    // 주어진 날짜
-    const targetDate = new Date(dateString)
-
-    // 밀리초 단위로 차이 계산
-    const timeDifference = targetDate.getTime() - today.getTime()
-
-    // 밀리초를 일 수로 변환
-    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
-
-    return daysDifference
-  }
   return (
     <BookmarkBox>
       <TitleContainer text="즐겨찾기" />

@@ -15,8 +15,23 @@ interface UseSearchProps {
   size?: number
 }
 
+export interface Filters {
+  tags: string[]
+  location: string[]
+  gender: string[]
+  person: string[]
+  period: string[]
+}
+
 const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
-  const { style } = searchStore()
+  const { style, place, gender, people, period } = searchStore()
+  const filters = {
+    tags: style,
+    location: place,
+    gender,
+    person: people,
+    period
+  }
   const {
     data,
     isLoading,
@@ -29,9 +44,9 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     ISearchData,
     Object,
     InfiniteData<ISearchData>,
-    [_1: string, _2: string, tags: string[]]
+    [_1: string, _2: string, filters: Filters]
   >({
-    queryKey: ['search', keyword, style],
+    queryKey: ['search', keyword, { ...filters }],
     initialPageParam: 0,
     getNextPageParam: lastPage => {
       if (lastPage.page.number + 1 === lastPage.page.totalPages) {
@@ -40,12 +55,13 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
         return lastPage?.page.number + 1
       }
     },
-    queryFn: ({ pageParam }) => getSearch(pageParam as number, keyword, style),
+    queryFn: ({ pageParam }) =>
+      getSearch(pageParam as number, keyword, { ...filters }),
     enabled: Boolean(keyword)
   })
 
   return {
-    data,
+    data: keyword === '' ? undefined : data,
     isLoading,
     error,
     fetchNextPage,
