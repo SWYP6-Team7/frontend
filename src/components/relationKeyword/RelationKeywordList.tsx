@@ -19,7 +19,7 @@ const RelationKeywordList = ({
   if (error) {
     return null
   }
-  console.log(data)
+  console.log(data, '관련 키워드.')
   return (
     <Contianer>
       {data &&

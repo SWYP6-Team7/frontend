@@ -9,6 +9,7 @@ import styled from '@emotion/styled'
 import Vector from '@/components/icons/Vector'
 import DuedatePickerView from './DuedatePickerView'
 import Calendar from '@/components/icons/Calendar'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
 
 interface DateValue {
   year: number
@@ -24,8 +25,9 @@ const today = { year, month, day }
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 
 export default function DuedateWrapper() {
+  const { dueDate } = tripDetailStore()
   const [showModal, setShowModal] = useState(false)
-  const [duedate, setDuedate] = useState<DateValue>(today)
+  const [duedate, setDuedate] = useState<DateValue>(dueDate)
 
   const day = new Date(`${duedate.year}/${duedate.month}/${duedate.day}`)
   const dayOfWeek = WEEKDAY[day.getDay()]

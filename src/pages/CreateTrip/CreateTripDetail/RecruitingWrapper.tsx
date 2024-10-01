@@ -7,10 +7,12 @@ import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import RecruitingPickerView from './RecruitingPickerView'
 import Button from '@/components/Button'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
 
 export default function RecruitingWrapper() {
+  const { maxPerson } = tripDetailStore()
   const [showModal, setShowModal] = useState(false)
-  const [count, setCount] = useState(1)
+  const [count, setCount] = useState(maxPerson)
   const handleCloseModal = () => {
     setShowModal(false)
   }
@@ -98,9 +100,7 @@ const Count = styled.div`
   margin-right: 19px;
 `
 
-const RecruitingContainer = styled.div`
-  margin-top: 48px;
-`
+const RecruitingContainer = styled.div``
 const RecruitingBtn = styled.button`
   display: flex;
   align-items: center;
