@@ -28,6 +28,7 @@ import TripDetailEdit from './pages/TripDetail/TripEdit'
 import TripEdit from './pages/TripDetail/TripEdit'
 import EditTripPlace from './pages/TripDetail/EditTripPlace'
 import TripList from './pages/TripList/TripList'
+import ServiceTerms from './pages/Terms/ServiceTerms'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -144,6 +145,20 @@ export const router = createBrowserRouter([
       {
         path: 'trip/list',
         element: <TripList />
+      },
+      {
+        path: 'terms',
+        element: (
+          <>
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            path: 'service',
+            element: <ServiceTerms />
+          }
+        ]
       }
     ]
   }
