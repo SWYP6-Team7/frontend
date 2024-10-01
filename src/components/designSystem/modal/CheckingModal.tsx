@@ -1,6 +1,6 @@
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { styleText } from 'util'
 interface CheckingModalProps {
   isModalOpen: boolean
@@ -22,26 +22,34 @@ export default function CheckingModal({
   setModalOpen
 }: CheckingModalProps) {
   const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
+  const [isListening, setIsListening] = useState(false) // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // 만약 클릭한 곳이 모달이 아닌 경우
       if (
+        isListening &&
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-        if (isModalOpen) {
-          setModalOpen(false)
-        } // 상태를 false로 변경
+        console.log('외부 클릭')
+        setModalOpen(false) // 외부 클릭 시 모달 닫기
       }
     }
-    // 문서에 click 이벤트를 등록
-    document.addEventListener('click', handleClickOutside)
 
-    // cleanup 함수: 이벤트 해제
+    if (isModalOpen) {
+      // 모달이 열릴 때 이벤트 리스너 등록
+      setIsListening(true)
+      document.addEventListener('click', handleClickOutside)
+    } else {
+      setIsListening(false)
+    }
+
+    // 컴포넌트가 언마운트되거나 모달이 닫힐 때 이벤트 리스너 제거
     return () => {
       document.removeEventListener('click', handleClickOutside)
     }
-  }, [])
+  }, [isModalOpen, isListening]) // isModalOpen이 변경될 때마다 실행
+
   const clickHandler = () => {
     if (setIsSelected) {
       setIsSelected(true)
