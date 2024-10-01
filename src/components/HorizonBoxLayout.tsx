@@ -9,7 +9,7 @@ interface HorizonBoxProps {
   title: string
   recruits: number
   total: number
-  description: string
+
   userName: string
   daysAgo: number
   imgSrc?: string // 이미지 없는 경우 대비.
@@ -35,7 +35,7 @@ const HorizonBoxLayout = ({
   title,
   recruits,
   total,
-  description,
+
   userName,
   daysAgo,
   imgSrc = '',
@@ -76,6 +76,19 @@ const HorizonBoxLayout = ({
           {cutTags.map((text: string, idx) => (
             <BoxLayoutTag text={text} />
           ))}
+          {tags.length > cutTags.length ? (
+            <BoxLayoutTag
+              addStyle={{
+                backgroundColor: `${palette.비강조4}`,
+                padding: '4px 6px 4px 6px',
+                color: `${palette.비강조}`,
+                height: '22px',
+                borderRadius: '20px',
+                fontSize: '12px'
+              }}
+              text={`+${tags.length - cutTags.length}`}
+            />
+          ) : null}
         </Tags>
       </PostInfo>
       <button>

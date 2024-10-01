@@ -94,7 +94,6 @@ const SearchResultList = ({
                 'day'
               )}
               recruits={content.nowPerson}
-              description={content.summary}
             />
           </BoxContainer>
         ))

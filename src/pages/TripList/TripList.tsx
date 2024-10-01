@@ -10,25 +10,33 @@ import { userStore } from '@/store/client/userStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../Home/Navbar'
+import TripInfiniteList from '@/components/triplist/TripInfiniteList'
 
 const TripList = () => {
   const { userId } = authStore()
+  const navigate = useNavigate()
+
+  const onClickSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    navigate('/search/travel')
+  }
   return (
     <>
       <div>
         <SearchContainer>
           <div css={{ flex: 1 }}>
-            <Link to={'/search/travel'}>
+            <button onClick={onClickSearch}>
               <CreateTripInputField
                 isRemove={false}
                 placeholder="어디로 여행을 떠날까요?"
                 icon={<RelationSearchIcon />}
                 handleRemoveValue={() => {}}
                 disabled
+                style={{ pointerEvents: 'none' }}
               />
-            </Link>
+            </button>
           </div>
 
           <Link to={`notification/${userId}`}>
@@ -38,6 +46,7 @@ const TripList = () => {
         <Spacing size={24} />
         <PopularPlaceList />
         <Bar />
+        <TripInfiniteList />
       </div>
       <Navbar />
     </>
