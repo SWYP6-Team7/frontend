@@ -1,4 +1,6 @@
+import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import EditAndDeleteModal from '@/components/designSystem/modal/EditAndDeleteModal'
+import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import AlarmIcon from '@/components/icons/AlarmIcon'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import MoreIcon from '@/components/icons/MoreIcon'
@@ -16,7 +18,10 @@ export default function TripDetailHeader() {
   const { tripDetail } = useTripDetail(parseInt(travelNumber!))
   const navigate = useNavigate()
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
-
+  const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false)
+  const [checkingModalClicked, setCheckingModalClicked] = useState(false)
+  const [threeDotsClick, setThreeDotsClick] = useState(false)
   useEffect(() => {}, [])
   const {
     addLocation,
@@ -68,6 +73,12 @@ export default function TripDetailHeader() {
         enrollCount,
         ageGroup
       } = tripInfos
+      const [year, month, day] = dueDate.split('-').map((v: string) => +v)
+      const DUEDATE = {
+        year,
+        month,
+        day
+      }
       addTravelNumber(travelNumber)
       addEnrollmentNumber(enrollmentNumber)
       addEnrollCount(enrollCount)
@@ -79,7 +90,7 @@ export default function TripDetailHeader() {
       addDetails(details)
       addMaxPerson(maxPerson)
       addGenderType(genderType)
-      addDueDate(dueDate)
+      addDueDate(DUEDATE)
       addPeriodType(periodType)
       addTags(tags)
       addPostStatus(postStatus)
@@ -91,6 +102,33 @@ export default function TripDetailHeader() {
     }
   }, [tripDetail.isFetched])
 
+  const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!))
+  const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
+
+  useEffect(() => {
+    if (isDeleteBtnClicked) {
+      setIsResultModalOpen(true)
+      setIsDeleteBtnClicked(false)
+    }
+    if (isEditBtnClicked) {
+      setThreeDotsClick(false)
+      setIsEditBtnClicked(false)
+      navigate(`trip/edit/${travelNumber}`)
+    }
+    if (checkingModalClicked) {
+      // 삭제 요청.
+
+      deleteTripDetailMutation().then(res => {
+        console.log(res)
+        if (res?.data.status === 205) {
+          setIsToastShow(true)
+          setTimeout(() => {
+            navigate('/')
+          }, 1800)
+        }
+      })
+    }
+  }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked])
   return (
     <Container hostUserCheck={hostUserCheck}>
       {hostUserCheck && (
@@ -109,13 +147,29 @@ export default function TripDetailHeader() {
       </div>
 
       {hostUserCheck && (
-        <div onClick={() => setIsEditBtnClicked(true)}>
+        <div onClick={() => setThreeDotsClick(true)}>
           <MoreIcon />
         </div>
       )}
       <EditAndDeleteModal
-        isOpen={isEditBtnClicked}
-        setIsOpen={setIsEditBtnClicked}
+        setIsEditBtnClicked={setIsEditBtnClicked}
+        setIsDeleteBtnClicked={setIsDeleteBtnClicked}
+        isOpen={threeDotsClick}
+        setIsOpen={setThreeDotsClick}
+      />
+      <CheckingModal
+        isModalOpen={isResultModalOpen}
+        modalMsg={`여행 멤버나 관심을 가진 분들이 \n 당황할 수 있어요.`}
+        modalTitle="정말 삭제할까요?"
+        modalButtonText="삭제하기"
+        setIsSelected={setCheckingModalClicked}
+        setModalOpen={setIsResultModalOpen}
+      />
+      <ResultToast
+        bottom="80px"
+        isShow={isToastShow}
+        setIsShow={setIsToastShow}
+        text="여행 게시글이 삭제되었어요."
       />
     </Container>
   )

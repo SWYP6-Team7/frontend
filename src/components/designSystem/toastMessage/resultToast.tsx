@@ -5,9 +5,11 @@ interface resultToastProps {
   isShow: boolean
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>
   text: string
+  bottom?: string
 }
 
 export default function ResultToast({
+  bottom = '20px',
   isShow,
   setIsShow,
   text
@@ -17,11 +19,13 @@ export default function ResultToast({
     if (isShow) {
       setTimeout(() => {
         setIsShow(false)
-      }, 1000)
+      }, 1500)
     }
   }, [isShow])
   return (
-    <Container isShow={isShow}>
+    <Container
+      isShow={isShow}
+      bottom={bottom}>
       <ToastMsg>
         <svg
           width="18"
@@ -48,12 +52,12 @@ export default function ResultToast({
     </Container>
   )
 }
-const Container = styled.div<{ isShow: boolean }>`
+const Container = styled.div<{ isShow: boolean; bottom: string }>`
   position: fixed;
   width: 100%;
-  bottom: ${({ isShow }) =>
+  bottom: ${({ isShow, bottom }) =>
     isShow
-      ? '20px'
+      ? bottom
       : '-100px'}; /* Toast 위치: 나타날 때는 40px, 사라질 때는 아래로 사라짐 */
   transition:
     bottom 0.4s ease-in-out,

@@ -23,16 +23,17 @@ const useTripDetail = (travelNumber: number) => {
     enabled: !!travelNumber && !!accessToken
   })
 
-  const { mutateAsync: updateTripDetailMutation } = useMutation({
-    mutationFn: (data: ITripDetail) => {
-      return updateTripDetail(travelNumber, data, accessToken)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['tripDetail', travelNumber]
-      })
-    }
-  })
+  const { mutateAsync: updateTripDetailMutation, isSuccess: isEditSuccess } =
+    useMutation({
+      mutationFn: (data: ITripDetail) => {
+        return updateTripDetail(travelNumber, data, accessToken)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['tripDetail', travelNumber]
+        })
+      }
+    })
 
   const { mutateAsync: deleteTripDetailMutation } = useMutation({
     mutationFn: () => {
@@ -47,6 +48,7 @@ const useTripDetail = (travelNumber: number) => {
 
   return {
     tripDetail,
+    isEditSuccess,
     updateTripDetailMutation,
     deleteTripDetailMutation,
     companions

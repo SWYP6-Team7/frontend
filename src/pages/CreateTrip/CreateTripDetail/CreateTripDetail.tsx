@@ -145,6 +145,7 @@ const CreateTripDetail = () => {
         </ContentTitle>
 
         {/* 모집 인원 부분 */}
+        <Spacing size={48} />
         <RecruitingWrapper />
         {/* 모집 마감일 부분 */}
 

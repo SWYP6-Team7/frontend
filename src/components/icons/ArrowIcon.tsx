@@ -1,13 +1,19 @@
 interface ArrowProps {
   size?: number
   stroke?: string
+  width?: number
+  height?: number
 }
 
-const ArrowIcon = ({ size = 48, stroke = '#848484' }: ArrowProps) => {
+const ArrowIcon = ({
+  width = 48,
+  height = 48,
+  stroke = '#848484'
+}: ArrowProps) => {
   return (
     <svg
-      width={size}
-      height={size}
+      width={width}
+      height={height}
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">

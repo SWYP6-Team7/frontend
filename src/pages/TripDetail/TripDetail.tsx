@@ -46,7 +46,7 @@ export default function TripDetail() {
 
   const isEditing = false
   const navigate = useNavigate()
-  const [year, month, day] = dueDate.split('-')
+  const { year, month, day } = dueDate
   const DAY = new Date(`${year}/${month}/${day}`)
   const dayOfWeek = WEEKDAY[DAY.getDay()]
   const [personViewClicked, setPersonViewClicked] = useState(false)
@@ -57,6 +57,17 @@ export default function TripDetail() {
   }
   const companionsViewHandler = () => {
     setPersonViewClicked(true)
+  }
+  function timeUntilDate(year: number, month: number, day: number): number {
+    const today = new Date() // 오늘 날짜
+    const targetDate = new Date(year, month - 1, day) // 목표 날짜 (month는 0부터 시작하므로 -1)
+
+    // 날짜 차이 계산
+    const timeDiff = targetDate.getTime() - today.getTime() // 밀리초 단위로 차이 계산
+    // 남은 일 수 계산
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
+
+    return daysLeft
   }
   return (
     <TripDetailWrapper>
@@ -156,13 +167,11 @@ export default function TripDetail() {
             alignItems: 'center'
           }}>
           <DueDate>
-            {dueDate.replaceAll('-', '.')}({dayOfWeek})
+            {year}.{month}.{day}({dayOfWeek})
           </DueDate>
           <Badge
             text={''}
-            daysLeft={
-              dayjs().diff(dayjs(dueDate, 'YYYY년MM월DD일'), 'day') * -1
-            }
+            daysLeft={timeUntilDate(year, month, day)}
           />
         </div>
       </DueDateWrapper>

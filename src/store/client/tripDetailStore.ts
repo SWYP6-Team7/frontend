@@ -1,5 +1,15 @@
 // src/userStore.ts
 import { create } from 'zustand'
+const date = new Date()
+const year: number = date.getFullYear()
+const month: number = date.getMonth() + 1
+const day = date.getDate()
+
+interface DateValue {
+  year: number
+  month: number
+  day: number
+}
 
 interface tripDetailState {
   travelNumber: number
@@ -25,8 +35,8 @@ interface tripDetailState {
   addNowPerson: (nowPerson: number) => void
   genderType: string
   addGenderType: (genderType: string) => void
-  dueDate: string
-  addDueDate: (dueDate: string) => void
+  dueDate: DateValue
+  addDueDate: (dueDate: DateValue) => void
   periodType: string
   addPeriodType: (periodType: string) => void
   tags: string[]
@@ -68,16 +78,16 @@ export const tripDetailStore = create<tripDetailState>(set => ({
   details: '',
   addDetails: (details: string) => set({ details }),
 
-  maxPerson: 0,
+  maxPerson: 1,
   addMaxPerson: (maxPerson: number) => set({ maxPerson }),
   nowPerson: 0,
   addNowPerson: (nowPerson: number) => set({ nowPerson }),
 
-  genderType: '',
+  genderType: '여자만',
   addGenderType: (genderType: string) => set({ genderType }),
 
-  dueDate: '',
-  addDueDate: (dueDate: string) => set({ dueDate }),
+  dueDate: { year, month, day },
+  addDueDate: (dueDate: DateValue) => set({ dueDate }),
 
   periodType: '',
   addPeriodType: (periodType: string) => set({ periodType }),

@@ -1,44 +1,63 @@
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { SetStateAction, useEffect, useRef } from 'react'
+import React, { SetStateAction, useEffect, useRef, useState } from 'react'
 interface EditAndDeleteModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<SetStateAction<boolean>>
+  setIsEditBtnClicked: React.Dispatch<SetStateAction<boolean>>
+  setIsDeleteBtnClicked: React.Dispatch<SetStateAction<boolean>>
 }
 export default function EditAndDeleteModal({
+  setIsEditBtnClicked,
+  setIsDeleteBtnClicked,
   isOpen,
   setIsOpen
 }: EditAndDeleteModalProps) {
   const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
+  const [isListening, setIsListening] = useState(false) // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // 만약 클릭한 곳이 모달이 아닌 경우
       if (
+        isListening &&
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-        if (isOpen) {
-          setIsOpen(false)
-        } // 상태를 false로 변경
+        setIsOpen(false) // 외부 클릭 시 모달 닫기
       }
     }
-    // 문서에 click 이벤트를 등록
-    document.addEventListener('click', handleClickOutside)
 
-    // cleanup 함수: 이벤트 해제
+    if (isOpen) {
+      // 모달이 열릴 때 이벤트 리스너 등록
+      setIsListening(true)
+      document.addEventListener('click', handleClickOutside)
+    } else {
+      setIsListening(false)
+    }
+
+    // 컴포넌트가 언마운트되거나 모달이 닫힐 때 이벤트 리스너 제거
     return () => {
       document.removeEventListener('click', handleClickOutside)
     }
-  }, [])
+  }, [isOpen, isListening]) // isModalOpen이 변경될 때마다 실행
 
+  const deleteHandler = () => {
+    setIsDeleteBtnClicked(true)
+    setIsOpen(false)
+  }
+  const editHandler = () => {
+    setIsEditBtnClicked(true)
+    setIsOpen(false)
+  }
   return (
     <Container isOpen={isOpen}>
       <Modal
+        ref={modalRef}
         isOpen={isOpen}
         nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
         <BtnBox>
-          <EditBtn>수정하기</EditBtn>
-          <DeleteBtn>삭제하기</DeleteBtn>
+          <EditBtn onClick={editHandler}>수정하기</EditBtn>
+          <DeleteBtn onClick={deleteHandler}>삭제하기</DeleteBtn>
         </BtnBox>
 
         <CloseBtn onClick={() => setIsOpen(false)}>닫기</CloseBtn>

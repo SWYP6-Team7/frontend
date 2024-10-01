@@ -24,6 +24,9 @@ import ApplyTrip from './pages/ApplyTrip'
 import TripDetail from './pages/TripDetail/TripDetail'
 import TripEnrollmentList from './pages/TripAcceptance/TripEnrollmentList'
 import Notifications from './pages/Notifications'
+import TripDetailEdit from './pages/TripDetail/TripEdit'
+import TripEdit from './pages/TripDetail/TripEdit'
+import EditTripPlace from './pages/TripDetail/EditTripPlace'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -128,6 +131,14 @@ export const router = createBrowserRouter([
       {
         path: 'notification/1',
         element: <Notifications />
+      },
+      {
+        path: 'trip/edit/:travelNumber',
+        element: <TripEdit />
+      },
+      {
+        path: 'editPlace/:travelNumber',
+        element: <EditTripPlace />
       }
     ]
   }

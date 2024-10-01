@@ -17,7 +17,7 @@ const tripDetail = {
   genderType: '여자만',
   dueDate: '2025-05-15',
   periodType: '일주일 이하',
-  tags: ['즉흥', '자연', '동성선호'],
+  tags: ['✊ 즉흥', '🏔️ 자연', '🍔 먹방'],
   postStatus: '모집 중',
   hostUserCheck: true,
   enrollmentNumber: 1
@@ -64,5 +64,11 @@ export const tripDetailHandler = [
     const url = new URL(request.url)
     const travelNumber = url.searchParams.get('travelNumber')
     return HttpResponse.json(companions, { status: 200 })
+  }),
+  http.delete('/api/travel/:travelNumber', async ({ request }) => {
+    console.log(request, '요청.')
+    const url = new URL(request.url)
+    const travelNumber = url.searchParams.get('travelNumber')
+    return HttpResponse.json({ status: 205 })
   })
 ]
