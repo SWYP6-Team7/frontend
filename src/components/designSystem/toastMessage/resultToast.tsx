@@ -6,12 +6,14 @@ interface resultToastProps {
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>
   text: string
   bottom?: string
+  height?: number
 }
 
 export default function ResultToast({
   bottom = '20px',
   isShow,
   setIsShow,
+  height = 20,
   text
 }: resultToastProps) {
   //   1초 후 다시 메시지가 아래로 내려감.
@@ -26,7 +28,7 @@ export default function ResultToast({
     <Container
       isShow={isShow}
       bottom={bottom}>
-      <ToastMsg>
+      <ToastMsg height={height}>
         <svg
           width="18"
           height="18"
@@ -69,9 +71,9 @@ const Container = styled.div<{ isShow: boolean; bottom: string }>`
   justify-content: center;
   left: 0;
 `
-const ToastMsg = styled.div`
+const ToastMsg = styled.div<{ height: number }>`
   position: absolute;
-  bottom: 40px;
+  bottom: ${(props: { height: number }) => props.height}px;
   height: 42px;
   border-radius: 20px;
   background-color: ${palette.keycolor};

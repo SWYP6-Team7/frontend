@@ -15,6 +15,7 @@ import Button from '@/components/Button'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import ArrowIcon from '@/components/icons/ArrowIcon'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
+import { authStore } from '@/store/client/authStore'
 const TAG_LIST = [
   {
     title: '태그 설정',
@@ -65,9 +66,10 @@ export default function TripEdit() {
   const navigate = useNavigate()
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'
-
+  const { updateTripDetailMutation, isEditSuccess } =
+    useTripDetail(travelNumber)
   // 기간
-
+  const { accessToken } = authStore()
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
   const [activeDuration, setActiveDuration] = useState<boolean[]>(
     new Array(4).fill(false)
@@ -110,8 +112,6 @@ export default function TripEdit() {
     setTaggedArray(newArray)
   }
   const editCompleteClickHandler = async () => {
-    const { updateTripDetailMutation, isEditSuccess } =
-      useTripDetail(travelNumber)
     try {
       await updateTripDetailMutation({
         location,
@@ -139,7 +139,7 @@ export default function TripEdit() {
     <Container>
       <City onClick={editLocationHandler}>
         <PlaceIcon />
-        <div css={{ marginRight: '4px' }}>호주</div>
+        <div css={{ marginRight: '4px' }}>{location}</div>
         <svg
           width="6"
           height="11"

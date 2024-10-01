@@ -99,6 +99,7 @@ export default function TripDetailHeader() {
       addHostUserCheck(hostUserCheck)
       addNowPerson(nowPerson)
       addAgeGroup(ageGroup)
+      addPostStatus(postStatus)
     }
   }, [tripDetail.isFetched])
 

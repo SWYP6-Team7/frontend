@@ -12,14 +12,14 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function EditTripPlace() {
-  const [keyword, setKeyword] = useState('')
   const [showRelationList, setShowRelationList] = useState(true)
   const navigate = useNavigate()
 
-  const { addLocation: addLocationForEdit } = tripDetailStore()
+  const { location, addLocation: addLocationForEdit } = tripDetailStore()
+  const [keyword, setKeyword] = useState(location)
   // const { data, isLoading } = useRelationKeyword(keyword)
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    addLocationForEdit(e.target.value)
+    setKeyword(e.target.value)
     if (!showRelationList) {
       setShowRelationList(true)
     }

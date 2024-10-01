@@ -62,6 +62,7 @@ const useEnrollment = (travelNumber: number) => {
     },
     onSuccess: () => {
       // 완료 수락 모달 메시지를 보여주기 위해 약간의 delay
+      console.log('123')
       setTimeout(() => {
         queryClient.invalidateQueries({
           queryKey: ['enrollment', travelNumber]
@@ -77,9 +78,11 @@ const useEnrollment = (travelNumber: number) => {
     return applyMutation.mutateAsync(data, {
       onSuccess: () => {
         if (!enrollmentList.data) {
-          queryClient.invalidateQueries({
-            queryKey: ['enrollment', travelNumber]
-          })
+          setTimeout(() => {
+            queryClient.invalidateQueries({
+              queryKey: ['enrollment', travelNumber]
+            })
+          }, 1500)
         }
       }
     })
@@ -94,9 +97,11 @@ const useEnrollment = (travelNumber: number) => {
     return cancelMutation.mutateAsync(enrollmentNumber, {
       onSuccess: () => {
         if (!enrollmentList.data) {
-          queryClient.invalidateQueries({
-            queryKey: ['enrollment', travelNumber]
-          })
+          setTimeout(() => {
+            queryClient.invalidateQueries({
+              queryKey: ['enrollment', travelNumber]
+            })
+          }, 1500)
         }
       }
     })

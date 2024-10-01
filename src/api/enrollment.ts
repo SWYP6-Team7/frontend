@@ -11,7 +11,6 @@ export async function postEnrollment(
     return axiosInstance.post('/api/enrollment', data, {
       headers: getJWTHeader('')
     })
-    return true
   } catch (err) {
     console.log(err)
   }

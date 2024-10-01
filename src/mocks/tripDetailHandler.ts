@@ -18,9 +18,9 @@ const tripDetail = {
   dueDate: '2025-05-15',
   periodType: '일주일 이하',
   tags: ['✊ 즉흥', '🏔️ 자연', '🍔 먹방'],
-  postStatus: '모집 중',
-  hostUserCheck: true,
-  enrollmentNumber: 1
+  postStatus: '진행중',
+  hostUserCheck: false,
+  enrollmentNumber: null
 }
 const companions = {
   totalCount: 5,

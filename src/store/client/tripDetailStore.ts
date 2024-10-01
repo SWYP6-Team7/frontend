@@ -53,9 +53,16 @@ interface tripDetailState {
   addHostUserCheck: (hostUserCheck: boolean) => void
   enrollmentNumber: number | null
   addEnrollmentNumber: (enrollmentNumber: number | null) => void
+  applySuccess: boolean
+  setApplySuccess: (status: boolean) => void
 }
 
 export const tripDetailStore = create<tripDetailState>(set => ({
+  applySuccess: false,
+  setApplySuccess: status => {
+    set({ applySuccess: status })
+  },
+
   travelNumber: 0,
   addTravelNumber: (travelNumber: number) => set({ travelNumber }),
   ageGroup: '',

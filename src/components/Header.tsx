@@ -15,6 +15,7 @@ const Header = () => {
   const isNotification = location.pathname.startsWith('/notification')
   const isTripDetailEdit = location.pathname.startsWith('/trip/edit')
   const isTripEditPlace = location.pathname.startsWith('/editPlace')
+  const isTripApply = location.pathname.startsWith('/trip/apply')
   const handleBack = () => {
     navigate(-1)
   }
@@ -30,7 +31,7 @@ const Header = () => {
         {(isCreateTrip || isTripEditPlace) && '여행 만들기'}
 
         {isTripEnrollment && '참가 신청 목록'}
-
+        {isTripApply && '참가 신청'}
         {isNotification && '알림'}
         {isTripDetailEdit && '게시글 수정'}
       </Title>
