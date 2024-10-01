@@ -2,7 +2,7 @@ import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 
 interface BoxLayoutTagProps {
-  text: string
+  text: React.ReactNode
   addStyle?: {
     backgroundColor?: string
     color?: string

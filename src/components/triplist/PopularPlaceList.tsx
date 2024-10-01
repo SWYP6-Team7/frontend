@@ -31,7 +31,6 @@ const PopularPlaceList = () => {
 }
 
 const Container = styled.div`
-  padding: 0 24px;
   display: flex;
   gap: 16px;
   flex-direction: column;
@@ -40,6 +39,7 @@ const Container = styled.div`
 const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
+  padding: 0 24px;
   line-height: 16px;
 `
 
@@ -53,6 +53,7 @@ const Text = styled.div`
 
 const TagContainer = styled.div`
   display: flex;
+  padding: 0 24px;
   position: relative;
   -ms-overflow-style: none;
 

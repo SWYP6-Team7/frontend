@@ -10,13 +10,33 @@ import { userStore } from '@/store/client/userStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Navbar from '../Home/Navbar'
 import TripInfiniteList from '@/components/triplist/TripInfiniteList'
+import SortHeader from '@/components/SortHeader'
+import { useTripAvailable } from '@/hooks/useTripAvailable'
+
+const LIST = ['최신순', '추천순']
 
 const TripList = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const sort = (() => {
+    const value = searchParams.get('sort')
+    if (!value || (value !== 'recent' && value !== 'recommend')) {
+      return '최신순'
+    }
+    return value === 'recent' ? '최신순' : '추천순'
+  })()
   const { userId } = authStore()
   const navigate = useNavigate()
+  const { data } = useTripAvailable()
+  const onClickSort = (value: string) => {
+    if (value === '추천순') {
+      setSearchParams({ sort: 'recommend' })
+    } else {
+      setSearchParams({ sort: 'recent' })
+    }
+  }
 
   const onClickSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -43,9 +63,17 @@ const TripList = () => {
             <AlarmIcon />
           </Link>
         </SearchContainer>
-        <Spacing size={24} />
+        <Spacing size={8} />
         <PopularPlaceList />
-        <Bar />
+        <Spacing size={31} />
+        <SortContainer>
+          <SortHeader
+            list={LIST}
+            clickSort={onClickSort}
+            sort={sort}
+            totalElements={data?.pages[0].page.totalElements ?? 0}
+          />
+        </SortContainer>
         <TripInfiniteList />
       </div>
       <Navbar />
@@ -56,9 +84,23 @@ const TripList = () => {
 const SearchContainer = styled.div`
   display: flex;
   padding: 0 24px;
-  margin-top: 6.1svh;
+  padding-top: 52px;
   align-items: center;
   gap: 22px;
+  position: sticky;
+  top: 0px;
+  padding-bottom: 16px;
+  background-color: ${palette.BG};
+  z-index: 100;
+`
+
+const SortContainer = styled.div`
+  padding: 0 24px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid rgb(240, 240, 240);
+  position: sticky;
+  top: calc(116px);
+  background-color: ${palette.BG};
 `
 
 const Bar = styled.div`

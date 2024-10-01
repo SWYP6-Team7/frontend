@@ -18,9 +18,6 @@ const TripInfiniteList = () => {
   }, [inView, !isFetching, fetchNextPage, hasNextPage])
   return (
     <Container>
-      <TopContainer>
-        <Title>여행 게시판</Title>
-      </TopContainer>
       {!isLoading &&
         data &&
         data.pages.map((page, pageIndex) => (

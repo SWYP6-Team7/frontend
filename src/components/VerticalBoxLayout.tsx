@@ -180,7 +180,7 @@ const PersonContainer = styled.div`
 
 const Info = styled.div`
   font-size: 14px;
-  line-weight: 16.71px;
+  line-height: 16.71px;
 `
 const RecruitingText = styled.div`
   font-size: 12px;
