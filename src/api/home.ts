@@ -15,8 +15,14 @@ export const getUserProfile = (accessToken: string) => {
   return axiosInstance.get(`/api/profile/me?userNumber=${accessToken}`)
 }
 
-export const getAvailableTrips = () => {
-  return axiosInstance.get('/api/travels/recent')
+export const getAvailableTrips = async (pageParams: number) => {
+  const response = await axiosInstance.get('/api/travels/recent', {
+    params: {
+      page: pageParams,
+      size: 10
+    }
+  })
+  return response.data
 }
 
 //api/home.ts
@@ -28,8 +34,14 @@ export const getAvailableTrips = () => {
 //   })
 // }
 
-export const getRecommendationTrips = () => {
-  return axiosInstance.get('/api/travels/recommend')
+export const getRecommendationTrips = async (pageParams: number) => {
+  const response = await axiosInstance.get('/api/travels/recommend', {
+    params: {
+      page: pageParams,
+      size: 10
+    }
+  })
+  return response.data
 }
 
 //api/home.ts

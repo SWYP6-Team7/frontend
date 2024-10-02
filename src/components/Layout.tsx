@@ -1,24 +1,71 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from './Header'
-import { Outlet, useMatch, useLocation } from 'react-router-dom'
+import {
+  Outlet,
+  useMatch,
+  useLocation,
+  useNavigate,
+  Navigate
+} from 'react-router-dom'
 import Navbar from '@/pages/Home/Navbar'
 import { authStore } from '@/store/client/authStore'
 import path from 'path'
 import { palette } from '@/styles/palette'
+import useAuth from '@/hooks/user/useAuth'
 const Layout = () => {
+  const navigate = useNavigate()
   const { pathname } = useLocation()
-
+  const { userPostRefreshToken } = useAuth()
   const { userId, accessToken } = authStore()
-  console.log(userId, accessToken, '!!')
+
+  const noNeedPages = [
+    '/login',
+    '/registerForm',
+    '/registerName',
+    '/registerAge',
+    '/registerAge/registerGender',
+    '/registerTripStyle'
+  ]
+  const isAccessTokenNoNeedpages = (path: string) => {
+    // 필요없는 페이지 인지 확인하는 함수.
+    return noNeedPages.some(url => url === path)
+  }
+  useEffect(() => {
+    // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
+    if (!accessToken) {
+      // 토큰이 없으면 리프레쉬 토큰 api 요청.
+      const refreshAccessToken = async () => {
+        try {
+          // refresh 토큰을 이용해 accessToken 재발급 요청
+          await userPostRefreshToken()
+        } catch (error) {
+          console.error('Failed to refresh token:', error)
+          navigate('/login') // 로그인 이동.
+        }
+      }
+
+      if (!isAccessTokenNoNeedpages(pathname)) {
+        refreshAccessToken()
+      }
+    }
+  }, [accessToken])
+  console.log(userId, accessToken, '토큰')
   return (
     <Container pathname={pathname}>
       <Body pathname={pathname}>
         {/* {isSignup && <Header />} */}
         {/* 홈 화면 헤더는 다른 형태. */}
-        {pathname !== '/' && pathname !== '/login' && <Header />}
-
+        {pathname !== '/' &&
+          pathname !== '/login' &&
+          pathname !== '/trip/list' && <Header />}
         <Outlet />
+        {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
+          <Outlet />
+        ) : (
+          <Navigate to="/login" />
+        )} */}
+
         {/* 로그인을 해야만 보이는거 처리. */}
         <Navbar />
       </Body>

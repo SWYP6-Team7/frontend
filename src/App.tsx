@@ -27,6 +27,9 @@ import Notifications from './pages/Notifications'
 import TripDetailEdit from './pages/TripDetail/TripEdit'
 import TripEdit from './pages/TripDetail/TripEdit'
 import EditTripPlace from './pages/TripDetail/EditTripPlace'
+import TripList from './pages/TripList/TripList'
+import ServiceTerms from './pages/Terms/ServiceTerms'
+import axios from 'axios'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -129,7 +132,7 @@ export const router = createBrowserRouter([
         element: <TripEnrollmentList />
       },
       {
-        path: 'notification/1',
+        path: 'notification/:userId',
         element: <Notifications />
       },
       {
@@ -139,12 +142,31 @@ export const router = createBrowserRouter([
       {
         path: 'editPlace/:travelNumber',
         element: <EditTripPlace />
+      },
+      {
+        path: 'trip/list',
+        element: <TripList />
+      },
+      {
+        path: 'terms',
+        element: (
+          <>
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            path: 'service',
+            element: <ServiceTerms />
+          }
+        ]
       }
     ]
   }
 ])
 
 export default function App() {
+  axios.defaults.withCredentials = true
   return (
     <>
       <RouterProvider router={router} />

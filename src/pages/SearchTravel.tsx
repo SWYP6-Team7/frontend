@@ -12,29 +12,33 @@ import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
 import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
+import { useSearchParams } from 'react-router-dom'
 
 const RECOMMEND_TAGS1 = ['유럽', '일본', '제주']
 const RECOMMEND_TAGS2 = ['유럽', '일본']
 
 const SearchTravel = () => {
-  const [keyword, setKeyword] = useState('')
-  const { keyword: finalKeyword, setKeyword: setFinalKeyword } = searchStore()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const keywordParams = searchParams.get('keyword') ?? ''
+  const [keyword, setKeyword] = useState(keywordParams)
+  const [finalKeyword, setFinalKeyword] = useState(keywordParams)
+
   const [showRelationKeyword, setShowRelationKeyword] = useState(true)
   const [ref, inView] = useInView()
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
     useSearch({
       keyword: finalKeyword
     })
-
+  console.log(finalKeyword)
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage()
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage])
-  console.log('Data', data, finalKeyword)
   useEffect(() => {
     if (finalKeyword !== '') {
       refetch()
+      setSearchParams({ keyword: finalKeyword })
     }
   }, [finalKeyword, refetch])
 

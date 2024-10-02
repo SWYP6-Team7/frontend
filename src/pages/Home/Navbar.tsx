@@ -37,7 +37,8 @@ const Navbar = () => {
       pathname === '/' ||
       pathname === '/bookmark' ||
       pathname === '/community' ||
-      pathname === '/mypage'
+      pathname === '/mypage' ||
+      pathname === '/trip/list'
     )
       return true
     return false

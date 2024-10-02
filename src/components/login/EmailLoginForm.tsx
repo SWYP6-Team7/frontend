@@ -136,10 +136,7 @@ const EmailLoginForm = () => {
       </SignUpLinkContainer>
       <Spacing size={26} />
       {success.email && success.password ? (
-        <Button
-          text="로그인"
-          onClick={() => {}}
-        />
+        <Button text="로그인" />
       ) : (
         <Button
           text="로그인"

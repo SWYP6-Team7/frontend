@@ -19,6 +19,7 @@ import {
 import { palette } from '@/styles/palette'
 import useSearch from '@/hooks/search/useSearch'
 import WhiteXIcon from './icons/WhiteXIcon'
+import { useSearchParams } from 'react-router-dom'
 
 const FILTER_LIST = [
   { title: '장소', tags: ['국내', '해외'] as const },
@@ -62,11 +63,13 @@ const FilterList = () => {
     period,
     style,
     setReset,
-    keyword,
+
     gender,
     setOneFilterReset
   } = searchStore()
-  const { refetch } = useSearch({ keyword: keyword })
+  const [searchParams, setSearchParams] = useSearchParams()
+  const keyword = searchParams.get('keyword') ?? ''
+  const { refetch } = useSearch({ keyword })
 
   const getCount = (type: '장소' | '인원' | '기간' | '스타일' | '성별') => {
     if (type === '장소') return place.length

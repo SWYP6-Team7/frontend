@@ -101,8 +101,8 @@ const RegisterTripStyle = () => {
           ))}
         </StyleBtns>
       </TripStyleContainer>
-
-      <ButtonContainer blur={'blur(1.5px)'}>
+      <Spacing size={120} />
+      <ButtonWrapper width={newRightPosition}>
         <Button
           text="다음"
           onClick={nextStepClickHandler}
@@ -112,7 +112,7 @@ const RegisterTripStyle = () => {
             boxShadow: 'rgba(170, 170, 170, 0.1)'
           }}
         />
-      </ButtonContainer>
+      </ButtonWrapper>
     </RegisterTripStyleWrapper>
   )
 }
