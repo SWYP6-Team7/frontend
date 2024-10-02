@@ -19,7 +19,6 @@ interface IRegisterEmail {
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
 const useAuth = () => {
-  const { updateUser, clearUser } = useUser()
   const { setLoginData, clearLoginData, accessToken } = authStore()
 
   async function loginEmail({
@@ -36,7 +35,10 @@ const useAuth = () => {
       })
       const data = response.data
 
-      setLoginData({ userId: 1, accessToken: data.accessToken })
+      setLoginData({
+        userId: response.data.userId,
+        accessToken: data.accessToken
+      })
     } catch (error: any) {
       console.error(error)
       throw new Error(error)
@@ -47,7 +49,10 @@ const useAuth = () => {
       const response = await axiosInstance.post('/api/users/new', formData)
       const data = response.data
 
-      setLoginData({ userId: 1, accessToken: data.accessToken })
+      setLoginData({
+        userId: response.data.userId,
+        accessToken: data.accessToken
+      })
     } catch (error: any) {
       console.error(error)
       throw new Error(error)
@@ -55,7 +60,6 @@ const useAuth = () => {
   }
 
   function logout(): void {
-    clearUser()
     clearLoginData()
   }
   // 유저가 로그인을 했는지 & 새로고침을 해도 accessToken을 유지하도록 하는 refresh 요청 api

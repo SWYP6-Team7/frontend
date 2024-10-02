@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import TitleContainer from './ContentTitleContainer'
 import VerticalBoxLayout from '@/components/VerticalBoxLayout'
 import { useTripList } from '@/hooks/useTripList'
-import useUser from '@/hooks/user/useUser'
 import { userStore } from '@/store/client/userStore'
 import { chunkArray } from '@/utils/array'
 
@@ -10,28 +9,8 @@ import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal
-} from 'react'
-import { palette } from '@/styles/palette'
-import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 
-// 백 데이터 받아오면 수정.
-interface TripsProps {
-  postId: string
-  imgUrl: string
-  endDate: string
-  title: string
-  description: string
-  createdDate: string
-  tags: string[]
-  recruits: number
-  total: number
-  userIdBookmarked: string[]
-}
+import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 
 const TripAvailable = () => {
   const { data } = useTripList('recent')
@@ -48,6 +27,7 @@ const TripAvailable = () => {
   return (
     <Container>
       <TitleContainer
+        detailLink={`/trip/list?sort=recent`}
         text={
           <>
             지금 참가 가능한 <br /> 여행을 소개해요.
@@ -58,12 +38,13 @@ const TripAvailable = () => {
       <ThreeRowCarousel>
         {cutTrips &&
           cutTrips?.map(post => (
-            <div css={{ padding: '18px 16px' }}>
+            <div
+              css={{ padding: '18px 16px' }}
+              key={post.travelNumber}>
               <HorizonBoxLayout
                 showTag={false}
                 bookmarkPosition="middle"
                 userName={post.userName}
-                key={post.travelNumber}
                 tags={post.tags}
                 daysAgo={dayjs().diff(
                   dayjs(post.createdAt, 'YYYY년MM월DD일'),

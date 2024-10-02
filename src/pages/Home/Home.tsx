@@ -1,5 +1,4 @@
 import useAuth from '@/hooks/user/useAuth'
-import useUser from '@/hooks/user/useUser'
 import { authStore } from '@/store/client/authStore'
 import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
@@ -21,7 +20,6 @@ import { useUserProfile } from '@/hooks/useUserInfo'
 import { palette } from '@/styles/palette'
 
 const Home = () => {
-  const { user } = useUser()
   const { name } = userStore()
   const { userId, accessToken } = authStore()
   const [userName, setUserName] = useState(name)
@@ -115,7 +113,7 @@ const Home = () => {
         {/* 참가 가능 여행 부분 */}
         <TripAvailable />
         {/* 추천 여행 부분 */}
-        {/* <TripRecommendation /> */}
+        <TripRecommendation />
         <Spacing size={92} />
         <Footer />
       </ContentWrapper>

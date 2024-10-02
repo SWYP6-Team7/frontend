@@ -31,7 +31,7 @@ const ContentBox = styled.div`
   display: flex;
   background-color: white;
   border-radius: 20px;
-  padding: 16px 0;
+  padding-bottom: 16px;
   margin-right: -24px;
   width: 100%;
 

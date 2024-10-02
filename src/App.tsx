@@ -29,6 +29,7 @@ import TripEdit from './pages/TripDetail/TripEdit'
 import EditTripPlace from './pages/TripDetail/EditTripPlace'
 import TripList from './pages/TripList/TripList'
 import ServiceTerms from './pages/Terms/ServiceTerms'
+import axios from 'axios'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -165,6 +166,7 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
+  axios.defaults.withCredentials = true
   return (
     <>
       <RouterProvider router={router} />

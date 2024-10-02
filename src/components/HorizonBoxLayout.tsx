@@ -16,6 +16,7 @@ interface HorizonBoxProps {
   imgSrc?: string // 이미지 없는 경우 대비.
   tags: string[]
   showTag?: boolean
+  isBar?: boolean
   bookmarkPosition?: 'top' | 'middle'
 }
 // 사용 방식
@@ -42,6 +43,7 @@ const HorizonBoxLayout = ({
   userName,
   daysAgo,
   imgSrc = '',
+  isBar = false,
   showTag = true,
   bookmarkPosition = 'top',
   tags
@@ -82,6 +84,7 @@ const HorizonBoxLayout = ({
             <div>{daysAgo}일전</div>
           </UserBox>
         </div>
+        {isBar && <Bar />}
         {showTag && (
           <Tags>
             <BoxLayoutTag
@@ -129,6 +132,13 @@ const BookmarkButton = () => {
     </button>
   )
 }
+
+const Bar = styled.div`
+  margin-bottom: 8px;
+  width: 100%;
+  height: 1px;
+  background-color: ${palette.비강조4};
+`
 
 const HorizonBoxContainer = styled.div`
   width: 100%;
