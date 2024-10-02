@@ -120,6 +120,127 @@ const trips = {
   }
 }
 
+const tripsRecommend = {
+  content: [
+    {
+      travelNumber: 1,
+      title: '추천순 여행',
+      userNumber: 1,
+      userName: '홍길동',
+      tags: ['문화', '음식', '사진', '문화', '음식', '사진'],
+      nowPerson: 2,
+      maxPerson: 5,
+      createdAt: '2024년 09월 01일',
+      registerDue: '2025년 01월 10일'
+    },
+    {
+      travelNumber: 2,
+      title: '이탈리아 로마 여행',
+      userNumber: 2,
+      userName: '이몽룡',
+      tags: ['역사', '건축', '맛집'],
+      nowPerson: 3,
+      maxPerson: 4,
+      createdAt: '2024년 09월 02일',
+      registerDue: '2025년 02월 15일'
+    },
+    {
+      travelNumber: 3,
+      title: '스페인 바르셀로나 여행',
+      userNumber: 3,
+      userName: '성춘향',
+      tags: ['해변', '휴식', '예술', '문화', '음식', '사진'],
+      nowPerson: 1,
+      maxPerson: 6,
+      createdAt: '2024년 09월 03일',
+      registerDue: '2025년 03월 20일'
+    },
+    {
+      travelNumber: 4,
+      title: '영국 런던 여행',
+      userNumber: 4,
+      userName: '강감찬',
+      tags: ['공연', '패션', '박물관'],
+      nowPerson: 2,
+      maxPerson: 5,
+      createdAt: '2024년 09월 04일',
+      registerDue: '2025년 04월 25일'
+    },
+    {
+      travelNumber: 5,
+      title: '미국 뉴욕 여행',
+      userNumber: 5,
+      userName: '안중근',
+      tags: ['쇼핑', '음악', '미술'],
+      nowPerson: 3,
+      maxPerson: 7,
+      createdAt: '2024년 09월 05일',
+      registerDue: '2025년 05월 30일'
+    },
+    {
+      travelNumber: 6,
+      title: '일본 도쿄 여행',
+      userNumber: 6,
+      userName: '을지문덕',
+      tags: ['음식', '쇼핑', '자연'],
+      nowPerson: 1,
+      maxPerson: 3,
+      createdAt: '2024년 09월 06일',
+      registerDue: '2025년 06월 05일'
+    },
+    {
+      travelNumber: 7,
+      title: '중국 베이징 여행',
+      userNumber: 7,
+      userName: '장보고',
+      tags: ['역사', '문화', '음식'],
+      nowPerson: 4,
+      maxPerson: 8,
+      createdAt: '2024년 09월 07일',
+      registerDue: '2025년 07월 10일'
+    },
+    {
+      travelNumber: 8,
+      title: '태국 방콕 여행',
+      userNumber: 8,
+      userName: '왕건',
+      tags: ['해변', '휴양', '맛집'],
+      nowPerson: 2,
+      maxPerson: 6,
+      createdAt: '2024년 09월 08일',
+      registerDue: '2025년 08월 15일'
+    },
+    {
+      travelNumber: 9,
+      title: '베트남 하노이 여행',
+      userNumber: 9,
+      userName: '고구려',
+      tags: ['자연', '음식', '액티비티'],
+      nowPerson: 1,
+      maxPerson: 4,
+      createdAt: '2024년 09월 09일',
+      registerDue: '2025년 09월 20일'
+    },
+    {
+      travelNumber: 10,
+      title: '호주 시드니 여행',
+      userNumber: 10,
+      userName: '백제',
+      tags: ['동물', '자연', '레저'],
+      nowPerson: 5,
+      maxPerson: 5,
+      createdAt: '2024년 09월 10일',
+      registerDue: '2025년 10월 25일'
+    }
+  ],
+  page: {
+    size: 10,
+    number: 0,
+    totalElements: 30,
+    totalPages: 3
+  }
+}
+
 const trips2 = {
   content: [
     {
@@ -205,7 +326,7 @@ export const homeHandler = [
     const url = new URL(request.url)
     const pageParams = url.searchParams.get('page')
     if (Number(pageParams) === 0) {
-      return HttpResponse.json(trips)
+      return HttpResponse.json(tripsRecommend)
     } else if (Number(pageParams) === 1) {
       return HttpResponse.json(trips2)
     } else if (Number(pageParams) === 2) {

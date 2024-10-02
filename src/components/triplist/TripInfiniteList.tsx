@@ -1,16 +1,25 @@
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
-import { useTripAvailable } from '@/hooks/useTripAvailable'
+import { useTripList } from '@/hooks/useTripList'
 import styled from '@emotion/styled'
 import React from 'react'
 import { useInView } from 'react-intersection-observer'
 import HorizonBoxLayout from '../HorizonBoxLayout'
 import dayjs from 'dayjs'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 const TripInfiniteList = () => {
   const [ref, inView] = useInView()
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
-    useTripAvailable()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const engSort = (() => {
+    const value = searchParams.get('sort')
+    if (!value || (value !== 'recent' && value !== 'recommend')) {
+      return 'recent'
+    }
+    return value
+  })()
+
+  const { data, isFetching, hasNextPage, fetchNextPage, isLoading } =
+    useTripList(engSort)
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage()

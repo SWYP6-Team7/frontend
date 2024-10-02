@@ -3,10 +3,8 @@ import AlarmIcon from '@/components/icons/AlarmIcon'
 import RelationSearchIcon from '@/components/icons/RelationSearchIcon'
 import Spacing from '@/components/Spacing'
 import PopularPlaceList from '@/components/triplist/PopularPlaceList'
-import useAuth from '@/hooks/user/useAuth'
-import useUser from '@/hooks/user/useUser'
+
 import { authStore } from '@/store/client/authStore'
-import { userStore } from '@/store/client/userStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React from 'react'
@@ -14,7 +12,8 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Navbar from '../Home/Navbar'
 import TripInfiniteList from '@/components/triplist/TripInfiniteList'
 import SortHeader from '@/components/SortHeader'
-import { useTripAvailable } from '@/hooks/useTripAvailable'
+import { useTripList } from '@/hooks/useTripList'
+import CreateTripButton from '../Home/CreateTripButton'
 
 const LIST = ['최신순', '추천순']
 
@@ -27,9 +26,16 @@ const TripList = () => {
     }
     return value === 'recent' ? '최신순' : '추천순'
   })()
+  const engSort = (() => {
+    const value = searchParams.get('sort')
+    if (!value || (value !== 'recent' && value !== 'recommend')) {
+      return 'recent'
+    }
+    return value
+  })()
   const { userId } = authStore()
   const navigate = useNavigate()
-  const { data } = useTripAvailable()
+  const { data } = useTripList(engSort)
   const onClickSort = (value: string) => {
     if (value === '추천순') {
       setSearchParams({ sort: 'recommend' })
@@ -47,7 +53,9 @@ const TripList = () => {
       <div>
         <SearchContainer>
           <div css={{ flex: 1 }}>
-            <button onClick={onClickSearch}>
+            <button
+              css={{ width: '100%' }}
+              onClick={onClickSearch}>
               <CreateTripInputField
                 isRemove={false}
                 placeholder="어디로 여행을 떠날까요?"
@@ -76,6 +84,7 @@ const TripList = () => {
         </SortContainer>
         <TripInfiniteList />
       </div>
+      <CreateTripButton />
       <Navbar />
     </>
   )

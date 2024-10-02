@@ -17,7 +17,7 @@ interface Page {
   totalPages: number
 }
 
-interface ITripAvailable {
+export interface ITripList {
   content: Travel[]
   page: Page
 }
