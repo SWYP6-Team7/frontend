@@ -3,7 +3,7 @@ import ResultModal from '@/components/designSystem/modal/ResultModal'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import useEnrollment from '@/hooks/enrollment/useEnrollment'
 import useAuth from '@/hooks/user/useAuth'
-import useUser from '@/hooks/user/useUser'
+
 import { authStore } from '@/store/client/authStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'

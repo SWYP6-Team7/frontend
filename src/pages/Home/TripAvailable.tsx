@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import TitleContainer from './ContentTitleContainer'
 import VerticalBoxLayout from '@/components/VerticalBoxLayout'
 import { useTripList } from '@/hooks/useTripList'
-import useUser from '@/hooks/user/useUser'
 import { userStore } from '@/store/client/userStore'
 
 // 백 데이터 받아오면 수정.
