@@ -39,7 +39,7 @@ const Layout = () => {
         await userPostRefreshToken()
       } catch (error) {
         console.error('Failed to refresh token:', error)
-        navigate('/login') // 로그인 이동.
+        //navigate('/login') // 로그인 이동.
       }
     }
 
@@ -56,12 +56,12 @@ const Layout = () => {
         {pathname !== '/' &&
           pathname !== '/login' &&
           pathname !== '/trip/list' && <Header />}
-
-        {accessToken || isAccessTokenNoNeedpages(pathname) ? (
+        <Outlet />
+        {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
           <Outlet />
         ) : (
           <Navigate to="/login" />
-        )}
+        )} */}
 
         {/* 로그인을 해야만 보이는거 처리. */}
         <Navbar />
