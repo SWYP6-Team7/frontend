@@ -1,5 +1,6 @@
 import { axiosInstance } from '@/api'
-import { getAvailableTrips } from '@/api/home'
+import { getAvailableTrips, getRecommendationTrips } from '@/api/home'
+import { ITripList } from '@/model/trip'
 import { authStore } from '@/store/client/authStore'
 import {
   useQuery,
@@ -10,7 +11,9 @@ import {
 } from '@tanstack/react-query'
 import axios from 'axios'
 
-export const useTripAvailable = () => {
+export const useTripList = (sort: 'recommend' | 'recent') => {
+  const queryKey =
+    sort === 'recommend' ? 'tripRecommendation' : 'availableTrips'
   const {
     data,
     isLoading,
@@ -20,13 +23,20 @@ export const useTripAvailable = () => {
     isFetching,
     hasNextPage
   } = useInfiniteQuery<
-    ITripAvailable,
+    ITripList,
     Object,
-    InfiniteData<ITripAvailable>,
+    InfiniteData<ITripList>,
     [_1: string]
   >({
-    queryKey: ['availableTrips'],
-    queryFn: ({ pageParam }) => getAvailableTrips(pageParam as number),
+    queryKey: [queryKey],
+    queryFn: ({ pageParam }) => {
+      if (sort === 'recent') {
+        return getAvailableTrips(pageParam as number)
+      } else {
+        return getRecommendationTrips(pageParam as number)
+      }
+    },
+
     initialPageParam: 0,
     getNextPageParam: lastPage => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
@@ -36,7 +46,6 @@ export const useTripAvailable = () => {
       }
     }
   })
-  console.log(data)
   return {
     data,
     isLoading,

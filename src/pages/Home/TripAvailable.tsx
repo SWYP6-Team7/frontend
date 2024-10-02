@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import TitleContainer from './ContentTitleContainer'
 import VerticalBoxLayout from '@/components/VerticalBoxLayout'
-import { useTripAvailable } from '@/hooks/useTripAvailable'
+import { useTripList } from '@/hooks/useTripList'
 import useUser from '@/hooks/user/useUser'
 import { userStore } from '@/store/client/userStore'
 
@@ -19,7 +19,7 @@ interface TripsProps {
   userIdBookmarked: string[]
 }
 const TripAvailable = () => {
-  const { data } = useTripAvailable()
+  const { data } = useTripList('recent')
   const { name } = userStore()
 
   const trips = data?.pages[0]
