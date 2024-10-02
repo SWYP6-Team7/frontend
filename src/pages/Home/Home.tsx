@@ -17,6 +17,7 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 import CreateTripButton from './CreateTripButton'
 import { useUserProfile } from '@/hooks/useUserInfo'
+import { palette } from '@/styles/palette'
 
 const Home = () => {
   const { name } = userStore()
@@ -89,12 +90,13 @@ const Home = () => {
           </Alarm>
         </HeaderTitle>
       </HomeHeader>
-      <CharacterBox>
+
+      {/* <CharacterBox>
         <img
           src="/images/homeCharacter.png"
           alt=""
         />
-      </CharacterBox>
+      </CharacterBox> */}
       <ContentWrapper>
         <SearchBox>
           <Greeting>
@@ -120,19 +122,17 @@ const Home = () => {
   )
 }
 const HomeContainer = styled.div`
-  background-color: #f0f0f0;
+  background-color: ${palette.검색창};
   width: 100%;
 `
 
 const ContentWrapper = styled.div`
   width: 100%;
   padding: 0px 24px;
-  background-color: white;
 
-  border-radius: 30px 30px 0px 0px;
+  margin-top: calc(100px);
 `
 const SearchBox = styled.div`
-  background-color: white;
   padding-top: 40px;
 `
 const Greeting = styled.div`
@@ -156,7 +156,7 @@ const CharacterBox = styled.div`
 `
 
 const HomeHeader = styled.div<{ scrolled: boolean }>`
-  background-color: ${({ scrolled }) => (scrolled ? 'white' : '#f0f0f0')};
+  background-color: ${palette.검색창};
   transition: background-color 0.3s ease;
 
   @media (max-width: 440px) {
