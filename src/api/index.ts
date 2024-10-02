@@ -5,6 +5,6 @@ export const axiosInstance = axios.create({
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
-    withCredentials: true
+    'Access-Control-Allow-Credentials': true
   }
 })

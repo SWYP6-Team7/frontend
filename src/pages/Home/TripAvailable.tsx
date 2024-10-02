@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import TitleContainer from './ContentTitleContainer'
 import VerticalBoxLayout from '@/components/VerticalBoxLayout'
-import { useTripAvailable } from '@/hooks/useTripAvailable'
+import { useTripList } from '@/hooks/useTripList'
 import useUser from '@/hooks/user/useUser'
 import { userStore } from '@/store/client/userStore'
 
@@ -19,10 +19,10 @@ interface TripsProps {
   userIdBookmarked: string[]
 }
 const TripAvailable = () => {
-  const { data } = useTripAvailable()
+  const { data } = useTripList('recent')
   const { name } = userStore()
 
-  const trips = data?.data
+  const trips = data?.pages[0]
   // 일단 앞에 몇개만 노출.
   //   const cutTrips = trips.length > 5 ? trips.slice(0, 5) : trips
   console.log(trips)
@@ -62,10 +62,10 @@ const TripAvailable = () => {
       />
       <ContentBox>
         {trips &&
-          trips?.map((post: TripsProps) => (
-            <Box key={post.postId}>
-              <VerticalBoxLayout
-                key={post.postId}
+          trips?.content.map(post => (
+            <Box key={post.travelNumber}>
+              {/* <VerticalBoxLayout
+                key={post.travelNumber}
                 userIdBookmarked={post.userIdBookmarked}
                 postId={post.postId}
                 daysLeft={daysLeft(post.endDate)}
@@ -75,9 +75,9 @@ const TripAvailable = () => {
                 userName={name}
                 recruits={post.recruits}
                 total={post.total}
-                imgSrc={post.imgUrl}
+           
                 tags={post.tags}
-              />
+              /> */}
             </Box>
           ))}
       </ContentBox>

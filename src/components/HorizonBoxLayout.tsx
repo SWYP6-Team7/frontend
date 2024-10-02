@@ -4,12 +4,13 @@ import PersonIcon from './icons/PersonIcon'
 import BoxLayoutTag from './designSystem/tag/BoxLayoutTag'
 import EmptyHeartIcon from './icons/EmptyHeartIcon'
 import { palette } from '@/styles/palette'
+import PlaceIcon from './icons/PlaceIcon'
 interface HorizonBoxProps {
   daysLeft: number
   title: string
   recruits: number
   total: number
-  description: string
+  location?: string
   userName: string
   daysAgo: number
   imgSrc?: string // 이미지 없는 경우 대비.
@@ -35,13 +36,13 @@ const HorizonBoxLayout = ({
   title,
   recruits,
   total,
-  description,
+  location = '',
   userName,
   daysAgo,
   imgSrc = '',
   tags
 }: HorizonBoxProps) => {
-  const cutTags = tags.length > 5 ? tags.slice(0, 4) : tags
+  const cutTags = tags.length > 2 ? tags.slice(0, 2) : tags
   return (
     <HorizonBoxContainer>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
@@ -73,9 +74,33 @@ const HorizonBoxLayout = ({
           </UserBox>
         </div>
         <Tags>
+          <BoxLayoutTag
+            text={
+              <div>
+                <PlaceIcon
+                  height={12}
+                  width={10}
+                />
+                &nbsp;{location}
+              </div>
+            }
+          />
           {cutTags.map((text: string, idx) => (
             <BoxLayoutTag text={text} />
           ))}
+          {tags.length > cutTags.length ? (
+            <BoxLayoutTag
+              addStyle={{
+                backgroundColor: `${palette.비강조4}`,
+                padding: '4px 6px 4px 6px',
+                color: `${palette.비강조}`,
+                height: '22px',
+                borderRadius: '20px',
+                fontSize: '12px'
+              }}
+              text={`+${tags.length - cutTags.length}`}
+            />
+          ) : null}
         </Tags>
       </PostInfo>
       <button>
