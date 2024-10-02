@@ -1,5 +1,4 @@
 import useAuth from '@/hooks/user/useAuth'
-import useUser from '@/hooks/user/useUser'
 import { authStore } from '@/store/client/authStore'
 import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
@@ -20,7 +19,6 @@ import CreateTripButton from './CreateTripButton'
 import { useUserProfile } from '@/hooks/useUserInfo'
 
 const Home = () => {
-  const { user } = useUser()
   const { name } = userStore()
   const { userId, accessToken } = authStore()
   const [userName, setUserName] = useState(name)
