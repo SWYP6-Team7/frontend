@@ -33,20 +33,23 @@ const Layout = () => {
   }
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
-    const refreshAccessToken = async () => {
-      try {
-        // refresh 토큰을 이용해 accessToken 재발급 요청
-        await userPostRefreshToken()
-      } catch (error) {
-        console.error('Failed to refresh token:', error)
-        navigate('/login') // 로그인 이동.
+    if (!accessToken) {
+      // 토큰이 없으면 리프레쉬 토큰 api 요청.
+      const refreshAccessToken = async () => {
+        try {
+          // refresh 토큰을 이용해 accessToken 재발급 요청
+          await userPostRefreshToken()
+        } catch (error) {
+          console.error('Failed to refresh token:', error)
+          navigate('/login') // 로그인 이동.
+        }
+      }
+
+      if (!isAccessTokenNoNeedpages(pathname)) {
+        refreshAccessToken()
       }
     }
-
-    if (!isAccessTokenNoNeedpages(pathname)) {
-      refreshAccessToken()
-    }
-  }, [])
+  }, [accessToken])
   console.log(userId, accessToken, '토큰')
   return (
     <Container pathname={pathname}>
