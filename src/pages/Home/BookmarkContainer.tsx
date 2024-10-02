@@ -8,72 +8,73 @@ import { daysLeft } from '@/utils/time'
 const BookmarkContainer = () => {
   const navigate = useNavigate()
   // 북마크 가져오기
-  const { data } = useBookmark('1')
-  const bookmarks = data?.data.bookMarks
+  // const { data } = useBookmark('1')
+  // const bookmarks = data?.data.bookMarks
 
   return (
-    <BookmarkBox>
-      <TitleContainer text="즐겨찾기" />
-      <ContentList>
-        {/* Empty는 북마크 한 것이 없을 때,로그인 안할 때. 보여줄 div */}
-        {bookmarks === undefined && (
-          <EmptyBox>
-            <Empty>
-              <img
-                // 클릭시,여행 찾기 페이지로 이동 예정
-                onClick={() => navigate('/search/travel')}
-                src="/images/bookmarkPlus.png"
-                alt=""
-              />
-              <span>여행을 즐겨찾기 해보세요!</span>
-            </Empty>
-          </EmptyBox>
-        )}
-        {bookmarks &&
-          (bookmarks.length === 0 ? (
-            <EmptyBox>
-              <Empty>
-                <img
-                  // 클릭시,여행 찾기 페이지로 이동 예정
-                  onClick={() => navigate('/search/travel')}
-                  src="/images/bookmarkPlus.png"
-                  alt=""
-                />
-                <span>여행을 즐겨찾기 해보세요!</span>
-              </Empty>
-            </EmptyBox>
-          ) : (
-            <BookmarkList>
-              {bookmarks.map(
-                (post: {
-                  postId: string
-                  imgUrl: string
-                  endDate: string
-                  title: string
-                  description: string
-                }) => (
-                  <BookmarkPreviewBox key={post.postId}>
-                    <ImgBox>
-                      <img
-                        src={post.imgUrl}
-                        alt=""
-                      />
-                    </ImgBox>
-                    <Info>
-                      <Badge
-                        text="마감"
-                        daysLeft={daysLeft(post.endDate)}
-                      />
-                      <div>{post.title}</div>
-                      <div>{post.description}</div>
-                    </Info>
-                  </BookmarkPreviewBox>
-                )
-              )}
-            </BookmarkList>
-          ))}
-      </ContentList>
-    </BookmarkBox>
+    <></>
+    // <BookmarkBox>
+    //   <TitleContainer text="즐겨찾기" />
+    //   <ContentList>
+    //     {/* Empty는 북마크 한 것이 없을 때,로그인 안할 때. 보여줄 div */}
+    //     {bookmarks === undefined && (
+    //       <EmptyBox>
+    //         <Empty>
+    //           <img
+    //             // 클릭시,여행 찾기 페이지로 이동 예정
+    //             onClick={() => navigate('/search/travel')}
+    //             src="/images/bookmarkPlus.png"
+    //             alt=""
+    //           />
+    //           <span>여행을 즐겨찾기 해보세요!</span>
+    //         </Empty>
+    //       </EmptyBox>
+    //     )}
+    //     {bookmarks &&
+    //       (bookmarks.length === 0 ? (
+    //         <EmptyBox>
+    //           <Empty>
+    //             <img
+    //               // 클릭시,여행 찾기 페이지로 이동 예정
+    //               onClick={() => navigate('/search/travel')}
+    //               src="/images/bookmarkPlus.png"
+    //               alt=""
+    //             />
+    //             <span>여행을 즐겨찾기 해보세요!</span>
+    //           </Empty>
+    //         </EmptyBox>
+    //       ) : (
+    //         <BookmarkList>
+    //           {bookmarks.map(
+    //             (post: {
+    //               postId: string
+    //               imgUrl: string
+    //               endDate: string
+    //               title: string
+    //               description: string
+    //             }) => (
+    //               <BookmarkPreviewBox key={post.postId}>
+    //                 <ImgBox>
+    //                   <img
+    //                     src={post.imgUrl}
+    //                     alt=""
+    //                   />
+    //                 </ImgBox>
+    //                 <Info>
+    //                   <Badge
+    //                     text="마감"
+    //                     daysLeft={daysLeft(post.endDate)}
+    //                   />
+    //                   <div>{post.title}</div>
+    //                   <div>{post.description}</div>
+    //                 </Info>
+    //               </BookmarkPreviewBox>
+    //             )
+    //           )}
+    //         </BookmarkList>
+    //       ))}
+    //   </ContentList>
+    // </BookmarkBox>
   )
 }
 export default BookmarkContainer

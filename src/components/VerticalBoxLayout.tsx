@@ -41,7 +41,7 @@ const VerticalBoxLayout = ({
   // const { userId, accessToken } = authStore()
   const userId = '1' // 임시적.
 
-  const { updateBookmark } = useUpdateBookmark(userId, postId)
+  // const { updateBookmark } = useUpdateBookmark(userId, postId)
 
   let isBookmarked: boolean = false
   if (userId !== null)
@@ -52,7 +52,7 @@ const VerticalBoxLayout = ({
 
   const bookmarkClickHandler = () => {
     // 북마크 추가 또는 제거 api 요청.
-    updateBookmark()
+    // updateBookmark()
   }
   return (
     <Container>

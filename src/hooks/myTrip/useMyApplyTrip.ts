@@ -26,9 +26,9 @@ export const useMyTrip = () => {
     InfiniteData<ITripList>,
     [_1: string]
   >({
-    queryKey: ['myTrips'],
+    queryKey: ['myApplyTrips'],
     queryFn: ({ pageParam }) => {
-      return getMyTrips(pageParam as number, accessToken!)
+      return getApplyTrips(pageParam as number, accessToken!)
     },
 
     initialPageParam: 0,
@@ -41,6 +41,18 @@ export const useMyTrip = () => {
     }
   })
 
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: deleteMyApplyTripsMutation } = useMutation({
+    mutationFn: (travelNumber: number) => {
+      return deleteMyApplyTrips(accessToken!, travelNumber)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['myApplyTrips']
+      })
+    }
+  })
   return {
     data,
     isLoading,
@@ -48,6 +60,7 @@ export const useMyTrip = () => {
     fetchNextPage,
     refetch,
     isFetching,
-    hasNextPage
+    hasNextPage,
+    deleteMyApplyTripsMutation
   }
 }

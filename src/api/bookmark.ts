@@ -1,10 +1,14 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 
-export const getBookmark = (accessToken: string) => {
-  return axiosInstance.get('/api/bookmarks', {
+export const getBookmark = async (pageParams: number, accessToken: string) => {
+  const response = await axiosInstance.get('/api/bookmarks', {
+    params: {
+      page: pageParams
+    },
     headers: getJWTHeader(accessToken)
   })
+  return response.data
 }
 
 export const postBookmark = (accessToken: string, travelNumber: number) => {

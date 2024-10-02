@@ -30,6 +30,7 @@ import EditTripPlace from './pages/TripDetail/EditTripPlace'
 import TripList from './pages/TripList/TripList'
 import ServiceTerms from './pages/Terms/ServiceTerms'
 import axios from 'axios'
+import MyTrip from './pages/MyTrip/MyTrip'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -160,6 +161,10 @@ export const router = createBrowserRouter([
             element: <ServiceTerms />
           }
         ]
+      },
+      {
+        path: 'myTrip',
+        element: <MyTrip />
       }
     ]
   }
