@@ -81,7 +81,7 @@ const useAuth = () => {
       const response = await axiosInstance.post('/api/token/refresh')
       const data = response.data
 
-      setLoginData({ userId: 1, accessToken: data.accessToken })
+      setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
       console.error(error)
       throw new Error(error)
