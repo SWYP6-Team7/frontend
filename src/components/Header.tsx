@@ -3,6 +3,9 @@ import React from 'react'
 import BackIcon from './icons/BackIcon'
 import { useMatch, useNavigate, useLocation } from 'react-router-dom'
 import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
+import AlarmIcon from './icons/AlarmIcon'
+import { palette } from '@/styles/palette'
+import { authStore } from '@/store/client/authStore'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -16,14 +19,21 @@ const Header = () => {
   const isTripDetailEdit = location.pathname.startsWith('/trip/edit')
   const isTripEditPlace = location.pathname.startsWith('/editPlace')
   const isTripApply = location.pathname.startsWith('/trip/apply')
+  const isMyTrip = location.pathname.startsWith('/myTrip')
   const handleBack = () => {
     navigate(-1)
   }
+
+  const { userId, accessToken } = authStore()
   return (
     <HeaderContainer>
-      <ButotnContainer onClick={handleBack}>
-        <BackIcon />
-      </ButotnContainer>
+      {isMyTrip ? (
+        <Title>내 여행</Title>
+      ) : (
+        <ButotnContainer onClick={handleBack}>
+          <BackIcon />
+        </ButotnContainer>
+      )}
 
       <Title>
         {isRegister && '회원가입'}
@@ -40,6 +50,14 @@ const Header = () => {
       )}
       {location.pathname != '/registerTripStyle' && <VoidArea />}
       {isTripDetail && <TripDetailHeader />}
+      {isMyTrip && (
+        <div onClick={() => navigate(`notification/${userId}`)}>
+          <AlarmIcon
+            size={23}
+            stroke={palette.기본}
+          />
+        </div>
+      )}
     </HeaderContainer>
   )
 }

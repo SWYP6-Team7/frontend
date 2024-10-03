@@ -6,40 +6,25 @@ interface EditAndDeleteModalProps {
   setIsOpen: React.Dispatch<SetStateAction<boolean>>
   setIsEditBtnClicked: React.Dispatch<SetStateAction<boolean>>
   setIsDeleteBtnClicked: React.Dispatch<SetStateAction<boolean>>
+  isMyApplyTrip?: boolean // 내가 참가한 여행에서도 사용하기 위함.
+  deleteText?: string
 }
 export default function EditAndDeleteModal({
   setIsEditBtnClicked,
   setIsDeleteBtnClicked,
   isOpen,
-  setIsOpen
+  setIsOpen,
+  isMyApplyTrip = false,
+  deleteText = '삭제하기'
 }: EditAndDeleteModalProps) {
   const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
   const [isListening, setIsListening] = useState(false) // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isListening &&
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false) // 외부 클릭 시 모달 닫기
-      }
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      setIsOpen(false) // 외부 클릭 시 모달 닫기
     }
-
-    if (isOpen) {
-      // 모달이 열릴 때 이벤트 리스너 등록
-      setIsListening(true)
-      document.addEventListener('click', handleClickOutside)
-    } else {
-      setIsListening(false)
-    }
-
-    // 컴포넌트가 언마운트되거나 모달이 닫힐 때 이벤트 리스너 제거
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [isOpen, isListening]) // isModalOpen이 변경될 때마다 실행
+  }
 
   const deleteHandler = () => {
     setIsDeleteBtnClicked(true)
@@ -55,15 +40,29 @@ export default function EditAndDeleteModal({
         ref={modalRef}
         isOpen={isOpen}
         nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
-        <BtnBox>
-          <EditBtn onClick={editHandler}>수정하기</EditBtn>
-          <DeleteBtn onClick={deleteHandler}>삭제하기</DeleteBtn>
-        </BtnBox>
+        {!isMyApplyTrip ? (
+          <BtnBox isMyApplyTrip={isMyApplyTrip}>
+            <EditBtn onClick={editHandler}>수정하기</EditBtn>
+            <DeleteBtn
+              isMyApplyTrip={isMyApplyTrip}
+              onClick={deleteHandler}>
+              삭제하기
+            </DeleteBtn>
+          </BtnBox>
+        ) : (
+          <BtnBox isMyApplyTrip={isMyApplyTrip}>
+            <DeleteBtn
+              isMyApplyTrip={isMyApplyTrip}
+              onClick={deleteHandler}>
+              {deleteText}
+            </DeleteBtn>
+          </BtnBox>
+        )}
 
         <CloseBtn onClick={() => setIsOpen(false)}>닫기</CloseBtn>
       </Modal>
 
-      <DarkWrapper></DarkWrapper>
+      <DarkWrapper onClick={handleClickOutside}></DarkWrapper>
     </Container>
   )
 }
@@ -97,8 +96,8 @@ const EditBtn = styled.button`
   text-align: center;
   color: ${palette.기본};
 `
-const DeleteBtn = styled.button`
-  height: 50%;
+const DeleteBtn = styled.button<{ isMyApplyTrip: boolean }>`
+  height: ${props => (props.isMyApplyTrip ? '100%' : '50%')};
   width: 100%;
   display: flex;
   justify-content: center;
@@ -109,14 +108,14 @@ const DeleteBtn = styled.button`
   text-align: center;
   color: ${palette.like};
 `
-const BtnBox = styled.div`
+const BtnBox = styled.div<{ isMyApplyTrip: boolean }>`
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
   background-color: #f0f0f0;
   border-radius: 20px;
-  height: 104px;
+  height: ${props => (props.isMyApplyTrip ? '52px' : '104px')};
 `
 const Modal = styled.div<{ isOpen: boolean; nowWidth: number }>`
   width: ${({ nowWidth }) => `calc(${nowWidth}px - 48px)`};
@@ -151,6 +150,7 @@ const Container = styled.div<{ isOpen: boolean }>`
     visibility 0.3s ease-in-out;
 `
 const DarkWrapper = styled.div`
+  pointer-events: auto;
   position: absolute;
   width: 100%;
   height: 100svh;

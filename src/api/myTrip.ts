@@ -4,7 +4,11 @@ import { axiosInstance } from '.'
 export const getMyTrips = async (pageParam: number, accessToken: string) => {
   try {
     const response = await axiosInstance.get('/api/my-travels', {
-      headers: getJWTHeader(accessToken)
+      headers: getJWTHeader(accessToken),
+      params: {
+        page: pageParam,
+        size: 10
+      }
     })
     return response.data
   } catch (e) {
@@ -16,7 +20,11 @@ export const getMyTrips = async (pageParam: number, accessToken: string) => {
 export const getApplyTrips = async (pageParam: number, accessToken: string) => {
   try {
     const response = await axiosInstance.get('/api/my-applied-travels', {
-      headers: getJWTHeader(accessToken)
+      headers: getJWTHeader(accessToken),
+      params: {
+        page: pageParam,
+        size: 10
+      }
     })
     return response.data
   } catch (e) {

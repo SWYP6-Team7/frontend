@@ -26,7 +26,6 @@ export default function ResultModal({
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-        console.log('외부 클릭')
         setModalOpen(false) // 외부 클릭 시 모달 닫기
       }
     }

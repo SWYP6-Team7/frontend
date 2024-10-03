@@ -70,6 +70,7 @@ const Container = styled.div<{ isShow: boolean; bottom: string }>`
   display: flex;
   justify-content: center;
   left: 0;
+  z-index: 1000;
 `
 const ToastMsg = styled.div<{ height: number }>`
   position: absolute;

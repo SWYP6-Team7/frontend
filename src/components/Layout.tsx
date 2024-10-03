@@ -83,7 +83,8 @@ const Body = styled.div<{ pathname: string }>`
   background-color: ${props =>
     props.pathname === '/'
       ? '#f0f0f0'
-      : props.pathname.startsWith('/trip/detail')
+      : props.pathname.startsWith('/trip/detail') ||
+          props.pathname.startsWith('/myTrip')
         ? `${palette.검색창}`
         : `${palette.BG}`};
 

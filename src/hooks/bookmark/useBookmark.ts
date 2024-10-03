@@ -1,4 +1,5 @@
 import { getBookmark } from '@/api/bookmark'
+import { IMyTripList } from '@/model/myTrip'
 import { ITripList } from '@/model/trip'
 import { authStore } from '@/store/client/authStore'
 import {
@@ -21,9 +22,9 @@ export const useBookmark = () => {
     isFetching,
     hasNextPage
   } = useInfiniteQuery<
-    ITripList,
+    IMyTripList,
     Object,
-    InfiniteData<ITripList>,
+    InfiniteData<IMyTripList>,
     [_1: string]
   >({
     queryKey: ['bookmarks'],
@@ -36,6 +37,7 @@ export const useBookmark = () => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
         return undefined
       } else {
+        if (lastPage?.page?.number + 1 === 3) return undefined //30개까지만 요청
         return lastPage?.page?.number + 1
       }
     }

@@ -19,15 +19,17 @@ const Navbar = () => {
   const navigate = useNavigate()
 
   const { pathname } = useLocation()
-  const pages = ['/', '/search/travel', '/bookmark', '/community', '/mypage']
+  // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
+  const pages = ['/', '/search/travel', '/myTrip', '/mypage']
   const icons = [
     HomeIcon,
     SearchIcon,
     EmptyHeartIcon,
-    CommnunityIcon,
+    // CommnunityIcon,
     PersonIcon
   ]
-  const iconNames = ['홈', '검색', '즐겨찾기', '커뮤니티', 'MY']
+  // const iconNames = ['홈', '검색', '즐겨찾기', '커뮤니티', 'MY']
+  const iconNames = ['홈', '검색', '즐겨찾기', 'MY']
 
   const getIsActive = (page: string) => {
     return pathname === page
@@ -35,7 +37,7 @@ const Navbar = () => {
   const condition = () => {
     if (
       pathname === '/' ||
-      pathname === '/bookmark' ||
+      pathname === '/myTrip' ||
       pathname === '/community' ||
       pathname === '/mypage' ||
       pathname === '/trip/list'

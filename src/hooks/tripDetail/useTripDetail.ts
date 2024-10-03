@@ -44,9 +44,11 @@ const useTripDetail = (travelNumber: number) => {
       queryClient.invalidateQueries({
         queryKey: ['tripDetail', travelNumber]
       }),
-        queryClient.invalidateQueries({
-          queryKey: ['myTrips']
-        })
+        setTimeout(() => {
+          queryClient.invalidateQueries({
+            queryKey: ['myTrips']
+          })
+        }, 1500)
     }
   })
 
