@@ -85,7 +85,7 @@ const Comment = () => {
       />
       <CheckingModal
         isModalOpen={isResultModalOpen}
-        modalMsg={`여행 멤버나 관심을 가진 분들이 \n 당황할 수 있어요.`}
+        modalMsg={`댓글을 삭제할까요?`}
         modalTitle="정말 삭제할까요?"
         modalButtonText="삭제하기"
         setIsSelected={setCheckingModalClicked}
@@ -95,7 +95,7 @@ const Comment = () => {
         bottom="80px"
         isShow={isToastShow}
         setIsShow={setIsToastShow}
-        text="여행 게시글이 삭제되었어요."
+        text="댓글이 삭제되었어요."
       />
     </Container>
   )
