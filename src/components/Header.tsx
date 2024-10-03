@@ -20,7 +20,9 @@ const Header = () => {
   const isTripEditPlace = location.pathname.startsWith('/editPlace')
   const isTripApply = location.pathname.startsWith('/trip/apply')
   const isMyTrip = location.pathname.startsWith('/myTrip')
+
   const isApply = location.pathname.startsWith('/trip/apply')
+  const isMyPage = location.pathname.startsWith('/myPage')
 
   const handleBack = () => {
     navigate(-1)
@@ -31,6 +33,8 @@ const Header = () => {
     <HeaderContainer>
       {isMyTrip ? (
         <Title>내 여행</Title>
+      ) : isMyPage ? (
+        <Title>마이 페이지</Title>
       ) : (
         <ButotnContainer onClick={handleBack}>
           <BackIcon />
@@ -50,15 +54,13 @@ const Header = () => {
             <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
           ) &&
           '게시글 수정'}
-
-
       </Title>
       {location.pathname == '/registerTripStyle' && (
         <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
       )}
       {location.pathname != '/registerTripStyle' && <VoidArea />}
       {isTripDetail && <TripDetailHeader />}
-      {isMyTrip && (
+      {(isMyTrip || isMyPage) && (
         <div onClick={() => navigate(`notification/${userId}`)}>
           <AlarmIcon
             size={23}
