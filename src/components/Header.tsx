@@ -43,7 +43,10 @@ const Header = () => {
         {isTripEnrollment && '참가 신청 목록'}
         {isTripApply && '참가 신청'}
         {isNotification && '알림'}
-        {isTripDetailEdit && '게시글 수정'}
+        {isTripDetailEdit && (
+            <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
+          ) &&
+          '게시글 수정'}
       </Title>
       {location.pathname == '/registerTripStyle' && (
         <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
