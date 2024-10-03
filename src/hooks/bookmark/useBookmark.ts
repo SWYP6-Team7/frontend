@@ -40,6 +40,7 @@ export const useBookmark = () => {
         if (lastPage?.page?.number + 1 === 3) return undefined //30개까지만 요청
         return lastPage?.page?.number + 1
       }
+
     }
   })
   return {

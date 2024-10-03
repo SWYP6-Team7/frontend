@@ -13,6 +13,7 @@ const Footer = () => {
             target="_blank">
             서비스이용약관
           </a>
+          <Bar />
           <a
             href={'/pdf/privacy_policy(241006).pdf'}
             target="_blank">
@@ -42,10 +43,11 @@ const Container = styled.div`
 `
 const Team = styled.div`
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 16.8px;
+
   color: ${palette.기본};
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 `
 const Policy = styled.div`
   font-size: 12px;
@@ -54,7 +56,11 @@ const Policy = styled.div`
   color: ${palette.비강조2};
   display: flex;
   justify-content: space-between;
-  div:nth-child(1) {
-    margin-right: 28px;
-  }
+`
+
+const Bar = styled.div`
+  height: 14px;
+  width: 1px;
+  margin: 0 14px;
+  background-color: ${palette.비강조3};
 `

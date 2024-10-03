@@ -3,55 +3,22 @@ import TitleContainer from './ContentTitleContainer'
 import VerticalBoxLayout from '@/components/VerticalBoxLayout'
 
 import { userStore } from '@/store/client/userStore'
-import { useTripRecommendation } from '@/hooks/useTripRecommendation'
+import { useTripList } from '@/hooks/useTripList'
+import ThreeRowCarousel from '@/components/ThreeRowCarousel'
+import HorizonBoxLayout from '@/components/HorizonBoxLayout'
+import dayjs from 'dayjs'
 
-// 백 데이터 받아오면 수정.
-interface TripRecommendationProps {
-  postId: string
-  imgUrl: string
-  endDate: string
-  title: string
-  description: string
-  createdDate: string
-  tags: string[]
-  recruits: number
-  total: number
-  userIdBookmarked: string[]
-}
 const TripRecommendation = () => {
-  const { data } = useTripRecommendation()
+  const { data } = useTripList('recommend')
   const { name } = userStore()
-  const trips = data?.data
-  // 일단 앞에 몇개만 노출.
-  //   const cutTrips = trips.length > 5 ? trips.slice(0, 5) : trips
 
-  function calcDaysAgo(dateString: string) {
-    const today = new Date()
+  const trips = data?.pages[0].content ?? []
+  const cutTrips = trips?.length > 9 ? trips.slice(0, 9) : trips
 
-    const targetDate = new Date(dateString)
-
-    const timeDifference = today.getTime() - targetDate.getTime()
-
-    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-
-    return daysDifference
-  }
-
-  function daysLeft(dateString: string) {
-    const today = new Date()
-
-    const targetDate = new Date(dateString)
-
-    const timeDifference = targetDate.getTime() - today.getTime()
-
-    // 밀리초를 일 수로 변환
-    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
-
-    return daysDifference
-  }
   return (
     <Container>
       <TitleContainer
+        detailLink={`/trip/list?sort=recommend`}
         text={
           <>
             이런 여행은 <br /> 어떠세요?
@@ -59,27 +26,32 @@ const TripRecommendation = () => {
         }
         minWidth="102px"
       />
-      <ContentBox>
-        {trips &&
-          trips.map((post: TripRecommendationProps) => (
-            <Box key={post.postId}>
-              <VerticalBoxLayout
-                key={post.postId}
-                userIdBookmarked={post.userIdBookmarked}
-                postId={post.postId}
-                daysLeft={daysLeft(post.endDate)}
-                daysAgo={calcDaysAgo(post.createdDate)}
-                title={post.title}
-                description={post.description}
-                userName={name}
-                recruits={post.recruits}
-                total={post.total}
-                imgSrc={post.imgUrl}
+      <ThreeRowCarousel>
+        {cutTrips &&
+          cutTrips?.map(post => (
+            <div
+              css={{ padding: '18px 16px' }}
+              key={post.travelNumber}>
+              <HorizonBoxLayout
+                showTag={false}
+                bookmarkPosition="middle"
+                userName={post.userName}
                 tags={post.tags}
+                daysAgo={dayjs().diff(
+                  dayjs(post.createdAt, 'YYYY년MM월DD일'),
+                  'day'
+                )}
+                daysLeft={dayjs(post.registerDue, 'YYYY년MM월DD일').diff(
+                  dayjs(),
+                  'day'
+                )}
+                title={post.title}
+                recruits={post.nowPerson}
+                total={post.maxPerson}
               />
-            </Box>
+            </div>
           ))}
-      </ContentBox>
+      </ThreeRowCarousel>
     </Container>
   )
 }
@@ -90,14 +62,4 @@ const Container = styled.div`
 `
 const Box = styled.div`
   margin-right: 16px;
-`
-const ContentBox = styled.div`
-  margin-top: 22px;
-  display: flex;
-  margin-right: -24px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `

@@ -520,14 +520,15 @@ export const homeHandler = [
     ]
     const value = userBookmarks.find(v => v.userId === userId)
 
-    if (value === undefined)
-      return HttpResponse.json(
-        {
-          userId: '1',
-          bookMarks: []
-        },
-        { status: 200 }
-      )
-    return HttpResponse.json(value, { status: 200 })
+    // if (value === undefined)
+    //   return HttpResponse.json(
+    //     {
+    //       userId: '1',
+    //       bookMarks: []
+    //     },
+    //     { status: 200 }
+    //   )
+    console.log('bookmark msw')
+    return HttpResponse.json(trips, { status: 200 })
   })
 ]

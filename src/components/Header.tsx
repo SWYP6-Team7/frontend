@@ -20,6 +20,8 @@ const Header = () => {
   const isTripEditPlace = location.pathname.startsWith('/editPlace')
   const isTripApply = location.pathname.startsWith('/trip/apply')
   const isMyTrip = location.pathname.startsWith('/myTrip')
+  const isApply = location.pathname.startsWith('/trip/apply')
+
   const handleBack = () => {
     navigate(-1)
   }
@@ -38,15 +40,18 @@ const Header = () => {
       <Title>
         {isRegister && '회원가입'}
         {isSearch && '여행찾기'}
-        {(isCreateTrip || isTripEditPlace) && '여행 만들기'}
-
+        {isCreateTrip && '여행 만들기'}
+        {isApply && '참가 신청'}
         {isTripEnrollment && '참가 신청 목록'}
-        {isTripApply && '참가 신청'}
+
         {isNotification && '알림'}
+
         {isTripDetailEdit && (
             <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
           ) &&
           '게시글 수정'}
+
+
       </Title>
       {location.pathname == '/registerTripStyle' && (
         <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
