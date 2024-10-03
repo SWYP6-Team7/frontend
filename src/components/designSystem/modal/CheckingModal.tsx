@@ -1,6 +1,6 @@
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { styleText } from 'util'
 interface CheckingModalProps {
   isModalOpen: boolean
@@ -8,7 +8,8 @@ interface CheckingModalProps {
   modalTitle: string
   modalButtonText: string
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  setIsSelected: React.Dispatch<React.SetStateAction<boolean>>
+  setIsSelected?: React.Dispatch<React.SetStateAction<boolean>>
+  onClick?: () => void
 }
 // setIsSelectd : 수락, 거절 등 버튼을 눌렀을 때, 상위 컴포넌트에서 api요청 해줌.
 export default function CheckingModal({
@@ -17,35 +18,31 @@ export default function CheckingModal({
   modalTitle,
   modalButtonText,
   setIsSelected,
-  setModalOpen
+  setModalOpen,
+  onClick
 }: CheckingModalProps) {
   const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      // 만약 클릭한 곳이 모달이 아닌 경우
-      if (
-        isModalOpen &&
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        setModalOpen(false) // 상태를 false로 변경
-      }
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      setModalOpen(false) // 외부 클릭 시 모달 닫기
     }
-    // 문서에 click 이벤트를 등록
-    document.addEventListener('click', handleClickOutside)
+  }
 
-    // cleanup 함수: 이벤트 해제
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [])
   const clickHandler = () => {
-    setIsSelected(true)
+    if (setIsSelected) {
+      setIsSelected(true)
+    } else if (onClick) {
+      onClick()
+    }
+
     setModalOpen(false)
   }
+
   return (
     <ModalContainer isModalOpen={isModalOpen}>
+      <DarkWrapper onClick={handleClickOutside}></DarkWrapper>
       <Modal
+        onClick={e => e.stopPropagation()}
         ref={modalRef}
         isModalOpen={isModalOpen}>
         <ContentBox>
@@ -57,8 +54,6 @@ export default function CheckingModal({
           <SelectBtn onClick={clickHandler}>{modalButtonText}</SelectBtn>
         </ButtonBox>
       </Modal>
-
-      <DarkWrapper></DarkWrapper>
     </ModalContainer>
   )
 }
@@ -151,6 +146,7 @@ const Modal = styled.div<{ isModalOpen: boolean }>`
   transition: transform 0.3s ease-in-out;
 `
 const DarkWrapper = styled.div`
+  pointer-events: auto;
   position: absolute;
   width: 100%;
   height: 100svh;

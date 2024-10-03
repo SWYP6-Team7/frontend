@@ -1,22 +1,18 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
-// 홈페이지에서 필요한 API요청들.
-export const getBookmark = (userId: string) => {
-  console.log(userId, '유저 아이디')
-  return axiosInstance.get(`/api/bookmark?userId=${userId}`)
-}
 
-export const toggleBookmark = (userId: string, postId: string) => {
-  return axiosInstance.post(
-    `/api/toggleBookmark?userId=${userId}&postId=${postId}`
-  )
-}
 export const getUserProfile = (accessToken: string) => {
   return axiosInstance.get(`/api/profile/me?userNumber=${accessToken}`)
 }
 
-export const getAvailableTrips = () => {
-  return axiosInstance.get('/api/travels/recent')
+export const getAvailableTrips = async (pageParams: number) => {
+  const response = await axiosInstance.get('/api/travels/recent', {
+    params: {
+      page: pageParams,
+      size: 10
+    }
+  })
+  return response.data
 }
 
 //api/home.ts
@@ -28,8 +24,14 @@ export const getAvailableTrips = () => {
 //   })
 // }
 
-export const getRecommendationTrips = () => {
-  return axiosInstance.get('/api/travels/recommend')
+export const getRecommendationTrips = async (pageParams: number) => {
+  const response = await axiosInstance.get('/api/travels/recommend', {
+    params: {
+      page: pageParams,
+      size: 10
+    }
+  })
+  return response.data
 }
 
 //api/home.ts

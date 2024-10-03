@@ -1,5 +1,4 @@
 import useAuth from '@/hooks/user/useAuth'
-import useUser from '@/hooks/user/useUser'
 import { authStore } from '@/store/client/authStore'
 import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
@@ -18,9 +17,9 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 import CreateTripButton from './CreateTripButton'
 import { useUserProfile } from '@/hooks/useUserInfo'
+import { palette } from '@/styles/palette'
 
 const Home = () => {
-  const { user } = useUser()
   const { name } = userStore()
   const { userId, accessToken } = authStore()
   const [userName, setUserName] = useState(name)
@@ -44,10 +43,6 @@ const Home = () => {
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value)
   }
-
-  // 북마크 가져오기
-  const { data } = useBookmark('1')
-  const bookmarks = data?.data.bookMarks
 
   const onFocusHandler = () => navigate('/search/travel') // 검색화면으로 이동.
 
@@ -91,12 +86,13 @@ const Home = () => {
           </Alarm>
         </HeaderTitle>
       </HomeHeader>
-      <CharacterBox>
+
+      {/* <CharacterBox>
         <img
           src="/images/homeCharacter.png"
           alt=""
         />
-      </CharacterBox>
+      </CharacterBox> */}
       <ContentWrapper>
         <SearchBox>
           <Greeting>
@@ -122,19 +118,17 @@ const Home = () => {
   )
 }
 const HomeContainer = styled.div`
-  background-color: #f0f0f0;
+  background-color: ${palette.검색창};
   width: 100%;
 `
 
 const ContentWrapper = styled.div`
   width: 100%;
   padding: 0px 24px;
-  background-color: white;
 
-  border-radius: 30px 30px 0px 0px;
+  margin-top: calc(100px);
 `
 const SearchBox = styled.div`
-  background-color: white;
   padding-top: 40px;
 `
 const Greeting = styled.div`
@@ -158,7 +152,7 @@ const CharacterBox = styled.div`
 `
 
 const HomeHeader = styled.div<{ scrolled: boolean }>`
-  background-color: ${({ scrolled }) => (scrolled ? 'white' : '#f0f0f0')};
+  background-color: ${palette.검색창};
   transition: background-color 0.3s ease;
 
   @media (max-width: 440px) {

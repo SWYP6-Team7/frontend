@@ -1,24 +1,54 @@
-import { toggleBookmark } from '@/api/home'
+import { deleteBookmark, postBookmark } from '@/api/bookmark'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-export function useUpdateBookmark(userId: string, postId: string) {
+export function useUpdateBookmark(
+  accessToken: string,
+  userId: number,
+  travelNumber: number
+) {
   const queryClient = useQueryClient()
-  const { mutateAsync: updateBookmark } = useMutation({
+  const { mutateAsync: postBookmarkMutation } = useMutation({
     mutationFn: () => {
-      return toggleBookmark(userId, postId)
+      return postBookmark(accessToken, userId, travelNumber)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['availableTrips']
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['tripRecommendation']
-      })
-      // 참가 가능 리스트, 추천 리스트에서 즐겨찾기 여부 업데이트시 필요.
-      //   queryClient.invalidateQueries({
-      //     queryKey: ['blahblah']
-      //   })
+        queryKey: ['bookmarks']
+      }),
+        queryClient.invalidateQueries({
+          queryKey: ['myTrips']
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['myApplyTrips']
+        })
     }
   })
-  return { updateBookmark }
+
+  const {
+    mutateAsync: deleteBookmarkMutation,
+    isSuccess: isBookmarkDeleteSuccess
+  } = useMutation({
+    mutationFn: () => {
+      return deleteBookmark(accessToken, travelNumber)
+    },
+    onSuccess: () => {
+      setTimeout(() => {
+        queryClient.invalidateQueries({
+          queryKey: ['bookmarks']
+        })
+      }, 1500)
+      queryClient.invalidateQueries({
+        queryKey: ['myTrips']
+      }),
+        queryClient.invalidateQueries({
+          queryKey: ['myApplyTrips']
+        })
+    }
+  })
+
+  return {
+    postBookmarkMutation,
+    deleteBookmarkMutation,
+    isBookmarkDeleteSuccess
+  }
 }

@@ -1,6 +1,8 @@
 import { authStore } from '@/store/client/authStore'
 import useUser from './useUser'
 import { axiosInstance } from '@/api'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { getJWTHeader } from '@/utils/user'
 
 interface IRegisterEmail {
   email: string
@@ -17,8 +19,7 @@ interface IRegisterEmail {
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
 const useAuth = () => {
-  const { updateUser, clearUser } = useUser()
-  const { setLoginData, clearLoginData } = authStore()
+  const { setLoginData, clearLoginData, accessToken } = authStore()
 
   async function loginEmail({
     email,
@@ -28,13 +29,22 @@ const useAuth = () => {
     password: string
   }): Promise<void> {
     try {
-      const response = await axiosInstance.post('/api/login', {
-        email,
-        password
-      })
+      const response = await axiosInstance.post(
+        '/api/login',
+        {
+          email,
+          password
+        },
+        {
+          withCredentials: true
+        }
+      )
       const data = response.data
 
-      setLoginData({ userId: data.userId, accessToken: data.accessToken })
+      setLoginData({
+        userId: response.data.userId,
+        accessToken: data.accessToken
+      })
     } catch (error: any) {
       console.error(error)
       throw new Error(error)
@@ -42,7 +52,47 @@ const useAuth = () => {
   }
   async function registerEmail(formData: IRegisterEmail): Promise<void> {
     try {
-      const response = await axiosInstance.post('/api/users/new', formData)
+      const response = await axiosInstance.post('/api/users/new', formData, {
+        withCredentials: true
+      })
+      const data = response.data
+
+      setLoginData({
+        userId: response.data.userId,
+        accessToken: data.accessToken
+      })
+    } catch (error: any) {
+      console.error(error)
+      throw new Error(error)
+    }
+  }
+
+  async function logout(): Promise<void> {
+    try {
+      await axiosInstance.post(
+        '/api/logout',
+        {},
+        {
+          headers: getJWTHeader(accessToken!)
+        }
+      )
+      clearLoginData()
+    } catch (error: any) {
+      console.error(error)
+      throw new Error(error)
+    }
+  }
+
+  // 유저가 로그인을 했는지 & 새로고침을 해도 accessToken을 유지하도록 하는 refresh 요청 api
+  async function userPostRefreshToken(): Promise<void> {
+    try {
+      const response = await axiosInstance.post(
+        '/api/token/refresh',
+        {},
+        {
+          withCredentials: true
+        }
+      )
       const data = response.data
 
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
@@ -52,15 +102,11 @@ const useAuth = () => {
     }
   }
 
-  function logout(): void {
-    clearUser()
-    clearLoginData()
-  }
-
   return {
     loginEmail,
     registerEmail,
-    logout
+    logout,
+    userPostRefreshToken
   }
 }
 

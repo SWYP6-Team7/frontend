@@ -21,6 +21,7 @@ const Accordion = ({
   const [isChecked, setIsChecked] = useState(initialChecked)
   const { pathname } = useLocation()
   const isCreateTripPage = pathname === '/createTripDetail'
+  const isEditTripPage = pathname.startsWith('/trip/edit')
 
   return (
     <List>
@@ -33,10 +34,11 @@ const Accordion = ({
       />
       <Tab
         htmlFor={id}
-        isCreateTripPage={isCreateTripPage && isChecked}>
+        isCreateTripPage={(isCreateTripPage || isEditTripPage) && isChecked}>
         <TitleContainer>
           {isCreateTripPage ? (
-            <TitleTextCreateTrip isCreateTripPage={isCreateTripPage}>
+            <TitleTextCreateTrip
+              isCreateTripPage={isCreateTripPage || isEditTripPage}>
               {title}
             </TitleTextCreateTrip>
           ) : (
@@ -44,7 +46,9 @@ const Accordion = ({
           )}
 
           {count > 0 && (
-            <Count isCreateTripPage={isCreateTripPage}>{count}</Count>
+            <Count isCreateTripPage={isCreateTripPage || isEditTripPage}>
+              {count}
+            </Count>
           )}
         </TitleContainer>
         <div css={{ transform: isChecked ? 'rotate(180deg)' : 'rotate(0)' }}>
@@ -60,7 +64,7 @@ const Accordion = ({
       </Tab>
       <Content
         checked={isChecked}
-        isCreateTripPage={isCreateTripPage}>
+        isCreateTripPage={isCreateTripPage || isEditTripPage}>
         {children}
       </Content>
       {isCreateTripPage && isChecked && (

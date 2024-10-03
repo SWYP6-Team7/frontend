@@ -4,27 +4,18 @@ import { useNavigate } from 'react-router-dom'
 import Badge from '@/components/designSystem/Badge'
 import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import TitleContainer from './ContentTitleContainer'
+import { daysLeft } from '@/utils/time'
+import { palette } from '@/styles/palette'
+import { ITripList } from '@/model/trip'
+import HorizonBoxLayout from '@/components/HorizonBoxLayout'
+import dayjs from 'dayjs'
 const BookmarkContainer = () => {
   const navigate = useNavigate()
   // 북마크 가져오기
+
   const { data } = useBookmark('1')
-  const bookmarks = data?.data.bookMarks
+  const bookmarks = data?.data.content as ITripList['content']
 
-  function daysLeft(dateString: string) {
-    // 오늘 날짜
-    const today = new Date()
-
-    // 주어진 날짜
-    const targetDate = new Date(dateString)
-
-    // 밀리초 단위로 차이 계산
-    const timeDifference = targetDate.getTime() - today.getTime()
-
-    // 밀리초를 일 수로 변환
-    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
-
-    return daysDifference
-  }
   return (
     <BookmarkBox>
       <TitleContainer text="즐겨찾기" />
@@ -58,46 +49,42 @@ const BookmarkContainer = () => {
             </EmptyBox>
           ) : (
             <BookmarkList>
-              {bookmarks.map(
-                (post: {
-                  postId: string
-                  imgUrl: string
-                  endDate: string
-                  title: string
-                  description: string
-                }) => (
-                  <BookmarkPreviewBox key={post.postId}>
-                    <ImgBox>
-                      <img
-                        src={post.imgUrl}
-                        alt=""
-                      />
-                    </ImgBox>
-                    <Info>
-                      <Badge
-                        text="마감"
-                        daysLeft={daysLeft(post.endDate)}
-                      />
-                      <div>{post.title}</div>
-                      <div>{post.description}</div>
-                    </Info>
-                  </BookmarkPreviewBox>
-                )
-              )}
+              {bookmarks.map((post, idx) => (
+                <BookmarkPreviewBox key={idx}>
+                  <HorizonBoxLayout
+                    isBar={true}
+                    bookmarkPosition="top"
+                    userName={post.userName}
+                    tags={post.tags}
+                    daysAgo={dayjs().diff(
+                      dayjs(post.createdAt, 'YYYY년MM월DD일'),
+                      'day'
+                    )}
+                    daysLeft={dayjs(post.registerDue, 'YYYY년MM월DD일').diff(
+                      dayjs(),
+                      'day'
+                    )}
+                    title={post.title}
+                    recruits={post.nowPerson}
+                    total={post.maxPerson}
+                  />
+                </BookmarkPreviewBox>
+              ))}
             </BookmarkList>
           ))}
       </ContentList>
     </BookmarkBox>
+
   )
 }
 export default BookmarkContainer
 const BookmarkPreviewBox = styled.div`
   display: flex;
-  height: 103px;
+  min-width: 235px;
   align-items: center;
   border-radius: 20px;
   padding: 16px;
-  background-color: rgba(240, 240, 240, 1);
+  background-color: white;
   margin-right: 16px;
 `
 const BookmarkList = styled.div`
@@ -146,6 +133,10 @@ const BookmarkBox = styled.div`
 `
 const EmptyBox = styled.div`
   display: flex;
+  width: 100%;
+  padding: 16px;
+  background-color: white;
+  border-radius: 20px;
 `
 const Empty = styled.div`
   display: flex;

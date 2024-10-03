@@ -5,24 +5,30 @@ interface resultToastProps {
   isShow: boolean
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>
   text: string
+  bottom?: string
+  height?: number
 }
 
 export default function ResultToast({
+  bottom = '20px',
   isShow,
   setIsShow,
+  height = 20,
   text
 }: resultToastProps) {
-  // 1초 후 다시 메시지가 아래로 내려감.
+  //   1초 후 다시 메시지가 아래로 내려감.
   useEffect(() => {
     if (isShow) {
       setTimeout(() => {
         setIsShow(false)
-      }, 1000)
+      }, 1500)
     }
   }, [isShow])
   return (
-    <Container isShow={isShow}>
-      <ToastMsg>
+    <Container
+      isShow={isShow}
+      bottom={bottom}>
+      <ToastMsg height={height}>
         <svg
           width="18"
           height="18"
@@ -38,9 +44,9 @@ export default function ResultToast({
           <path
             d="M5.40039 9.23268L8.33327 12.1656L13.2214 6.2998"
             stroke="#3E8D00"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
         <Text>{text}</Text>
@@ -48,12 +54,12 @@ export default function ResultToast({
     </Container>
   )
 }
-const Container = styled.div<{ isShow: boolean }>`
+const Container = styled.div<{ isShow: boolean; bottom: string }>`
   position: fixed;
   width: 100%;
-  bottom: ${({ isShow }) =>
+  bottom: ${({ isShow, bottom }) =>
     isShow
-      ? '40px'
+      ? bottom
       : '-100px'}; /* Toast 위치: 나타날 때는 40px, 사라질 때는 아래로 사라짐 */
   transition:
     bottom 0.4s ease-in-out,
@@ -63,10 +69,12 @@ const Container = styled.div<{ isShow: boolean }>`
   pointer-events: none; /* Toast는 클릭할 수 없도록함 */
   display: flex;
   justify-content: center;
+  left: 0;
+  z-index: 1000;
 `
-const ToastMsg = styled.div`
+const ToastMsg = styled.div<{ height: number }>`
   position: absolute;
-  bottom: 40px;
+  bottom: ${(props: { height: number }) => props.height}px;
   height: 42px;
   border-radius: 20px;
   background-color: ${palette.keycolor};

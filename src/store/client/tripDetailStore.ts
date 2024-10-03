@@ -1,5 +1,15 @@
 // src/userStore.ts
 import { create } from 'zustand'
+const date = new Date()
+const year: number = date.getFullYear()
+const month: number = date.getMonth() + 1
+const day = date.getDate()
+
+interface DateValue {
+  year: number
+  month: number
+  day: number
+}
 
 interface tripDetailState {
   travelNumber: number
@@ -8,6 +18,8 @@ interface tripDetailState {
   addUserNumber: (userNumber: number) => void
   userName: string
   addUserName: (userName: string) => void
+  ageGroup: string
+  addAgeGroup: (ageGroup: string) => void
   createdAt: string
   addCreatedAt: (createdAt: string) => void
   location: string
@@ -19,32 +31,42 @@ interface tripDetailState {
   addDetails: (details: string) => void
   maxPerson: number
   addMaxPerson: (maxPerson: number) => void
+  nowPerson: number
+  addNowPerson: (nowPerson: number) => void
   genderType: string
   addGenderType: (genderType: string) => void
-  dueDate: string
-  addDueDate: (dueDate: string) => void
+  dueDate: DateValue
+  addDueDate: (dueDate: DateValue) => void
   periodType: string
   addPeriodType: (periodType: string) => void
   tags: string[]
   addTags: (tags: string[]) => void
   postStatus: string
   addPostStatus: (postStatus: string) => void
-  applyPerson: number
-  addApplyPerson: (applyPerson: number) => void
-  interestPerson: number
-  addInterestPerson: (interestPerson: number) => void
-  views: number
-  addViews: (views: number) => void
-  isOwner: boolean
-  addIsOwner: (isOwner: boolean) => void
-  canApply: boolean
-  addCanApply: (canApply: boolean) => void
+  enrollCount: number
+  addEnrollCount: (enrollCount: number) => void
+  bookmarkCount: number
+  addBookmarkCount: (bookmarkCount: number) => void
+  viewCount: number
+  addViewCount: (viewCount: number) => void
+  hostUserCheck: boolean
+  addHostUserCheck: (hostUserCheck: boolean) => void
+  enrollmentNumber: number | null
+  addEnrollmentNumber: (enrollmentNumber: number | null) => void
+  applySuccess: boolean
+  setApplySuccess: (status: boolean) => void
 }
 
 export const tripDetailStore = create<tripDetailState>(set => ({
+  applySuccess: false,
+  setApplySuccess: status => {
+    set({ applySuccess: status })
+  },
+
   travelNumber: 0,
   addTravelNumber: (travelNumber: number) => set({ travelNumber }),
-
+  ageGroup: '',
+  addAgeGroup: (ageGroup: string) => set({ ageGroup }),
   userNumber: 0,
   addUserNumber: (userNumber: number) => set({ userNumber }),
 
@@ -63,14 +85,16 @@ export const tripDetailStore = create<tripDetailState>(set => ({
   details: '',
   addDetails: (details: string) => set({ details }),
 
-  maxPerson: 0,
+  maxPerson: 1,
   addMaxPerson: (maxPerson: number) => set({ maxPerson }),
+  nowPerson: 0,
+  addNowPerson: (nowPerson: number) => set({ nowPerson }),
 
-  genderType: '',
+  genderType: '여자만',
   addGenderType: (genderType: string) => set({ genderType }),
 
-  dueDate: '',
-  addDueDate: (dueDate: string) => set({ dueDate }),
+  dueDate: { year, month, day },
+  addDueDate: (dueDate: DateValue) => set({ dueDate }),
 
   periodType: '',
   addPeriodType: (periodType: string) => set({ periodType }),
@@ -81,18 +105,19 @@ export const tripDetailStore = create<tripDetailState>(set => ({
   postStatus: '',
   addPostStatus: (postStatus: string) => set({ postStatus }),
 
-  applyPerson: 0,
-  addApplyPerson: (applyPerson: number) => set({ applyPerson }),
+  enrollCount: 0,
+  addEnrollCount: (enrollCount: number) => set({ enrollCount }),
 
-  interestPerson: 0,
-  addInterestPerson: (interestPerson: number) => set({ interestPerson }),
+  bookmarkCount: 0,
+  addBookmarkCount: (bookmarkCount: number) => set({ bookmarkCount }),
 
-  views: 0,
-  addViews: (views: number) => set({ views }),
+  viewCount: 0,
+  addViewCount: (viewCount: number) => set({ viewCount }),
 
-  isOwner: false,
-  addIsOwner: (isOwner: boolean) => set({ isOwner }),
+  hostUserCheck: false,
+  addHostUserCheck: (hostUserCheck: boolean) => set({ hostUserCheck }),
 
-  canApply: false,
-  addCanApply: (canApply: boolean) => set({ canApply })
+  enrollmentNumber: null,
+  addEnrollmentNumber: (enrollmentNumber: number | null) =>
+    set({ enrollmentNumber })
 }))

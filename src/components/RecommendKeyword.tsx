@@ -3,7 +3,7 @@ import React from 'react'
 import Spacing from './Spacing'
 import SearchFilterTag from './designSystem/tag/SearchFilterTag'
 
-const TAG_LIST = ['유럽', '일본', '제주', '액티비티', '주말']
+const TAG_LIST = ['유럽', '일본', '제주', '강릉', '미국']
 
 interface RecoomendKeywordProps {
   setKeyword: (keyword: string) => void

@@ -22,7 +22,18 @@ import CreateTripIntroduce from './pages/CreateTrip/CreateTripIntroduce'
 import RegisterAge from './pages/RegisterAge'
 import ApplyTrip from './pages/ApplyTrip'
 import TripDetail from './pages/TripDetail/TripDetail'
+import TripEnrollmentList from './pages/TripAcceptance/TripEnrollmentList'
 import Notifications from './pages/Notifications'
+import TripDetailEdit from './pages/TripDetail/TripEdit'
+import TripEdit from './pages/TripDetail/TripEdit'
+import EditTripPlace from './pages/TripDetail/EditTripPlace'
+import TripList from './pages/TripList/TripList'
+import ServiceTerms from './pages/Terms/ServiceTerms'
+import axios from 'axios'
+import MyTrip from './pages/MyTrip/MyTrip'
+import EditMyInfo from './pages/MyPage/EditMyInfo'
+import EditMyName from './pages/MyPage/EditMyName'
+import TripComment from './pages/Comment/TripComment'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -91,7 +102,14 @@ export const router = createBrowserRouter([
         path: '/myPage',
         element: <MyPage />
       },
-
+      {
+        path: '/editMyInfo',
+        element: <EditMyInfo />
+      },
+      {
+        path: '/editMyName',
+        element: <EditMyName />
+      },
       {
         path: '/bookmark',
         element: <Bookmark />
@@ -121,14 +139,51 @@ export const router = createBrowserRouter([
         element: <TripDetail />
       },
       {
-        path: 'notification/1',
+        path: 'trip/enrollmentList/:travelNumber',
+        element: <TripEnrollmentList />
+      },
+      {
+        path: 'notification/:userId',
         element: <Notifications />
+      },
+      {
+        path: 'trip/edit/:travelNumber',
+        element: <TripEdit />
+      },
+      {
+        path: 'editPlace/:travelNumber',
+        element: <EditTripPlace />
+      },
+      {
+        path: 'trip/list',
+        element: <TripList />
+      },
+
+      { path: 'trip/comment/:travelNumber', element: <TripComment /> },
+      {
+        path: 'terms',
+        element: (
+          <>
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            path: 'service',
+            element: <ServiceTerms />
+          }
+        ]
+      },
+      {
+        path: 'myTrip',
+        element: <MyTrip />
       }
     ]
   }
 ])
 
 export default function App() {
+  axios.defaults.withCredentials = true
   return (
     <>
       <RouterProvider router={router} />

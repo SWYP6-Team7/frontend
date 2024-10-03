@@ -3,6 +3,9 @@ import React from 'react'
 import BackIcon from './icons/BackIcon'
 import { useMatch, useNavigate, useLocation } from 'react-router-dom'
 import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
+import AlarmIcon from './icons/AlarmIcon'
+import { palette } from '@/styles/palette'
+import { authStore } from '@/store/client/authStore'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -11,27 +14,63 @@ const Header = () => {
   const isCreateTrip = location.pathname.startsWith('/createTrip')
   const isSearch = location.pathname === '/search/travel'
   const isTripDetail = location.pathname.startsWith('/trip/detail')
+  const isTripEnrollment = location.pathname.startsWith('/trip/enrollmentList')
   const isNotification = location.pathname.startsWith('/notification')
+  const isTripDetailEdit = location.pathname.startsWith('/trip/edit')
+  const isTripEditPlace = location.pathname.startsWith('/editPlace')
+  const isTripApply = location.pathname.startsWith('/trip/apply')
+  const isMyTrip = location.pathname.startsWith('/myTrip')
+
+  const isApply = location.pathname.startsWith('/trip/apply')
+  const isMyPage = location.pathname.startsWith('/myPage')
+  const isEditMyInfo = location.pathname.startsWith('/editMyInfo')
+  const isEditMyName = location.pathname.startsWith('/editMyName')
   const handleBack = () => {
     navigate(-1)
   }
+
+  const { userId, accessToken } = authStore()
   return (
     <HeaderContainer>
-      <ButotnContainer onClick={handleBack}>
-        <BackIcon />
-      </ButotnContainer>
+      {isMyTrip ? (
+        <Title>내 여행</Title>
+      ) : isMyPage ? (
+        <Title>마이 페이지</Title>
+      ) : (
+        <ButotnContainer onClick={handleBack}>
+          <BackIcon />
+        </ButotnContainer>
+      )}
 
       <Title>
         {isRegister && '회원가입'}
         {isSearch && '여행찾기'}
         {isCreateTrip && '여행 만들기'}
+        {isApply && '참가 신청'}
+        {isTripEnrollment && '참가 신청 목록'}
+
         {isNotification && '알림'}
+        {isEditMyInfo && '내 정보 수정'}
+        {isEditMyName && '이름 변경'}
+
+        {isTripDetailEdit && (
+            <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
+          ) &&
+          '게시글 수정'}
       </Title>
       {location.pathname == '/registerTripStyle' && (
         <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
       )}
       {location.pathname != '/registerTripStyle' && <VoidArea />}
       {isTripDetail && <TripDetailHeader />}
+      {(isMyTrip || isMyPage) && (
+        <div onClick={() => navigate(`notification/${userId}`)}>
+          <AlarmIcon
+            size={23}
+            stroke={palette.기본}
+          />
+        </div>
+      )}
     </HeaderContainer>
   )
 }
