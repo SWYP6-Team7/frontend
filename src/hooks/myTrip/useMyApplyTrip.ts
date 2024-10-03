@@ -1,18 +1,18 @@
-import { getBookmark } from '@/api/bookmark'
+import { deleteMyApplyTrips, getApplyTrips, getMyTrips } from '@/api/myTrip'
 import { IMyTripList } from '@/model/myTrip'
 import { ITripList } from '@/model/trip'
 import { authStore } from '@/store/client/authStore'
 import {
-  useQuery,
-  useQueryClient,
   useMutation,
+  useQueryClient,
+  useQuery,
   useInfiniteQuery,
   InfiniteData
 } from '@tanstack/react-query'
-import axios from 'axios'
 
-export const useBookmark = () => {
-  const { userId, accessToken } = authStore()
+export const useMyApplyTrip = () => {
+  const { accessToken } = authStore()
+
   const {
     data,
     isLoading,
@@ -27,9 +27,9 @@ export const useBookmark = () => {
     InfiniteData<IMyTripList>,
     [_1: string]
   >({
-    queryKey: ['bookmarks'],
+    queryKey: ['myApplyTrips'],
     queryFn: ({ pageParam }) => {
-      return getBookmark(pageParam as number, accessToken!)
+      return getApplyTrips(pageParam as number, accessToken!)
     },
 
     initialPageParam: 0,
@@ -40,7 +40,19 @@ export const useBookmark = () => {
         if (lastPage?.page?.number + 1 === 3) return undefined //30개까지만 요청
         return lastPage?.page?.number + 1
       }
+    }
+  })
 
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: deleteMyApplyTripsMutation } = useMutation({
+    mutationFn: (travelNumber: number) => {
+      return deleteMyApplyTrips(accessToken!, travelNumber)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['myApplyTrips']
+      })
     }
   })
   return {
@@ -50,6 +62,7 @@ export const useBookmark = () => {
     fetchNextPage,
     refetch,
     isFetching,
-    hasNextPage
+    hasNextPage,
+    deleteMyApplyTripsMutation
   }
 }

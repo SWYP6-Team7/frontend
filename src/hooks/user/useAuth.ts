@@ -59,16 +59,29 @@ const useAuth = () => {
     }
   }
 
-  function logout(): void {
-    clearLoginData()
+  async function logout(): Promise<void> {
+    try {
+      await axiosInstance.post(
+        '/api/logout',
+        {},
+        {
+          headers: getJWTHeader(accessToken!)
+        }
+      )
+      clearLoginData()
+    } catch (error: any) {
+      console.error(error)
+      throw new Error(error)
+    }
   }
+
   // 유저가 로그인을 했는지 & 새로고침을 해도 accessToken을 유지하도록 하는 refresh 요청 api
   async function userPostRefreshToken(): Promise<void> {
     try {
       const response = await axiosInstance.post('/api/token/refresh')
       const data = response.data
 
-      setLoginData({ userId: 1, accessToken: data.accessToken })
+      setLoginData({ userId: data.userId, accessToken: data.accessToken })
     } catch (error: any) {
       console.error(error)
       throw new Error(error)

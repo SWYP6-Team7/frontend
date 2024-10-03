@@ -11,8 +11,14 @@ import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+
+interface TripDetailHeaderProps {
+  isTripDetailEdit?: boolean // 해당 컴포넌트에서 여행 상세 정보를 들고오고 있으며 edit에서도 바로 값을 받을 수있도록 함.
+}
 // 헤더부터 주최자인지에 따라 화면이 달라서, 헤더에서 여행 정보를 들고 오기.
-export default function TripDetailHeader() {
+export default function TripDetailHeader({
+  isTripDetailEdit = false
+}: TripDetailHeaderProps) {
   const { userId, accessToken } = authStore()
   const { travelNumber } = useParams<{ travelNumber: string }>()
   const { tripDetail } = useTripDetail(parseInt(travelNumber!))
@@ -121,7 +127,7 @@ export default function TripDetailHeader() {
 
       deleteTripDetailMutation().then(res => {
         console.log(res)
-        if (res?.data.status === 205) {
+        if (res?.data.status === 200) {
           setIsToastShow(true)
           setTimeout(() => {
             navigate('/')
@@ -131,7 +137,9 @@ export default function TripDetailHeader() {
     }
   }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked])
   return (
-    <Container hostUserCheck={hostUserCheck}>
+    <Container
+      hostUserCheck={hostUserCheck}
+      isTripDetailEdit={isTripDetailEdit}>
       {hostUserCheck && (
         <div onClick={() => navigate(`notification/${userId}`)}>
           <AlarmIcon
@@ -175,8 +183,11 @@ export default function TripDetailHeader() {
     </Container>
   )
 }
-const Container = styled.div<{ hostUserCheck: boolean }>`
-  display: flex;
+const Container = styled.div<{
+  hostUserCheck: boolean
+  isTripDetailEdit: boolean
+}>`
+  display: ${props => (props.isTripDetailEdit ? 'none' : 'flex')};
   align-items: center;
   justify-content: space-around;
   width: ${props => (props.hostUserCheck ? '136px' : 'auto')};

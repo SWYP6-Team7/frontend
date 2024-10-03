@@ -12,6 +12,7 @@ import dayjs from 'dayjs'
 const BookmarkContainer = () => {
   const navigate = useNavigate()
   // 북마크 가져오기
+
   const { data } = useBookmark('1')
   const bookmarks = data?.data.content as ITripList['content']
 
@@ -73,6 +74,7 @@ const BookmarkContainer = () => {
           ))}
       </ContentList>
     </BookmarkBox>
+
   )
 }
 export default BookmarkContainer

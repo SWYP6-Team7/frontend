@@ -40,9 +40,15 @@ const useTripDetail = (travelNumber: number) => {
       return deleteTripDetail(travelNumber, accessToken)
     },
     onSuccess: () => {
+      // 내가 만든 여행을 내 여행에서 삭제 가능하므로, 삭제시 무효화시킴.
       queryClient.invalidateQueries({
         queryKey: ['tripDetail', travelNumber]
-      })
+      }),
+        setTimeout(() => {
+          queryClient.invalidateQueries({
+            queryKey: ['myTrips']
+          })
+        }, 1500)
     }
   })
 
