@@ -10,6 +10,7 @@ import React from 'react'
 import { useInView } from 'react-intersection-observer'
 import { Link } from 'react-router-dom'
 import HostTripIconBtns from './HostTripIconBtns'
+import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
 export default function HostTrip() {
   const [ref, inView] = useInView()
@@ -21,13 +22,36 @@ export default function HostTrip() {
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage])
 
+  function isEmptyObject(): boolean {
+    // 빈 데이터 확인 함수.
+    return Object.keys(data?.pages[0] as object).length === 0
+  }
+  const isNoData = data && isEmptyObject()
+
   return (
-    <Container>
+    <Container isNodata={isNoData}>
+      {isNoData && (
+        <Empty>
+          <RoundedImage
+            size={80}
+            src="/images/noData.png"
+          />
+          <NoData
+            css={{
+              marginTop: '16px',
+              display: 'flex',
+              justifyContent: 'center',
+              textAlign: 'center'
+            }}>
+            아직 만든 여행이 없어요 <br /> 지금 첫 여행 게시글을 등록해 볼까요?
+          </NoData>
+        </Empty>
+      )}
       {!isLoading &&
         data &&
         data.pages.map((page, pageIndex) => (
           <React.Fragment key={pageIndex}>
-            {page.content.map((content, itemIndex) => (
+            {page.content?.map((content, itemIndex) => (
               <BoxContainer key={content.travelNumber}>
                 <Link to={`/trip/detail/${content.travelNumber}`}>
                   <MyTripHorizonBoxLayout
@@ -63,9 +87,31 @@ export default function HostTrip() {
     </Container>
   )
 }
+const NoData = styled.div`
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22.4px;
+  letter-spacing: -0.025em;
+  text-align: center;
+  color: ${palette.기본};
+`
+const Empty = styled.div`
+  position: fixed;
+  top: 0;
 
-const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100svh;
+`
+const Container = styled.div<{ isNodata: boolean | undefined }>`
   padding: 0 24px;
+  position: relative;
+  display: ${props => (props.isNodata ? 'flex' : 'auto')};
+  justify-content: center;
+  align-items: center;
 `
 
 const TopContainer = styled.div`
