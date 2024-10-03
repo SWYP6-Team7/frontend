@@ -69,6 +69,6 @@ export const tripDetailHandler = [
     console.log(request, '요청.')
     const url = new URL(request.url)
     const travelNumber = url.searchParams.get('travelNumber')
-    return HttpResponse.json({ status: 205 })
+    return HttpResponse.json({ status: 200 })
   })
 ]

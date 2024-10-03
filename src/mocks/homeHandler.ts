@@ -10,7 +10,8 @@ const trips = {
       nowPerson: 2,
       maxPerson: 5,
       createdAt: '2024년 09월 01일',
-      registerDue: '2025년 01월 10일'
+      registerDue: '2025년 01월 10일',
+      bookmarked: true
     },
     {
       travelNumber: 2,
@@ -21,7 +22,8 @@ const trips = {
       nowPerson: 3,
       maxPerson: 4,
       createdAt: '2024년 09월 02일',
-      registerDue: '2025년 02월 15일'
+      registerDue: '2025년 02월 15일',
+      bookmarked: true
     },
     {
       travelNumber: 3,
@@ -32,7 +34,8 @@ const trips = {
       nowPerson: 1,
       maxPerson: 6,
       createdAt: '2024년 09월 03일',
-      registerDue: '2025년 03월 20일'
+      registerDue: '2025년 03월 20일',
+      bookmarked: false
     },
     {
       travelNumber: 4,
@@ -43,7 +46,8 @@ const trips = {
       nowPerson: 2,
       maxPerson: 5,
       createdAt: '2024년 09월 04일',
-      registerDue: '2025년 04월 25일'
+      registerDue: '2025년 04월 25일',
+      bookmarked: true
     },
     {
       travelNumber: 5,
@@ -54,7 +58,8 @@ const trips = {
       nowPerson: 3,
       maxPerson: 7,
       createdAt: '2024년 09월 05일',
-      registerDue: '2025년 05월 30일'
+      registerDue: '2025년 05월 30일',
+      bookmarked: false
     },
     {
       travelNumber: 6,
@@ -65,7 +70,8 @@ const trips = {
       nowPerson: 1,
       maxPerson: 3,
       createdAt: '2024년 09월 06일',
-      registerDue: '2025년 06월 05일'
+      registerDue: '2025년 06월 05일',
+      bookmarked: true
     },
     {
       travelNumber: 7,
@@ -76,7 +82,8 @@ const trips = {
       nowPerson: 4,
       maxPerson: 8,
       createdAt: '2024년 09월 07일',
-      registerDue: '2025년 07월 10일'
+      registerDue: '2025년 07월 10일',
+      bookmarked: true
     },
     {
       travelNumber: 8,
@@ -87,7 +94,8 @@ const trips = {
       nowPerson: 2,
       maxPerson: 6,
       createdAt: '2024년 09월 08일',
-      registerDue: '2025년 08월 15일'
+      registerDue: '2025년 08월 15일',
+      bookmarked: false
     },
     {
       travelNumber: 9,
@@ -98,7 +106,8 @@ const trips = {
       nowPerson: 1,
       maxPerson: 4,
       createdAt: '2024년 09월 09일',
-      registerDue: '2025년 09월 20일'
+      registerDue: '2025년 09월 20일',
+      bookmarked: true
     },
     {
       travelNumber: 10,
@@ -109,7 +118,8 @@ const trips = {
       nowPerson: 5,
       maxPerson: 5,
       createdAt: '2024년 09월 10일',
-      registerDue: '2025년 10월 25일'
+      registerDue: '2025년 10월 25일',
+      bookmarked: true
     }
   ],
   page: {
@@ -131,7 +141,8 @@ const tripsRecommend = {
       nowPerson: 2,
       maxPerson: 5,
       createdAt: '2024년 09월 01일',
-      registerDue: '2025년 01월 10일'
+      registerDue: '2025년 01월 10일',
+      bookmarked: true
     },
     {
       travelNumber: 2,
@@ -142,7 +153,8 @@ const tripsRecommend = {
       nowPerson: 3,
       maxPerson: 4,
       createdAt: '2024년 09월 02일',
-      registerDue: '2025년 02월 15일'
+      registerDue: '2025년 02월 15일',
+      bookmarked: true
     },
     {
       travelNumber: 3,
@@ -153,7 +165,8 @@ const tripsRecommend = {
       nowPerson: 1,
       maxPerson: 6,
       createdAt: '2024년 09월 03일',
-      registerDue: '2025년 03월 20일'
+      registerDue: '2025년 03월 20일',
+      bookmarked: true
     },
     {
       travelNumber: 4,
@@ -164,7 +177,8 @@ const tripsRecommend = {
       nowPerson: 2,
       maxPerson: 5,
       createdAt: '2024년 09월 04일',
-      registerDue: '2025년 04월 25일'
+      registerDue: '2025년 04월 25일',
+      bookmarked: true
     },
     {
       travelNumber: 5,
@@ -175,7 +189,8 @@ const tripsRecommend = {
       nowPerson: 3,
       maxPerson: 7,
       createdAt: '2024년 09월 05일',
-      registerDue: '2025년 05월 30일'
+      registerDue: '2025년 05월 30일',
+      bookmarked: true
     },
     {
       travelNumber: 6,
@@ -186,7 +201,8 @@ const tripsRecommend = {
       nowPerson: 1,
       maxPerson: 3,
       createdAt: '2024년 09월 06일',
-      registerDue: '2025년 06월 05일'
+      registerDue: '2025년 06월 05일',
+      bookmarked: true
     },
     {
       travelNumber: 7,
@@ -197,7 +213,8 @@ const tripsRecommend = {
       nowPerson: 4,
       maxPerson: 8,
       createdAt: '2024년 09월 07일',
-      registerDue: '2025년 07월 10일'
+      registerDue: '2025년 07월 10일',
+      bookmarked: true
     },
     {
       travelNumber: 8,
@@ -208,7 +225,8 @@ const tripsRecommend = {
       nowPerson: 2,
       maxPerson: 6,
       createdAt: '2024년 09월 08일',
-      registerDue: '2025년 08월 15일'
+      registerDue: '2025년 08월 15일',
+      bookmarked: true
     },
     {
       travelNumber: 9,
@@ -219,7 +237,8 @@ const tripsRecommend = {
       nowPerson: 1,
       maxPerson: 4,
       createdAt: '2024년 09월 09일',
-      registerDue: '2025년 09월 20일'
+      registerDue: '2025년 09월 20일',
+      bookmarked: true
     },
     {
       travelNumber: 10,
@@ -230,7 +249,8 @@ const tripsRecommend = {
       nowPerson: 5,
       maxPerson: 5,
       createdAt: '2024년 09월 10일',
-      registerDue: '2025년 10월 25일'
+      registerDue: '2025년 10월 25일',
+      bookmarked: true
     }
   ],
   page: {
@@ -252,7 +272,8 @@ const trips2 = {
       nowPerson: 3,
       maxPerson: 7,
       createdAt: '2024년 09월 11일',
-      registerDue: '2025년 11월 10일'
+      registerDue: '2025년 11월 10일',
+      bookmarked: true
     },
     {
       travelNumber: 12,
@@ -263,7 +284,8 @@ const trips2 = {
       nowPerson: 2,
       maxPerson: 5,
       createdAt: '2024년 09월 12일',
-      registerDue: '2025년 12월 15일'
+      registerDue: '2025년 12월 15일',
+      bookmarked: true
     }
     // ... 8 more travel objects
   ],
@@ -286,7 +308,8 @@ const trips3 = {
       nowPerson: 4,
       maxPerson: 8,
       createdAt: '2024년 09월 21일',
-      registerDue: '2026년 01월 05일'
+      registerDue: '2026년 01월 05일',
+      bookmarked: true
     },
     {
       travelNumber: 22,
@@ -297,7 +320,8 @@ const trips3 = {
       nowPerson: 2,
       maxPerson: 6,
       createdAt: '2024년 09월 22일',
-      registerDue: '2026년 02월 15일'
+      registerDue: '2026년 02월 15일',
+      bookmarked: true
     }
     // ... 8 more travel objects
   ],
@@ -308,8 +332,64 @@ const trips3 = {
     totalPages: 3
   }
 }
+interface BookmarkPostReqBody {
+  userNumber: number
+  travelNumber: number
+}
 export const homeHandler = [
   http.get('/api/travels/recent', async ({ request }) => {
+    const url = new URL(request.url)
+    const pageParams = url.searchParams.get('page')
+    if (Number(pageParams) === 0) {
+      return HttpResponse.json(trips)
+    } else if (Number(pageParams) === 1) {
+      return HttpResponse.json(trips2)
+    } else if (Number(pageParams) === 2) {
+      return HttpResponse.json(trips3)
+    } else {
+      return HttpResponse.json({})
+    }
+  }),
+  http.get('/api/bookmarks', async ({ request }) => {
+    const url = new URL(request.url)
+    const pageParams = url.searchParams.get('page')
+    if (Number(pageParams) === 0) {
+      return HttpResponse.json(trips)
+    } else if (Number(pageParams) === 1) {
+      return HttpResponse.json(trips2)
+    } else if (Number(pageParams) === 2) {
+      return HttpResponse.json(trips3)
+    } else {
+      return HttpResponse.json({})
+    }
+  }),
+  http.post('/api/bookmarks', async ({ request }) => {
+    const { userNumber, travelNumber } =
+      (await request.json()) as BookmarkPostReqBody
+
+    console.log(travelNumber, '번 여행 북마크 추가.')
+    return HttpResponse.json({ status: 205 })
+  }),
+  http.delete('/api/bookmarks/:travelNumber', async ({ request }) => {
+    console.log(request, '요청.')
+    const url = new URL(request.url)
+    const travelNumber = url.searchParams.get('travelNumber')
+    return HttpResponse.json({ status: 200 })
+  }),
+  http.get('/api/my-travels', async ({ request }) => {
+    const url = new URL(request.url)
+    const pageParams = url.searchParams.get('page')
+    if (Number(pageParams) === 0) {
+      return HttpResponse.json(trips)
+    } else if (Number(pageParams) === 1) {
+      return HttpResponse.json(trips2)
+    } else if (Number(pageParams) === 2) {
+      return HttpResponse.json(trips3)
+    } else {
+      return HttpResponse.json({})
+    }
+  }),
+  http.get('/api/my-applied-travels', async ({ request }) => {
     const url = new URL(request.url)
     const pageParams = url.searchParams.get('page')
     if (Number(pageParams) === 0) {

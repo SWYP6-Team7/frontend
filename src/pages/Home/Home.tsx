@@ -44,10 +44,6 @@ const Home = () => {
     setSearchWord(e.target.value)
   }
 
-  // 북마크 가져오기
-  const { data } = useBookmark('1')
-  const bookmarks = data?.data.bookMarks
-
   const onFocusHandler = () => navigate('/search/travel') // 검색화면으로 이동.
 
   // 이 부분 추후 유저 id로 대채해야함

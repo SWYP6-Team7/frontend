@@ -18,37 +18,15 @@ export default function CheckingModal({
   modalTitle,
   modalButtonText,
   setIsSelected,
-  onClick,
-  setModalOpen
+  setModalOpen,
+  onClick
 }: CheckingModalProps) {
   const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
-  const [isListening, setIsListening] = useState(false) // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isListening &&
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        console.log('외부 클릭')
-        setModalOpen(false) // 외부 클릭 시 모달 닫기
-      }
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      setModalOpen(false) // 외부 클릭 시 모달 닫기
     }
-
-    if (isModalOpen) {
-      // 모달이 열릴 때 이벤트 리스너 등록
-      setIsListening(true)
-      document.addEventListener('click', handleClickOutside)
-    } else {
-      setIsListening(false)
-    }
-
-    // 컴포넌트가 언마운트되거나 모달이 닫힐 때 이벤트 리스너 제거
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [isModalOpen, isListening]) // isModalOpen이 변경될 때마다 실행
+  }
 
   const clickHandler = () => {
     if (setIsSelected) {
@@ -59,9 +37,12 @@ export default function CheckingModal({
 
     setModalOpen(false)
   }
+
   return (
     <ModalContainer isModalOpen={isModalOpen}>
+      <DarkWrapper onClick={handleClickOutside}></DarkWrapper>
       <Modal
+        onClick={e => e.stopPropagation()}
         ref={modalRef}
         isModalOpen={isModalOpen}>
         <ContentBox>
@@ -73,8 +54,6 @@ export default function CheckingModal({
           <SelectBtn onClick={clickHandler}>{modalButtonText}</SelectBtn>
         </ButtonBox>
       </Modal>
-
-      <DarkWrapper></DarkWrapper>
     </ModalContainer>
   )
 }
@@ -167,6 +146,7 @@ const Modal = styled.div<{ isModalOpen: boolean }>`
   transition: transform 0.3s ease-in-out;
 `
 const DarkWrapper = styled.div`
+  pointer-events: auto;
   position: absolute;
   width: 100%;
   height: 100svh;
