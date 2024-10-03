@@ -28,7 +28,7 @@ export default function MyPage() {
         <ProfileImg>
           <RoundedImage
             size={80}
-            src="/images/activeFemale.png"
+            src="/images/moingLogo.png"
           />
         </ProfileImg>
         <div css={{ width: '100%' }}>

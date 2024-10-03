@@ -1,9 +1,11 @@
 import Badge from '@/components/designSystem/Badge'
+import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import RightVector from '@/components/icons/RightVector'
 import Spacing from '@/components/Spacing'
 import useMyPage from '@/hooks/myPage/useMyPage'
+import useAuth from '@/hooks/user/useAuth'
 import { ImyPage } from '@/model/myPages'
 import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
@@ -14,6 +16,7 @@ import { symbol } from 'zod'
 
 export default function EditMyInfo() {
   const navigate = useNavigate()
+  const { logout } = useAuth()
   const {
     name,
     agegroup,
@@ -23,7 +26,11 @@ export default function EditMyInfo() {
     addIsNameUpdated
   } = myPageStore()
   const [isNameChangeToastShow, setIsNameChangeToastShow] = useState(false) // 변경시 보이게 해줄 토스트 메시지
-  console.log(isNameUpdated)
+  // 로그 아웃 관련
+  const [checkingLogoutModalClicked, setCheckingLogoutModalClicked] =
+    useState(false)
+  const [isLogoutClicked, setIsLogoutClicked] = useState(false)
+
   useEffect(() => {
     if (isNameUpdated) {
       setTimeout(() => {
@@ -33,6 +40,13 @@ export default function EditMyInfo() {
     }
   }, [isNameUpdated])
 
+  useEffect(() => {
+    if (isLogoutClicked) {
+      logout()
+      setCheckingLogoutModalClicked(false)
+    }
+  }, [isLogoutClicked])
+
   return (
     <Container>
       <ResultToast
@@ -41,10 +55,18 @@ export default function EditMyInfo() {
         setIsShow={setIsNameChangeToastShow}
         text="이름 변경이 완료되었어요"
       />
+      <CheckingModal
+        isModalOpen={checkingLogoutModalClicked}
+        modalMsg="정말 로그아웃 하시겠어요?"
+        modalTitle="로그 아웃"
+        modalButtonText="로그아웃"
+        setIsSelected={setIsLogoutClicked}
+        setModalOpen={setCheckingLogoutModalClicked}
+      />
       <ProfileImg>
         <RoundedImage
           size={80}
-          src="/images/activeFemale.png"
+          src="/images/moingLogo.png"
         />
       </ProfileImg>
       <div>
@@ -118,7 +140,7 @@ export default function EditMyInfo() {
         <Spacing size={8} />
         <Line></Line>
         <Spacing size={8} />
-        <LogoutBox>
+        <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
           <div>로그아웃</div>
         </LogoutBox>
       </div>
