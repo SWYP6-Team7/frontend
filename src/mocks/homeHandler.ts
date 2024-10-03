@@ -415,11 +415,6 @@ export const homeHandler = [
       return HttpResponse.json({})
     }
   }),
-  http.get(`/api/profile/me`, async ({ request }) => {
-    const url = new URL(request.url)
-    const accessToken = url.searchParams.get('accessToken') as string
-    return HttpResponse.json('모잉', { status: 200 })
-  }),
   http.post(`/api/toggleBookmark`, async ({ request }) => {
     const url = new URL(request.url)
     const userId = url.searchParams.get('userId') as string

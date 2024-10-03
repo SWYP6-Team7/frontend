@@ -20,7 +20,7 @@ const Navbar = () => {
 
   const { pathname } = useLocation()
   // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
-  const pages = ['/', '/search/travel', '/myTrip', '/mypage']
+  const pages = ['/', '/search/travel', '/myTrip', '/myPage']
   const icons = [
     HomeIcon,
     SearchIcon,
@@ -32,6 +32,7 @@ const Navbar = () => {
   const iconNames = ['홈', '검색', '즐겨찾기', 'MY']
 
   const getIsActive = (page: string) => {
+    if (page === '/myPage' && pathname === '/editMyInfo') return true
     return pathname === page
   }
   const condition = () => {
@@ -39,8 +40,9 @@ const Navbar = () => {
       pathname === '/' ||
       pathname === '/myTrip' ||
       pathname === '/community' ||
-      pathname === '/mypage' ||
-      pathname === '/trip/list'
+      pathname === '/myPage' ||
+      pathname === '/trip/list' ||
+      pathname === '/editMyInfo'
     )
       return true
     return false
