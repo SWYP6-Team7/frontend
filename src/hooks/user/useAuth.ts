@@ -29,10 +29,16 @@ const useAuth = () => {
     password: string
   }): Promise<void> {
     try {
-      const response = await axiosInstance.post('/api/login', {
-        email,
-        password
-      })
+      const response = await axiosInstance.post(
+        '/api/login',
+        {
+          email,
+          password
+        },
+        {
+          withCredentials: true
+        }
+      )
       const data = response.data
 
       setLoginData({
@@ -46,7 +52,9 @@ const useAuth = () => {
   }
   async function registerEmail(formData: IRegisterEmail): Promise<void> {
     try {
-      const response = await axiosInstance.post('/api/users/new', formData)
+      const response = await axiosInstance.post('/api/users/new', formData, {
+        withCredentials: true
+      })
       const data = response.data
 
       setLoginData({
@@ -78,7 +86,13 @@ const useAuth = () => {
   // 유저가 로그인을 했는지 & 새로고침을 해도 accessToken을 유지하도록 하는 refresh 요청 api
   async function userPostRefreshToken(): Promise<void> {
     try {
-      const response = await axiosInstance.post('/api/token/refresh')
+      const response = await axiosInstance.post(
+        '/api/token/refresh',
+        {},
+        {
+          withCredentials: true
+        }
+      )
       const data = response.data
 
       setLoginData({ userId: data.userId, accessToken: data.accessToken })
