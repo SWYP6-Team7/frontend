@@ -33,6 +33,7 @@ import axios from 'axios'
 import MyTrip from './pages/MyTrip/MyTrip'
 import EditMyInfo from './pages/MyPage/EditMyInfo'
 import EditMyName from './pages/MyPage/EditMyName'
+import TripComment from './pages/Comment/TripComment'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -157,6 +158,8 @@ export const router = createBrowserRouter([
         path: 'trip/list',
         element: <TripList />
       },
+
+      { path: 'trip/comment/:travelNumber', element: <TripComment /> },
       {
         path: 'terms',
         element: (
