@@ -351,6 +351,7 @@ export const homeHandler = [
     }
   }),
   http.get('/api/bookmarks', async ({ request }) => {
+    // return HttpResponse.json({})
     const url = new URL(request.url)
     const pageParams = url.searchParams.get('page')
     if (Number(pageParams) === 0) {
@@ -378,6 +379,7 @@ export const homeHandler = [
   }),
   http.get('/api/my-travels', async ({ request }) => {
     const url = new URL(request.url)
+
     const pageParams = url.searchParams.get('page')
     if (Number(pageParams) === 0) {
       return HttpResponse.json(trips)
@@ -391,6 +393,7 @@ export const homeHandler = [
   }),
   http.get('/api/my-applied-travels', async ({ request }) => {
     const url = new URL(request.url)
+
     const pageParams = url.searchParams.get('page')
     if (Number(pageParams) === 0) {
       return HttpResponse.json(trips)
