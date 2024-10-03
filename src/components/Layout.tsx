@@ -13,11 +13,30 @@ import { authStore } from '@/store/client/authStore'
 import path from 'path'
 import { palette } from '@/styles/palette'
 import useAuth from '@/hooks/user/useAuth'
+import { myPageStore } from '@/store/client/myPageStore'
+import useMyPage from '@/hooks/myPage/useMyPage'
+import { ImyPage } from '@/model/myPages'
 const Layout = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { userPostRefreshToken } = useAuth()
   const { userId, accessToken } = authStore()
+  // 유저 프로필 정보 불러오기
+  const { addEmail, addName, addGender, addAgegroup, addPreferredTags } =
+    myPageStore()
+
+  const { data, isLoading } = useMyPage()
+  const myPageData: ImyPage = data?.data
+
+  useEffect(() => {
+    if (!isLoading && myPageData) {
+      addName(myPageData.name)
+      addAgegroup(myPageData.ageGroup)
+      addEmail(myPageData.email)
+      addPreferredTags(myPageData.preferredTags)
+      addGender(myPageData.gender)
+    }
+  }, [isLoading])
 
   const noNeedPages = [
     '/login',
