@@ -13,6 +13,7 @@ import { tripDetailHandler } from './tripDetailHandler'
 import { enrollmentListHandler } from './enrollmentList'
 import { bookmarkHandler } from './bookmarkHandler'
 import { myPageHandler } from './myPageHandler'
+import { commentHandlers } from './commentHandler'
 export const handlers = [
   ...homeHandler,
   ...searchHandler,
@@ -20,6 +21,7 @@ export const handlers = [
   ...enrollmentListHandler,
   ...bookmarkHandler,
   ...myPageHandler,
+  ...commentHandlers,
   http.post('/api/login', async ({ request }) => {
     try {
       const formData = (await request.json()) as {

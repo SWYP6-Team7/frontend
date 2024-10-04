@@ -1,4 +1,3 @@
-import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import MyTripHorizonBoxLayout from '@/components/MyTripHorizonBoxLayout'
 import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import { useMyApplyTrip } from '@/hooks/myTrip/useMyApplyTrip'
