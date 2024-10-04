@@ -7,6 +7,7 @@ import Spacing from '@/components/Spacing'
 import useMyPage from '@/hooks/myPage/useMyPage'
 import useAuth from '@/hooks/user/useAuth'
 import { ImyPage } from '@/model/myPages'
+import { authStore } from '@/store/client/authStore'
 import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
@@ -16,6 +17,7 @@ import { symbol } from 'zod'
 
 export default function EditMyInfo() {
   const navigate = useNavigate()
+  const { addLogoutCheck } = authStore()
   const { logout } = useAuth()
   const {
     name,
@@ -42,8 +44,11 @@ export default function EditMyInfo() {
 
   useEffect(() => {
     if (isLogoutClicked) {
+      addLogoutCheck(true) // 로그아웃 예정 표시 => 자동 토큰 재발급 요청을 막기 위한 값.
       logout()
       setCheckingLogoutModalClicked(false)
+
+      navigate('/') // 홈으로.
     }
   }, [isLogoutClicked])
 

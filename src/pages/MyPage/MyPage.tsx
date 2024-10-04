@@ -41,23 +41,27 @@ export default function MyPage() {
           </MoreBox>
           <Email>{email}</Email>
           <Tags>
-            <Badge
-              isDueDate={false}
-              fontWeight="600"
-              color={palette.keycolor}
-              backgroundColor={palette.keycolorBG}
-              text={agegroup}
-            />
+            <div css={{ marginRight: '8px' }}>
+              <Badge
+                isDueDate={false}
+                fontWeight="600"
+                color={palette.keycolor}
+                backgroundColor={palette.keycolorBG}
+                text={agegroup}
+              />
+            </div>
 
             {cutTags.map((text: string) => (
-              <Badge
-                key={text}
-                isDueDate={false}
-                fontWeight="500"
-                color={palette.비강조}
-                backgroundColor="white"
-                text={text}
-              />
+              <div css={{ marginRight: '8px' }}>
+                <Badge
+                  key={text}
+                  isDueDate={false}
+                  fontWeight="500"
+                  color={palette.비강조}
+                  backgroundColor="white"
+                  text={text}
+                />
+              </div>
             ))}
             {preferredTags.length > cutTags.length ? (
               <Badge
@@ -132,7 +136,6 @@ const UserName = styled.div`
 
 const Tags = styled.div`
   display: flex;
-  justify-content: space-between;
 `
 const Email = styled.div`
   font-size: 14px;
