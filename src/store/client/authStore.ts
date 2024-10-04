@@ -11,6 +11,8 @@ interface IAuthStore {
     accessToken: string
   }) => void
   clearLoginData: () => void
+  logoutCheck: boolean
+  addLogoutCheck: (logoutCheck: boolean) => void
 }
 
 // userId와 accessToken을 전역 상태로 관리하는 역할
@@ -22,5 +24,9 @@ export const authStore = create<IAuthStore>(set => ({
   },
   clearLoginData: () => {
     set(state => ({ userId: null, accessToken: null }))
+  },
+  logoutCheck: false,
+  addLogoutCheck: state => {
+    set({ logoutCheck: state })
   }
 }))
