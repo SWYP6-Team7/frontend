@@ -20,7 +20,7 @@ const Layout = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { userPostRefreshToken } = useAuth()
-  const { userId, accessToken } = authStore()
+  const { userId, accessToken, logoutCheck } = authStore()
   // 유저 프로필 정보 불러오기
   const { addEmail, addName, addGender, addAgegroup, addPreferredTags } =
     myPageStore()
@@ -52,7 +52,7 @@ const Layout = () => {
   }
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
-    if (!accessToken) {
+    if (!accessToken && !logoutCheck) {
       // 토큰이 없으면 리프레쉬 토큰 api 요청.
       const refreshAccessToken = async () => {
         try {
