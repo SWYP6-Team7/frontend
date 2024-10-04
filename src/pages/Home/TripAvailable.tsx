@@ -11,12 +11,13 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
 import ThreeRowCarousel from '@/components/ThreeRowCarousel'
+import { IMyTripList } from '@/model/myTrip'
 
 const TripAvailable = () => {
   const { data } = useTripList('recent')
   const { name } = userStore()
 
-  const trips = data?.pages[0].content ?? []
+  const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
   const cutTrips = trips?.length > 9 ? trips.slice(0, 9) : trips
   const refinedTrips = chunkArray(cutTrips)
 
@@ -42,6 +43,8 @@ const TripAvailable = () => {
               css={{ padding: '18px 16px' }}
               key={post.travelNumber}>
               <HorizonBoxLayout
+                travelNumber={post.travelNumber}
+                bookmarked={post.bookmarked}
                 showTag={false}
                 bookmarkPosition="middle"
                 userName={post.userName}

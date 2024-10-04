@@ -8,6 +8,7 @@ interface Travel {
   maxPerson: number
   createdAt: string
   registerDue: string
+  bookmarked: boolean
 }
 
 interface Page {

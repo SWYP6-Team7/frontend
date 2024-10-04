@@ -12,6 +12,7 @@ import {
 import axios from 'axios'
 
 export const useTripList = (sort: 'recommend' | 'recent') => {
+  const { accessToken } = authStore()
   const queryKey =
     sort === 'recommend' ? 'tripRecommendation' : 'availableTrips'
   const {
@@ -31,9 +32,9 @@ export const useTripList = (sort: 'recommend' | 'recent') => {
     queryKey: [queryKey],
     queryFn: ({ pageParam }) => {
       if (sort === 'recent') {
-        return getAvailableTrips(pageParam as number)
+        return getAvailableTrips(pageParam as number, accessToken!)
       } else {
-        return getRecommendationTrips(pageParam as number)
+        return getRecommendationTrips(pageParam as number, accessToken!)
       }
     },
 

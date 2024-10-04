@@ -10,6 +10,7 @@ export interface IContent {
   maxPerson: number
   nowPerson: number
   userName: string
+  bookmarked: boolean
 }
 
 export interface ISort {

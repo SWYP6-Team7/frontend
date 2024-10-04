@@ -1,12 +1,13 @@
 interface InfoIconProps {
   color?: string
+  size?: number
 }
 
-const InfoIcon = ({ color = '#ABABAB' }: InfoIconProps) => {
+const InfoIcon = ({ color = '#ABABAB', size = 14 }: InfoIconProps) => {
   return (
     <svg
-      width="14"
-      height="14"
+      width={size}
+      height={size}
       viewBox="0 0 14 14"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">

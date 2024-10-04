@@ -55,9 +55,15 @@ interface tripDetailState {
   addEnrollmentNumber: (enrollmentNumber: number | null) => void
   applySuccess: boolean
   setApplySuccess: (status: boolean) => void
+  bookmarked: boolean
+  addBookmarked: (status: boolean) => void
 }
 
 export const tripDetailStore = create<tripDetailState>(set => ({
+  bookmarked: false,
+  addBookmarked: status => {
+    set({ bookmarked: status })
+  },
   applySuccess: false,
   setApplySuccess: status => {
     set({ applySuccess: status })

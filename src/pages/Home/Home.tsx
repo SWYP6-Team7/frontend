@@ -18,9 +18,11 @@ import Navbar from './Navbar'
 import CreateTripButton from './CreateTripButton'
 import { useUserProfile } from '@/hooks/useUserInfo'
 import { palette } from '@/styles/palette'
+import { myPageStore } from '@/store/client/myPageStore'
 
 const Home = () => {
-  const { name } = userStore()
+  // const { name } = userStore()
+  const { name } = myPageStore()
   const { userId, accessToken } = authStore()
   const [userName, setUserName] = useState(name)
   // 홈화면 유저 이름 및 정보 get api 백엔드 연결 예정 주석 처리.

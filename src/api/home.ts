@@ -5,12 +5,16 @@ export const getUserProfile = (accessToken: string) => {
   return axiosInstance.get(`/api/profile/me?userNumber=${accessToken}`)
 }
 
-export const getAvailableTrips = async (pageParams: number) => {
+export const getAvailableTrips = async (
+  pageParams: number,
+  accessToken: string
+) => {
   const response = await axiosInstance.get('/api/travels/recent', {
     params: {
       page: pageParams,
       size: 10
-    }
+    },
+    headers: getJWTHeader(accessToken)
   })
   return response.data
 }
@@ -24,12 +28,16 @@ export const getAvailableTrips = async (pageParams: number) => {
 //   })
 // }
 
-export const getRecommendationTrips = async (pageParams: number) => {
+export const getRecommendationTrips = async (
+  pageParams: number,
+  accessToken: string
+) => {
   const response = await axiosInstance.get('/api/travels/recommend', {
     params: {
       page: pageParams,
       size: 10
-    }
+    },
+    headers: getJWTHeader(accessToken)
   })
   return response.data
 }
