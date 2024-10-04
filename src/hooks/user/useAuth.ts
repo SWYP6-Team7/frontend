@@ -3,6 +3,7 @@ import useUser from './useUser'
 import { axiosInstance } from '@/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getJWTHeader } from '@/utils/user'
+import { useNavigate } from 'react-router-dom'
 
 interface IRegisterEmail {
   email: string
