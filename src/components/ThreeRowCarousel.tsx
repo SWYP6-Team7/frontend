@@ -1,22 +1,29 @@
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import { ReactNode } from 'react'
+import React, { ReactNode, useMemo } from 'react'
 import Slider from 'react-slick'
 
 interface ThreeRowCarouselProps {
   children: ReactNode
 }
 
-var settings = {
-  dots: true,
-  rows: 3,
-  infinite: true,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  dotsClass: 'dots-custom'
-}
-
 const ThreeRowCarousel = ({ children }: ThreeRowCarouselProps) => {
+  const settings = useMemo(() => {
+    const itemCount = React.Children.count(children)
+    const rows = 3
+    const slidesToShow = 1
+    const slidesToScroll = 1
+
+    return {
+      dots: itemCount > 3,
+      infinite: false,
+      rows,
+      slidesToShow,
+      slidesToScroll,
+      dotsClass: 'dots-custom'
+    }
+  }, [children])
+
   return (
     <ContentBox>
       <div css={{ width: '100%' }}>

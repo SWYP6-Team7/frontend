@@ -48,85 +48,13 @@ const trips = {
       createdAt: '2024년 09월 04일',
       registerDue: '2025년 04월 25일',
       bookmarked: true
-    },
-    {
-      travelNumber: 5,
-      title: '미국 뉴욕 여행',
-      userNumber: 5,
-      userName: '안중근',
-      tags: ['쇼핑', '음악', '미술'],
-      nowPerson: 3,
-      maxPerson: 7,
-      createdAt: '2024년 09월 05일',
-      registerDue: '2025년 05월 30일',
-      bookmarked: false
-    },
-    {
-      travelNumber: 6,
-      title: '일본 도쿄 여행',
-      userNumber: 6,
-      userName: '을지문덕',
-      tags: ['음식', '쇼핑', '자연'],
-      nowPerson: 1,
-      maxPerson: 3,
-      createdAt: '2024년 09월 06일',
-      registerDue: '2025년 06월 05일',
-      bookmarked: true
-    },
-    {
-      travelNumber: 7,
-      title: '중국 베이징 여행',
-      userNumber: 7,
-      userName: '장보고',
-      tags: ['역사', '문화', '음식'],
-      nowPerson: 4,
-      maxPerson: 8,
-      createdAt: '2024년 09월 07일',
-      registerDue: '2025년 07월 10일',
-      bookmarked: true
-    },
-    {
-      travelNumber: 8,
-      title: '태국 방콕 여행',
-      userNumber: 8,
-      userName: '왕건',
-      tags: ['해변', '휴양', '맛집'],
-      nowPerson: 2,
-      maxPerson: 6,
-      createdAt: '2024년 09월 08일',
-      registerDue: '2025년 08월 15일',
-      bookmarked: false
-    },
-    {
-      travelNumber: 9,
-      title: '베트남 하노이 여행',
-      userNumber: 9,
-      userName: '고구려',
-      tags: ['자연', '음식', '액티비티'],
-      nowPerson: 1,
-      maxPerson: 4,
-      createdAt: '2024년 09월 09일',
-      registerDue: '2025년 09월 20일',
-      bookmarked: true
-    },
-    {
-      travelNumber: 10,
-      title: '호주 시드니 여행',
-      userNumber: 10,
-      userName: '백제',
-      tags: ['동물', '자연', '레저'],
-      nowPerson: 5,
-      maxPerson: 5,
-      createdAt: '2024년 09월 10일',
-      registerDue: '2025년 10월 25일',
-      bookmarked: true
     }
   ],
   page: {
     size: 10,
     number: 0,
-    totalElements: 30,
-    totalPages: 3
+    totalElements: 3,
+    totalPages: 1
   }
 }
 
@@ -340,8 +268,8 @@ export const homeHandler = [
   http.get('/api/travels/recent', async ({ request }) => {
     const url = new URL(request.url)
     const pageParams = url.searchParams.get('page')
+    return HttpResponse.json(trips)
     if (Number(pageParams) === 0) {
-      return HttpResponse.json(trips)
     } else if (Number(pageParams) === 1) {
       return HttpResponse.json(trips2)
     } else if (Number(pageParams) === 2) {

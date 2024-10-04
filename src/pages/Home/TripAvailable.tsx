@@ -19,6 +19,7 @@ const TripAvailable = () => {
 
   const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
   const cutTrips = trips?.length > 9 ? trips.slice(0, 9) : trips
+  console.log(cutTrips)
   const refinedTrips = chunkArray(cutTrips)
 
   // 일단 앞에 몇개만 노출.
@@ -38,31 +39,34 @@ const TripAvailable = () => {
       />
       <ThreeRowCarousel>
         {cutTrips &&
-          cutTrips?.map(post => (
-            <div
-              css={{ padding: '18px 16px' }}
-              key={post.travelNumber}>
-              <HorizonBoxLayout
-                travelNumber={post.travelNumber}
-                bookmarked={post.bookmarked}
-                showTag={false}
-                bookmarkPosition="middle"
-                userName={post.userName}
-                tags={post.tags}
-                daysAgo={dayjs().diff(
-                  dayjs(post.createdAt, 'YYYY년MM월DD일'),
-                  'day'
-                )}
-                daysLeft={dayjs(post.registerDue, 'YYYY년MM월DD일').diff(
-                  dayjs(),
-                  'day'
-                )}
-                title={post.title}
-                recruits={post.nowPerson}
-                total={post.maxPerson}
-              />
-            </div>
-          ))}
+          cutTrips?.map(post => {
+            console.log('cut', cutTrips)
+            return (
+              <div
+                css={{ padding: '18px 16px' }}
+                key={post.travelNumber}>
+                <HorizonBoxLayout
+                  travelNumber={post.travelNumber}
+                  bookmarked={post.bookmarked}
+                  showTag={false}
+                  bookmarkPosition="middle"
+                  userName={post.userName}
+                  tags={post.tags}
+                  daysAgo={dayjs().diff(
+                    dayjs(post.createdAt, 'YYYY년MM월DD일 HH:mm'),
+                    'day'
+                  )}
+                  daysLeft={dayjs(post.registerDue, 'YYYY년MM월DD일').diff(
+                    dayjs(),
+                    'day'
+                  )}
+                  title={post.title}
+                  recruits={post.nowPerson}
+                  total={post.maxPerson}
+                />
+              </div>
+            )
+          })}
       </ThreeRowCarousel>
     </Container>
   )
