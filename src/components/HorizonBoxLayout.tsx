@@ -5,6 +5,9 @@ import BoxLayoutTag from './designSystem/tag/BoxLayoutTag'
 import EmptyHeartIcon from './icons/EmptyHeartIcon'
 import { palette } from '@/styles/palette'
 import PlaceIcon from './icons/PlaceIcon'
+import FullHeartIcon from './icons/FullHeartIcon'
+import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
+import { authStore } from '@/store/client/authStore'
 interface HorizonBoxProps {
   daysLeft: number
   title: string
@@ -18,6 +21,9 @@ interface HorizonBoxProps {
   showTag?: boolean
   isBar?: boolean
   bookmarkPosition?: 'top' | 'middle'
+  bookmarkNeed?: boolean // false면 필요 없거나, Link에 속하지 않는 버튼을 따로 사용.
+  bookmarked: boolean
+  travelNumber: number
 }
 // 사용 방식
 {
@@ -35,6 +41,7 @@ interface HorizonBoxProps {
 }
 
 const HorizonBoxLayout = ({
+  bookmarked,
   daysLeft,
   title,
   recruits,
@@ -46,7 +53,9 @@ const HorizonBoxLayout = ({
   isBar = false,
   showTag = true,
   bookmarkPosition = 'top',
-  tags
+  tags,
+  bookmarkNeed = true,
+  travelNumber
 }: HorizonBoxProps) => {
   const cutTags = tags.length > 2 ? tags.slice(0, 2) : tags
   return (
@@ -61,12 +70,22 @@ const HorizonBoxLayout = ({
             color={`${palette.keycolor}`}
             daysLeft={daysLeft}
           />
-          {bookmarkPosition === 'top' && <BookmarkButton />}
+          {bookmarkPosition === 'top' && bookmarkNeed && (
+            <BookmarkButton
+              travelNumber={travelNumber}
+              bookmarked={bookmarked}
+            />
+          )}
         </TopContainer>
         <div>
           <TitleBox>
             <Title>{title}</Title>
-            {bookmarkPosition === 'middle' && <BookmarkButton />}
+            {bookmarkPosition === 'middle' && bookmarkNeed && (
+              <BookmarkButton
+                travelNumber={travelNumber}
+                bookmarked={bookmarked}
+              />
+            )}
           </TitleBox>
           {/* <Description>{description}</Description> */}
           <UserBox>
@@ -120,15 +139,41 @@ const HorizonBoxLayout = ({
     </HorizonBoxContainer>
   )
 }
-
-const BookmarkButton = () => {
+interface BookmarkButtonProps {
+  bookmarked: boolean
+  travelNumber: number
+}
+const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
+  const { accessToken, userId } = authStore()
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    travelNumber
+  )
+  const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    if (bookmarked) {
+      deleteBookmarkMutation()
+    } else {
+      // 북마크 추가.
+      postBookmarkMutation()
+    }
+  }
+  console.log(bookmarked, '??')
   return (
-    <button>
-      <EmptyHeartIcon
-        width={24}
-        height={21.4}
-        stroke={`${palette.비강조3}`}
-      />
+    <button onClick={bookmarkClickHandler}>
+      {bookmarked ? (
+        <FullHeartIcon
+          width={24}
+          height={21.4}
+        />
+      ) : (
+        <EmptyHeartIcon
+          width={24}
+          height={21.4}
+          stroke={`${palette.비강조3}`}
+        />
+      )}
     </button>
   )
 }

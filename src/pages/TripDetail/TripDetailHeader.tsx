@@ -3,7 +3,9 @@ import EditAndDeleteModal from '@/components/designSystem/modal/EditAndDeleteMod
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import AlarmIcon from '@/components/icons/AlarmIcon'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
+import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import MoreIcon from '@/components/icons/MoreIcon'
+import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
@@ -50,7 +52,9 @@ export default function TripDetailHeader({
     addTravelNumber,
     addEnrollmentNumber,
     hostUserCheck,
-    addAgeGroup
+    addAgeGroup,
+    addBookmarked,
+    bookmarked
   } = tripDetailStore()
 
   const tripInfos = tripDetail.data?.data
@@ -77,7 +81,8 @@ export default function TripDetailHeader({
         hostUserCheck,
         enrollmentNumber,
         enrollCount,
-        ageGroup
+        ageGroup,
+        bookmarked
       } = tripInfos
       const [year, month, day] = dueDate.split('-').map((v: string) => +v)
       const DUEDATE = {
@@ -106,12 +111,17 @@ export default function TripDetailHeader({
       addNowPerson(nowPerson)
       addAgeGroup(ageGroup)
       addPostStatus(postStatus)
+      addBookmarked(bookmarked)
     }
   }, [tripDetail.isFetched])
 
   const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!))
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
-
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    parseInt(travelNumber!)
+  )
   useEffect(() => {
     if (isDeleteBtnClicked) {
       setIsResultModalOpen(true)
@@ -136,6 +146,16 @@ export default function TripDetailHeader({
       })
     }
   }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked])
+
+  // 북마크
+  const bookmarkClickHandler = () => {
+    if (bookmarked) {
+      deleteBookmarkMutation()
+    } else {
+      // 북마크 추가.
+      postBookmarkMutation()
+    }
+  }
   return (
     <Container
       hostUserCheck={hostUserCheck}
@@ -148,11 +168,15 @@ export default function TripDetailHeader({
           />
         </div>
       )}
-      <div onClick={() => navigate('/bookmark')}>
-        <EmptyHeartIcon
-          width={22}
-          stroke={palette.기본}
-        />
+      <div onClick={bookmarkClickHandler}>
+        {bookmarked ? (
+          <FullHeartIcon width={22} />
+        ) : (
+          <EmptyHeartIcon
+            width={22}
+            stroke={palette.기본}
+          />
+        )}
       </div>
 
       {hostUserCheck && (

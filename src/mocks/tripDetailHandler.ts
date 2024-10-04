@@ -20,7 +20,8 @@ const tripDetail = {
   tags: ['✊ 즉흥', '🏔️ 자연', '🍔 먹방'],
   postStatus: '진행중',
   hostUserCheck: false,
-  enrollmentNumber: null
+  enrollmentNumber: null,
+  bookmarked: true
 }
 const companions = {
   totalCount: 5,
