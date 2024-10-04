@@ -36,6 +36,7 @@ const TripRecommendation = () => {
               key={post.travelNumber}>
               <HorizonBoxLayout
                 bookmarked={post.bookmarked}
+                location={post.location}
                 travelNumber={post.travelNumber}
                 showTag={false}
                 bookmarkPosition="middle"

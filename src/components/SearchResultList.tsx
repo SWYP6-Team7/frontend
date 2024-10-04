@@ -53,6 +53,7 @@ const SearchResultList = ({
                 userName={content.userName}
                 title={content.title}
                 tags={content.tags}
+                location={content.location}
                 total={content.maxPerson}
                 daysAgo={formatTime(content.createdAt)}
                 daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
