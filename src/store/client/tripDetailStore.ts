@@ -18,8 +18,8 @@ interface tripDetailState {
   addUserNumber: (userNumber: number) => void
   userName: string
   addUserName: (userName: string) => void
-  ageGroup: string
-  addAgeGroup: (ageGroup: string) => void
+  userAgeGroup: string
+  addUserAgeGroup: (ageGroup: string) => void
   createdAt: string
   addCreatedAt: (createdAt: string) => void
   location: string
@@ -71,8 +71,8 @@ export const tripDetailStore = create<tripDetailState>(set => ({
 
   travelNumber: 0,
   addTravelNumber: (travelNumber: number) => set({ travelNumber }),
-  ageGroup: '',
-  addAgeGroup: (ageGroup: string) => set({ ageGroup }),
+  userAgeGroup: '',
+  addUserAgeGroup: (userAgeGroup: string) => set({ userAgeGroup }),
   userNumber: 0,
   addUserNumber: (userNumber: number) => set({ userNumber }),
 
