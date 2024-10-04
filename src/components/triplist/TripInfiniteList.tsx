@@ -48,10 +48,10 @@ const TripInfiniteList = () => {
                     tags={content.tags}
                     total={content.maxPerson}
                     daysAgo={dayjs().diff(
-                      dayjs(content.createdAt, 'YYYY년MM월DD일 HH:mm'),
+                      dayjs(content.createdAt, 'YYYY-MM-DD HH:mm'),
                       'day'
                     )}
-                    daysLeft={dayjs(content.registerDue, 'YYYY년MM월DD일').diff(
+                    daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                       dayjs(),
                       'day'
                     )}

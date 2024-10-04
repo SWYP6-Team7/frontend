@@ -64,13 +64,13 @@ const BookmarkContainer = () => {
                         userName={post.userName}
                         tags={post.tags}
                         daysAgo={dayjs().diff(
-                          dayjs(post.createdAt, 'YYYY년MM월DD일 HH:mm'),
+                          dayjs(post.createdAt, 'YYYY-MM-DD HH:mm'),
                           'day'
                         )}
-                        daysLeft={dayjs(
-                          post.registerDue,
-                          'YYYY년MM월DD일'
-                        ).diff(dayjs(), 'day')}
+                        daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
+                          dayjs(),
+                          'day'
+                        )}
                         title={post.title}
                         recruits={post.nowPerson}
                         total={post.maxPerson}
