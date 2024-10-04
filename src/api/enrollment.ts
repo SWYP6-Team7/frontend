@@ -50,12 +50,13 @@ export async function getLastViewed(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.get(
+    const response = await axiosInstance.get(
       `/api/travel/${travelNumber}/enrollments/last-viewed`,
       {
         headers: getJWTHeader(accessToken)
       }
     )
+    return response.data
   } catch (err) {
     console.log(err)
   }
