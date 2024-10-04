@@ -20,7 +20,7 @@ interface HorizonBoxProps {
   total: number
   location?: string
   userName: string
-  daysAgo: number
+  daysAgo: string
   imgSrc?: string // 이미지 없는 경우 대비.
   tags: string[]
   bookmarked: boolean
@@ -138,7 +138,7 @@ const MyTripHorizonBoxLayout = ({
               ·
             </div>
             <DaysAgo css={{ fontSize: '14px', fontWeight: 40 }}>
-              {daysAgo}일전
+              {daysAgo}
             </DaysAgo>
           </UserBox>
         </div>

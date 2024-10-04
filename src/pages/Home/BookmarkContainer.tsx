@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Badge from '@/components/designSystem/Badge'
 import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import TitleContainer from './ContentTitleContainer'
-import { daysLeft } from '@/utils/time'
+import { daysLeft, daysAgo } from '@/utils/time'
 import { palette } from '@/styles/palette'
 import { ITripList } from '@/model/trip'
 import HorizonBoxLayout from '@/components/HorizonBoxLayout'
@@ -63,10 +63,7 @@ const BookmarkContainer = () => {
                         bookmarkPosition="top"
                         userName={post.userName}
                         tags={post.tags}
-                        daysAgo={dayjs().diff(
-                          dayjs(post.createdAt, 'YYYY-MM-DD HH:mm'),
-                          'day'
-                        )}
+                        daysAgo={daysAgo(post.createdAt)}
                         daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
                           dayjs(),
                           'day'
