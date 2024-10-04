@@ -1,6 +1,7 @@
 import { axiosInstance } from '@/api'
 import { getSearch } from '@/api/search'
 import { ISearchData } from '@/model/search'
+import { authStore } from '@/store/client/authStore'
 import { searchStore } from '@/store/client/searchStore'
 import {
   InfiniteData,
@@ -25,6 +26,7 @@ export interface Filters {
 
 const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const { style, place, gender, people, period } = searchStore()
+  const { accessToken } = authStore()
   const filters = {
     tags: style,
     location: place,
@@ -56,8 +58,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       }
     },
     queryFn: ({ pageParam }) =>
-      getSearch(pageParam as number, keyword, { ...filters }),
-    enabled: Boolean(keyword)
+      getSearch(pageParam as number, keyword, { ...filters }, accessToken!),
+    enabled: Boolean(keyword) && !!accessToken
   })
 
   return {
