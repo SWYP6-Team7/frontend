@@ -9,7 +9,7 @@ const trips = {
       tags: ['문화', '음식', '사진', '문화', '음식', '사진'],
       nowPerson: 2,
       maxPerson: 5,
-      createdAt: '2024년 09월 01일',
+      createdAt: '2024-10-04 21:51',
       registerDue: '2025년 01월 10일',
       bookmarked: true
     },

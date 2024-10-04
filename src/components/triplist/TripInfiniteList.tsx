@@ -11,6 +11,7 @@ import EmptyHeartIcon from '../icons/EmptyHeartIcon'
 import { palette } from '@/styles/palette'
 import { authStore } from '@/store/client/authStore'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
+import { daysAgo } from '@/utils/time'
 
 const TripInfiniteList = () => {
   const [ref, inView] = useInView()
@@ -47,10 +48,7 @@ const TripInfiniteList = () => {
                     title={content.title}
                     tags={content.tags}
                     total={content.maxPerson}
-                    daysAgo={dayjs().diff(
-                      dayjs(content.createdAt, 'YYYY-MM-DD HH:mm'),
-                      'day'
-                    )}
+                    daysAgo={daysAgo(content.createdAt)}
                     daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                       dayjs(),
                       'day'

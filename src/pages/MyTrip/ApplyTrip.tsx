@@ -12,7 +12,11 @@ import { useInView } from 'react-intersection-observer'
 import { Link } from 'react-router-dom'
 import ApplyTripIconBtns from './ApplyTripIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
+
 import { IMyTripList } from '@/model/myTrip'
+
+import { daysAgo } from '@/utils/time'
+
 
 export default function ApplyTrip() {
   const [ref, inView] = useInView()
@@ -60,10 +64,7 @@ export default function ApplyTrip() {
                     title={content.title}
                     tags={content.tags}
                     total={content.maxPerson}
-                    daysAgo={dayjs().diff(
-                      dayjs(content.createdAt, 'YYYY-MM-DD HH:mm'),
-                      'day'
-                    )}
+                    daysAgo={daysAgo(content?.createdAt)}
                     daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                       dayjs(),
                       'day'
