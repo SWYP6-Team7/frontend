@@ -9,6 +9,7 @@ import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
 import { IMyTripList } from '@/model/myTrip'
 import { daysAgo } from '@/utils/time'
+import { Link } from 'react-router-dom'
 
 const TripRecommendation = () => {
   const { data } = useTripList('recommend')
@@ -34,23 +35,25 @@ const TripRecommendation = () => {
             <div
               css={{ padding: '18px 16px' }}
               key={post.travelNumber}>
-              <HorizonBoxLayout
-                bookmarked={post.bookmarked}
-                location={post.location}
-                travelNumber={post.travelNumber}
-                showTag={false}
-                bookmarkPosition="middle"
-                userName={post.userName}
-                tags={post.tags}
-                daysAgo={daysAgo(post?.createdAt)}
-                daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
-                  dayjs(),
-                  'day'
-                )}
-                title={post.title}
-                recruits={post.nowPerson}
-                total={post.maxPerson}
-              />
+              <Link to={`/trip/detail/${post.travelNumber}`}>
+                <HorizonBoxLayout
+                  bookmarked={post.bookmarked}
+                  location={post.location}
+                  travelNumber={post.travelNumber}
+                  showTag={false}
+                  bookmarkPosition="middle"
+                  userName={post.userName}
+                  tags={post.tags}
+                  daysAgo={daysAgo(post?.createdAt)}
+                  daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
+                    dayjs(),
+                    'day'
+                  )}
+                  title={post.title}
+                  recruits={post.nowPerson}
+                  total={post.maxPerson}
+                />
+              </Link>
             </div>
           ))}
       </ThreeRowCarousel>
