@@ -53,10 +53,10 @@ const TripAvailable = () => {
                   userName={post.userName}
                   tags={post.tags}
                   daysAgo={dayjs().diff(
-                    dayjs(post.createdAt, 'YYYY년MM월DD일 HH:mm'),
+                    dayjs(post.createdAt, 'YYYY-MM-DD HH:mm'),
                     'day'
                   )}
-                  daysLeft={dayjs(post.registerDue, 'YYYY년MM월DD일').diff(
+                  daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
                     dayjs(),
                     'day'
                   )}

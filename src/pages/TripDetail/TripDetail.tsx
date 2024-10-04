@@ -165,10 +165,7 @@ export default function TripDetail() {
                     lineHeight: '16.71px',
                     color: palette.비강조
                   }}>
-                  {dayjs().diff(
-                    dayjs(createdAt, 'YYYY년MM월DD일 HH:mm'),
-                    'day'
-                  )}
+                  {dayjs().diff(dayjs(createdAt, 'YYYY-MM-DD HH:mm'), 'day')}
                   시간 전
                 </div>
               </div>

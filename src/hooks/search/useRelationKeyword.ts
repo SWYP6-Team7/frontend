@@ -1,13 +1,15 @@
 import { getSearchRelation } from '@/api/search'
+import { authStore } from '@/store/client/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 const useRelationKeyword = (keyword: string) => {
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword)
+  const { accessToken } = authStore()
   const { data, isLoading, error } = useQuery({
     queryKey: ['search', 'relation', debouncedKeyword],
-    queryFn: () => getSearchRelation(debouncedKeyword),
-    enabled: keyword !== ''
+    queryFn: () => getSearchRelation(debouncedKeyword, accessToken!),
+    enabled: keyword !== '' && !!accessToken
   })
 
   useEffect(() => {
