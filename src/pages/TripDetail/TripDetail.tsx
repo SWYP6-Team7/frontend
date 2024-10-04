@@ -46,7 +46,8 @@ export default function TripDetail() {
     enrollmentNumber,
     travelNumber,
     nowPerson,
-    ageGroup,
+    userAgeGroup,
+    addUserAgeGroup,
     applySuccess
   } = tripDetailStore()
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
@@ -285,23 +286,23 @@ export default function TripDetail() {
                   ? palette.keycolor
                   : palette.비강조3
                 : enrollmentNumber
-                  ? palette.keycolor
-                  : palette.keycolorBG,
+                  ? palette.keycolorBG
+                  : palette.keycolor,
               color: hostUserCheck
                 ? nowPerson > 0
                   ? palette.BG
                   : palette.비강조
                 : enrollmentNumber
-                  ? palette.BG
-                  : palette.keycolor,
+                  ? palette.keycolor
+                  : palette.BG,
               fontWeight: '600'
             }}
             text={
               hostUserCheck
                 ? '참가신청목록'
                 : enrollmentNumber
-                  ? '참가신청하기'
-                  : '참가신청취소'
+                  ? '참가신청취소'
+                  : '참가신청하기'
             }>
             {hostUserCheck && nowPerson > 0 && (
               <AppliedPersonCircle>{nowPerson}</AppliedPersonCircle>
