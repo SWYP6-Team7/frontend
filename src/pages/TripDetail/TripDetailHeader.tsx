@@ -52,7 +52,7 @@ export default function TripDetailHeader({
     addTravelNumber,
     addEnrollmentNumber,
     hostUserCheck,
-    addAgeGroup,
+    addUserAgeGroup,
     addBookmarked,
     bookmarked
   } = tripDetailStore()
@@ -81,7 +81,7 @@ export default function TripDetailHeader({
         hostUserCheck,
         enrollmentNumber,
         enrollCount,
-        ageGroup,
+        userAgeGroup,
         bookmarked
       } = tripInfos
       const [year, month, day] = dueDate.split('-').map((v: string) => +v)
@@ -109,7 +109,7 @@ export default function TripDetailHeader({
       addViewCount(viewCount)
       addHostUserCheck(hostUserCheck)
       addNowPerson(nowPerson)
-      addAgeGroup(ageGroup)
+      addUserAgeGroup(userAgeGroup)
       addPostStatus(postStatus)
       addBookmarked(bookmarked)
     }

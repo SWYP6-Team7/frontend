@@ -53,7 +53,14 @@ const CreateTripDetail = () => {
     periodType,
     addPeriodType,
     tags,
-    addTags
+    addTags,
+    addLocation,
+    addTitle,
+    addMaxPerson,
+    addGenderType,
+    addCompletionStatus,
+    addDueDate,
+    addDetails
   } = createTripStore()
   const { userId, accessToken } = authStore()
   const navigate = useNavigate()
@@ -83,6 +90,15 @@ const CreateTripDetail = () => {
   }
   const { createTripMutate } = useCreateTrip(travelData, accessToken as string) // 여행 생성 api 요청.
   const completeClickHandler = () => {
+    // 다시 빈 값으로 만들기.
+    addTitle('')
+    addLocation('')
+    addDetails('')
+    addMaxPerson(0)
+    addGenderType('')
+    addDueDate('')
+    addPeriodType('')
+    addTags([])
     navigate('/')
 
     createTripMutate()
