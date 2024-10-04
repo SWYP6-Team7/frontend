@@ -37,7 +37,7 @@ export const useTripList = (sort: 'recommend' | 'recent') => {
         return getRecommendationTrips(pageParam as number, accessToken!)
       }
     },
-
+    enabled: !!accessToken,
     initialPageParam: 0,
     getNextPageParam: lastPage => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
