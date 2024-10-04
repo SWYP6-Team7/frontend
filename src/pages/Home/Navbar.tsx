@@ -29,7 +29,7 @@ const Navbar = () => {
     PersonIcon
   ]
   // const iconNames = ['홈', '검색', '즐겨찾기', '커뮤니티', 'MY']
-  const iconNames = ['홈', '검색', '즐겨찾기', 'MY']
+  const iconNames = ['홈', '검색', '내 여행', 'MY']
 
   const getIsActive = (page: string) => {
     if (page === '/myPage' && pathname === '/editMyInfo') return true

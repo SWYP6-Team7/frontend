@@ -7,7 +7,12 @@ export const getMyPage = (accessToken: string) => {
   })
 }
 // 배포 후에 더 추가하기.
-export const putMyPage = (accessToken: string, name: string) => {
+export const putMyPage = (
+  accessToken: string,
+  name: string,
+  proIntroduce: string,
+  preferredTags: string[]
+) => {
   return axiosInstance.put(
     '/api/profile/update',
     {

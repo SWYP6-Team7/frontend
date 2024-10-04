@@ -5,7 +5,7 @@ const data = {
   gender: '여자',
   ageGroup: '20대',
   proIntroduce: '',
-  preferredTags: ['액티비티', '계획', '먹방', '해외']
+  preferredTags: ['액티비티', '계획']
 }
 
 export const myPageHandler = [
