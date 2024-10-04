@@ -54,7 +54,7 @@ const SearchResultList = ({
                 tags={content.tags}
                 total={content.maxPerson}
                 daysAgo={dayjs().diff(
-                  dayjs(content.createdAt, 'YYYY년MM월DD일'),
+                  dayjs(content.createdAt, 'YYYY년MM월DD일 HH:mm'),
                   'day'
                 )}
                 daysLeft={dayjs(content.registerDue, 'YYYY년MM월DD일').diff(
