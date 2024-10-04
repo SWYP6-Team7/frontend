@@ -13,6 +13,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 import { IMyTripList } from '@/model/myTrip'
 import { daysAgo } from '@/utils/time'
+import { Link } from 'react-router-dom'
 
 const TripAvailable = () => {
   const { data } = useTripList('recent')
@@ -43,23 +44,25 @@ const TripAvailable = () => {
               <div
                 css={{ padding: '18px 16px' }}
                 key={post.travelNumber}>
-                <HorizonBoxLayout
-                  travelNumber={post.travelNumber}
-                  location={post.location}
-                  bookmarked={post.bookmarked}
-                  showTag={false}
-                  bookmarkPosition="middle"
-                  userName={post.userName}
-                  tags={post.tags}
-                  daysAgo={daysAgo(post?.createdAt)}
-                  daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
-                    dayjs(),
-                    'day'
-                  )}
-                  title={post.title}
-                  recruits={post.nowPerson}
-                  total={post.maxPerson}
-                />
+                <Link to={`/trip/detail/${post.travelNumber}`}>
+                  <HorizonBoxLayout
+                    travelNumber={post.travelNumber}
+                    location={post.location}
+                    bookmarked={post.bookmarked}
+                    showTag={false}
+                    bookmarkPosition="middle"
+                    userName={post.userName}
+                    tags={post.tags}
+                    daysAgo={daysAgo(post?.createdAt)}
+                    daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
+                      dayjs(),
+                      'day'
+                    )}
+                    title={post.title}
+                    recruits={post.nowPerson}
+                    total={post.maxPerson}
+                  />
+                </Link>
               </div>
             )
           })}
