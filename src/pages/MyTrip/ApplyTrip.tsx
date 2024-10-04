@@ -12,6 +12,7 @@ import { useInView } from 'react-intersection-observer'
 import { Link } from 'react-router-dom'
 import ApplyTripIconBtns from './ApplyTripIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
+import { IMyTripList } from '@/model/myTrip'
 
 export default function ApplyTrip() {
   const [ref, inView] = useInView()
@@ -23,11 +24,9 @@ export default function ApplyTrip() {
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage])
 
-  function isEmptyObject(): boolean {
-    // 빈 데이터 확인 함수.
-    return Object.keys(data?.pages[0] as object).length === 0
-  }
-  const isNoData = data && isEmptyObject()
+  const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
+
+  const isNoData = trips.length === 0
 
   return (
     <Container isNodata={isNoData}>
