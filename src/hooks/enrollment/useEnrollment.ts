@@ -20,11 +20,11 @@ const useEnrollment = (travelNumber: number) => {
     enabled: !!travelNumber && !!accessToken
   })
   // 주최자 - 가장 최근에 봤던 글.
-  // const enrollmentsLastViewed = useQuery({
-  //   queryKey: ['enrollment', travelNumber],
-  //   queryFn: () => getLastViewed(travelNumber, accessToken)
-  //   enabled: !!travelNumber && !!accessToken
-  // })
+  const enrollmentsLastViewed = useQuery({
+    queryKey: ['enrollment', travelNumber],
+    queryFn: () => getLastViewed(travelNumber, accessToken),
+    enabled: !!travelNumber && !!accessToken
+  })
 
   const queryClient = useQueryClient()
   // 최근 열람 시점 업데이트.
@@ -115,7 +115,7 @@ const useEnrollment = (travelNumber: number) => {
     enrollmentList,
     enrollmentRejectionMutate,
     enrollmentAcceptanceMutate,
-    // enrollmentsLastViewed,
+    enrollmentsLastViewed,
     updateLastViewed
   }
 }

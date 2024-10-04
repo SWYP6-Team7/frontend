@@ -21,21 +21,23 @@ interface enrollment {
 }
 export default function TripEnrollmentList() {
   const { travelNumber } = useParams<{ travelNumber: string }>()
-  const { enrollmentList } = useEnrollment(parseInt(travelNumber!))
-
+  const { enrollmentList, enrollmentsLastViewed, updateLastViewed } =
+    useEnrollment(parseInt(travelNumber!))
+  // 최근에 본 시점.
+  const lastViewed = enrollmentsLastViewed.data.lastViewedAt
   const list = enrollmentList.data?.data
-  // const lastViewTime = enrollmentsLastViewed.data?.data
+
   console.log(list)
 
-  const isNew = (dateString: string) => {
+  const isNew = (last: string, enrolledTime: string) => {
     // 문자열을 Date 객체로 변환
-    const inputDate = new Date(dateString.replace('.', '-').replace('.', '-'))
-
-    // 현재 시간을 가져옴
-    const currentDate = new Date()
+    const lastTime = new Date(last.replace('.', '-').replace('.', '-'))
+    const enrolledAt = new Date(
+      enrolledTime.replace('.', '-').replace('.', '-')
+    )
 
     // 주어진 날짜가 현재 시간보다 이전인지 확인
-    return inputDate < currentDate
+    return lastTime < enrolledAt
   }
   function getCurrentFormattedDate() {
     const now = new Date()
@@ -49,10 +51,14 @@ export default function TripEnrollmentList() {
 
     return `${year}.${month}.${day} ${hours}:${minutes}`
   }
+
   useEffect(() => {
-    //최근 열람 시간 업데이트.
-    // updateLastViewed(getCurrentFormattedDate())
+    // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.
+    return () => {
+      updateLastViewed(getCurrentFormattedDate())
+    }
   }, [])
+
   return (
     <Container>
       {list && (
@@ -68,8 +74,7 @@ export default function TripEnrollmentList() {
             {list.enrollments?.map((enrollment: enrollment) => (
               <TripEnrollmentCard
                 key={enrollment.enrollmentNumber}
-                isNew={false}
-                // isNew={isNew(lastViewTime)}
+                isNew={isNew(lastViewed, enrollment.enrolledAt)}
                 enrollmentNumber={enrollment.enrollmentNumber}
                 userName={enrollment.userName}
                 ageGroup={enrollment.userAgeGroup}

@@ -98,7 +98,7 @@ const Home = () => {
       <ContentWrapper>
         <SearchBox>
           <Greeting>
-            <span>{userName}</span>님, 반가워요!
+            <span>{name}</span>님, 반가워요!
           </Greeting>
 
           <HomeInputField
