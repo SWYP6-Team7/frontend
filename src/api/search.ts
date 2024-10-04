@@ -34,7 +34,7 @@ export async function getSearchRelation(keyword: string, accessToken: string) {
       headers: getJWTHeader(accessToken)
     })
     console.log('data', response)
-    return response.data as string[]
+    return response.data as { suggestions: string[] }
   } catch (err) {
     console.error(err)
   }

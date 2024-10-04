@@ -12,6 +12,7 @@ import 'slick-carousel/slick/slick-theme.css'
 
 import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 import { IMyTripList } from '@/model/myTrip'
+import { daysAgo } from '@/utils/time'
 
 const TripAvailable = () => {
   const { data } = useTripList('recent')
@@ -19,12 +20,9 @@ const TripAvailable = () => {
 
   const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
   const cutTrips = trips?.length > 9 ? trips.slice(0, 9) : trips
-  console.log(cutTrips)
-  const refinedTrips = chunkArray(cutTrips)
 
   // 일단 앞에 몇개만 노출.
   //   const cutTrips = trips.length > 5 ? trips.slice(0, 5) : trips
-  console.log(trips)
 
   return (
     <Container>
@@ -52,10 +50,7 @@ const TripAvailable = () => {
                   bookmarkPosition="middle"
                   userName={post.userName}
                   tags={post.tags}
-                  daysAgo={dayjs().diff(
-                    dayjs(post.createdAt, 'YYYY-MM-DD HH:mm'),
-                    'day'
-                  )}
+                  daysAgo={daysAgo(post?.createdAt)}
                   daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
                     dayjs(),
                     'day'

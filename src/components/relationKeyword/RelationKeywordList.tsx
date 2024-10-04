@@ -23,8 +23,8 @@ const RelationKeywordList = ({
   return (
     <Contianer>
       {data &&
-        data.length > 0 &&
-        data?.map(data => (
+        data.suggestions.length > 0 &&
+        data?.suggestions?.map(data => (
           <button
             css={{ display: 'block' }}
             key={data}
