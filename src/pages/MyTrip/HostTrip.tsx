@@ -11,6 +11,7 @@ import { useInView } from 'react-intersection-observer'
 import { Link } from 'react-router-dom'
 import HostTripIconBtns from './HostTripIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
+import { daysAgo } from '@/utils/time'
 
 export default function HostTrip() {
   const [ref, inView] = useInView()
@@ -60,10 +61,7 @@ export default function HostTrip() {
                     title={content.title}
                     tags={content.tags}
                     total={content.maxPerson}
-                    daysAgo={dayjs().diff(
-                      dayjs(content.createdAt, 'YYYY-MM-DD HH:mm'),
-                      'day'
-                    )}
+                    daysAgo={daysAgo(content?.createdAt)}
                     daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                       dayjs(),
                       'day'

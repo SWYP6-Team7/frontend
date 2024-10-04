@@ -381,7 +381,7 @@ export const notificationList1 = {
   content: [
     {
       title: '여행 참가 신청',
-      createdAt: '2024-09-28 18:56',
+      createdAt: '2024-10-24 21:51',
       content: '김모잉님이 참가를 희망했어요.\n수락하시려면 눌러주세요.',
       isRead: false,
       travelNumber: 10,

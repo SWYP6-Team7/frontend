@@ -15,7 +15,7 @@ interface HorizonBoxProps {
   total: number
   location?: string
   userName: string
-  daysAgo: number
+  daysAgo: string
   imgSrc?: string // 이미지 없는 경우 대비.
   tags: string[]
   showTag?: boolean
@@ -100,7 +100,7 @@ const HorizonBoxLayout = ({
               </Recruiting>
             </RecruitingBox>
             <Dot>·</Dot>
-            <div>{daysAgo}일전</div>
+            <div>{daysAgo}</div>
           </UserBox>
         </div>
         {isBar && <Bar />}

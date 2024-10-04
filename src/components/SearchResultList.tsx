@@ -16,6 +16,7 @@ import EmptyHeartIcon from './icons/EmptyHeartIcon'
 import FullHeartIcon from './icons/FullHeartIcon'
 import { authStore } from '@/store/client/authStore'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
+import { formatTime } from '@/utils/time'
 dayjs.extend(customParseFormat)
 
 const LIST = ['추천순', '최신순', '등록일순', '정확도순']
@@ -53,10 +54,7 @@ const SearchResultList = ({
                 title={content.title}
                 tags={content.tags}
                 total={content.maxPerson}
-                daysAgo={dayjs().diff(
-                  dayjs(content.createdAt, 'YYYY-MM-DD HH:mm'),
-                  'day'
-                )}
+                daysAgo={formatTime(content.createdAt)}
                 daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                   dayjs(),
                   'day'

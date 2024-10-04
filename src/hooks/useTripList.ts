@@ -30,6 +30,7 @@ export const useTripList = (sort: 'recommend' | 'recent') => {
     [_1: string]
   >({
     queryKey: [queryKey],
+
     queryFn: ({ pageParam }) => {
       if (sort === 'recent') {
         return getAvailableTrips(pageParam as number, accessToken!)

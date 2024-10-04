@@ -8,6 +8,7 @@ import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
 import { IMyTripList } from '@/model/myTrip'
+import { daysAgo } from '@/utils/time'
 
 const TripRecommendation = () => {
   const { data } = useTripList('recommend')
@@ -40,10 +41,7 @@ const TripRecommendation = () => {
                 bookmarkPosition="middle"
                 userName={post.userName}
                 tags={post.tags}
-                daysAgo={dayjs().diff(
-                  dayjs(post.createdAt, 'YYYY-MM-DD HH:mm'),
-                  'day'
-                )}
+                daysAgo={daysAgo(post?.createdAt)}
                 daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
                   dayjs(),
                   'day'
