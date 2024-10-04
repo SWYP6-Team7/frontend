@@ -9,8 +9,21 @@ import { useNavigate } from 'react-router-dom'
 import EditAndDeleteModal from '../designSystem/modal/EditAndDeleteModal'
 import CheckingModal from '../designSystem/modal/CheckingModal'
 import ResultToast from '../designSystem/toastMessage/resultToast'
+import { IComment } from '@/model/comment'
+import { daysAgo } from '@/utils/time'
+import FullHeartIcon from '../icons/FullHeartIcon'
+import useComment from '@/hooks/comment/useComment'
+import { authStore } from '@/store/client/authStore'
+import { commentStore } from '@/store/client/commentStore'
 
-const Comment = () => {
+interface CommentProps {
+  comment: IComment
+  relatedType: 'travel' | 'community'
+  relatedNumber: number
+}
+
+const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
+  const userId = 101
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
@@ -18,6 +31,11 @@ const Comment = () => {
 
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
   const [threeDotsClick, setThreeDotsClick] = useState(false)
+  const { setOpenEdit, setParentNumber } = commentStore()
+  const { removeMutation, remove, like, unlike } = useComment(
+    relatedType,
+    relatedNumber
+  )
   const navigate = useNavigate()
   useEffect(() => {
     if (isDeleteBtnClicked) {
@@ -27,55 +45,77 @@ const Comment = () => {
     if (isEditBtnClicked) {
       setThreeDotsClick(false)
       setIsEditBtnClicked(false)
-      // navigate(`trip/edit/${travelNumber}`)
+      setOpenEdit(comment.content)
     }
     if (checkingModalClicked) {
-      // 삭제 요청.
-      // deleteTripDetailMutation().then(res => {
-      //   console.log(res)
-      //   if (res?.data.status === 205) {
-      //     setIsToastShow(true)
-      //     setTimeout(() => {
-      //       navigate('/')
-      //     }, 1800)
-      //   }
-      // })
+      remove({ commentNumber: comment.commentNumber })
+      if (removeMutation.isSuccess) {
+        setIsToastShow(true)
+      }
     }
   }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked])
+
+  const onClickReply = () => {
+    setParentNumber(comment.commentNumber)
+  }
+  const onClickLike = () => {
+    if (comment.liked) {
+      unlike({ commentNumber: comment.commentNumber })
+    } else {
+      like({ commentNumber: comment.commentNumber })
+    }
+  }
+
   return (
-    <Container>
+    <Container isChild={comment.parentNumber !== 0}>
       <TopContainer>
         <RoundedImage
           size={32}
           src=""
         />
         <UserBox>
-          <UserName>{'김모잉'}</UserName>
+          <UserName>{comment.writer}</UserName>
 
           <Dot>·</Dot>
-          <Day>{3}일전</Day>
+          <Day>{daysAgo(comment.regDate)}</Day>
         </UserBox>
-        <button onClick={() => setThreeDotsClick(true)}>
-          <EllipsisIcon />
-        </button>
+        {(comment.userNumber === userId ||
+          comment.travelWriterNumber === userId) && (
+          <button onClick={() => setThreeDotsClick(true)}>
+            <EllipsisIcon />
+          </button>
+        )}
       </TopContainer>
-      <Content>
-        미야가와 아침시장, 다카야마 진옥 산마치 전통 거리보존지구, 야요이바시,
-        혼마치도리, 카페 백파이프(バグパイプ), 도서관 칸쇼칸
-      </Content>
+      <Content>{comment.content}</Content>
       <BottomContainer>
-        <Like>
-          <EmptyHeartIcon
-            width={16}
-            height={14}
-            stroke={palette.비강조2}
-          />
-          <div>좋아요</div>
+        <Like
+          onClick={onClickLike}
+          liked={comment.liked}>
+          {comment.liked ? (
+            <FullHeartIcon
+              color={palette.keycolor}
+              width={16}
+              height={14}
+            />
+          ) : (
+            <EmptyHeartIcon
+              width={16}
+              height={14}
+              stroke={palette.비강조2}
+            />
+          )}
+          <div>좋아요{comment.likes > 0 && ` ${comment.likes}`}</div>
         </Like>
-        <Reply>
-          <CommentIcon />
-          <div>답글달기</div>
-        </Reply>
+        {comment.parentNumber === 0 && (
+          <Reply onClick={onClickReply}>
+            <CommentIcon />
+            {comment.repliesCount > 0 ? (
+              <div>{`답글 ${comment.repliesCount}`}</div>
+            ) : (
+              <div>답글달기</div>
+            )}
+          </Reply>
+        )}
       </BottomContainer>
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}
@@ -85,8 +125,8 @@ const Comment = () => {
       />
       <CheckingModal
         isModalOpen={isResultModalOpen}
-        modalMsg={`댓글을 삭제할까요?`}
-        modalTitle="정말 삭제할까요?"
+        modalMsg={`작성된 댓글을 삭제할까요?`}
+        modalTitle="댓글 삭제"
         modalButtonText="삭제하기"
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
@@ -101,8 +141,9 @@ const Comment = () => {
   )
 }
 
-const Container = styled.div`
+const Container = styled.div<{ isChild: boolean }>`
   padding: 16px 0;
+  padding-left: ${props => (props.isChild ? '40px' : '0')};
   border-bottom: 1px solid ${palette.비강조4};
 `
 
@@ -159,13 +200,13 @@ const BottomContainer = styled.div`
   padding-left: 40px;
 `
 
-const Like = styled.button`
+const Like = styled.button<{ liked: boolean }>`
   font-size: 14px;
   font-weight: 400;
   line-height: 16.71px;
   display: flex;
   align-items: center;
-  color: ${palette.비강조2};
+  color: ${props => (props.liked ? palette.keycolor : palette.비강조2)};
   gap: 6px;
 `
 const Reply = styled.button`

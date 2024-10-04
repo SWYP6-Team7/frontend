@@ -48,6 +48,7 @@ const TripInfiniteList = () => {
                     title={content.title}
                     tags={content.tags}
                     total={content.maxPerson}
+                    location={content.location}
                     daysAgo={daysAgo(content.createdAt)}
                     daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                       dayjs(),

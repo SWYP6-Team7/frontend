@@ -62,8 +62,9 @@ const BookmarkContainer = () => {
                         isBar={true}
                         bookmarkPosition="top"
                         userName={post.userName}
+                        location={post.location}
                         tags={post.tags}
-                        daysAgo={daysAgo(post.createdAt)}
+                        daysAgo={daysAgo(post?.createdAt)}
                         daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
                           dayjs(),
                           'day'
