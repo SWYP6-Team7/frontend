@@ -1,22 +1,30 @@
 import React from 'react'
 
 interface BackIconProps {
-  size?: number
+  width?: number
+  height?: number
+  strokeWidth?: number
+  stroke?: string
 }
 
 // < icon
-const BackIcon = ({ size = 24 }: BackIconProps) => {
+const BackIcon = ({
+  width = 24,
+  height = 24,
+  strokeWidth = 3,
+  stroke = '#343434'
+}: BackIconProps) => {
   return (
     <svg
-      width={size}
-      height={size}
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
       <path
         d="M16.9354 20.5L7.06445 12L16.9354 3.5"
-        stroke="#343434"
-        strokeWidth="3"
+        stroke={stroke}
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
