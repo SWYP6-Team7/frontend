@@ -9,13 +9,15 @@ import { palette } from '@/styles/palette'
 import { ITripList } from '@/model/trip'
 import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
+import { IMyTripList } from '@/model/myTrip'
 const BookmarkContainer = () => {
   const navigate = useNavigate()
   // 북마크 가져오기
 
-  const { data } = useBookmark('1')
-  const bookmarks = data?.data.content as ITripList['content']
+  const { data } = useBookmark()
+  const bookmarks = data?.pages[0].content as IMyTripList['content']
 
+  console.log(bookmarks)
   return (
     <BookmarkBox>
       <TitleContainer text="즐겨찾기" />
@@ -49,32 +51,37 @@ const BookmarkContainer = () => {
             </EmptyBox>
           ) : (
             <BookmarkList>
-              {bookmarks.map((post, idx) => (
-                <BookmarkPreviewBox key={idx}>
-                  <HorizonBoxLayout
-                    isBar={true}
-                    bookmarkPosition="top"
-                    userName={post.userName}
-                    tags={post.tags}
-                    daysAgo={dayjs().diff(
-                      dayjs(post.createdAt, 'YYYY년MM월DD일'),
-                      'day'
-                    )}
-                    daysLeft={dayjs(post.registerDue, 'YYYY년MM월DD일').diff(
-                      dayjs(),
-                      'day'
-                    )}
-                    title={post.title}
-                    recruits={post.nowPerson}
-                    total={post.maxPerson}
-                  />
-                </BookmarkPreviewBox>
-              ))}
+              {bookmarks.map(
+                (post, idx) =>
+                  post.bookmarked && (
+                    <BookmarkPreviewBox key={idx}>
+                      <HorizonBoxLayout
+                        bookmarked={post.bookmarked}
+                        travelNumber={post.travelNumber}
+                        bookmarkNeed={false}
+                        isBar={true}
+                        bookmarkPosition="top"
+                        userName={post.userName}
+                        tags={post.tags}
+                        daysAgo={dayjs().diff(
+                          dayjs(post.createdAt, 'YYYY년MM월DD일'),
+                          'day'
+                        )}
+                        daysLeft={dayjs(
+                          post.registerDue,
+                          'YYYY년MM월DD일'
+                        ).diff(dayjs(), 'day')}
+                        title={post.title}
+                        recruits={post.nowPerson}
+                        total={post.maxPerson}
+                      />
+                    </BookmarkPreviewBox>
+                  )
+              )}
             </BookmarkList>
           ))}
       </ContentList>
     </BookmarkBox>
-
   )
 }
 export default BookmarkContainer

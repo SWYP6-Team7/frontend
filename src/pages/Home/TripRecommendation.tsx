@@ -7,12 +7,13 @@ import { useTripList } from '@/hooks/useTripList'
 import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
+import { IMyTripList } from '@/model/myTrip'
 
 const TripRecommendation = () => {
   const { data } = useTripList('recommend')
   const { name } = userStore()
 
-  const trips = data?.pages[0].content ?? []
+  const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
   const cutTrips = trips?.length > 9 ? trips.slice(0, 9) : trips
 
   return (
@@ -33,6 +34,8 @@ const TripRecommendation = () => {
               css={{ padding: '18px 16px' }}
               key={post.travelNumber}>
               <HorizonBoxLayout
+                bookmarked={post.bookmarked}
+                travelNumber={post.travelNumber}
                 showTag={false}
                 bookmarkPosition="middle"
                 userName={post.userName}
