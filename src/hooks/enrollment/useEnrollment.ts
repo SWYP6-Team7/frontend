@@ -98,6 +98,9 @@ const useEnrollment = (travelNumber: number) => {
   const cancel = (enrollmentNumber: number) => {
     return cancelMutation.mutateAsync(enrollmentNumber, {
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['tripDetail', travelNumber]
+        })
         if (!enrollmentList.data) {
           setTimeout(() => {
             queryClient.invalidateQueries({
