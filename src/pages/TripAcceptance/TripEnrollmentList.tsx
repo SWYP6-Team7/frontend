@@ -61,7 +61,7 @@ export default function TripEnrollmentList() {
 
   return (
     <Container>
-      {list && (
+      {list && lastViewed && (
         <>
           <Count>
             총
