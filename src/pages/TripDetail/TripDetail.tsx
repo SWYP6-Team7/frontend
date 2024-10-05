@@ -305,8 +305,8 @@ export default function TripDetail() {
                   ? '참가신청취소'
                   : '참가신청하기'
             }>
-            {hostUserCheck && nowPerson > 0 && (
-              <AppliedPersonCircle>{nowPerson}</AppliedPersonCircle>
+            {hostUserCheck && enrollCount > 0 && (
+              <AppliedPersonCircle>{enrollCount}</AppliedPersonCircle>
             )}
           </Button>
         </BtnContainer>
