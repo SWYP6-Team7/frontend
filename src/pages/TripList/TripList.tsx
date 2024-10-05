@@ -100,7 +100,7 @@ const SearchContainer = styled.div`
   top: 0px;
   padding-bottom: 16px;
   background-color: ${palette.BG};
-  z-index: 2000;
+  z-index: 100;
 `
 
 const SortContainer = styled.div`
@@ -109,6 +109,7 @@ const SortContainer = styled.div`
   border-bottom: 1px solid rgb(240, 240, 240);
   position: sticky;
   top: calc(116px);
+  z-index: 2000;
   background-color: ${palette.BG};
 `
 
