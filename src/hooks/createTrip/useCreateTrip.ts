@@ -27,6 +27,12 @@ export const useCreateTrip = (
       queryClient.invalidateQueries({
         queryKey: ['createTrip']
       })
+      queryClient.invalidateQueries({
+        queryKey: ['tripRecommendation']
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['availableTrips']
+      })
     }
   })
   return { createTripMutate }
