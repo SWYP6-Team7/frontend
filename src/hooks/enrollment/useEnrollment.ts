@@ -24,8 +24,7 @@ const useEnrollment = (travelNumber: number) => {
   const enrollmentsLastViewed = useQuery({
     queryKey: ['enrollmentLastViewed', travelNumber],
     queryFn: () => getLastViewed(travelNumber, accessToken),
-    // enabled: !!travelNumber && !!accessToken
-    enabled: false
+    enabled: !!travelNumber && !!accessToken
   })
 
   const queryClient = useQueryClient()

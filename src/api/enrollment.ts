@@ -73,7 +73,7 @@ export async function putLastViewed(
     return axiosInstance.put(
       `/api/travel/${travelNumber}/enrollments/last-viewed`,
       {
-        lastViewAt: viewedAt
+        lastViewedAt: viewedAt
       },
       {
         headers: getJWTHeader(accessToken)
@@ -91,9 +91,13 @@ export async function rejectEnrollment(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.put(`/api/enrollment/${enrollmentNumber}/rejection`, {
-      headers: getJWTHeader(accessToken)
-    })
+    return axiosInstance.put(
+      `/api/enrollment/${enrollmentNumber}/rejection`,
+      {},
+      {
+        headers: getJWTHeader(accessToken)
+      }
+    )
   } catch (err) {
     console.log(err)
   }
@@ -105,9 +109,13 @@ export async function acceptEnrollment(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.put(`/api/enrollment/${enrollmentNumber}/acceptance`, {
-      headers: getJWTHeader(accessToken)
-    })
+    return axiosInstance.put(
+      `/api/enrollment/${enrollmentNumber}/acceptance`,
+      {},
+      {
+        headers: getJWTHeader(accessToken)
+      }
+    )
   } catch (err) {
     console.log(err)
   }
