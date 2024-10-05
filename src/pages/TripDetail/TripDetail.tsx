@@ -456,7 +456,8 @@ const PlaceBadge = styled.div`
   border-radius: 20px;
   opacity: 0px;
 `
-const CommentWrapper = styled.button`
+const CommentWrapper = styled.div`
+  cursor: pointer;
   margin-top: 16px;
   height: 70px;
   display: flex;
