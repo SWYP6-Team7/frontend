@@ -8,7 +8,7 @@ import { authStore } from '@/store/client/authStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const ApplyTrip = () => {
@@ -33,14 +33,18 @@ const ApplyTrip = () => {
         throw new Error('메제지는 1,000자 미만이여야 합니다.')
       }
       await apply({ travelNumber: Number(travelNumber), message })
-      if (applyMutation.isSuccess) {
-        setApplySuccess(true)
-        navigate(`/trip/detail/${travelNumber}`)
-      }
+      console.log(applyMutation, 'applyMutation')
     } catch (err) {
       console.error(err)
     }
   }
+
+  useEffect(() => {
+    if (applyMutation.isSuccess) {
+      setApplySuccess(true)
+      navigate(`/trip/detail/${travelNumber}`)
+    }
+  }, [applyMutation.isSuccess, navigate, setApplySuccess, travelNumber])
 
   return (
     <Container>
