@@ -20,7 +20,7 @@ interface IRegisterEmail {
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
 const useAuth = () => {
-  const { setLoginData, clearLoginData, accessToken } = authStore()
+  const { setLoginData, clearLoginData, accessToken, resetData } = authStore()
 
   async function loginEmail({
     email,
@@ -78,6 +78,7 @@ const useAuth = () => {
         }
       )
       clearLoginData()
+      resetData()
     } catch (error: any) {
       console.error(error)
       throw new Error(error)

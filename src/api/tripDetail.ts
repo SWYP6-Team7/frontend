@@ -37,7 +37,8 @@ export async function updateTripDetail(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.put(`/api/travel/${travelNumber}`, data, {
+    const newData = { ...data, locationName: data.location }
+    return axiosInstance.put(`/api/travel/${travelNumber}`, newData, {
       headers: getJWTHeader(accessToken)
     })
     return true
