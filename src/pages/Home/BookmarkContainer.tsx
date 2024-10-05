@@ -17,7 +17,7 @@ const BookmarkContainer = () => {
   const { data } = useBookmark()
   const bookmarks = data?.pages[0].content as IMyTripList['content']
 
-  console.log(bookmarks)
+  console.log(bookmarks, 'bookmarks')
   return (
     <BookmarkBox>
       <TitleContainer text="즐겨찾기" />
