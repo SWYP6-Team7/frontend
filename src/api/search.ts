@@ -15,7 +15,7 @@ export async function getSearch(
       keyword: keyword,
       page: pageParams,
       tags: tags.join(','),
-      perios: period.join(','),
+      period: period.join(','),
       person: person.join(','),
       gender: gender.join(','),
       location: location.join(',')
