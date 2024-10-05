@@ -22,6 +22,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CompanionsView from './CompanionsView'
+import { daysAgo } from '@/utils/time'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false)
@@ -106,7 +107,7 @@ export default function TripDetail() {
   const createdAtKST = dayjs(createdAt).add(9, 'hour') // UTC에서 9시간 추가
 
   // 현재 한국 시간이랑 차이.
-  const hoursDiff = dayjs().add(9, 'hour').diff(createdAtKST, 'hour')
+  const pastTimeAge = daysAgo(createdAtKST.format('YYYY-MM-DD HH:mm'))
   return (
     <>
       <ResultToast
@@ -172,8 +173,7 @@ export default function TripDetail() {
                     lineHeight: '16.71px',
                     color: palette.비강조
                   }}>
-                  {hoursDiff}
-                  시간 전
+                  {pastTimeAge}
                 </div>
               </div>
             </ProfileContainer>
