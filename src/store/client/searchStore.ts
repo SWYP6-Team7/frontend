@@ -18,10 +18,10 @@ export type IStyle =
 export type IGender = '모두' | '여자만' | '남자만'
 
 interface ISearchStore {
-  sort: '추천순' | '최신순' | '등록일순' | '정확도순'
+  sort: '추천순' | '최신순' | '등록일순'
   keyword: string
   setKeyword: (keyword: string) => void
-  setSort: (sort: '추천순' | '최신순' | '등록일순' | '정확도순') => void
+  setSort: (sort: '추천순' | '최신순' | '등록일순') => void
   place: IPlace[]
   people: IPeople[]
   period: IPeriod[]
