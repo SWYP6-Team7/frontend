@@ -296,7 +296,7 @@ export default function TripDetail() {
                   ? palette.keycolorBG
                   : palette.keycolor,
               color: hostUserCheck
-                ? nowPerson > 0
+                ? enrollCount > 0
                   ? palette.BG
                   : palette.비강조
                 : enrollmentNumber
