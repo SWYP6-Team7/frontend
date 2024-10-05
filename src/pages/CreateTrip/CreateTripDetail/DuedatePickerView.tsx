@@ -59,7 +59,13 @@ const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
   useEffect(() => {
     addDueDateForEdit(value)
     setDuedate(value)
-    addDueDate(`${value.year}-${value.month}-${value.day}`)
+
+    // month와 day를 두 자리로 포맷
+    const formattedMonth = String(value.month).padStart(2, '0')
+    const formattedDay = String(value.day).padStart(2, '0')
+
+    addDueDate(`${value.year}-${formattedMonth}-${formattedDay}`)
+
     const selectedDate = new Date(value.year, value.month - 1, value.day)
     const todayDate = new Date(today.year, today.month - 1, today.day)
 
@@ -67,7 +73,7 @@ const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
     if (selectedDate < todayDate) {
       setTimeout(() => {
         setValue(today)
-      }, 500) // 1초 후에 오늘 날짜로 되돌아오게 함
+      }, 500) // 0.5초 후에 오늘 날짜로 되돌아오게 함
     }
   }, [value])
 
