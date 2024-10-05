@@ -73,7 +73,7 @@ export default function TripEnrollmentList() {
             {list.enrollments?.map((enrollment: enrollment) => (
               <TripEnrollmentCard
                 key={enrollment.enrollmentNumber}
-                isNew={isNew(lastViewed, enrollment.enrolledAt)}
+                isNew={false}
                 enrollmentNumber={enrollment.enrollmentNumber}
                 userName={enrollment.userName}
                 ageGroup={enrollment.userAgeGroup}
