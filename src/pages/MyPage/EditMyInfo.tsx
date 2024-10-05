@@ -48,7 +48,7 @@ export default function EditMyInfo() {
       logout()
       setCheckingLogoutModalClicked(false)
 
-      navigate('/') // 홈으로.
+      navigate('/login') // 홈으로.
     }
   }, [isLogoutClicked])
 
