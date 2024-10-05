@@ -101,6 +101,12 @@ export default function TripDetail() {
 
     return daysLeft
   }
+
+  // 한국 시간(KST)으로 변환.
+  const createdAtKST = dayjs(createdAt).add(9, 'hour') // UTC에서 9시간 추가
+
+  // 현재 한국 시간이랑 차이.
+  const hoursDiff = dayjs().add(9, 'hour').diff(createdAtKST, 'hour')
   return (
     <>
       <ResultToast
@@ -166,7 +172,7 @@ export default function TripDetail() {
                     lineHeight: '16.71px',
                     color: palette.비강조
                   }}>
-                  {dayjs().diff(dayjs(createdAt, 'YYYY-MM-DD HH:mm'), 'day')}
+                  {hoursDiff}
                   시간 전
                 </div>
               </div>
