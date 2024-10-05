@@ -6,7 +6,7 @@ let list = {
       enrollmentNumber: 8,
       userName: '내이름은김삼순',
       userAgeGroup: '20대',
-      enrolledAt: '2024-10-05 12:57',
+      enrolledAt: '2024-10-06 8:57',
       message: '신청 고고~~ 안녕하세요',
       status: '대기'
     },
@@ -45,6 +45,7 @@ let list = {
   ]
 }
 const data = 'ok'
+let lastViewedAt: string | null = null
 export const enrollmentListHandler = [
   http.get(
     '/api/travel/:travelNumber/enrollments/last-viewed',
@@ -53,7 +54,21 @@ export const enrollmentListHandler = [
       const travelNumber = url.searchParams.get('travelNumber')
       return HttpResponse.json(
         {
-          lastViewedAt: '2024.10.04 16:54'
+          lastViewedAt: lastViewedAt
+        },
+        { status: 200 }
+      )
+    }
+  ),
+  http.put(
+    '/api/travel/:travelNumber/enrollments/last-viewed',
+    async ({ request }) => {
+      const url = new URL(request.url)
+      const travelNumber = url.searchParams.get('travelNumber')
+      lastViewedAt = '2024-10-06 00:50'
+      return HttpResponse.json(
+        {
+          lastViewedAt: '2024-10-06 12:30'
         },
         { status: 200 }
       )
