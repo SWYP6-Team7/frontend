@@ -18,8 +18,7 @@ const ApplyTrip = () => {
   const { setApplySuccess } = tripDetailStore()
   const { apply, applyMutation } = useEnrollment(Number(travelNumber))
   const navigate = useNavigate()
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     try {
       if (Number.isNaN(Number(travelNumber))) {
         throw new Error('잘못된 경로입니다.')
@@ -37,9 +36,6 @@ const ApplyTrip = () => {
       if (applyMutation.isSuccess) {
         setApplySuccess(true)
         navigate(`/trip/detail/${travelNumber}`)
-        setTimeout(() => {
-          setApplySuccess(false)
-        }, 3000)
       }
     } catch (err) {
       console.error(err)
@@ -47,7 +43,7 @@ const ApplyTrip = () => {
   }
 
   return (
-    <Container onSubmit={handleSubmit}>
+    <Container>
       <ApplyTripProfile />
       <TextareaField
         placeholder="참가 신청 메세지를 적어주세요.
@@ -57,6 +53,7 @@ const ApplyTrip = () => {
       />
       <ButtonContainer>
         <Button
+          onClick={handleSubmit}
           text={'보내기'}
           disabled={message === '' || applyMutation.isPending}
           addStyle={
@@ -74,7 +71,7 @@ const ApplyTrip = () => {
   )
 }
 
-const Container = styled.form`
+const Container = styled.div`
   margin-top: 2.5svh;
   padding: 0 24px;
   display: flex;

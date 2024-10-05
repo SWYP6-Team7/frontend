@@ -34,7 +34,7 @@ export default function CreateTripPlace() {
   const handleRemoveValue = () => setKeyword('')
 
   const handleNext = () => {
-    if (isMatchedKeyword) {
+    if (!isMatchedKeyword) {
       return
     }
     addLocation(keyword)
@@ -79,7 +79,7 @@ export default function CreateTripPlace() {
           onClick={handleNext}
           disabled={keyword === '' || !isMatchedKeyword}
           addStyle={
-            keyword === ''
+            keyword === '' || !isMatchedKeyword
               ? {
                   backgroundColor: 'rgba(220, 220, 220, 1)',
                   color: 'rgba(132, 132, 132, 1)',
