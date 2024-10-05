@@ -73,3 +73,16 @@ export function daysAgo(date: string) {
     return `${diffInDays}일 전`
   }
 }
+// 현재 시간을 2000-10-10 11:11 문자열로 반환.
+export function getCurrentFormattedDate() {
+  const now = new Date()
+
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0') // 0부터 시작하므로 +1
+  const day = String(now.getDate()).padStart(2, '0')
+
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+
+  return `${year}.${month}.${day} ${hours}:${minutes}`
+}
