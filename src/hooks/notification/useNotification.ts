@@ -32,8 +32,8 @@ const useNotification = () => {
       }
     },
     queryFn: ({ pageParam }) =>
-      getNotifications(pageParam as number, userId as number, accessToken!),
-    enabled: Boolean(userId) && !!accessToken
+      getNotifications(pageParam as number, accessToken!),
+    enabled: !!accessToken
   })
 
   return {

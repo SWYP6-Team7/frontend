@@ -10,7 +10,7 @@ export async function getSearch(
   accessToken: string
 ) {
   const { tags, period, person, gender, location } = filters
-  const response = await axiosInstance.get('/api/travel/search', {
+  const response = await axiosInstance.get('/api/travels/search', {
     params: {
       keyword: keyword,
       page: pageParams,

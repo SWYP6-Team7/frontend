@@ -8,7 +8,7 @@ import {
 } from './data'
 
 export const searchHandler = [
-  http.get('/api/travel/search', async ({ request }) => {
+  http.get('/api/travels/search', async ({ request }) => {
     const url = new URL(request.url)
 
     const tags = url.searchParams.get('tags')

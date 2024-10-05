@@ -3,10 +3,9 @@ import { axiosInstance } from '.'
 
 export async function getNotifications(
   pageParams: number,
-  userNumber: number,
   accessToken: string
 ) {
-  const response = await axiosInstance.get(`/api/notifications/${userNumber}`, {
+  const response = await axiosInstance.get(`/api/notifications`, {
     params: {
       page: pageParams
     },

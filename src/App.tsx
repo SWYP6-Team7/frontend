@@ -143,7 +143,7 @@ export const router = createBrowserRouter([
         element: <TripEnrollmentList />
       },
       {
-        path: 'notification/:userId',
+        path: 'notification',
         element: <Notifications />
       },
       {
