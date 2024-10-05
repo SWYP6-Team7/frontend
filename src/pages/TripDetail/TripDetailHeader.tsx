@@ -161,7 +161,7 @@ export default function TripDetailHeader({
       hostUserCheck={hostUserCheck}
       isTripDetailEdit={isTripDetailEdit}>
       {hostUserCheck && (
-        <div onClick={() => navigate(`notification/${userId}`)}>
+        <div onClick={() => navigate(`/notification/${userId}`)}>
           <AlarmIcon
             size={23}
             stroke={palette.기본}

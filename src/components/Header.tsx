@@ -64,7 +64,7 @@ const Header = () => {
       {location.pathname != '/registerTripStyle' && <VoidArea />}
       {isTripDetail && <TripDetailHeader />}
       {(isMyTrip || isMyPage) && (
-        <div onClick={() => navigate(`notification/${userId}`)}>
+        <div onClick={() => navigate(`/notification/${userId}`)}>
           <AlarmIcon
             size={23}
             stroke={palette.기본}

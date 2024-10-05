@@ -67,7 +67,7 @@ const TripList = () => {
             </button>
           </div>
 
-          <Link to={`notification/${userId}`}>
+          <Link to={`/notification/${userId}`}>
             <AlarmIcon />
           </Link>
         </SearchContainer>

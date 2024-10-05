@@ -59,6 +59,7 @@ const SearchTravel = () => {
 
   const handleRecommendKeyword = (keyword: string) => {
     setKeyword(keyword)
+    setFinalKeyword(keyword)
     refetch()
   }
 
