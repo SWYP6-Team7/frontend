@@ -10,7 +10,7 @@ import {
 } from './data'
 import { searchHandler } from './serachHandler'
 import { tripDetailHandler } from './tripDetailHandler'
-import { enrollmentListHandler } from './enrollmentList'
+import { enrollmentListHandler } from './enrollmentListHandler'
 import { bookmarkHandler } from './bookmarkHandler'
 import { myPageHandler } from './myPageHandler'
 import { commentHandlers } from './commentHandler'

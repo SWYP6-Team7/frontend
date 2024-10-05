@@ -56,6 +56,7 @@ export async function getLastViewed(
         headers: getJWTHeader(accessToken)
       }
     )
+
     return response.data
   } catch (err) {
     console.log(err)
