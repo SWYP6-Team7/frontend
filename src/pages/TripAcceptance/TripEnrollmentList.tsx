@@ -28,6 +28,7 @@ export default function TripEnrollmentList() {
   const list = enrollmentList.data?.data
 
   console.log(list)
+  console.log(enrollmentList, '참가 신청 목록.')
 
   const isNew = (last: string, enrolledTime: string) => {
     // 문자열을 Date 객체로 변환
