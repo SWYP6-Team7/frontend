@@ -37,6 +37,9 @@ const ApplyTrip = () => {
       if (applyMutation.isSuccess) {
         setApplySuccess(true)
         navigate(`/trip/detail/${travelNumber}`)
+        setTimeout(() => {
+          setApplySuccess(false)
+        }, 3000)
       }
     } catch (err) {
       console.error(err)
@@ -75,7 +78,7 @@ const Container = styled.form`
   margin-top: 2.5svh;
   padding: 0 24px;
   display: flex;
-  justify-centent: center;
+  justify-content: center;
   flex-direction: column;
   gap: 2.5svh;
 `
