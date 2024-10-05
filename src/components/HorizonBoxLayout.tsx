@@ -108,13 +108,13 @@ const HorizonBoxLayout = ({
           <Tags>
             <BoxLayoutTag
               text={
-                <div>
+                <Location>
                   <PlaceIcon
                     height={12}
                     width={10}
                   />
-                  &nbsp;{location}
-                </div>
+                  <div>{location}</div>
+                </Location>
               }
             />
             {cutTags.map((text: string, idx) => (
@@ -202,6 +202,12 @@ const Title = styled.div`
   font-weight: 600;
   margin-right: 8px;
   line-height: 21.48px;
+`
+
+const Location = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `
 
 const Description = styled.div`

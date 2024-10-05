@@ -73,9 +73,9 @@ export default function TripDetail() {
       navigate(`/trip/enrollmentList/${travelNumber}`)
     } else {
       if (enrollmentNumber) {
-        setShowApplyModal(true)
-      } else {
         setShowCancelModal(true)
+      } else {
+        setShowApplyModal(true)
       }
     }
   }
@@ -198,7 +198,8 @@ export default function TripDetail() {
             <div>조회수 {viewCount}</div>
           </ViewsETC>
         </PostWrapper>
-        <CommentWrapper>
+        <CommentWrapper
+          onClick={() => navigate(`/trip/comment/${travelNumber}`)}>
           <div css={{ display: 'flex', alignItems: 'center' }}>
             <img
               src="/images/createTripBtn.png"
@@ -455,7 +456,7 @@ const PlaceBadge = styled.div`
   border-radius: 20px;
   opacity: 0px;
 `
-const CommentWrapper = styled.div`
+const CommentWrapper = styled.button`
   margin-top: 16px;
   height: 70px;
   display: flex;
