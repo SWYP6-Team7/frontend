@@ -7,7 +7,7 @@ import { authStore } from '@/store/client/authStore'
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
 const useNotification = () => {
-  const userId = 1
+  const { userId, accessToken } = authStore()
   const {
     data,
     isLoading,
@@ -32,8 +32,8 @@ const useNotification = () => {
       }
     },
     queryFn: ({ pageParam }) =>
-      getNotifications(pageParam as number, userId as number),
-    enabled: Boolean(userId)
+      getNotifications(pageParam as number, userId as number, accessToken!),
+    enabled: Boolean(userId) && !!accessToken
   })
 
   return {

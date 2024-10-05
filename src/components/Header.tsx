@@ -25,6 +25,7 @@ const Header = () => {
   const isMyPage = location.pathname.startsWith('/myPage')
   const isEditMyInfo = location.pathname.startsWith('/editMyInfo')
   const isEditMyName = location.pathname.startsWith('/editMyName')
+  const isTripComment = location.pathname.startsWith('/trip/comment')
   const handleBack = () => {
     navigate(-1)
   }
@@ -48,7 +49,7 @@ const Header = () => {
         {isCreateTrip && '여행 만들기'}
         {isApply && '참가 신청'}
         {isTripEnrollment && '참가 신청 목록'}
-
+        {isTripComment && '멤버 댓글'}
         {isNotification && '알림'}
         {isEditMyInfo && '내 정보 수정'}
         {isEditMyName && '이름 변경'}
