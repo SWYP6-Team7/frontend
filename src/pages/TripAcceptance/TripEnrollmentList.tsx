@@ -21,14 +21,13 @@ interface enrollment {
 }
 export default function TripEnrollmentList() {
   const { travelNumber } = useParams<{ travelNumber: string }>()
+
   const { enrollmentList, enrollmentsLastViewed, updateLastViewed } =
     useEnrollment(parseInt(travelNumber!))
   // 최근에 본 시점.
-  const lastViewed = enrollmentsLastViewed.data.lastViewedAt
   const list = enrollmentList.data?.data
 
-  console.log(list)
-  console.log(enrollmentList, '참가 신청 목록.')
+  const lastViewed = enrollmentsLastViewed.data?.lastViewedAt
 
   const isNew = (last: string, enrolledTime: string) => {
     // 문자열을 Date 객체로 변환
