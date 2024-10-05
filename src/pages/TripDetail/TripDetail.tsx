@@ -49,13 +49,15 @@ export default function TripDetail() {
     nowPerson,
     userAgeGroup,
     addUserAgeGroup,
-    applySuccess
+    applySuccess,
+    setApplySuccess
   } = tripDetailStore()
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
 
   useEffect(() => {
     if (applySuccess) {
       setIsApplyToast(true)
+      setApplySuccess(false)
     }
   }, [applySuccess])
 
@@ -80,9 +82,9 @@ export default function TripDetail() {
       }
     }
   }
-  const onClickCancelApply = () => {
+  const onClickCancelApply = async () => {
     if (enrollmentNumber) {
-      cancel(enrollmentNumber)
+      await cancel(enrollmentNumber)
       if (cancelMutation.isSuccess) {
         setIsCancelToast(true)
       }
