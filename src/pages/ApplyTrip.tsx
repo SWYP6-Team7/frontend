@@ -18,7 +18,7 @@ const ApplyTrip = () => {
   const { setApplySuccess } = tripDetailStore()
   const { apply, applyMutation } = useEnrollment(Number(travelNumber))
   const navigate = useNavigate()
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     try {
       if (Number.isNaN(Number(travelNumber))) {
@@ -33,7 +33,7 @@ const ApplyTrip = () => {
       if (message.length > 1000) {
         throw new Error('메제지는 1,000자 미만이여야 합니다.')
       }
-      apply({ travelNumber: Number(travelNumber), message })
+      await apply({ travelNumber: Number(travelNumber), message })
       if (applyMutation.isSuccess) {
         setApplySuccess(true)
         navigate(`/trip/detail/${travelNumber}`)
