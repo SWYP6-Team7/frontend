@@ -10,6 +10,8 @@ import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import TripEnrollmentCard from './TripEnrollmentCard'
+import { getCurrentFormattedDate } from '@/utils/time'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
 
 interface enrollment {
   enrollmentNumber: number
@@ -21,13 +23,17 @@ interface enrollment {
 }
 export default function TripEnrollmentList() {
   const { travelNumber } = useParams<{ travelNumber: string }>()
-
+  const { createdAt } = tripDetailStore()
   const { enrollmentList, enrollmentsLastViewed, updateLastViewed } =
     useEnrollment(parseInt(travelNumber!))
   // 최근에 본 시점.
   const list = enrollmentList.data?.data
 
-  const lastViewed = enrollmentsLastViewed.data?.lastViewedAt
+  // 처음에는 null 값이니, 생성했을 때 시간 으로 두기.
+  const lastViewed =
+    enrollmentsLastViewed.data?.lastViewedAt === null
+      ? createdAt
+      : enrollmentsLastViewed.data?.lastViewedAt
 
   const isNew = (last: string, enrolledTime: string) => {
     // 문자열을 Date 객체로 변환
@@ -36,31 +42,19 @@ export default function TripEnrollmentList() {
       enrolledTime.replace('.', '-').replace('.', '-')
     )
 
-    // 최근에 본 시간 < 등록된 시간인지 확인
+    // 주어진 날짜가 현재 시간보다 이전인지 확인
     return lastTime < enrolledAt
-  }
-  function getCurrentFormattedDate() {
-    const now = new Date()
-
-    const year = now.getFullYear()
-    const month = String(now.getMonth() + 1).padStart(2, '0') // 0부터 시작하므로 +1
-    const day = String(now.getDate()).padStart(2, '0')
-
-    const hours = String(now.getHours()).padStart(2, '0')
-    const minutes = String(now.getMinutes()).padStart(2, '0')
-
-    return `${year}.${month}.${day} ${hours}:${minutes}`
   }
 
   useEffect(() => {
     // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.
-
-    updateLastViewed(getCurrentFormattedDate())
+    return () => {
+      updateLastViewed(getCurrentFormattedDate())
+    }
   }, [])
 
   return (
     <Container>
-      {/* {list && lastViewed && ( */}
       {list && lastViewed && (
         <>
           <Count>

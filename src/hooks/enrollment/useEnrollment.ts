@@ -40,7 +40,6 @@ const useEnrollment = (travelNumber: number) => {
       })
     }
   })
-  // 주최자 - 참가 신청 거절
 
   const { mutateAsync: enrollmentRejectionMutate } = useMutation({
     mutationFn: (enrollmentNumber: number) => {
@@ -51,6 +50,9 @@ const useEnrollment = (travelNumber: number) => {
       setTimeout(() => {
         queryClient.invalidateQueries({
           queryKey: ['enrollment', travelNumber]
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['tripDetail', travelNumber]
         })
       }, 1300)
     }
@@ -67,6 +69,9 @@ const useEnrollment = (travelNumber: number) => {
       setTimeout(() => {
         queryClient.invalidateQueries({
           queryKey: ['enrollment', travelNumber]
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['tripDetail', travelNumber]
         })
       }, 1300)
     }
