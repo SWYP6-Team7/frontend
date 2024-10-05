@@ -21,6 +21,15 @@ export function useUpdateBookmark(
         queryClient.invalidateQueries({
           queryKey: ['myApplyTrips']
         })
+      queryClient.invalidateQueries({
+        queryKey: ['tripRecommendation']
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['availableTrips']
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['tripDetail', travelNumber]
+      })
     }
   })
 
@@ -43,6 +52,15 @@ export function useUpdateBookmark(
         queryClient.invalidateQueries({
           queryKey: ['myApplyTrips']
         })
+      queryClient.invalidateQueries({
+        queryKey: ['tripRecommendation']
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['availableTrips']
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['tripDetail', travelNumber]
+      })
     }
   })
 

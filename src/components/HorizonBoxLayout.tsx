@@ -152,6 +152,7 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   )
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
+    e.preventDefault()
     if (bookmarked) {
       deleteBookmarkMutation()
     } else {
