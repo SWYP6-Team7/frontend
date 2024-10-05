@@ -36,7 +36,7 @@ export default function TripEnrollmentList() {
       enrolledTime.replace('.', '-').replace('.', '-')
     )
 
-    // 주어진 날짜가 현재 시간보다 이전인지 확인
+    // 최근에 본 시간 < 등록된 시간인지 확인
     return lastTime < enrolledAt
   }
   function getCurrentFormattedDate() {
@@ -54,9 +54,8 @@ export default function TripEnrollmentList() {
 
   useEffect(() => {
     // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.
-    return () => {
-      updateLastViewed(getCurrentFormattedDate())
-    }
+
+    updateLastViewed(getCurrentFormattedDate())
   }, [])
 
   return (
