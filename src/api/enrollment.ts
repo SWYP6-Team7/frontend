@@ -105,12 +105,9 @@ export async function acceptEnrollment(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.post(
-      `/api/enrollment/${enrollmentNumber}/acceptance`,
-      {
-        headers: getJWTHeader(accessToken)
-      }
-    )
+    return axiosInstance.put(`/api/enrollment/${enrollmentNumber}/acceptance`, {
+      headers: getJWTHeader(accessToken)
+    })
   } catch (err) {
     console.log(err)
   }
