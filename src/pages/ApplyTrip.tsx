@@ -58,7 +58,7 @@ const ApplyTrip = () => {
       <ButtonContainer>
         <Button
           text={'보내기'}
-          disabled={message === ''}
+          disabled={message === '' || applyMutation.isPending}
           addStyle={
             message === ''
               ? {
