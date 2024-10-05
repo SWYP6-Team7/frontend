@@ -20,8 +20,9 @@ const useEnrollment = (travelNumber: number) => {
     enabled: !!travelNumber && !!accessToken
   })
   // 주최자 - 가장 최근에 봤던 글.
+
   const enrollmentsLastViewed = useQuery({
-    queryKey: ['enrollment', travelNumber],
+    queryKey: ['enrollmentLastViewed', travelNumber],
     queryFn: () => getLastViewed(travelNumber, accessToken),
     enabled: !!travelNumber && !!accessToken
   })
@@ -35,7 +36,7 @@ const useEnrollment = (travelNumber: number) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['enrollment', travelNumber]
+        queryKey: ['enrollmentLastViewed', travelNumber]
       })
     }
   })
