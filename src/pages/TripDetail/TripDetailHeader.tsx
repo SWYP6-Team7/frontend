@@ -30,7 +30,7 @@ export default function TripDetailHeader({
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
   const [checkingModalClicked, setCheckingModalClicked] = useState(false)
   const [threeDotsClick, setThreeDotsClick] = useState(false)
-  useEffect(() => {}, [])
+
   const {
     addLocation,
     addUserName,
@@ -60,6 +60,7 @@ export default function TripDetailHeader({
   const tripInfos = tripDetail.data?.data
 
   useEffect(() => {
+    console.log(tripInfos)
     if (tripDetail.isFetched) {
       const {
         travelNumber,
@@ -113,7 +114,7 @@ export default function TripDetailHeader({
       addPostStatus(postStatus)
       addBookmarked(bookmarked)
     }
-  }, [tripDetail.isFetched])
+  }, [tripDetail.isFetched, tripInfos])
 
   const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!))
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.

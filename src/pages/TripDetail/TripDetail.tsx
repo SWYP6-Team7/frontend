@@ -283,7 +283,7 @@ export default function TripDetail() {
           <Button
             addStyle={{
               backgroundColor: hostUserCheck
-                ? nowPerson > 0
+                ? enrollCount > 0
                   ? palette.keycolor
                   : palette.비강조3
                 : enrollmentNumber
