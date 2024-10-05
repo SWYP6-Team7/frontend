@@ -19,7 +19,7 @@ import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import { formatTime } from '@/utils/time'
 dayjs.extend(customParseFormat)
 
-const LIST = ['추천순', '최신순', '등록일순', '정확도순']
+const LIST = ['추천순', '최신순', '등록일순']
 
 const SearchResultList = ({
   searchResult
@@ -29,7 +29,7 @@ const SearchResultList = ({
   const { sort, setSort } = searchStore()
 
   const clickSort = (value: string) => {
-    setSort(value as '추천순' | '최신순' | '등록일순' | '정확도순')
+    setSort(value as '추천순' | '최신순' | '등록일순')
   }
 
   return (
