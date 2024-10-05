@@ -27,7 +27,7 @@ export default function TripEnrollmentList() {
   // 최근에 본 시점.
   const list = enrollmentList.data?.data
 
-  const lastViewed = enrollmentsLastViewed.data?.lastViewedAt
+  // const lastViewed = enrollmentsLastViewed.data?.lastViewedAt
 
   const isNew = (last: string, enrolledTime: string) => {
     // 문자열을 Date 객체로 변환
@@ -60,7 +60,8 @@ export default function TripEnrollmentList() {
 
   return (
     <Container>
-      {list && lastViewed && (
+      {/* {list && lastViewed && ( */}
+      {list && (
         <>
           <Count>
             총
