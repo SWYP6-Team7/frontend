@@ -289,6 +289,7 @@ export default function TripDetail() {
           onClick={buttonClickHandler}
           width={newRightPosition}>
           <Button
+            disabled={hostUserCheck && enrollCount === 0}
             addStyle={{
               backgroundColor: hostUserCheck
                 ? enrollCount > 0

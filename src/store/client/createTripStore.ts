@@ -1,4 +1,5 @@
 // src/userStore.ts
+import { getCurrentFormattedDate } from '@/utils/time'
 import { create } from 'zustand'
 
 type Gender = 'F' | 'M' | ''
@@ -45,7 +46,7 @@ export const createTripStore = create<CreateTripState>(set => ({
   addGenderType: genderType => {
     set({ genderType })
   },
-  dueDate: '',
+  dueDate: getCurrentFormattedDate().split(' ')[0], // 혹시 유저가 마감일 지정일을 따로 설정안하고 당일로 한다면, 오늘 날짜로 들어가도록.
   addDueDate: dueDate => {
     set({ dueDate })
   },
