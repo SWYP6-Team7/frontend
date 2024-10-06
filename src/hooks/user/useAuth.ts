@@ -43,7 +43,7 @@ const useAuth = () => {
       const data = response.data
 
       setLoginData({
-        userId: response.data.userId,
+        userId: Number(response.data.userId),
         accessToken: data.accessToken
       })
     } catch (error: any) {
@@ -59,7 +59,7 @@ const useAuth = () => {
       const data = response.data
 
       setLoginData({
-        userId: response.data.userId,
+        userId: Number(response.data.userId),
         accessToken: data.accessToken
       })
     } catch (error: any) {
@@ -97,7 +97,10 @@ const useAuth = () => {
       )
       const data = response.data
 
-      setLoginData({ userId: data.userId, accessToken: data.accessToken })
+      setLoginData({
+        userId: Number(data.userId),
+        accessToken: data.accessToken
+      })
     } catch (error: any) {
       console.error(error)
       throw new Error(error)
