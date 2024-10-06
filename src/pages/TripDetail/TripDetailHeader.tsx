@@ -24,6 +24,7 @@ export default function TripDetailHeader({
   const { userId, accessToken } = authStore()
   const { travelNumber } = useParams<{ travelNumber: string }>()
   const { tripDetail } = useTripDetail(parseInt(travelNumber!))
+
   const navigate = useNavigate()
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
@@ -58,7 +59,6 @@ export default function TripDetailHeader({
   } = tripDetailStore()
 
   const tripInfos = tripDetail.data?.data
-
   useEffect(() => {
     console.log(tripInfos)
     if (tripDetail.isFetched) {

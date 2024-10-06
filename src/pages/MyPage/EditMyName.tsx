@@ -33,6 +33,7 @@ export default function EditMyName() {
   }
   useEffect(() => {
     if (isUpdatedSuccess) {
+      console.log('이름을 변경했어요.')
       addIsNameUpdated(true)
       navigate(-1)
     }

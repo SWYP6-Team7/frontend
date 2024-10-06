@@ -55,6 +55,9 @@ const useEnrollment = (travelNumber: number) => {
           queryKey: ['tripDetail', travelNumber]
         })
       }, 1300)
+      queryClient.invalidateQueries({
+        queryKey: ['tripEnrollment', travelNumber]
+      })
     }
   })
 
@@ -72,6 +75,9 @@ const useEnrollment = (travelNumber: number) => {
         })
         queryClient.invalidateQueries({
           queryKey: ['tripDetail', travelNumber]
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['tripEnrollment', travelNumber]
         })
       }, 1300)
     }

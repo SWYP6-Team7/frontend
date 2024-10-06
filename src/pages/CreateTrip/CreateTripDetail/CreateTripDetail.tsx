@@ -18,6 +18,7 @@ import { useStore } from 'zustand'
 import { userStore } from '@/store/client/userStore'
 import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
+import { unknown } from 'zod'
 
 const TAG_LIST = [
   {
@@ -93,7 +94,14 @@ const CreateTripDetail = () => {
     accessToken as string
   ) // 여행 생성 api 요청.
   const completeClickHandler = () => {
-    createTripMutate()
+    createTripMutate(undefined, {
+      onSuccess: () => {
+        navigate('/')
+      },
+      onError: e => {
+        console.log(e, '여행 생성에 오류 발생.')
+      }
+    })
     console.log(
       title,
       location,
@@ -105,21 +113,21 @@ const CreateTripDetail = () => {
       tags
     )
   }
-  useEffect(() => {
-    // 여행 생성 성공.
-    if (isCreatedSuccess) {
-      // 다시 빈 값으로 만들기.
-      addTitle('')
-      addLocation('')
-      addDetails('')
-      addMaxPerson(0)
-      addGenderType('')
-      addDueDate('')
-      addPeriodType('')
-      addTags([])
-      navigate('/')
-    }
-  }, [isCreatedSuccess])
+  // useEffect(() => {
+  //   // 여행 생성 성공.
+  //   if (isCreatedSuccess) {
+  //     // 다시 빈 값으로 만들기.
+  //     addTitle('')
+  //     addLocation('')
+  //     addDetails('')
+  //     addMaxPerson(0)
+  //     addGenderType('')
+  //     addDueDate('')
+  //     addPeriodType('')
+  //     addTags([])
+  //     navigate('/')
+  //   }
+  // }, [isCreatedSuccess])
 
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
   const [activeDuration, setActiveDuration] = useState<boolean[]>(
