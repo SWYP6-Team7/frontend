@@ -18,7 +18,6 @@ import { IMyTripList } from '@/model/myTrip'
 
 import { daysAgo } from '@/utils/time'
 
-
 export default function Bookmark() {
   const [ref, inView] = useInView()
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
@@ -61,6 +60,7 @@ export default function Bookmark() {
                   <MyTripHorizonBoxLayout
                     travelNumber={content.travelNumber}
                     userName={content.userName}
+                    location={content.location}
                     title={content.title}
                     tags={content.tags}
                     total={content.maxPerson}
