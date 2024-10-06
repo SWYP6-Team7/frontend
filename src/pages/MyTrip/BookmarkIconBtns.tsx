@@ -37,7 +37,7 @@ export default function BookmarkIconBtns({
   useEffect(() => {
     if (bookmarked && bookmarkCancelClicked) {
       deleteBookmarkMutation().then(res => {
-        if (res?.data.status === 200) {
+        if (res?.data.status === 204) {
           setBookmarkCancelToast(true)
         }
       })

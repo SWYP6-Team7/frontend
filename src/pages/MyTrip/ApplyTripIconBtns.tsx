@@ -97,7 +97,7 @@ export default function ApplyTripIconBtns({
             />
           </div>
         ) : (
-          <div>
+          <div onClick={bookmarkClickHandler}>
             <EmptyHeartIcon
               width={24}
               height={21.4}
