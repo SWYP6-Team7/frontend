@@ -19,7 +19,7 @@ const tripDetail = {
   periodType: '일주일 이하',
   tags: ['✊ 즉흥', '🏔️ 자연', '🍔 먹방'],
   postStatus: '진행중',
-  hostUserCheck: true,
+  hostUserCheck: false,
   enrollmentNumber: null,
   bookmarked: true
 }

@@ -71,7 +71,7 @@ export default function EditMyInfo() {
       <ProfileImg>
         <RoundedImage
           size={80}
-          src="/images/moingLogo.png"
+          src="/images/profileDefault.png"
         />
       </ProfileImg>
       <div>
