@@ -145,13 +145,13 @@ const MyTripHorizonBoxLayout = ({
         <Tags>
           <BoxLayoutTag
             text={
-              <div>
+              <Location>
                 <PlaceIcon
-                  height={14}
-                  width={12}
+                  height={12}
+                  width={10}
                 />
-                &nbsp;{location}
-              </div>
+                <div>{location}</div>
+              </Location>
             }
           />
           {cutTags.map((text: string, idx) => (
@@ -242,6 +242,13 @@ const Recruiting = styled.div`
 const PostInfo = styled.div`
   width: 100%;
 `
+
+const Location = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`
+
 const UserBox = styled.div`
   display: flex;
   gap: 4px;

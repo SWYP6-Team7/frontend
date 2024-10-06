@@ -93,9 +93,23 @@ const CreateTripDetail = () => {
     travelData,
     accessToken as string
   ) // 여행 생성 api 요청.
+
+  useEffect(() => {
+    addCompletionStatus(true)
+  }, [])
+
   const completeClickHandler = () => {
     createTripMutate(undefined, {
-      onSuccess: () => {
+        onSuccess: () => {
+        addTitle('')
+        addLocation('')
+        addDetails('')
+        addMaxPerson(0)
+        addGenderType('')
+        addDueDate('')
+        addPeriodType('')
+        addTags([])
+        addCompletionStatus(false)
         navigate('/')
       },
       onError: e => {
@@ -113,21 +127,23 @@ const CreateTripDetail = () => {
       tags
     )
   }
-  // useEffect(() => {
-  //   // 여행 생성 성공.
-  //   if (isCreatedSuccess) {
-  //     // 다시 빈 값으로 만들기.
-  //     addTitle('')
-  //     addLocation('')
-  //     addDetails('')
-  //     addMaxPerson(0)
-  //     addGenderType('')
-  //     addDueDate('')
-  //     addPeriodType('')
-  //     addTags([])
-  //     navigate('/')
-  //   }
-  // }, [isCreatedSuccess])
+
+//   useEffect(() => {
+//     // 여행 생성 성공.
+//     if (isCreatedSuccess) {
+//       // 다시 빈 값으로 만들기.
+//       addTitle('')
+//       addLocation('')
+//       addDetails('')
+//       addMaxPerson(0)
+//       addGenderType('')
+//       addDueDate('')
+//       addPeriodType('')
+//       addTags([])
+//       addCompletionStatus(false)
+//       navigate('/')
+//     }
+//   }, [isCreatedSuccess])
 
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
   const [activeDuration, setActiveDuration] = useState<boolean[]>(
