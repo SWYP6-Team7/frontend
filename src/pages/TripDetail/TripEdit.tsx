@@ -112,6 +112,10 @@ export default function TripEdit() {
     setTaggedArray(newArray)
   }
   const editCompleteClickHandler = async () => {
+    const { year, month, day } = dueDate
+
+    const formattedMonth = month.toString().padStart(2, '0')
+    const formattedDay = day.toString().padStart(2, '0')
     try {
       await updateTripDetailMutation({
         location,
@@ -119,7 +123,7 @@ export default function TripEdit() {
         details,
         maxPerson,
         genderType,
-        dueDate: `${dueDate.year}-${dueDate.month}-${dueDate.day}`,
+        dueDate: `${year}-${formattedMonth}-${formattedDay}`,
         periodType,
         tags,
         completionStatus: true
