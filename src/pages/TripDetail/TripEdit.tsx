@@ -89,11 +89,11 @@ export default function TripEdit() {
     }
   }, [])
 
-  useEffect(() => {
-    if (isEditSuccess) {
-      navigate(`/trip/detail/${travelNumber}`)
-    }
-  }, [isEditSuccess, navigate])
+  // useEffect(() => {
+  //   if (isEditSuccess) {
+  //     navigate(`/trip/detail/${travelNumber}`)
+  //   }
+  // }, [isEditSuccess, navigate])
 
   const durationClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     const newActiveStates = [false, false, false, false]
