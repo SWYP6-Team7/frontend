@@ -19,8 +19,8 @@ export const useCreateTrip = (
   accessToken: string
 ) => {
   const queryClient = useQueryClient()
-  const { mutateAsync: createTripMutate, isSuccess: isCreatedSuccess } =
-    useMutation({
+  const { mutate: createTripMutate, isSuccess: isCreatedSuccess } = useMutation(
+    {
       mutationFn: () => {
         return createTrip(travelData, accessToken)
       },
@@ -35,6 +35,7 @@ export const useCreateTrip = (
           queryKey: ['availableTrips']
         })
       }
-    })
+    }
+  )
   return { createTripMutate, isCreatedSuccess }
 }

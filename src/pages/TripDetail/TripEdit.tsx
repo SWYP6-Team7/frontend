@@ -16,6 +16,7 @@ import PlaceIcon from '@/components/icons/PlaceIcon'
 import ArrowIcon from '@/components/icons/ArrowIcon'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
+import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 const TAG_LIST = [
   {
     title: '태그 설정',
@@ -66,8 +67,10 @@ export default function TripEdit() {
   const navigate = useNavigate()
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'
-  const { updateTripDetailMutation, isEditSuccess } =
+  const { updateTripDetailMutation, isEditSuccess, updateTripDetailMutate } =
     useTripDetail(travelNumber)
+
+  const [tripEditToastShow, setTripEditToastShow] = useState(false) // 상세 글 변경시 보이게 해줄 토스트 메시지
   // 기간
   const { accessToken } = authStore()
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
@@ -118,6 +121,12 @@ export default function TripEdit() {
     setTaggedArray(newArray)
   }
   const editCompleteClickHandler = async () => {
+
+    // month와 day를 두 자리로 포맷
+    const formattedMonth = String(dueDate.month).padStart(2, '0')
+    const formattedDay = String(dueDate.day).padStart(2, '0')
+    updateTripDetailMutate(
+      {
     const { year, month, day } = dueDate
 
     const formattedMonth = month.toString().padStart(2, '0')
@@ -129,14 +138,42 @@ export default function TripEdit() {
         details,
         maxPerson,
         genderType,
-        dueDate: `${year}-${formattedMonth}-${formattedDay}`,
+        dueDate: `${dueDate.year}-${formattedMonth}-${formattedDay}`,
         periodType,
         tags,
         completionStatus: true
-      })
-    } catch (e) {
-      console.log(e)
-    }
+      },
+      {
+        onSuccess: () => {
+          setTripEditToastShow(true)
+          setTimeout(() => {
+            navigate(-1)
+          }, 1000)
+        },
+        onError: e => {
+          console.log(e, '여행 수정에 오류 발생')
+        }
+      }
+    )
+    // try {
+    //   await updateTripDetailMutation({
+    //     location,
+    //     title,
+    //     details,
+    //     maxPerson,
+    //     genderType,
+    //     dueDate: `${dueDate.year}-${dueDate.month}-${dueDate.day}`,
+    //     periodType,
+    //     tags,
+    //     completionStatus: true
+    //   })
+    //   if (isEditSuccess) {
+    //     navigate(`/trip/detail/${travelNumber}`)
+    //   }
+    // } catch (e) {
+    //   console.log(e)
+    // }
+
   }
   console.log(title, details, genderType, maxPerson, dueDate, periodType, tags)
   const editLocationHandler = () => {
@@ -144,6 +181,12 @@ export default function TripEdit() {
   }
   return (
     <Container>
+      <ResultToast
+        height={120}
+        isShow={tripEditToastShow}
+        setIsShow={setTripEditToastShow}
+        text="게시글이 수정되었어요."
+      />
       <City onClick={editLocationHandler}>
         <PlaceIcon />
         <div css={{ marginRight: '4px' }}>{location}</div>

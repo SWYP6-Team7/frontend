@@ -23,12 +23,14 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CompanionsView from './CompanionsView'
 import { daysAgo } from '@/utils/time'
+import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [isApplyToast, setIsApplyToast] = useState(false)
   const [isCancelToast, setIsCancelToast] = useState(false)
+
   const {
     location,
     postStatus,
@@ -53,7 +55,8 @@ export default function TripDetail() {
     setApplySuccess
   } = tripDetailStore()
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
-
+  const { tripEnrollmentCount } = useTripDetail(travelNumber!)
+  const nowEnrollmentCount = tripEnrollmentCount.data?.data
   useEffect(() => {
     if (applySuccess) {
       setIsApplyToast(true)
@@ -105,11 +108,6 @@ export default function TripDetail() {
     return daysLeft
   }
 
-  // 한국 시간(KST)으로 변환.
-  const createdAtKST = dayjs(createdAt).add(9, 'hour') // UTC에서 9시간 추가
-
-  // 현재 한국 시간이랑 차이.
-  const pastTimeAge = daysAgo(createdAtKST.format('YYYY-MM-DD HH:mm'))
   return (
     <>
       <ResultToast
@@ -175,7 +173,7 @@ export default function TripDetail() {
                     lineHeight: '16.71px',
                     color: palette.비강조
                   }}>
-                  {pastTimeAge}
+                  {daysAgo(createdAt)}
                 </div>
               </div>
             </ProfileContainer>
@@ -289,7 +287,7 @@ export default function TripDetail() {
           onClick={buttonClickHandler}
           width={newRightPosition}>
           <Button
-            disabled={hostUserCheck && enrollCount === 0}
+            disabled={hostUserCheck && nowEnrollmentCount === 0}
             addStyle={{
               backgroundColor: hostUserCheck
                 ? enrollCount > 0
@@ -314,8 +312,8 @@ export default function TripDetail() {
                   ? '참가신청취소'
                   : '참가신청하기'
             }>
-            {hostUserCheck && enrollCount > 0 && (
-              <AppliedPersonCircle>{enrollCount}</AppliedPersonCircle>
+            {hostUserCheck && nowEnrollmentCount > 0 && (
+              <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
             )}
           </Button>
         </BtnContainer>
