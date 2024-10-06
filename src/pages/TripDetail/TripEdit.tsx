@@ -93,7 +93,7 @@ export default function TripEdit() {
     if (isEditSuccess) {
       navigate(`/trip/detail/${travelNumber}`)
     }
-  }, [isEditSuccess])
+  }, [isEditSuccess, navigate])
 
   const durationClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     const newActiveStates = [false, false, false, false]
