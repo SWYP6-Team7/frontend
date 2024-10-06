@@ -14,6 +14,7 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   shake?: boolean
   height?: number
   icon?: React.ReactNode
+  showIcon?: boolean
   handleRemoveValue: () => void
 }
 
@@ -47,6 +48,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
       icon = undefined,
       handleRemoveValue,
       onFocus,
+      showIcon = true,
       onBlur,
       height = 48,
       ...props
@@ -95,17 +97,18 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
           {...props}
         />
         <div>
-          {success ? (
-            focused ? (
-              <RemoveButton onClick={handleRemoveValue} />
+          {showIcon &&
+            (success ? (
+              focused ? (
+                <RemoveButton onClick={handleRemoveValue} />
+              ) : (
+                <CheckIcon status="done" />
+              )
+            ) : props.value === '' ? (
+              <CheckIcon />
             ) : (
-              <CheckIcon status="done" />
-            )
-          ) : props.value === '' ? (
-            <CheckIcon />
-          ) : (
-            <RemoveButton onClick={handleRemoveValue} />
-          )}
+              <RemoveButton onClick={handleRemoveValue} />
+            ))}
         </div>
       </Container>
     )
@@ -126,7 +129,7 @@ const Container = styled.div<ContainerProps>`
 
   width: 100%;
   height: ${props => props.height}px;
-  padding: 0px 12px;
+  padding: 0px 16px;
   border-radius: 50px;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -145,6 +148,7 @@ const Input = styled.input<InputProps>`
   &::placeholder {
     color: #cdcdcd;
   }
+  font-family: Pretendard;
   height: 100%;
   outline: none;
   font-weight: 500;
