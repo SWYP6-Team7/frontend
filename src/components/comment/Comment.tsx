@@ -23,7 +23,7 @@ interface CommentProps {
 }
 
 const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
-  const userId = 101
+  const { accessToken, userId } = authStore()
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from './Header'
 import {
   Outlet,
@@ -21,6 +21,7 @@ const Layout = () => {
   const { pathname } = useLocation()
   const { userPostRefreshToken } = useAuth()
   const { userId, accessToken, logoutCheck } = authStore()
+  const [isTabActive, setIsTabActive] = useState(true)
   // 유저 프로필 정보 불러오기
   const { addEmail, addName, addGender, addAgegroup, addPreferredTags } =
     myPageStore()
@@ -50,6 +51,25 @@ const Layout = () => {
     // 필요없는 페이지 인지 확인하는 함수.
     return noNeedPages.some(url => url === path)
   }
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsTabActive(!document.hidden) // document.hidden이 true이면 비활성화 상태
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    const interval = setInterval(() => {
+      if (!isTabActive) {
+        window.location.reload()
+      }
+    }, 300000)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      clearInterval(interval)
+    }
+  }, [isTabActive])
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
     if (!accessToken && !logoutCheck) {
