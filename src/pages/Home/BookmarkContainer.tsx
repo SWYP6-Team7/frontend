@@ -20,7 +20,10 @@ const BookmarkContainer = () => {
   console.log(bookmarks, 'bookmarks')
   return (
     <BookmarkBox>
-      <TitleContainer text="즐겨찾기" />
+      <TitleContainer
+        text="즐겨찾기"
+        detailLink="/myTrip"
+      />
       <ContentList>
         {/* Empty는 북마크 한 것이 없을 때,로그인 안할 때. 보여줄 div */}
         {bookmarks === undefined && (
@@ -54,7 +57,11 @@ const BookmarkContainer = () => {
               {bookmarks.map(
                 (post, idx) =>
                   post.bookmarked && (
-                    <BookmarkPreviewBox key={idx}>
+                    <BookmarkPreviewBox
+                      onClick={() =>
+                        navigate(`/trip/detail/${post.travelNumber}`)
+                      }
+                      key={idx}>
                       <HorizonBoxLayout
                         bookmarked={post.bookmarked}
                         travelNumber={post.travelNumber}
