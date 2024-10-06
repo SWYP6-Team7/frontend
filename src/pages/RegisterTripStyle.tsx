@@ -62,7 +62,7 @@ const RegisterTripStyle = () => {
   }
 
   const nextStepClickHandler = () => {
-    navigate('/')
+    navigate('/registerDone')
     registerEmail({
       email,
       password,
