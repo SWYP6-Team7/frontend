@@ -8,7 +8,7 @@ export async function getComments(
   accessToken: string | null
 ) {
   try {
-    // if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error('로그인을 해주세요.')
     const result = await axiosInstance.get(
       `/api/${relatedType}/${relatedNumber}/comments`,
       {
@@ -29,7 +29,7 @@ export async function postComment(
   accessToken: string | null
 ) {
   try {
-    //if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.post(
       `/api/${relatedType}/${relatedNumber}/comments`,
       data,
@@ -49,7 +49,7 @@ export async function updateComment(
 ) {
   try {
     const contentData = { content: data.content }
-    //if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.put(`/api/comments/${commentNumber}`, contentData, {
       headers: getJWTHeader(accessToken!)
     })
@@ -63,7 +63,7 @@ export async function deleteComment(
   accessToken: string | null
 ) {
   try {
-    //if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.delete(`/api/comments/${commentNumber}`, {
       headers: getJWTHeader(accessToken!)
     })
@@ -77,7 +77,7 @@ export async function likeComment(
   accessToken: string | null
 ) {
   try {
-    //if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.post(
       `/api/comments/${commentNumber}/like`,
       {},
@@ -95,8 +95,8 @@ export async function unlikeComment(
   accessToken: string | null
 ) {
   try {
-    //if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.delete(
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    return axiosInstance.post(
       `/api/comments/${commentNumber}/like`,
 
       {

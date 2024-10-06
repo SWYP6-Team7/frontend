@@ -34,20 +34,20 @@ export default function CreateTripPlace() {
   const handleRemoveValue = () => setKeyword('')
 
   const handleNext = () => {
-    if (!isMatchedKeyword) {
-      return
-    }
+    // if (!isMatchedKeyword) {
+    //   return
+    // }
     addLocation(keyword)
     navigate('/createTripIntroduce')
   }
 
-  const isMatchedKeyword = useMemo(() => {
-    if (data?.suggestions && Array.isArray(data.suggestions)) {
-      return data.suggestions.includes(keyword)
-    } else {
-      return false
-    }
-  }, [keyword, data?.suggestions])
+  // const isMatchedKeyword = useMemo(() => {
+  //   if (data?.suggestions && Array.isArray(data.suggestions)) {
+  //     return data.suggestions.includes(keyword)
+  //   } else {
+  //     return false
+  //   }
+  // }, [keyword, data?.suggestions])
   return (
     <Container>
       <StepIconContainer>
@@ -77,9 +77,9 @@ export default function CreateTripPlace() {
       <ButtonContainer>
         <Button
           onClick={handleNext}
-          disabled={keyword === '' || !isMatchedKeyword}
+          disabled={keyword === ''}
           addStyle={
-            keyword === '' || !isMatchedKeyword
+            keyword === ''
               ? {
                   backgroundColor: 'rgba(220, 220, 220, 1)',
                   color: 'rgba(132, 132, 132, 1)',

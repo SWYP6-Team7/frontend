@@ -73,6 +73,13 @@ export function daysAgo(date: string) {
     return `${diffInDays}일 전`
   }
 }
+
+export function daysAgoFormatted(date: string) {
+  const format = 'YYYY년 MM월 DD일 HH시 mm분'
+  const parsedDate = dayjs(date, format).utcOffset(9)
+
+  return daysAgo(parsedDate.toISOString())
+}
 // 현재 시간을 2000-10-10 11:11 문자열로 반환.
 export function getCurrentFormattedDate() {
   const now = new Date()
