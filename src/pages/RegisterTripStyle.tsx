@@ -9,6 +9,7 @@ import Spacing from '@/components/Spacing'
 import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
 import ButtonContainer from '@/components/ButtonContainer'
+import { palette } from '@/styles/palette'
 const TAGCOUNT = 18
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
@@ -104,11 +105,18 @@ const RegisterTripStyle = () => {
       <Spacing size={120} />
       <ButtonWrapper width={newRightPosition}>
         <Button
+          disabled={tripStyleArray.length === 0}
           text="다음"
           onClick={nextStepClickHandler}
           addStyle={{
-            backgroundColor: 'rgba(62, 141, 0, 1)',
-            color: 'rgba(240, 240, 240, 1)',
+            backgroundColor:
+              tripStyleArray.length > 0
+                ? 'rgba(62, 141, 0, 1)'
+                : 'rgba(220, 220, 220, 1)',
+            color:
+              tripStyleArray.length > 0
+                ? 'rgba(240, 240, 240, 1)'
+                : palette.비강조,
             boxShadow: 'rgba(170, 170, 170, 0.1)'
           }}
         />
@@ -128,9 +136,11 @@ const ButtonWrapper = styled.div<{ width: string }>`
     width: ${props => props.width};
   }
   position: fixed;
-  bottom: 4.7svh;
+  bottom: 0;
+
+  background-color: white;
   margin-left: -24px;
-  padding: 0px 24px;
+  padding: 14px 24px 38px 24px;
   z-index: 10;
 `
 
