@@ -10,7 +10,7 @@ import EditAndDeleteModal from '../designSystem/modal/EditAndDeleteModal'
 import CheckingModal from '../designSystem/modal/CheckingModal'
 import ResultToast from '../designSystem/toastMessage/resultToast'
 import { IComment } from '@/model/comment'
-import { daysAgo } from '@/utils/time'
+import { daysAgo, daysAgoFormatted } from '@/utils/time'
 import FullHeartIcon from '../icons/FullHeartIcon'
 import useComment from '@/hooks/comment/useComment'
 import { authStore } from '@/store/client/authStore'
@@ -77,7 +77,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
           <UserName>{comment.writer}</UserName>
 
           <Dot>·</Dot>
-          <Day>{daysAgo(comment.regDate)}</Day>
+          <Day>{daysAgoFormatted(comment.regDate)}</Day>
         </UserBox>
         {(comment.userNumber === userId ||
           comment.travelWriterNumber === userId) && (
