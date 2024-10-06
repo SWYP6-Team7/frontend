@@ -290,14 +290,14 @@ export default function TripDetail() {
             disabled={hostUserCheck && nowEnrollmentCount === 0}
             addStyle={{
               backgroundColor: hostUserCheck
-                ? enrollCount > 0
+                ? nowEnrollmentCount > 0
                   ? palette.keycolor
                   : palette.비강조3
                 : enrollmentNumber
                   ? palette.keycolorBG
                   : palette.keycolor,
               color: hostUserCheck
-                ? enrollCount > 0
+                ? nowEnrollmentCount > 0
                   ? palette.BG
                   : palette.비강조
                 : enrollmentNumber
