@@ -55,6 +55,16 @@ const DuedatePickerView = ({ duedate, setDuedate }: Props) => {
     }
   }, [value.year, value.month])
 
+  useEffect(() => {
+    if (value) {
+      // month와 day를 두 자리로 포맷
+      const formattedMonth = String(value.month).padStart(2, '0')
+      const formattedDay = String(value.day).padStart(2, '0')
+
+      addDueDate(`${value.year}-${formattedMonth}-${formattedDay}`)
+    }
+  }, [])
+
   // 날짜가 변경될 때마다 현재 날짜와 비교하여 이전 날짜를 선택하면 일정 시간 후 오늘 날짜로 되돌림
   useEffect(() => {
     addDueDateForEdit(value)
