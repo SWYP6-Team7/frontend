@@ -20,6 +20,7 @@ import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
 import { unknown } from 'zod'
 import { getCurrentFormattedDate } from '@/utils/time'
+import ButtonContainer from '@/components/ButtonContainer'
 
 const TAG_LIST = [
   {
@@ -259,7 +260,7 @@ const CreateTripDetail = () => {
         <div></div>
       </CreateTripDetailContainer>
 
-      <ButtonWrapper width={newRightPosition}>
+      <ButtonContainer>
         <Button
           text="완료"
           onClick={completeClickHandler}
@@ -269,7 +270,7 @@ const CreateTripDetail = () => {
             boxShadow: 'rgba(170, 170, 170, 0.1)'
           }}
         />
-      </ButtonWrapper>
+      </ButtonContainer>
     </CreateTripDetailWrapper>
   )
 }
