@@ -27,6 +27,13 @@ const Header = () => {
   const isEditMyName = location.pathname.startsWith('/editMyName')
   const isTripComment = location.pathname.startsWith('/trip/comment')
   const handleBack = () => {
+    if (isTripDetail) {
+      navigate('/')
+      return
+    } else if (isSearch) {
+      navigate('/')
+      return
+    }
     navigate(-1)
   }
 
