@@ -5,14 +5,16 @@ import RoundedImage from '../designSystem/profile/RoundedImage'
 import { palette } from '@/styles/palette'
 import { daysLeft, formatTime } from '@/utils/time'
 import Badge from '../designSystem/Badge'
+import { useNavigate } from 'react-router-dom'
 
 interface NotificationItemProps {
   data: INotificationContent
 }
 
 const NotificationItem = ({ data }: NotificationItemProps) => {
+  const navigate = useNavigate()
   return (
-    <Container>
+    <Container onClick={() => navigate(`/trip/detail/${data.travelNumber}`)}>
       <TopContainer>
         <RoundedImage
           size={32}
