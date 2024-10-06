@@ -31,7 +31,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
 
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
   const [threeDotsClick, setThreeDotsClick] = useState(false)
-  const { setOpenEdit, setParentNumber } = commentStore()
+  const { setOpenEdit, setParentNumber, setCommentNumber } = commentStore()
   const { removeMutation, remove, like, unlike } = useComment(
     relatedType,
     relatedNumber
@@ -46,6 +46,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
       setThreeDotsClick(false)
       setIsEditBtnClicked(false)
       setOpenEdit(comment.content)
+      setCommentNumber(comment.commentNumber)
     }
     if (checkingModalClicked) {
       remove({ commentNumber: comment.commentNumber })
