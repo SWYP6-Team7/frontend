@@ -34,6 +34,7 @@ import MyTrip from './pages/MyTrip/MyTrip'
 import EditMyInfo from './pages/MyPage/EditMyInfo'
 import EditMyName from './pages/MyPage/EditMyName'
 import TripComment from './pages/Comment/TripComment'
+import RegisterDone from './pages/RegisterDone'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -83,6 +84,10 @@ export const router = createBrowserRouter([
       {
         path: 'registerTripStyle',
         element: <RegisterTripStyle />
+      },
+      {
+        path: 'registerDone',
+        element: <RegisterDone />
       },
       {
         path: 'search',
