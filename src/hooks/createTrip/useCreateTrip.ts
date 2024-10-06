@@ -19,21 +19,22 @@ export const useCreateTrip = (
   accessToken: string
 ) => {
   const queryClient = useQueryClient()
-  const { mutateAsync: createTripMutate } = useMutation({
-    mutationFn: () => {
-      return createTrip(travelData, accessToken)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['createTrip']
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['tripRecommendation']
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['availableTrips']
-      })
-    }
-  })
-  return { createTripMutate }
+  const { mutateAsync: createTripMutate, isSuccess: isCreatedSuccess } =
+    useMutation({
+      mutationFn: () => {
+        return createTrip(travelData, accessToken)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['createTrip']
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['tripRecommendation']
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['availableTrips']
+        })
+      }
+    })
+  return { createTripMutate, isCreatedSuccess }
 }

@@ -19,7 +19,7 @@ const tripDetail = {
   periodType: '일주일 이하',
   tags: ['✊ 즉흥', '🏔️ 자연', '🍔 먹방'],
   postStatus: '진행중',
-  hostUserCheck: false,
+  hostUserCheck: true,
   enrollmentNumber: null,
   bookmarked: true
 }
@@ -70,6 +70,6 @@ export const tripDetailHandler = [
     console.log(request, '요청.')
     const url = new URL(request.url)
     const travelNumber = url.searchParams.get('travelNumber')
-    return HttpResponse.json({ status: 200 })
+    return HttpResponse.json({ status: 204 })
   })
 ]
