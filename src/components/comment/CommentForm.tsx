@@ -53,6 +53,14 @@ const CommentForm = ({
     }
   }, [isEdit, isReply])
 
+  useEffect(() => {
+    if (!focused) {
+      if (value === '') {
+        setReset()
+      }
+    }
+  }, [focused, value])
+
   const submitComment = (e: React.FormEvent) => {
     e.preventDefault()
     if (value === '') {
