@@ -16,7 +16,6 @@ import { IMyTripList } from '@/model/myTrip'
 
 import { daysAgo } from '@/utils/time'
 
-
 export default function ApplyTrip() {
   const [ref, inView] = useInView()
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
@@ -63,6 +62,7 @@ export default function ApplyTrip() {
                     title={content.title}
                     tags={content.tags}
                     total={content.maxPerson}
+                    location={content.location}
                     daysAgo={daysAgo(content?.createdAt)}
                     daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                       dayjs(),

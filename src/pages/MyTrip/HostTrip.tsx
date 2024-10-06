@@ -16,7 +16,6 @@ import { IMyTripList } from '@/model/myTrip'
 
 import { daysAgo } from '@/utils/time'
 
-
 export default function HostTrip() {
   const [ref, inView] = useInView()
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
@@ -59,6 +58,7 @@ export default function HostTrip() {
                 <Link to={`/trip/detail/${content.travelNumber}`}>
                   <MyTripHorizonBoxLayout
                     travelNumber={content.travelNumber}
+                    location={content.location}
                     userName={content.userName}
                     title={content.title}
                     tags={content.tags}
