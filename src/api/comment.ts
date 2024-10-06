@@ -98,7 +98,7 @@ export async function unlikeComment(
     if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.post(
       `/api/comments/${commentNumber}/like`,
-
+      {},
       {
         headers: getJWTHeader(accessToken!)
       }
