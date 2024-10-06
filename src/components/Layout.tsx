@@ -76,6 +76,7 @@ const Layout = () => {
         {/* {isSignup && <Header />} */}
         {/* 홈 화면 헤더는 다른 형태. */}
         {pathname !== '/' &&
+          pathname !== '/registerDone' &&
           pathname !== '/login' &&
           pathname !== '/trip/list' && <Header />}
         <Outlet />

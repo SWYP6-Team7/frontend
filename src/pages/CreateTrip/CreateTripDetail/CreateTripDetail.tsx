@@ -111,7 +111,7 @@ const CreateTripDetail = () => {
         addPeriodType('')
         addTags([])
         addCompletionStatus(false)
-        navigate('/')
+        navigate('/registerDone')
       },
       onError: e => {
         console.log(e, '여행 생성에 오류 발생.')
