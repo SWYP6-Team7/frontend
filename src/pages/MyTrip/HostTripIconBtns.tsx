@@ -77,8 +77,11 @@ export default function HostTripIconBtns({
       // 삭제 요청.
 
       deleteTripDetailMutation().then(res => {
-        if (res?.data.status === 200) {
+        if (200 <= res?.data.status && res?.data.status < 300) {
           setIsToastShow(true)
+          setTimeout(() => {
+            navigate('/')
+          }, 800)
         }
       })
     }

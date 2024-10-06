@@ -88,19 +88,11 @@ const CreateTripDetail = () => {
     tags,
     completionStatus
   }
-  const { createTripMutate } = useCreateTrip(travelData, accessToken as string) // 여행 생성 api 요청.
+  const { createTripMutate, isCreatedSuccess } = useCreateTrip(
+    travelData,
+    accessToken as string
+  ) // 여행 생성 api 요청.
   const completeClickHandler = () => {
-    // 다시 빈 값으로 만들기.
-    addTitle('')
-    addLocation('')
-    addDetails('')
-    addMaxPerson(0)
-    addGenderType('')
-    addDueDate('')
-    addPeriodType('')
-    addTags([])
-    navigate('/')
-
     createTripMutate()
     console.log(
       title,
@@ -113,6 +105,21 @@ const CreateTripDetail = () => {
       tags
     )
   }
+  useEffect(() => {
+    // 여행 생성 성공.
+    if (isCreatedSuccess) {
+      // 다시 빈 값으로 만들기.
+      addTitle('')
+      addLocation('')
+      addDetails('')
+      addMaxPerson(0)
+      addGenderType('')
+      addDueDate('')
+      addPeriodType('')
+      addTags([])
+      navigate('/')
+    }
+  }, [isCreatedSuccess])
 
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
   const [activeDuration, setActiveDuration] = useState<boolean[]>(
