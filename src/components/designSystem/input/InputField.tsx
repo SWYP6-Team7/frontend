@@ -64,7 +64,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
     const bgColor = hasError
       ? '#FFF7F7'
       : focused
-        ? '#FFF7F7'
+        ? 'rgba(252, 255, 250, 1)'
         : props.value === ''
           ? palette.검색창
           : '#F5F5F5'
