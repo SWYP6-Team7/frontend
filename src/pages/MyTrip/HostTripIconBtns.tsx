@@ -77,11 +77,8 @@ export default function HostTripIconBtns({
       // 삭제 요청.
 
       deleteTripDetailMutation().then(res => {
-        if (200 <= res?.data.status && res?.data.status < 300) {
+        if (res?.data.status === 200) {
           setIsToastShow(true)
-          setTimeout(() => {
-            navigate('/')
-          }, 800)
         }
       })
     }
@@ -102,7 +99,7 @@ export default function HostTripIconBtns({
             />
           </div>
         ) : (
-          <div>
+          <div onClick={bookmarkClickHandler}>
             <EmptyHeartIcon
               width={24}
               height={21.4}

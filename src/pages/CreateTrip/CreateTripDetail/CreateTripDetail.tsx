@@ -92,6 +92,11 @@ const CreateTripDetail = () => {
     travelData,
     accessToken as string
   ) // 여행 생성 api 요청.
+
+  useEffect(() => {
+    addCompletionStatus(true)
+  }, [])
+
   const completeClickHandler = () => {
     createTripMutate()
     console.log(
@@ -117,6 +122,7 @@ const CreateTripDetail = () => {
       addDueDate('')
       addPeriodType('')
       addTags([])
+      addCompletionStatus(false)
       navigate('/')
     }
   }, [isCreatedSuccess])
