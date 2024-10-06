@@ -121,18 +121,11 @@ export default function TripEdit() {
     setTaggedArray(newArray)
   }
   const editCompleteClickHandler = async () => {
-
     // month와 day를 두 자리로 포맷
     const formattedMonth = String(dueDate.month).padStart(2, '0')
     const formattedDay = String(dueDate.day).padStart(2, '0')
     updateTripDetailMutate(
       {
-    const { year, month, day } = dueDate
-
-    const formattedMonth = month.toString().padStart(2, '0')
-    const formattedDay = day.toString().padStart(2, '0')
-    try {
-      await updateTripDetailMutation({
         location,
         title,
         details,
@@ -173,7 +166,6 @@ export default function TripEdit() {
     // } catch (e) {
     //   console.log(e)
     // }
-
   }
   console.log(title, details, genderType, maxPerson, dueDate, periodType, tags)
   const editLocationHandler = () => {
