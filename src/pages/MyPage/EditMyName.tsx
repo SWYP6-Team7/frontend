@@ -54,6 +54,7 @@ export default function EditMyName() {
       <StepContent>새로운 이름을 입력해주세요</StepContent>
       <div css={{ marginTop: '14px' }}>
         <InputField
+          showIcon={false}
           shake={nameValidError && userName.length > 0}
           success={userName.length > 0 && !nameValidError}
           hasError={nameValidError && userName.length > 0}
