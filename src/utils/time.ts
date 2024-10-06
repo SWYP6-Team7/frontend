@@ -76,7 +76,7 @@ export function daysAgo(date: string) {
 
 export function daysAgoFormatted(date: string) {
   const format = 'YYYY년 MM월 DD일 HH시 mm분'
-  const parsedDate = dayjs(date, format).utcOffset(9)
+  const parsedDate = dayjs(date, format)
 
   return daysAgo(parsedDate.toISOString())
 }
