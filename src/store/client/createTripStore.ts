@@ -48,7 +48,12 @@ export const createTripStore = create<CreateTripState>(set => ({
   },
   dueDate: getCurrentFormattedDate().split(' ')[0], // 혹시 유저가 마감일 지정일을 따로 설정안하고 당일로 한다면, 오늘 날짜로 들어가도록.
   addDueDate: dueDate => {
-    set({ dueDate })
+    const [year, month, day] = dueDate.split('-')
+
+    const formattedMonth = month.padStart(2, '0')
+    const formattedDay = day.padStart(2, '0')
+
+    set({ dueDate: `${year}-${formattedMonth}-${formattedDay}` })
   },
   periodType: '',
   addPeriodType: periodType => {
@@ -58,7 +63,7 @@ export const createTripStore = create<CreateTripState>(set => ({
   addTags: tags => {
     set({ tags })
   },
-  completionStatus: false,
+  completionStatus: true,
   addCompletionStatus: completionStatus => {
     set({ completionStatus })
   }
