@@ -355,7 +355,9 @@ const ButtonWrapper = styled.div<{ width: string }>`
   padding: 0px 24px;
   z-index: 10;
 `
-const CreateTripDetailWrapper = styled.div``
+const CreateTripDetailWrapper = styled.div`
+  position: relative;
+`
 const CreateTripDetailContainer = styled.div`
   padding: 0px 24px;
 `
