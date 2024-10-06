@@ -81,7 +81,8 @@ export default function TripDetail() {
       if (enrollmentNumber) {
         setShowCancelModal(true)
       } else {
-        setShowApplyModal(true)
+        // 신청하러 바로 이동.
+        navigate(`/trip/apply/${travelNumber}`)
       }
     }
   }
@@ -108,6 +109,14 @@ export default function TripDetail() {
     return daysLeft
   }
 
+  const commentClickHandler = () => {
+    if (!hostUserCheck && !enrollmentNumber) {
+      // 주최자가 아니며, 신청 번호가 없는 사람은 댓글을 볼 수 없음.
+      setShowApplyModal(true)
+    } else {
+      navigate(`/trip/comment/${travelNumber}`)
+    }
+  }
   return (
     <>
       <ResultToast
@@ -131,6 +140,7 @@ export default function TripDetail() {
         modalButtonText="신청하기"
         setModalOpen={setShowApplyModal}
       />
+
       <CheckingModal
         isModalOpen={showCancelModal}
         onClick={onClickCancelApply}
@@ -204,8 +214,7 @@ export default function TripDetail() {
             <div>조회수 {viewCount}</div>
           </ViewsETC>
         </PostWrapper>
-        <CommentWrapper
-          onClick={() => navigate(`/trip/comment/${travelNumber}`)}>
+        <CommentWrapper onClick={commentClickHandler}>
           <div css={{ display: 'flex', alignItems: 'center' }}>
             <img
               src="/images/createTripBtn.png"
