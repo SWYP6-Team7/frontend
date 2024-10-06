@@ -266,9 +266,7 @@ const Container = styled.form`
 const FieldContainer = styled.div`
   display: flex;
   width: 100%;
-  & > *:not(input) {
-    padding-left: 6px;
-  }
+
   flex-direction: column;
 `
 

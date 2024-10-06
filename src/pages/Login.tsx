@@ -26,7 +26,6 @@ const Login = () => {
     <Container>
       <TopArea>
         <img
-          css={{ marginTop: '100%' }}
           src={'/images/moingLogo.png'}
           alt="모잉 서비스의 로고 이미지입니다."
           width={80}
@@ -75,11 +74,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `
 
 const TopArea = styled.div`
   display: flex;
-  margin-top: 13.8svh;
+
   justify-content: end;
   align-items: center;
   gap: 16px;
