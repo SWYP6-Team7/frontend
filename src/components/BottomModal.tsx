@@ -131,7 +131,7 @@ const slideDownDesktop = keyframes`
 const Container = styled.div`
   height: 100svh;
   position: fixed;
-  z-index: 1000;
+  z-index: 1005;
   width: 100%;
   top: 0;
   left: 0;
