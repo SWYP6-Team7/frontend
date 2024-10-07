@@ -4,6 +4,7 @@ import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import React, { useState, useEffect, useRef } from 'react'
 import Picker from 'react-mobile-picker'
+import { useLocation } from 'react-router-dom'
 
 const date = new Date()
 const year: number = date.getFullYear()
@@ -33,6 +34,9 @@ interface Props {
 }
 
 const RecruitingPickerView = ({ count, setCount }: Props) => {
+  const { pathname } = useLocation()
+  const isCreateTripDetailPage = pathname === '/createTripDetail'
+
   const { maxPerson, addMaxPerson, genderType, addGenderType } =
     createTripStore()
   const {
@@ -42,10 +46,14 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
     addGenderType: addGenderTypeEdit
   } = tripDetailStore()
   const pickerRef = useRef<HTMLDivElement>(null)
-  const [value, setValue] = useState({
-    gender: genderTypeEdit,
-    count: maxPersonForEdit
-  })
+  const [value, setValue] = useState(
+    isCreateTripDetailPage
+      ? { gender: '여자만', count: 1 }
+      : {
+          gender: genderTypeEdit,
+          count: maxPersonForEdit
+        }
+  )
 
   // 현재 날짜
 
