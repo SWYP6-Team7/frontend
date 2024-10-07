@@ -45,11 +45,24 @@ export default function TripEnrollmentList() {
     // 주어진 날짜가 현재 시간보다 이전인지 확인
     return lastTime < enrolledAt
   }
+  //현재 시간을 2000.10.10 11:11 문자열로 반환.
+  function todayFormattedDate() {
+    const now = new Date()
+
+    const year = now.getFullYear()
+    const month = String(now.getMonth() + 1).padStart(2, '0') // 0부터 시작하므로 +1
+    const day = String(now.getDate()).padStart(2, '0')
+
+    const hours = String(now.getHours()).padStart(2, '0')
+    const minutes = String(now.getMinutes()).padStart(2, '0')
+
+    return `${year}.${month}.${day} ${hours}:${minutes}`
+  }
 
   useEffect(() => {
     // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.
     return () => {
-      updateLastViewed(getCurrentFormattedDate())
+      updateLastViewed(todayFormattedDate())
     }
   }, [])
 
