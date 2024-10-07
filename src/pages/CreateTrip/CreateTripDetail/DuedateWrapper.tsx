@@ -10,6 +10,7 @@ import Vector from '@/components/icons/Vector'
 import DuedatePickerView from './DuedatePickerView'
 import Calendar from '@/components/icons/Calendar'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
+import { useLocation } from 'react-router-dom'
 
 interface DateValue {
   year: number
@@ -27,7 +28,11 @@ const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function DuedateWrapper() {
   const { dueDate } = tripDetailStore()
   const [showModal, setShowModal] = useState(false)
-  const [duedate, setDuedate] = useState<DateValue>(dueDate)
+  const { pathname } = useLocation()
+  const isCreateTripDetailPage = pathname === '/createTripDetail'
+  const [duedate, setDuedate] = useState<DateValue>(
+    isCreateTripDetailPage ? today : dueDate
+  )
 
   const day = new Date(`${duedate.year}/${duedate.month}/${duedate.day}`)
   const dayOfWeek = WEEKDAY[day.getDay()]
