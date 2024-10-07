@@ -111,8 +111,8 @@ const CreateTripDetail = () => {
         addDueDate(getCurrentFormattedDate())
         addPeriodType('')
         addTags([])
-        addCompletionStatus(false)
         navigate('/')
+        addCompletionStatus(false)
       },
       onError: e => {
         console.log(e, '여행 생성에 오류 발생.')
