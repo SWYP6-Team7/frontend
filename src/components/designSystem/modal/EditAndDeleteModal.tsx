@@ -8,7 +8,6 @@ interface EditAndDeleteModalProps {
   setIsDeleteBtnClicked: React.Dispatch<SetStateAction<boolean>>
   isMyApplyTrip?: boolean // 내가 참가한 여행에서도 사용하기 위함.
   deleteText?: string
-  showEdit?: boolean
 }
 export default function EditAndDeleteModal({
   setIsEditBtnClicked,
@@ -16,8 +15,7 @@ export default function EditAndDeleteModal({
   isOpen,
   setIsOpen,
   isMyApplyTrip = false,
-  deleteText = '삭제하기',
-  showEdit=true
+  deleteText = '삭제하기'
 }: EditAndDeleteModalProps) {
   const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
   const [isListening, setIsListening] = useState(false) // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
@@ -44,7 +42,7 @@ export default function EditAndDeleteModal({
         nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
         {!isMyApplyTrip ? (
           <BtnBox isMyApplyTrip={isMyApplyTrip}>
-            {showEdit && <EditBtn onClick={editHandler}>수정하기</EditBtn>}
+            <EditBtn onClick={editHandler}>수정하기</EditBtn>
             <DeleteBtn
               isMyApplyTrip={isMyApplyTrip}
               onClick={deleteHandler}>
