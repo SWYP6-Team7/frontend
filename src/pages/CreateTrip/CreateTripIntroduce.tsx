@@ -88,6 +88,7 @@ const ButtonContainer = styled.div`
   position: absolute;
   padding: 0 24px;
   background-color: white;
+  padding-top: 16px;
   padding-bottom: 40px;
   left: 0;
 `
