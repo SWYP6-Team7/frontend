@@ -302,12 +302,11 @@ const ButtonWrapper = styled.div<{ width: string }>`
   }
   /* pointer-events: none; */
   position: fixed;
-  /* top: 0; */
-  bottom: 4.7svh;
-  /* z-index: 1001; */
+  bottom: 0;
 
-  padding: 0px 24px;
+  background-color: white;
   margin-left: -24px;
+  padding: 14px 24px 38px 24px;
   z-index: 10;
 `
 const DurationContainer = styled.div`
