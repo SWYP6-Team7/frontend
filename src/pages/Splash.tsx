@@ -12,7 +12,7 @@ export default function Splash() {
     if (revisit === undefined || revisit === null) {
       setTimeout(() => {
         addSplashOn(false)
-      }, 2500)
+      }, 2000)
       sessionStorage.setItem('revisit', 'true')
     } else if (revisit === 'true') {
       addSplashOn(false)
@@ -32,12 +32,19 @@ const Container = styled.div<{ splashOn: boolean }>`
   position: absolute;
   z-index: 2500;
   height: 100svh;
-  width: 100%;
+  /* width: 100%; */
   top: 0;
   opacity: ${({ splashOn }) => (splashOn ? 1 : 0)};
   transition: opacity 1s ease-in-out;
   pointer-events: ${({ splashOn }) => (splashOn ? 'auto' : 'none')};
   background-color: ${palette.keycolor};
+  @media (max-width: 440px) {
+    width: 100svw;
+  }
+  @media (min-width: 440px) {
+    width: 390px;
+    overflow-x: hidden;
+  }
 `
 const LogoContainer = styled.div`
   display: flex;
