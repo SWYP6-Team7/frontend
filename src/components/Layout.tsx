@@ -16,6 +16,7 @@ import useAuth from '@/hooks/user/useAuth'
 import { myPageStore } from '@/store/client/myPageStore'
 import useMyPage from '@/hooks/myPage/useMyPage'
 import { ImyPage } from '@/model/myPages'
+import Splash from '@/pages/Splash'
 const Layout = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
@@ -72,6 +73,7 @@ const Layout = () => {
   console.log(userId, accessToken, '토큰')
   return (
     <Container pathname={pathname}>
+      <Splash />
       <Body pathname={pathname}>
         {/* {isSignup && <Header />} */}
         {/* 홈 화면 헤더는 다른 형태. */}
