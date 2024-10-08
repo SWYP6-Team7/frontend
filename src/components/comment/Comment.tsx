@@ -119,7 +119,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
         )}
       </BottomContainer>
       <EditAndDeleteModal
-        isMyApplyTrip={true}
+       
         setIsEditBtnClicked={setIsEditBtnClicked}
         setIsDeleteBtnClicked={setIsDeleteBtnClicked}
         isOpen={threeDotsClick}
