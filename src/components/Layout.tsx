@@ -65,8 +65,6 @@ const Layout = () => {
           console.error('Failed to refresh token:', error)
 
           navigate('/login') // 로그인 이동.
-
-
         }
       }
 
@@ -86,7 +84,8 @@ const Layout = () => {
           !isOnboarding &&
           pathname !== '/registerDone' &&
           pathname !== '/login' &&
-          pathname !== '/trip/list' && <Header />}
+          pathname !== '/trip/list' &&
+          pathname !== '/community' && <Header />}
         <Outlet />
         {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
           <Outlet />

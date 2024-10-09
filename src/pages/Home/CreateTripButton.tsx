@@ -4,7 +4,13 @@ import styled from '@emotion/styled'
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function CreateTripButton() {
+interface CreateTripButtonProps {
+  type?: 'trip' | 'community'
+}
+
+export default function CreateTripButton({
+  type = 'trip'
+}: CreateTripButtonProps) {
   const [isClicked, setIsClicked] = useState(false)
   const addRef = useRef<HTMLButtonElement>(null) // 버튼 참조
   const createButtonRef = useRef<HTMLButtonElement>(null) // 버튼 참조
@@ -36,19 +42,31 @@ export default function CreateTripButton() {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [])
+
+  const onClickCreate = () => {
+    if (type === 'community') {
+      navigate('/community/create')
+    } else {
+      navigate('/createTripPlace')
+    }
+  }
   return (
     <CreatedTripWrapper>
       {isClicked && (
         <CreateBtn
           right={newRightPosition}
-          onClick={() => navigate('/createTripPlace')}
+          onClick={onClickCreate}
           ref={createButtonRef}>
           <img
-            src="/images/createTripBtn.png"
+            src={
+              type === 'community'
+                ? '/images/createCommunityBtn.png'
+                : '/images/createTripBtn.png'
+            }
             alt=""
             css={{ marginRight: '13px' }}
           />
-          여행 만들기
+          {type === 'trip' ? '여행 만들기' : '글쓰기'}
         </CreateBtn>
       )}
 
@@ -122,7 +140,7 @@ const IconContainer = styled.button<{ rotated: boolean; right: string }>`
   justify-content: center;
   align-items: center;
   color: white;
-  background-color: ${palette.keycolor};
+  background-color: ${palette.기본};
   z-index: 1003;
   font-size: 32px;
   @media (max-width: 390px) {
