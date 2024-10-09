@@ -84,9 +84,11 @@ const TripList = () => {
             list={LIST}
             clickSort={onClickSort}
             setFixed={handleFixed}
-            sort={sort}
-            totalElements={data?.pages[0].page.totalElements ?? 0}
-          />
+            sort={sort}>
+            <CountContainer>
+              총&nbsp;<Count>{data?.pages[0].page.totalElements ?? 0}건</Count>
+            </CountContainer>
+          </SortHeader>
         </SortContainer>
         <TripInfiniteList />
       </div>
@@ -107,6 +109,17 @@ const SearchContainer = styled.div`
   padding-bottom: 16px;
   background-color: ${palette.BG};
   z-index: 1000;
+`
+const CountContainer = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.71px;
+  letter-spacing: -0.025em;
+`
+
+const Count = styled.span`
+  color: #3e8d00;
+  font-weight: 700;
 `
 
 const SortContainer = styled.div`

@@ -133,6 +133,10 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
+            path: '',
+            element: <Community />
+          },
+          {
             path: 'create',
             element: <CreateCommunity />
           }
