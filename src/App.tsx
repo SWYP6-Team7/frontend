@@ -35,6 +35,7 @@ import EditMyInfo from './pages/MyPage/EditMyInfo'
 import EditMyName from './pages/MyPage/EditMyName'
 import TripComment from './pages/Comment/TripComment'
 import RegisterDone from './pages/RegisterDone'
+import OnBoarding from './pages/OnBoarding/OnBoarding'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -182,6 +183,10 @@ export const router = createBrowserRouter([
       {
         path: 'myTrip',
         element: <MyTrip />
+      },
+      {
+        path: '/onBoarding',
+        element: <OnBoarding />
       }
     ]
   }
