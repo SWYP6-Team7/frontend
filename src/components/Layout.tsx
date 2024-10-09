@@ -61,7 +61,7 @@ const Layout = () => {
           await userPostRefreshToken()
         } catch (error) {
           console.error('Failed to refresh token:', error)
-          navigate('/login') // 로그인 이동.
+          // navigate('/login') // 로그인 이동.
         }
       }
 

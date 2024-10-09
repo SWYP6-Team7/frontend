@@ -2,49 +2,83 @@ import styled from '@emotion/styled'
 import { forwardRef, SelectHTMLAttributes, useState } from 'react'
 import SelectArrow from '../icons/SelectArrow'
 import Spacing from '../Spacing'
+import { palette } from '@/styles/palette'
 
 interface SelectProps {
   list: string[]
   setValue: (element: string) => void
-  value: string | number
+  value?: string | number
+  noneValue?: string
 }
 
-const Select = ({ list, value, setValue }: SelectProps) => {
+// none value는 일종의 label값 같은 느낌
+// value가 undefined인 초깃값일 때 보여주기 위한 값
+
+const Select = ({ list, value, setValue, noneValue }: SelectProps) => {
   const [active, setActive] = useState(false)
   const changeValue = (element: string) => {
     setValue(element)
     setActive(false)
   }
   return (
-    <Container>
-      <OptionList active={active}>
-        <Label
-          value={value}
-          onClick={() => setActive(!active)}>
-          {value}
-          <div css={{ transform: active ? 'rotate(180deg)' : 'rotate(0)' }}>
-            <SelectArrow />
-          </div>
-        </Label>
-        <StyledOptionList active={active}>
-          {list.map((element: string) => (
-            <div css={{ display: 'flex', gap: '7px' }}>
-              <StyledOptionItem
-                key={element} // map을 쓰기 위해서는 해당 방식으로 key가 주어져야함.
-                onClick={() => changeValue(element)}>
-                {element}
-              </StyledOptionItem>
-              <Spacing
-                direction="horizontal"
-                size={12}
-              />
+    <>
+      {active && <Background />}
+      <Container>
+        <OptionList active={active}>
+          <Label
+            value={value}
+            onClick={() => setActive(!active)}>
+            {value ? (
+              value
+            ) : (
+              <div css={{ color: palette.비강조 }}>{noneValue}</div>
+            )}
+            <div css={{ transform: active ? 'rotate(180deg)' : 'rotate(0)' }}>
+              <SelectArrow />
             </div>
-          ))}
-        </StyledOptionList>
-      </OptionList>
-    </Container>
+          </Label>
+          <StyledOptionList active={active}>
+            {list.map((element: string) => {
+              return (
+                <div css={{ display: 'flex', gap: '7px' }}>
+                  <StyledOptionItem
+                    key={element} // map을 쓰기 위해서는 해당 방식으로 key가 주어져야함.
+                    onClick={() => changeValue(element)}>
+                    {element}
+                  </StyledOptionItem>
+                  <Spacing
+                    direction="horizontal"
+                    size={12}
+                  />
+                </div>
+              )
+            })}
+          </StyledOptionList>
+        </OptionList>
+      </Container>
+    </>
   )
 }
+
+const Background = styled.div`
+  pointer-events: auto;
+  position: fixed;
+  width: 100%;
+  height: 100svh;
+  z-index: 1001;
+  top: 0;
+  transition: 0.2s all ease-in-out;
+  bottom: 0;
+  background-color: rgba(26, 26, 26, 0.3);
+  opacity: 0.8;
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    height: 100svh;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
+`
 
 const activeContainer = ({ active = true }) => {
   return `${
@@ -57,25 +91,37 @@ const activeContainer = ({ active = true }) => {
     // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
     max-height: 300px;
   }`
-      : 'max-height: 40px'
+      : `max-height: 40px; 
+      &::-webkit-scrollbar {
+    display: none;
+}`
   }`
 }
 const Container = styled.div`
   position: relative;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  z-index: 1002;
   width: fit-content;
-  border-radius: 8px;
-  background: #ffffff;
-  height: 40px;
+  border-radius: 20px;
+  background-color: ${palette.BG};
+  min-height: 44px;
+  overflow: hidden;
   cursor: pointer;
 `
 
 const OptionList = styled.div<{ active: boolean }>`
   transition: 0.2s ease-in-out;
-  border-radius: 18px;
+  border-radius: 20px;
   overflow-x: hidden;
-  border: 1px solid #ababab;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  border: 1px solid ${props => (props.active ? 'none' : palette.비강조3)};
   height: max-content;
-  padding: 9px 0;
+  min-height: 44px;
   ${activeContainer};
 
   background-color: white;
@@ -83,11 +129,13 @@ const OptionList = styled.div<{ active: boolean }>`
 
 const Label = styled.button`
   width: 100%;
-  font-size: 14px;
-  padding: 0 16px;
+  font-size: 16px;
+  padding: 12px 16px;
   border: none;
+  outline: none;
   cursor: pointer;
-  gap: 7px;
+  min-height: 44px;
+  gap: 10px;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -115,12 +163,13 @@ const StyledOptionList = styled.ul<{ active: boolean }>`
   width: 100%;
   padding: 0 16px;
   height: inherit;
-
+  font-weight: 16px;
+  line-height: 20px;
   border-radius: 8px; // 동글동글하게 아래부분을 만들어야해서 border-radius를 줌.
-  margin-top: 10px;
-  background-color: white;
+
+  background-color: ${palette.BG};
   overflow-y: scroll;
-  ${activeExist};
+
   transition: 0.2s ease-in-out; // 0.2초를 걸려서 부드럽게 ul이 보이고 사라진다.
   &::-webkit-scrollbar {
     // scrollbar 자체의 설정
