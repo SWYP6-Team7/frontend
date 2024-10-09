@@ -27,6 +27,7 @@ const Layout = () => {
     myPageStore()
 
   const { data, isLoading } = useMyPage()
+  const isOnboarding = pathname.startsWith('/onBoardingOne')
   const myPageData: ImyPage = data?.data
 
   useEffect(() => {
@@ -45,7 +46,8 @@ const Layout = () => {
     '/registerName',
     '/registerAge',
     '/registerAge/registerGender',
-    '/registerTripStyle'
+    '/registerTripStyle',
+    '/onBoardingOne'
   ]
   const isAccessTokenNoNeedpages = (path: string) => {
     // 필요없는 페이지 인지 확인하는 함수.
@@ -78,6 +80,7 @@ const Layout = () => {
         {/* {isSignup && <Header />} */}
         {/* 홈 화면 헤더는 다른 형태. */}
         {pathname !== '/' &&
+          !isOnboarding &&
           pathname !== '/registerDone' &&
           pathname !== '/login' &&
           pathname !== '/trip/list' && <Header />}
