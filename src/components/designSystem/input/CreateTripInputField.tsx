@@ -10,7 +10,7 @@ import { BooleanLiteral } from 'typescript'
 // React.InputHTMLAttributes<HTMLInputElement
 // input element의 property 타입들도 상속받아서 사용할 수 있음
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  handleRemoveValue: () => void
+  handleRemoveValue?: () => void
   icon?: React.ReactNode
   isRemove?: boolean
   success?: BooleanLiteral
@@ -35,7 +35,7 @@ const CreateTripInputField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
     {
       icon,
-      handleRemoveValue,
+      handleRemoveValue = () => {},
       isRemove = true,
       success = false,
       onFocus,

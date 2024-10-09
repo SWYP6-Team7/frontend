@@ -20,7 +20,7 @@ const Header = () => {
   const isTripEditPlace = location.pathname.startsWith('/editPlace')
   const isTripApply = location.pathname.startsWith('/trip/apply')
   const isMyTrip = location.pathname.startsWith('/myTrip')
-
+  const isCommunityCreate = location.pathname.startsWith('/community/create')
   const isApply = location.pathname.startsWith('/trip/apply')
   const isMyPage = location.pathname.startsWith('/myPage')
   const isEditMyInfo = location.pathname.startsWith('/editMyInfo')
@@ -60,6 +60,7 @@ const Header = () => {
         {isNotification && '알림'}
         {isEditMyInfo && '내 정보 수정'}
         {isEditMyName && '이름 변경'}
+        {isCommunityCreate && '글쓰기'}
 
         {isTripDetailEdit && (
             <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
