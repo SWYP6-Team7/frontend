@@ -35,7 +35,11 @@ import EditMyInfo from './pages/MyPage/EditMyInfo'
 import EditMyName from './pages/MyPage/EditMyName'
 import TripComment from './pages/Comment/TripComment'
 import RegisterDone from './pages/RegisterDone'
+
 import OnBoarding from './pages/OnBoarding/OnBoarding'
+
+import CreateCommunity from './pages/Community/CreateCommunity'
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -122,7 +126,17 @@ export const router = createBrowserRouter([
       },
       {
         path: '/community',
-        element: <Community />
+        element: (
+          <>
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            path: 'create',
+            element: <CreateCommunity />
+          }
+        ]
       },
       {
         path: '/createTripPlace',
