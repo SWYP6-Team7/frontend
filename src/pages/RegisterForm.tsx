@@ -184,6 +184,7 @@ const RegisterForm = () => {
             value={formData.email}
             hasError={Boolean(error.email)}
             success={success.email}
+            placeholder="이메일 입력"
             shake={shake.email}
           />
           <Spacing size={10} />
@@ -204,6 +205,7 @@ const RegisterForm = () => {
             onChange={changeValue}
             shake={shake.password}
             name="password"
+            placeholder="비밀번호 입력"
             hasError={Boolean(error.password)}
             value={formData.password}
             success={success.password}
@@ -225,6 +227,7 @@ const RegisterForm = () => {
             handleRemoveValue={() => handleRemoveValue('confirmPassword')}
             type="password"
             name="confirmPassword"
+            placeholder="비밀번호 재입력"
             onChange={changeValue}
             hasError={Boolean(error.confirmPassword)}
             value={formData.confirmPassword}
@@ -266,9 +269,7 @@ const Container = styled.form`
 const FieldContainer = styled.div`
   display: flex;
   width: 100%;
-  & > *:not(input) {
-    padding-left: 6px;
-  }
+
   flex-direction: column;
 `
 

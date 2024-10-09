@@ -7,7 +7,7 @@ import PopularPlaceList from '@/components/triplist/PopularPlaceList'
 import { authStore } from '@/store/client/authStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Navbar from '../Home/Navbar'
 import TripInfiniteList from '@/components/triplist/TripInfiniteList'
@@ -19,6 +19,7 @@ const LIST = ['최신순', '추천순']
 
 const TripList = () => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [fixed, setFixed] = useState(true)
   const sort = (() => {
     const value = searchParams.get('sort')
     if (!value || (value !== 'recent' && value !== 'recommend')) {
@@ -48,6 +49,10 @@ const TripList = () => {
     e.stopPropagation()
     navigate('/search/travel')
   }
+
+  const handleFixed = (type: boolean) => {
+    setFixed(type)
+  }
   return (
     <>
       <div>
@@ -67,7 +72,7 @@ const TripList = () => {
             </button>
           </div>
 
-          <Link to={`notification/${userId}`}>
+          <Link to={`/notification`}>
             <AlarmIcon />
           </Link>
         </SearchContainer>
@@ -78,13 +83,14 @@ const TripList = () => {
           <SortHeader
             list={LIST}
             clickSort={onClickSort}
+            setFixed={handleFixed}
             sort={sort}
             totalElements={data?.pages[0].page.totalElements ?? 0}
           />
         </SortContainer>
         <TripInfiniteList />
       </div>
-      <CreateTripButton />
+      {fixed && <CreateTripButton />}
       <Navbar />
     </>
   )
@@ -100,7 +106,7 @@ const SearchContainer = styled.div`
   top: 0px;
   padding-bottom: 16px;
   background-color: ${palette.BG};
-  z-index: 100;
+  z-index: 1000;
 `
 
 const SortContainer = styled.div`
@@ -109,6 +115,7 @@ const SortContainer = styled.div`
   border-bottom: 1px solid rgb(240, 240, 240);
   position: sticky;
   top: calc(116px);
+  z-index: 1001;
   background-color: ${palette.BG};
 `
 

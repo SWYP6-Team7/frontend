@@ -26,13 +26,17 @@ const Login = () => {
     <Container>
       <TopArea>
         <img
-          css={{ marginTop: '100%' }}
-          src={'/images/moing-logo.png'}
+          src={'/images/moingLogo.png'}
           alt="모잉 서비스의 로고 이미지입니다."
           width={80}
           height={82}
         />
-        <Title>MOING</Title>
+        <img
+          src={'/images/logo_txt.png'}
+          width={128}
+          height={32}
+          alt="모잉 서비스의 로고 입니다."
+        />
       </TopArea>
       <EmailLoginForm />
       {/* <BottomArea>
@@ -70,14 +74,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `
 
 const TopArea = styled.div`
   display: flex;
-  margin-top: 13.8svh;
+
   justify-content: end;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
   flex-direction: column;
   padding-bottom: 7.7svh;
 `

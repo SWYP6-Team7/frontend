@@ -20,12 +20,20 @@ const Header = () => {
   const isTripEditPlace = location.pathname.startsWith('/editPlace')
   const isTripApply = location.pathname.startsWith('/trip/apply')
   const isMyTrip = location.pathname.startsWith('/myTrip')
-
+  const isCommunityCreate = location.pathname.startsWith('/community/create')
   const isApply = location.pathname.startsWith('/trip/apply')
   const isMyPage = location.pathname.startsWith('/myPage')
   const isEditMyInfo = location.pathname.startsWith('/editMyInfo')
   const isEditMyName = location.pathname.startsWith('/editMyName')
+  const isTripComment = location.pathname.startsWith('/trip/comment')
   const handleBack = () => {
+    if (isTripDetail) {
+      navigate('/')
+      return
+    } else if (isSearch) {
+      navigate('/')
+      return
+    }
     navigate(-1)
   }
 
@@ -48,10 +56,11 @@ const Header = () => {
         {isCreateTrip && '여행 만들기'}
         {isApply && '참가 신청'}
         {isTripEnrollment && '참가 신청 목록'}
-
+        {isTripComment && '멤버 댓글'}
         {isNotification && '알림'}
         {isEditMyInfo && '내 정보 수정'}
         {isEditMyName && '이름 변경'}
+        {isCommunityCreate && '글쓰기'}
 
         {isTripDetailEdit && (
             <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
@@ -64,7 +73,7 @@ const Header = () => {
       {location.pathname != '/registerTripStyle' && <VoidArea />}
       {isTripDetail && <TripDetailHeader />}
       {(isMyTrip || isMyPage) && (
-        <div onClick={() => navigate(`notification/${userId}`)}>
+        <div onClick={() => navigate(`/notification`)}>
           <AlarmIcon
             size={23}
             stroke={palette.기본}

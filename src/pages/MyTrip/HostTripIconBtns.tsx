@@ -99,7 +99,7 @@ export default function HostTripIconBtns({
             />
           </div>
         ) : (
-          <div>
+          <div onClick={bookmarkClickHandler}>
             <EmptyHeartIcon
               width={24}
               height={21.4}

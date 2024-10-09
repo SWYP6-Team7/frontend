@@ -36,7 +36,15 @@ const Container = styled.div<{
   gap: 16px;
   left: 0;
   bottom: 0;
-  position: absolute;
+  position: fixed;
+  width: 100%;
+
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   padding: 0 24px;
   background-color: white;
   backdrop-filter: ${props => (props.blur ? props.blur : 'none')};

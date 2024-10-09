@@ -17,7 +17,8 @@ export const createTrip = (
   travelData: CreateTripReqData,
   accessToken: string
 ) => {
-  return axiosInstance.post('/api/travel', travelData, {
+  const newData = { ...travelData, locationName: travelData.location }
+  return axiosInstance.post('/api/travel', newData, {
     headers: getJWTHeader(accessToken)
   })
 }

@@ -4,21 +4,26 @@ import { useNavigate } from 'react-router-dom'
 import Badge from '@/components/designSystem/Badge'
 import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import TitleContainer from './ContentTitleContainer'
-import { daysLeft } from '@/utils/time'
+import { daysLeft, daysAgo } from '@/utils/time'
 import { palette } from '@/styles/palette'
 import { ITripList } from '@/model/trip'
 import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
+import { IMyTripList } from '@/model/myTrip'
 const BookmarkContainer = () => {
   const navigate = useNavigate()
   // 북마크 가져오기
 
-  const { data } = useBookmark('1')
-  const bookmarks = data?.data.content as ITripList['content']
+  const { data } = useBookmark()
+  const bookmarks = data?.pages[0].content as IMyTripList['content']
 
+  console.log(bookmarks, 'bookmarks')
   return (
     <BookmarkBox>
-      <TitleContainer text="즐겨찾기" />
+      <TitleContainer
+        text="즐겨찾기"
+        detailLink="/myTrip"
+      />
       <ContentList>
         {/* Empty는 북마크 한 것이 없을 때,로그인 안할 때. 보여줄 div */}
         {bookmarks === undefined && (
@@ -49,32 +54,39 @@ const BookmarkContainer = () => {
             </EmptyBox>
           ) : (
             <BookmarkList>
-              {bookmarks.map((post, idx) => (
-                <BookmarkPreviewBox key={idx}>
-                  <HorizonBoxLayout
-                    isBar={true}
-                    bookmarkPosition="top"
-                    userName={post.userName}
-                    tags={post.tags}
-                    daysAgo={dayjs().diff(
-                      dayjs(post.createdAt, 'YYYY년MM월DD일'),
-                      'day'
-                    )}
-                    daysLeft={dayjs(post.registerDue, 'YYYY년MM월DD일').diff(
-                      dayjs(),
-                      'day'
-                    )}
-                    title={post.title}
-                    recruits={post.nowPerson}
-                    total={post.maxPerson}
-                  />
-                </BookmarkPreviewBox>
-              ))}
+              {bookmarks.map(
+                (post, idx) =>
+                  post.bookmarked && (
+                    <BookmarkPreviewBox
+                      onClick={() =>
+                        navigate(`/trip/detail/${post.travelNumber}`)
+                      }
+                      key={idx}>
+                      <HorizonBoxLayout
+                        bookmarked={post.bookmarked}
+                        travelNumber={post.travelNumber}
+                        bookmarkNeed={false}
+                        isBar={true}
+                        bookmarkPosition="top"
+                        userName={post.userName}
+                        location={post.location}
+                        tags={post.tags}
+                        daysAgo={daysAgo(post?.createdAt)}
+                        daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
+                          dayjs(),
+                          'day'
+                        )}
+                        title={post.title}
+                        recruits={post.nowPerson}
+                        total={post.maxPerson}
+                      />
+                    </BookmarkPreviewBox>
+                  )
+              )}
             </BookmarkList>
           ))}
       </ContentList>
     </BookmarkBox>
-
   )
 }
 export default BookmarkContainer

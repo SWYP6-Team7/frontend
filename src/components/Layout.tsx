@@ -16,16 +16,18 @@ import useAuth from '@/hooks/user/useAuth'
 import { myPageStore } from '@/store/client/myPageStore'
 import useMyPage from '@/hooks/myPage/useMyPage'
 import { ImyPage } from '@/model/myPages'
+import Splash from '@/pages/Splash'
 const Layout = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { userPostRefreshToken } = useAuth()
-  const { userId, accessToken } = authStore()
+  const { userId, accessToken, logoutCheck } = authStore()
   // 유저 프로필 정보 불러오기
   const { addEmail, addName, addGender, addAgegroup, addPreferredTags } =
     myPageStore()
 
   const { data, isLoading } = useMyPage()
+  const isOnboarding = pathname.startsWith('/onBoardingOne')
   const myPageData: ImyPage = data?.data
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const Layout = () => {
       addPreferredTags(myPageData.preferredTags)
       addGender(myPageData.gender)
     }
-  }, [isLoading])
+  }, [isLoading]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
 
   const noNeedPages = [
     '/login',
@@ -44,7 +46,8 @@ const Layout = () => {
     '/registerName',
     '/registerAge',
     '/registerAge/registerGender',
-    '/registerTripStyle'
+    '/registerTripStyle',
+    '/onBoardingOne'
   ]
   const isAccessTokenNoNeedpages = (path: string) => {
     // 필요없는 페이지 인지 확인하는 함수.
@@ -52,7 +55,7 @@ const Layout = () => {
   }
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
-    if (!accessToken) {
+    if (!accessToken && !logoutCheck) {
       // 토큰이 없으면 리프레쉬 토큰 api 요청.
       const refreshAccessToken = async () => {
         try {
@@ -60,7 +63,10 @@ const Layout = () => {
           await userPostRefreshToken()
         } catch (error) {
           console.error('Failed to refresh token:', error)
-          //navigate('/login') // 로그인 이동.
+
+          navigate('/login') // 로그인 이동.
+
+
         }
       }
 
@@ -72,10 +78,13 @@ const Layout = () => {
   console.log(userId, accessToken, '토큰')
   return (
     <Container pathname={pathname}>
+      <Splash />
       <Body pathname={pathname}>
         {/* {isSignup && <Header />} */}
         {/* 홈 화면 헤더는 다른 형태. */}
         {pathname !== '/' &&
+          !isOnboarding &&
+          pathname !== '/registerDone' &&
           pathname !== '/login' &&
           pathname !== '/trip/list' && <Header />}
         <Outlet />

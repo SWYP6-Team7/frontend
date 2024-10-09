@@ -20,7 +20,8 @@ const tripDetail = {
   tags: ['✊ 즉흥', '🏔️ 자연', '🍔 먹방'],
   postStatus: '진행중',
   hostUserCheck: false,
-  enrollmentNumber: null
+  enrollmentNumber: null,
+  bookmarked: true
 }
 const companions = {
   totalCount: 5,
@@ -59,6 +60,12 @@ export const tripDetailHandler = [
     const travelNumber = url.searchParams.get('travelNumber')
     return HttpResponse.json(tripDetail, { status: 200 })
   }),
+  http.post('/api/travel', async ({ request }) => {
+    console.log(request, '요청.')
+    const url = new URL(request.url)
+    const travelNumber = url.searchParams.get('travelNumber')
+    return HttpResponse.json(tripDetail)
+  }),
   http.get('/api/travel/:travelNumber/companions', async ({ request }) => {
     console.log(request, '요청.')
     const url = new URL(request.url)
@@ -69,6 +76,6 @@ export const tripDetailHandler = [
     console.log(request, '요청.')
     const url = new URL(request.url)
     const travelNumber = url.searchParams.get('travelNumber')
-    return HttpResponse.json({ status: 200 })
+    return HttpResponse.json({ status: 204 })
   })
 ]

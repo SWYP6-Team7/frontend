@@ -9,7 +9,7 @@ export async function postEnrollment(
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.post('/api/enrollment', data, {
-      headers: getJWTHeader('')
+      headers: getJWTHeader(accessToken)
     })
   } catch (err) {
     console.log(err)
@@ -50,12 +50,14 @@ export async function getLastViewed(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.get(
+    const response = await axiosInstance.get(
       `/api/travel/${travelNumber}/enrollments/last-viewed`,
       {
         headers: getJWTHeader(accessToken)
       }
     )
+
+    return response.data
   } catch (err) {
     console.log(err)
   }
@@ -71,7 +73,7 @@ export async function putLastViewed(
     return axiosInstance.put(
       `/api/travel/${travelNumber}/enrollments/last-viewed`,
       {
-        lastViewAt: viewedAt
+        lastViewedAt: viewedAt
       },
       {
         headers: getJWTHeader(accessToken)
@@ -89,9 +91,13 @@ export async function rejectEnrollment(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.put(`/api/enrollment/${enrollmentNumber}/rejection`, {
-      headers: getJWTHeader(accessToken)
-    })
+    return axiosInstance.put(
+      `/api/enrollment/${enrollmentNumber}/rejection`,
+      {},
+      {
+        headers: getJWTHeader(accessToken)
+      }
+    )
   } catch (err) {
     console.log(err)
   }
@@ -103,8 +109,9 @@ export async function acceptEnrollment(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.post(
+    return axiosInstance.put(
       `/api/enrollment/${enrollmentNumber}/acceptance`,
+      {},
       {
         headers: getJWTHeader(accessToken)
       }

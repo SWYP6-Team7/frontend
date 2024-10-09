@@ -14,6 +14,10 @@ import { tuple } from 'zod'
 import BookmarkIconBtns from './BookmarkIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
+import { IMyTripList } from '@/model/myTrip'
+
+import { daysAgo } from '@/utils/time'
+
 export default function Bookmark() {
   const [ref, inView] = useInView()
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
@@ -24,11 +28,9 @@ export default function Bookmark() {
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage])
 
-  function isEmptyObject(): boolean {
-    // 빈 데이터 확인 함수.
-    return Object.keys(data?.pages[0] as object).length === 0
-  }
-  const isNoData = data && isEmptyObject()
+  const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
+
+  const isNoData = trips.length === 0
   return (
     <Container isNodata={isNoData}>
       {isNoData && (
@@ -58,14 +60,12 @@ export default function Bookmark() {
                   <MyTripHorizonBoxLayout
                     travelNumber={content.travelNumber}
                     userName={content.userName}
+                    location={content.location}
                     title={content.title}
                     tags={content.tags}
                     total={content.maxPerson}
-                    daysAgo={dayjs().diff(
-                      dayjs(content.createdAt, 'YYYY년MM월DD일'),
-                      'day'
-                    )}
-                    daysLeft={dayjs(content.registerDue, 'YYYY년MM월DD일').diff(
+                    daysAgo={daysAgo(content?.createdAt)}
+                    daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                       dayjs(),
                       'day'
                     )}

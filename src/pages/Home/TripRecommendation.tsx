@@ -7,12 +7,15 @@ import { useTripList } from '@/hooks/useTripList'
 import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
+import { IMyTripList } from '@/model/myTrip'
+import { daysAgo } from '@/utils/time'
+import { Link } from 'react-router-dom'
 
 const TripRecommendation = () => {
   const { data } = useTripList('recommend')
   const { name } = userStore()
 
-  const trips = data?.pages[0].content ?? []
+  const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
   const cutTrips = trips?.length > 9 ? trips.slice(0, 9) : trips
 
   return (
@@ -32,23 +35,25 @@ const TripRecommendation = () => {
             <div
               css={{ padding: '18px 16px' }}
               key={post.travelNumber}>
-              <HorizonBoxLayout
-                showTag={false}
-                bookmarkPosition="middle"
-                userName={post.userName}
-                tags={post.tags}
-                daysAgo={dayjs().diff(
-                  dayjs(post.createdAt, 'YYYY년MM월DD일'),
-                  'day'
-                )}
-                daysLeft={dayjs(post.registerDue, 'YYYY년MM월DD일').diff(
-                  dayjs(),
-                  'day'
-                )}
-                title={post.title}
-                recruits={post.nowPerson}
-                total={post.maxPerson}
-              />
+              <Link to={`/trip/detail/${post.travelNumber}`}>
+                <HorizonBoxLayout
+                  bookmarked={post.bookmarked}
+                  location={post.location}
+                  travelNumber={post.travelNumber}
+                  showTag={false}
+                  bookmarkPosition="middle"
+                  userName={post.userName}
+                  tags={post.tags}
+                  daysAgo={daysAgo(post?.createdAt)}
+                  daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
+                    dayjs(),
+                    'day'
+                  )}
+                  title={post.title}
+                  recruits={post.nowPerson}
+                  total={post.maxPerson}
+                />
+              </Link>
             </div>
           ))}
       </ThreeRowCarousel>

@@ -2,6 +2,7 @@ import {
   deleteTripDetail,
   getCompanions,
   getTripDetail,
+  getTripEnrollmentCount,
   updateTripDetail
 } from '@/api/tripDetail'
 import { ITripDetail } from '@/model/tripDetail'
@@ -16,6 +17,12 @@ const useTripDetail = (travelNumber: number) => {
     queryFn: () => getTripDetail(travelNumber, accessToken),
     enabled: !!travelNumber && !!accessToken
   })
+  // 현재 신청 온 사람 수
+  const tripEnrollmentCount = useQuery({
+    queryKey: ['tripEnrollment', travelNumber],
+    queryFn: () => getTripEnrollmentCount(travelNumber, accessToken),
+    enabled: !!travelNumber && !!accessToken
+  })
 
   const companions = useQuery({
     queryKey: ['companions', travelNumber],
@@ -23,17 +30,20 @@ const useTripDetail = (travelNumber: number) => {
     enabled: !!travelNumber && !!accessToken
   })
 
-  const { mutateAsync: updateTripDetailMutation, isSuccess: isEditSuccess } =
-    useMutation({
-      mutationFn: (data: ITripDetail) => {
-        return updateTripDetail(travelNumber, data, accessToken)
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['tripDetail', travelNumber]
-        })
-      }
-    })
+  const {
+    mutate: updateTripDetailMutate,
+    mutateAsync: updateTripDetailMutation,
+    isSuccess: isEditSuccess
+  } = useMutation({
+    mutationFn: (data: ITripDetail) => {
+      return updateTripDetail(travelNumber, data, accessToken)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['tripDetail', travelNumber]
+      })
+    }
+  })
 
   const { mutateAsync: deleteTripDetailMutation } = useMutation({
     mutationFn: () => {
@@ -55,9 +65,11 @@ const useTripDetail = (travelNumber: number) => {
   return {
     tripDetail,
     isEditSuccess,
+    updateTripDetailMutate,
     updateTripDetailMutation,
     deleteTripDetailMutation,
-    companions
+    companions,
+    tripEnrollmentCount
   }
 }
 

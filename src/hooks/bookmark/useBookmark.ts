@@ -31,7 +31,7 @@ export const useBookmark = () => {
     queryFn: ({ pageParam }) => {
       return getBookmark(pageParam as number, accessToken!)
     },
-
+    enabled: !!accessToken,
     initialPageParam: 0,
     getNextPageParam: lastPage => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
@@ -40,7 +40,6 @@ export const useBookmark = () => {
         if (lastPage?.page?.number + 1 === 3) return undefined //30개까지만 요청
         return lastPage?.page?.number + 1
       }
-
     }
   })
   return {

@@ -7,6 +7,7 @@ import Spacing from './Spacing'
 import CheckIcon from './icons/CheckIcon'
 import Button from './Button'
 import { palette } from '@/styles/palette'
+import ResultToast from './designSystem/toastMessage/resultToast'
 
 interface TermsProps {
   closeShowTerms: () => void
@@ -14,15 +15,19 @@ interface TermsProps {
 
 const Terms = ({ closeShowTerms }: TermsProps) => {
   const [check, setCheck] = useState({
-    service: false,
-    privacy: false
+    service: true,
+    privacy: true
   })
+  const [isToastShow, setIsToastShow] = useState(false)
   const navigate = useNavigate()
   const handleBackButton = () => {
     navigate(-1)
   }
 
   const handleCheck = (item: 'privacy' | 'service') => {
+    if (check[item]) {
+      setIsToastShow(true)
+    }
     setCheck(prev => ({
       ...prev,
       [item]: !prev[item]
@@ -37,7 +42,7 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
         <Title>
           모잉을 이용하기 위해
           <br />
-          <GreenText>약관에 동의</GreenText>가 필요해요.
+          <GreenText>동의</GreenText>가 필요해요.
         </Title>
 
         <Bar />
@@ -97,6 +102,12 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
         )}
         <Spacing size={40} />
       </TermsContainer>
+      <ResultToast
+        bottom="80px"
+        isShow={isToastShow}
+        setIsShow={setIsToastShow}
+        text="필수 항목은 반드시 동의해야 해요."
+      />
     </Container>
   )
 }

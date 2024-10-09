@@ -20,11 +20,12 @@ const useEnrollment = (travelNumber: number) => {
     enabled: !!travelNumber && !!accessToken
   })
   // 주최자 - 가장 최근에 봤던 글.
-  // const enrollmentsLastViewed = useQuery({
-  //   queryKey: ['enrollment', travelNumber],
-  //   queryFn: () => getLastViewed(travelNumber, accessToken)
-  //   enabled: !!travelNumber && !!accessToken
-  // })
+
+  const enrollmentsLastViewed = useQuery({
+    queryKey: ['enrollmentLastViewed', travelNumber],
+    queryFn: () => getLastViewed(travelNumber, accessToken),
+    enabled: !!travelNumber && !!accessToken
+  })
 
   const queryClient = useQueryClient()
   // 최근 열람 시점 업데이트.
@@ -35,11 +36,10 @@ const useEnrollment = (travelNumber: number) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['enrollment', travelNumber]
+        queryKey: ['enrollmentLastViewed', travelNumber]
       })
     }
   })
-  // 주최자 - 참가 신청 거절
 
   const { mutateAsync: enrollmentRejectionMutate } = useMutation({
     mutationFn: (enrollmentNumber: number) => {
@@ -51,7 +51,13 @@ const useEnrollment = (travelNumber: number) => {
         queryClient.invalidateQueries({
           queryKey: ['enrollment', travelNumber]
         })
+        queryClient.invalidateQueries({
+          queryKey: ['tripDetail', travelNumber]
+        })
       }, 1300)
+      queryClient.invalidateQueries({
+        queryKey: ['tripEnrollment', travelNumber]
+      })
     }
   })
 
@@ -66,6 +72,12 @@ const useEnrollment = (travelNumber: number) => {
       setTimeout(() => {
         queryClient.invalidateQueries({
           queryKey: ['enrollment', travelNumber]
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['tripDetail', travelNumber]
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['tripEnrollment', travelNumber]
         })
       }, 1300)
     }
@@ -96,6 +108,9 @@ const useEnrollment = (travelNumber: number) => {
   const cancel = (enrollmentNumber: number) => {
     return cancelMutation.mutateAsync(enrollmentNumber, {
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['tripDetail', travelNumber]
+        })
         if (!enrollmentList.data) {
           setTimeout(() => {
             queryClient.invalidateQueries({
@@ -115,7 +130,7 @@ const useEnrollment = (travelNumber: number) => {
     enrollmentList,
     enrollmentRejectionMutate,
     enrollmentAcceptanceMutate,
-    // enrollmentsLastViewed,
+    enrollmentsLastViewed,
     updateLastViewed
   }
 }

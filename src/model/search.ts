@@ -9,7 +9,9 @@ export interface IContent {
   tags: string[]
   maxPerson: number
   nowPerson: number
+  location: string
   userName: string
+  bookmarked: boolean
 }
 
 export interface ISort {

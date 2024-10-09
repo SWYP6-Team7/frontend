@@ -8,7 +8,7 @@ import { authStore } from '@/store/client/authStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const ApplyTrip = () => {
@@ -18,8 +18,7 @@ const ApplyTrip = () => {
   const { setApplySuccess } = tripDetailStore()
   const { apply, applyMutation } = useEnrollment(Number(travelNumber))
   const navigate = useNavigate()
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     try {
       if (Number.isNaN(Number(travelNumber))) {
         throw new Error('잘못된 경로입니다.')
@@ -33,18 +32,22 @@ const ApplyTrip = () => {
       if (message.length > 1000) {
         throw new Error('메제지는 1,000자 미만이여야 합니다.')
       }
-      apply({ travelNumber: Number(travelNumber), message })
-      if (applyMutation.isSuccess) {
-        setApplySuccess(true)
-        navigate(`/trip/detail/${travelNumber}`)
-      }
+      await apply({ travelNumber: Number(travelNumber), message })
+      console.log(applyMutation, 'applyMutation')
     } catch (err) {
       console.error(err)
     }
   }
 
+  useEffect(() => {
+    if (applyMutation.isSuccess) {
+      setApplySuccess(true)
+      navigate(`/trip/detail/${travelNumber}`)
+    }
+  }, [applyMutation.isSuccess, navigate, setApplySuccess, travelNumber])
+
   return (
-    <Container onSubmit={handleSubmit}>
+    <Container>
       <ApplyTripProfile />
       <TextareaField
         placeholder="참가 신청 메세지를 적어주세요.
@@ -54,8 +57,9 @@ const ApplyTrip = () => {
       />
       <ButtonContainer>
         <Button
+          onClick={handleSubmit}
           text={'보내기'}
-          disabled={message === ''}
+          disabled={message === '' || applyMutation.isPending}
           addStyle={
             message === ''
               ? {
@@ -71,11 +75,11 @@ const ApplyTrip = () => {
   )
 }
 
-const Container = styled.form`
+const Container = styled.div`
   margin-top: 2.5svh;
   padding: 0 24px;
   display: flex;
-  justify-centent: center;
+  justify-content: center;
   flex-direction: column;
   gap: 2.5svh;
 `

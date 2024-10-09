@@ -20,7 +20,7 @@ interface HorizonBoxProps {
   total: number
   location?: string
   userName: string
-  daysAgo: number
+  daysAgo: string
   imgSrc?: string // 이미지 없는 경우 대비.
   tags: string[]
   bookmarked: boolean
@@ -138,20 +138,20 @@ const MyTripHorizonBoxLayout = ({
               ·
             </div>
             <DaysAgo css={{ fontSize: '14px', fontWeight: 40 }}>
-              {daysAgo}일전
+              {daysAgo}
             </DaysAgo>
           </UserBox>
         </div>
         <Tags>
           <BoxLayoutTag
             text={
-              <div>
+              <Location>
                 <PlaceIcon
-                  height={14}
-                  width={12}
+                  height={12}
+                  width={10}
                 />
-                &nbsp;{location}
-              </div>
+                <div>{location}</div>
+              </Location>
             }
           />
           {cutTags.map((text: string, idx) => (
@@ -242,6 +242,13 @@ const Recruiting = styled.div`
 const PostInfo = styled.div`
   width: 100%;
 `
+
+const Location = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`
+
 const UserBox = styled.div`
   display: flex;
   gap: 4px;

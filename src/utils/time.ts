@@ -1,11 +1,12 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import updateLocale from 'dayjs/plugin/updateLocale'
+import utc from 'dayjs/plugin/utc'
 
 dayjs.extend(relativeTime)
 dayjs.extend(updateLocale)
+dayjs.extend(utc)
 
-// 로케일 설정
 dayjs.updateLocale('en', {
   relativeTime: {
     future: 'in %s',
@@ -25,44 +26,70 @@ dayjs.updateLocale('en', {
 })
 
 export function formatTime(date: string) {
-  const now = dayjs()
-  const inputDate = dayjs(date)
+  const now = dayjs().utcOffset(9)
+  const inputDate = dayjs.utc(date).utcOffset(9) // locale utc 변환해보기
 
-  // 현재 시간과의 차이를 계산
   const diffInMinutes = now.diff(inputDate, 'minute')
   const diffInHours = now.diff(inputDate, 'hour')
   const diffInDays = now.diff(inputDate, 'day')
 
-  // 59분까지는 'x분 전'
   if (diffInMinutes < 60) {
     return inputDate.fromNow()
-    // 1시간 이상 24시간 미만은 'x시간 전'
   } else if (diffInHours < 24) {
     return inputDate.fromNow()
-    // 1일 차이는 '어제'
   } else if (diffInDays === 1) {
     return '어제'
-    // 1일 초과 7일 이하는 'x일 전'
-  } else if (diffInDays <= 7) {
-    return inputDate.fromNow()
-    // 그 외는 'yy.mm.dd'
   } else {
-    return inputDate.format('YY.MM.DD')
+    return inputDate.fromNow()
   }
 }
 
 export function daysLeft(dateString: string) {
-  // 오늘 날짜
-  const today = new Date()
-
-  // 주어진 날짜
-  const targetDate = new Date(dateString)
-
-  // 밀리초 단위로 차이 계산
+  const today = dayjs().utcOffset(9).toDate()
+  const targetDate = dayjs.utc(dateString).utcOffset(9).toDate()
   const timeDifference = targetDate.getTime() - today.getTime()
-
-  // 밀리초를 일 수로 변환
   const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
 
   return daysDifference
+}
+
+export function daysAgo(date: string) {
+  const now = dayjs().utcOffset(9)
+  const inputDate = dayjs.utc(date).utcOffset(9)
+
+  const diffInMinutes = now.diff(inputDate, 'minute')
+  const diffInHours = now.diff(inputDate, 'hour')
+  const diffInDays = now.diff(inputDate, 'day')
+
+  if (diffInMinutes < 10) {
+    return '지금'
+  } else if (diffInMinutes < 60) {
+    return `${diffInMinutes}분 전`
+  } else if (diffInHours < 24) {
+    return `${diffInHours}시간 전`
+  } else if (diffInDays === 1) {
+    return '어제'
+  } else {
+    return `${diffInDays}일 전`
+  }
+}
+
+export function daysAgoFormatted(date: string) {
+  const format = 'YYYY년 MM월 DD일 HH시 mm분'
+  const parsedDate = dayjs(date, format)
+
+  return daysAgo(parsedDate.format('YYYY-MM-DD HH:mm'))
+}
+// 현재 시간을 2000-10-10 11:11 문자열로 반환.
+export function getCurrentFormattedDate() {
+  const now = new Date()
+
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0') // 0부터 시작하므로 +1
+  const day = String(now.getDate()).padStart(2, '0')
+
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`
 }

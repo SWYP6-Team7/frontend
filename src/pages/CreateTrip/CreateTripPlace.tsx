@@ -5,9 +5,10 @@ import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
 import Spacing from '@/components/Spacing'
+import useRelationKeyword from '@/hooks/search/useRelationKeyword'
 import { createTripStore } from '@/store/client/createTripStore'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function CreateTripPlace() {
@@ -15,6 +16,8 @@ export default function CreateTripPlace() {
   const [showRelationList, setShowRelationList] = useState(true)
   const navigate = useNavigate()
   const { addLocation } = createTripStore()
+  const { data, isLoading, error } = useRelationKeyword(keyword)
+
   // const { data, isLoading } = useRelationKeyword(keyword)
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
@@ -31,17 +34,20 @@ export default function CreateTripPlace() {
   const handleRemoveValue = () => setKeyword('')
 
   const handleNext = () => {
+    // if (!isMatchedKeyword) {
+    //   return
+    // }
     addLocation(keyword)
     navigate('/createTripIntroduce')
   }
 
   // const isMatchedKeyword = useMemo(() => {
-  //   if (data) {
-  //     return data.includes(keyword)
+  //   if (data?.suggestions && Array.isArray(data.suggestions)) {
+  //     return data.suggestions.includes(keyword)
   //   } else {
   //     return false
   //   }
-  // }, [keyword, data?.length])
+  // }, [keyword, data?.suggestions])
   return (
     <Container>
       <StepIconContainer>

@@ -4,19 +4,33 @@ import styled from '@emotion/styled'
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import ArrowIcon from '../icons/ArrowIcon'
 import UpArrowIcon from '../icons/UpArrowIcon'
+import { commentStore } from '@/store/client/commentStore'
+import useComment from '@/hooks/comment/useComment'
+import ResultToast from '../designSystem/toastMessage/resultToast'
 
 interface CommentFormProps {
   paddingBottom?: number
   paddingTop?: number
+  relatedType: 'travel' | 'community'
+  relatedNumber: number
 }
 
 const CommentForm = ({
   paddingBottom = 40,
-  paddingTop = 16
+  paddingTop = 16,
+  relatedType,
+  relatedNumber
 }: CommentFormProps) => {
+  const { isEdit, edit, parentNumber, commentNumber, setReset, isReply } =
+    commentStore()
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [focused, setFocused] = useState(false)
+  const [isToastShow, setIsToastShow] = useState(false)
   const [value, setValue] = useState('')
+  const { post, postMutation, updateMutation, update } = useComment(
+    relatedType,
+    relatedNumber
+  )
   const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (inputRef.current) {
       inputRef.current.style.height = '32px'
@@ -25,9 +39,50 @@ const CommentForm = ({
     setValue(e.target.value)
   }
   useKeyboardResizeEffect()
+  console.log(value, 'value')
+  useEffect(() => {
+    if (inputRef?.current) {
+      if (isEdit && edit !== '') {
+        console.log('eidt', edit)
+        setValue(edit)
+        inputRef.current.focus()
+      }
+      if (isReply) {
+        inputRef.current.focus()
+      }
+    }
+  }, [isEdit, isReply])
+
+  useEffect(() => {
+    if (!focused) {
+      if (value === '') {
+        setReset()
+      }
+    }
+  }, [focused, value])
+
+  const submitComment = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (value === '') {
+      return
+    }
+
+    if (isEdit) {
+      if (!commentNumber) {
+        return
+      }
+      update({ content: value, commentNumber })
+      if (updateMutation.isSuccess) setIsToastShow(true)
+    } else {
+      post({ content: value, parentNumber })
+    }
+    setValue('')
+    setReset()
+  }
 
   return (
     <Container
+      onSubmit={submitComment}
       paddingBottom={paddingBottom}
       paddingTop={paddingTop}>
       <InputContainer focused={focused}>
@@ -36,11 +91,20 @@ const CommentForm = ({
           onBlur={() => setFocused(false)}
           ref={inputRef}
           onChange={handleInput}
+          value={value}
         />
-        <Button canSubmit={value !== ''}>
+        <Button
+          type="submit"
+          canSubmit={value !== ''}>
           <UpArrowIcon />
         </Button>
       </InputContainer>
+      <ResultToast
+        bottom="80px"
+        isShow={isToastShow}
+        setIsShow={setIsToastShow}
+        text="댓글이 수정되었어요."
+      />
     </Container>
   )
 }

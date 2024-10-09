@@ -18,6 +18,9 @@ import { useStore } from 'zustand'
 import { userStore } from '@/store/client/userStore'
 import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
+import { unknown } from 'zod'
+import { getCurrentFormattedDate } from '@/utils/time'
+import ButtonContainer from '@/components/ButtonContainer'
 
 const TAG_LIST = [
   {
@@ -53,7 +56,14 @@ const CreateTripDetail = () => {
     periodType,
     addPeriodType,
     tags,
-    addTags
+    addTags,
+    addLocation,
+    addTitle,
+    addMaxPerson,
+    addGenderType,
+    addCompletionStatus,
+    addDueDate,
+    addDetails
   } = createTripStore()
   const { userId, accessToken } = authStore()
   const navigate = useNavigate()
@@ -81,11 +91,33 @@ const CreateTripDetail = () => {
     tags,
     completionStatus
   }
-  const { createTripMutate } = useCreateTrip(travelData, accessToken as string) // 여행 생성 api 요청.
-  const completeClickHandler = () => {
-    navigate('/')
+  const { createTripMutate, isCreatedSuccess } = useCreateTrip(
+    travelData,
+    accessToken as string
+  ) // 여행 생성 api 요청.
 
-    createTripMutate()
+  useEffect(() => {
+    addCompletionStatus(true)
+  }, [])
+
+  const completeClickHandler = () => {
+    createTripMutate(undefined, {
+      onSuccess: () => {
+        addTitle('')
+        addLocation('')
+        addDetails('')
+        addMaxPerson(0)
+        addGenderType('')
+        addDueDate(getCurrentFormattedDate())
+        addPeriodType('')
+        addTags([])
+        navigate('/')
+        addCompletionStatus(false)
+      },
+      onError: e => {
+        console.log(e, '여행 생성에 오류 발생.')
+      }
+    })
     console.log(
       title,
       location,
@@ -97,6 +129,23 @@ const CreateTripDetail = () => {
       tags
     )
   }
+
+  //   useEffect(() => {
+  //     // 여행 생성 성공.
+  //     if (isCreatedSuccess) {
+  //       // 다시 빈 값으로 만들기.
+  //       addTitle('')
+  //       addLocation('')
+  //       addDetails('')
+  //       addMaxPerson(0)
+  //       addGenderType('')
+  //       addDueDate('')
+  //       addPeriodType('')
+  //       addTags([])
+  //       addCompletionStatus(false)
+  //       navigate('/')
+  //     }
+  //   }, [isCreatedSuccess])
 
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
   const [activeDuration, setActiveDuration] = useState<boolean[]>(
@@ -211,7 +260,7 @@ const CreateTripDetail = () => {
         <div></div>
       </CreateTripDetailContainer>
 
-      <ButtonWrapper width={newRightPosition}>
+      <ButtonContainer>
         <Button
           text="완료"
           onClick={completeClickHandler}
@@ -221,7 +270,7 @@ const CreateTripDetail = () => {
             boxShadow: 'rgba(170, 170, 170, 0.1)'
           }}
         />
-      </ButtonWrapper>
+      </ButtonContainer>
     </CreateTripDetailWrapper>
   )
 }
@@ -306,7 +355,9 @@ const ButtonWrapper = styled.div<{ width: string }>`
   padding: 0px 24px;
   z-index: 10;
 `
-const CreateTripDetailWrapper = styled.div``
+const CreateTripDetailWrapper = styled.div`
+  position: relative;
+`
 const CreateTripDetailContainer = styled.div`
   padding: 0px 24px;
 `

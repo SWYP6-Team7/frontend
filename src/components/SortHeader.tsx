@@ -10,12 +10,14 @@ interface SortHeaderProps {
   sort: string
   clickSort: (value: any) => void
   totalElements: number
+  setFixed?: (bool: boolean) => void
 }
 
 const SortHeader = ({
   list,
   clickSort,
   sort,
+  setFixed,
   totalElements
 }: SortHeaderProps) => {
   const [showModal, setShowModal] = useState(false)
@@ -23,12 +25,18 @@ const SortHeader = ({
     clickSort(value as (typeof list)[number])
     setShowModal(false)
   }
+  const handleShowModal = (type: boolean) => {
+    setShowModal(type)
+    if (setFixed) {
+      setFixed(!type)
+    }
+  }
   return (
     <>
       {showModal && (
         <BottomModal
           initialHeight={40}
-          closeModal={() => setShowModal(false)}>
+          closeModal={() => handleShowModal(false)}>
           <SortContainer>
             <Spacing size={24} />
             {list.map(value => (
@@ -64,7 +72,7 @@ const SortHeader = ({
         <CountContainer>
           총&nbsp;<Count>{totalElements}건</Count>
         </CountContainer>
-        <ShowSortButton onClick={() => setShowModal(true)}>
+        <ShowSortButton onClick={() => handleShowModal(true)}>
           <SortIcon />
           {sort}
         </ShowSortButton>

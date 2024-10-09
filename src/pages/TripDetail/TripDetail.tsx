@@ -22,12 +22,15 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CompanionsView from './CompanionsView'
+import { daysAgo } from '@/utils/time'
+import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [isApplyToast, setIsApplyToast] = useState(false)
   const [isCancelToast, setIsCancelToast] = useState(false)
+
   const {
     location,
     postStatus,
@@ -46,14 +49,18 @@ export default function TripDetail() {
     enrollmentNumber,
     travelNumber,
     nowPerson,
-    ageGroup,
-    applySuccess
+    userAgeGroup,
+    addUserAgeGroup,
+    applySuccess,
+    setApplySuccess
   } = tripDetailStore()
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
-
+  const { tripEnrollmentCount } = useTripDetail(travelNumber!)
+  const nowEnrollmentCount = tripEnrollmentCount.data?.data
   useEffect(() => {
     if (applySuccess) {
       setIsApplyToast(true)
+      setApplySuccess(false)
     }
   }, [applySuccess])
 
@@ -72,15 +79,16 @@ export default function TripDetail() {
       navigate(`/trip/enrollmentList/${travelNumber}`)
     } else {
       if (enrollmentNumber) {
-        setShowApplyModal(true)
-      } else {
         setShowCancelModal(true)
+      } else {
+        // 신청하러 바로 이동.
+        navigate(`/trip/apply/${travelNumber}`)
       }
     }
   }
-  const onClickCancelApply = () => {
+  const onClickCancelApply = async () => {
     if (enrollmentNumber) {
-      cancel(enrollmentNumber)
+      await cancel(enrollmentNumber)
       if (cancelMutation.isSuccess) {
         setIsCancelToast(true)
       }
@@ -99,6 +107,15 @@ export default function TripDetail() {
     const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
 
     return daysLeft
+  }
+
+  const commentClickHandler = () => {
+    if (!hostUserCheck && !enrollmentNumber) {
+      // 주최자가 아니며, 신청 번호가 없는 사람은 댓글을 볼 수 없음.
+      setShowApplyModal(true)
+    } else {
+      navigate(`/trip/comment/${travelNumber}`)
+    }
   }
   return (
     <>
@@ -123,6 +140,7 @@ export default function TripDetail() {
         modalButtonText="신청하기"
         setModalOpen={setShowApplyModal}
       />
+
       <CheckingModal
         isModalOpen={showCancelModal}
         onClick={onClickCancelApply}
@@ -165,8 +183,7 @@ export default function TripDetail() {
                     lineHeight: '16.71px',
                     color: palette.비강조
                   }}>
-                  {dayjs().diff(dayjs(createdAt, 'YYYY년MM월DD일'), 'day')}시간
-                  전
+                  {daysAgo(createdAt)}
                 </div>
               </div>
             </ProfileContainer>
@@ -197,7 +214,7 @@ export default function TripDetail() {
             <div>조회수 {viewCount}</div>
           </ViewsETC>
         </PostWrapper>
-        <CommentWrapper>
+        <CommentWrapper onClick={commentClickHandler}>
           <div css={{ display: 'flex', alignItems: 'center' }}>
             <img
               src="/images/createTripBtn.png"
@@ -279,32 +296,33 @@ export default function TripDetail() {
           onClick={buttonClickHandler}
           width={newRightPosition}>
           <Button
+            disabled={hostUserCheck && nowEnrollmentCount === 0}
             addStyle={{
               backgroundColor: hostUserCheck
-                ? nowPerson > 0
+                ? nowEnrollmentCount > 0
                   ? palette.keycolor
                   : palette.비강조3
                 : enrollmentNumber
-                  ? palette.keycolor
-                  : palette.keycolorBG,
+                  ? palette.keycolorBG
+                  : palette.keycolor,
               color: hostUserCheck
-                ? nowPerson > 0
+                ? nowEnrollmentCount > 0
                   ? palette.BG
                   : palette.비강조
                 : enrollmentNumber
-                  ? palette.BG
-                  : palette.keycolor,
+                  ? palette.keycolor
+                  : palette.BG,
               fontWeight: '600'
             }}
             text={
               hostUserCheck
                 ? '참가신청목록'
                 : enrollmentNumber
-                  ? '참가신청하기'
-                  : '참가신청취소'
+                  ? '참가신청취소'
+                  : '참가신청하기'
             }>
-            {hostUserCheck && nowPerson > 0 && (
-              <AppliedPersonCircle>{nowPerson}</AppliedPersonCircle>
+            {hostUserCheck && nowEnrollmentCount > 0 && (
+              <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
             )}
           </Button>
         </BtnContainer>
@@ -455,6 +473,7 @@ const PlaceBadge = styled.div`
   opacity: 0px;
 `
 const CommentWrapper = styled.div`
+  cursor: pointer;
   margin-top: 16px;
   height: 70px;
   display: flex;

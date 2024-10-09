@@ -10,6 +10,8 @@ import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import TripEnrollmentCard from './TripEnrollmentCard'
+import { getCurrentFormattedDate } from '@/utils/time'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
 
 interface enrollment {
   enrollmentNumber: number
@@ -21,23 +23,30 @@ interface enrollment {
 }
 export default function TripEnrollmentList() {
   const { travelNumber } = useParams<{ travelNumber: string }>()
-  const { enrollmentList } = useEnrollment(parseInt(travelNumber!))
-
+  const { createdAt } = tripDetailStore()
+  const { enrollmentList, enrollmentsLastViewed, updateLastViewed } =
+    useEnrollment(parseInt(travelNumber!))
+  // 최근에 본 시점.
   const list = enrollmentList.data?.data
-  // const lastViewTime = enrollmentsLastViewed.data?.data
-  console.log(list)
 
-  const isNew = (dateString: string) => {
+  // 처음에는 null 값이니, 생성했을 때 시간 으로 두기.
+  const lastViewed =
+    enrollmentsLastViewed.data?.lastViewedAt === null
+      ? createdAt
+      : enrollmentsLastViewed.data?.lastViewedAt
+
+  const isNew = (last: string, enrolledTime: string) => {
     // 문자열을 Date 객체로 변환
-    const inputDate = new Date(dateString.replace('.', '-').replace('.', '-'))
-
-    // 현재 시간을 가져옴
-    const currentDate = new Date()
+    const lastTime = new Date(last.replace('.', '-').replace('.', '-'))
+    const enrolledAt = new Date(
+      enrolledTime.replace('.', '-').replace('.', '-')
+    )
 
     // 주어진 날짜가 현재 시간보다 이전인지 확인
-    return inputDate < currentDate
+    return lastTime < enrolledAt
   }
-  function getCurrentFormattedDate() {
+  //현재 시간을 2000.10.10 11:11 문자열로 반환.
+  function todayFormattedDate() {
     const now = new Date()
 
     const year = now.getFullYear()
@@ -49,13 +58,17 @@ export default function TripEnrollmentList() {
 
     return `${year}.${month}.${day} ${hours}:${minutes}`
   }
+
   useEffect(() => {
-    //최근 열람 시간 업데이트.
-    // updateLastViewed(getCurrentFormattedDate())
+    // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.
+    return () => {
+      updateLastViewed(todayFormattedDate())
+    }
   }, [])
+
   return (
     <Container>
-      {list && (
+      {list && lastViewed && (
         <>
           <Count>
             총
@@ -68,8 +81,7 @@ export default function TripEnrollmentList() {
             {list.enrollments?.map((enrollment: enrollment) => (
               <TripEnrollmentCard
                 key={enrollment.enrollmentNumber}
-                isNew={false}
-                // isNew={isNew(lastViewTime)}
+                isNew={isNew(lastViewed, enrollment.enrolledAt)}
                 enrollmentNumber={enrollment.enrollmentNumber}
                 userName={enrollment.userName}
                 ageGroup={enrollment.userAgeGroup}

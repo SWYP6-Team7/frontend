@@ -34,6 +34,12 @@ import MyTrip from './pages/MyTrip/MyTrip'
 import EditMyInfo from './pages/MyPage/EditMyInfo'
 import EditMyName from './pages/MyPage/EditMyName'
 import TripComment from './pages/Comment/TripComment'
+import RegisterDone from './pages/RegisterDone'
+
+import OnBoarding from './pages/OnBoarding/OnBoarding'
+
+import CreateCommunity from './pages/Community/CreateCommunity'
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -85,6 +91,10 @@ export const router = createBrowserRouter([
         element: <RegisterTripStyle />
       },
       {
+        path: 'registerDone',
+        element: <RegisterDone />
+      },
+      {
         path: 'search',
         element: (
           <>
@@ -116,7 +126,17 @@ export const router = createBrowserRouter([
       },
       {
         path: '/community',
-        element: <Community />
+        element: (
+          <>
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            path: 'create',
+            element: <CreateCommunity />
+          }
+        ]
       },
       {
         path: '/createTripPlace',
@@ -143,7 +163,7 @@ export const router = createBrowserRouter([
         element: <TripEnrollmentList />
       },
       {
-        path: 'notification/:userId',
+        path: 'notification',
         element: <Notifications />
       },
       {
@@ -177,6 +197,10 @@ export const router = createBrowserRouter([
       {
         path: 'myTrip',
         element: <MyTrip />
+      },
+      {
+        path: '/onBoarding',
+        element: <OnBoarding />
       }
     ]
   }

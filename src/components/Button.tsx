@@ -7,6 +7,7 @@ interface ButtonProps {
     boxShadow?: string
     fontWeight?: string
   }
+  id?: string
   children?: React.ReactNode
   disabled?: boolean
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
@@ -22,6 +23,7 @@ interface ButtonProps {
 
 const Button = ({
   text = '다음',
+  id = '다음',
   addStyle = {
     backgroundColor: 'rgba(62, 141, 0, 1)',
     color: 'white',
@@ -34,6 +36,7 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <ButtonContainer
+      id={id}
       disabled={disabled}
       onClick={onClick}
       css={addStyle}>

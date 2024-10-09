@@ -18,9 +18,11 @@ import Navbar from './Navbar'
 import CreateTripButton from './CreateTripButton'
 import { useUserProfile } from '@/hooks/useUserInfo'
 import { palette } from '@/styles/palette'
+import { myPageStore } from '@/store/client/myPageStore'
 
 const Home = () => {
-  const { name } = userStore()
+  // const { name } = userStore()
+  const { name } = myPageStore()
   const { userId, accessToken } = authStore()
   const [userName, setUserName] = useState(name)
   // 홈화면 유저 이름 및 정보 get api 백엔드 연결 예정 주석 처리.
@@ -47,7 +49,7 @@ const Home = () => {
   const onFocusHandler = () => navigate('/search/travel') // 검색화면으로 이동.
 
   // 이 부분 추후 유저 id로 대채해야함
-  const onClickAlarm = () => navigate(`/notification/1`)
+  const onClickAlarm = () => navigate(`/notification`)
 
   function daysLeft(dateString: string) {
     // 오늘 날짜
@@ -96,7 +98,7 @@ const Home = () => {
       <ContentWrapper>
         <SearchBox>
           <Greeting>
-            <span>{userName}</span>님, 반가워요!
+            <span>{name}</span>님, 반가워요!
           </Greeting>
 
           <HomeInputField
