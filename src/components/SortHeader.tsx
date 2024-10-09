@@ -9,7 +9,7 @@ interface SortHeaderProps {
   list: string[]
   sort: string
   clickSort: (value: any) => void
-  totalElements: number
+  children: React.ReactNode
   setFixed?: (bool: boolean) => void
 }
 
@@ -18,7 +18,7 @@ const SortHeader = ({
   clickSort,
   sort,
   setFixed,
-  totalElements
+  children
 }: SortHeaderProps) => {
   const [showModal, setShowModal] = useState(false)
   const handleSort = (value: (typeof list)[number]) => {
@@ -69,9 +69,7 @@ const SortHeader = ({
         </BottomModal>
       )}
       <Header>
-        <CountContainer>
-          총&nbsp;<Count>{totalElements}건</Count>
-        </CountContainer>
+        {children}
         <ShowSortButton onClick={() => handleShowModal(true)}>
           <SortIcon />
           {sort}
@@ -85,7 +83,6 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 17px;
 `
 
 const ShowSortButton = styled.div`

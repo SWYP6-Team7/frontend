@@ -1,3 +1,4 @@
+import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import { forwardRef } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -13,6 +14,7 @@ interface SearchFilterTagProps
     borderRadius?: string
     padding?: string
     fontWeight?: string
+    fontSize?: string
   }
   disabled?: boolean
   active?: boolean
@@ -40,14 +42,13 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
       onClick,
       disabled = false,
       addStyle = {
-        backgroundColor: active
-          ? 'rgba(62, 141, 0, 1)'
-          : ' rgba(240, 240, 240, 1)',
-        color: active ? 'rgba(255, 255, 255, 1)' : 'rgba(52, 52, 52, 1)',
-        border: 'none',
+        backgroundColor: active ? palette.keycolorBG : palette.검색창,
+        color: active ? palette.keycolor : palette.기본,
+        border: active ? `1px solid ${palette.keycolor}` : 'none',
         borderRadius: '16px',
         padding: '8px 14px',
-        fontWeight: '400'
+        fontWeight: '400',
+        fontSize: '14px'
       },
       ...props
     },
