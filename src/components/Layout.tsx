@@ -26,7 +26,7 @@ const Layout = () => {
     myPageStore()
 
   const { data, isLoading } = useMyPage()
-  const isOnboarding = pathname.startsWith('/onBoardingOne')
+  const isOnboarding = pathname.startsWith('/onBoarding')
   const myPageData: ImyPage = data?.data
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Layout = () => {
     '/registerAge',
     '/registerAge/registerGender',
     '/registerTripStyle',
-    '/onBoardingOne'
+    '/onBoarding'
   ]
   const isAccessTokenNoNeedpages = (path: string) => {
     // 필요없는 페이지 인지 확인하는 함수.
