@@ -28,6 +28,7 @@ const Layout = () => {
 
   const { data, isLoading } = useMyPage()
   const isOnboarding = pathname.startsWith('/onBoardingOne')
+  const isCommunityDetail = pathname.startsWith('/community/detail')
   const myPageData: ImyPage = data?.data
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const Layout = () => {
         } catch (error) {
           console.error('Failed to refresh token:', error)
 
-          navigate('/login') // 로그인 이동.
+          //navigate('/login') // 로그인 이동.
         }
       }
 

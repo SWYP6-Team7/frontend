@@ -40,6 +40,8 @@ import OnBoarding from './pages/OnBoarding/OnBoarding'
 
 import CreateCommunity from './pages/Community/CreateCommunity'
 import SearchCommunity from './pages/Seacrh/SearchCommunity'
+import DetailCommunity from './pages/Community/DetailCommunity'
+import EditCommunity from './pages/Community/EditCommunity'
 
 export const router = createBrowserRouter([
   {
@@ -144,6 +146,14 @@ export const router = createBrowserRouter([
           {
             path: 'create',
             element: <CreateCommunity />
+          },
+          {
+            path: 'detail/:communityNumber',
+            element: <DetailCommunity />
+          },
+          {
+            path: 'edit/:communityNumber',
+            element: <EditCommunity />
           }
         ]
       },
