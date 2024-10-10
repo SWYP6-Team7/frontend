@@ -29,7 +29,7 @@ const SearchTravel = () => {
     useSearch({
       keyword: finalKeyword
     })
-  console.log(finalKeyword)
+
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage()

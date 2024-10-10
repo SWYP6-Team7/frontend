@@ -40,7 +40,6 @@ const Community = () => {
     return value
   })()
   const { userId } = authStore()
-  const navigate = useNavigate()
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
 
