@@ -12,7 +12,8 @@ const Header = () => {
   const location = useLocation()
   const isRegister = location.pathname.startsWith('/register')
   const isCreateTrip = location.pathname.startsWith('/createTrip')
-  const isSearch = location.pathname === '/search/travel'
+  const isSearchTravel = location.pathname === '/search/travel'
+  const isSearchCommunity = location.pathname === '/search/community'
   const isTripDetail = location.pathname.startsWith('/trip/detail')
   const isTripEnrollment = location.pathname.startsWith('/trip/enrollmentList')
   const isNotification = location.pathname.startsWith('/notification')
@@ -26,11 +27,12 @@ const Header = () => {
   const isEditMyInfo = location.pathname.startsWith('/editMyInfo')
   const isEditMyName = location.pathname.startsWith('/editMyName')
   const isTripComment = location.pathname.startsWith('/trip/comment')
+
   const handleBack = () => {
     if (isTripDetail) {
       navigate('/')
       return
-    } else if (isSearch) {
+    } else if (isSearchTravel || isSearchCommunity) {
       navigate('/')
       return
     }
@@ -52,7 +54,8 @@ const Header = () => {
 
       <Title>
         {isRegister && '회원가입'}
-        {isSearch && '여행찾기'}
+        {isSearchTravel && '여행검색'}
+        {isSearchCommunity && '검색'}
         {isCreateTrip && '여행 만들기'}
         {isApply && '참가 신청'}
         {isTripEnrollment && '참가 신청 목록'}
