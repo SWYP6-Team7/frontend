@@ -1,3 +1,4 @@
+import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import { forwardRef } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -13,8 +14,11 @@ interface SearchFilterTagProps
     borderRadius?: string
     padding?: string
     fontWeight?: string
+    fontSize?: string
   }
   disabled?: boolean
+  icon?: React.ReactNode
+
   active?: boolean
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
@@ -39,15 +43,15 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
       active = false,
       onClick,
       disabled = false,
+      icon,
       addStyle = {
-        backgroundColor: active
-          ? 'rgba(62, 141, 0, 1)'
-          : ' rgba(240, 240, 240, 1)',
-        color: active ? 'rgba(255, 255, 255, 1)' : 'rgba(52, 52, 52, 1)',
-        border: 'none',
+        backgroundColor: active ? palette.keycolorBG : palette.검색창,
+        color: active ? palette.keycolor : palette.기본,
+        border: active ? `1px solid ${palette.keycolor}` : 'none',
         borderRadius: '16px',
         padding: '8px 14px',
-        fontWeight: '400'
+        fontWeight: '400',
+        fontSize: '14px'
       },
       ...props
     },
@@ -62,7 +66,8 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         id={`${idx}`}
         onClick={onClick}
         css={addStyle}>
-        {text}
+        {icon}
+        <div>{text}</div>
       </SearchFilterTagContainer>
     )
   }
@@ -72,7 +77,9 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   height: ${props => (props.isCreateTrip ? '42px' : 'auto')};
   line-height: ${props => (props.isCreateTrip ? '22.4px' : 'auto')};
   padding: 8px 14px;
-
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border-radius: 16px;
 `
 export default SearchFilterTag

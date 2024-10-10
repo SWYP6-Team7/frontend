@@ -6,13 +6,15 @@ import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 import AlarmIcon from './icons/AlarmIcon'
 import { palette } from '@/styles/palette'
 import { authStore } from '@/store/client/authStore'
+import CommunityHeader from './community/CommunityHeader'
 
 const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const isRegister = location.pathname.startsWith('/register')
   const isCreateTrip = location.pathname.startsWith('/createTrip')
-  const isSearch = location.pathname === '/search/travel'
+  const isSearchTravel = location.pathname === '/search/travel'
+  const isSearchCommunity = location.pathname === '/search/community'
   const isTripDetail = location.pathname.startsWith('/trip/detail')
   const isTripEnrollment = location.pathname.startsWith('/trip/enrollmentList')
   const isNotification = location.pathname.startsWith('/notification')
@@ -26,11 +28,13 @@ const Header = () => {
   const isEditMyInfo = location.pathname.startsWith('/editMyInfo')
   const isEditMyName = location.pathname.startsWith('/editMyName')
   const isTripComment = location.pathname.startsWith('/trip/comment')
+  const isCommunityDetail = location.pathname.startsWith('/community/detail')
+  const isCommunityEdit = location.pathname.startsWith('/community/edit')
   const handleBack = () => {
     if (isTripDetail) {
       navigate('/')
       return
-    } else if (isSearch) {
+    } else if (isSearchTravel || isSearchCommunity) {
       navigate('/')
       return
     }
@@ -52,7 +56,8 @@ const Header = () => {
 
       <Title>
         {isRegister && '회원가입'}
-        {isSearch && '여행찾기'}
+        {isSearchTravel && '여행검색'}
+        {isSearchCommunity && '검색'}
         {isCreateTrip && '여행 만들기'}
         {isApply && '참가 신청'}
         {isTripEnrollment && '참가 신청 목록'}
@@ -61,6 +66,7 @@ const Header = () => {
         {isEditMyInfo && '내 정보 수정'}
         {isEditMyName && '이름 변경'}
         {isCommunityCreate && '글쓰기'}
+        {isCommunityEdit && '수정하기'}
 
         {isTripDetailEdit && (
             <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
@@ -72,6 +78,7 @@ const Header = () => {
       )}
       {location.pathname != '/registerTripStyle' && <VoidArea />}
       {isTripDetail && <TripDetailHeader />}
+      {isCommunityDetail && <CommunityHeader />}
       {(isMyTrip || isMyPage) && (
         <div onClick={() => navigate(`/notification`)}>
           <AlarmIcon

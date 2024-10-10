@@ -117,7 +117,18 @@ const Container = styled.form<{
   align-items: center;
   left: 0;
   bottom: 0;
-  position: absolute;
+  @media (max-width: 440px) {
+    width: 100svw;
+  }
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
+
+  position: fixed;
   padding: 0 24px;
   background-color: white;
   padding-top: ${props => Math.abs(props.paddingTop / 844) * 100}svh;

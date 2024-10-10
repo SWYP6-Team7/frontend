@@ -38,9 +38,11 @@ const SearchResultList = ({
       <SortHeader
         sort={sort}
         list={LIST}
-        clickSort={clickSort}
-        totalElements={searchResult[0].page.totalElements}
-      />
+        clickSort={clickSort}>
+        <CountContainer>
+          총&nbsp;<Count>{searchResult[0].page.totalElements}건</Count>
+        </CountContainer>
+      </SortHeader>
 
       {searchResult.map(page =>
         page.content.map(content => (
@@ -124,5 +126,17 @@ const BoxContainer = styled.div`
 `
 
 const Container = styled.div``
+
+const CountContainer = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.71px;
+  letter-spacing: -0.025em;
+`
+
+const Count = styled.span`
+  color: #3e8d00;
+  font-weight: 700;
+`
 
 export default SearchResultList

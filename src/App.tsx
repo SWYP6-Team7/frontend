@@ -11,7 +11,7 @@ import RegisterGender from './pages/RegisterGender'
 import OauthKakao from './pages/OauthKakao'
 import OauthNaver from './pages/OauthNaver'
 import OauthGoogle from './pages/OauthGoogle'
-import SearchTravel from './pages/SearchTravel'
+import SearchTravel from './pages/Seacrh/SearchTravel'
 import MyPage from './pages/MyPage/MyPage'
 import Bookmark from './pages/Bookmark/Bookmark'
 import Community from './pages/Community/Community'
@@ -39,6 +39,9 @@ import RegisterDone from './pages/RegisterDone'
 import OnBoarding from './pages/OnBoarding/OnBoarding'
 
 import CreateCommunity from './pages/Community/CreateCommunity'
+import SearchCommunity from './pages/Seacrh/SearchCommunity'
+import DetailCommunity from './pages/Community/DetailCommunity'
+import EditCommunity from './pages/Community/EditCommunity'
 
 export const router = createBrowserRouter([
   {
@@ -105,6 +108,10 @@ export const router = createBrowserRouter([
           {
             path: 'travel',
             element: <SearchTravel />
+          },
+          {
+            path: 'community',
+            element: <SearchCommunity />
           }
         ]
       },
@@ -133,8 +140,20 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
+            path: '',
+            element: <Community />
+          },
+          {
             path: 'create',
             element: <CreateCommunity />
+          },
+          {
+            path: 'detail/:communityNumber',
+            element: <DetailCommunity />
+          },
+          {
+            path: 'edit/:communityNumber',
+            element: <EditCommunity />
           }
         ]
       },
