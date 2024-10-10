@@ -17,6 +17,8 @@ interface SearchFilterTagProps
     fontSize?: string
   }
   disabled?: boolean
+  icon?: React.ReactNode
+
   active?: boolean
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
@@ -41,6 +43,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
       active = false,
       onClick,
       disabled = false,
+      icon,
       addStyle = {
         backgroundColor: active ? palette.keycolorBG : palette.검색창,
         color: active ? palette.keycolor : palette.기본,
@@ -63,7 +66,8 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         id={`${idx}`}
         onClick={onClick}
         css={addStyle}>
-        {text}
+        {icon}
+        <div>{text}</div>
       </SearchFilterTagContainer>
     )
   }
@@ -73,7 +77,9 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   height: ${props => (props.isCreateTrip ? '42px' : 'auto')};
   line-height: ${props => (props.isCreateTrip ? '22.4px' : 'auto')};
   padding: 8px 14px;
-
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border-radius: 16px;
 `
 export default SearchFilterTag
