@@ -6,6 +6,7 @@ import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 import AlarmIcon from './icons/AlarmIcon'
 import { palette } from '@/styles/palette'
 import { authStore } from '@/store/client/authStore'
+import CommunityHeader from './community/CommunityHeader'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -27,7 +28,8 @@ const Header = () => {
   const isEditMyInfo = location.pathname.startsWith('/editMyInfo')
   const isEditMyName = location.pathname.startsWith('/editMyName')
   const isTripComment = location.pathname.startsWith('/trip/comment')
-
+  const isCommunityDetail = location.pathname.startsWith('/community/detail')
+  const isCommunityEdit = location.pathname.startsWith('/community/edit')
   const handleBack = () => {
     if (isTripDetail) {
       navigate('/')
@@ -64,6 +66,7 @@ const Header = () => {
         {isEditMyInfo && '내 정보 수정'}
         {isEditMyName && '이름 변경'}
         {isCommunityCreate && '글쓰기'}
+        {isCommunityEdit && '수정하기'}
 
         {isTripDetailEdit && (
             <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
@@ -75,6 +78,7 @@ const Header = () => {
       )}
       {location.pathname != '/registerTripStyle' && <VoidArea />}
       {isTripDetail && <TripDetailHeader />}
+      {isCommunityDetail && <CommunityHeader />}
       {(isMyTrip || isMyPage) && (
         <div onClick={() => navigate(`/notification`)}>
           <AlarmIcon

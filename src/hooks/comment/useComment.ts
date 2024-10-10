@@ -20,7 +20,7 @@ const useComment = (
   const commentList = useQuery({
     queryKey: ['comments', relatedType, relatedNumber],
     queryFn: () => getComments(relatedType, relatedNumber, accessToken),
-    enabled: !!relatedNumber && !!accessToken
+    enabled: !!relatedNumber
   })
 
   const queryClient = useQueryClient()

@@ -8,7 +8,7 @@ export async function getComments(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    // if (!accessToken) throw new Error('로그인을 해주세요.')
     const result = await axiosInstance.get(
       `/api/${relatedType}/${relatedNumber}/comments`,
       {

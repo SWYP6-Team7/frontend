@@ -116,19 +116,19 @@ const SearchCommunity = () => {
                 />
               </SortHeader>
             </SortContainer>
-            <Link to={`/community/${1}`}>
+            <Link to={`/community/detail/${1}`}>
               <CommunityItem />
             </Link>
-            <Link to={`/community/${1}`}>
+            <Link to={`/community/detail/${1}`}>
               <CommunityItem />
             </Link>
-            <Link to={`/community/${1}`}>
+            <Link to={`/community/detail/${1}`}>
               <CommunityItem />
             </Link>
-            <Link to={`/community/${1}`}>
+            <Link to={`/community/detail/${1}`}>
               <CommunityItem />
             </Link>
-            <Link to={`/community/${1}`}>
+            <Link to={`/community/detail/${1}`}>
               <CommunityItem />
             </Link>
             <div
