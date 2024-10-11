@@ -63,7 +63,8 @@ export default function EditMyTag() {
   // 버튼 활성화상태.
 
   const isActive = (tag: string) => {
-    return taggedArray.includes(tag)
+    const value = tag.split(' ')[1]
+    return taggedArray.includes(value)
   }
 
   const clickTag = (tag: string) => {
@@ -144,7 +145,7 @@ export default function EditMyTag() {
                     fontWeight: isActive(tag) ? '600' : '400'
                   }}
                   text={tag}
-                  onClick={() => clickTag(tag)}
+                  onClick={() => clickTag(tag.split(' ')[1])}
                 />
               ))}
             </TagContainer>
