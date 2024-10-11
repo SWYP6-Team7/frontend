@@ -66,7 +66,7 @@ const useMyPage = () => {
 
   const { data: profileImage, isLoading: isLoadingImage } = useQuery({
     queryKey: ['profileImg'],
-    queryFn: () => getMyProfileImage(userId!),
+    queryFn: () => getMyProfileImage(userId!, accessToken!),
     enabled: !!accessToken
   })
   const {
