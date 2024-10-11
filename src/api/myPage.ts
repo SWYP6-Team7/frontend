@@ -7,8 +7,10 @@ export const getMyPage = (accessToken: string) => {
   })
 }
 
-export const getMyProfileImage = (userId: number) => {
-  return axiosInstance.get(`api/profile/${userId}/image`)
+export const getMyProfileImage = (userId: number, accessToken: string) => {
+  return axiosInstance.get(`api/profile/${userId}/image`, {
+    headers: getJWTHeader(accessToken)
+  })
 }
 
 // 배포 후에 더 추가하기.
