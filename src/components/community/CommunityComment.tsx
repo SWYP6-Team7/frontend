@@ -13,7 +13,7 @@ const CommunityComment = () => {
   }
   const {
     commentList: { isLoading, data, error }
-  } = useComment('travel', Number(communityNumber))
+  } = useComment('community', Number(communityNumber))
   return (
     <Container>
       <Title>댓글 3</Title>
