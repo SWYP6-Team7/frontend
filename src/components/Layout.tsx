@@ -43,12 +43,14 @@ const Layout = () => {
   const profileImg: IProfileImg = profileImage?.data
 
   useEffect(() => {
-    if (!isLoading && myPageData && !isLoadingImage && profileImage) {
+    if (!isLoading && myPageData) {
       addName(myPageData.name)
       addAgegroup(myPageData.ageGroup)
       addEmail(myPageData.email)
       addPreferredTags(myPageData.preferredTags)
       addGender(myPageData.gender)
+    }
+    if (!isLoadingImage && profileImage) {
       addProfileUrl(profileImg.url)
     }
   }, [isLoading, myPageData]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
