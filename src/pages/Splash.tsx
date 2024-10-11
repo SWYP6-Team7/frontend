@@ -3,15 +3,18 @@ import { splashOnStore } from '@/store/client/splashOnOffStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Splash() {
   const { splashOn, addSplashOn } = splashOnStore()
+  const navigate = useNavigate()
   useEffect(() => {
     const revisit = sessionStorage.getItem('revisit')
 
     if (revisit === undefined || revisit === null) {
       setTimeout(() => {
         addSplashOn(false)
+        navigate('/onBoarding')
       }, 2000)
       sessionStorage.setItem('revisit', 'true')
     } else if (revisit === 'true') {
@@ -35,7 +38,7 @@ const Container = styled.div<{ splashOn: boolean }>`
   /* width: 100%; */
   top: 0;
   opacity: ${({ splashOn }) => (splashOn ? 1 : 0)};
-  transition: opacity 1s ease-in-out;
+  transition: opacity 200ms ease-in-out;
   pointer-events: ${({ splashOn }) => (splashOn ? 'auto' : 'none')};
   background-color: ${palette.keycolor};
   @media (max-width: 440px) {
