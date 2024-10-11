@@ -7,7 +7,7 @@ export default function RegisterDone() {
   const navigate = useNavigate()
   useEffect(() => {
     setTimeout(() => {
-      navigate('/onBoarding')
+      navigate('/login')
     }, 2000)
   }, [])
   return (
