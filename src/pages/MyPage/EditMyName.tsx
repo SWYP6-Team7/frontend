@@ -30,6 +30,7 @@ export default function EditMyName() {
   const completeClickHandler = () => {
     //   변경 요청 보냄
     updateMyPageMutation()
+    addName(userName)
   }
   useEffect(() => {
     if (isUpdatedSuccess) {
@@ -41,7 +42,7 @@ export default function EditMyName() {
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value)
-    addName(e.target.value)
+
     if (koreanOnly.safeParse(e.target.value).success) {
       setNameValidError(false)
     } else {

@@ -15,7 +15,7 @@ import { palette } from '@/styles/palette'
 import useAuth from '@/hooks/user/useAuth'
 import { myPageStore } from '@/store/client/myPageStore'
 import useMyPage from '@/hooks/myPage/useMyPage'
-import { ImyPage } from '@/model/myPages'
+import { ImyPage, IProfileImg } from '@/model/myPages'
 import Splash from '@/pages/Splash'
 const Layout = () => {
   const navigate = useNavigate()
@@ -23,26 +23,35 @@ const Layout = () => {
   const { userPostRefreshToken } = useAuth()
   const { userId, accessToken, logoutCheck } = authStore()
   // 유저 프로필 정보 불러오기
-  const { addEmail, addName, addGender, addAgegroup, addPreferredTags } =
-    myPageStore()
+  const {
+    addEmail,
+    addProfileUrl,
+    addName,
+    addGender,
+    addAgegroup,
+    addPreferredTags,
+    profileUrl
+  } = myPageStore()
 
-  const { data, isLoading } = useMyPage()
+  const { data, isLoading, profileImage, isLoadingImage } = useMyPage()
 
   const isOnboarding = pathname.startsWith('/onBoarding')
 
   const isCommunityDetail = pathname.startsWith('/community/detail')
 
   const myPageData: ImyPage = data?.data
+  const profileImg: IProfileImg = profileImage?.data
 
   useEffect(() => {
-    if (!isLoading && myPageData) {
+    if (!isLoading && myPageData && !isLoadingImage && profileImage) {
       addName(myPageData.name)
       addAgegroup(myPageData.ageGroup)
       addEmail(myPageData.email)
       addPreferredTags(myPageData.preferredTags)
       addGender(myPageData.gender)
+      addProfileUrl(profileImg.url)
     }
-  }, [isLoading]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
+  }, [isLoading, myPageData]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
 
   const noNeedPages = [
     '/login',

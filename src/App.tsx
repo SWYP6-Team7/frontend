@@ -42,6 +42,10 @@ import CreateCommunity from './pages/Community/CreateCommunity'
 import SearchCommunity from './pages/Seacrh/SearchCommunity'
 import DetailCommunity from './pages/Community/DetailCommunity'
 import EditCommunity from './pages/Community/EditCommunity'
+import EditMyPassword from './pages/MyPage/EditMyPassword'
+import EditMyTag from './pages/MyPage/EditMyTag'
+import Withdrawal from './pages/MyPage/Withdrawal'
+import NewPassword from './pages/MyPage/NewPassword'
 
 export const router = createBrowserRouter([
   {
@@ -220,6 +224,22 @@ export const router = createBrowserRouter([
       {
         path: '/onBoarding',
         element: <OnBoarding />
+      },
+      {
+        path: '/editMyPassword',
+        element: <EditMyPassword />
+      },
+      {
+        path: '/editMyPassword2',
+        element: <NewPassword />
+      },
+      {
+        path: '/editMyTag',
+        element: <EditMyTag />
+      },
+      {
+        path: '/withdrawal',
+        element: <Withdrawal />
       }
     ]
   }
