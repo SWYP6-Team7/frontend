@@ -6,6 +6,8 @@ interface myPageStoreState {
   addEmail: (email: string) => void
   name: string
   addName: (name: string) => void
+  profileUrl: string
+  addProfileUrl: (profileUrl: string) => void
   gender: string
   addGender: (sex: string) => void
   agegroup: string
@@ -16,12 +18,22 @@ interface myPageStoreState {
   addPreferredTags: (preferredTags: string[]) => void
   isNameUpdated: boolean
   addIsNameUpdated: (isNameUpdated: boolean) => void
+  isProfileImgUpdated: boolean
+  addIsProfileImgUpdated: (isProfileImgUpdated: boolean) => void
+  isTagUpdated: boolean
+  addIsTagUpdated: (isTagUpdated: boolean) => void
+  isPasswordUpdated: boolean
+  addIsPasswordUpdated: (isPasswordUpdated: boolean) => void
 }
 
 export const myPageStore = create<myPageStoreState>(set => ({
   name: '',
   addName: name => {
     set(state => ({ name: name }))
+  },
+  profileUrl: '',
+  addProfileUrl: profileUrl => {
+    set(state => ({ profileUrl: profileUrl }))
   },
   gender: '',
   addGender: gender => {
@@ -46,5 +58,17 @@ export const myPageStore = create<myPageStoreState>(set => ({
   isNameUpdated: false,
   addIsNameUpdated: isNameUpdated => {
     set(state => ({ isNameUpdated }))
+  },
+  isProfileImgUpdated: false,
+  addIsProfileImgUpdated: isProfileImgUpdated => {
+    set(state => ({ isProfileImgUpdated }))
+  },
+  isTagUpdated: false,
+  addIsTagUpdated: isTagUpdated => {
+    set(state => ({ isTagUpdated }))
+  },
+  isPasswordUpdated: false,
+  addIsPasswordUpdated: isPasswordUpdated => {
+    set(state => ({ isPasswordUpdated }))
   }
 }))

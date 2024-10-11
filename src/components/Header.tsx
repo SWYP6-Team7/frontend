@@ -30,6 +30,9 @@ const Header = () => {
   const isTripComment = location.pathname.startsWith('/trip/comment')
   const isCommunityDetail = location.pathname.startsWith('/community/detail')
   const isCommunityEdit = location.pathname.startsWith('/community/edit')
+  const isEditMyPassword = location.pathname.startsWith('/editMyPassword')
+  const isEditMyTag = location.pathname.startsWith('/editMyTag')
+  const isWithdrawal = location.pathname.startsWith('/withdrawal')
   const handleBack = () => {
     if (isTripDetail) {
       navigate('/')
@@ -67,7 +70,9 @@ const Header = () => {
         {isEditMyName && '이름 변경'}
         {isCommunityCreate && '글쓰기'}
         {isCommunityEdit && '수정하기'}
-
+        {isEditMyPassword && '비밀번호 변경'}
+        {isEditMyTag && '태그 수정'}
+        {isWithdrawal && '탈퇴하기'}
         {isTripDetailEdit && (
             <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
           ) &&

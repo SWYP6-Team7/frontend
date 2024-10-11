@@ -6,3 +6,19 @@ export interface ImyPage {
   proIntroduce: string
   preferredTags: string[]
 }
+
+export interface IProfileImg {
+  imageNumber: number
+  originalName: string
+  size: number
+  format: string
+  relatedType: string
+  relatedNumber: number
+  path: string
+  uploadDate: string
+  url: string
+}
+export interface NewPasswordProps {
+  newPassword: string
+  newPasswordConfirm: string
+}
