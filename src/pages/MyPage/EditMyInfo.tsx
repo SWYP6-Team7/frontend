@@ -216,6 +216,8 @@ export default function EditMyInfo() {
         <Spacing size={8} />
         <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
           <div>로그아웃</div>
+          {/* <div onClick={() => navigate('/withdrawal')}>탈퇴하기</div> */}
+          <Spacing size={150} />
         </LogoutBox>
         {showModal && (
           <ProfileEditModal

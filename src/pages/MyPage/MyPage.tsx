@@ -15,7 +15,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function MyPage() {
-  const { name, agegroup, email, preferredTags } = myPageStore()
+  const { name, agegroup, email, preferredTags, profileUrl } = myPageStore()
   const navigate = useNavigate()
 
   const cutTags =
@@ -28,7 +28,7 @@ export default function MyPage() {
         <ProfileImg>
           <RoundedImage
             size={80}
-            src="/images/profileDefault.png"
+            src={profileUrl}
           />
         </ProfileImg>
         <div css={{ width: '100%' }}>

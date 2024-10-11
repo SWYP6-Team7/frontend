@@ -29,7 +29,8 @@ const Layout = () => {
     addName,
     addGender,
     addAgegroup,
-    addPreferredTags
+    addPreferredTags,
+    profileUrl
   } = myPageStore()
 
   const { data, isLoading, profileImage, isLoadingImage } = useMyPage()
@@ -40,6 +41,7 @@ const Layout = () => {
 
   const myPageData: ImyPage = data?.data
   const profileImg: IProfileImg = profileImage?.data
+
   useEffect(() => {
     if (!isLoading && myPageData && !isLoadingImage && profileImage) {
       addName(myPageData.name)
@@ -49,7 +51,7 @@ const Layout = () => {
       addGender(myPageData.gender)
       addProfileUrl(profileImg.url)
     }
-  }, [isLoading]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
+  }, [isLoading, myPageData]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
 
   const noNeedPages = [
     '/login',

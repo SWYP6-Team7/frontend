@@ -16,12 +16,16 @@ export const putMyPage = (
   accessToken: string,
   name: string,
   proIntroduce: string,
-  preferredTags: string[]
+  preferredTags: string[],
+  ageGroup: string
 ) => {
   return axiosInstance.put(
     '/api/profile/update',
     {
-      name
+      name,
+      proIntroduce,
+      preferredTags,
+      ageGroup
     },
     {
       headers: getJWTHeader(accessToken)
@@ -46,6 +50,18 @@ export async function postMyProfilImg(userId: number, formData: FormData) {
     return response.data
   } catch (err) {
     console.log(err)
+  }
+}
+// 탈퇴하기
+export async function deleteMyAccount(userId: number, accessToken: string) {
+  try {
+    if (!userId) throw new Error('로그인을 해주세요.')
+    const response = await axiosInstance.delete(`/api/users/${userId}`, {
+      headers: getJWTHeader(accessToken)
+    })
+    return response.data
+  } catch (e) {
+    console.log(e)
   }
 }
 // 비번 확인 조회

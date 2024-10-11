@@ -1,4 +1,5 @@
 import {
+  deleteMyAccount,
   getMyPage,
   getMyProfileImage,
   postMyProfilImg,
@@ -13,7 +14,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const useMyPage = () => {
   const { userId, accessToken } = authStore()
-  const { name, preferredTags } = myPageStore()
+  const { name, preferredTags, agegroup } = myPageStore()
   const queryClient = useQueryClient()
 
   const { data, isLoading } = useQuery({
@@ -25,7 +26,7 @@ const useMyPage = () => {
   const { mutateAsync: updateMyPageMutation, isSuccess: isUpdatedSuccess } =
     useMutation({
       mutationFn: () => {
-        return putMyPage(accessToken!, name, '', preferredTags)
+        return putMyPage(accessToken!, name, '', preferredTags, agegroup)
       },
       onSuccess: () => {
         queryClient.invalidateQueries({
@@ -82,7 +83,16 @@ const useMyPage = () => {
       })
     }
   })
+
+  const { mutateAsync: withdrawMutation, isSuccess: isWithDrawSuccess } =
+    useMutation({
+      mutationFn: () => {
+        return deleteMyAccount(userId!, accessToken!)
+      }
+    })
   return {
+    withdrawMutation,
+    isWithDrawSuccess,
     data,
     isLoading,
     updateMyPageMutation,

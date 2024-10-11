@@ -7,17 +7,20 @@ interface ButtonContainerProps {
   paddingBottom?: number
   paddingTop?: number
   blur?: string
+  isWithdrawal?: boolean
 }
 
 const ButtonContainer = ({
   children,
   paddingBottom = 40,
   paddingTop = 16,
-  blur
+  blur,
+  isWithdrawal = false
 }: ButtonContainerProps) => {
   useKeyboardResizeEffect()
   return (
     <Container
+      isWithdrawal={isWithdrawal}
       paddingBottom={paddingBottom}
       paddingTop={paddingTop}
       blur={blur}>
@@ -30,8 +33,10 @@ const Container = styled.div<{
   paddingBottom: number
   paddingTop: number
   blur?: string
+  isWithdrawal: boolean
 }>`
   display: flex;
+  flex-direction: ${props => props.isWithdrawal && 'column'};
   align-items: center;
   gap: 16px;
   left: 0;

@@ -47,6 +47,7 @@ export default function ProfileEditModal({
 
     setShowModal(false)
   }
+  console.log(profileUrl, '이미지 url')
   const addImageFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null) {
       // post 요청 보내기.
@@ -90,7 +91,7 @@ export default function ProfileEditModal({
   const check = (url: string) => {
     return profileUrl.includes(url)
   }
-  console.log(changed)
+
   return (
     <BottomModal
       initialHeight={window.innerHeight <= 700 ? 60 : 50} // height 비율이 짧아 진다면 58%로 맞추기.
@@ -100,7 +101,7 @@ export default function ProfileEditModal({
           <DetailTitle>프로필 이미지를 선택해 주세요</DetailTitle>
           <Spacing size={32} />
           <ProfileContainer>
-            <ShowImg isCustomImg={!isDefaultProfile(profileUrl!)}>
+            <ShowImg isCustomImg={!isDefaultProfile(profileUrl)}>
               <input
                 onChange={event => addImageFile(event)}
                 type="file"
@@ -108,7 +109,7 @@ export default function ProfileEditModal({
                 accept="image/*"
                 css={{ display: 'none' }}
               />
-              {showImage !== '' && (
+              {showImage !== '' && !isDefaultProfile(profileUrl) && (
                 <img
                   src={showImage}
                   css={{
@@ -128,7 +129,7 @@ export default function ProfileEditModal({
                 </div>
               )}
             </ShowImg>
-            <DefaultProfile isSelected={check('defaultProfile.png')}>
+            <DefaultProfile isSelected={check('defaultProfile')}>
               <Profile
                 onClick={() =>
                   handleDefaultProfileUpload(
@@ -139,7 +140,7 @@ export default function ProfileEditModal({
                 src="/images/defaultProfile.png"
                 alt=""
               />
-              {check('defaultProfile.png') && (
+              {check('defaultProfile') && (
                 <div
                   onClick={() => setShowImage('')}
                   css={{ position: 'absolute', right: 0, top: 0 }}>
@@ -147,7 +148,7 @@ export default function ProfileEditModal({
                 </div>
               )}
             </DefaultProfile>
-            <DefaultProfile isSelected={check('defaultProfile3.png')}>
+            <DefaultProfile isSelected={check('defaultProfile3')}>
               <Profile
                 onClick={() =>
                   handleDefaultProfileUpload(
@@ -158,7 +159,7 @@ export default function ProfileEditModal({
                 src="/images/defaultProfile3.png"
                 alt=""
               />
-              {check('defaultProfile.png') && (
+              {check('defaultProfile3') && (
                 <div
                   onClick={() => setShowImage('')}
                   css={{ position: 'absolute', right: 0, top: 0 }}>
@@ -166,7 +167,7 @@ export default function ProfileEditModal({
                 </div>
               )}
             </DefaultProfile>
-            <DefaultProfile isSelected={check('defaultProfile5.png')}>
+            <DefaultProfile isSelected={check('defaultProfile5')}>
               <Profile
                 onClick={() =>
                   handleDefaultProfileUpload(
@@ -177,7 +178,7 @@ export default function ProfileEditModal({
                 src="/images/defaultProfile5.png"
                 alt=""
               />
-              {check('defaultProfile.png') && (
+              {check('defaultProfile5') && (
                 <div
                   onClick={() => setShowImage('')}
                   css={{ position: 'absolute', right: 0, top: 0 }}>
@@ -190,7 +191,7 @@ export default function ProfileEditModal({
             <UploadImg htmlFor="imageInput">
               <CameraIconForUploadMypage />
             </UploadImg>
-            <DefaultProfile isSelected={check('defaultProfile2.png')}>
+            <DefaultProfile isSelected={check('defaultProfile2')}>
               <Profile
                 onClick={() =>
                   handleDefaultProfileUpload(
@@ -201,7 +202,7 @@ export default function ProfileEditModal({
                 src="/images/defaultProfile2.png"
                 alt=""
               />
-              {check('defaultProfile.png') && (
+              {check('defaultProfile2') && (
                 <div
                   onClick={() => setShowImage('')}
                   css={{ position: 'absolute', right: 0, top: 0 }}>
@@ -209,7 +210,7 @@ export default function ProfileEditModal({
                 </div>
               )}
             </DefaultProfile>
-            <DefaultProfile isSelected={check('defaultProfile4.png')}>
+            <DefaultProfile isSelected={check('defaultProfile4')}>
               <Profile
                 onClick={() =>
                   handleDefaultProfileUpload(
@@ -220,7 +221,7 @@ export default function ProfileEditModal({
                 src="/images/defaultProfile4.png"
                 alt=""
               />
-              {check('defaultProfile.png') && (
+              {check('defaultProfile4') && (
                 <div
                   onClick={() => setShowImage('')}
                   css={{ position: 'absolute', right: 0, top: 0 }}>
@@ -228,7 +229,7 @@ export default function ProfileEditModal({
                 </div>
               )}
             </DefaultProfile>
-            <DefaultProfile isSelected={check('defaultProfile6.png')}>
+            <DefaultProfile isSelected={check('defaultProfile6')}>
               <Profile
                 onClick={() =>
                   handleDefaultProfileUpload(
@@ -239,7 +240,7 @@ export default function ProfileEditModal({
                 src="/images/defaultProfile6.png"
                 alt=""
               />
-              {check('defaultProfile.png') && (
+              {check('defaultProfile6') && (
                 <div
                   onClick={() => setShowImage('')}
                   css={{ position: 'absolute', right: 0, top: 0 }}>
@@ -281,8 +282,8 @@ const DefaultProfile = styled.div<{ isSelected: boolean }>`
     props.isSelected ? `2px solid ${palette.keycolor}` : 'none'};
 `
 const Profile = styled.img`
-  max-height: 72px;
-  aspect-ratio: 1 / 1;
+  display: block;
+  object-fit: cover;
   width: 100%;
   height: 100%;
 `

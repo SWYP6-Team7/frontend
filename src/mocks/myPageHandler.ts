@@ -6,12 +6,14 @@ const data = {
   gender: '여자',
   ageGroup: '20대',
   proIntroduce: '',
-  preferredTags: ['액티비티', '계획']
+  preferredTags: ['⏱️ 단기', '✊ 즉흥', '📝 계획', '🧳 중장기', '🏄‍♂️ 액티비티']
 }
 interface PasswordBody {
   confirmPassword: string
 }
-
+const URL = {
+  url: 'https://moing-hosted-contents.s3.ap-northeast-2.amazonaws.com/images/profile/default/defaultProfile.png'
+}
 export const myPageHandler = [
   http.get('/api/profile/me', async ({ request }) => {
     return HttpResponse.json(data, { status: 200 })
@@ -30,5 +32,14 @@ export const myPageHandler = [
   }),
   http.put('/api/profile/password/change', async ({ request }) => {
     return HttpResponse.json({ status: 200 })
+  }),
+  http.delete('/api/users/:userId', async ({ request }) => {
+    return HttpResponse.json({ status: 204 })
+  }),
+  http.get('/api/profile/:userId/image', async ({ request }) => {
+    return HttpResponse.json({
+      url: 'https://moing-hosted-contents.s3.ap-northeast-2.amazonaws.com/images/profile/default/defaultProfile.png',
+      status: 204
+    })
   })
 ]
