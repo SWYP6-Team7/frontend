@@ -7,6 +7,7 @@ import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import MoreIcon from '@/components/icons/MoreIcon'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
+import useCommunity from '@/hooks/useCommunity'
 import { authStore } from '@/store/client/authStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
@@ -25,6 +26,12 @@ export default function CommunityHeader() {
   const [checkingModalClicked, setCheckingModalClicked] = useState(false)
   const [threeDotsClick, setThreeDotsClick] = useState(false)
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
+  const { cummunityNumber } = useParams()
+  const {
+    community: { data, isLoading },
+    removeMutation,
+    remove
+  } = useCommunity(Number(cummunityNumber))
 
   useEffect(() => {
     if (isDeleteBtnClicked) {
@@ -37,23 +44,22 @@ export default function CommunityHeader() {
       navigate(`community/edit/${communityNumber}`)
     }
     if (checkingModalClicked) {
-      // 삭제 요청.
-      // deleteTripDetailMutation().then(res => {
-      //   console.log(res)
-      //   if (res?.data.status === 204) {
-      //     setIsToastShow(true)
-      //     setTimeout(() => {
-      //       navigate('/')
-      //     }, 1800)
-      //   }
-      // })
+      remove({ communityNumber: Number(communityNumber) })
     }
   }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked])
 
-  const hostUserCheck = true
+  useEffect(() => {
+    if (removeMutation.isSuccess) {
+      setIsToastShow(true)
+      setTimeout(() => {
+        navigate('/')
+      }, 1800)
+    }
+  }, [removeMutation.isSuccess])
+
   return (
     <Container>
-      {hostUserCheck && (
+      {data?.userNumber === userId && (
         <div onClick={() => navigate(`/notification`)}>
           <AlarmIcon
             size={23}
@@ -62,7 +68,7 @@ export default function CommunityHeader() {
         </div>
       )}
 
-      {hostUserCheck && (
+      {data?.userNumber === userId && (
         <div onClick={() => setThreeDotsClick(true)}>
           <MoreIcon />
         </div>

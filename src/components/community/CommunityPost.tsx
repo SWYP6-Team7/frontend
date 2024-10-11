@@ -2,19 +2,30 @@ import styled from '@emotion/styled'
 import Badge from '../designSystem/Badge'
 import { palette } from '@/styles/palette'
 import RoundedImage from '../designSystem/profile/RoundedImage'
-import { daysAgo } from '@/utils/time'
+import { daysAgo, daysAgoFormatted } from '@/utils/time'
 import DetailImages from './DetailImages'
 import SearchFilterTag from '../designSystem/tag/SearchFilterTag'
 import CommunityHeartIcon from '../icons/CommunityHeartIcon'
+import useCommunity from '@/hooks/useCommunity'
+import { useParams } from 'react-router-dom'
 
 const CommunityPost = () => {
+  const { cummunityNumber } = useParams()
+  const {
+    community: { data, isLoading }
+  } = useCommunity(Number(cummunityNumber))
+
+  if (isLoading || !data) {
+    return <></>
+  }
+
   return (
     <PostWrapper>
       <MainContent>
         <BadgeContainer>
           <Badge
             isDueDate={false}
-            text={'잡담'}
+            text={data.categoryName}
             height="22px"
             backgroundColor={palette.비강조4}
             color={palette.비강조}
@@ -24,11 +35,11 @@ const CommunityPost = () => {
         <ProfileContainer>
           {/* 프로필 */}
           <RoundedImage
-            src={''}
+            src={data.profileImageUrl}
             size={40}
           />
           <div css={{ marginLeft: '8px' }}>
-            <UserName>{'김모잉'}</UserName>
+            <UserName>{data.postWriter}</UserName>
             <div
               css={{
                 fontWeight: '400',
@@ -36,46 +47,40 @@ const CommunityPost = () => {
                 lineHeight: '16.71px',
                 color: palette.비강조
               }}>
-              {daysAgo('2024-10-03 13:03')}
+              {daysAgoFormatted(data.regDate)}
             </div>
           </div>
         </ProfileContainer>
         {/* 제목  */}
-        <Title>{'가을되니까 놀러가고 싶다'}</Title>
+        <Title>{data.title}</Title>
         {/* 내용 */}
-        <Details>{'가을조아'}</Details>
+        <Details>{data.content}</Details>
         {/*태그   */}
         <ImageContainer>
-          <DetailImages
-            images={[
-              '/images/jeju.png',
-              '/images/japan.png',
-              '/images/seoul.png'
-            ]}
-          />
+          <DetailImages images={data.postImageUrls} />
         </ImageContainer>
         <LikeContainer>
           <SearchFilterTag
             addStyle={{
               padding: '11px 16px',
               fontSize: '16px',
-              backgroundColor: true ? palette.keycolorBG : palette.검색창,
-              color: true ? palette.keycolor : palette.기본,
-              border: true ? `1px solid ${palette.keycolor}` : 'none',
+              backgroundColor: data.liked ? palette.keycolorBG : palette.검색창,
+              color: data.liked ? palette.keycolor : palette.기본,
+              border: data.liked ? `1px solid ${palette.keycolor}` : 'none',
               borderRadius: '30px'
             }}
             icon={<CommunityHeartIcon />}
-            text={'3'}
+            text={`${data.likeCount}`}
             idx={0}
           />
         </LikeContainer>
       </MainContent>
       <ViewsETC>
-        <div>댓글 {2}</div>
+        <div>댓글 {data.commentCount}</div>
         <div css={{ margin: '0px 4px' }}> · </div>
-        <div>좋아요 {5}</div>
+        <div>좋아요 {data.likeCount}</div>
         <div css={{ margin: '0px 4px' }}> · </div>
-        <div>조회수 {102}</div>
+        <div>조회수 {data.viewCount}</div>
       </ViewsETC>
     </PostWrapper>
   )
