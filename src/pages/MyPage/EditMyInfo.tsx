@@ -1,7 +1,11 @@
+import BottomModal from '@/components/BottomModal'
+import Button from '@/components/Button'
+import ButtonContainer from '@/components/ButtonContainer'
 import Badge from '@/components/designSystem/Badge'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
+import CameraIconForProfileEdit from '@/components/icons/CameraIconForProfileEdit'
 import RightVector from '@/components/icons/RightVector'
 import Spacing from '@/components/Spacing'
 import useMyPage from '@/hooks/myPage/useMyPage'
@@ -14,6 +18,7 @@ import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { symbol } from 'zod'
+import ProfileEditModal from './ProfileEditModal'
 
 export default function EditMyInfo() {
   const navigate = useNavigate()
@@ -25,14 +30,26 @@ export default function EditMyInfo() {
     email,
     preferredTags,
     isNameUpdated,
-    addIsNameUpdated
+    isProfileImgUpdated,
+    isTagUpdated,
+    isPasswordUpdated,
+    addIsNameUpdated,
+    addIsPasswordUpdated,
+    addIsProfileImgUpdated,
+    addIsTagUpdated,
+    profileUrl
   } = myPageStore()
   const [isNameChangeToastShow, setIsNameChangeToastShow] = useState(false) // 변경시 보이게 해줄 토스트 메시지
+  const [isProfileChangeToastShow, setIsProfileChangeToastShow] =
+    useState(false) // 변경시 보이게 해줄 토스트 메시지
+  const [isTagChangeToastShow, setIsTagChangeToastShow] = useState(false) // 변경시 보이게 해줄 토스트 메시지
+  const [isPasswordChangeToastShow, setIsPasswordChangeToastShow] =
+    useState(false) // 변경시 보이게 해줄 토스트 메시지
   // 로그 아웃 관련
   const [checkingLogoutModalClicked, setCheckingLogoutModalClicked] =
     useState(false)
   const [isLogoutClicked, setIsLogoutClicked] = useState(false)
-
+  const [showModal, setShowModal] = useState(false)
   useEffect(() => {
     if (isNameUpdated) {
       setTimeout(() => {
@@ -40,7 +57,25 @@ export default function EditMyInfo() {
         addIsNameUpdated(false)
       }, 500)
     }
-  }, [isNameUpdated])
+    if (isPasswordUpdated) {
+      setTimeout(() => {
+        setIsPasswordChangeToastShow(true)
+        addIsPasswordUpdated(false)
+      }, 500)
+    }
+    if (isProfileImgUpdated) {
+      setTimeout(() => {
+        setIsProfileChangeToastShow(true)
+        addIsProfileImgUpdated(false)
+      }, 500)
+    }
+    if (isTagUpdated) {
+      setTimeout(() => {
+        setIsTagChangeToastShow(true)
+        addIsTagUpdated(false)
+      }, 500)
+    }
+  }, [isNameUpdated, isPasswordUpdated, isProfileImgUpdated, isTagUpdated])
 
   useEffect(() => {
     if (isLogoutClicked) {
@@ -60,6 +95,24 @@ export default function EditMyInfo() {
         setIsShow={setIsNameChangeToastShow}
         text="이름 변경이 완료되었어요"
       />
+      <ResultToast
+        height={120}
+        isShow={isProfileChangeToastShow}
+        setIsShow={setIsProfileChangeToastShow}
+        text="프로필 이미자가 변경되었어요"
+      />
+      <ResultToast
+        height={120}
+        isShow={isPasswordChangeToastShow}
+        setIsShow={setIsPasswordChangeToastShow}
+        text="비밀번호가 변경되었어요"
+      />
+      <ResultToast
+        height={120}
+        isShow={isTagChangeToastShow}
+        setIsShow={setIsTagChangeToastShow}
+        text="태그가 변경되었어요"
+      />
       <CheckingModal
         isModalOpen={checkingLogoutModalClicked}
         modalMsg="정말 로그아웃 하시겠어요?"
@@ -69,15 +122,28 @@ export default function EditMyInfo() {
         setModalOpen={setCheckingLogoutModalClicked}
       />
       <ProfileImg>
-        <RoundedImage
-          size={80}
-          src="/images/profileDefault.png"
-        />
+        <div
+          onClick={() => setShowModal(true)}
+          css={{ position: 'relative' }}>
+          <RoundedImage
+            size={80}
+            src={profileUrl}
+          />
+          <div
+            css={{
+              height: '32px',
+              position: 'absolute',
+              right: '-4px',
+              bottom: '-4px'
+            }}>
+            <CameraIconForProfileEdit />
+          </div>
+        </div>
       </ProfileImg>
       <div>
-        <Box>
+        <Box onClick={() => navigate('/editMyName')}>
           <SmallTitle>이름</SmallTitle>
-          <Name onClick={() => navigate('/editMyName')}>
+          <Name>
             <Value css={{ marginRight: '8px' }}>{name}</Value>
             <div css={{ padding: '8px 9px' }}>
               <RightVector />
@@ -93,22 +159,25 @@ export default function EditMyInfo() {
             <Value>{email}</Value>
           </div>
         </Box>
-        {/* 아래는 배포 이후 예정 */}
-        {/* <div>
-              <div>비밀번호 변경</div>
-              <div>
-                <div>김모잉</div>
-                <RightVector />
-              </div>
-            </div> */}
         <Spacing size={8} />
         <Line></Line>
         <Spacing size={8} />
-        <TagBox>
-          <div css={{ padding: '18px 8px' }}>
-            <SmallTitle css={{ display: 'flex' }}>나의 태그</SmallTitle>
-            {/* <RightVector /> */}
+        <Box onClick={() => navigate('/editMyPassword')}>
+          <SmallTitle>비밀번호 변경</SmallTitle>
+          <div css={{ padding: '8px 9px' }}>
+            <RightVector />
           </div>
+        </Box>
+        <Spacing size={8} />
+        <Line></Line>
+        <Spacing size={8} />
+        <TagBox onClick={() => navigate('/editMyTag')}>
+          <Box css={{ padding: '18px 8px', display: 'flex' }}>
+            <SmallTitle css={{ display: 'flex' }}>나의 태그</SmallTitle>
+            <div css={{ padding: '8px 9px' }}>
+              <RightVector />
+            </div>
+          </Box>
           <MyTag>
             <AgeBox css={{ display: 'flex' }}>
               <LastTitle css={{ marginRight: '24px' }}>연령대</LastTitle>
@@ -148,10 +217,17 @@ export default function EditMyInfo() {
         <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
           <div>로그아웃</div>
         </LogoutBox>
+        {showModal && (
+          <ProfileEditModal
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
+        )}
       </div>
     </Container>
   )
 }
+
 const LogoutBox = styled.div`
   font-size: 14px;
   font-weight: 400;

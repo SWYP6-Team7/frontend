@@ -1,3 +1,4 @@
+import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 interface ButtonProps {
   text: string
@@ -39,14 +40,14 @@ const Button = ({
       id={id}
       disabled={disabled}
       onClick={onClick}
-      css={addStyle}>
+      css={!disabled && addStyle}>
       {text}
       {children}
     </ButtonContainer>
   )
 }
 
-const ButtonContainer = styled.button`
+const ButtonContainer = styled.button<{ disabled: boolean }>`
   width: 100%;
   height: 48px;
   border-radius: 40px;
@@ -54,7 +55,10 @@ const ButtonContainer = styled.button`
   font-size: 18px;
   padding: 10px 20px 10px 20px;
   display: flex;
+  fontweight: '700';
   align-items: center;
+  background-color: ${props => props.disabled && 'rgba(220, 220, 220, 1)'};
+  color: ${props => props.disabled && palette.비강조};
 `
 
 export default Button
