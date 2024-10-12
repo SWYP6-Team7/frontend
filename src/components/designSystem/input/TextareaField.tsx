@@ -13,7 +13,7 @@ const TextareaField = ({ height = '31svh', ...rest }: TextareaFieldProps) => {
   const [focused, setFocused] = useState(false)
   useTextAreaScroll(textAreaRef)
   const borderColor = focused ? palette.keycolor : palette.검색창
-  const bgColor = focused ? 'rgba(255, 247, 247, 1)' : palette.검색창
+  const bgColor = focused ? 'rgba(252, 255, 250, 1)' : palette.검색창
 
   const handleFocus: FocusEventHandler<HTMLTextAreaElement> = event => {
     setFocused(true)
