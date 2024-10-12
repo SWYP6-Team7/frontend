@@ -13,6 +13,8 @@ interface IAuthStore {
   clearLoginData: () => void
   logoutCheck: boolean
   addLogoutCheck: (logoutCheck: boolean) => void
+  isAccessTokenNullInOnboarding: boolean
+  addIsAccessTokenNullInOnboarding: (isAccessTokenNull: boolean) => void
   resetData: () => void
 }
 
@@ -32,5 +34,9 @@ export const authStore = create<IAuthStore>(set => ({
   },
   resetData: () => {
     set({ userId: null, accessToken: null })
+  },
+  isAccessTokenNullInOnboarding: false,
+  addIsAccessTokenNullInOnboarding: state => {
+    set({ isAccessTokenNullInOnboarding: state })
   }
 }))

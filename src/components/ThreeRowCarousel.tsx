@@ -5,6 +5,7 @@ import Slider from 'react-slick'
 import ButtonContainer from './ButtonContainer'
 import Button from './Button'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { authStore } from '@/store/client/authStore'
 
 interface ThreeRowCarouselProps {
   children: ReactNode
@@ -38,6 +39,8 @@ const ThreeRowCarousel = ({
       dotsClass: 'dots-custom'
     }
   }, [children])
+  // 온보딩 파트.
+  const { accessToken, addIsAccessTokenNullInOnboarding } = authStore()
 
   const slickRef = useRef<Slider>(null) // Slider 타입으로 지정
   const navigate = useNavigate()
@@ -47,7 +50,14 @@ const ThreeRowCarousel = ({
       setCurrentSlideNumber(currentSlideNumber + 1)
       slickRef.current?.slickNext() // 현재 슬라이드 이동
     } else {
-      navigate('/')
+      // 유저가 접속을 새로운 탭에서 시작했을 때, 온보딩 화면 보여줌.
+      // 시작하기로 갈 때 만약 액세스 토큰이 없다면 없다고 알림. => Layout에서 캐치하고 액세스 토큰 요청함.
+      if (accessToken === null) {
+        addIsAccessTokenNullInOnboarding(true)
+        navigate('/login')
+      } else {
+        navigate('/')
+      }
     }
   }
   const { pathname } = useLocation()
