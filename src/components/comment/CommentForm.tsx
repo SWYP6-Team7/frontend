@@ -125,7 +125,6 @@ const Container = styled.form<{
     left: 50%;
 
     transform: translateX(-50%);
-    overflow-x: hidden;
   }
 
   position: fixed;
@@ -159,6 +158,7 @@ const Input = styled.textarea`
   line-height: 22px;
   font-family: Pretendard;
   padding: 5px 16px;
+  resize: none;
   height: 32px;
   overflow-y: auto; /* 내용이 넘칠 때 스크롤 생성 */
 `

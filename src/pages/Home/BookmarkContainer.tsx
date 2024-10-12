@@ -92,7 +92,7 @@ const BookmarkContainer = () => {
 export default BookmarkContainer
 const BookmarkPreviewBox = styled.div`
   display: flex;
-  min-width: 235px;
+  min-width: 250px;
   align-items: center;
   border-radius: 20px;
   padding: 16px;

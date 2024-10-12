@@ -67,6 +67,8 @@ const Background = styled.div`
   height: 100svh;
   z-index: 1001;
   top: 0;
+  left: 0;
+  right: 0;
   transition: 0.2s all ease-in-out;
   bottom: 0;
   background-color: rgba(26, 26, 26, 0.3);

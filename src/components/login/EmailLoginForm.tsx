@@ -37,6 +37,7 @@ const EmailLoginForm = () => {
   const [shake, setShake] = useState(false)
 
   const handleRemoveValue = (name: 'email' | 'password') => {
+    console.log('name', name)
     if (name === 'email') {
       setSuccess(prev => ({ ...prev, email: false }))
       setFormData(prev => ({ ...prev, email: '' }))
@@ -50,7 +51,9 @@ const EmailLoginForm = () => {
     e.preventDefault()
     try {
       await loginEmail(formData)
+      setFormData({ email: '', password: '' })
       navigate('/')
+
       return
     } catch (error: any) {
       setError('로그인 정보를 다시 확인해주세요.')
@@ -140,7 +143,10 @@ const EmailLoginForm = () => {
       </SignUpLinkContainer>
       <Spacing size={26} />
       {success.email && success.password ? (
-        <Button text="로그인" />
+        <Button
+          text="로그인"
+          type="submit"
+        />
       ) : (
         <Button
           text="로그인"
