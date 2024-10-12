@@ -40,7 +40,7 @@ const ThreeRowCarousel = ({
     }
   }, [children])
   // 온보딩 파트.
-  const { accessToken, addIsAccessTokenNullInOnboarding } = authStore()
+  const { accessToken } = authStore()
 
   const slickRef = useRef<Slider>(null) // Slider 타입으로 지정
   const navigate = useNavigate()
@@ -51,9 +51,8 @@ const ThreeRowCarousel = ({
       slickRef.current?.slickNext() // 현재 슬라이드 이동
     } else {
       // 유저가 접속을 새로운 탭에서 시작했을 때, 온보딩 화면 보여줌.
-      // 시작하기로 갈 때 만약 액세스 토큰이 없다면 없다고 알림. => Layout에서 캐치하고 액세스 토큰 요청함.
+      // 시작하기로 갈 때 만약 액세스 토큰이 없다면 로그인으로 아니면 홈으로.
       if (accessToken === null) {
-        addIsAccessTokenNullInOnboarding(true)
         navigate('/login')
       } else {
         navigate('/')
