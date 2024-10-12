@@ -59,7 +59,7 @@ const useAuth = () => {
       const data = response.data
 
       setLoginData({
-        userId: Number(response.data.userId),
+        userId: Number(response.data.userNumber),
         accessToken: data.accessToken
       })
     } catch (error: any) {
