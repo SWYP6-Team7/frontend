@@ -1,4 +1,3 @@
-import PersonIcon from '@/components/icons/PersonIcon'
 import React, { useState, useEffect, useRef, MouseEventHandler } from 'react'
 import RecruitingPickerView from './RecruitingPickerView'
 import styled from '@emotion/styled'
