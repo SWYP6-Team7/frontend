@@ -122,7 +122,7 @@ export default function EditMyTag() {
       </AgeStep>
       <TripStyleContainer>
         <Content>
-          연령대를 선택해주세요
+          취향을 선택해주세요
           <SubContent>(최대 5개)</SubContent>
         </Content>
         <StyleBtns>
