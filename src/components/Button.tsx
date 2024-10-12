@@ -8,6 +8,7 @@ interface ButtonProps {
     boxShadow?: string
     fontWeight?: string
   }
+  type?: 'button' | 'reset' | 'submit' | undefined
   id?: string
   children?: React.ReactNode
   disabled?: boolean
@@ -25,6 +26,7 @@ interface ButtonProps {
 const Button = ({
   text = '다음',
   id = '다음',
+  type = 'button',
   addStyle = {
     backgroundColor: 'rgba(62, 141, 0, 1)',
     color: 'white',
@@ -38,6 +40,7 @@ const Button = ({
   return (
     <ButtonContainer
       id={id}
+      type={type}
       disabled={disabled}
       onClick={onClick}
       css={!disabled && addStyle}>
@@ -55,7 +58,7 @@ const ButtonContainer = styled.button<{ disabled: boolean }>`
   font-size: 18px;
   padding: 10px 20px 10px 20px;
   display: flex;
-  fontweight: '700';
+  font-weight: '700';
   align-items: center;
   background-color: ${props => props.disabled && 'rgba(220, 220, 220, 1)'};
   color: ${props => props.disabled && palette.비강조};
