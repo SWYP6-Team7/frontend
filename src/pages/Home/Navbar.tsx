@@ -2,7 +2,7 @@ import CommnunityIcon from '@/components/icons/CommnunityIcon'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import HomeIcon from '@/components/icons/HomeIcon'
 import NavCommunityIcon from '@/components/icons/NavCommunityIcon'
-import PersonIcon from '@/components/icons/PersonIcon'
+import NavPersonIcon from '@/components/icons/NavPersonIcon'
 import SearchIcon from '@/components/icons/SearchIcon'
 
 import { palette } from '@/styles/palette'
@@ -36,7 +36,7 @@ const Navbar = () => {
       height={20}
     />,
     <NavCommunityIcon />,
-    <PersonIcon
+    <NavPersonIcon
       width={20}
       height={20}
     />

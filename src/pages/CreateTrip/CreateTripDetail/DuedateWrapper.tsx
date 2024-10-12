@@ -1,5 +1,5 @@
 import BottomModal from '@/components/BottomModal'
-import PersonIcon from '@/components/icons/PersonIcon'
+
 import Spacing from '@/components/Spacing'
 import { palette } from '@/styles/palette'
 import React, { useState } from 'react'
