@@ -1,4 +1,3 @@
-import PersonIcon from '@/components/icons/PersonIcon'
 import { createTripStore } from '@/store/client/createTripStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import React, { useState, useEffect, useRef } from 'react'
