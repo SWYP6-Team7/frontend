@@ -92,9 +92,8 @@ const HorizonBoxLayout = ({
             <UserName>{userName}</UserName>
             <Dot>·</Dot>
             <RecruitingBox>
-              <div>
-                <PersonIcon stroke={`${palette.비강조}`} />
-              </div>
+              <PersonIcon stroke={`${palette.비강조}`} />
+
               <Recruiting>
                 {recruits}/{total}
               </Recruiting>
