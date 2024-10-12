@@ -3,7 +3,9 @@ import styled from '@emotion/styled'
 
 const RemoveButton = ({ onClick }: { onClick: () => void }) => {
   return (
-    <XIconButton onClick={onClick}>
+    <XIconButton
+      type="button"
+      onClick={onClick}>
       <XIcon />
     </XIconButton>
   )
