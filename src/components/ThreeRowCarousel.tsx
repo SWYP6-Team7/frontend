@@ -59,6 +59,13 @@ const ThreeRowCarousel = ({
       }
     }
   }
+  const onClickSkip = () => {
+    if (accessToken === null) {
+      navigate('/login')
+    } else {
+      navigate('/')
+    }
+  }
   const { pathname } = useLocation()
   return (
     <ContentBox isOnboarding={pathname === '/onBoardingOne'}>
@@ -91,7 +98,7 @@ const ThreeRowCarousel = ({
                 }}
               />
               <Skip
-                onClick={() => navigate('/')}
+                onClick={onClickSkip}
                 css={{ marginTop: '16px', padding: '10px' }}>
                 건너뛰기
               </Skip>
