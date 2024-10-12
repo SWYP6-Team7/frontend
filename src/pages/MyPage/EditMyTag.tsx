@@ -44,12 +44,14 @@ export default function EditMyTag() {
   } = myPageStore()
   console.log(agegroup, preferredTags, '나이, 태그')
   const { updateMyPageMutation, isUpdatedSuccess } = useMyPage()
-  const [taggedArray, setTaggedArray] = useState<string[]>(preferredTags)
+  const tempArray = preferredTags.filter(v => v !== '국내' && v !== '해외')
+  // 일단 국내 해외 태그는 제외해두고 저장. 수정해서 전송시에는 포함 예정.
+  const [taggedArray, setTaggedArray] = useState<string[]>(tempArray)
   const [age, setAge] = useState(agegroup)
   const navigate = useNavigate()
 
   const completeClickHandler = () => {
-    addPreferredTags(taggedArray)
+    addPreferredTags([...taggedArray, ...tempArray])
     addAgegroup(age)
     updateMyPageMutation()
   }
