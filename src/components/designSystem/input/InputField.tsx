@@ -13,6 +13,7 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   success?: boolean
   shake?: boolean
   height?: number
+  showSuccessIcon?: boolean
   icon?: React.ReactNode
   showIcon?: boolean
   handleRemoveValue: () => void
@@ -46,6 +47,7 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
       success = false,
       shake = false,
       icon = undefined,
+      showSuccessIcon = true,
       handleRemoveValue,
       onFocus,
       showIcon = true,
@@ -101,11 +103,17 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
             (success ? (
               focused ? (
                 <RemoveButton onClick={handleRemoveValue} />
-              ) : (
+              ) : showSuccessIcon ? (
                 <CheckIcon status="done" />
+              ) : (
+                <></>
               )
             ) : props.value === '' ? (
-              <CheckIcon />
+              showSuccessIcon ? (
+                <CheckIcon />
+              ) : (
+                <></>
+              )
             ) : (
               <RemoveButton onClick={handleRemoveValue} />
             ))}
