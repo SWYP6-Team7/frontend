@@ -1,13 +1,14 @@
 import CommnunityIcon from '@/components/icons/CommnunityIcon'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import HomeIcon from '@/components/icons/HomeIcon'
+import NavCommunityIcon from '@/components/icons/NavCommunityIcon'
 import PersonIcon from '@/components/icons/PersonIcon'
 import SearchIcon from '@/components/icons/SearchIcon'
 
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import path from 'path'
-import { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useState } from 'react'
 import { NavLink, useLocation, useMatch, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
@@ -20,19 +21,33 @@ const Navbar = () => {
 
   const { pathname } = useLocation()
   // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
-  const pages = ['/', '/search/travel', '/myTrip', '/myPage']
+  const pages = ['/', '/search/travel', '/myTrip', '/community', '/myPage']
   const icons = [
-    HomeIcon,
-    SearchIcon,
-    EmptyHeartIcon,
-    // CommnunityIcon,
-    PersonIcon
+    <HomeIcon
+      width={20}
+      height={20}
+    />,
+    <SearchIcon
+      width={22}
+      height={19}
+    />,
+    <EmptyHeartIcon
+      width={22}
+      height={20}
+    />,
+    <NavCommunityIcon />,
+    <PersonIcon
+      width={20}
+      height={20}
+    />
   ]
   // const iconNames = ['홈', '검색', '즐겨찾기', '커뮤니티', 'MY']
-  const iconNames = ['홈', '검색', '내 여행', 'MY']
+  const iconNames = ['홈', '여행 찾기', '내 여행', '커뮤니티', 'MY']
 
   const getIsActive = (page: string) => {
     if (page === '/myPage' && pathname === '/editMyInfo') return true
+    if (page === '/search/travel' && pathname === '/search/community')
+      return true
     return pathname === page
   }
   const condition = () => {
@@ -47,13 +62,17 @@ const Navbar = () => {
       return true
     return false
   }
+
   return condition() ? (
     <Container>
       <Box>
         {pages.map((page, idx) => {
           const Icon = icons[idx]
           const isLinkActive = getIsActive(page)
-
+          const iconProps = {
+            stroke: isLinkActive ? `${palette.기본}` : `${palette.비강조3}`,
+            fill: isLinkActive ? `${palette.기본}` : 'none'
+          }
           return (
             <NavLink
               key={page}
@@ -66,12 +85,8 @@ const Navbar = () => {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-              <Icon
-                width={16}
-                height={15.67}
-                stroke={isLinkActive ? `${palette.기본}` : `${palette.비강조3}`}
-                fill={isLinkActive ? `${palette.기본}` : 'none'}
-              />
+              {React.cloneElement(Icon, iconProps)}
+
               <PageName
                 color={isLinkActive ? `${palette.기본}` : `${palette.비강조3}`}>
                 {iconNames[idx]}
@@ -96,6 +111,8 @@ const Container = styled.div`
     transform: translateX(-50%);
     overflow-x: hidden;
   }
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   position: fixed;
   bottom: 0;
   background-color: white;
