@@ -6,7 +6,7 @@ const data = {
   gender: '여자',
   ageGroup: '20대',
   proIntroduce: '',
-  preferredTags: ['⏱️ 단기', '✊ 즉흥', '📝 계획', '🧳 중장기', '🏄‍♂️ 액티비티']
+  preferredTags: ['단기', '즉흥', '계획', '중장기', '액티비티']
 }
 interface PasswordBody {
   confirmPassword: string
