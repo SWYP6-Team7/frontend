@@ -26,16 +26,10 @@ const Login = () => {
     <Container>
       <TopArea>
         <img
-          src={'/images/moingLogo.png'}
+          src={'/images/loginLogo2.png'}
           alt="모잉 서비스의 로고 이미지입니다."
-          width={80}
-          height={82}
-        />
-        <img
-          src={'/images/logo_txt.png'}
           width={128}
-          height={32}
-          alt="모잉 서비스의 로고 입니다."
+          height={89}
         />
       </TopArea>
       <EmailLoginForm />

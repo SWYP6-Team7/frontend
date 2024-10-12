@@ -28,15 +28,29 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
   const [checkingModalClicked, setCheckingModalClicked] = useState(false)
-
+  const [successEdit, setSuccessEdit] = useState(false)
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
   const [threeDotsClick, setThreeDotsClick] = useState(false)
-  const { setOpenEdit, setParentNumber, setCommentNumber } = commentStore()
-  const { removeMutation, remove, like, unlike } = useComment(
+  const { setOpenEdit, setParentNumber, setCommentNumber, isEdit } =
+    commentStore()
+  const { removeMutation, remove, like, unlike, updateMutation } = useComment(
     relatedType,
     relatedNumber
   )
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (updateMutation.isSuccess) {
+      setSuccessEdit(true)
+    }
+  }, [updateMutation.isSuccess])
+  useEffect(() => {
+    if (successEdit) {
+      setTimeout(() => {
+        setSuccessEdit(false)
+      }, 2000)
+    }
+  }, [successEdit])
   useEffect(() => {
     if (isDeleteBtnClicked) {
       setIsResultModalOpen(true)
@@ -68,7 +82,9 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
   }
 
   return (
-    <Container isChild={comment.parentNumber !== 0}>
+    <Container
+      isEdit={isEdit}
+      isChild={comment.parentNumber !== 0}>
       <TopContainer>
         <RoundedImage
           size={32}
@@ -119,7 +135,6 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
         )}
       </BottomContainer>
       <EditAndDeleteModal
-       
         setIsEditBtnClicked={setIsEditBtnClicked}
         setIsDeleteBtnClicked={setIsDeleteBtnClicked}
         isOpen={threeDotsClick}
@@ -143,10 +158,11 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
   )
 }
 
-const Container = styled.div<{ isChild: boolean }>`
+const Container = styled.div<{ isChild: boolean; isEdit: boolean }>`
   padding: 16px 0;
   padding-left: ${props => (props.isChild ? '40px' : '0')};
   border-bottom: 1px solid ${palette.비강조4};
+  background-color: ${props => (props.isEdit ? '#E3EFD94D' : palette.BG)};
 `
 
 const TopContainer = styled.div`

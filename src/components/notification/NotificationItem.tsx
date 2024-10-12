@@ -6,6 +6,8 @@ import { palette } from '@/styles/palette'
 import { daysLeft, formatTime } from '@/utils/time'
 import Badge from '../designSystem/Badge'
 import { useNavigate } from 'react-router-dom'
+import CommunityNotification from '../icons/CommunityNotification'
+import TripNotificationIcon from '../icons/TripNotificationIcon'
 
 interface NotificationItemProps {
   data: INotificationContent
@@ -16,10 +18,17 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
   return (
     <Container onClick={() => navigate(`/trip/detail/${data.travelNumber}`)}>
       <TopContainer>
-        <RoundedImage
-          size={32}
-          src=""
-        />
+        {data.title === '커뮤니티' ? (
+          <CommunityNotification />
+        ) : data.title === '여행 신청 알림' ||
+          data.title === '멤버 댓글 알림' ? (
+          <TripNotificationIcon
+            heartColor={palette.keycolorBG}
+            circleColor={palette.keycolor}
+          />
+        ) : (
+          <TripNotificationIcon />
+        )}
         <TextContainer>
           <InfoContainer>
             <div>{data.title}</div>
