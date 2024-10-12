@@ -251,6 +251,7 @@ const RegisterForm = () => {
                 color: 'rgba(132, 132, 132, 1)',
                 boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.1)'
               }}
+              type="submit"
               disabled={true}
             />
           )}
