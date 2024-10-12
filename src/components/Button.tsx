@@ -26,7 +26,7 @@ interface ButtonProps {
 const Button = ({
   text = '다음',
   id = '다음',
-  type = 'button',
+  type = 'submit',
   addStyle = {
     backgroundColor: 'rgba(62, 141, 0, 1)',
     color: 'white',

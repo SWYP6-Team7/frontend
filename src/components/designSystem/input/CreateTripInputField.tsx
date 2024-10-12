@@ -48,7 +48,7 @@ const CreateTripInputField = forwardRef<HTMLInputElement, TextFieldProps>(
 
     const borderColor = focused ? palette.keycolor : 'none'
     const bgColor = focused
-      ? 'rgba(255, 247, 247, 1)'
+      ? 'rgba(252, 255, 250, 1)'
       : props.value === ''
         ? palette.검색창
         : palette.비강조4
