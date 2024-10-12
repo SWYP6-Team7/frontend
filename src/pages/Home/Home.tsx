@@ -82,7 +82,12 @@ const Home = () => {
     <HomeContainer>
       <HomeHeader scrolled={scrolled}>
         <HeaderTitle>
-          <Text>홈</Text>
+          <img
+            src={'/images/homeLogo.png'}
+            width={96}
+            height={24}
+            alt="홈 모잉의 로고입니다"
+          />
           <Alarm onClick={onClickAlarm}>
             <AlarmIcon />
           </Alarm>

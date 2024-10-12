@@ -1,5 +1,6 @@
 import Comment from '@/components/comment/Comment'
 import CommentForm from '@/components/comment/CommentForm'
+import Spacing from '@/components/Spacing'
 import useComment from '@/hooks/comment/useComment'
 
 import styled from '@emotion/styled'
@@ -18,9 +19,7 @@ const TripComment = () => {
   console.log('data', data)
   return (
     <Container>
-      {!isLoading &&
-        data &&
-        data.length > 0 &&
+      {!isLoading && data && data.length > 0 ? (
         data.map(comment => (
           <Comment
             key={comment.commentNumber}
@@ -28,7 +27,25 @@ const TripComment = () => {
             relatedType="travel"
             relatedNumber={Number(travelNumber)}
           />
-        ))}
+        ))
+      ) : (
+        <>
+          <NoDataContainer>
+            <img
+              alt="댓글이 없습니다"
+              width={80}
+              height={80}
+              src={'/images/noData.png'}
+            />
+            <Spacing size={16} />
+            <NoDataTitle>
+              아직 달린 댓글이 없어요
+              <br />
+              댓글을 달아보세요
+            </NoDataTitle>
+          </NoDataContainer>
+        </>
+      )}
       <CommentForm
         relatedType="travel"
         relatedNumber={Number(travelNumber)}
@@ -49,4 +66,18 @@ const Container = styled.div`
   overflow-y: auto;
 `
 
+const NoDataContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+`
+
+const NoDataTitle = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22.4px;
+  letter-spacing: -0.025em;
+  text-align: center;
+`
 export default TripComment

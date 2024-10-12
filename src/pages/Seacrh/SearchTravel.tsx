@@ -14,8 +14,8 @@ import RelationKeywordList from '@/components/relationKeyword/RelationKeywordLis
 import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
 import { useSearchParams } from 'react-router-dom'
 
-const RECOMMEND_TAGS1 = ['유럽', '일본', '제주']
-const RECOMMEND_TAGS2 = ['유럽', '일본']
+const RECOMMEND_TAGS1 = ['유럽', '강릉', '제주']
+const RECOMMEND_TAGS2 = ['호주', '미국']
 
 const SearchTravel = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -97,7 +97,7 @@ const SearchTravel = () => {
               <SearchResultList searchResult={data.pages} />
               <div
                 ref={ref}
-                css={{ height: 80 }}
+                css={{ height: 20 }}
               />
             </>
           )}
@@ -105,13 +105,11 @@ const SearchTravel = () => {
             <>
               <NoDataContainer>
                 <Spacing size={'12.3svh'} />
-                <div
-                  css={{
-                    borderRadius: '50%',
-                    backgroundColor: 'rgba(217, 217, 217, 1)',
-                    width: 65,
-                    height: 65
-                  }}
+                <img
+                  alt="검색 결과가 없습니다"
+                  width={80}
+                  height={80}
+                  src={'/images/noData.png'}
                 />
                 <Spacing size={16} />
                 <NoDataTitle>

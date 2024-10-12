@@ -101,20 +101,22 @@ const EmailLoginForm = () => {
         placeholder="email"
         name="email"
         height={54}
-        showIcon={false}
-        success={success.email}
+        showIcon={true}
+        success={false}
+        showSuccessIcon={false}
         onChange={changeValue}
       />
       <Spacing size={16} />
       <InputField
+        showSuccessIcon={false}
         handleRemoveValue={() => handleRemoveValue('password')}
         type="password"
         height={54}
-        showIcon={false}
+        showIcon={true}
         value={formData.password}
         placeholder="password"
         name="password"
-        success={success.password}
+        success={false}
         onChange={changeValue}
       />
       <Spacing size={14} />
