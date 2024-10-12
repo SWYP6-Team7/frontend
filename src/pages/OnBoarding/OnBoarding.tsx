@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 
-import React, { ButtonHTMLAttributes, useState } from 'react'
+import React, { ButtonHTMLAttributes, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTripList } from '@/hooks/useTripList'
 import { userStore } from '@/store/client/userStore'
@@ -17,6 +17,7 @@ import OnBoardingOne from '@/components/icons/OnBoardingOne'
 import OnBoardingTwo from '@/components/icons/OnBoardingTwo'
 import OnBoardingThree from '@/components/icons/OnBoardingThree'
 import { palette } from '@/styles/palette'
+import { authStore } from '@/store/client/authStore'
 interface OnBoardingData {
   title: string
   description: string
