@@ -87,7 +87,7 @@ export default function MyPage() {
             공지사항
           </SmallTitle>
         </Box>
-        <Box>
+        {/* <Box>
           <Title>내 여행 현황</Title>
           <SmallTitle onClick={() => navigate('/myTrip')}>
             <img
@@ -103,7 +103,7 @@ export default function MyPage() {
             />
             참가 중인 여행
           </SmallTitle>
-        </Box>
+        </Box> */}
         <div css={{ marginTop: '16px' }}>
           <SmallTitle>
             <a
