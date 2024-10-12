@@ -21,7 +21,13 @@ const Layout = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { userPostRefreshToken } = useAuth()
-  const { userId, accessToken, logoutCheck } = authStore()
+  const {
+    userId,
+    accessToken,
+    logoutCheck,
+    isAccessTokenNullInOnboarding,
+    addIsAccessTokenNullInOnboarding
+  } = authStore()
   // 유저 프로필 정보 불러오기
   const {
     addEmail,
@@ -76,6 +82,7 @@ const Layout = () => {
         try {
           // refresh 토큰을 이용해 accessToken 재발급 요청
           await userPostRefreshToken()
+          addIsAccessTokenNullInOnboarding(false)
         } catch (error) {
           console.error('Failed to refresh token:', error)
 
@@ -87,7 +94,7 @@ const Layout = () => {
         refreshAccessToken()
       }
     }
-  }, [accessToken])
+  }, [accessToken, isAccessTokenNullInOnboarding])
   console.log(userId, accessToken, '토큰')
   return (
     <Container pathname={pathname}>
