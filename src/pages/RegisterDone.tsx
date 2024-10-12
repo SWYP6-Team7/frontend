@@ -7,7 +7,7 @@ export default function RegisterDone() {
   const navigate = useNavigate()
   useEffect(() => {
     setTimeout(() => {
-      navigate('/')
+      navigate('/login') // refresh 토큰 받을려면 로그인으로 접속해야함.
     }, 2000)
   }, [])
   return (
