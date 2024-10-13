@@ -20,11 +20,12 @@ interface ErrorProps {
 
 const RegisterForm = () => {
   const { loginEmail } = useAuth()
+  const { addEmail, addPassword, email, password } = userStore()
   const [showTerms, setShowTerms] = useState(true)
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: ''
+    email: email,
+    password: password,
+    confirmPassword: password
   })
   const [success, setSuccess] = useState({
     email: false,
@@ -41,7 +42,7 @@ const RegisterForm = () => {
     password: false,
     confirmPassword: false
   })
-  const { addEmail, addPassword } = userStore()
+
   const navigate = useNavigate()
 
   const allSuccess = Object.values(success).every(value => value)

@@ -57,6 +57,8 @@ interface tripDetailState {
   setApplySuccess: (status: boolean) => void
   bookmarked: boolean
   addBookmarked: (status: boolean) => void
+  commentLength: number
+  addCommentLength: (status: number) => void
 }
 
 export const tripDetailStore = create<tripDetailState>(set => ({
@@ -125,5 +127,8 @@ export const tripDetailStore = create<tripDetailState>(set => ({
 
   enrollmentNumber: null,
   addEnrollmentNumber: (enrollmentNumber: number | null) =>
-    set({ enrollmentNumber })
+    set({ enrollmentNumber }),
+
+  commentLength: 0,
+  addCommentLength: (commentLength: number) => set({ commentLength })
 }))

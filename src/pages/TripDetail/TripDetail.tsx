@@ -23,6 +23,8 @@ import { useNavigate } from 'react-router-dom'
 import CompanionsView from './CompanionsView'
 import { daysAgo } from '@/utils/time'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
+import NewIcon from '@/components/icons/NewIcon'
+import useComment from '@/hooks/comment/useComment'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false)
@@ -30,6 +32,7 @@ export default function TripDetail() {
   const [isApplyToast, setIsApplyToast] = useState(false)
   const [isCancelToast, setIsCancelToast] = useState(false)
 
+  const [isCommentUpdated, setIsCommentUpdated] = useState(false)
   const {
     location,
     postStatus,
@@ -51,7 +54,9 @@ export default function TripDetail() {
     userAgeGroup,
     addUserAgeGroup,
     applySuccess,
-    setApplySuccess
+    setApplySuccess,
+    commentLength,
+    addCommentLength
   } = tripDetailStore()
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
   const { tripEnrollmentCount } = useTripDetail(travelNumber!)
@@ -73,6 +78,7 @@ export default function TripDetail() {
   const DAY = new Date(`${year}/${month}/${day}`)
   const dayOfWeek = WEEKDAY[DAY.getDay()]
   const [personViewClicked, setPersonViewClicked] = useState(false)
+
   const buttonClickHandler = () => {
     if (hostUserCheck) {
       navigate(`/trip/enrollmentList/${travelNumber}`)
@@ -107,6 +113,19 @@ export default function TripDetail() {
 
     return daysLeft
   }
+  // 댓글 새로 업데이트 여부 표시
+
+  const {
+    commentList: { isLoading, data, error }
+  } = useComment('travel', Number(travelNumber))
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      if (data.length > commentLength) {
+        setIsCommentUpdated(true)
+      }
+    }
+  }, [data])
 
   const commentClickHandler = () => {
     if (!hostUserCheck && !enrollmentNumber) {
@@ -116,6 +135,14 @@ export default function TripDetail() {
       navigate(`/trip/comment/${travelNumber}`)
     }
   }
+
+  useEffect(() => {
+    return () => {
+      // 컴포넌트가 언마운트될 때 실행
+      addCommentLength(data?.length!)
+    }
+  }, [])
+
   return (
     <>
       <ResultToast
@@ -224,10 +251,12 @@ export default function TripDetail() {
               css={{
                 fontSize: '16px',
                 fontWeight: '600',
-                lineHeight: '14px'
+                lineHeight: '14px',
+                marginRight: ' 8px'
               }}>
               멤버 댓글
             </div>
+            {hostUserCheck && isCommentUpdated && <NewIcon />}
           </div>
           <div>
             <ArrowIcon stroke={palette.비강조3} />
