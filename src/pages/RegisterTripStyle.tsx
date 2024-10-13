@@ -15,8 +15,17 @@ const RegisterTripStyle = () => {
   const navigate = useNavigate()
   const { registerEmail } = useAuth()
   const { userId, accessToken } = authStore()
-  const { name, email, password, sex, agegroup, tripStyle, addTripStyle } =
-    userStore()
+  const {
+    addName,
+    addEmail,
+    name,
+    email,
+    password,
+    sex,
+    agegroup,
+    tripStyle,
+    addTripStyle
+  } = userStore()
 
   console.log(name, email, password, sex, agegroup, tripStyle)
 
@@ -72,6 +81,8 @@ const RegisterTripStyle = () => {
       agegroup: agegroup as string,
       preferredTags: tripStyleArray
     })
+    addName('')
+    addEmail('')
   }
 
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.

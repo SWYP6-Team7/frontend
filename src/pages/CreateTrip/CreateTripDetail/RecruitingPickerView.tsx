@@ -1,7 +1,11 @@
+import EveryBodyIcon from '@/components/icons/EveryBodyIcon'
+import OnlyFemaleIcon from '@/components/icons/OnlyFemaleIcon'
+import OnlyMaleIcon from '@/components/icons/OnlyMaleIcon'
 import PersonIcon from '@/components/icons/PersonIcon'
 import { createTripStore } from '@/store/client/createTripStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
+import styled from '@emotion/styled'
 import React, { useState, useEffect, useRef } from 'react'
 import Picker from 'react-mobile-picker'
 import { useLocation } from 'react-router-dom'
@@ -100,6 +104,8 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
     addMaxPerson(value.count)
     addMaxPersonForEdit(value.count)
   }, [value])
+
+  const icons = [<EveryBodyIcon />, <OnlyFemaleIcon />, <OnlyMaleIcon />]
   return (
     <div
       style={{ display: 'flex', justifyContent: 'center' }}
@@ -113,49 +119,62 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
         itemHeight={50.3} // 각 항목의 높이 설정
         height={160} // 3개의 항목만 보이도록 전체 높이 설정
       >
-        {Object.keys(selections).map(col => (
-          <Picker.Column
-            key={col}
-            name={col}>
-            {selections[col].map(option => (
-              <Picker.Item
-                key={option}
-                value={option}>
-                {({ selected }) => (
-                  <div
-                    style={{
-                      color: selected ? 'black' : '#CDCDCD',
-                      //   backgroundColor: selected ? '#d9d9d9' : 'white',
-                      padding: '14px 16px',
-                      height: '52px',
-                      fontWeight: 500,
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      lineHeight: col === 'gender' ? '22.4px' : '25.2px',
-                      fontSize: col === 'gender' ? '16px' : '18px'
-                      //   borderTop: selected ? '1px solid black' : 'none',
-                      //   borderBottom: selected ? '1px solid black' : 'none'
-                    }}>
-                    {col === 'gender' ? (
-                      <PersonIcon
-                        stroke={palette.keycolor}
-                        width={24}
-                        height={20}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {option}
-                  </div>
-                )}
-              </Picker.Item>
-            ))}
-          </Picker.Column>
-        ))}
+        {Object.keys(selections).map((col, idx) => {
+          return (
+            <Picker.Column
+              key={col}
+              name={col}>
+              {selections[col].map(option => (
+                <Picker.Item
+                  key={option}
+                  value={option}>
+                  {({ selected }) => (
+                    <div
+                      style={{
+                        color: selected ? 'black' : '#CDCDCD',
+                        //   backgroundColor: selected ? '#d9d9d9' : 'white',
+                        padding: '14px 16px',
+                        height: '52px',
+                        fontWeight: 500,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        lineHeight: col === 'gender' ? '22.4px' : '25.2px',
+                        fontSize: col === 'gender' ? '16px' : '18px'
+                        //   borderTop: selected ? '1px solid black' : 'none',
+                        //   borderBottom: selected ? '1px solid black' : 'none'
+                      }}>
+                      {col === 'gender' ? (
+                        idx === 0 ? (
+                          <EveryBodyIcon />
+                        ) : idx === 1 ? (
+                          <OnlyFemaleIcon />
+                        ) : (
+                          <OnlyMaleIcon />
+                        )
+                      ) : (
+                        <></>
+                      )}
+                      <Text>{option}</Text>
+                    </div>
+                  )}
+                </Picker.Item>
+              ))}
+            </Picker.Column>
+          )
+        })}
       </Picker>
     </div>
   )
 }
 
 export default RecruitingPickerView
+const Text = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22.4px;
+
+  text-align: left;
+  color: ${palette.기본};
+  margin-left: 4px;
+`

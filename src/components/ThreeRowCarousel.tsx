@@ -17,6 +17,29 @@ interface ThreeRowCarouselProps {
   rowsProp?: number
   needNextBtn?: boolean
 }
+// 다음 버튼, 연속적으로 누를 때, 이벤트가 천천히 가도록.
+function throttle(func: Function, limit: number) {
+  let lastFunc: any
+  let lastRan: number
+
+  return function (...args: any[]) {
+    if (!lastRan) {
+      func(...args)
+      lastRan = Date.now()
+    } else {
+      clearTimeout(lastFunc)
+      lastFunc = setTimeout(
+        () => {
+          if (Date.now() - lastRan >= limit) {
+            func(...args)
+            lastRan = Date.now()
+          }
+        },
+        limit - (Date.now() - lastRan)
+      )
+    }
+  }
+}
 
 const ThreeRowCarousel = ({
   children,
@@ -45,17 +68,31 @@ const ThreeRowCarousel = ({
   const slickRef = useRef<Slider>(null) // Slider 타입으로 지정
   const navigate = useNavigate()
   const [currentSlideNumber, setCurrentSlideNumber] = useState(0)
-  const onClickNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (e.currentTarget.id === '다음') {
+
+  const handleNext = useCallback(
+    throttle(() => {
       setCurrentSlideNumber(currentSlideNumber + 1)
       slickRef.current?.slickNext() // 현재 슬라이드 이동
+    }, 300), // 200ms마다 한 번만 처리
+    []
+  )
+
+  const onClickNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (e.currentTarget.id === '다음') {
+      handleNext()
+      // setCurrentSlideNumber(currentSlideNumber + 1)
+      // slickRef.current?.slickNext() // 현재 슬라이드 이동
     } else {
       // 유저가 접속을 새로운 탭에서 시작했을 때, 온보딩 화면 보여줌.
       // 시작하기로 갈 때 만약 액세스 토큰이 없다면 로그인으로 아니면 홈으로.
       if (accessToken === null) {
-        navigate('/login')
+        setTimeout(() => {
+          navigate('/login')
+        }, 300)
       } else {
-        navigate('/')
+        setTimeout(() => {
+          navigate('/')
+        }, 300)
       }
     }
   }

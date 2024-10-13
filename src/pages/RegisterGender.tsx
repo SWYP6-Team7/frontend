@@ -48,14 +48,14 @@ const RegisterGender = () => {
               src={
                 maleClicked
                   ? '/images/activeMale.png'
-                  : '/images/defaultGender.png'
+                  : '/images/defaultMale.png'
               }
               alt=""
             />
             <p
               css={
                 maleClicked
-                  ? { color: 'black' }
+                  ? { color: 'black', fontWeight: 700 }
                   : { color: 'rgba(171, 171, 171, 1)' }
               }>
               남자
@@ -67,14 +67,14 @@ const RegisterGender = () => {
               src={
                 femaleClicked
                   ? '/images/activeFemale.png'
-                  : '/images/defaultGender.png'
+                  : '/images/defaultFemale.png'
               }
               alt=""
             />
             <p
               css={
                 femaleClicked
-                  ? { color: 'black' }
+                  ? { color: 'black', fontWeight: 700 }
                   : { color: 'rgba(171, 171, 171, 1)' }
               }>
               여자
@@ -119,20 +119,20 @@ const MaleBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-weight: 500;
   p {
     margin-top: 18px;
     font-size: 18px;
-    font-weight: 500;
   }
 `
 const FemaleBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-weight: 500;
   p {
     margin-top: 18px;
     font-size: 18px;
-    font-weight: 500;
   }
 `
 
