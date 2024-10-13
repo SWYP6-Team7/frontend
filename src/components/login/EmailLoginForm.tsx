@@ -101,7 +101,7 @@ const EmailLoginForm = () => {
         handleRemoveValue={() => handleRemoveValue('email')}
         type="email"
         value={formData.email}
-        placeholder="email"
+        placeholder="이메일 아이디"
         name="email"
         height={54}
         showIcon={true}
@@ -117,7 +117,7 @@ const EmailLoginForm = () => {
         height={54}
         showIcon={true}
         value={formData.password}
-        placeholder="password"
+        placeholder="패스워드"
         name="password"
         success={false}
         onChange={changeValue}

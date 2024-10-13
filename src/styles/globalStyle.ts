@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 // css reset 및 추후 color palette나 글자 규격 정해지면 아래에 추가
 export default css`
   @import url('https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap'); // 이모지 일관되게 보이도록 하는 오픈소스.
   @font-face {
     font-family: 'Pretendard';
     src:
@@ -193,5 +194,6 @@ export default css`
   }
   * {
     box-sizing: border-box;
+    font-family: 'Noto Color Emoji', sans-serif; // 이모지가 모든 운영체제에서 일관되게 보이도록.
   }
 `
