@@ -87,7 +87,7 @@ export default function EditMyTag() {
     if (JSON.stringify(newArray) !== JSON.stringify(taggedArray)) {
       setIsChanged(true)
     }
-    addPreferredTags(newArray)
+
     setTaggedArray(newArray)
   }
   const handleClickage = (ageInput: string) => {
