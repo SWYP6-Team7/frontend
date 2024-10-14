@@ -2,6 +2,7 @@ import {
   deleteCommunity,
   getCommunities,
   getCommunity,
+  getImages,
   likeCommunity,
   postCommunity,
   unlikeCommunity,
@@ -24,6 +25,12 @@ const useCommunity = (communityNumber: number | undefined = undefined) => {
   const community = useQuery({
     queryKey: ['community', communityNumber],
     queryFn: () => getCommunity(communityNumber!, accessToken!),
+    enabled: !!accessToken && !!communityNumber
+  })
+
+  const images = useQuery({
+    queryKey: ['community', 'images', communityNumber],
+    queryFn: () => getImages(communityNumber!, accessToken!),
     enabled: !!accessToken && !!communityNumber
   })
 
@@ -125,7 +132,8 @@ const useCommunity = (communityNumber: number | undefined = undefined) => {
     unlike,
     unlikeMutation,
     communityList,
-    community
+    community,
+    images
   }
 }
 

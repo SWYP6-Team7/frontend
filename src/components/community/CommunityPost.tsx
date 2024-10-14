@@ -12,7 +12,8 @@ import { useParams } from 'react-router-dom'
 const CommunityPost = () => {
   const { cummunityNumber } = useParams()
   const {
-    community: { data, isLoading }
+    community: { data, isLoading },
+    images
   } = useCommunity(Number(cummunityNumber))
 
   if (isLoading || !data) {
@@ -57,7 +58,7 @@ const CommunityPost = () => {
         <Details>{data.content}</Details>
         {/*태그   */}
         <ImageContainer>
-          <DetailImages images={data.postImageUrls} />
+          {!isLoading && images.data && <DetailImages images={images.data} />}
         </ImageContainer>
         <LikeContainer>
           <SearchFilterTag

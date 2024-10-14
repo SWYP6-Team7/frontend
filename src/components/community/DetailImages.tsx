@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import ImageModal from '../designSystem/modal/ImageModal'
+import { Image } from '@/model/community'
 
 interface DetailImagesProps {
-  images: string[]
+  images: Image[]
 }
 
 interface ImageInfo {
@@ -33,12 +34,12 @@ const DetailImages = ({ images }: DetailImagesProps) => {
             key={idx}
             onClick={() =>
               onClickImage({
-                image: image,
+                image: image.url,
                 allCount: images.length,
                 count: idx + 1
               })
             }
-            image={image}
+            image={image.url}
           />
         ))}
       </Container>

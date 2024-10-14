@@ -1,4 +1,4 @@
-import { Community, PostCommunity } from './../model/community'
+import { Community, Image, PostCommunity } from './../model/community'
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 
@@ -59,8 +59,7 @@ export async function updateCommunity(
     const contentData = {
       categoryName: data.categoryName,
       title: data.title,
-      content: data.content,
-      files: data.files
+      content: data.content
     }
     if (!accessToken) throw new Error('로그인을 해주세요.')
     const result = await axiosInstance.put(
@@ -121,6 +120,21 @@ export async function unlikeCommunity(
         headers: getJWTHeader(accessToken!)
       }
     )
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export async function getImages(communityNumber: number, accessToken: string) {
+  try {
+    const result = await axiosInstance.get(
+      `api/community/${communityNumber}/images`,
+
+      {
+        headers: getJWTHeader(accessToken!)
+      }
+    )
+    return result.data as Image[]
   } catch (err) {
     console.log(err)
   }

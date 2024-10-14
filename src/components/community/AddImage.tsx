@@ -2,8 +2,14 @@ import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useRef } from 'react'
 import CameraIcon from '../icons/CameraIcon'
+import { Image } from '@/model/community'
 
-const AddImage = () => {
+interface AddImageProps {
+  images: Image[]
+  setImages: React.Dispatch<React.SetStateAction<Image[]>>
+}
+
+const AddImage = ({ images, setImages }: AddImageProps) => {
   const imageRef = useRef<HTMLInputElement>(null)
 
   return (
@@ -19,6 +25,8 @@ const AddImage = () => {
         <CameraIcon />
         <div>0/3</div>
       </ImageInput>
+      {images.length > 0 &&
+        images.map(image => <ImageDiv src={image.url}></ImageDiv>)}
     </Container>
   )
 }
@@ -34,7 +42,8 @@ const ImageInput = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18.5px 26px;
+  width: 80px;
+  height: 80px;
   border: 1px solid ${palette.비강조3};
   border-radius: 15px;
   flex-direction: column;
@@ -43,6 +52,25 @@ const ImageInput = styled.label`
   font-weight: 600;
   line-height: 16.71px;
   color: ${palette.비강조};
+`
+
+const ImageDiv = styled.div<{ src: string }>`
+  width: 80px;
+  height: 80px;
+
+  border-radius: 15px;
+  position: relative;
+  background-image: url(${props => props.src});
+  background-size: cover;
+`
+const RemoveButton = styled.button`
+  display: block;
+  position: absolute;
+  top: -4px;
+  width: 16px;
+  height: 16px;
+
+  right: -4px;
 `
 
 export default AddImage

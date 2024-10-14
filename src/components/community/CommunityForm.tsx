@@ -10,6 +10,7 @@ import styled from '@emotion/styled'
 import useCommunity from '@/hooks/useCommunity'
 import { useNavigate, useParams } from 'react-router-dom'
 import ResultToast from '../designSystem/toastMessage/resultToast'
+import { Image } from '@/model/community'
 
 const LIST = ['잡담', '여행팁', '후기']
 
@@ -24,23 +25,32 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   const { communityNumber } = useParams()
   const navigate = useNavigate()
   const [tripEditToastShow, setTripEditToastShow] = useState(false) // 상세 글 변경시 보이게 해줄 토스트 메시지
+  const [images, setImages] = useState<Image[]>([])
+  const {
+    community,
+    post,
+    update,
+    postMutation,
+    updateMutation,
+    images: editImages
+  } = useCommunity(Number(communityNumber))
 
-  const { community, post, update, postMutation, updateMutation } =
-    useCommunity(Number(communityNumber))
-  useEffect(() => {
-    if (community.data && isEdit) {
-      setValue(community.data.categoryName)
-      setTitle(community.data.title)
-      setContent(community.data.content)
-    }
-  }, [isEdit, community.data])
   const [value, setValue] = useState<string>()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const changeValue = (element: string) => {
     setValue(element)
   }
-
+  useEffect(() => {
+    if (community.data && isEdit) {
+      setValue(community.data.categoryName)
+      setTitle(community.data.title)
+      setContent(community.data.content)
+    }
+    if (editImages.data && isEdit) {
+      setImages(editImages.data)
+    }
+  }, [isEdit, community.data, editImages.data])
   const submitCommunity = () => {
     if (!value || title === '' || content === '') {
       return
@@ -54,11 +64,10 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
         categoryName: value,
         communityNumber: Number(communityNumber),
         title: title,
-        content: content,
-        files: []
+        content: content
       })
     } else {
-      post({ categoryName: value, title: title, content: content, files: [] })
+      post({ categoryName: value, title: title, content: content })
     }
   }
 
@@ -80,7 +89,6 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
 
   return (
     <>
-      {' '}
       <ResultToast
         height={120}
         isShow={tripEditToastShow}
@@ -109,7 +117,10 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           placeholder="내용을 입력해주세요. (최대 2,000자)"
         />
         <Spacing size={'3.8svh'} />
-        <AddImage />
+        <AddImage
+          images={images}
+          setImages={setImages}
+        />
         <ButtonContainer>
           <Button
             onClick={submitCommunity}
