@@ -1,6 +1,7 @@
 import { Community, Image, PostCommunity } from './../model/community'
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
+import { EditImage, UploadImage } from '@/store/client/imageStore'
 
 export async function getCommunities(accessToken: string) {
   try {
@@ -135,6 +136,67 @@ export async function getImages(communityNumber: number, accessToken: string) {
       }
     )
     return result.data as Image[]
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const uploadImage = async (file: File) => {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  try {
+    const response = await axiosInstance.post(
+      'api/community/images/temp',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error('Error uploading image:', error)
+    throw error
+  }
+}
+
+export async function updateImage(
+  data: EditImage[],
+  communityNumber: number,
+  accessToken: string | null
+) {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    const result = await axiosInstance.put(
+      `/api/community/${communityNumber}/images`,
+      data,
+      {
+        headers: getJWTHeader(accessToken!)
+      }
+    )
+    return result.data as Community
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export async function postImage(
+  data: UploadImage[],
+  communityNumber: number,
+  accessToken: string | null
+) {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    const result = await axiosInstance.post(
+      `/api/community/${communityNumber}/images`,
+      data,
+      {
+        headers: getJWTHeader(accessToken!)
+      }
+    )
+    return result.data as Community
   } catch (err) {
     console.log(err)
   }

@@ -11,6 +11,7 @@ import useCommunity from '@/hooks/useCommunity'
 import { useNavigate, useParams } from 'react-router-dom'
 import ResultToast from '../designSystem/toastMessage/resultToast'
 import { Image } from '@/model/community'
+import { useEditStore, useUploadStore } from '@/store/client/imageStore'
 
 const LIST = ['잡담', '여행팁', '후기']
 
@@ -25,15 +26,23 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   const { communityNumber } = useParams()
   const navigate = useNavigate()
   const [tripEditToastShow, setTripEditToastShow] = useState(false) // 상세 글 변경시 보이게 해줄 토스트 메시지
-  const [images, setImages] = useState<Image[]>([])
+
   const {
     community,
     post,
     update,
     postMutation,
     updateMutation,
-    images: editImages
+    postImageMutation,
+    updateImageMutation
   } = useCommunity(Number(communityNumber))
+  const { saveFinalImages, images } = useUploadStore()
+  const {
+    images: editImages,
+
+    saveFinalImages: saveEditImages
+  } = useEditStore()
+  const { images: detailImages } = useCommunity(Number(communityNumber))
 
   const [value, setValue] = useState<string>()
   const [title, setTitle] = useState('')
@@ -47,10 +56,7 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       setTitle(community.data.title)
       setContent(community.data.content)
     }
-    if (editImages.data && isEdit) {
-      setImages(editImages.data)
-    }
-  }, [isEdit, community.data, editImages.data])
+  }, [isEdit, community.data])
   const submitCommunity = () => {
     if (!value || title === '' || content === '') {
       return
@@ -60,6 +66,30 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       if (!communityNumber) {
         return
       }
+      const detailImageList = detailImages.data ?? []
+      const initialImages = [...detailImageList] // 초기 이미지 목록
+      const currentImages = [...editImages] // 현재 이미지 목록
+
+      const statuses = currentImages.map((img, index) => {
+        const initialImage = initialImages.find(
+          initial => initial.imageNumber === img.imageNumber
+        )
+        if (!initialImage) return 'd' // 초기 이미지 목록에 없는 경우 삭제된 이미지
+
+        if (initialImage.url !== img.url) return 'y' // URL이 변경된 경우
+        if (
+          index !==
+          initialImages.findIndex(
+            initial => initial.imageNumber === img.imageNumber
+          )
+        )
+          return 'y' // 순서 변경된 경우
+        return 'n' // 변경 없음
+      })
+
+      const urls = currentImages.map(img => img.url)
+
+      saveEditImages({ statuses, urls })
       update({
         categoryName: value,
         communityNumber: Number(communityNumber),
@@ -67,14 +97,21 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
         content: content
       })
     } else {
+      saveFinalImages() // 업로드 시 저장
       post({ categoryName: value, title: title, content: content })
     }
   }
+
+  console.log(editImages, images, 'images')
 
   useEffect(() => {
     if (updateMutation.isSuccess && updateMutation.data) {
       navigate(`/community/detail/${updateMutation.data?.postNumber}`)
       setTripEditToastShow(true)
+      updateImageMutation.mutateAsync({
+        editImages: editImages,
+        communityNumber: updateMutation.data?.postNumber
+      })
       setTimeout(() => {
         navigate(`/community/detail/${updateMutation.data?.postNumber}`)
       }, 1000)
@@ -83,6 +120,10 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
 
   useEffect(() => {
     if (postMutation.isSuccess && postMutation.data) {
+      postImageMutation.mutateAsync({
+        uploadImages: images,
+        communityNumber: postMutation.data?.postNumber
+      })
       navigate(`/community/detail/${postMutation.data?.postNumber}`)
     }
   }, [postMutation.isSuccess && postMutation.data])
@@ -117,10 +158,7 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           placeholder="내용을 입력해주세요. (최대 2,000자)"
         />
         <Spacing size={'3.8svh'} />
-        <AddImage
-          images={images}
-          setImages={setImages}
-        />
+        <AddImage isEdit={isEdit} />
         <ButtonContainer>
           <Button
             onClick={submitCommunity}
