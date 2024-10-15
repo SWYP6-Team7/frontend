@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import ImageModal from '../designSystem/modal/ImageModal'
+import { Image } from '@/model/community'
 
 interface DetailImagesProps {
-  images: string[]
+  images: Image[]
 }
 
 interface ImageInfo {
@@ -29,16 +30,16 @@ const DetailImages = ({ images }: DetailImagesProps) => {
       )}
       <Container length={images.length}>
         {images.map((image, idx) => (
-          <Image
+          <ImageDiv
             key={idx}
             onClick={() =>
               onClickImage({
-                image: image,
+                image: image.url,
                 allCount: images.length,
                 count: idx + 1
               })
             }
-            image={image}
+            image={image.url}
           />
         ))}
       </Container>
@@ -57,7 +58,7 @@ const Container = styled.div<{ length: number }>`
     ${props => props.length === 3 && 'grid-row: 1 / span 2'};
   }
 `
-const Image = styled.div<{ image: string }>`
+const ImageDiv = styled.div<{ image: string }>`
   width: 100%;
   height: 100%;
   background-image: url(${props => props.image});
