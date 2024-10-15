@@ -27,6 +27,7 @@ const AddImage = ({ isEdit }: AddImageProps) => {
 
   const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
+
     uploadImage(e.target.files[0]).then(newImage => {
       if (isEdit) {
         updateImage(newImage) // 수정 시 이미지 업데이트
@@ -36,7 +37,8 @@ const AddImage = ({ isEdit }: AddImageProps) => {
     })
   }
 
-  const onUploadImageButtonClick = () => {
+  const onUploadImageButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.stopPropagation() // 클릭 이벤트 전파를 막아 중복 호출 방지
     if (!imageRef.current) return
     imageRef.current.click()
   }
@@ -63,15 +65,14 @@ const AddImage = ({ isEdit }: AddImageProps) => {
       <input
         ref={imageRef}
         onChange={onUploadImage}
+        onClick={onUploadImageButtonClick}
         type="file"
         id="imageInput"
         accept="image/*"
         css={{ display: 'none' }}
       />
       {canUploadImage && (
-        <ImageInput
-          onClick={onUploadImageButtonClick}
-          htmlFor="imageInput">
+        <ImageInput htmlFor="imageInput">
           <CameraIcon />
           <div>
             {isEdit
