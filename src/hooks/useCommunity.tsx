@@ -2,13 +2,17 @@ import {
   deleteCommunity,
   getCommunities,
   getCommunity,
+  getImages,
   likeCommunity,
   postCommunity,
+  postImage,
   unlikeCommunity,
-  updateCommunity
+  updateCommunity,
+  updateImage
 } from '@/api/community'
 import { PostCommunity } from '@/model/community'
 import { authStore } from '@/store/client/authStore'
+import { EditImage, UploadImage } from '@/store/client/imageStore'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 
@@ -25,6 +29,24 @@ const useCommunity = (communityNumber: number | undefined = undefined) => {
     queryKey: ['community', communityNumber],
     queryFn: () => getCommunity(communityNumber!, accessToken!),
     enabled: !!accessToken && !!communityNumber
+  })
+
+  const images = useQuery({
+    queryKey: ['community', 'images', communityNumber],
+    queryFn: () => getImages(communityNumber!, accessToken!),
+    enabled: !!accessToken && !!communityNumber
+  })
+
+  const postImageMutation = useMutation({
+    mutationFn: (data: {
+      uploadImages: UploadImage[]
+      communityNumber: number
+    }) => postImage(data.uploadImages, data.communityNumber, accessToken)
+  })
+
+  const updateImageMutation = useMutation({
+    mutationFn: (data: { editImages: EditImage[]; communityNumber: number }) =>
+      updateImage(data.editImages, data.communityNumber, accessToken)
   })
 
   const queryClient = useQueryClient()
@@ -125,7 +147,10 @@ const useCommunity = (communityNumber: number | undefined = undefined) => {
     unlike,
     unlikeMutation,
     communityList,
-    community
+    community,
+    images,
+    postImageMutation,
+    updateImageMutation
   }
 }
 

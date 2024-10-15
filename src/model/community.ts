@@ -2,7 +2,6 @@ export interface PostCommunity {
   categoryName: string
   title: string
   content: string
-  files: string[]
 }
 
 export interface Community {
@@ -18,6 +17,14 @@ export interface Community {
   viewCount: number
   likeCount: number
   liked: boolean
-  postImageUrls: string[]
   profileImageUrl: string
+}
+
+export interface Image {
+  imageNumber: number
+  relatedType: string
+  relatedNumber: number
+  key: string
+  url: string
+  uploadDate: string
 }
