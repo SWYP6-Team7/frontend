@@ -87,7 +87,7 @@ const useMyPage = () => {
   const { mutateAsync: withdrawMutation, isSuccess: isWithDrawSuccess } =
     useMutation({
       mutationFn: () => {
-        return deleteMyAccount(userId!, accessToken!)
+        return deleteMyAccount(accessToken!)
       }
     })
   return {

@@ -33,7 +33,7 @@ export const myPageHandler = [
   http.put('/api/profile/password/change', async ({ request }) => {
     return HttpResponse.json({ status: 200 })
   }),
-  http.delete('/api/users/:userId', async ({ request }) => {
+  http.delete('/api/user/delete', async ({ request }) => {
     return HttpResponse.json({ status: 204 })
   }),
   http.get('/api/profile/:userId/image', async ({ request }) => {
