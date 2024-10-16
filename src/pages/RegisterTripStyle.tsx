@@ -15,8 +15,7 @@ const TAGCOUNT = 18
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
   const { registerEmail } = useAuth()
-  const { firstProfileImageMutation, isFirstProfileImagePostSuccess } =
-    useMyPage()
+
   const { userId, accessToken } = authStore()
   const {
     addName,
@@ -84,15 +83,10 @@ const RegisterTripStyle = () => {
       agegroup: agegroup as string,
       preferredTags: tripStyleArray
     })
-    firstProfileImageMutation()
+
     addName('')
     addEmail('')
   }
-  useEffect(() => {
-    if (isFirstProfileImagePostSuccess) {
-      console.log('첫 프로필 이미지 등록 실패.')
-    }
-  }, [isFirstProfileImagePostSuccess])
 
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'

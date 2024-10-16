@@ -38,7 +38,8 @@ const Layout = () => {
     isLoading,
     profileImage,
     isLoadingImage,
-    firstProfileImageMutation
+    firstProfileImageMutation,
+    isFirstProfileImagePostSuccess
   } = useMyPage()
 
   const isOnboarding = pathname.startsWith('/onBoarding')
@@ -59,11 +60,11 @@ const Layout = () => {
     if (!isLoadingImage && profileImg) {
       addProfileUrl(profileImg.url)
     }
-    if (!isLoadingImage && !profileImg) {
+    if (accessToken !== null && !isLoadingImage && !profileImg) {
       // 이미 가입한 회원들의 경우. post 요청으로 첫 이미지 등록 요청.
       firstProfileImageMutation()
     }
-  }, [isLoading, myPageData]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
+  }, [isLoading, myPageData, profileImg, accessToken]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
 
   const noNeedPages = [
     '/login',
