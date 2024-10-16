@@ -17,12 +17,6 @@ import { useNavigate } from 'react-router-dom'
 export default function MyPage() {
   const { name, agegroup, email, preferredTags, profileUrl } = myPageStore()
 
-  useEffect(() => {
-    if (profileUrl === '') {
-      firstProfileImageMutation()
-    }
-  }, [profileUrl])
-
   const navigate = useNavigate()
 
   const cutTags =
