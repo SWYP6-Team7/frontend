@@ -20,7 +20,7 @@ const tripDetail = {
   tags: ['✊ 즉흥', '🏔️ 자연', '🍔 먹방'],
   postStatus: '진행중',
   hostUserCheck: false,
-  enrollmentNumber: null,
+  enrollmentNumber: 4,
   bookmarked: true
 }
 const companions = {
@@ -37,7 +37,7 @@ const companions = {
       ageGroup: '20대'
     },
     {
-      userNumber: 4,
+      userNumber: 6,
       userName: '박모잉',
       ageGroup: '30대'
     },
