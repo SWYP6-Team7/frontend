@@ -11,7 +11,7 @@ export const intialPostMyProfileImage = async (accessToken: string) => {
   try {
     if (!accessToken)
       throw new Error('프로필 초기 등록 실패. 로그인을 해주세요.')
-    const response = await axiosInstance.post('/api/profile/image', {
+    const response = await axiosInstance.post('/api/profile/image', null, {
       headers: getJWTHeader(accessToken)
     })
   } catch (err) {

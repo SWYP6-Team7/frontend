@@ -74,7 +74,7 @@ const useMyPage = () => {
     mutateAsync: firstProfileImageMutation,
     isSuccess: isFirstProfileImagePostSuccess
   } = useMutation({
-    mutationFn: () => {
+    mutationFn: (accessToken: string) => {
       return intialPostMyProfileImage(accessToken!)
     },
     onSuccess: () => {
