@@ -48,7 +48,7 @@ const Layout = () => {
 
   const myPageData: ImyPage = data?.data
   const profileImg: IProfileImg = profileImage?.data
-  console.log(profileImg, '프로필 이미지 get')
+  console.log(profileImg, profileImage, '프로필 이미지 get')
   useEffect(() => {
     if (!isLoading && myPageData) {
       addName(myPageData.name)
