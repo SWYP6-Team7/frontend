@@ -4,10 +4,10 @@ import SearchFilterTag from '../designSystem/tag/SearchFilterTag'
 import { palette } from '@/styles/palette'
 import EmptyHeartIcon from '../icons/EmptyHeartIcon'
 import CommentIcon from '../icons/CommentIcon'
-import { CommunityItem } from '@/model/community'
+import { ICommunityItem } from '@/model/community'
 import { daysAgoFormatted } from '@/utils/time'
 
-const CommunityItem = ({ data }: { data: CommunityItem }) => {
+const CommunityItem = ({ data }: { data: ICommunityItem }) => {
   return (
     <Container>
       <div>

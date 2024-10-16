@@ -15,6 +15,7 @@ export interface IComment {
   repliesCount: number
   likes: number
   liked: boolean
+  imageUrl: string
   travelWriterNumber: number
 }
 interface Page {

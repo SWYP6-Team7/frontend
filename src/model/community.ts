@@ -29,7 +29,7 @@ export interface Image {
   uploadDate: string
 }
 
-export interface CommunityItem {
+export interface ICommunityItem {
   postNumber: number
   userNumber: number
   postWriter: string
@@ -53,6 +53,6 @@ interface Page {
 }
 
 export interface ICommunityList {
-  content: CommunityItem[]
+  content: ICommunityItem[]
   page: Page
 }

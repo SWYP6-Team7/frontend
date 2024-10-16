@@ -2,6 +2,7 @@ import { ISearchData } from '@/model/search'
 import { axiosInstance } from '.'
 import { Filters } from '@/hooks/search/useSearch'
 import { getJWTHeader } from '@/utils/user'
+import { daysAgo } from '@/utils/time'
 
 export async function getSearch(
   pageParams: number,
@@ -22,7 +23,19 @@ export async function getSearch(
     },
     headers: getJWTHeader(accessToken)
   })
-  return response.data as ISearchData
+  let data = response.data as ISearchData | undefined
+  if (response.data) {
+    data = {
+      ...response.data,
+      content: (response.data as ISearchData).content.filter(
+        item => Number(daysAgo(item.registerDue)) < 0
+      )
+    }
+  } else {
+    return response.data
+  }
+
+  return data
 }
 
 export async function getSearchRelation(keyword: string, accessToken: string) {

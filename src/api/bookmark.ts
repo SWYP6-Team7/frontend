@@ -1,6 +1,8 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 import { authStore } from '@/store/client/authStore'
+import { ITripList } from '@/model/trip'
+import { daysAgo } from '@/utils/time'
 
 export const getBookmark = async (pageParams: number, accessToken: string) => {
   const response = await axiosInstance.get('/api/bookmarks', {
@@ -10,7 +12,19 @@ export const getBookmark = async (pageParams: number, accessToken: string) => {
     },
     headers: getJWTHeader(accessToken)
   })
-  return response.data
+  let data = response.data as ITripList | undefined
+  if (response.data) {
+    data = {
+      ...response.data,
+      content: (response.data as ITripList).content.filter(
+        item => Number(daysAgo(item.registerDue)) < 0
+      )
+    }
+  } else {
+    return response.data
+  }
+
+  return data
 }
 
 export const postBookmark = (

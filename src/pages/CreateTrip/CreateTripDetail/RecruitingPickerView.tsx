@@ -52,7 +52,7 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
   const pickerRef = useRef<HTMLDivElement>(null)
   const [value, setValue] = useState(
     isCreateTripDetailPage
-      ? { gender: '여자만', count: 1 }
+      ? { gender: '모두', count: 1 }
       : {
           gender: genderTypeEdit,
           count: maxPersonForEdit
@@ -62,7 +62,7 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
   // 현재 날짜
 
   const selections: { [key: string]: number[] | string[] } = {
-    gender: ['모두', '여자만', '남자만'],
+    gender: ['여자만', '모두', '남자만'],
     count: Array.from({ length: 20 }, (v, i) => i + 1)
   }
   useEffect(() => {
@@ -105,7 +105,6 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
     addMaxPersonForEdit(value.count)
   }, [value])
 
-  const icons = [<EveryBodyIcon />, <OnlyFemaleIcon />, <OnlyMaleIcon />]
   return (
     <div
       style={{ display: 'flex', justifyContent: 'center' }}
@@ -131,11 +130,12 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
                   {({ selected }) => (
                     <div
                       style={{
-                        color: selected ? 'black' : '#CDCDCD',
+                        color: selected ? palette.기본 : palette.비강조3,
                         //   backgroundColor: selected ? '#d9d9d9' : 'white',
                         padding: '14px 16px',
                         height: '52px',
                         fontWeight: 500,
+
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -146,11 +146,11 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
                       }}>
                       {col === 'gender' ? (
                         idx === 0 ? (
-                          <EveryBodyIcon />
+                          <EveryBodyIcon selected={selected} />
                         ) : idx === 1 ? (
-                          <OnlyFemaleIcon />
+                          <OnlyFemaleIcon selected={selected} />
                         ) : (
-                          <OnlyMaleIcon />
+                          <OnlyMaleIcon selected={selected} />
                         )
                       ) : (
                         <></>
@@ -175,6 +175,5 @@ const Text = styled.div`
   line-height: 22.4px;
 
   text-align: left;
-  color: ${palette.기본};
   margin-left: 4px;
 `

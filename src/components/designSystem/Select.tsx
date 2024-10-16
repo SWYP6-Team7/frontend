@@ -170,6 +170,8 @@ const OptionList = styled.div<{ active: boolean }>`
 const Label = styled.button`
   width: 100%;
   font-size: 14px;
+  color: ${palette.비강조};
+  min-width: 95px;
   padding: 12px 16px;
   border: none;
   outline: none;
