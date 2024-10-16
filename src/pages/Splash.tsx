@@ -16,17 +16,20 @@ export default function Splash() {
     if (revisit === undefined || revisit === null) {
       setTimeout(() => {
         addSplashOn(false)
-        if (!accessToken) {
-          // 접속했는데, 로그인을 안했다면 온보딩 화면으로
-          navigate('/onBoarding')
-        }
       }, 2000)
       sessionStorage.setItem('revisit', 'true')
     } else if (revisit === 'true') {
       addSplashOn(false)
     }
   }, [])
-
+  useEffect(() => {
+    if (splashOn === false) {
+      console.log('스플래쉬 닫힘')
+      if (!accessToken) {
+        navigate('/onBoarding')
+      }
+    }
+  }, [splashOn])
   return (
     <Container splashOn={splashOn}>
       <LogoContainer>

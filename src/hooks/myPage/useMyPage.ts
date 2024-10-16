@@ -1,10 +1,13 @@
 import {
   deleteMyAccount,
+  deleteMyProfileImage,
   getMyPage,
   getMyProfileImage,
-  postMyProfilImg,
+  intialPostMyProfileImage,
   postVerifyPassword,
   putMyPage,
+  putMyProfileDefaultImage,
+  putMyProfileImage,
   putPassword
 } from '@/api/myPage'
 import { NewPasswordProps } from '@/model/myPages'
@@ -62,20 +65,17 @@ const useMyPage = () => {
       }
     })
 
+  // 마이페이지 프로필 이미지 부분
   // 사진을 업로드 해서 response의 url를 통해 화면에 보여주기.
 
-  const { data: profileImage, isLoading: isLoadingImage } = useQuery({
-    queryKey: ['profileImg'],
-    queryFn: () => getMyProfileImage(userId!, accessToken!),
-    enabled: !!accessToken
-  })
+  // 첫 프로필 기본으로 post 요청
+
   const {
-    mutateAsync: uploadMyProfileImgMutation,
-    isSuccess: isUploadSuccess,
-    data: resultURL
+    mutateAsync: firstProfileImageMutation,
+    isSuccess: isFirstProfileImagePostSuccess
   } = useMutation({
-    mutationFn: (formData: FormData) => {
-      return postMyProfilImg(userId!, formData)
+    mutationFn: () => {
+      return intialPostMyProfileImage(accessToken!)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -83,13 +83,56 @@ const useMyPage = () => {
       })
     }
   })
-
+  // 현재 프로필 조회.
+  const { data: profileImage, isLoading: isLoadingImage } = useQuery({
+    queryKey: ['profileImg'],
+    queryFn: () => getMyProfileImage(accessToken!),
+    enabled: !!accessToken
+  })
+  // 커스텀 이미지로 update
+  const {
+    mutateAsync: updateProfileImgMutation,
+    isSuccess: isUpdateProfileImgSuccess
+  } = useMutation({
+    mutationFn: (formData: FormData) => {
+      return putMyProfileImage(accessToken!, formData)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['profileImg']
+      })
+    }
+  })
+  //default 이미지로 update
+  const {
+    mutateAsync: updateDefaultProfileImgMutation,
+    isSuccess: isUpdateDefaultProfileImgSuccess
+  } = useMutation({
+    mutationFn: (defaultNumber: number) => {
+      return putMyProfileDefaultImage(accessToken!, defaultNumber)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['profileImg']
+      })
+    }
+  })
+  // 프로필 이미지 db에서 삭제.
+  const {
+    mutateAsync: deleteMyProfileImgMutation,
+    isSuccess: isDeleteSuccessProfileImg
+  } = useMutation({
+    mutationFn: () => {
+      return deleteMyProfileImage(accessToken!)
+    }
+  })
   const { mutateAsync: withdrawMutation, isSuccess: isWithDrawSuccess } =
     useMutation({
       mutationFn: () => {
         return deleteMyAccount(accessToken!)
       }
     })
+
   return {
     withdrawMutation,
     isWithDrawSuccess,
@@ -97,15 +140,22 @@ const useMyPage = () => {
     isLoading,
     updateMyPageMutation,
     isUpdatedSuccess,
-    uploadMyProfileImgMutation,
-    isUploadSuccess,
-    resultURL,
-    profileImage,
+
     isLoadingImage,
     verifyPasswordMutation,
     isVerified,
     updatePasswordMutation,
-    isUpatedPassword
+    isUpatedPassword,
+
+    profileImage,
+    firstProfileImageMutation,
+    isFirstProfileImagePostSuccess,
+    updateProfileImgMutation,
+    isUpdateProfileImgSuccess,
+    updateDefaultProfileImgMutation,
+    isUpdateDefaultProfileImgSuccess,
+    deleteMyProfileImgMutation,
+    isDeleteSuccessProfileImg
   }
 }
 export default useMyPage
