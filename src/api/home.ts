@@ -2,6 +2,7 @@ import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 import { ITripList } from '@/model/trip'
 import { daysAgo } from '@/utils/time'
+import dayjs from 'dayjs'
 
 export const getUserProfile = (accessToken: string) => {
   return axiosInstance.get(`/api/profile/me?userNumber=${accessToken}`)
@@ -23,7 +24,7 @@ export const getAvailableTrips = async (
     data = {
       ...response.data,
       content: (response.data as ITripList).content.filter(
-        item => Number(daysAgo(item.registerDue)) < 0
+        item => dayjs(item.registerDue, 'YYYY-MM-DD').diff(dayjs(), 'day') >= 0
       )
     }
   } else {
@@ -58,7 +59,7 @@ export const getRecommendationTrips = async (
     data = {
       ...response.data,
       content: (response.data as ITripList).content.filter(
-        item => Number(daysAgo(item.registerDue)) < 0
+        item => dayjs(item.registerDue, 'YYYY-MM-DD').diff(dayjs(), 'day') >= 0
       )
     }
   } else {
