@@ -127,7 +127,7 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       navigate(`/community/detail/${postMutation.data?.postNumber}`)
     }
   }, [postMutation.isSuccess && postMutation.data])
-
+  const handleRemoveValue = () => setTitle('')
   return (
     <>
       <ResultToast
@@ -148,7 +148,8 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
         <CreateTripInputField
           value={title}
           placeholder="제목을 입력해주세요. (최대 20자)"
-          isRemove={false}
+          isRemove={true}
+          handleRemoveValue={handleRemoveValue}
           onChange={e => setTitle(e.target.value)}
         />
         <Spacing size={'3.8svh'} />
