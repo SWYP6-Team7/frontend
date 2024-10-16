@@ -6,14 +6,78 @@ export const getMyPage = (accessToken: string) => {
     headers: getJWTHeader(accessToken)
   })
 }
-
-export const getMyProfileImage = (userId: number, accessToken: string) => {
-  return axiosInstance.get(`api/profile/${userId}/image`, {
-    headers: getJWTHeader(accessToken)
-  })
+// 프로필 이미지
+export const intialPostMyProfileImage = async (accessToken: string) => {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    const response = await axiosInstance.post('/api/profile/image', {
+      headers: getJWTHeader(accessToken)
+    })
+  } catch (err) {
+    console.log(err, '초기 이미지 등록 오류')
+  }
 }
 
-// 배포 후에 더 추가하기.
+export const getMyProfileImage = async (accessToken: string) => {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    const response = await axiosInstance.get('/api/profile/image', {
+      headers: getJWTHeader(accessToken)
+    })
+
+    return response.data
+  } catch (err) {
+    console.log(err, '현재 프로필 이미지 가져오기 오류')
+  }
+}
+export const putMyProfileImage = async (
+  accessToken: string,
+  formData: FormData
+) => {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    const response = await axiosInstance.put('/api/profile/image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    return response.data
+  } catch (err) {
+    console.log(err, '현재 프로필 이미지 가져오기 오류')
+  }
+}
+export const deleteMyProfileImage = async (accessToken: string) => {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    const response = await axiosInstance.delete('/api/profile/image')
+    return response.data
+  } catch (err) {
+    console.log(err, '현재 프로필 이미지 가져오기 오류')
+  }
+}
+export const putMyProfileDefaultImage = async (
+  accessToken: string,
+  defaultNumber: number
+) => {
+  try {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    const response = await axiosInstance.put(
+      '/api/profile/image/default',
+      {
+        defaultNumber: defaultNumber
+      },
+      {
+        headers: getJWTHeader(accessToken)
+      }
+    )
+
+    return response.data
+  } catch (err) {
+    console.log(err, '현재 프로필 이미지 가져오기 오류')
+  }
+}
+
 export const putMyPage = (
   accessToken: string,
   name: string,
@@ -35,25 +99,6 @@ export const putMyPage = (
   )
 }
 
-// 최근 열람 조회
-export async function postMyProfilImg(userId: number, formData: FormData) {
-  try {
-    if (!userId) throw new Error('로그인을 해주세요.')
-    const response = await axiosInstance.post(
-      `api/image/profile/${userId}`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    )
-
-    return response.data
-  } catch (err) {
-    console.log(err)
-  }
-}
 // 탈퇴하기
 export async function deleteMyAccount(accessToken: string) {
   try {

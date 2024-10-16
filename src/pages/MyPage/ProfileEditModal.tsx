@@ -31,33 +31,76 @@ export default function ProfileEditModal({
   showModal,
   setShowModal
 }: ModalProps) {
-  const { uploadMyProfileImgMutation, profileImage, isLoadingImage } =
-    useMyPage()
+  const {
+    updateProfileImgMutation,
+    isUpdateProfileImgSuccess,
+    updateDefaultProfileImgMutation,
+    isUpdateDefaultProfileImgSuccess,
+    deleteMyProfileImgMutation,
+    isDeleteSuccessProfileImg
+  } = useMyPage()
   const { profileUrl, addIsProfileImgUpdated } = myPageStore()
   const [image, setImage] = useState<FileData | null>()
+  const [clickedSave, setClickedSave] = useState(false)
+
+  // 일단 업로드를 하면, 저장할 용도 (추후에 미리보기 api 추가 되면 수정 예정.)
+  const [fileImg, setFileImg] = useState<FormData>(new FormData())
+
   const [showImage, setShowImage] = useState(profileUrl)
+  const ret = isDefaultProfile(profileUrl)
+  const [active, setActive] = useState(
+    ret.length === 0
+      ? 'custom'
+      : ret[0][ret[0].length - 5] === 'e'
+        ? 1
+        : +ret[0][ret[0].length - 5]
+  )
   const [changed, setChanged] = useState(false)
   const navigate = useNavigate()
   const handleCloseModal = () => {
     setShowModal(false)
   }
+  console.log(profileUrl, active)
   const profileSaveHandler = () => {
-    // 프로필 저장.
+    // 프로필 저장. 실제 update api 요청.
+    if (active !== 'custom') {
+      handleDefaultProfileUpload(active as number)
+    }
+    // else {
+    //   // 커스텀 형태라면.
+    //     updateProfileImgMutation(fileImg)
+    //       .then(res => {
+    //         console.log('프로필 업데이트 후, res', res)
+    //         setShowImage(res.url)
+    //         setChanged(true)
+    //       })
+    //       .catch(e => {
+    //         console.log(e, '커스텀 프로필 업로드 에러')
+    //       })
+
+    // }
     addIsProfileImgUpdated(true)
 
     setShowModal(false)
+    // setClickedSave(true)
   }
   console.log(profileUrl, '이미지 url')
+
+  // 미리보기로 교체 예정.
   const addImageFile = (event: ChangeEvent<HTMLInputElement>) => {
+    setActive('custom')
     if (event.target.files !== null) {
       // post 요청 보내기.
       const formData = new FormData() // 폼데이터 생성
       formData.append('file', event.target.files[0])
       // post 요청 후 받은 url로 보여주기
+      setFileImg(formData)
 
-      uploadMyProfileImgMutation(formData)
+      //이 아래 부분은 미리보기 추가 되면 지울고 미리보기 api로 교체 예정.
+      updateProfileImgMutation(formData)
         .then(res => {
-          setShowImage(res.url)
+          console.log('프로필 업데이트 후, res', res)
+          setShowImage(res.data?.url)
           setChanged(true)
         })
         .catch(e => {
@@ -67,23 +110,12 @@ export default function ProfileEditModal({
       console.log(event.target.files[0])
     }
   }
+  console.log(showImage, '커스텀 이미지 업로드 이후')
 
-  const handleDefaultProfileUpload = async (src: string, filename: string) => {
+  const handleDefaultProfileUpload = async (defaultNumber: number) => {
     try {
-      // 이미지 URL (public 폴더에 있는 이미지 경로)
-      const imageUrl = src // ex:'/images/default.png'
-
-      // fetch를 이용해 이미지를 불러온 후 Blob으로 변환
-      const response = await fetch(imageUrl)
-      const blob = await response.blob()
-
-      // FormData 생성 및 Blob 추가
-      const formData = new FormData()
-      formData.append('file', blob, filename)
-
       // axios로 서버에 전송
-      uploadMyProfileImgMutation(formData)
-      setChanged(true)
+      updateDefaultProfileImgMutation(defaultNumber)
     } catch (error) {
       console.log('기본 프로필 업로드 오류')
     }
@@ -91,7 +123,18 @@ export default function ProfileEditModal({
   const check = (url: string) => {
     return profileUrl.includes(url)
   }
-
+  const deleteProfileImgHandler = (event: React.MouseEvent) => {
+    event.stopPropagation()
+    console.log('why')
+    setShowImage('')
+    setActive(1)
+  }
+  console.log(active)
+  // useEffect(() => {
+  //   if (showImage !== '') {
+  //     setActive('custom')
+  //   }
+  // }, [showImage])
   return (
     <BottomModal
       initialHeight={window.innerHeight <= 700 ? 60 : 50} // height 비율이 짧아 진다면 58%로 맞추기.
@@ -101,7 +144,9 @@ export default function ProfileEditModal({
           <DetailTitle>프로필 이미지를 선택해 주세요</DetailTitle>
           <Spacing size={32} />
           <ProfileContainer>
-            <ShowImg isCustomImg={!isDefaultProfile(profileUrl)}>
+            <ShowImg
+              onClick={() => showImage !== '' && setActive('custom')}
+              isCustomImg={active === 'custom'}>
               <input
                 onChange={event => addImageFile(event)}
                 type="file"
@@ -109,7 +154,7 @@ export default function ProfileEditModal({
                 accept="image/*"
                 css={{ display: 'none' }}
               />
-              {showImage !== '' && !isDefaultProfile(profileUrl) && (
+              {showImage !== '' && (
                 <img
                   src={showImage}
                   css={{
@@ -121,132 +166,78 @@ export default function ProfileEditModal({
                 />
               )}
               <PictureIcon />
-              {!isDefaultProfile(profileUrl!) && (
+              {active === 'custom' && (
                 <div
-                  onClick={() => setShowImage('')}
+                  onClick={deleteProfileImgHandler}
                   css={{ position: 'absolute', right: '0px', top: '0px' }}>
                   <ProfileRemoveIcon />
                 </div>
               )}
             </ShowImg>
-            <DefaultProfile isSelected={check('defaultProfile')}>
+            <DefaultProfile isSelected={active === 1}>
               <Profile
-                onClick={() =>
-                  handleDefaultProfileUpload(
-                    '/images/defaultProfile.png',
-                    'defaultProfile.png'
-                  )
-                }
+                onClick={() => {
+                  setActive(1)
+                  setChanged(true)
+                }}
                 src="/images/defaultProfile.png"
                 alt=""
               />
-              {check('defaultProfile') && (
-                <div
-                  onClick={() => setShowImage('')}
-                  css={{ position: 'absolute', right: 0, top: 0 }}>
-                  <ProfileRemoveIcon />
-                </div>
-              )}
             </DefaultProfile>
-            <DefaultProfile isSelected={check('defaultProfile3')}>
+            <DefaultProfile isSelected={active === 3}>
               <Profile
-                onClick={() =>
-                  handleDefaultProfileUpload(
-                    '/images/defaultProfile3.png',
-                    'defaultProfile3.png'
-                  )
-                }
+                onClick={() => {
+                  setActive(3)
+                  setChanged(true)
+                }}
                 src="/images/defaultProfile3.png"
                 alt=""
               />
-              {check('defaultProfile3') && (
-                <div
-                  onClick={() => setShowImage('')}
-                  css={{ position: 'absolute', right: 0, top: 0 }}>
-                  <ProfileRemoveIcon />
-                </div>
-              )}
             </DefaultProfile>
-            <DefaultProfile isSelected={check('defaultProfile5')}>
+            <DefaultProfile isSelected={active === 5}>
               <Profile
-                onClick={() =>
-                  handleDefaultProfileUpload(
-                    '/images/defaultProfile5.png',
-                    'defaultProfile5.png'
-                  )
-                }
+                onClick={() => {
+                  setActive(5)
+                  setChanged(true)
+                }}
                 src="/images/defaultProfile5.png"
                 alt=""
               />
-              {check('defaultProfile5') && (
-                <div
-                  onClick={() => setShowImage('')}
-                  css={{ position: 'absolute', right: 0, top: 0 }}>
-                  <ProfileRemoveIcon />
-                </div>
-              )}
             </DefaultProfile>
           </ProfileContainer>
           <ProfileContainer css={{ marginTop: '16px' }}>
             <UploadImg htmlFor="imageInput">
               <CameraIconForUploadMypage />
             </UploadImg>
-            <DefaultProfile isSelected={check('defaultProfile2')}>
+            <DefaultProfile isSelected={active === 2}>
               <Profile
-                onClick={() =>
-                  handleDefaultProfileUpload(
-                    '/images/defaultProfile2.png',
-                    'defaultProfile2.png'
-                  )
-                }
+                onClick={() => {
+                  setActive(2)
+                  setChanged(true)
+                }}
                 src="/images/defaultProfile2.png"
                 alt=""
               />
-              {check('defaultProfile2') && (
-                <div
-                  onClick={() => setShowImage('')}
-                  css={{ position: 'absolute', right: 0, top: 0 }}>
-                  <ProfileRemoveIcon />
-                </div>
-              )}
             </DefaultProfile>
-            <DefaultProfile isSelected={check('defaultProfile4')}>
+            <DefaultProfile isSelected={active === 4}>
               <Profile
-                onClick={() =>
-                  handleDefaultProfileUpload(
-                    '/images/defaultProfile4.png',
-                    'defaultProfile4.png'
-                  )
-                }
+                onClick={() => {
+                  setActive(4)
+                  setChanged(true)
+                }}
                 src="/images/defaultProfile4.png"
                 alt=""
               />
-              {check('defaultProfile4') && (
-                <div
-                  onClick={() => setShowImage('')}
-                  css={{ position: 'absolute', right: 0, top: 0 }}>
-                  <ProfileRemoveIcon />
-                </div>
-              )}
             </DefaultProfile>
-            <DefaultProfile isSelected={check('defaultProfile6')}>
+            <DefaultProfile isSelected={active === 6}>
               <Profile
-                onClick={() =>
-                  handleDefaultProfileUpload(
-                    '/images/defaultProfile6.png',
-                    'defaultProfile6.png'
-                  )
-                }
+                onClick={() => {
+                  setActive(6)
+                  setChanged(true)
+                }}
                 src="/images/defaultProfile6.png"
                 alt=""
               />
-              {check('defaultProfile6') && (
-                <div
-                  onClick={() => setShowImage('')}
-                  css={{ position: 'absolute', right: 0, top: 0 }}>
-                  <ProfileRemoveIcon />
-                </div>
-              )}
             </DefaultProfile>
           </ProfileContainer>
           <div css={{ marginTop: '16px' }}></div>

@@ -15,6 +15,19 @@ const URL = {
   url: 'https://moing-hosted-contents.s3.ap-northeast-2.amazonaws.com/images/profile/default/defaultProfile.png'
 }
 export const myPageHandler = [
+  http.put('/api/profile/image', async ({ request }) => {
+    const data = {
+      data: {
+        imageNumber: 1,
+        relatedType: 'profile',
+        relatedNumber: 1,
+        key: 'images/profile/1/8915cda6-e3ba-4b47-ba12-1b6141ca7fdf.webp',
+        url: 'https://moing-hosted-contents.s3.ap-northeast-2.amazonaws.com/images/profile/default/defaultProfile5.png',
+        uploadDate: '2024년 10월 06일 19시 10분'
+      }
+    }
+    return HttpResponse.json(data, { status: 200 })
+  }),
   http.get('/api/profile/me', async ({ request }) => {
     return HttpResponse.json(data, { status: 200 })
   }),
@@ -36,10 +49,17 @@ export const myPageHandler = [
   http.delete('/api/user/delete', async ({ request }) => {
     return HttpResponse.json({ status: 204 })
   }),
-  http.get('/api/profile/:userId/image', async ({ request }) => {
-    return HttpResponse.json({
-      url: 'https://moing-hosted-contents.s3.ap-northeast-2.amazonaws.com/images/profile/default/defaultProfile.png',
-      status: 204
-    })
+  http.get('/api/profile/image', async ({ request }) => {
+    const data = {
+      data: {
+        imageNumber: 1,
+        relatedType: 'profile',
+        relatedNumber: 1,
+        key: 'images/profile/1/8915cda6-e3ba-4b47-ba12-1b6141ca7fdf.webp',
+        url: 'https://moing-hosted-contents.s3.ap-northeast-2.amazonaws.com/images/profile/default/defaultProfile.png',
+        uploadDate: '2024년 10월 06일 19시 10분'
+      }
+    }
+    return HttpResponse.json(data, { status: 200 })
   })
 ]

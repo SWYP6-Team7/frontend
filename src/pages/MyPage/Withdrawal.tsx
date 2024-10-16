@@ -3,6 +3,7 @@ import ButtonContainer from '@/components/ButtonContainer'
 import CheckIcon from '@/components/icons/CheckIcon'
 import Spacing from '@/components/Spacing'
 import useMyPage from '@/hooks/myPage/useMyPage'
+import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
@@ -12,6 +13,7 @@ import { symbol } from 'zod'
 export default function Withdrawal() {
   const [isClicked, setIsClicked] = useState(false)
   const { withdrawMutation } = useMyPage()
+  const { name } = myPageStore()
   const navigate = useNavigate()
   const completeClickHandler = () => {
     // 탈퇴 api 요청
@@ -27,7 +29,7 @@ export default function Withdrawal() {
     <Container>
       <TitleBox>
         <Text>
-          김모잉님, 정말 탈퇴하시겠어요?
+          {name}님, 정말 탈퇴하시겠어요?
           <br /> 너무 아쉬워요 🥺
         </Text>
         <SubText>회원 탈퇴 전에 꼭 확인하세요.</SubText>
