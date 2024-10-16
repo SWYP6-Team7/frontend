@@ -25,13 +25,27 @@ import { daysAgo } from '@/utils/time'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import NewIcon from '@/components/icons/NewIcon'
 import useComment from '@/hooks/comment/useComment'
+import ResultModal from '@/components/designSystem/modal/ResultModal'
+import NoticeModal from '@/components/designSystem/modal/NoticeModal'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
+
+interface Companion {
+  userNumber: number
+  userName: string
+  ageGroup: string
+}
+
 export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [isApplyToast, setIsApplyToast] = useState(false)
   const [isCancelToast, setIsCancelToast] = useState(false)
 
+  // 신청 대기 모달
+  const [noticeModal, setNoticeModal] = useState(false)
+
+  const [isAccepted, setIsAccepted] = useState(false)
+  const { userId } = authStore()
   const [isCommentUpdated, setIsCommentUpdated] = useState(false)
   const {
     location,
@@ -61,6 +75,10 @@ export default function TripDetail() {
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
   const { tripEnrollmentCount } = useTripDetail(travelNumber!)
   const nowEnrollmentCount = tripEnrollmentCount.data?.data
+
+  const { companions } = useTripDetail(travelNumber)
+  const allCompanions = companions.data?.data.companions
+  console.log(allCompanions, '모집 인원들 댓글 열람 권한 처리.')
   useEffect(() => {
     if (applySuccess) {
       setIsApplyToast(true)
@@ -68,6 +86,13 @@ export default function TripDetail() {
     }
   }, [applySuccess])
 
+  useEffect(() => {
+    allCompanions?.map((company: Companion) => {
+      if (company.userNumber === userId) {
+        setIsAccepted(true)
+      }
+    })
+  }, [allCompanions])
   // 일시적인 값
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'
@@ -115,36 +140,45 @@ export default function TripDetail() {
   }
   // 댓글 새로 업데이트 여부 표시
 
-  const {
-    commentList: { isLoading, data, error }
-  } = useComment('travel', Number(travelNumber))
-
-  useEffect(() => {
-    if (data && data.length > 0) {
-      if (data.length > commentLength) {
-        setIsCommentUpdated(true)
-      }
-    }
-  }, [data])
+  // const {
+  //   commentList: { isLoading, data, error }
+  // } = useComment('travel', Number(travelNumber))
+  // // console.log(data)
+  // // useEffect(() => {
+  // //   if (data && data.length > 0) {
+  // //     if (data.length > commentLength) {
+  // //       setIsCommentUpdated(true)
+  // //     }
+  // //   }
+  // // }, [data])
 
   const commentClickHandler = () => {
     if (!hostUserCheck && !enrollmentNumber) {
       // 주최자가 아니며, 신청 번호가 없는 사람은 댓글을 볼 수 없음.
       setShowApplyModal(true)
-    } else {
+    } else if (isAccepted || hostUserCheck) {
       navigate(`/trip/comment/${travelNumber}`)
+    } else {
+      // 신청 대기중인 경우.
+      setNoticeModal(true)
     }
   }
 
-  useEffect(() => {
-    return () => {
-      // 컴포넌트가 언마운트될 때 실행
-      addCommentLength(data?.length!)
-    }
-  }, [])
+  // useEffect(() => {
+  //   return () => {
+  //     // 컴포넌트가 언마운트될 때 실행
+  //     addCommentLength(data?.length!)
+  //   }
+  // }, [])
 
   return (
     <>
+      <NoticeModal
+        isModalOpen={noticeModal}
+        modalMsg={`여행에 참가가 확정된\n 멤버만 볼 수 있어요.`}
+        modalTitle="참가 신청 대기중"
+        setModalOpen={setNoticeModal}
+      />
       <ResultToast
         height={80}
         isShow={isCancelToast}
