@@ -17,3 +17,14 @@ export interface IComment {
   liked: boolean
   travelWriterNumber: number
 }
+interface Page {
+  size: number
+  number: number
+  totalElements: number
+  totalPages: number
+}
+
+export interface ICommentList {
+  content: IComment[]
+  page: Page
+}

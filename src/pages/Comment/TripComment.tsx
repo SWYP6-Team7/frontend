@@ -2,9 +2,11 @@ import Comment from '@/components/comment/Comment'
 import CommentForm from '@/components/comment/CommentForm'
 import Spacing from '@/components/Spacing'
 import useComment from '@/hooks/comment/useComment'
+import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 
 import styled from '@emotion/styled'
 import React from 'react'
+import { useInView } from 'react-intersection-observer'
 import { useParams } from 'react-router-dom'
 
 const TripComment = () => {
@@ -13,21 +15,40 @@ const TripComment = () => {
   if (!travelNumber) {
     return null
   }
+
+  const [ref, inView] = useInView()
+
   const {
-    commentList: { isLoading, data, error }
+    commentList: { isLoading, data, isFetching, hasNextPage, fetchNextPage }
   } = useComment('travel', Number(travelNumber))
-  console.log('data', data)
+
+  useInfiniteScroll(() => {
+    if (inView) {
+      !isFetching && hasNextPage && fetchNextPage()
+    }
+  }, [inView, !isFetching, fetchNextPage, hasNextPage])
   return (
     <Container>
-      {!isLoading && data && data.length > 0 ? (
-        data.map(comment => (
-          <Comment
-            key={comment.commentNumber}
-            comment={comment}
-            relatedType="travel"
-            relatedNumber={Number(travelNumber)}
+      {!isLoading && data?.pages && data.pages.length > 0 ? (
+        <>
+          {data.pages.map((page, pageIndex) => (
+            <React.Fragment key={pageIndex}>
+              {page.content.map((comment, itemIndex) => (
+                <Comment
+                  key={comment.commentNumber}
+                  comment={comment}
+                  relatedType="travel"
+                  relatedNumber={Number(travelNumber)}
+                />
+              ))}
+            </React.Fragment>
+          ))}
+
+          <div
+            ref={ref}
+            css={{ height: 80 }}
           />
-        ))
+        </>
       ) : (
         <>
           <NoDataContainer>
