@@ -28,8 +28,8 @@ export default function OnBoardingTwo() {
             d="M197.084 4.84412H52.9157C36.4171 4.84412 23.0424 17.8567 23.0424 33.9085V354.092C23.0424 370.143 36.4171 383.156 52.9157 383.156H197.084C213.583 383.156 226.958 370.143 226.958 354.092V33.9085C226.958 17.8567 213.583 4.84412 197.084 4.84412Z"
             fill="#F5F5F5"
             stroke="#1A1A1A"
-            stroke-width="6"
-            stroke-miterlimit="10"
+            strokeWidth="6"
+            strokeMiterlimit="10"
           />
           <path
             d="M97.0286 5.93884H152.981V13.6022C152.981 17.8262 149.456 21.2655 145.105 21.2655H104.895C100.554 21.2655 97.0187 17.8359 97.0187 13.6022V5.93884H97.0286Z"
@@ -133,8 +133,8 @@ export default function OnBoardingTwo() {
           <stop />
           <stop
             offset="1"
-            stop-color="white"
-            stop-opacity="0"
+            stopColor="white"
+            stopOpacity="0"
           />
         </linearGradient>
         <linearGradient
@@ -145,12 +145,12 @@ export default function OnBoardingTwo() {
           y2="230.94"
           gradientUnits="userSpaceOnUse">
           <stop
-            stop-color="white"
-            stop-opacity="0"
+            stopColor="white"
+            stopOpacity="0"
           />
           <stop
             offset="0.71"
-            stop-color="#EEBB89"
+            stopColor="#EEBB89"
           />
         </linearGradient>
         <clipPath id="clip0_2391_14031">

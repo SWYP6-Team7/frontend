@@ -33,9 +33,14 @@ const Layout = () => {
     profileUrl
   } = myPageStore()
 
-  const { data, isLoading, profileImage, isLoadingImage } = useMyPage()
-  const { firstProfileImageMutation, isFirstProfileImagePostSuccess } =
-    useMyPage() // 이미 가입한 회원들의 경우. post 요청으로 첫 이미지 등록 요청.
+  const {
+    data,
+    isLoading,
+    profileImage,
+    isLoadingImage,
+    firstProfileImageMutation
+  } = useMyPage()
+
   const isOnboarding = pathname.startsWith('/onBoarding')
 
   const isCommunityDetail = pathname.startsWith('/community/detail')
@@ -55,6 +60,7 @@ const Layout = () => {
       addProfileUrl(profileImg.url)
     }
     if (!isLoadingImage && !profileImg) {
+      // 이미 가입한 회원들의 경우. post 요청으로 첫 이미지 등록 요청.
       firstProfileImageMutation()
     }
   }, [isLoading, myPageData]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
