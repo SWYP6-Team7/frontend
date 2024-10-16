@@ -34,7 +34,7 @@ export async function getCommunity(
 ) {
   try {
     const result = await axiosInstance.get(
-      `api/community/${communityNumber}`,
+      `api/community/posts/${communityNumber}`,
 
       {
         headers: getJWTHeader(accessToken!)
@@ -52,7 +52,7 @@ export async function postCommunity(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    const result = await axiosInstance.post(`/api/community`, data, {
+    const result = await axiosInstance.post(`/api/community/posts`, data, {
       headers: getJWTHeader(accessToken!)
     })
     return result.data as Community
@@ -74,7 +74,7 @@ export async function updateCommunity(
     }
     if (!accessToken) throw new Error('로그인을 해주세요.')
     const result = await axiosInstance.put(
-      `/api/community/${communityNumber}`,
+      `/api/community/posts/${communityNumber}`,
       contentData,
       {
         headers: getJWTHeader(accessToken!)
@@ -92,7 +92,7 @@ export async function deleteCommunity(
 ) {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    return axiosInstance.delete(`/api/community/${communityNumber}`, {
+    return axiosInstance.delete(`/api/community/posts/${communityNumber}`, {
       headers: getJWTHeader(accessToken!)
     })
   } catch (err) {

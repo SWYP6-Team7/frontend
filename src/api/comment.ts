@@ -5,18 +5,20 @@ import { IComment, ICommentPost } from '@/model/comment'
 export async function getComments(
   relatedType: 'travel' | 'community',
   relatedNumber: number,
-  accessToken: string | null
+  accessToken: string | null,
+  page: number
 ) {
   try {
     // if (!accessToken) throw new Error('로그인을 해주세요.')
     const result = await axiosInstance.get(
       `/api/${relatedType}/${relatedNumber}/comments`,
       {
-        headers: getJWTHeader(accessToken!)
+        headers: getJWTHeader(accessToken!),
+        params: { page }
       }
     )
 
-    return result.data as IComment[]
+    return result.data
   } catch (err) {
     console.log(err)
   }
