@@ -22,6 +22,9 @@ export default function MyPage() {
     preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags
 
   console.log(name, agegroup, email, preferredTags)
+  const announcement = () => {
+    navigate('/announcement')
+  }
   return (
     <Container>
       <UserInfo>
@@ -79,7 +82,7 @@ export default function MyPage() {
       <Menu>
         <Box>
           <Title>모잉 소식</Title>
-          <SmallTitle>
+          <SmallTitle onClick={announcement}>
             <img
               src="/images/createTripBtn.png"
               alt=""
@@ -105,11 +108,26 @@ export default function MyPage() {
           </SmallTitle>
         </Box> */}
         <div css={{ marginTop: '16px' }}>
-          <SmallTitle>
+          <Title>약관 및 정책</Title>
+          <SmallTitle css={{ margin: 0 }}>
             <a
               href={'/pdf/service_terms(241006).pdf'}
               target="_blank">
-              약관 및 정책
+              서비스이용약관
+            </a>
+          </SmallTitle>
+          <SmallTitle css={{ margin: 0 }}>
+            <a
+              href={'/pdf/privacy_policy(241006).pdf'}
+              target="_blank">
+              개인정보처리방침
+            </a>
+          </SmallTitle>
+          <SmallTitle css={{ margin: 0 }}>
+            <a
+              href="/pdf/privacy_terms(241006).pdf"
+              target="_blank">
+              개인정보 수집 ・ 이용 동의
             </a>
           </SmallTitle>
         </div>

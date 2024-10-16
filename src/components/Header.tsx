@@ -33,6 +33,7 @@ const Header = () => {
   const isEditMyPassword = location.pathname.startsWith('/editMyPassword')
   const isEditMyTag = location.pathname.startsWith('/editMyTag')
   const isWithdrawal = location.pathname.startsWith('/withdrawal')
+  const isAnnouncement = location.pathname.startsWith('/announcement')
   const handleBack = () => {
     if (isTripDetail) {
       navigate('/')
@@ -73,6 +74,7 @@ const Header = () => {
         {isEditMyPassword && '비밀번호 변경'}
         {isEditMyTag && '태그 수정'}
         {isWithdrawal && '탈퇴하기'}
+        {isAnnouncement && '공지사항'}
         {isTripDetailEdit && (
             <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
           ) &&
