@@ -1,4 +1,5 @@
 import useKeyboardResizeEffect from '@/hooks/useKeyboardResizeEffect'
+import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 
@@ -51,7 +52,7 @@ const Container = styled.div<{
   }
 
   padding: 0 24px;
-  background-color: white;
+  background-color: ${palette.BG};
   backdrop-filter: ${props => (props.blur ? props.blur : 'none')};
   padding-top: ${props => Math.abs(props.paddingTop / 844) * 100}svh;
   padding-bottom: ${props => Math.abs(props.paddingBottom / 844) * 100}svh;

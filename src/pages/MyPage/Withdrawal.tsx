@@ -15,13 +15,13 @@ export default function Withdrawal() {
   const navigate = useNavigate()
   const completeClickHandler = () => {
     // 탈퇴 api 요청
-    console.log('탈퇴!!')
-    // withdrawMutation().then(res => {
-    //   if (res.status === 204) {
-    //     console.log('탈퇴 성공!')
-    //     navigate('/login')
-    //   }
-    // })
+    console.log('탈퇴')
+    withdrawMutation().then(res => {
+      if (res.status === 204) {
+        console.log('탈퇴 성공!')
+        navigate('/login')
+      }
+    })
   }
   return (
     <Container>
