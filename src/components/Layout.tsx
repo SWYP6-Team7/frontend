@@ -47,7 +47,7 @@ const Layout = () => {
   const isCommunityDetail = pathname.startsWith('/community/detail')
 
   const myPageData: ImyPage = data?.data
-  const profileImg: IProfileImg = profileImage?.data
+  const profileImg: IProfileImg = profileImage
   console.log(profileImg, profileImage, '프로필 이미지 get')
   useEffect(() => {
     if (!isLoading && myPageData) {
