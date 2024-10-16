@@ -100,7 +100,7 @@ export default function ProfileEditModal({
       updateProfileImgMutation(formData)
         .then(res => {
           console.log('프로필 업데이트 후, res', res)
-          setShowImage(res.data?.url)
+          setShowImage(res.url)
           setChanged(true)
         })
         .catch(e => {
