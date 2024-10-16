@@ -23,7 +23,9 @@ export default function Splash() {
     }
   }, [])
   useEffect(() => {
-    if (splashOn === false) {
+    const revisit = sessionStorage.getItem('revisit')
+    if (splashOn === false && revisit !== 'true') {
+      // 스플래쉬 닫혔고, 방문한 적이 없다면, 온보딩으로.
       console.log('스플래쉬 닫힘')
       if (!accessToken) {
         navigate('/onBoarding')
