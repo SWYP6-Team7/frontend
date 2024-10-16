@@ -28,3 +28,31 @@ export interface Image {
   url: string
   uploadDate: string
 }
+
+export interface CommunityItem {
+  postNumber: number
+  userNumber: number
+  postWriter: string
+  categoryNumber: number
+  categoryName: string
+  title: string
+  content: string
+  regDate: string
+  commentCount: number
+  viewCount: number
+  likeCount: number
+  liked: boolean
+  thumbnailUrl: string
+}
+
+interface Page {
+  size: number
+  number: number
+  totalElements: number
+  totalPages: number
+}
+
+export interface ICommunityList {
+  content: CommunityItem[]
+  page: Page
+}

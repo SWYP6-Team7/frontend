@@ -1,18 +1,28 @@
-import { Community, Image, PostCommunity } from './../model/community'
+import {
+  Community,
+  ICommunityList,
+  Image,
+  PostCommunity
+} from './../model/community'
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 import { EditImage, UploadImage } from '@/store/client/imageStore'
+import { IListParams } from '@/hooks/useCommunity'
 
-export async function getCommunities(accessToken: string) {
+export async function getCommunities(
+  accessToken: string,
+  params: IListParams & { page: number }
+) {
   try {
     const result = await axiosInstance.get(
-      `/api/community/list`,
+      `/api/community/posts`,
 
       {
-        headers: getJWTHeader(accessToken!)
+        headers: getJWTHeader(accessToken!),
+        params: params
       }
     )
-    return result.data as Community[]
+    return result.data
   } catch (err) {
     console.log(err)
   }
