@@ -99,7 +99,7 @@ export default function EditMyInfo() {
         height={120}
         isShow={isProfileChangeToastShow}
         setIsShow={setIsProfileChangeToastShow}
-        text="프로필 이미자가 변경되었어요"
+        text="프로필 이미지가 변경되었어요"
       />
       <ResultToast
         height={120}

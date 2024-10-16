@@ -46,6 +46,7 @@ import EditMyPassword from './pages/MyPage/EditMyPassword'
 import EditMyTag from './pages/MyPage/EditMyTag'
 import Withdrawal from './pages/MyPage/Withdrawal'
 import NewPassword from './pages/MyPage/NewPassword'
+import Announcement from './pages/MyPage/Announcement'
 
 export const router = createBrowserRouter([
   {
@@ -240,6 +241,10 @@ export const router = createBrowserRouter([
       {
         path: '/withdrawal',
         element: <Withdrawal />
+      },
+      {
+        path: '/announcement',
+        element: <Announcement />
       }
     ]
   }
