@@ -1,4 +1,5 @@
 import MoingFullLogo from '@/components/icons/MoingFullLogo'
+import { authStore } from '@/store/client/authStore'
 import { splashOnStore } from '@/store/client/splashOnOffStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
@@ -7,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function Splash() {
   const { splashOn, addSplashOn } = splashOnStore()
+  const { accessToken } = authStore()
   const navigate = useNavigate()
   useEffect(() => {
     const revisit = sessionStorage.getItem('revisit')
@@ -14,7 +16,10 @@ export default function Splash() {
     if (revisit === undefined || revisit === null) {
       setTimeout(() => {
         addSplashOn(false)
-        navigate('/onBoarding')
+        if (!accessToken) {
+          // 접속했는데, 로그인을 안했다면 온보딩 화면으로
+          navigate('/onBoarding')
+        }
       }, 2000)
       sessionStorage.setItem('revisit', 'true')
     } else if (revisit === 'true') {

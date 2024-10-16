@@ -41,11 +41,17 @@ const Navbar = () => {
       height={20}
     />
   ]
+  console.log(pathname)
   // const iconNames = ['홈', '검색', '즐겨찾기', '커뮤니티', 'MY']
   const iconNames = ['홈', '여행 찾기', '내 여행', '커뮤니티', 'MY']
 
   const getIsActive = (page: string) => {
-    if (page === '/myPage' && pathname === '/editMyInfo') return true
+    if (
+      page === '/myPage' &&
+      (pathname === '/editMyInfo' || pathname === '/announcement')
+    ) {
+      return true
+    }
     if (page === '/search/travel' && pathname === '/search/community')
       return true
     return pathname === page
@@ -57,7 +63,8 @@ const Navbar = () => {
       pathname === '/community' ||
       pathname === '/myPage' ||
       pathname === '/trip/list' ||
-      pathname === '/editMyInfo'
+      pathname === '/editMyInfo' ||
+      pathname === '/announcement'
     )
       return true
     return false
