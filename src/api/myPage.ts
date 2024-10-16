@@ -55,10 +55,10 @@ export async function postMyProfilImg(userId: number, formData: FormData) {
   }
 }
 // 탈퇴하기
-export async function deleteMyAccount(userId: number, accessToken: string) {
+export async function deleteMyAccount(accessToken: string) {
   try {
-    if (!userId) throw new Error('로그인을 해주세요.')
-    const response = await axiosInstance.delete(`/api/users/${userId}`, {
+    if (!accessToken) throw new Error('로그인을 해주세요.')
+    const response = await axiosInstance.delete('/api/user/delete', {
       headers: getJWTHeader(accessToken)
     })
     return response.data

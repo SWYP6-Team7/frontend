@@ -214,11 +214,13 @@ export default function EditMyInfo() {
         <Spacing size={8} />
         <Line></Line>
         <Spacing size={8} />
+
         <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
           <div>로그아웃</div>
-          {/* <div onClick={() => navigate('/withdrawal')}>탈퇴하기</div> */}
-          <Spacing size={150} />
+          <VerticalLine>|</VerticalLine>
+          <div onClick={() => navigate('/withdrawal')}>탈퇴하기</div>
         </LogoutBox>
+        <Spacing size={150} />
         {showModal && (
           <ProfileEditModal
             showModal={showModal}
@@ -229,17 +231,25 @@ export default function EditMyInfo() {
     </Container>
   )
 }
-
+const VerticalLine = styled.div`
+  height: 16px;
+  color: rgba(231, 231, 231, 1);
+  margin: 0px 16px;
+  padding: 2px 0px;
+  display: flex;
+  align-items: center;
+`
 const LogoutBox = styled.div`
+  height: 16px;
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
-  letter-spacing: -0.25px;
   text-align: left;
   color: ${palette.비강조2};
   margin-top: 32px;
   display: flex;
   justify-content: center;
+  /* align-items: center; */
 `
 const AgeBox = styled.div`
   display: flex;
