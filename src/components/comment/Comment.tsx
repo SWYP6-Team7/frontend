@@ -88,7 +88,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
       <TopContainer>
         <RoundedImage
           size={32}
-          src=""
+          src={comment.imageUrl}
         />
         <UserBox>
           <UserName>{comment.writer}</UserName>

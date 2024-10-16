@@ -21,7 +21,7 @@ const Navbar = () => {
 
   const { pathname } = useLocation()
   // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
-  const pages = ['/', '/search/travel', '/myTrip', '/community', '/myPage']
+  const pages = ['/', '/trip/list', '/myTrip', '/community', '/myPage']
   const icons = [
     <HomeIcon
       width={20}
@@ -52,8 +52,7 @@ const Navbar = () => {
     ) {
       return true
     }
-    if (page === '/search/travel' && pathname === '/search/community')
-      return true
+
     return pathname === page
   }
   const condition = () => {
@@ -122,6 +121,7 @@ const Container = styled.div`
   border-top-right-radius: 20px;
   position: fixed;
   bottom: 0;
+  border-top: 1px solid ${palette.비강조5};
   background-color: white;
   z-index: 1000;
   width: 100%;
