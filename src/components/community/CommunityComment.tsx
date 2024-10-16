@@ -4,30 +4,46 @@ import CommentForm from '../comment/CommentForm'
 import { useParams } from 'react-router-dom'
 import useComment from '@/hooks/comment/useComment'
 import { palette } from '@/styles/palette'
+import React from 'react'
+import useInfiniteScroll from '@/hooks/useInfiniteScroll'
+import { useInView } from 'react-intersection-observer'
 
 const CommunityComment = () => {
   const { communityNumber } = useParams()
-
+  const [ref, inView] = useInView()
   if (!communityNumber) {
     return null
   }
   const {
-    commentList: { isLoading, data, error }
+    commentList: { isLoading, data, isFetching, hasNextPage, fetchNextPage }
   } = useComment('community', Number(communityNumber))
+
+  useInfiniteScroll(() => {
+    if (inView) {
+      !isFetching && hasNextPage && fetchNextPage()
+    }
+  }, [inView, !isFetching, fetchNextPage, hasNextPage])
   return (
     <Container>
-      <Title>댓글 3</Title>
+      <Title>댓글 {data?.pages[0]?.page?.totalElements ?? 0}</Title>
       {!isLoading &&
         data &&
-        data.length > 0 &&
-        data.map(comment => (
-          <Comment
-            key={comment.commentNumber}
-            comment={comment}
-            relatedType="community"
-            relatedNumber={Number(communityNumber)}
-          />
+        data.pages.map((page, pageIndex) => (
+          <React.Fragment key={pageIndex}>
+            {page.content.map((comment, itemIndex) => (
+              <Comment
+                key={comment.commentNumber}
+                comment={comment}
+                relatedType="community"
+                relatedNumber={Number(communityNumber)}
+              />
+            ))}
+          </React.Fragment>
         ))}
+      <div
+        ref={ref}
+        css={{ height: 80 }}
+      />
       <CommentForm
         relatedType="community"
         relatedNumber={Number(communityNumber)}

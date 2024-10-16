@@ -7,9 +7,15 @@ import {
   updateComment
 } from '@/api/comment'
 
-import { ICommentPost } from '@/model/comment'
+import { ICommentList, ICommentPost } from '@/model/comment'
 import { authStore } from '@/store/client/authStore'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from '@tanstack/react-query'
 
 const useComment = (
   relatedType: 'travel' | 'community',
@@ -17,10 +23,31 @@ const useComment = (
 ) => {
   const { userId, accessToken } = authStore()
 
-  const commentList = useQuery({
+  const commentList = useInfiniteQuery<
+    ICommentList,
+    Object,
+    InfiniteData<ICommentList>,
+    [_1: string, _2: string, _3: number]
+  >({
     queryKey: ['comments', relatedType, relatedNumber],
-    queryFn: () => getComments(relatedType, relatedNumber, accessToken),
-    enabled: !!relatedNumber
+
+    queryFn: ({ pageParam }) => {
+      return getComments(
+        relatedType,
+        relatedNumber,
+        accessToken,
+        pageParam as number
+      )
+    },
+    enabled: !!accessToken,
+    initialPageParam: 0,
+    getNextPageParam: lastPage => {
+      if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
+        return undefined
+      } else {
+        return lastPage?.page?.number + 1
+      }
+    }
   })
 
   const queryClient = useQueryClient()
