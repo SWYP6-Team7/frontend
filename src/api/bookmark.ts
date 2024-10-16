@@ -3,6 +3,7 @@ import { axiosInstance } from '.'
 import { authStore } from '@/store/client/authStore'
 import { ITripList } from '@/model/trip'
 import { daysAgo } from '@/utils/time'
+import dayjs from 'dayjs'
 
 export const getBookmark = async (pageParams: number, accessToken: string) => {
   const response = await axiosInstance.get('/api/bookmarks', {
@@ -17,7 +18,7 @@ export const getBookmark = async (pageParams: number, accessToken: string) => {
     data = {
       ...response.data,
       content: (response.data as ITripList).content.filter(
-        item => Number(daysAgo(item.registerDue)) < 0
+        item => dayjs(item.registerDue, 'YYYY-MM-DD').diff(dayjs(), 'day') >= 0
       )
     }
   } else {
