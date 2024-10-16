@@ -7,5 +7,5 @@ export const defaultProfileImages = [
   'defaultProfile6.png'
 ]
 export const isDefaultProfile = (url: string) => {
-  return defaultProfileImages.some(name => url.includes(name))
+  return defaultProfileImages.filter(name => url.includes(name)) // 프로필 파일이 기본 이미지 인지
 }
