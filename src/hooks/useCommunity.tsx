@@ -10,21 +10,54 @@ import {
   updateCommunity,
   updateImage
 } from '@/api/community'
-import { PostCommunity } from '@/model/community'
+import { ICommunityList, PostCommunity } from '@/model/community'
 import { authStore } from '@/store/client/authStore'
 import { EditImage, UploadImage } from '@/store/client/imageStore'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from '@tanstack/react-query'
 import React from 'react'
 
-const useCommunity = (communityNumber: number | undefined = undefined) => {
+export interface IListParams {
+  sort?: string
+  categoryName?: string
+  keyword?: string
+}
+
+const useCommunity = (
+  communityNumber: number | undefined = undefined,
+  params: IListParams = { sort: '최신순', keyword: '', categoryName: '' }
+) => {
+  const { sort, keyword, categoryName } = params
   const { accessToken } = authStore()
-
-  const communityList = useQuery({
+  const communityList = useInfiniteQuery<
+    ICommunityList,
+    Object,
+    InfiniteData<ICommunityList>,
+    [_1: string]
+  >({
     queryKey: ['community'],
-    queryFn: () => getCommunities(accessToken!),
-    enabled: !!accessToken
-  })
 
+    queryFn: ({ pageParam }) => {
+      return getCommunities(accessToken!, {
+        ...params,
+        page: pageParam as number
+      })
+    },
+    enabled: !!accessToken,
+    initialPageParam: 0,
+    getNextPageParam: lastPage => {
+      if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
+        return undefined
+      } else {
+        return lastPage?.page?.number + 1
+      }
+    }
+  })
   const community = useQuery({
     queryKey: ['community', communityNumber],
     queryFn: () => getCommunity(communityNumber!, accessToken!),

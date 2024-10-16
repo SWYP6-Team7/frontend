@@ -13,26 +13,36 @@ import { authStore } from '@/store/client/authStore'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import { daysAgo } from '@/utils/time'
 import CommunityItem from './CommunityItem'
+import useCommunity from '@/hooks/useCommunity'
 
 const CommunityInfinite = () => {
   const [ref, inView] = useInView()
   const [searchParams, setSearchParams] = useSearchParams()
-  const isLoading = false
-  const data = []
 
-  // useInfiniteScroll(() => {
-  //   if (inView) {
-  //     !isFetching && hasNextPage && fetchNextPage()
-  //   }
-  // }, [inView, !isFetching, fetchNextPage, hasNextPage])
+  const sort = searchParams.get('sort') ?? '최신순'
+  const categoryName = searchParams.get('categoryName') ?? '전체'
+  const {
+    communityList: { data, isFetching, hasNextPage, fetchNextPage, isLoading }
+  } = useCommunity(undefined, { sort: sort, categoryName: categoryName })
+
+  useInfiniteScroll(() => {
+    if (inView) {
+      !isFetching && hasNextPage && fetchNextPage()
+    }
+  }, [inView, !isFetching, fetchNextPage, hasNextPage])
   return (
     <Container>
-      <CommunityItem />
-      <CommunityItem />
-      <CommunityItem />
-      <CommunityItem />
-      <CommunityItem />
-      <CommunityItem />
+      {!isLoading &&
+        data &&
+        data.pages.map((page, pageIndex) => (
+          <React.Fragment key={pageIndex}>
+            {page.content.map((content, itemIndex) => (
+              <Link to={`/community/detail/${content.postNumber}`}>
+                <CommunityItem data={content} />
+              </Link>
+            ))}
+          </React.Fragment>
+        ))}
       <div
         ref={ref}
         css={{ height: 80 }}

@@ -25,29 +25,13 @@ const Community = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [fixed, setFixed] = useState(true)
   const category = searchParams.get('category') ?? '전체'
-  const sort = (() => {
-    const value = searchParams.get('sort')
-    if (!value || (value !== 'recent' && value !== 'recommend')) {
-      return '최신순'
-    }
-    return value === 'recent' ? '최신순' : '추천순'
-  })()
-  const engSort = (() => {
-    const value = searchParams.get('sort')
-    if (!value || (value !== 'recent' && value !== 'recommend')) {
-      return 'recent'
-    }
-    return value
-  })()
+  const sort = searchParams.get('sort') ?? '최신순'
   const { userId } = authStore()
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
 
-    if (value === '추천순') {
-      newSearchParams.set('sort', 'recommend')
-    } else {
-      newSearchParams.set('sort', 'recent')
-    }
+    newSearchParams.set('sort', value)
+
     setSearchParams(newSearchParams)
   }
 
@@ -55,13 +39,13 @@ const Community = () => {
     const newSearchParams = new URLSearchParams(searchParams)
 
     if (value === '잡담') {
-      newSearchParams.set('category', '잡담')
+      newSearchParams.set('categoryName', '잡담')
     } else if (value === '여행팁') {
-      newSearchParams.set('category', '여행팁')
+      newSearchParams.set('categoryName', '여행팁')
     } else if (value === '후기') {
-      newSearchParams.set('category', '후기')
+      newSearchParams.set('categoryName', '후기')
     } else {
-      newSearchParams.set('category', '전체')
+      newSearchParams.set('categoryName', '전체')
     }
     setSearchParams(newSearchParams)
   }

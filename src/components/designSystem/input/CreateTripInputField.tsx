@@ -106,6 +106,7 @@ const IconContainer = styled.div`
 
 const Input = styled.input`
   flex: 1;
+  font-family: 'Pretendard';
   &::placeholder {
     color: ${palette.비강조2};
   }
