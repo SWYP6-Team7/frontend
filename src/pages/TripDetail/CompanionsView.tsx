@@ -18,6 +18,7 @@ interface CompanionsViewProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 interface Companion {
+  userNumber: number
   userName: string
   ageGroup: string
 }
