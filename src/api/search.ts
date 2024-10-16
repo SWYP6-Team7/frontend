@@ -3,6 +3,7 @@ import { axiosInstance } from '.'
 import { Filters } from '@/hooks/search/useSearch'
 import { getJWTHeader } from '@/utils/user'
 import { daysAgo } from '@/utils/time'
+import dayjs from 'dayjs'
 
 export async function getSearch(
   pageParams: number,
@@ -28,7 +29,7 @@ export async function getSearch(
     data = {
       ...response.data,
       content: (response.data as ISearchData).content.filter(
-        item => Number(daysAgo(item.registerDue)) < 0
+        item => dayjs(item.registerDue, 'YYYY-MM-DD').diff(dayjs(), 'day') >= 0
       )
     }
   } else {
