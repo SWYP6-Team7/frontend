@@ -11,7 +11,7 @@ export default function OnBoardingThree() {
       <path
         d="M132 264C204.902 264 264 204.902 264 132C264 59.0984 204.902 0 132 0C59.0984 0 0 59.0984 0 132C0 204.902 59.0984 264 132 264Z"
         fill="url(#paint0_radial_2391_14063)"
-        fill-opacity="0.5"
+        fillOpacity="0.5"
       />
       <path
         d="M98.0974 65.313C101.909 58.8065 103.136 50.8064 100.795 43.0094C96.3464 28.1564 80.7418 19.7321 65.9353 24.1951C51.1348 28.6582 42.7429 44.3179 47.192 59.171C49.5267 66.9679 54.9526 72.9665 61.7006 76.2825C57.8888 82.7889 56.6619 90.789 59.0026 98.586C63.4517 113.439 79.0622 121.863 93.8628 117.4C108.663 112.937 117.055 97.2775 112.606 82.4245C110.271 74.6275 104.846 68.6289 98.0974 65.313Z"
@@ -119,15 +119,15 @@ export default function OnBoardingThree() {
           r="1"
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(132 132) rotate(90) scale(132)">
-          <stop stop-color="#F8F0CA" />
+          <stop stopColor="#F8F0CA" />
           <stop
             offset="0.5"
-            stop-color="#F8F0CA"
+            stopColor="#F8F0CA"
           />
           <stop
             offset="1"
-            stop-color="#EFEBD9"
-            stop-opacity="0"
+            stopColor="#EFEBD9"
+            stopOpacity="0"
           />
         </radialGradient>
       </defs>
