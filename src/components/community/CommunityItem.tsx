@@ -4,13 +4,15 @@ import SearchFilterTag from '../designSystem/tag/SearchFilterTag'
 import { palette } from '@/styles/palette'
 import EmptyHeartIcon from '../icons/EmptyHeartIcon'
 import CommentIcon from '../icons/CommentIcon'
+import { CommunityItem } from '@/model/community'
+import { daysAgoFormatted } from '@/utils/time'
 
-const CommunityItem = () => {
+const CommunityItem = ({ data }: { data: CommunityItem }) => {
   return (
     <Container>
       <div>
         <SearchFilterTag
-          text="여행팁"
+          text={data.categoryName}
           idx={0}
           addStyle={{
             backgroundColor: palette.비강조4,
@@ -23,18 +25,15 @@ const CommunityItem = () => {
           }}
         />
       </div>
-      <Title>여행 짐쌀 때 꿀팁</Title>
-      <Content>
-        무조건 가볍게 싸세요. 이게 필요한지 긴가민가한 것들은 그냥 필요할 때
-        여행지에서 산다는 마인드로 가져가지 마세요.
-      </Content>
+      <Title>{data.title}</Title>
+      <Content>{data.content}</Content>
       <BottomContainer>
         <UserBox>
-          <div>박건상</div>
+          <div>{data.postWriter}</div>
           <Dot>·</Dot>
-          <div>1일전</div>
+          <div>{daysAgoFormatted(data.regDate)}</div>
           <Dot>·</Dot>
-          <div>조회수 102</div>
+          <div>조회수 {data.viewCount}</div>
         </UserBox>
         <InfoContainer>
           <IconContainer>
@@ -45,7 +44,7 @@ const CommunityItem = () => {
                 stroke={palette.비강조2}
               />
             </Icon>
-            <span>2</span>
+            <span>{data.likeCount}</span>
           </IconContainer>
           <IconContainer>
             <Icon>
@@ -54,7 +53,7 @@ const CommunityItem = () => {
                 stroke={palette.비강조2}
               />
             </Icon>
-            <span>2</span>
+            <span>{data.commentCount}</span>
           </IconContainer>
         </InfoContainer>
       </BottomContainer>
