@@ -78,6 +78,12 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       const currentImages = [...editImages]
       const result = currentImages.reduce(
         (acc: EditFinalImages, currentImage, currentIndex) => {
+          if (currentImage.status === 'd') {
+            acc.statuses.push('d')
+            acc.urls.push(currentImage.url)
+            return acc
+          }
+
           const initialImage = initialImages.find(
             initial => initial.imageNumber === currentImage.imageNumber
           )
