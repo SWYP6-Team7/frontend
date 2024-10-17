@@ -19,11 +19,14 @@ const CommunityInfinite = () => {
   const [ref, inView] = useInView()
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const sort = searchParams.get('sortingType') ?? '최신순'
+  const sort = searchParams.get('sortingTypeName') ?? '최신순'
   const categoryName = searchParams.get('categoryName') ?? '전체'
   const {
     communityList: { data, isFetching, hasNextPage, fetchNextPage, isLoading }
-  } = useCommunity(undefined, { sortingType: sort, categoryName: categoryName })
+  } = useCommunity(undefined, {
+    sortingTypeName: sort,
+    categoryName: categoryName
+  })
 
   useInfiniteScroll(() => {
     if (inView) {

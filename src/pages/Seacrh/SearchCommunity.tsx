@@ -21,7 +21,7 @@ const SearchCommunity = () => {
   const [keyword, setKeyword] = useState(keywordParams)
   const [finalKeyword, setFinalKeyword] = useState(keywordParams)
   const category = searchParams.get('categoryName') ?? '전체'
-  const sort = searchParams.get('sortingType') ?? '최신순'
+  const sort = searchParams.get('sortingTypeName') ?? '최신순'
   const [ref, inView] = useInView()
   const {
     communityList: {
@@ -33,7 +33,7 @@ const SearchCommunity = () => {
       isFetching
     }
   } = useCommunity(undefined, {
-    sortingType: sort,
+    sortingTypeName: sort,
     categoryName: category,
     keyword: keyword
   })
@@ -70,7 +70,7 @@ const SearchCommunity = () => {
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
 
-    newSearchParams.set('sortingType', value)
+    newSearchParams.set('sortingTypeName', value)
 
     setSearchParams(newSearchParams)
   }

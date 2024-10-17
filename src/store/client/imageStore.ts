@@ -6,7 +6,7 @@ export interface UploadImage extends Image {
 }
 
 export interface EditImage extends Image {
-  status: 'y' | 'n' | 'd'
+  status: 'y' | 'n' | 'd' | 'i'
 }
 
 export interface FinalImages {
@@ -14,7 +14,7 @@ export interface FinalImages {
   tempUrls: string[]
 }
 export interface EditFinalImages {
-  statuses: ('y' | 'n' | 'd')[]
+  statuses: ('y' | 'n' | 'd' | 'i')[]
   urls: string[]
 }
 
