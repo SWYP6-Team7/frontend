@@ -11,7 +11,7 @@ import {
   InfiniteData
 } from '@tanstack/react-query'
 
-export const useMyApplyTrip = () => {
+export const useRequestedTrip = () => {
   const { accessToken } = authStore()
 
   const {

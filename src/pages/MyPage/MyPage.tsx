@@ -5,6 +5,7 @@ import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import ArrowIcon from '@/components/icons/ArrowIcon'
 import RightVector from '@/components/icons/RightVector'
 import Vector from '@/components/icons/Vector'
+import Spacing from '@/components/Spacing'
 
 import useMyPage from '@/hooks/myPage/useMyPage'
 import { ImyPage } from '@/model/myPages'
@@ -95,23 +96,23 @@ export default function MyPage() {
             공지사항
           </SmallTitle>
         </Box>
-        {/* <Box>
+        <Box>
           <Title>내 여행 현황</Title>
-          <SmallTitle onClick={() => navigate('/myTrip')}>
+          <SmallTitle onClick={() => navigate('/requestedTrip')}>
             <img
               src="/images/createTripBtn.png"
               alt=""
             />
             참가 신청한 여행
           </SmallTitle>
-          <SmallTitle onClick={() => navigate('/myTrip')}>
+          <SmallTitle onClick={() => navigate('/community')}>
             <img
               src="/images/createTripBtn.png"
               alt=""
             />
-            참가 중인 여행
+            내 커뮤니티
           </SmallTitle>
-        </Box> */}
+        </Box>
         <div css={{ marginTop: '16px' }}>
           <Title>약관 및 정책</Title>
           <SmallTitle css={{ margin: 0 }}>
@@ -135,6 +136,7 @@ export default function MyPage() {
               개인정보 수집 ・ 이용 동의
             </a>
           </SmallTitle>
+          <Spacing size={150} />
         </div>
       </Menu>
     </Container>
