@@ -135,11 +135,14 @@ const Content = styled.div<{ checked: boolean; isCreateTripPage: boolean }>`
   max-height: ${props =>
     props.checked ? (props.isCreateTripPage ? '55svh' : '25svh') : '0'};
 
-  padding: ${props =>
-    props.checked ? (props.isCreateTripPage ? '0' : '1.7svh') : '0 1.7svh'};
+  padding: ${props => (props.checked ? '1.7svh' : '0 1.7svh')};
+  opacity: ${props => (props.checked ? '1' : '0 ')};
 
+  transform: ${props => (props.checked ? 'translateY(0)' : 'translateY(20px)')};
   transition:
     max-height 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.7s ease,
     padding 0.3s ease;
 `
 
