@@ -7,6 +7,7 @@ import PictureIcon from '@/components/icons/PictureIcon'
 import ProfileRemoveIcon from '@/components/icons/ProfileRemoveIcon'
 import Spacing from '@/components/Spacing'
 import useMyPage from '@/hooks/myPage/useMyPage'
+import { authStore } from '@/store/client/authStore'
 import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import { isDefaultProfile } from '@/utils/profileUrl'
@@ -38,9 +39,16 @@ export default function ProfileEditModal({
     deleteMyProfileImgMutation,
     isDeleteSuccessProfileImg,
     tempProfileImageMutation,
-    updateRealProfileImgMutation
+    updateRealProfileImgMutation,
+
+    firstProfileImageMutation, // 삭제 후 등록 .
+    isFirstProfileImagePostSuccess
   } = useMyPage()
-  const { profileUrl, addIsProfileImgUpdated } = myPageStore()
+
+  const { profileUrl, addIsProfileImgUpdated, addProfileUrl } = myPageStore()
+
+  const { accessToken } = authStore()
+
   const [image, setImage] = useState<FileData | null>()
   const [clickedSave, setClickedSave] = useState(false)
 
@@ -79,12 +87,12 @@ export default function ProfileEditModal({
           console.log('프로필 업데이트 후, res', res)
           setShowImage(res.url)
           setChanged(true)
+          addIsProfileImgUpdated(true)
         })
         .catch(e => {
           console.log(e, '커스텀 프로필 정식 등록 요청 에러')
         })
     }
-    addIsProfileImgUpdated(true)
 
     setShowModal(false)
     setClickedSave(true)
@@ -137,13 +145,14 @@ export default function ProfileEditModal({
 
     setShowImage('')
     try {
-      await deleteMyProfileImgMutation()
-      console.log('실제 프로필 삭제 완료.')
+      await deleteMyProfileImgMutation() // 프로필 삭제.
+      await firstProfileImageMutation(accessToken!) // 삭제했으니 기본 이미지로 등록 요청.
+      setActive(1)
+      // addProfileUrl('')
+      console.log('실제 프로필 삭제& 삭제 후 기본 이미지 등록 완료.')
     } catch (e) {
-      console.log('실제 프로필 삭제 실패.')
+      console.log('실제 프로필 삭제 실패 & 기본 이미지 등록 ')
     }
-
-    setActive(1)
   }
   console.log(active)
   useEffect(() => {
