@@ -11,7 +11,13 @@ import useCommunity from '@/hooks/useCommunity'
 import { useNavigate, useParams } from 'react-router-dom'
 import ResultToast from '../designSystem/toastMessage/resultToast'
 import { Image } from '@/model/community'
-import { useEditStore, useUploadStore } from '@/store/client/imageStore'
+import {
+  EditFinalImages,
+  EditImage,
+  UploadImage,
+  useEditStore,
+  useUploadStore
+} from '@/store/client/imageStore'
 
 const LIST = ['잡담', '여행팁', '후기']
 
@@ -70,38 +76,43 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       const detailImageList = detailImages.data ?? []
       const initialImages = [...detailImageList] // 초기 이미지 목록
       const currentImages = [...editImages]
+      const result = currentImages.reduce(
+        (acc: EditFinalImages, currentImage, currentIndex) => {
+          const initialImage = initialImages.find(
+            initial => initial.imageNumber === currentImage.imageNumber
+          )
 
-      const statuses = currentImages.map((currentImage, currentIndex) => {
-        if (currentImage.status === 'd') return 'd'
+          if (!initialImage) {
+            acc.statuses.push('n')
+            acc.urls.push(currentImage.url)
+            return acc
+          }
 
-        const initialImage = initialImages.find(
-          initial => initial.imageNumber === currentImage.imageNumber
-        )
+          const initialIndex = initialImages.findIndex(
+            img => img.imageNumber === currentImage.imageNumber
+          )
 
-        if (!initialImage) return 'n'
+          acc.statuses.push(initialIndex !== currentIndex ? 'y' : 'n')
+          acc.urls.push(currentImage.url)
 
-        const initialIndex = initialImages.findIndex(
-          img => img.imageNumber === currentImage.imageNumber
-        )
-
-        return initialIndex !== currentIndex ? 'y' : 'n'
-      })
-
-      const urls = currentImages
-        .filter(img => img.status !== 'd')
-        .map(img => img.url)
+          return acc
+        },
+        { statuses: [], urls: [] }
+      )
 
       initialImages.forEach(initialImage => {
         const isDeleted = !currentImages.some(
-          current => current.imageNumber === initialImage.imageNumber
+          current =>
+            current.imageNumber === initialImage.imageNumber &&
+            current.status !== 'd'
         )
         if (isDeleted) {
-          statuses.push('d')
-          urls.push(initialImage.url)
+          result.statuses.push('d')
+          result.urls.push(initialImage.url)
         }
       })
 
-      saveEditImages({ statuses, urls })
+      saveEditImages(result)
       update({
         categoryName: value,
         communityNumber: Number(communityNumber),
