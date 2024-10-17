@@ -127,6 +127,15 @@ export default function ProfileEditModal({
     event.stopPropagation()
     console.log('why')
     setShowImage('')
+    deleteMyProfileImgMutation().then(res => {
+      if (res.status === 204) {
+        console.log(
+          '프로필 이미지 삭제 완료, 자동으로 기본 이미지로 지정 필수.'
+        )
+      } else if (res.status === 500) {
+        console.log('프로필 이미지 삭제 실패.')
+      }
+    })
     setActive(1)
   }
   console.log(active)
@@ -154,7 +163,7 @@ export default function ProfileEditModal({
                 accept="image/*"
                 css={{ display: 'none' }}
               />
-              {showImage !== '' && (
+              {showImage !== '' && active === 'custom' && (
                 <img
                   src={showImage}
                   css={{
