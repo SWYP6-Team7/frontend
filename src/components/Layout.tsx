@@ -56,6 +56,13 @@ const Layout = () => {
       addEmail(myPageData.email)
       addPreferredTags(myPageData.preferredTags)
       addGender(myPageData.gender)
+      const tags = []
+      for (const tag of myPageData.preferredTags) {
+        const text = tag.split(' ')
+
+        tags.push(text[text.length - 1])
+      }
+      addPreferredTags(tags)
     }
     if (!isLoadingImage && profileImg) {
       addProfileUrl(profileImg.url)
