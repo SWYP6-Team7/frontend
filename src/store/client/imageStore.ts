@@ -32,10 +32,7 @@ interface EditState {
   finalImages: EditFinalImages
   updateImage: (image: Image) => void
   updateImageStatus: (imageNumber: number, status: 'y' | 'n' | 'd') => void
-  saveFinalImages: (payload: {
-    statuses: ('y' | 'n' | 'd')[]
-    urls: string[]
-  }) => void
+  saveFinalImages: (payload: EditFinalImages) => void
 
   initializeImages: (images: Image[]) => void
   reset: () => void
