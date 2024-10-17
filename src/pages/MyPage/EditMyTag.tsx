@@ -70,15 +70,16 @@ export default function EditMyTag() {
   // 버튼 활성화상태.
 
   const isActive = (tag: string) => {
-    const value = tag.split(' ')[1]
-    return taggedArray.includes(value)
+    // return taggedArray.some(v => v.includes(tag))
+    return taggedArray.includes(tag)
   }
 
   const clickTag = (tag: string) => {
     if (taggedArray.length >= 5) {
       //이미 5개.
+
       if (!isActive(tag)) {
-        taggedArray.pop()
+        return
       }
     }
     const newArray = taggedArray.includes(tag)
@@ -138,18 +139,18 @@ export default function EditMyTag() {
                   key={tag}
                   idx={idx}
                   addStyle={{
-                    backgroundColor: isActive(tag)
+                    backgroundColor: isActive(tag.split(' ')[1])
                       ? 'rgba(227, 239, 217, 1)'
                       : ' rgba(240, 240, 240, 1)',
-                    color: isActive(tag)
+                    color: isActive(tag.split(' ')[1])
                       ? `${palette.keycolor}`
                       : 'rgba(52, 52, 52, 1)',
-                    border: isActive(tag)
+                    border: isActive(tag.split(' ')[1])
                       ? `1px solid ${palette.keycolor}`
                       : `1px solid ${palette.검색창}`,
                     borderRadius: '30px',
                     padding: '10px 20px',
-                    fontWeight: isActive(tag) ? '600' : '400'
+                    fontWeight: isActive(tag.split(' ')[1]) ? '600' : '400'
                   }}
                   text={tag}
                   onClick={() => clickTag(tag.split(' ')[1])}
