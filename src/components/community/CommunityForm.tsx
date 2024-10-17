@@ -69,23 +69,27 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       }
       const detailImageList = detailImages.data ?? []
       const initialImages = [...detailImageList] // 초기 이미지 목록
-      const currentImages = [...editImages] // 현재 이미지 목록
+      const currentImages = [...editImages]
 
-      const statuses: ('y' | 'n' | 'd')[] = currentImages.map(
-        (currentImage, currentIndex) => {
-          const initialImage = initialImages.find(
-            initial => initial.imageNumber === currentImage.imageNumber
-          )
+      const statuses = currentImages.map((currentImage, currentIndex) => {
+        if (currentImage.status === 'd') return 'd'
 
-          if (!initialImage) return 'n'
+        const initialImage = initialImages.find(
+          initial => initial.imageNumber === currentImage.imageNumber
+        )
 
-          const initialIndex = initialImages.findIndex(
-            img => img.imageNumber === currentImage.imageNumber
-          )
+        if (!initialImage) return 'n'
 
-          return initialIndex !== currentIndex ? 'y' : 'n'
-        }
-      )
+        const initialIndex = initialImages.findIndex(
+          img => img.imageNumber === currentImage.imageNumber
+        )
+
+        return initialIndex !== currentIndex ? 'y' : 'n'
+      })
+
+      const urls = currentImages
+        .filter(img => img.status !== 'd')
+        .map(img => img.url)
 
       initialImages.forEach(initialImage => {
         const isDeleted = !currentImages.some(
@@ -93,16 +97,6 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
         )
         if (isDeleted) {
           statuses.push('d')
-        }
-      })
-
-      const urls = currentImages.map(img => img.url)
-
-      initialImages.forEach(initialImage => {
-        const isDeleted = !currentImages.some(
-          current => current.imageNumber === initialImage.imageNumber
-        )
-        if (isDeleted) {
           urls.push(initialImage.url)
         }
       })
