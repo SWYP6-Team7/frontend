@@ -106,17 +106,14 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   console.log(editImages, images, 'images')
 
   useEffect(() => {
-    if (
-      updateMutation.isSuccess &&
-      updateMutation.data &&
-      editFinalImages.urls.length > 0
-    ) {
-      navigate(`/community/detail/${updateMutation.data?.postNumber}`)
-      setTripEditToastShow(true)
-      updateImageMutation.mutateAsync({
-        editImages: editFinalImages,
-        communityNumber: updateMutation.data?.postNumber
-      })
+    if (updateMutation.isSuccess && updateMutation.data) {
+      if (editFinalImages.urls.length > 0) {
+        setTripEditToastShow(true)
+        updateImageMutation.mutateAsync({
+          editImages: editFinalImages,
+          communityNumber: updateMutation.data?.postNumber
+        })
+      }
       editReset()
       setTimeout(() => {
         navigate(`/community/detail/${updateMutation.data?.postNumber}`)
@@ -128,15 +125,13 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   ])
 
   useEffect(() => {
-    if (
-      postMutation.isSuccess &&
-      postMutation.data &&
-      finalImages.tempUrls.length > 0
-    ) {
-      postImageMutation.mutateAsync({
-        uploadImages: finalImages,
-        communityNumber: postMutation.data?.postNumber
-      })
+    if (postMutation.isSuccess && postMutation.data) {
+      if (finalImages.tempUrls.length > 0) {
+        postImageMutation.mutateAsync({
+          uploadImages: finalImages,
+          communityNumber: postMutation.data?.postNumber
+        })
+      }
       reset()
       navigate(`/community/detail/${postMutation.data?.postNumber}`)
     }

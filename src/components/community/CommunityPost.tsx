@@ -13,11 +13,21 @@ const CommunityPost = () => {
   const { communityNumber } = useParams()
   const {
     community: { data, isLoading },
-    images
+    images,
+    like,
+    unlike
   } = useCommunity(Number(communityNumber))
 
   if (isLoading || !data) {
     return <></>
+  }
+
+  const handleLikeToggle = () => {
+    if (data.liked) {
+      unlike({ communityNumber: Number(communityNumber) })
+    } else {
+      like({ communityNumber: Number(communityNumber) })
+    }
   }
 
   return (
@@ -64,7 +74,7 @@ const CommunityPost = () => {
           </ImageContainer>
         )}
 
-        <LikeContainer>
+        <LikeContainer onClick={handleLikeToggle}>
           <SearchFilterTag
             addStyle={{
               padding: '11px 16px',
@@ -75,7 +85,7 @@ const CommunityPost = () => {
               borderRadius: '30px'
             }}
             icon={<CommunityHeartIcon />}
-            text={`${data.likeCount}`}
+            text={data.liked ? `${data.likeCount}` : '좋아요'}
             idx={0}
           />
         </LikeContainer>
@@ -153,6 +163,7 @@ const UserName = styled.div`
 
 const LikeContainer = styled.div`
   margin: 3.8svh 0;
+  cursor: pointer;
 `
 
 export default CommunityPost
