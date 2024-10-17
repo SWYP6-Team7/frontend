@@ -8,6 +8,7 @@ import useCommunity from '@/hooks/useCommunity'
 import { useParams } from 'react-router-dom'
 import { uploadImage } from '@/api/community'
 import ImageRemoveIcon from '../icons/ImageRemoveIcon'
+import { authStore } from '@/store/client/authStore'
 
 interface AddImageProps {
   isEdit: boolean
@@ -24,11 +25,11 @@ const AddImage = ({ isEdit }: AddImageProps) => {
     updateImage
   } = useEditStore()
   const { images: detailImages } = useCommunity(Number(communityNumber))
-
+  const { accessToken } = authStore()
   const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
-
-    uploadImage(e.target.files[0]).then(newImage => {
+    if (!accessToken) return
+    uploadImage(e.target.files[0], Number(accessToken)).then(newImage => {
       if (isEdit) {
         updateImage(newImage) // 수정 시 이미지 업데이트
       } else {
