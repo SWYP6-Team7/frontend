@@ -116,7 +116,6 @@ export default function NewPassword() {
           newPassword: formData.password,
           newPasswordConfirm: formData.confirmPassword
         })
-        console.log(res, ': 비번 변경 reponse')
 
         addPassword(formData.password)
         addIsPasswordUpdated(true)

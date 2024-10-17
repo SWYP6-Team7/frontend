@@ -14,7 +14,7 @@ export interface FinalImages {
   tempUrls: string[]
 }
 export interface EditFinalImages {
-  statuses: string[]
+  statuses: ('y' | 'n' | 'd')[]
   urls: string[]
 }
 
@@ -32,7 +32,10 @@ interface EditState {
   finalImages: EditFinalImages
   updateImage: (image: Image) => void
   updateImageStatus: (imageNumber: number, status: 'y' | 'n' | 'd') => void
-  saveFinalImages: (payload: { statuses: string[]; urls: string[] }) => void
+  saveFinalImages: (payload: {
+    statuses: ('y' | 'n' | 'd')[]
+    urls: string[]
+  }) => void
 
   initializeImages: (images: Image[]) => void
   reset: () => void

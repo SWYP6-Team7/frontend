@@ -82,14 +82,28 @@ const useCommunity = (
     mutationFn: (data: {
       uploadImages: FinalImages
       communityNumber: number
-    }) => postImage(data.uploadImages, data.communityNumber, accessToken)
+    }) => postImage(data.uploadImages, data.communityNumber, accessToken),
+    onSuccess: () => {
+      if (images.data) {
+        queryClient.invalidateQueries({
+          queryKey: ['community', 'images', communityNumber]
+        })
+      }
+    }
   })
 
   const updateImageMutation = useMutation({
     mutationFn: (data: {
       editImages: EditFinalImages
       communityNumber: number
-    }) => updateImage(data.editImages, data.communityNumber, accessToken)
+    }) => updateImage(data.editImages, data.communityNumber, accessToken),
+    onSuccess: () => {
+      if (images.data) {
+        queryClient.invalidateQueries({
+          queryKey: ['community', 'images', communityNumber]
+        })
+      }
+    }
   })
 
   const queryClient = useQueryClient()

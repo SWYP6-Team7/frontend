@@ -13,7 +13,7 @@ import { palette } from '@/styles/palette'
 import CommunityItem from '@/components/community/CommunityItem'
 import useCommunity from '@/hooks/useCommunity'
 
-const LIST = ['최신순', '추천순']
+const LIST = ['최신순', '추천순', '등록일순']
 
 const SearchCommunity = () => {
   const [searchParams, setSearchParams] = useSearchParams()

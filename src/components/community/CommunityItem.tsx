@@ -70,6 +70,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  height: 133px;
   justify-content: center;
   border-bottom: 1px solid ${palette.비강조4};
   padding: 11px 0 16px 0;
@@ -94,6 +95,7 @@ const ImgDiv = styled.div<{ src: string }>`
   background-image: url(${props => props.src});
   background-size: cover;
   height: 100%;
+  width: 74px;
   aspect-ratio: 1;
 `
 

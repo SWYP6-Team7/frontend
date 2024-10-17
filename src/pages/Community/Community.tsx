@@ -19,7 +19,7 @@ import SearchIcon from '@/components/icons/SearchIcon'
 import EllipsisIcon from '@/components/icons/EllipsisIcon'
 import CommunityInfinite from '@/components/community/CommunityInfinite'
 
-const LIST = ['최신순', '추천순']
+const LIST = ['최신순', '추천순', '등록일순']
 
 const Community = () => {
   const [searchParams, setSearchParams] = useSearchParams()

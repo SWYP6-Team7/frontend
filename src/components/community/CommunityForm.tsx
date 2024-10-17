@@ -69,26 +69,37 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       }
       const detailImageList = detailImages.data ?? []
       const initialImages = [...detailImageList] // 초기 이미지 목록
-      const currentImages = [...editImages] // 현재 이미지 목록
+      const currentImages = [...editImages]
 
-      const statuses = currentImages.map((img, index) => {
+      const statuses = currentImages.map((currentImage, currentIndex) => {
+        if (currentImage.status === 'd') return 'd'
+
         const initialImage = initialImages.find(
-          initial => initial.imageNumber === img.imageNumber
+          initial => initial.imageNumber === currentImage.imageNumber
         )
-        if (!initialImage) return 'd' // 초기 이미지 목록에 없는 경우 삭제된 이미지
 
-        if (initialImage.url !== img.url) return 'y' // URL이 변경된 경우
-        if (
-          index !==
-          initialImages.findIndex(
-            initial => initial.imageNumber === img.imageNumber
-          )
+        if (!initialImage) return 'n'
+
+        const initialIndex = initialImages.findIndex(
+          img => img.imageNumber === currentImage.imageNumber
         )
-          return 'y' // 순서 변경된 경우
-        return 'n' // 변경 없음
+
+        return initialIndex !== currentIndex ? 'y' : 'n'
       })
 
-      const urls = currentImages.map(img => img.url)
+      const urls = currentImages
+        .filter(img => img.status !== 'd')
+        .map(img => img.url)
+
+      initialImages.forEach(initialImage => {
+        const isDeleted = !currentImages.some(
+          current => current.imageNumber === initialImage.imageNumber
+        )
+        if (isDeleted) {
+          statuses.push('d')
+          urls.push(initialImage.url)
+        }
+      })
 
       saveEditImages({ statuses, urls })
       update({
@@ -114,15 +125,27 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           communityNumber: updateMutation.data?.postNumber
         })
       }
-      editReset()
-      setTimeout(() => {
-        navigate(`/community/detail/${updateMutation.data?.postNumber}`)
-      }, 1000)
     }
   }, [
     updateMutation.isSuccess && updateMutation.data,
     JSON.stringify(editFinalImages)
   ])
+
+  useEffect(() => {
+    if (updateImageMutation.isSuccess) {
+      editReset()
+      setTimeout(() => {
+        navigate(`/community/detail/${updateMutation.data?.postNumber}`)
+      }, 1000)
+    }
+  }, [updateImageMutation.isSuccess, updateMutation.data?.postNumber])
+
+  useEffect(() => {
+    if (postImageMutation.isSuccess) {
+      reset()
+      navigate(`/community/detail/${postMutation.data?.postNumber}`)
+    }
+  }, [postImageMutation.isSuccess, postMutation.data?.postNumber])
 
   useEffect(() => {
     if (postMutation.isSuccess && postMutation.data) {
@@ -132,8 +155,6 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           communityNumber: postMutation.data?.postNumber
         })
       }
-      reset()
-      navigate(`/community/detail/${postMutation.data?.postNumber}`)
     }
   }, [postMutation.isSuccess && postMutation.data, JSON.stringify(finalImages)])
   const handleRemoveValue = () => setTitle('')
