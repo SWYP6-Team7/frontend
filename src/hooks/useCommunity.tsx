@@ -37,15 +37,15 @@ const useCommunity = (
   communityNumber: number | undefined = undefined,
   params: IListParams = { sort: '최신순', keyword: '', categoryName: '' }
 ) => {
-  const { sort, keyword, categoryName } = params
+  const { sort = '최신순', keyword = '', categoryName = '전체' } = params
   const { accessToken } = authStore()
   const communityList = useInfiniteQuery<
     ICommunityList,
     Object,
     InfiniteData<ICommunityList>,
-    [_1: string]
+    [_1: string, { categoryName: string; sort: string; keyword: string }]
   >({
-    queryKey: ['community'],
+    queryKey: ['community', { categoryName: categoryName, sort, keyword }],
 
     queryFn: ({ pageParam }) => {
       return getCommunities(accessToken!, {
