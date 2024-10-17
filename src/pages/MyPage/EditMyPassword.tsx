@@ -80,10 +80,9 @@ export default function EditMyPassword() {
       try {
         const checking = await verifyPasswordMutation(formData.password)
         console.log(checking, ': 비번 verity response')
-        if (checking.status === 200) {
-          addPassword(formData.password)
-          navigate('/editMyPassword2')
-        }
+
+        addPassword(formData.password)
+        navigate('/editMyPassword2')
       } catch (e) {
         // 틀리면 500에러
         console.log(e)

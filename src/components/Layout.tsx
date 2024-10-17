@@ -17,6 +17,7 @@ import { myPageStore } from '@/store/client/myPageStore'
 import useMyPage from '@/hooks/myPage/useMyPage'
 import { ImyPage, IProfileImg } from '@/model/myPages'
 import Splash from '@/pages/Splash'
+import { splashOnStore } from '@/store/client/splashOnOffStore'
 const Layout = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
@@ -108,7 +109,21 @@ const Layout = () => {
       }
     }
   }, [accessToken])
-  console.log(userId, accessToken, '토큰')
+
+  const { splashOn } = splashOnStore()
+  // 배경이 검색창 색인 경우 제외하고는 BG색. 노치 영역 색 지정해서 변경시키기.
+  const backGroundGrey = ['/trip/detail', '/', '/myTrip']
+  useEffect(() => {
+    if (splashOn === true) return
+    let themeColorMetaTag = document.querySelector('meta[name="theme-color"]')
+    if (themeColorMetaTag) {
+      themeColorMetaTag.setAttribute(
+        'content',
+        backGroundGrey.includes(pathname) ? '#F5F5F5' : `${palette.BG}`
+      )
+    }
+  }, [pathname])
+
   return (
     <Container pathname={pathname}>
       <Splash />
