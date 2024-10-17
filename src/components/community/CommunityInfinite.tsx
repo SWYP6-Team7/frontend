@@ -45,7 +45,7 @@ const CommunityInfinite = () => {
         ))}
       <div
         ref={ref}
-        css={{ height: 80 }}
+        css={{ height: 130 }}
       />
     </Container>
   )
