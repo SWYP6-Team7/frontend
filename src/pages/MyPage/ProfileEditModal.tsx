@@ -55,6 +55,10 @@ export default function ProfileEditModal({
         ? 1
         : +ret[0][ret[0].length - 5]
   )
+  // 이미지를 띄어야하는 경우. 여부를 표시.
+  const [isCustomImgUpload, setIsCustomImgUpload] = useState(
+    ret.length === 0 ? true : false
+  )
   const [changed, setChanged] = useState(false)
   const navigate = useNavigate()
   const handleCloseModal = () => {
@@ -102,6 +106,7 @@ export default function ProfileEditModal({
           console.log('프로필 업데이트 후, res', res)
           setShowImage(res.url)
           setChanged(true)
+          setIsCustomImgUpload(true)
         })
         .catch(e => {
           console.log(e, '커스텀 프로필 업로드 에러')
@@ -163,17 +168,18 @@ export default function ProfileEditModal({
                 accept="image/*"
                 css={{ display: 'none' }}
               />
-              {showImage !== '' && (changed || active === 'custom') && (
-                <img
-                  src={showImage}
-                  css={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: '50%',
-                    position: 'absolute'
-                  }}
-                />
-              )}
+              {showImage !== '' &&
+                (active === 'custom' || isCustomImgUpload) && (
+                  <img
+                    src={showImage}
+                    css={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: '50%',
+                      position: 'absolute'
+                    }}
+                  />
+                )}
               <PictureIcon />
               {active === 'custom' && (
                 <div
