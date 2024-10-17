@@ -26,12 +26,12 @@ export default function CommunityHeader() {
   const [checkingModalClicked, setCheckingModalClicked] = useState(false)
   const [threeDotsClick, setThreeDotsClick] = useState(false)
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
-  const { cummunityNumber } = useParams()
+
   const {
     community: { data, isLoading },
     removeMutation,
     remove
-  } = useCommunity(Number(cummunityNumber))
+  } = useCommunity(Number(communityNumber))
 
   useEffect(() => {
     if (isDeleteBtnClicked) {

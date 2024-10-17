@@ -10,23 +10,28 @@ import { daysAgoFormatted } from '@/utils/time'
 const CommunityItem = ({ data }: { data: ICommunityItem }) => {
   return (
     <Container>
-      <div>
-        <SearchFilterTag
-          text={data.categoryName}
-          idx={0}
-          addStyle={{
-            backgroundColor: palette.비강조4,
-            color: palette.비강조,
-            border: 'none',
-            borderRadius: '12px',
-            fontSize: '12px',
-            padding: '4px 10px',
-            fontWeight: '400'
-          }}
-        />
-      </div>
-      <Title>{data.title}</Title>
-      <Content>{data.content}</Content>
+      <TopContainer>
+        <TopContent>
+          <div>
+            <SearchFilterTag
+              text={data.categoryName}
+              idx={0}
+              addStyle={{
+                backgroundColor: palette.비강조4,
+                color: palette.비강조,
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '12px',
+                padding: '4px 10px',
+                fontWeight: '400'
+              }}
+            />
+          </div>
+          <Title>{data.title}</Title>
+          <Content>{data.content}</Content>
+        </TopContent>
+        {data.thumbnailUrl && <ImgDiv src={data.thumbnailUrl} />}
+      </TopContainer>
       <BottomContainer>
         <UserBox>
           <div>{data.postWriter}</div>
@@ -68,6 +73,24 @@ const Container = styled.div`
   justify-content: center;
   border-bottom: 1px solid ${palette.비강조4};
   padding: 11px 0 16px 0;
+`
+
+const TopContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 26px;
+`
+
+const TopContent = styled.div`
+  flex: 1;
+`
+
+const ImgDiv = styled.div<{ src: string }>`
+  border-radius: 20px;
+  background-image: url(${props => props.src});
+  background-size: cover;
+  height: 100%;
+  aspect-ratio: 1;
 `
 
 const Title = styled.div`

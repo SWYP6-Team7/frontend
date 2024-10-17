@@ -10,11 +10,11 @@ import useCommunity from '@/hooks/useCommunity'
 import { useParams } from 'react-router-dom'
 
 const CommunityPost = () => {
-  const { cummunityNumber } = useParams()
+  const { communityNumber } = useParams()
   const {
     community: { data, isLoading },
     images
-  } = useCommunity(Number(cummunityNumber))
+  } = useCommunity(Number(communityNumber))
 
   if (isLoading || !data) {
     return <></>
@@ -57,9 +57,13 @@ const CommunityPost = () => {
         {/* 내용 */}
         <Details>{data.content}</Details>
         {/*태그   */}
-        <ImageContainer>
-          {!isLoading && images.data && <DetailImages images={images.data} />}
-        </ImageContainer>
+
+        {!isLoading && images.data && (
+          <ImageContainer>
+            <DetailImages images={images.data} />{' '}
+          </ImageContainer>
+        )}
+
         <LikeContainer>
           <SearchFilterTag
             addStyle={{
