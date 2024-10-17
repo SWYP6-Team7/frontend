@@ -48,6 +48,8 @@ import Withdrawal from './pages/MyPage/Withdrawal'
 import NewPassword from './pages/MyPage/NewPassword'
 import Announcement from './pages/MyPage/Announcement'
 import RequestedTrip from './pages/MyTrip/RequestedTrip'
+import MetaTag from './components/MetaTag'
+import { homeMeta } from './utils/meta'
 
 export const router = createBrowserRouter([
   {
@@ -57,7 +59,12 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Home />
+        element: (
+          <>
+            <MetaTag meta={homeMeta} />
+            <Home />
+          </>
+        )
       },
       {
         path: 'login/oauth/kakao',
