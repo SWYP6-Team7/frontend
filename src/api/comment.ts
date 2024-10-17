@@ -81,7 +81,7 @@ export async function likeComment(
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.post(
-      `/api/comments/${commentNumber}/like`,
+      `/api/comment/${commentNumber}/like`,
       {},
       {
         headers: getJWTHeader(accessToken!)
@@ -99,7 +99,7 @@ export async function unlikeComment(
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.post(
-      `/api/comments/${commentNumber}/like`,
+      `/api/comment/${commentNumber}/like`,
       {},
       {
         headers: getJWTHeader(accessToken!)

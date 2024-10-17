@@ -59,7 +59,7 @@ const SearchResultList = ({
                 total={content.maxPerson}
                 daysAgo={formatTime(content.createdAt)}
                 daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
-                  dayjs(),
+                  dayjs().startOf('day'),
                   'day'
                 )}
                 recruits={content.nowPerson}

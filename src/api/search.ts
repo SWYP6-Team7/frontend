@@ -29,7 +29,11 @@ export async function getSearch(
     data = {
       ...response.data,
       content: (response.data as ISearchData).content.filter(
-        item => dayjs(item.registerDue, 'YYYY-MM-DD').diff(dayjs(), 'day') >= 0
+        item =>
+          dayjs(item.registerDue, 'YYYY-MM-DD').diff(
+            dayjs().startOf('day'),
+            'day'
+          ) >= 0
       )
     }
   } else {
