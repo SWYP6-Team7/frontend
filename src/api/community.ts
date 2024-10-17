@@ -6,7 +6,12 @@ import {
 } from './../model/community'
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
-import { EditImage, UploadImage } from '@/store/client/imageStore'
+import {
+  EditFinalImages,
+  EditImage,
+  FinalImages,
+  UploadImage
+} from '@/store/client/imageStore'
 import { IListParams } from '@/hooks/useCommunity'
 
 export async function getCommunities(
@@ -174,7 +179,7 @@ export const uploadImage = async (file: File, accessToken: string) => {
 }
 
 export async function updateImage(
-  data: EditImage[],
+  data: EditFinalImages,
   communityNumber: number,
   accessToken: string | null
 ) {
@@ -194,7 +199,7 @@ export async function updateImage(
 }
 
 export async function postImage(
-  data: UploadImage[],
+  data: FinalImages,
   communityNumber: number,
   accessToken: string | null
 ) {
