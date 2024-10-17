@@ -28,26 +28,37 @@ import {
 import React from 'react'
 
 export interface IListParams {
-  sortingType?: string
+  sortingTypeName?: string
   categoryName?: string
   keyword?: string
 }
 
 const useCommunity = (
   communityNumber: number | undefined = undefined,
-  params: IListParams = { sortingType: '최신순', keyword: '', categoryName: '' }
+  params: IListParams = {
+    sortingTypeName: '최신순',
+    keyword: '',
+    categoryName: ''
+  }
 ) => {
-  const { sortingType = '최신순', keyword = '', categoryName = '전체' } = params
+  const {
+    sortingTypeName = '최신순',
+    keyword = '',
+    categoryName = '전체'
+  } = params
   const { accessToken } = authStore()
   const communityList = useInfiniteQuery<
     ICommunityList,
     Object,
     InfiniteData<ICommunityList>,
-    [_1: string, { categoryName: string; sortingType: string; keyword: string }]
+    [
+      _1: string,
+      { categoryName: string; sortingTypeName: string; keyword: string }
+    ]
   >({
     queryKey: [
       'community',
-      { categoryName: categoryName, sortingType, keyword }
+      { categoryName: categoryName, sortingTypeName, keyword }
     ],
 
     queryFn: ({ pageParam }) => {

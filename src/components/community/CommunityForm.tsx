@@ -76,29 +76,37 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       const detailImageList = detailImages.data ?? []
       const initialImages = [...detailImageList] // 초기 이미지 목록
       const currentImages = [...editImages]
-      const result = currentImages.reduce(
-        (acc: EditFinalImages, currentImage, currentIndex) => {
-          if (currentImage.status === 'd') {
-            acc.statuses.push('d')
-            acc.urls.push(currentImage.url)
-            return acc
-          }
+      const activeImages = currentImages.filter(img => img.status !== 'd')
+      const deletedImages = [
+        ...currentImages.filter(img => img.status === 'd'),
+        ...initialImages.filter(
+          initialImg =>
+            !currentImages.some(
+              current => current.imageNumber === initialImg.imageNumber
+            )
+        )
+      ]
 
-          const initialImage = initialImages.find(
-            initial => initial.imageNumber === currentImage.imageNumber
-          )
-
-          if (!initialImage) {
-            acc.statuses.push('n')
-            acc.urls.push(currentImage.url)
-            return acc
-          }
-
+      const activeResult = activeImages.reduce(
+        (acc: EditFinalImages, currentImage) => {
           const initialIndex = initialImages.findIndex(
             img => img.imageNumber === currentImage.imageNumber
           )
 
-          acc.statuses.push(initialIndex !== currentIndex ? 'y' : 'n')
+          if (initialIndex === -1) {
+            acc.statuses.push('i')
+            acc.urls.push(currentImage.url)
+            return acc
+          }
+
+          const currentOrderIndex = activeImages.findIndex(
+            img => img.imageNumber === currentImage.imageNumber
+          )
+          const initialOrderIndex = initialImages.findIndex(
+            img => img.imageNumber === currentImage.imageNumber
+          )
+
+          acc.statuses.push(currentOrderIndex !== initialOrderIndex ? 'y' : 'n')
           acc.urls.push(currentImage.url)
 
           return acc
@@ -106,19 +114,15 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
         { statuses: [], urls: [] }
       )
 
-      initialImages.forEach(initialImage => {
-        const isDeleted = !currentImages.some(
-          current =>
-            current.imageNumber === initialImage.imageNumber &&
-            current.status !== 'd'
-        )
-        if (isDeleted) {
-          result.statuses.push('d')
-          result.urls.push(initialImage.url)
-        }
-      })
+      const finalResult = {
+        statuses: [
+          ...activeResult.statuses,
+          ...deletedImages.map(() => 'd')
+        ] as ('n' | 'y' | 'd' | 'i')[],
+        urls: [...activeResult.urls, ...deletedImages.map(img => img.url)]
+      }
 
-      saveEditImages(result)
+      saveEditImages(finalResult)
       update({
         categoryName: value,
         communityNumber: Number(communityNumber),
