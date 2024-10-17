@@ -29,7 +29,7 @@ const AddImage = ({ isEdit }: AddImageProps) => {
   const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     if (!accessToken) return
-    uploadImage(e.target.files[0], Number(accessToken)).then(newImage => {
+    uploadImage(e.target.files[0], accessToken).then(newImage => {
       if (isEdit) {
         updateImage(newImage) // 수정 시 이미지 업데이트
       } else {
