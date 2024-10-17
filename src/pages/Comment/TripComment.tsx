@@ -29,7 +29,7 @@ const TripComment = () => {
   }, [inView, !isFetching, fetchNextPage, hasNextPage])
   return (
     <Container>
-      {!isLoading && data?.pages && data.pages.length > 0 ? (
+      {!isLoading && data?.pages && data.pages[0].content.length > 0 ? (
         <>
           {data.pages.map((page, pageIndex) => (
             <React.Fragment key={pageIndex}>

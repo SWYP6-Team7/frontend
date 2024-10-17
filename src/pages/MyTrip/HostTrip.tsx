@@ -65,7 +65,7 @@ export default function HostTrip() {
                     total={content.maxPerson}
                     daysAgo={daysAgo(content?.createdAt)}
                     daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
-                      dayjs(),
+                      dayjs().startOf('day'),
                       'day'
                     )}
                     recruits={content.nowPerson}
