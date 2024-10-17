@@ -13,15 +13,16 @@ export default function Withdrawal() {
   const [isClicked, setIsClicked] = useState(false)
   const { withdrawMutation } = useMyPage()
   const navigate = useNavigate()
-  const completeClickHandler = () => {
+  const completeClickHandler = async () => {
     // 탈퇴 api 요청
     console.log('탈퇴')
-    withdrawMutation().then(res => {
-      if (res.status === 204) {
-        console.log('탈퇴 성공!')
-        navigate('/login')
-      }
-    })
+    try {
+      await withdrawMutation()
+      console.log('탈퇴 성공!')
+      navigate('/login')
+    } catch (e) {
+      console.log(e, '탈퇴 오류 발생')
+    }
   }
   return (
     <Container>
