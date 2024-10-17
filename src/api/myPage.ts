@@ -145,7 +145,7 @@ export async function putPassword(
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
     const response = await axiosInstance.put(
-      '/api/profile/password/change',
+      '/api/password/change',
       {
         newPassword: newPassword,
         newPasswordConfirm: newPasswordConfirm
