@@ -9,9 +9,18 @@ export interface EditImage extends Image {
   status: 'y' | 'n' | 'd'
 }
 
+export interface FinalImages {
+  deletedTempUrls: string[]
+  tempUrls: string[]
+}
+export interface EditFinalImages {
+  statuses: string[]
+  urls: string[]
+}
+
 interface UploadState {
   images: UploadImage[]
-  finalImages: { deletedTempUrls: string[]; tempUrls: string[] }
+  finalImages: FinalImages
   addImage: (image: Image) => void
   removeImage: (imageNumber: number) => void
   saveFinalImages: () => void
@@ -20,7 +29,7 @@ interface UploadState {
 
 interface EditState {
   images: EditImage[]
-  finalImages: { statuses: string[]; urls: string[] }
+  finalImages: EditFinalImages
   updateImage: (image: Image) => void
   updateImageStatus: (imageNumber: number, status: 'y' | 'n' | 'd') => void
   saveFinalImages: (payload: { statuses: string[]; urls: string[] }) => void

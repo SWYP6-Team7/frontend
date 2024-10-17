@@ -52,7 +52,7 @@ export default function CommunityHeader() {
     if (removeMutation.isSuccess) {
       setIsToastShow(true)
       setTimeout(() => {
-        navigate('/')
+        navigate('/community')
       }, 1800)
     }
   }, [removeMutation.isSuccess])

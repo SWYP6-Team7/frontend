@@ -36,11 +36,12 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
     postImageMutation,
     updateImageMutation
   } = useCommunity(Number(communityNumber))
-  const { saveFinalImages, images } = useUploadStore()
+  const { saveFinalImages, images, finalImages, reset } = useUploadStore()
   const {
     images: editImages,
-
-    saveFinalImages: saveEditImages
+    finalImages: editFinalImages,
+    saveFinalImages: saveEditImages,
+    reset: editReset
   } = useEditStore()
   const { images: detailImages } = useCommunity(Number(communityNumber))
 
@@ -109,24 +110,29 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       navigate(`/community/detail/${updateMutation.data?.postNumber}`)
       setTripEditToastShow(true)
       updateImageMutation.mutateAsync({
-        editImages: editImages,
+        editImages: editFinalImages,
         communityNumber: updateMutation.data?.postNumber
       })
+      editReset()
       setTimeout(() => {
         navigate(`/community/detail/${updateMutation.data?.postNumber}`)
       }, 1000)
     }
-  }, [updateMutation.isSuccess && updateMutation.data])
+  }, [
+    updateMutation.isSuccess && updateMutation.data,
+    JSON.stringify(editFinalImages)
+  ])
 
   useEffect(() => {
     if (postMutation.isSuccess && postMutation.data) {
       postImageMutation.mutateAsync({
-        uploadImages: images,
+        uploadImages: finalImages,
         communityNumber: postMutation.data?.postNumber
       })
+      reset()
       navigate(`/community/detail/${postMutation.data?.postNumber}`)
     }
-  }, [postMutation.isSuccess && postMutation.data])
+  }, [postMutation.isSuccess && postMutation.data, JSON.stringify(finalImages)])
   const handleRemoveValue = () => setTitle('')
   return (
     <>
