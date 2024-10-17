@@ -151,7 +151,7 @@ export async function getImages(communityNumber: number, accessToken: string) {
   }
 }
 
-export const uploadImage = async (file: File) => {
+export const uploadImage = async (file: File, accessToken: number) => {
   const formData = new FormData()
   formData.append('file', file)
 
@@ -161,7 +161,8 @@ export const uploadImage = async (file: File) => {
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`
         }
       }
     )
