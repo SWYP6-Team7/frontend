@@ -25,12 +25,12 @@ const Community = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [fixed, setFixed] = useState(true)
   const category = searchParams.get('categoryName') ?? '전체'
-  const sort = searchParams.get('sort') ?? '최신순'
+  const sort = searchParams.get('sortingType') ?? '최신순'
   const { userId } = authStore()
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
 
-    newSearchParams.set('sort', value)
+    newSearchParams.set('sortingType', value)
 
     setSearchParams(newSearchParams)
   }
