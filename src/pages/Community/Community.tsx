@@ -24,7 +24,7 @@ const LIST = ['최신순', '추천순']
 const Community = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [fixed, setFixed] = useState(true)
-  const category = searchParams.get('category') ?? '전체'
+  const category = searchParams.get('categoryName') ?? '전체'
   const sort = searchParams.get('sort') ?? '최신순'
   const { userId } = authStore()
   const onClickSort = (value: string) => {

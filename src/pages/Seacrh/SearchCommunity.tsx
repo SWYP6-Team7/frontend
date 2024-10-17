@@ -20,14 +20,8 @@ const SearchCommunity = () => {
   const keywordParams = searchParams.get('keyword') ?? ''
   const [keyword, setKeyword] = useState(keywordParams)
   const [finalKeyword, setFinalKeyword] = useState(keywordParams)
-  const category = searchParams.get('category') ?? '전체'
-  const sort = (() => {
-    const value = searchParams.get('sort')
-    if (!value || (value !== 'recent' && value !== 'recommend')) {
-      return '최신순'
-    }
-    return value === 'recent' ? '최신순' : '추천순'
-  })()
+  const category = searchParams.get('categoryName') ?? '전체'
+  const sort = searchParams.get('sort') ?? '최신순'
   const [ref, inView] = useInView()
   const {
     communityList: {
@@ -76,11 +70,8 @@ const SearchCommunity = () => {
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
 
-    if (value === '추천순') {
-      newSearchParams.set('sort', 'recommend')
-    } else {
-      newSearchParams.set('sort', 'recent')
-    }
+    newSearchParams.set('sort', value)
+
     setSearchParams(newSearchParams)
   }
 
@@ -113,37 +104,40 @@ const SearchCommunity = () => {
 
       <>
         {isLoading && <div>검색 중...</div>}
-        {!isLoading && data && data.pages[0].content.length > 0 && (
-          <>
-            <SortContainer>
-              <SortHeader
-                list={LIST}
-                clickSort={onClickSort}
-                sort={sort}>
-                <CategoryList
-                  type={category}
-                  setType={onClickCategory}
-                  list={['전체', '잡담', '여행팁', '후기']}
-                />
-              </SortHeader>
-            </SortContainer>
+        {!isLoading &&
+          data &&
+          data.pages[0].content.length > 0 &&
+          keyword !== '' && (
+            <>
+              <SortContainer>
+                <SortHeader
+                  list={LIST}
+                  clickSort={onClickSort}
+                  sort={sort}>
+                  <CategoryList
+                    type={category}
+                    setType={onClickCategory}
+                    list={['전체', '잡담', '여행팁', '후기']}
+                  />
+                </SortHeader>
+              </SortContainer>
 
-            {data.pages.map((page, pageIndex) => (
-              <React.Fragment key={pageIndex}>
-                {page.content.map((content, itemIndex) => (
-                  <Link to={`/community/detail/${content.postNumber}`}>
-                    <CommunityItem data={content} />
-                  </Link>
-                ))}
-              </React.Fragment>
-            ))}
+              {data.pages.map((page, pageIndex) => (
+                <React.Fragment key={pageIndex}>
+                  {page.content.map((content, itemIndex) => (
+                    <Link to={`/community/detail/${content.postNumber}`}>
+                      <CommunityItem data={content} />
+                    </Link>
+                  ))}
+                </React.Fragment>
+              ))}
 
-            <div
-              ref={ref}
-              css={{ height: 80 }}
-            />
-          </>
-        )}
+              <div
+                ref={ref}
+                css={{ height: 80 }}
+              />
+            </>
+          )}
       </>
     </Container>
   )
