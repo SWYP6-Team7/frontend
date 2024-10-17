@@ -63,7 +63,7 @@ export const myPageHandler = [
       relatedType: 'profile',
       relatedNumber: 1,
       key: 'images/profile/1/8915cda6-e3ba-4b47-ba12-1b6141ca7fdf.webp',
-      url: 'https://moing-hosted-contents.s3.ap-northeast-2.amazonaws.com/images/profile/default/defaultProfile.png',
+      url: 'https://moing-hosted-contents.s3.ap-northeast-2.amazonaws.com/images/profile/39/ad8e893d-6185-4083-8cf7-0f4a584a23a9.png',
       uploadDate: '2024년 10월 06일 19시 10분'
     }
     return HttpResponse.json(data, { status: 200 })

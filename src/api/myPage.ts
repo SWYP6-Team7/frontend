@@ -51,10 +51,12 @@ export const putMyProfileImage = async (
 export const deleteMyProfileImage = async (accessToken: string) => {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
-    const response = await axiosInstance.delete('/api/profile/image')
+    const response = await axiosInstance.delete('/api/profile/image', {
+      headers: getJWTHeader(accessToken)
+    })
     return response.data
   } catch (err) {
-    console.log(err, '현재 프로필 이미지 가져오기 오류')
+    console.log(err, '프로필 삭제.')
   }
 }
 export const putMyProfileDefaultImage = async (
