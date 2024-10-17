@@ -71,21 +71,21 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       const initialImages = [...detailImageList] // 초기 이미지 목록
       const currentImages = [...editImages] // 현재 이미지 목록
 
-      const statuses = currentImages.map((img, index) => {
-        const initialImage = initialImages.find(
-          initial => initial.imageNumber === img.imageNumber
+      const statuses = initialImages.map(initialImage => {
+        const currentImage = currentImages.find(
+          current => current.imageNumber === initialImage.imageNumber
         )
-        if (!initialImage) return 'd' // 초기 이미지 목록에 없는 경우 삭제된 이미지
 
-        if (initialImage.url !== img.url) return 'y' // URL이 변경된 경우
-        if (
-          index !==
-          initialImages.findIndex(
-            initial => initial.imageNumber === img.imageNumber
-          )
+        if (!currentImage) return 'd'
+
+        const initialIndex = initialImages.findIndex(
+          img => img.imageNumber === initialImage.imageNumber
         )
-          return 'y' // 순서 변경된 경우
-        return 'n' // 변경 없음
+        const currentIndex = currentImages.findIndex(
+          img => img.imageNumber === initialImage.imageNumber
+        )
+
+        return initialIndex !== currentIndex ? 'y' : 'n'
       })
 
       const urls = currentImages.map(img => img.url)
