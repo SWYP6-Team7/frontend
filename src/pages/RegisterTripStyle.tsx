@@ -70,7 +70,10 @@ const RegisterTripStyle = () => {
     newActiveStates[parseInt(e.currentTarget.id)] =
       !newActiveStates[parseInt(e.currentTarget.id)] // 토글
 
-    setActiveStates(newActiveStates) // 상태 업데이트
+    const activeArray = newActiveStates.filter(v => v === true)
+    if (activeArray.length <= 5) {
+      setActiveStates(newActiveStates) // 상태 업데이트
+    }
   }
 
   const completeHandler = () => {
@@ -103,7 +106,7 @@ const RegisterTripStyle = () => {
 
         <ContentText>어떤 여행을 선호하세요?</ContentText>
       </TripStyleStep>
-      <MultipleSelectionText>중복 선택 가능</MultipleSelectionText>
+      <MultipleSelectionText>중복 선택 가능 (최대 5개)</MultipleSelectionText>
       <TripStyleContainer>
         <StyleBtns>
           {categoryButtonTextArray.map((item, idx) => (

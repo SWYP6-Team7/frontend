@@ -97,7 +97,7 @@ const SearchCommunity = () => {
         value={keyword}
         onChange={changeKeyword}
         onKeyDown={handleKeyDown}
-        placeholder="어디로 여행을 떠날까요?"
+        placeholder="검색어를 입력해주세요"
         handleRemoveValue={handleRemoveValue}
       />
       <Spacing size={16} />
