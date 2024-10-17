@@ -128,7 +128,7 @@ export default function EditMyInfo() {
           <img
             src={profileUrl}
             css={{
-              width: '100%',
+              width: '80px',
               height: '100%',
               borderRadius: '50%'
             }}
