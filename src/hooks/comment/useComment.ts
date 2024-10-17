@@ -42,6 +42,9 @@ const useComment = (
     enabled: !!accessToken,
     initialPageParam: 0,
     getNextPageParam: lastPage => {
+      if (lastPage?.page?.totalPages) {
+        return undefined
+      }
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
         return undefined
       } else {
