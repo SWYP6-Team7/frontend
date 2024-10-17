@@ -150,6 +150,7 @@ const InputContainer = styled.div<{ focused: boolean }>`
 `
 const Input = styled.textarea`
   flex: 1;
+  width: 100%;
   border: none;
   outline: none;
   height: 32px;
