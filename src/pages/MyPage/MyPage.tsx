@@ -30,9 +30,13 @@ export default function MyPage() {
     <Container>
       <UserInfo>
         <ProfileImg>
-          <RoundedImage
-            size={80}
+          <img
             src={profileUrl}
+            css={{
+              width: '80px',
+              height: '100%',
+              borderRadius: '50%'
+            }}
           />
         </ProfileImg>
         <div css={{ width: '100%' }}>

@@ -163,7 +163,7 @@ export default function ProfileEditModal({
                 accept="image/*"
                 css={{ display: 'none' }}
               />
-              {showImage !== '' && active === 'custom' && (
+              {showImage !== '' && (changed || active === 'custom') && (
                 <img
                   src={showImage}
                   css={{
