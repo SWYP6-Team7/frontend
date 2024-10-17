@@ -83,6 +83,10 @@ const TopContainer = styled.div`
 
 const TopContent = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
 `
 
 const ImgDiv = styled.div<{ src: string }>`

@@ -57,7 +57,7 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       setTitle(community.data.title)
       setContent(community.data.content)
     }
-  }, [isEdit, community.data])
+  }, [isEdit, JSON.stringify(community.data)])
   const submitCommunity = () => {
     if (!value || title === '' || content === '') {
       return
