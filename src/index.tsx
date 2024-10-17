@@ -6,6 +6,7 @@ import { Global } from '@emotion/react'
 import globalStyle from '@/styles/globalStyle'
 import { client } from './store/server/queryClient'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { HelmetProvider } from 'react-helmet-async'
 const reactRoot = document.querySelector('div#root')
 
 const prepare = async (): Promise<void> => {
@@ -21,10 +22,12 @@ const prepare = async (): Promise<void> => {
 prepare().then(() => {
   reactDOM.createRoot(reactRoot as HTMLElement).render(
     <QueryClientProvider client={client}>
-      {/* globalstyle 적용  */}
-      <Global styles={globalStyle} />
-      <App />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <HelmetProvider>
+        {/* globalstyle 적용  */}
+        <Global styles={globalStyle} />
+        <App />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </HelmetProvider>
     </QueryClientProvider>
   )
 })
