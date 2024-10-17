@@ -107,6 +107,7 @@ export default function ProfileEditModal({
           console.log('프로필 임시 등록 요청 후, res', res)
           setShowImage(res.tempUrl)
           setChanged(true)
+          setActive('custom')
           setIsCustomImgUpload(true)
         })
         .catch(e => {
@@ -179,7 +180,10 @@ export default function ProfileEditModal({
           <Spacing size={32} />
           <ProfileContainer>
             <ShowImg
-              onClick={() => showImage !== '' && setActive('custom')}
+              onClick={() =>
+                // 이미지가 존재하고, 현재 보여진 이미지가 커스텀일 때만 active 보더 표시.
+                showImage !== '' && isCustomImg && setActive('custom')
+              }
               isCustomImg={active === 'custom'}>
               <input
                 onChange={event => addImageFile(event)}
