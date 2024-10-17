@@ -131,15 +131,27 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           communityNumber: updateMutation.data?.postNumber
         })
       }
-      editReset()
-      setTimeout(() => {
-        navigate(`/community/detail/${updateMutation.data?.postNumber}`)
-      }, 1000)
     }
   }, [
     updateMutation.isSuccess && updateMutation.data,
     JSON.stringify(editFinalImages)
   ])
+
+  useEffect(() => {
+    if (updateImageMutation.isSuccess) {
+      editReset()
+      setTimeout(() => {
+        navigate(`/community/detail/${updateMutation.data?.postNumber}`)
+      }, 1000)
+    }
+  }, [updateImageMutation.isSuccess, updateMutation.data?.postNumber])
+
+  useEffect(() => {
+    if (postImageMutation.isSuccess) {
+      reset()
+      navigate(`/community/detail/${postMutation.data?.postNumber}`)
+    }
+  }, [postImageMutation.isSuccess, postMutation.data?.postNumber])
 
   useEffect(() => {
     if (postMutation.isSuccess && postMutation.data) {
@@ -149,8 +161,6 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           communityNumber: postMutation.data?.postNumber
         })
       }
-      reset()
-      navigate(`/community/detail/${postMutation.data?.postNumber}`)
     }
   }, [postMutation.isSuccess && postMutation.data, JSON.stringify(finalImages)])
   const handleRemoveValue = () => setTitle('')

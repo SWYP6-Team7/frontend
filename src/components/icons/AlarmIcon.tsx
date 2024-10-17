@@ -32,7 +32,7 @@ const AlarmIcon = ({ size = 24, stroke = '#848484' }: AlarmProps) => {
           strokeLinejoin="round"
         />
       </svg>
-      {data?.pages[0].content[0].isRead === false && <RedDot />}
+      {data?.pages[0]?.content[0]?.isRead === false && <RedDot />}
     </Container>
   )
 }
