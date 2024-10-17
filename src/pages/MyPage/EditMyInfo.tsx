@@ -125,9 +125,13 @@ export default function EditMyInfo() {
         <div
           onClick={() => setShowModal(true)}
           css={{ position: 'relative' }}>
-          <RoundedImage
-            size={80}
+          <img
             src={profileUrl}
+            css={{
+              width: '100%',
+              height: '100%',
+              borderRadius: '50%'
+            }}
           />
           <div
             css={{
@@ -297,6 +301,7 @@ const Container = styled.div`
 const ProfileImg = styled.div`
   display: flex;
   justify-content: center;
+  height: 80px;
 `
 const Box = styled.div`
   display: flex;

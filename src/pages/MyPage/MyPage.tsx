@@ -18,7 +18,7 @@ export default function MyPage() {
   const { name, agegroup, email, preferredTags, profileUrl } = myPageStore()
 
   const navigate = useNavigate()
-
+  console.log(profileUrl, '마이페이지 프로필 이미지')
   const cutTags =
     preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags
 
