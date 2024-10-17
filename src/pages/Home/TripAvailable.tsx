@@ -55,7 +55,7 @@ const TripAvailable = () => {
                     tags={post.tags}
                     daysAgo={daysAgo(post?.createdAt)}
                     daysLeft={dayjs(post.registerDue, 'YYYY-MM-DD').diff(
-                      dayjs(),
+                      dayjs().startOf('day'),
                       'day'
                     )}
                     title={post.title}
