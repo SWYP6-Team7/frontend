@@ -1,20 +1,33 @@
 import MoingFullLogo from '@/components/icons/MoingFullLogo'
 import { authStore } from '@/store/client/authStore'
+import { myPageStore } from '@/store/client/myPageStore'
 import { splashOnStore } from '@/store/client/splashOnOffStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function Splash() {
   const { splashOn, addSplashOn } = splashOnStore()
+
   const { accessToken } = authStore()
   const navigate = useNavigate()
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+  const backGroundGrey = ['/trip/detail', '/', 'myTrip', '/splash']
   useEffect(() => {
     const revisit = sessionStorage.getItem('revisit')
 
     if (revisit === undefined || revisit === null) {
       setTimeout(() => {
+        // if (isMobile) window.location.reload()
+
+        let themeColorMetaTag = document.querySelector(
+          'meta[name="theme-color"]'
+        )
+        if (themeColorMetaTag) {
+          themeColorMetaTag.setAttribute('content', '#F5F5F5')
+        }
+
         addSplashOn(false)
       }, 2000)
       sessionStorage.setItem('revisit', 'true')
@@ -32,6 +45,7 @@ export default function Splash() {
       }
     }
   }, [splashOn])
+
   return (
     <Container splashOn={splashOn}>
       <LogoContainer>
@@ -40,8 +54,11 @@ export default function Splash() {
     </Container>
   )
 }
+
 const Container = styled.div<{ splashOn: boolean }>`
   /* display: ${props => (props.splashOn ? 'block' : 'none')}; */
+  padding-top: env(safe-area-inset-top);
+
   position: absolute;
   z-index: 2500;
   height: 100svh;

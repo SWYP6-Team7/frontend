@@ -115,7 +115,7 @@ export default function ProfileEditModal({
       console.log(event.target.files[0])
     }
   }
-  console.log(showImage, '커스텀 이미지 업로드 이후')
+  console.log(showImage, '현재 이미지')
 
   const handleDefaultProfileUpload = async (defaultNumber: number) => {
     try {
@@ -149,6 +149,8 @@ export default function ProfileEditModal({
   //     setActive('custom')
   //   }
   // }, [showImage])
+  console.log(isCustomImgUpload, 'isCustomImgUpload')
+
   return (
     <BottomModal
       initialHeight={window.innerHeight <= 700 ? 60 : 50} // height 비율이 짧아 진다면 58%로 맞추기.

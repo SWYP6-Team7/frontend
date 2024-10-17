@@ -164,13 +164,6 @@ export default function TripDetail() {
     }
   }
 
-  // useEffect(() => {
-  //   return () => {
-  //     // 컴포넌트가 언마운트될 때 실행
-  //     addCommentLength(data?.length!)
-  //   }
-  // }, [])
-
   return (
     <>
       <NoticeModal
