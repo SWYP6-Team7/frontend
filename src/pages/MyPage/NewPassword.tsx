@@ -89,7 +89,6 @@ export default function NewPassword() {
         password: passwordValidation.success && !passwordError
       }))
     } else {
-      console.log(formData.password, formData.confirmPassword)
       if (formData.password !== value) {
         setError(prev => ({
           ...prev,
@@ -118,11 +117,10 @@ export default function NewPassword() {
           newPasswordConfirm: formData.confirmPassword
         })
         console.log(res, ': 비번 변경 reponse')
-        if (res.status === 200) {
-          addPassword(formData.password)
-          addIsPasswordUpdated(true)
-          navigate('/editMyInfo')
-        }
+
+        addPassword(formData.password)
+        addIsPasswordUpdated(true)
+        navigate('/editMyInfo')
       } catch (e) {
         console.log(e, '새 비밀번호 업데이트 에러')
         setShake(prev => ({
