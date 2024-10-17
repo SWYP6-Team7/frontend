@@ -12,7 +12,12 @@ import {
 } from '@/api/community'
 import { ICommunityList, PostCommunity } from '@/model/community'
 import { authStore } from '@/store/client/authStore'
-import { EditImage, UploadImage } from '@/store/client/imageStore'
+import {
+  EditFinalImages,
+  EditImage,
+  FinalImages,
+  UploadImage
+} from '@/store/client/imageStore'
 import {
   InfiniteData,
   useInfiniteQuery,
@@ -72,14 +77,16 @@ const useCommunity = (
 
   const postImageMutation = useMutation({
     mutationFn: (data: {
-      uploadImages: UploadImage[]
+      uploadImages: FinalImages
       communityNumber: number
     }) => postImage(data.uploadImages, data.communityNumber, accessToken)
   })
 
   const updateImageMutation = useMutation({
-    mutationFn: (data: { editImages: EditImage[]; communityNumber: number }) =>
-      updateImage(data.editImages, data.communityNumber, accessToken)
+    mutationFn: (data: {
+      editImages: EditFinalImages
+      communityNumber: number
+    }) => updateImage(data.editImages, data.communityNumber, accessToken)
   })
 
   const queryClient = useQueryClient()

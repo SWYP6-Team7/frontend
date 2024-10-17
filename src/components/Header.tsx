@@ -41,6 +41,8 @@ const Header = () => {
     } else if (isSearchTravel || isSearchCommunity) {
       navigate('/')
       return
+    } else if (isCommunityDetail) {
+      navigate('/community')
     }
     navigate(-1)
   }
