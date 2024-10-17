@@ -71,24 +71,41 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       const initialImages = [...detailImageList] // 초기 이미지 목록
       const currentImages = [...editImages] // 현재 이미지 목록
 
-      const statuses = initialImages.map(initialImage => {
-        const currentImage = currentImages.find(
+      const statuses: ('y' | 'n' | 'd')[] = currentImages.map(
+        (currentImage, currentIndex) => {
+          const initialImage = initialImages.find(
+            initial => initial.imageNumber === currentImage.imageNumber
+          )
+
+          if (!initialImage) return 'n'
+
+          const initialIndex = initialImages.findIndex(
+            img => img.imageNumber === currentImage.imageNumber
+          )
+
+          return initialIndex !== currentIndex ? 'y' : 'n'
+        }
+      )
+
+      initialImages.forEach(initialImage => {
+        const isDeleted = !currentImages.some(
           current => current.imageNumber === initialImage.imageNumber
         )
-
-        if (!currentImage) return 'd'
-
-        const initialIndex = initialImages.findIndex(
-          img => img.imageNumber === initialImage.imageNumber
-        )
-        const currentIndex = currentImages.findIndex(
-          img => img.imageNumber === initialImage.imageNumber
-        )
-
-        return initialIndex !== currentIndex ? 'y' : 'n'
+        if (isDeleted) {
+          statuses.push('d')
+        }
       })
 
       const urls = currentImages.map(img => img.url)
+
+      initialImages.forEach(initialImage => {
+        const isDeleted = !currentImages.some(
+          current => current.imageNumber === initialImage.imageNumber
+        )
+        if (isDeleted) {
+          urls.push(initialImage.url)
+        }
+      })
 
       saveEditImages({ statuses, urls })
       update({
