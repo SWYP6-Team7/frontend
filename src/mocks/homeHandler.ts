@@ -333,6 +333,20 @@ export const homeHandler = [
       return HttpResponse.json({})
     }
   }),
+  http.get('/api/my-requested-travels', async ({ request }) => {
+    const url = new URL(request.url)
+
+    const pageParams = url.searchParams.get('page')
+    if (Number(pageParams) === 0) {
+      return HttpResponse.json(trips)
+    } else if (Number(pageParams) === 1) {
+      return HttpResponse.json(trips2)
+    } else if (Number(pageParams) === 2) {
+      return HttpResponse.json(trips3)
+    } else {
+      return HttpResponse.json({})
+    }
+  }),
   http.get('/api/travels/recommend', async ({ request }) => {
     const url = new URL(request.url)
     const pageParams = url.searchParams.get('page')

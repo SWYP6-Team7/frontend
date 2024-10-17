@@ -48,7 +48,9 @@ const Navbar = () => {
   const getIsActive = (page: string) => {
     if (
       page === '/myPage' &&
-      (pathname === '/editMyInfo' || pathname === '/announcement')
+      (pathname === '/editMyInfo' ||
+        pathname === '/announcement' ||
+        pathname === '/requestedTrip')
     ) {
       return true
     }
@@ -63,7 +65,8 @@ const Navbar = () => {
       pathname === '/myPage' ||
       pathname === '/trip/list' ||
       pathname === '/editMyInfo' ||
-      pathname === '/announcement'
+      pathname === '/announcement' ||
+      pathname === '/requestedTrip'
     )
       return true
     return false

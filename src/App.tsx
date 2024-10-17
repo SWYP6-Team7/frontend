@@ -47,6 +47,7 @@ import EditMyTag from './pages/MyPage/EditMyTag'
 import Withdrawal from './pages/MyPage/Withdrawal'
 import NewPassword from './pages/MyPage/NewPassword'
 import Announcement from './pages/MyPage/Announcement'
+import RequestedTrip from './pages/MyTrip/RequestedTrip'
 
 export const router = createBrowserRouter([
   {
@@ -245,6 +246,10 @@ export const router = createBrowserRouter([
       {
         path: '/announcement',
         element: <Announcement />
+      },
+      {
+        path: '/requestedTrip',
+        element: <RequestedTrip />
       }
     ]
   }

@@ -112,7 +112,7 @@ const Layout = () => {
 
   const { splashOn } = splashOnStore()
   // 배경이 검색창 색인 경우 제외하고는 BG색. 노치 영역 색 지정해서 변경시키기.
-  const backGroundGrey = ['/trip/detail', '/', '/myTrip']
+  const backGroundGrey = ['/trip/detail', '/', '/myTrip', '/requestedTrip']
   useEffect(() => {
     if (splashOn === true) return
     let themeColorMetaTag = document.querySelector('meta[name="theme-color"]')
@@ -161,7 +161,8 @@ const Body = styled.div<{ pathname: string }>`
     props.pathname === '/'
       ? '#f0f0f0'
       : props.pathname.startsWith('/trip/detail') ||
-          props.pathname.startsWith('/myTrip')
+          props.pathname.startsWith('/myTrip') ||
+          props.pathname.startsWith('/requestedTrip')
         ? `${palette.검색창}`
         : `${palette.BG}`};
 
