@@ -1,7 +1,7 @@
 import Communityform from '@/components/community/CommunityForm'
 
 const EditCommunity = () => {
-  return <Communityform />
+  return <Communityform isEdit={true} />
 }
 
 export default EditCommunity
