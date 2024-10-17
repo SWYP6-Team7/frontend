@@ -153,6 +153,7 @@ const Container = styled.div<ContainerProps>`
 
 const Input = styled.input<InputProps>`
   flex: 1;
+  width: 100%;
   &::placeholder {
     color: #cdcdcd;
   }
