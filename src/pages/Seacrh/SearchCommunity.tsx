@@ -21,7 +21,7 @@ const SearchCommunity = () => {
   const [keyword, setKeyword] = useState(keywordParams)
   const [finalKeyword, setFinalKeyword] = useState(keywordParams)
   const category = searchParams.get('categoryName') ?? '전체'
-  const sort = searchParams.get('sort') ?? '최신순'
+  const sort = searchParams.get('sortingType') ?? '최신순'
   const [ref, inView] = useInView()
   const {
     communityList: {
@@ -33,7 +33,7 @@ const SearchCommunity = () => {
       isFetching
     }
   } = useCommunity(undefined, {
-    sort: sort,
+    sortingType: sort,
     categoryName: category,
     keyword: keyword
   })
@@ -70,7 +70,7 @@ const SearchCommunity = () => {
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
 
-    newSearchParams.set('sort', value)
+    newSearchParams.set('sortingType', value)
 
     setSearchParams(newSearchParams)
   }
@@ -79,13 +79,13 @@ const SearchCommunity = () => {
     const newSearchParams = new URLSearchParams(searchParams)
 
     if (value === '잡담') {
-      newSearchParams.set('category', '잡담')
+      newSearchParams.set('categoryName', '잡담')
     } else if (value === '여행팁') {
-      newSearchParams.set('category', '여행팁')
+      newSearchParams.set('categoryName', '여행팁')
     } else if (value === '후기') {
-      newSearchParams.set('category', '후기')
+      newSearchParams.set('categoryName', '후기')
     } else {
-      newSearchParams.set('category', '전체')
+      newSearchParams.set('categoryName', '전체')
     }
     setSearchParams(newSearchParams)
   }
