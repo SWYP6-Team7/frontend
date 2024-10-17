@@ -56,6 +56,8 @@ export default function ProfileEditModal({
         ? 1
         : +ret[0][ret[0].length - 5]
   )
+
+  const isCustomImg = isDefaultProfile(showImage).length === 0 // 커스텀 이미지 라면 true
   // 이미지를 띄어야하는 경우. 여부를 표시.
   const [isCustomImgUpload, setIsCustomImgUpload] = useState(
     ret.length === 0 ? true : false
@@ -186,7 +188,9 @@ export default function ProfileEditModal({
                 accept="image/*"
                 css={{ display: 'none' }}
               />
+              {/* 커스텀 이미지만 show 함. */}
               {showImage !== '' &&
+                isCustomImg &&
                 (active === 'custom' || isCustomImgUpload) && (
                   <img
                     src={showImage}
