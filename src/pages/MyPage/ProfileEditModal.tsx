@@ -11,7 +11,7 @@ import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import { isDefaultProfile } from '@/utils/profileUrl'
 import styled from '@emotion/styled'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { act, ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface ModalProps {
@@ -32,12 +32,13 @@ export default function ProfileEditModal({
   setShowModal
 }: ModalProps) {
   const {
-    updateProfileImgMutation,
-    isUpdateProfileImgSuccess,
     updateDefaultProfileImgMutation,
     isUpdateDefaultProfileImgSuccess,
+    deleteTempProfileImgMutation,
     deleteMyProfileImgMutation,
-    isDeleteSuccessProfileImg
+    isDeleteSuccessProfileImg,
+    tempProfileImageMutation,
+    updateRealProfileImgMutation
   } = useMyPage()
   const { profileUrl, addIsProfileImgUpdated } = myPageStore()
   const [image, setImage] = useState<FileData | null>()
@@ -69,28 +70,26 @@ export default function ProfileEditModal({
     // 프로필 저장. 실제 update api 요청.
     if (active !== 'custom') {
       handleDefaultProfileUpload(active as number)
+    } else {
+      // 커스텀 형태라면.
+      updateRealProfileImgMutation(showImage)
+        .then(res => {
+          console.log('프로필 업데이트 후, res', res)
+          setShowImage(res.url)
+          setChanged(true)
+        })
+        .catch(e => {
+          console.log(e, '커스텀 프로필 정식 등록 요청 에러')
+        })
     }
-    // else {
-    //   // 커스텀 형태라면.
-    //     updateProfileImgMutation(fileImg)
-    //       .then(res => {
-    //         console.log('프로필 업데이트 후, res', res)
-    //         setShowImage(res.url)
-    //         setChanged(true)
-    //       })
-    //       .catch(e => {
-    //         console.log(e, '커스텀 프로필 업로드 에러')
-    //       })
-
-    // }
     addIsProfileImgUpdated(true)
 
     setShowModal(false)
-    // setClickedSave(true)
+    setClickedSave(true)
   }
   console.log(profileUrl, '이미지 url')
 
-  // 미리보기로 교체 예정.
+  // 임시 등록 요청.
   const addImageFile = (event: ChangeEvent<HTMLInputElement>) => {
     setActive('custom')
     if (event.target.files !== null) {
@@ -101,15 +100,15 @@ export default function ProfileEditModal({
       setFileImg(formData)
 
       //이 아래 부분은 미리보기 추가 되면 지울고 미리보기 api로 교체 예정.
-      updateProfileImgMutation(formData)
+      tempProfileImageMutation(formData)
         .then(res => {
-          console.log('프로필 업데이트 후, res', res)
-          setShowImage(res.url)
+          console.log('프로필 임시 등록 요청 후, res', res)
+          setShowImage(res.tempUrl)
           setChanged(true)
           setIsCustomImgUpload(true)
         })
         .catch(e => {
-          console.log(e, '커스텀 프로필 업로드 에러')
+          console.log(e, ' 프로필 임시 등록 요청 에러')
         })
 
       console.log(event.target.files[0])
@@ -128,22 +127,39 @@ export default function ProfileEditModal({
   const check = (url: string) => {
     return profileUrl.includes(url)
   }
-  const deleteProfileImgHandler = (event: React.MouseEvent) => {
+
+  // 임시 등록된 프로필 삭제.
+  const deleteProfileImgHandler = async (event: React.MouseEvent) => {
     event.stopPropagation()
-    console.log('why')
+
     setShowImage('')
-    deleteMyProfileImgMutation().then(res => {
-      if (res.status === 204) {
-        console.log(
-          '프로필 이미지 삭제 완료, 자동으로 기본 이미지로 지정 필수.'
-        )
-      } else if (res.status === 500) {
-        console.log('프로필 이미지 삭제 실패.')
-      }
-    })
+    try {
+      await deleteMyProfileImgMutation()
+      console.log('실제 프로필 삭제 완료.')
+    } catch (e) {
+      console.log('실제 프로필 삭제 실패.')
+    }
+
     setActive(1)
   }
   console.log(active)
+  useEffect(() => {
+    return () => {
+      if (clickedSave === false && active === 'custom') {
+        const deleteTempImage = async () => {
+          try {
+            await deleteTempProfileImgMutation(showImage)
+            console.log('임시 등록한 이미지 삭제 완료.')
+          } catch (e) {
+            console.log('임시 등록 이미지 삭제 실패')
+          }
+        }
+
+        deleteTempImage()
+      }
+    }
+  }, []) //컴포넌트 언마운트 시에만 실행
+
   // useEffect(() => {
   //   if (showImage !== '') {
   //     setActive('custom')

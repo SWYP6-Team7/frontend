@@ -1,14 +1,17 @@
 import {
   deleteMyAccount,
   deleteMyProfileImage,
+  deleteTempProfileImage,
   getMyPage,
   getMyProfileImage,
   intialPostMyProfileImage,
+  postTempMyProfileImage,
   postVerifyPassword,
   putMyPage,
   putMyProfileDefaultImage,
   putMyProfileImage,
-  putPassword
+  putPassword,
+  putRealMyProfileImage
 } from '@/api/myPage'
 import { NewPasswordProps } from '@/model/myPages'
 import { authStore } from '@/store/client/authStore'
@@ -83,6 +86,15 @@ const useMyPage = () => {
       })
     }
   })
+  // 임시 저장 post 요청
+  const {
+    mutateAsync: tempProfileImageMutation,
+    isSuccess: isTempProfileImagePostSuccess
+  } = useMutation({
+    mutationFn: (formData: FormData) => {
+      return postTempMyProfileImage(accessToken!, formData)
+    }
+  })
   // 현재 프로필 조회.
   const { data: profileImage, isLoading: isLoadingImage } = useQuery({
     queryKey: ['profileImg'],
@@ -96,6 +108,22 @@ const useMyPage = () => {
   } = useMutation({
     mutationFn: (formData: FormData) => {
       return putMyProfileImage(accessToken!, formData)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['profileImg']
+      })
+    }
+  })
+
+  // 정식 수정 등록.
+  // 임시저장 로직 추가 되면 아래 코드로.
+  const {
+    mutateAsync: updateRealProfileImgMutation,
+    isSuccess: isUpdateRealProfileImgSuccess
+  } = useMutation({
+    mutationFn: (imageUrl: string) => {
+      return putRealMyProfileImage(accessToken!, imageUrl)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -124,6 +152,16 @@ const useMyPage = () => {
   } = useMutation({
     mutationFn: () => {
       return deleteMyProfileImage(accessToken!)
+    }
+  })
+  // 임시 저장된 미리보기 프로필 삭제
+
+  const {
+    mutateAsync: deleteTempProfileImgMutation,
+    isSuccess: isDeleteSuccessTempProfileImg
+  } = useMutation({
+    mutationFn: (deletedTempUrl: string) => {
+      return deleteTempProfileImage(accessToken!, deletedTempUrl)
     }
   })
   const { mutateAsync: withdrawMutation, isSuccess: isWithDrawSuccess } =
@@ -155,7 +193,15 @@ const useMyPage = () => {
     updateDefaultProfileImgMutation,
     isUpdateDefaultProfileImgSuccess,
     deleteMyProfileImgMutation,
-    isDeleteSuccessProfileImg
+    isDeleteSuccessProfileImg,
+    updateRealProfileImgMutation,
+    isUpdateRealProfileImgSuccess,
+    // 프로필 임시 저장 요청.
+    tempProfileImageMutation,
+    isTempProfileImagePostSuccess,
+    // 임시 프로필 삭제
+    deleteTempProfileImgMutation,
+    isDeleteSuccessTempProfileImg
   }
 }
 export default useMyPage
