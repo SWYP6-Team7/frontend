@@ -93,11 +93,6 @@ const useMyPage = () => {
   } = useMutation({
     mutationFn: (formData: FormData) => {
       return postTempMyProfileImage(accessToken!, formData)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['profileImg']
-      })
     }
   })
   // 현재 프로필 조회.
@@ -165,8 +160,8 @@ const useMyPage = () => {
     mutateAsync: deleteTempProfileImgMutation,
     isSuccess: isDeleteSuccessTempProfileImg
   } = useMutation({
-    mutationFn: () => {
-      return deleteTempProfileImage(accessToken!)
+    mutationFn: (deletedTempUrl: string) => {
+      return deleteTempProfileImage(accessToken!, deletedTempUrl)
     }
   })
   const { mutateAsync: withdrawMutation, isSuccess: isWithDrawSuccess } =

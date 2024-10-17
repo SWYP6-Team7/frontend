@@ -25,12 +25,16 @@ export const postTempMyProfileImage = async (
 ) => {
   try {
     if (!accessToken) throw new Error('임시 저장 등록 실패. 로그인을 해주세요.')
-    const response = await axiosInstance.post('api/profile/image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${accessToken}`
+    const response = await axiosInstance.post(
+      '/api/profile/image/temp',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`
+        }
       }
-    })
+    )
     return response.data
   } catch (err) {
     console.log(err, '프로필 임시 저장 등록 오류')
@@ -66,7 +70,7 @@ export const putMyProfileImage = async (
     console.log(err, '프로필 이미지 수정하기 오류')
   }
 }
-// 임시저장 로직 추가 되면 아래 코드로 교체.
+// 프로필 이미지 정식 저장 요청.
 export const putRealMyProfileImage = async (
   accessToken: string,
   imageUrl: string
@@ -98,12 +102,17 @@ export const deleteMyProfileImage = async (accessToken: string) => {
 }
 
 // 임시 저장 프로필 삭제
-export const deleteTempProfileImage = async (accessToken: string) => {
+export const deleteTempProfileImage = async (
+  accessToken: string,
+  deletedTempUrl: string
+) => {
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
     const response = await axiosInstance.delete('/api/profile/image/temp', {
-      headers: getJWTHeader(accessToken)
+      data: { deletedTempUrl: deletedTempUrl }, // data에 삭제할 URL 전달
+      headers: getJWTHeader(accessToken) // 헤더 전달
     })
+    return response.data
   } catch (err) {
     console.log(err, '임시 저장된 미리 보기 프로필 삭제.')
   }
@@ -127,7 +136,7 @@ export const putMyProfileDefaultImage = async (
 
     return response.data
   } catch (err) {
-    console.log(err, '현재 프로필 이미지 가져오기 오류')
+    console.log(err, '기본 프로필 이미지로 수정 요청 에러 발생')
   }
 }
 
