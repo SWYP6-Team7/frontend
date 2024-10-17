@@ -58,9 +58,9 @@ const CommunityPost = () => {
         <Details>{data.content}</Details>
         {/*태그   */}
 
-        {!isLoading && images.data && (
+        {!isLoading && images.data && images.data.length > 0 && (
           <ImageContainer>
-            <DetailImages images={images.data} />{' '}
+            <DetailImages images={images.data} />
           </ImageContainer>
         )}
 

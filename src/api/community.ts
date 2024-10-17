@@ -151,7 +151,7 @@ export async function getImages(communityNumber: number, accessToken: string) {
   }
 }
 
-export const uploadImage = async (file: File, accessToken: number) => {
+export const uploadImage = async (file: File, accessToken: string) => {
   const formData = new FormData()
   formData.append('file', file)
 
