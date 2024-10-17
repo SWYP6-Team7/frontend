@@ -33,7 +33,7 @@ const MetaTag = ({ meta }: MetaTagProps) => {
       />
       <meta
         property="og:image"
-        content={`${process.env.PUBLIC_URL}${meta.imgsrc}`}
+        content={`https://www.moing.shop${meta.imgsrc}`}
       />
       <meta
         property="og:url"
@@ -50,7 +50,7 @@ const MetaTag = ({ meta }: MetaTagProps) => {
       />
       <meta
         name="twitter:image"
-        content={`${process.env.PUBLIC_URL}${meta.imgsrc}`}
+        content={`https://www.moing.shop${meta.imgsrc}`}
       />
     </Helmet>
   )
