@@ -3,7 +3,7 @@ import Spacing from '@/components/Spacing'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import useSearch from '@/hooks/search/useSearch'
 import styled from '@emotion/styled'
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -11,6 +11,7 @@ import SortHeader from '@/components/SortHeader'
 import CategoryList from '@/components/community/CategoryList'
 import { palette } from '@/styles/palette'
 import CommunityItem from '@/components/community/CommunityItem'
+import useCommunity from '@/hooks/useCommunity'
 
 const LIST = ['최신순', '추천순']
 
@@ -28,10 +29,20 @@ const SearchCommunity = () => {
     return value === 'recent' ? '최신순' : '추천순'
   })()
   const [ref, inView] = useInView()
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
-    useSearch({
-      keyword: finalKeyword
-    })
+  const {
+    communityList: {
+      data,
+      isLoading,
+      refetch,
+      fetchNextPage,
+      hasNextPage,
+      isFetching
+    }
+  } = useCommunity(undefined, {
+    sort: sort,
+    categoryName: category,
+    keyword: keyword
+  })
 
   useInfiniteScroll(() => {
     if (inView) {
@@ -102,7 +113,7 @@ const SearchCommunity = () => {
 
       <>
         {isLoading && <div>검색 중...</div>}
-        {!isLoading && data && (
+        {!isLoading && data && data.pages[0].content.length > 0 && (
           <>
             <SortContainer>
               <SortHeader
@@ -116,21 +127,17 @@ const SearchCommunity = () => {
                 />
               </SortHeader>
             </SortContainer>
-            <Link to={`/community/detail/${1}`}>
-              <CommunityItem />
-            </Link>
-            <Link to={`/community/detail/${1}`}>
-              <CommunityItem />
-            </Link>
-            <Link to={`/community/detail/${1}`}>
-              <CommunityItem />
-            </Link>
-            <Link to={`/community/detail/${1}`}>
-              <CommunityItem />
-            </Link>
-            <Link to={`/community/detail/${1}`}>
-              <CommunityItem />
-            </Link>
+
+            {data.pages.map((page, pageIndex) => (
+              <React.Fragment key={pageIndex}>
+                {page.content.map((content, itemIndex) => (
+                  <Link to={`/community/detail/${content.postNumber}`}>
+                    <CommunityItem data={content} />
+                  </Link>
+                ))}
+              </React.Fragment>
+            ))}
+
             <div
               ref={ref}
               css={{ height: 80 }}

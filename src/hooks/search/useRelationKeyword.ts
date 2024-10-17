@@ -13,10 +13,11 @@ const useRelationKeyword = (keyword: string) => {
   })
 
   useEffect(() => {
-    // 디바운스 처리 (1초)
+    if (keyword.length === 1) {
+      setDebouncedKeyword(keyword)
+    }
     const handler = setTimeout(() => {
       if (keyword.length > 0) {
-        // keyword가 완성형 한글인지, 영어 대,소문자인지 체크
         if (
           (keyword.charCodeAt(keyword.length - 1) >= 0xac00 &&
             keyword.charCodeAt(keyword.length - 1) <= 0xd7a3) ||
@@ -28,11 +29,12 @@ const useRelationKeyword = (keyword: string) => {
           setDebouncedKeyword(keyword)
         }
       }
-    }, 1000)
+    }, 300)
     return () => {
       clearTimeout(handler)
     }
   }, [keyword])
+
   return { data, isLoading, error }
 }
 
