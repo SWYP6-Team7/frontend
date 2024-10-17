@@ -43,6 +43,7 @@ const Header = () => {
       return
     } else if (isCommunityDetail) {
       navigate('/community')
+      return
     }
     navigate(-1)
   }
