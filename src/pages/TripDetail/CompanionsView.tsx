@@ -160,6 +160,7 @@ const Title = styled.div`
 const CompanionsBox = styled.div`
   display: flex;
   margin-top: 16px;
+  padding-left: 6px;
   overflow-x: scroll;
   ::-webkit-scrollbar {
     display: none;
@@ -192,7 +193,6 @@ const OwnerBox = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 64px;
-  align-items: center;
 `
 const Line = styled.div`
   width: 100%;

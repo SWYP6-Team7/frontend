@@ -261,6 +261,11 @@ export default function ProfileEditModal({
   }, []) //컴포넌트 언마운트 시에만 실행
 
   console.log(isCustomImgUpload, 'isCustomImgUpload')
+  // 갤러리 부분에 사진을 보여줘야하는 경우.
+  const isShowingGallery = // 이미지가 존재하고, 커스텀이며, 클릭되어있거나 or 클릭안해도 업로드는 해둔상태.
+    showImage !== '' &&
+    isCustomImg &&
+    (active === 'custom' || isCustomImgUpload)
 
   return (
     <BottomModal
@@ -286,21 +291,19 @@ export default function ProfileEditModal({
                 css={{ display: 'none' }}
               />
               {/* 직접 올린 이미지만 show 함. */}
-              {showImage !== '' &&
-                isCustomImg &&
-                (active === 'custom' || isCustomImgUpload) && (
-                  <img
-                    src={showImage}
-                    css={{
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: '50%',
-                      position: 'absolute'
-                    }}
-                  />
-                )}
+              {isShowingGallery && (
+                <img
+                  src={showImage}
+                  css={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '50%',
+                    position: 'absolute'
+                  }}
+                />
+              )}
               <div css={{ position: 'absolute' }}>
-                {showImage === '' && <PictureIcon />}
+                {isShowingGallery === false && <PictureIcon />}
               </div>
 
               {active === 'custom' && (
