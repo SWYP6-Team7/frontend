@@ -33,6 +33,7 @@ export default function TripDetailHeader({
   const [threeDotsClick, setThreeDotsClick] = useState(false)
 
   const {
+    addProfileUrl,
     addLocation,
     addUserName,
     addUserNumber,
@@ -83,7 +84,8 @@ export default function TripDetailHeader({
         enrollmentNumber,
         enrollCount,
         userAgeGroup,
-        bookmarked
+        bookmarked,
+        profileUrl
       } = tripInfos
       const [year, month, day] = dueDate.split('-').map((v: string) => +v)
       const DUEDATE = {
@@ -91,6 +93,7 @@ export default function TripDetailHeader({
         month,
         day
       }
+      addProfileUrl(profileUrl)
       addTravelNumber(travelNumber)
       addEnrollmentNumber(enrollmentNumber)
       addEnrollCount(enrollCount)

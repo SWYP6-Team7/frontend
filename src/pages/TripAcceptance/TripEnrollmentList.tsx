@@ -20,6 +20,7 @@ interface enrollment {
   enrolledAt: string
   message: string
   status: string
+  profileUrl: string
 }
 export default function TripEnrollmentList() {
   const { travelNumber } = useParams<{ travelNumber: string }>()
@@ -87,6 +88,7 @@ export default function TripEnrollmentList() {
                 ageGroup={enrollment.userAgeGroup}
                 enrolledAt={enrollment.enrolledAt}
                 message={enrollment.message}
+                profileUrl={enrollment.profileUrl}
               />
             ))}
           </div>

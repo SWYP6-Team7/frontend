@@ -21,6 +21,7 @@ interface Companion {
   userNumber: number
   userName: string
   ageGroup: string
+  profileUrl: string
 }
 
 export default function CompanionsView({
@@ -34,8 +35,14 @@ export default function CompanionsView({
     setIsOpen(false)
     // zustand에 채용 인원 및 성별 저장 로직 필수.
   }
-  const { userName, userAgeGroup, nowPerson, maxPerson, travelNumber } =
-    tripDetailStore()
+  const {
+    profileUrl,
+    userName,
+    userAgeGroup,
+    nowPerson,
+    maxPerson,
+    travelNumber
+  } = tripDetailStore()
   const { companions } = useTripDetail(travelNumber)
   const allCompanions = companions.data?.data.companions
   console.log(companions, '모집 인원들 ')
@@ -56,7 +63,7 @@ export default function CompanionsView({
                   <div>
                     <RoundedImage
                       size={64}
-                      src={''}
+                      src={profileUrl}
                     />
                   </div>
                   <OwnerInfo>
@@ -91,7 +98,7 @@ export default function CompanionsView({
                         <div>
                           <RoundedImage
                             size={64}
-                            src={''}
+                            src={person?.profileUrl ? person?.profileUrl : ''}
                           />
                         </div>
                         <OwnerInfo>
