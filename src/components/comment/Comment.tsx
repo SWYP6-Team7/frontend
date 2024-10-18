@@ -37,7 +37,8 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
     setCommentNumber,
     isEdit,
     isReply,
-    parentNumber
+    parentNumber,
+    commentNumber
   } = commentStore()
   const { removeMutation, remove, like, unlike, updateMutation } = useComment(
     relatedType,
@@ -89,7 +90,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
 
   return (
     <Container
-      isEdit={isEdit}
+      isEdit={isEdit && comment.commentNumber === commentNumber}
       isChild={comment.parentNumber !== 0}>
       <TopContainer>
         <RoundedImage
@@ -133,7 +134,14 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
           <Reply
             isReplied={isReply && parentNumber === comment.commentNumber}
             onClick={onClickReply}>
-            <CommentIcon />
+            <CommentIcon
+              stroke="none"
+              fill={
+                isReply && parentNumber === comment.commentNumber
+                  ? palette.keycolor
+                  : 'transparent'
+              }
+            />
             {comment.repliesCount > 0 ? (
               <div>{`답글 ${comment.repliesCount}`}</div>
             ) : (

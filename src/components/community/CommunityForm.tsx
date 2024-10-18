@@ -144,6 +144,8 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           editImages: editFinalImages,
           communityNumber: updateMutation.data?.postNumber
         })
+      } else {
+        navigate(`/community/detail/${updateMutation.data?.postNumber}`)
       }
     }
   }, [
@@ -174,6 +176,8 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           uploadImages: finalImages,
           communityNumber: postMutation.data?.postNumber
         })
+      } else {
+        navigate(`/community/detail/${postMutation.data?.postNumber}`)
       }
     }
   }, [postMutation.isSuccess && postMutation.data, JSON.stringify(finalImages)])
