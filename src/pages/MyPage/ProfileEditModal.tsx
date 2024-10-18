@@ -56,6 +56,8 @@ export default function ProfileEditModal({
   const [fileImg, setFileImg] = useState<FormData>(new FormData())
 
   const [showImage, setShowImage] = useState(profileUrl)
+  const [showImageCamera, setShowImageCamera] = useState('')
+
   const ret = isDefaultProfile(profileUrl)
   const [active, setActive] = useState(
     ret.length === 0
@@ -66,10 +68,14 @@ export default function ProfileEditModal({
   )
 
   const isCustomImg = isDefaultProfile(showImage).length === 0 // 커스텀 이미지 라면 true
-  // 이미지를 띄어야하는 경우. 여부를 표시.
+  // 갤러리 이미지를 띄어야하는 경우. 여부를 표시.
   const [isCustomImgUpload, setIsCustomImgUpload] = useState(
     ret.length === 0 ? true : false
   )
+
+  // const [isCameraImgUpload, setIsCameraImgUpload] = useState(
+  //   ret.length === 0 ? true : false
+  // )
   const [changed, setChanged] = useState(false)
   const navigate = useNavigate()
   const handleCloseModal = () => {
@@ -78,54 +84,90 @@ export default function ProfileEditModal({
   console.log(profileUrl, active)
   const profileSaveHandler = () => {
     // 프로필 저장. 실제 update api 요청.
-    if (active !== 'custom') {
+    if (active !== 'custom' && active !== 'camera') {
       handleDefaultProfileUpload(active as number)
     } else {
-      // 커스텀 형태라면.
-      updateRealProfileImgMutation(showImage)
-        .then(res => {
-          console.log('프로필 업데이트 후, res', res)
-          setShowImage(res.url)
-          setChanged(true)
-          addIsProfileImgUpdated(true)
-        })
-        .catch(e => {
-          console.log(e, '커스텀 프로필 정식 등록 요청 에러')
-        })
+      // 갤러리 이미지로 선택.
+      if (active === 'custom') {
+        updateRealProfileImgMutation(showImage)
+          .then(res => {
+            console.log('프로필 업데이트 후, res', res)
+            setShowImage(res.url)
+            setChanged(true)
+            addIsProfileImgUpdated(true)
+          })
+          .catch(e => {
+            console.log(e, '커스텀 프로필 정식 등록 요청 에러')
+          })
+      } // 카메라 이미지로 선택
+      else {
+        updateRealProfileImgMutation(showImageCamera)
+          .then(res => {
+            console.log('카메라프로필 업데이트 후, res', res)
+            setShowImage(res.url)
+            setChanged(true)
+            addIsProfileImgUpdated(true)
+          })
+          .catch(e => {
+            console.log(e, '카메라 프로필 정식 등록 요청 에러')
+          })
+      }
     }
 
     setShowModal(false)
     setClickedSave(true)
   }
   console.log(profileUrl, '이미지 url')
+  // 임시 등록 요청(카메라)
+  const addImageFileCamera = (event: ChangeEvent<HTMLInputElement>) => {
+    setActive('camera')
+    if (event.target.files !== null) {
+      // post 요청 보내기.
+      const formData = new FormData() // 폼데이터 생성
+      formData.append('file', event.target.files[0])
+      // post 요청 후 받은 url로 보여주기
 
-  // 임시 등록 요청.
-  const addImageFile = (event: ChangeEvent<HTMLInputElement>) => {
+      //이 아래 부분은 미리보기 추가 되면 지울고 미리보기 api로 교체 예정.
+      tempProfileImageMutation(formData)
+        .then(res => {
+          console.log('카메라 프로필 임시 등록 요청 후, res', res)
+          setShowImageCamera(res.tempUrl)
+          setChanged(true)
+          setActive('camera')
+          setIsCustomImgUpload(true)
+        })
+        .catch(e => {
+          console.log(e, ' 카메라 프로필 임시 등록 요청 에러')
+        })
+
+      console.log(event.target.files[0])
+    }
+  }
+  console.log(showImageCamera, '이미지 카메라')
+  // 임시 등록 요청. (갤러리)
+  const addImageFileGalary = (event: ChangeEvent<HTMLInputElement>) => {
     setActive('custom')
     if (event.target.files !== null) {
       // post 요청 보내기.
       const formData = new FormData() // 폼데이터 생성
       formData.append('file', event.target.files[0])
       // post 요청 후 받은 url로 보여주기
-      setFileImg(formData)
 
-      //이 아래 부분은 미리보기 추가 되면 지울고 미리보기 api로 교체 예정.
       tempProfileImageMutation(formData)
         .then(res => {
-          console.log('프로필 임시 등록 요청 후, res', res)
+          console.log('갤러리 프로필 임시 등록 요청 후, res', res)
           setShowImage(res.tempUrl)
           setChanged(true)
           setActive('custom')
           setIsCustomImgUpload(true)
         })
         .catch(e => {
-          console.log(e, ' 프로필 임시 등록 요청 에러')
+          console.log(e, '갤러리 프로필 임시 등록 요청 에러')
         })
 
       console.log(event.target.files[0])
     }
   }
-  console.log(showImage, '현재 이미지')
 
   const handleDefaultProfileUpload = async (defaultNumber: number) => {
     try {
@@ -139,32 +181,73 @@ export default function ProfileEditModal({
     return profileUrl.includes(url)
   }
 
-  // 임시 등록된 프로필 삭제.
+  // 임시 등록된 카메라 프로필 삭제
+  const deleteProfileCameraImgHandler = async (event: React.MouseEvent) => {
+    event.stopPropagation()
+
+    setShowImageCamera('')
+
+    try {
+      await deleteTempProfileImgMutation(showImageCamera)
+      setActive(1)
+      setChanged(true)
+      console.log('카메라 임시 등록한 이미지 삭제 완료.')
+    } catch (e) {
+      console.log('카메라 임시 등록 이미지 삭제 실패')
+    }
+  }
+  // 프로필 삭제.
   const deleteProfileImgHandler = async (event: React.MouseEvent) => {
     event.stopPropagation()
 
     setShowImage('')
-    try {
-      await deleteMyProfileImgMutation() // 프로필 삭제.
-      await firstProfileImageMutation(accessToken!) // 삭제했으니 기본 이미지로 등록 요청.
-      setActive(1)
-      setChanged(true)
-      // addProfileUrl('')
-      console.log('실제 프로필 삭제& 삭제 후 기본 이미지 등록 완료.')
-    } catch (e) {
-      console.log('실제 프로필 삭제 실패 & 기본 이미지 등록 ')
+    if (showImage === profileUrl) {
+      // 현재 보여지는 이미지가 지금의 프로필 사진과 같은 거라면 프로필 삭제.
+      try {
+        await deleteMyProfileImgMutation() // 프로필 삭제.
+        await firstProfileImageMutation(accessToken!) // 삭제했으니 기본 이미지로 등록 요청.
+
+        setActive(1)
+        setChanged(true)
+        // addProfileUrl('')
+        console.log('실제 프로필 삭제& 삭제 후 기본 이미지 등록 완료.')
+      } catch (e) {
+        console.log('실제 프로필 삭제 실패 & 기본 이미지 등록 ')
+      }
+    } else {
+      // 아니라면. 임시 저장된 것 삭제.
+      try {
+        await deleteTempProfileImgMutation(showImage)
+        setActive(1)
+        setChanged(true)
+        console.log('갤러리 임시 등록한 이미지 삭제 완료.')
+      } catch (e) {
+        console.log('갤러리 임시 등록 이미지 삭제 실패')
+      }
     }
   }
   console.log(active)
   useEffect(() => {
     return () => {
-      if (clickedSave === false && active === 'custom') {
+      if (
+        clickedSave === false &&
+        (showImage !== '' || showImageCamera !== '')
+      ) {
         const deleteTempImage = async () => {
-          try {
-            await deleteTempProfileImgMutation(showImage)
-            console.log('임시 등록한 이미지 삭제 완료.')
-          } catch (e) {
-            console.log('임시 등록 이미지 삭제 실패')
+          if (showImage !== '') {
+            try {
+              await deleteTempProfileImgMutation(showImage)
+              console.log('갤러리 임시 등록한 이미지 삭제 완료.')
+            } catch (e) {
+              console.log('갤러리 임시 등록 이미지 삭제 실패')
+            }
+          } else {
+            try {
+              await deleteTempProfileImgMutation(showImageCamera)
+              console.log('카메라 임시 등록한 이미지 삭제 완료.')
+            } catch (e) {
+              console.log('카메라 임시 등록 이미지 삭제 실패')
+            }
           }
         }
 
@@ -173,11 +256,6 @@ export default function ProfileEditModal({
     }
   }, []) //컴포넌트 언마운트 시에만 실행
 
-  // useEffect(() => {
-  //   if (showImage !== '') {
-  //     setActive('custom')
-  //   }
-  // }, [showImage])
   console.log(isCustomImgUpload, 'isCustomImgUpload')
 
   return (
@@ -195,14 +273,15 @@ export default function ProfileEditModal({
                 showImage !== '' && isCustomImg && setActive('custom')
               }
               isCustomImg={active === 'custom'}>
+              <UploadImg htmlFor="imageInput"></UploadImg>
               <input
-                onChange={event => addImageFile(event)}
+                onChange={event => addImageFileGalary(event)}
                 type="file"
                 id="imageInput"
                 accept="image/*"
                 css={{ display: 'none' }}
               />
-              {/* 커스텀 이미지만 show 함. */}
+              {/* 직접 올린 이미지만 show 함. */}
               {showImage !== '' &&
                 isCustomImg &&
                 (active === 'custom' || isCustomImgUpload) && (
@@ -216,7 +295,10 @@ export default function ProfileEditModal({
                     }}
                   />
                 )}
-              <PictureIcon />
+              <div css={{ position: 'absolute' }}>
+                <PictureIcon />
+              </div>
+
               {active === 'custom' && (
                 <div
                   onClick={deleteProfileImgHandler}
@@ -257,9 +339,46 @@ export default function ProfileEditModal({
             </DefaultProfile>
           </ProfileContainer>
           <ProfileContainer css={{ marginTop: '16px' }}>
-            <UploadImg htmlFor="imageInput">
-              <CameraIconForUploadMypage />
-            </UploadImg>
+            <ShowImg
+              onClick={() =>
+                // 이미지가 존재하고, 현재 보여진 이미지가 커스텀일 때만 active 보더 표시.
+                showImageCamera !== '' && isCustomImg && setActive('camera')
+              }
+              isCustomImg={active === 'camera'}>
+              <UploadImg htmlFor="cameraInput"></UploadImg>
+              <input
+                onChange={event => addImageFileCamera(event)}
+                type="file"
+                id="cameraInput"
+                capture="environment"
+                accept="image/*"
+                css={{ display: 'none' }}
+              />
+              {/* 커스텀 이미지만 show 함. */}
+
+              {showImageCamera !== '' && (
+                <img
+                  src={showImageCamera}
+                  css={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '50%',
+                    position: 'absolute'
+                  }}
+                />
+              )}
+              <div css={{ position: 'absolute' }}>
+                <CameraIconForUploadMypage />
+              </div>
+
+              {active === 'camera' && (
+                <div
+                  onClick={deleteProfileCameraImgHandler}
+                  css={{ position: 'absolute', right: '0px', top: '0px' }}>
+                  <ProfileRemoveIcon />
+                </div>
+              )}
+            </ShowImg>
             <DefaultProfile isSelected={active === 2}>
               <Profile
                 onClick={() => {
