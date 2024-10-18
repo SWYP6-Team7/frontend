@@ -176,6 +176,7 @@ export default function ProfileEditModal({
     try {
       // axios로 서버에 전송
       updateDefaultProfileImgMutation(defaultNumber)
+      addIsProfileImgUpdated(true)
     } catch (error) {
       console.log('기본 프로필 업로드 오류')
     }
