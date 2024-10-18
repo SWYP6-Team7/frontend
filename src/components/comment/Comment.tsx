@@ -137,8 +137,8 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
             <CommentIcon
               stroke={
                 isReply && parentNumber === comment.commentNumber
-                  ? undefined
-                  : 'transparent'
+                  ? 'none'
+                  : undefined
               }
               fill={
                 isReply && parentNumber === comment.commentNumber

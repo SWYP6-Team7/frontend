@@ -27,6 +27,7 @@ import NewIcon from '@/components/icons/NewIcon'
 import useComment from '@/hooks/comment/useComment'
 import ResultModal from '@/components/designSystem/modal/ResultModal'
 import NoticeModal from '@/components/designSystem/modal/NoticeModal'
+import { editStore } from '@/store/client/editStore'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 
 interface Companion {
@@ -76,7 +77,7 @@ export default function TripDetail() {
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
   const { tripEnrollmentCount } = useTripDetail(travelNumber!)
   const nowEnrollmentCount = tripEnrollmentCount.data?.data
-
+  const { editToastShow, setEditToastShow } = editStore()
   const { companions } = useTripDetail(travelNumber)
   const allCompanions = companions.data?.data.companions
   console.log(allCompanions, '모집 인원들 댓글 열람 권한 처리.')
@@ -167,6 +168,12 @@ export default function TripDetail() {
 
   return (
     <>
+      <ResultToast
+        height={120}
+        isShow={editToastShow}
+        setIsShow={setEditToastShow}
+        text="게시글이 수정되었어요."
+      />
       <NoticeModal
         isModalOpen={noticeModal}
         modalMsg={`여행에 참가가 확정된\n 멤버만 볼 수 있어요.`}

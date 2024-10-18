@@ -17,6 +17,7 @@ import ArrowIcon from '@/components/icons/ArrowIcon'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
+import { editStore } from '@/store/client/editStore'
 const TAG_LIST = [
   {
     title: '태그 설정',
@@ -70,7 +71,8 @@ export default function TripEdit() {
   const { updateTripDetailMutation, isEditSuccess, updateTripDetailMutate } =
     useTripDetail(travelNumber)
 
-  const [tripEditToastShow, setTripEditToastShow] = useState(false) // 상세 글 변경시 보이게 해줄 토스트 메시지
+  const { editToastShow, setEditToastShow } = editStore()
+
   // 기간
   const { accessToken } = authStore()
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
@@ -138,7 +140,7 @@ export default function TripEdit() {
       },
       {
         onSuccess: () => {
-          setTripEditToastShow(true)
+          setEditToastShow(true)
 
           navigate(-1)
         },
@@ -172,12 +174,6 @@ export default function TripEdit() {
   }
   return (
     <Container>
-      <ResultToast
-        height={120}
-        isShow={tripEditToastShow}
-        setIsShow={setTripEditToastShow}
-        text="게시글이 수정되었어요."
-      />
       <City onClick={editLocationHandler}>
         <PlaceIcon />
         <div css={{ marginRight: '4px' }}>{location}</div>

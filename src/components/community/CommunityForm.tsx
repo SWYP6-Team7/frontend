@@ -18,6 +18,7 @@ import {
   useEditStore,
   useUploadStore
 } from '@/store/client/imageStore'
+import { editStore } from '@/store/client/editStore'
 
 const LIST = ['잡담', '여행팁', '후기']
 
@@ -31,7 +32,7 @@ interface CommunityFormProps {
 const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   const { communityNumber } = useParams()
   const navigate = useNavigate()
-  const [tripEditToastShow, setTripEditToastShow] = useState(false) // 상세 글 변경시 보이게 해줄 토스트 메시지
+  const { editToastShow, setEditToastShow } = editStore()
 
   const {
     community,
@@ -145,8 +146,8 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           communityNumber: updateMutation.data?.postNumber
         })
       } else {
+        setEditToastShow(true)
         navigate(`/community/detail/${updateMutation.data?.postNumber}`)
-        setTripEditToastShow(true)
       }
     }
   }, [
@@ -157,9 +158,8 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   useEffect(() => {
     if (updateImageMutation.isSuccess) {
       editReset()
-
+      setEditToastShow(true)
       navigate(`/community/detail/${updateMutation.data?.postNumber}`)
-      setTripEditToastShow(true)
     }
   }, [updateImageMutation.isSuccess, updateMutation.data?.postNumber])
 
@@ -185,12 +185,6 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   const handleRemoveValue = () => setTitle('')
   return (
     <>
-      <ResultToast
-        height={120}
-        isShow={tripEditToastShow}
-        setIsShow={setTripEditToastShow}
-        text="게시글이 수정되었어요."
-      />
       <Container>
         <Spacing size={8} />
         <Select
