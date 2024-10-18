@@ -15,6 +15,13 @@ interface NotificationItemProps {
 
 const NotificationItem = ({ data }: NotificationItemProps) => {
   const navigate = useNavigate()
+  const clickLink = () => {
+    if (data.title === '멤버 댓글 알림') {
+      navigate(`/trip/comment/${data.travelNumber}`)
+    } else {
+      navigate(`/trip/detail/${data.travelNumber}`)
+    }
+  }
   return (
     <Container onClick={() => navigate(`/trip/detail/${data.travelNumber}`)}>
       <TopContainer>

@@ -132,11 +132,15 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
         </Like>
         {comment.parentNumber === 0 && (
           <Reply
-            isReplied={isReply && parentNumber === comment.commentNumber}
+            isReplied={
+              (isReply && parentNumber === comment.commentNumber) ||
+              comment.commented
+            }
             onClick={onClickReply}>
             <CommentIcon
               stroke={
-                isReply && parentNumber === comment.commentNumber
+                (isReply && parentNumber === comment.commentNumber) ||
+                comment.commented
                   ? 'none'
                   : undefined
               }
