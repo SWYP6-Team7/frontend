@@ -93,6 +93,7 @@ export default function ProfileEditModal({
           .then(res => {
             console.log('프로필 업데이트 후, res', res)
             setShowImage(res.url)
+
             setChanged(true)
             addIsProfileImgUpdated(true)
           })
@@ -132,6 +133,7 @@ export default function ProfileEditModal({
         .then(res => {
           console.log('카메라 프로필 임시 등록 요청 후, res', res)
           setShowImageCamera(res.tempUrl)
+
           setChanged(true)
           setActive('camera')
           setIsCustomImgUpload(true)
@@ -157,6 +159,7 @@ export default function ProfileEditModal({
         .then(res => {
           console.log('갤러리 프로필 임시 등록 요청 후, res', res)
           setShowImage(res.tempUrl)
+
           setChanged(true)
           setActive('custom')
           setIsCustomImgUpload(true)
@@ -173,6 +176,7 @@ export default function ProfileEditModal({
     try {
       // axios로 서버에 전송
       updateDefaultProfileImgMutation(defaultNumber)
+      addIsProfileImgUpdated(true)
     } catch (error) {
       console.log('기본 프로필 업로드 오류')
     }
@@ -296,7 +300,7 @@ export default function ProfileEditModal({
                   />
                 )}
               <div css={{ position: 'absolute' }}>
-                <PictureIcon />
+                {showImage === '' && <PictureIcon />}
               </div>
 
               {active === 'custom' && (
@@ -368,7 +372,7 @@ export default function ProfileEditModal({
                 />
               )}
               <div css={{ position: 'absolute' }}>
-                <CameraIconForUploadMypage />
+                {showImageCamera === '' && <CameraIconForUploadMypage />}
               </div>
 
               {active === 'camera' && (
