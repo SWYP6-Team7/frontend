@@ -238,14 +238,14 @@ export default function ProfileEditModal({
         (showImage !== '' || showImageCamera !== '')
       ) {
         const deleteTempImage = async () => {
-          if (showImage !== '') {
+          if (showImage !== '' && showImage !== profileUrl) {
             try {
               await deleteTempProfileImgMutation(showImage)
               console.log('갤러리 임시 등록한 이미지 삭제 완료.')
             } catch (e) {
               console.log('갤러리 임시 등록 이미지 삭제 실패')
             }
-          } else {
+          } else if (showImageCamera !== '' && showImageCamera !== profileUrl) {
             try {
               await deleteTempProfileImgMutation(showImageCamera)
               console.log('카메라 임시 등록한 이미지 삭제 완료.')
