@@ -31,8 +31,14 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
   const [successEdit, setSuccessEdit] = useState(false)
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
   const [threeDotsClick, setThreeDotsClick] = useState(false)
-  const { setOpenEdit, setParentNumber, setCommentNumber, isEdit } =
-    commentStore()
+  const {
+    setOpenEdit,
+    setParentNumber,
+    setCommentNumber,
+    isEdit,
+    isReply,
+    parentNumber
+  } = commentStore()
   const { removeMutation, remove, like, unlike, updateMutation } = useComment(
     relatedType,
     relatedNumber
@@ -124,7 +130,9 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
           <div>좋아요{comment.likes > 0 && ` ${comment.likes}`}</div>
         </Like>
         {comment.parentNumber === 0 && (
-          <Reply onClick={onClickReply}>
+          <Reply
+            isReplied={isReply && parentNumber === comment.commentNumber}
+            onClick={onClickReply}>
             <CommentIcon />
             {comment.repliesCount > 0 ? (
               <div>{`답글 ${comment.repliesCount}`}</div>
@@ -162,7 +170,8 @@ const Container = styled.div<{ isChild: boolean; isEdit: boolean }>`
   padding: 16px 0;
   padding-left: ${props => (props.isChild ? '40px' : '0')};
   border-bottom: 1px solid ${palette.비강조4};
-  background-color: ${props => (props.isEdit ? '#E3EFD94D' : palette.BG)};
+  background-color: ${props =>
+    props.isEdit ? 'rgba(227, 239, 217, 0.3)' : palette.BG};
 `
 
 const TopContainer = styled.div`
@@ -227,13 +236,14 @@ const Like = styled.button<{ liked: boolean }>`
   color: ${props => (props.liked ? palette.keycolor : palette.비강조2)};
   gap: 6px;
 `
-const Reply = styled.button`
+const Reply = styled.button<{ isReplied: boolean }>`
   font-size: 14px;
   font-weight: 400;
   line-height: 16.71px;
+
   display: flex;
   align-items: center;
-  color: ${palette.비강조2};
+  color: ${props => (props.isReplied ? palette.keycolor : palette.비강조2)};
   gap: 6px;
 `
 

@@ -85,7 +85,7 @@ const CommunityPost = () => {
               borderRadius: '30px'
             }}
             icon={<CommunityHeartIcon />}
-            text={data.liked ? `${data.likeCount}` : '좋아요'}
+            text={data.likeCount > 0 ? `${data.likeCount}` : '좋아요'}
             idx={0}
           />
         </LikeContainer>

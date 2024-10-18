@@ -86,6 +86,7 @@ const TopContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   justify-content: center;
   gap: 8px;
 `

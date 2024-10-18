@@ -140,7 +140,6 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   useEffect(() => {
     if (updateMutation.isSuccess && updateMutation.data) {
       if (editFinalImages.urls.length > 0) {
-        setTripEditToastShow(true)
         updateImageMutation.mutateAsync({
           editImages: editFinalImages,
           communityNumber: updateMutation.data?.postNumber
@@ -155,9 +154,9 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   useEffect(() => {
     if (updateImageMutation.isSuccess) {
       editReset()
-      setTimeout(() => {
-        navigate(`/community/detail/${updateMutation.data?.postNumber}`)
-      }, 1000)
+
+      navigate(`/community/detail/${updateMutation.data?.postNumber}`)
+      setTripEditToastShow(true)
     }
   }, [updateImageMutation.isSuccess, updateMutation.data?.postNumber])
 

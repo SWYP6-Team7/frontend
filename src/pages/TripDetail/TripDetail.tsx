@@ -348,10 +348,9 @@ export default function TripDetail() {
           <ArrowIcon />
         </PersonWrapper>
         <Spacing size={100} />
-        <BtnContainer
-          onClick={buttonClickHandler}
-          width={newRightPosition}>
+        <ButtonContainer>
           <Button
+            onClick={buttonClickHandler}
             disabled={hostUserCheck && nowEnrollmentCount === 0}
             addStyle={{
               backgroundColor: hostUserCheck
@@ -381,7 +380,7 @@ export default function TripDetail() {
               <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
             )}
           </Button>
-        </BtnContainer>
+        </ButtonContainer>
         <CompanionsView
           isOpen={personViewClicked}
           setIsOpen={setPersonViewClicked}
