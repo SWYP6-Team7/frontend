@@ -68,6 +68,8 @@ export default function ProfileEditModal({
   )
 
   const isCustomImg = isDefaultProfile(showImage).length === 0 // 커스텀 이미지 라면 true
+
+  const isCameraCustomImg = isDefaultProfile(showImageCamera).length === 0 // 커스텀 이미지 라면 true
   // 갤러리 이미지를 띄어야하는 경우. 여부를 표시.
   const [isCustomImgUpload, setIsCustomImgUpload] = useState(
     ret.length === 0 ? true : false
@@ -238,14 +240,18 @@ export default function ProfileEditModal({
         (showImage !== '' || showImageCamera !== '')
       ) {
         const deleteTempImage = async () => {
-          if (showImage !== '' && showImage !== profileUrl) {
+          if (showImage !== '' && isCustomImg && showImage !== profileUrl) {
             try {
               await deleteTempProfileImgMutation(showImage)
               console.log('갤러리 임시 등록한 이미지 삭제 완료.')
             } catch (e) {
               console.log('갤러리 임시 등록 이미지 삭제 실패')
             }
-          } else if (showImageCamera !== '' && showImageCamera !== profileUrl) {
+          } else if (
+            showImageCamera !== '' &&
+            isCameraCustomImg &&
+            showImage !== profileUrl
+          ) {
             try {
               await deleteTempProfileImgMutation(showImageCamera)
               console.log('카메라 임시 등록한 이미지 삭제 완료.')
