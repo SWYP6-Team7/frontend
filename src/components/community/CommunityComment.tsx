@@ -40,9 +40,10 @@ const CommunityComment = () => {
             ))}
           </React.Fragment>
         ))}
+
       <div
         ref={ref}
-        css={{ height: 80 }}
+        css={{ height: 130 }}
       />
       <CommentForm
         relatedType="community"
