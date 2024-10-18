@@ -30,6 +30,9 @@ export function useUpdateBookmark(
       queryClient.invalidateQueries({
         queryKey: ['tripDetail', travelNumber]
       })
+      queryClient.invalidateQueries({
+        queryKey: ['myRequestedTrips']
+      })
     }
   })
 
