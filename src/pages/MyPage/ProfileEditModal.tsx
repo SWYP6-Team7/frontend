@@ -148,6 +148,7 @@ export default function ProfileEditModal({
       await deleteMyProfileImgMutation() // 프로필 삭제.
       await firstProfileImageMutation(accessToken!) // 삭제했으니 기본 이미지로 등록 요청.
       setActive(1)
+      setChanged(true)
       // addProfileUrl('')
       console.log('실제 프로필 삭제& 삭제 후 기본 이미지 등록 완료.')
     } catch (e) {
