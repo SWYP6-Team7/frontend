@@ -8,9 +8,13 @@ import SearchFilterTag from '../designSystem/tag/SearchFilterTag'
 import CommunityHeartIcon from '../icons/CommunityHeartIcon'
 import useCommunity from '@/hooks/useCommunity'
 import { useParams } from 'react-router-dom'
+import ResultToast from '../designSystem/toastMessage/resultToast'
+import { editStore } from '@/store/client/editStore'
 
 const CommunityPost = () => {
   const { communityNumber } = useParams()
+  const { editToastShow, setEditToastShow } = editStore()
+
   const {
     community: { data, isLoading },
     images,
@@ -32,6 +36,12 @@ const CommunityPost = () => {
 
   return (
     <PostWrapper>
+      <ResultToast
+        height={120}
+        isShow={editToastShow}
+        setIsShow={setEditToastShow}
+        text="게시글이 수정되었어요."
+      />
       <MainContent>
         <BadgeContainer>
           <Badge

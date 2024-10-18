@@ -3,7 +3,9 @@ import styled from '@emotion/styled'
 import React, { useEffect } from 'react'
 interface resultToastProps {
   isShow: boolean
-  setIsShow: React.Dispatch<React.SetStateAction<boolean>>
+  setIsShow:
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | ((bool: boolean) => void)
   text: string
   bottom?: string
   height?: number
