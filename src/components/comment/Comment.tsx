@@ -135,7 +135,11 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
             isReplied={isReply && parentNumber === comment.commentNumber}
             onClick={onClickReply}>
             <CommentIcon
-              stroke="none"
+              stroke={
+                isReply && parentNumber === comment.commentNumber
+                  ? undefined
+                  : 'transparent'
+              }
               fill={
                 isReply && parentNumber === comment.commentNumber
                   ? palette.keycolor

@@ -146,6 +146,7 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
         })
       } else {
         navigate(`/community/detail/${updateMutation.data?.postNumber}`)
+        setTripEditToastShow(true)
       }
     }
   }, [
