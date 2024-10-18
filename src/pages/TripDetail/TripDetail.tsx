@@ -70,7 +70,8 @@ export default function TripDetail() {
     applySuccess,
     setApplySuccess,
     commentLength,
-    addCommentLength
+    addCommentLength,
+    profileUrl
   } = tripDetailStore()
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
   const { tripEnrollmentCount } = useTripDetail(travelNumber!)
@@ -224,7 +225,7 @@ export default function TripDetail() {
             <ProfileContainer>
               {/* 프로필 */}
               <RoundedImage
-                src={''}
+                src={profileUrl}
                 size={40}
               />
               <div css={{ marginLeft: '8px' }}>

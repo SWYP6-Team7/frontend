@@ -12,6 +12,8 @@ interface DateValue {
 }
 
 interface tripDetailState {
+  profileUrl: string
+  addProfileUrl: (profileUrl: string) => void
   travelNumber: number
   addTravelNumber: (travelNumber: number) => void
   userNumber: number
@@ -75,6 +77,10 @@ export const tripDetailStore = create<tripDetailState>(set => ({
   addTravelNumber: (travelNumber: number) => set({ travelNumber }),
   userAgeGroup: '',
   addUserAgeGroup: (userAgeGroup: string) => set({ userAgeGroup }),
+  profileUrl: '',
+  addProfileUrl: (profileUrl: string) => {
+    set({ profileUrl })
+  },
   userNumber: 0,
   addUserNumber: (userNumber: number) => set({ userNumber }),
 
