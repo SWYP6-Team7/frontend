@@ -73,11 +73,6 @@ const Community = () => {
                 <AlarmIcon stroke={palette.기본} />
               </Link>
             </LinkContainer>
-            <LinkContainer>
-              <Link to={`/notification`}>
-                <EllipsisIcon stroke={palette.기본} />
-              </Link>
-            </LinkContainer>
           </IconContainer>
         </SearchContainer>
 

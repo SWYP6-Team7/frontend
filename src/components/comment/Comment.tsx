@@ -145,7 +145,8 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
                   : undefined
               }
               fill={
-                isReply && parentNumber === comment.commentNumber
+                (isReply && parentNumber === comment.commentNumber) ||
+                comment.commented
                   ? palette.keycolor
                   : 'transparent'
               }
