@@ -8,6 +8,7 @@ import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import useEnrollment from '@/hooks/enrollment/useEnrollment'
 import { authStore } from '@/store/client/authStore'
 import { palette } from '@/styles/palette'
+import { daysAgo } from '@/utils/time'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -65,45 +66,6 @@ export default function TripEnrollmentCard({
     }
   }, [isAcceptBtnClicked, isRejectBtnClicked])
 
-  function getTimeAgo(dateString: string) {
-    // 입력된 문자열을 Date 객체로 변환
-    const inputDate = new Date(
-      dateString.replace('.', '-').replace('.', '-') + ':00'
-    )
-
-    // 현재 시간 가져오기
-    const now = new Date()
-
-    // 밀리초 단위로 시간 차이 계산
-    const diffInMilliseconds = now.getTime() - inputDate.getTime()
-
-    // 초, 분, 시간, 일, 달, 년 계산
-    const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60))
-    const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60))
-    const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24))
-    const diffInMonths = Math.floor(
-      diffInMilliseconds / (1000 * 60 * 60 * 24 * 30)
-    )
-    const diffInYears = Math.floor(
-      diffInMilliseconds / (1000 * 60 * 60 * 24 * 365)
-    )
-
-    // 조건에 따라 '몇 분 전', '몇 시간 전', '몇 일 전', '몇 달 전', '몇 년 전'을 반환
-    if (diffInMinutes < 1) {
-      return '방금 전'
-    } else if (diffInMinutes < 60) {
-      return `${diffInMinutes}분 전`
-    } else if (diffInHours < 24) {
-      return `${diffInHours}시간 전`
-    } else if (diffInDays < 30) {
-      return `${diffInDays}일 전`
-    } else if (diffInMonths < 12) {
-      return `${diffInMonths}개월 전`
-    } else {
-      return `${diffInYears}년 전`
-    }
-  }
-
   return (
     <Container>
       <UserBox>
@@ -123,7 +85,7 @@ export default function TripEnrollmentCard({
           />
         </Profile>
         <div css={{ display: 'flex', alignItems: 'center' }}>
-          <TimeAgo>{getTimeAgo(enrolledAt)}</TimeAgo>
+          <TimeAgo>{daysAgo(enrolledAt)}</TimeAgo>
           {/* 최신인가 아닌가 부분. */}
           {isNew && <NewMark></NewMark>}
         </div>
