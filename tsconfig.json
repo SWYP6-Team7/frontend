@@ -15,7 +15,6 @@
     "paths": {
       "@/*": ["./src/*"],
       "node_modules/*": ["./node_modules/*"]
-    },
-    "types": ["vite/client"]
+    }
   }
 }
