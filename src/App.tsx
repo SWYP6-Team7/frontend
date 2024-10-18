@@ -61,7 +61,6 @@ export const router = createBrowserRouter([
         path: '',
         element: (
           <>
-            <MetaTag meta={homeMeta} />
             <Home />
           </>
         )
