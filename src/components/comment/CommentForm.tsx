@@ -140,6 +140,8 @@ const InputContainer = styled.div<{ focused: boolean }>`
   border: 1px solid
     ${props => (props.focused ? palette.keycolor : palette.비강조3)};
   display: flex;
+  background-color: ${props =>
+    props.focused ? 'rgba(252, 255, 250, 1)' : 'white'};
   align-items: center;
 
   padding: 8px;

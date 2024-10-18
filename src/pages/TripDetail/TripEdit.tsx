@@ -139,9 +139,8 @@ export default function TripEdit() {
       {
         onSuccess: () => {
           setTripEditToastShow(true)
-          setTimeout(() => {
-            navigate(-1)
-          }, 1000)
+
+          navigate(-1)
         },
         onError: e => {
           console.log(e, '여행 수정에 오류 발생')

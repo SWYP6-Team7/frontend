@@ -13,6 +13,7 @@ interface HorizonBoxProps {
   title: string
   recruits: number
   total: number
+  isBookmark?: boolean
   location?: string
   userName: string
   daysAgo: string
@@ -46,6 +47,7 @@ const HorizonBoxLayout = ({
   title,
   recruits,
   total,
+  isBookmark = false,
   location = '',
   userName,
   daysAgo,
@@ -57,7 +59,8 @@ const HorizonBoxLayout = ({
   bookmarkNeed = true,
   travelNumber
 }: HorizonBoxProps) => {
-  const cutTags = tags.length > 2 ? tags.slice(0, 2) : tags
+  const cutTags =
+    tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags
   return (
     <HorizonBoxContainer>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
