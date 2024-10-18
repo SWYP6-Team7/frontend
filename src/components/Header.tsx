@@ -37,7 +37,7 @@ const Header = () => {
   const isRequestedTrip = location.pathname.startsWith('/requestedTrip')
   const handleBack = () => {
     if (isTripDetail) {
-      navigate('/')
+      navigate(-1)
       return
     } else if (isSearchTravel || isSearchCommunity) {
       navigate('/')
