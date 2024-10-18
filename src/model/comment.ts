@@ -5,6 +5,7 @@ export interface ICommentPost {
 
 export interface IComment {
   commentNumber: number
+  commented: boolean
   userNumber: number
   content: string
   parentNumber: number
