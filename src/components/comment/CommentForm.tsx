@@ -155,6 +155,7 @@ const Input = styled.textarea`
   width: 100%;
   border: none;
   outline: none;
+  background-color: transparent;
   height: 32px;
   font-size: 16px;
   font-weight: 500;

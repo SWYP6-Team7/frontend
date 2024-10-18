@@ -101,7 +101,8 @@ const TripList = () => {
 const SearchContainer = styled.div`
   display: flex;
   padding: 0 24px;
-  padding-top: 52px;
+  padding-top: 36px;
+  padding-bottom: 16px;
   align-items: center;
   gap: 22px;
   position: sticky;
