@@ -17,6 +17,7 @@ interface enrollmentCardProps {
   userName: string
   ageGroup: string
   enrolledAt: string
+  profileUrl: string
   message: string
   isNew: boolean
 }
@@ -26,7 +27,8 @@ export default function TripEnrollmentCard({
   ageGroup,
   enrolledAt,
   message,
-  isNew
+  isNew,
+  profileUrl
 }: enrollmentCardProps) {
   const { travelNumber } = useParams<{ travelNumber: string }>()
   const { enrollmentAcceptanceMutate, enrollmentRejectionMutate } =
@@ -107,7 +109,7 @@ export default function TripEnrollmentCard({
       <UserBox>
         <Profile>
           <RoundedImage
-            src={''}
+            src={profileUrl}
             size={36}
           />
           <UserName>{userName}</UserName>
