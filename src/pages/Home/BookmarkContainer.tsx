@@ -63,6 +63,7 @@ const BookmarkContainer = () => {
                       }
                       key={idx}>
                       <HorizonBoxLayout
+                        isBookmark={true}
                         bookmarked={post.bookmarked}
                         travelNumber={post.travelNumber}
                         bookmarkNeed={false}
