@@ -18,6 +18,8 @@ import CategoryList from '@/components/community/CategoryList'
 import SearchIcon from '@/components/icons/SearchIcon'
 import EllipsisIcon from '@/components/icons/EllipsisIcon'
 import CommunityInfinite from '@/components/community/CommunityInfinite'
+import ResultToast from '@/components/designSystem/toastMessage/resultToast'
+import { editStore } from '@/store/client/editStore'
 
 const LIST = ['최신순', '추천순', '등록일순']
 
@@ -27,6 +29,7 @@ const Community = () => {
   const category = searchParams.get('categoryName') ?? '전체'
   const sort = searchParams.get('sortingTypeName') ?? '최신순'
   const { userId } = authStore()
+  const { setRemoveToastShow, removeToastShow } = editStore()
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
 
@@ -56,6 +59,12 @@ const Community = () => {
 
   return (
     <>
+      <ResultToast
+        bottom="80px"
+        isShow={removeToastShow}
+        setIsShow={setRemoveToastShow}
+        text="게시글이 삭제되었어요."
+      />
       <div>
         <SearchContainer>
           <Title>커뮤니티</Title>

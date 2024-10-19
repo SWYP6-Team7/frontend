@@ -4,6 +4,8 @@ interface IEditStore {
   editToastShow: boolean
   setEditToastShow: (bool: boolean) => void
   reset: () => void
+  removeToastShow: boolean
+  setRemoveToastShow: (bool: boolean) => void
 }
 
 export const editStore = create<IEditStore>(set => ({
@@ -11,7 +13,11 @@ export const editStore = create<IEditStore>(set => ({
   setEditToastShow: bool => {
     set({ editToastShow: bool })
   },
+  removeToastShow: false,
+  setRemoveToastShow: bool => {
+    set({ removeToastShow: bool })
+  },
   reset: () => {
-    set({ editToastShow: false })
+    set({ editToastShow: false, removeToastShow: false })
   }
 }))

@@ -71,11 +71,16 @@ const Layout = () => {
   }, [isLoading, myPageData, profileImage, isLoadingImage]) // 새로고침 시, 토큰이 다시 생겼을 때 정보 할당히 가능하도록.
 
   useEffect(() => {
-    if (accessToken !== null && !isLoadingImage && !profileImg) {
+    if (
+      accessToken !== null &&
+      !isLoadingImage &&
+      !profileImg &&
+      !isFirstProfileImagePostSuccess // 성공 여부 확인
+    ) {
       // 이미 가입한 회원들의 경우. post 요청으로 첫 이미지 등록 요청.
       firstProfileImageMutation(accessToken)
     }
-  }, [accessToken, isLoadingImage, profileImg])
+  }, [accessToken, isLoadingImage, profileImg, isFirstProfileImagePostSuccess])
   const noNeedPages = [
     '/login',
     '/registerForm',
