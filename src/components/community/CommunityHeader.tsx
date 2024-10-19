@@ -9,6 +9,7 @@ import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import useCommunity from '@/hooks/useCommunity'
 import { authStore } from '@/store/client/authStore'
+import { editStore } from '@/store/client/editStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
@@ -25,7 +26,7 @@ export default function CommunityHeader() {
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
   const [checkingModalClicked, setCheckingModalClicked] = useState(false)
   const [threeDotsClick, setThreeDotsClick] = useState(false)
-  const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
+  const { removeToastShow, setRemoveToastShow } = editStore()
 
   const {
     community: { data, isLoading },
@@ -50,10 +51,9 @@ export default function CommunityHeader() {
 
   useEffect(() => {
     if (removeMutation.isSuccess) {
-      setIsToastShow(true)
-      setTimeout(() => {
-        navigate('/community')
-      }, 1800)
+      setRemoveToastShow(true)
+
+      navigate('/community')
     }
   }, [removeMutation.isSuccess])
 
@@ -86,12 +86,6 @@ export default function CommunityHeader() {
         modalButtonText="삭제하기"
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
-      />
-      <ResultToast
-        bottom="80px"
-        isShow={isToastShow}
-        setIsShow={setIsToastShow}
-        text="게시글이 삭제되었어요."
       />
     </Container>
   )
