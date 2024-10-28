@@ -14,6 +14,8 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@sentry/react": "^8.35.0",
+    "@sentry/tracing": "^7.114.0",
     "@tanstack/react-query": "^5.53.1",
     "@tanstack/react-query-devtools": "^5.55.4",
     "axios": "^1.7.7",
