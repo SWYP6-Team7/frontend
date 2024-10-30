@@ -12,10 +12,11 @@ import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function CreateTripPlace() {
-  const [keyword, setKeyword] = useState('')
+  const { location, addLocation } = createTripStore()
+  const [keyword, setKeyword] = useState(location)
   const [showRelationList, setShowRelationList] = useState(true)
   const navigate = useNavigate()
-  const { addLocation } = createTripStore()
+
   const { data, isLoading, error } = useRelationKeyword(keyword)
 
   // const { data, isLoading } = useRelationKeyword(keyword)
