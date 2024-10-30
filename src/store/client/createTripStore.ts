@@ -38,7 +38,7 @@ export const createTripStore = create<CreateTripState>(set => ({
   addDetails: details => {
     set({ details })
   },
-  maxPerson: 0,
+  maxPerson: 1,
   addMaxPerson: maxPerson => {
     set({ maxPerson })
   },
