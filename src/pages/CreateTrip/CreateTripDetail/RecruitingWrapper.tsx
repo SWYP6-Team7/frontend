@@ -8,11 +8,15 @@ import React, { useState } from 'react'
 import RecruitingPickerView from './RecruitingPickerView'
 import Button from '@/components/Button'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
+import { useLocation } from 'react-router-dom'
 
 export default function RecruitingWrapper() {
+  const { pathname } = useLocation()
+  const isCreateTripDetailPage = pathname === '/createTripDetail'
   const { maxPerson } = tripDetailStore()
   const [showModal, setShowModal] = useState(false)
-  const [count, setCount] = useState(maxPerson)
+
+  const [count, setCount] = useState(isCreateTripDetailPage ? 1 : maxPerson)
   const handleCloseModal = () => {
     setShowModal(false)
   }
