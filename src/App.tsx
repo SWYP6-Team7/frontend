@@ -262,7 +262,6 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
-  axios.defaults.withCredentials = true
   return (
     <>
       <RouterProvider router={router} />

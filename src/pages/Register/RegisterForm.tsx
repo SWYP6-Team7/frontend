@@ -1,17 +1,15 @@
 import Button from '@/components/Button'
 import InputField from '@/components/designSystem/input/InputField'
 import InfoText from '@/components/designSystem/text/InfoText'
-import { emailSchema, passwordSchema } from '@/components/login/EmailLoginForm'
 import Spacing from '@/components/Spacing'
 import Terms from '@/components/Terms'
 import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useStore } from 'zustand'
-import useAuth from '@/hooks/user/useAuth'
 import { checkEmail } from '@/api/user'
 import ButtonContainer from '@/components/ButtonContainer'
+import { emailSchema, passwordSchema } from '@/utils/schema'
 interface ErrorProps {
   email: undefined | string
   password: undefined | string
@@ -19,7 +17,6 @@ interface ErrorProps {
 }
 
 const RegisterForm = () => {
-  const { loginEmail } = useAuth()
   const { addEmail, addPassword, email, password } = userStore()
   const [showTerms, setShowTerms] = useState(true)
   const [formData, setFormData] = useState({
@@ -54,16 +51,8 @@ const RegisterForm = () => {
   const handleRemoveValue = (
     name: 'email' | 'password' | 'confirmPassword'
   ) => {
-    if (name === 'email') {
-      setSuccess(prev => ({ ...prev, email: false }))
-      setFormData(prev => ({ ...prev, email: '' }))
-    } else if (name === 'password') {
-      setSuccess(prev => ({ ...prev, password: false }))
-      setFormData(prev => ({ ...prev, password: '' }))
-    } else {
-      setSuccess(prev => ({ ...prev, confirmPassword: false }))
-      setFormData(prev => ({ ...prev, confirmPassword: '' }))
-    }
+    setSuccess(prev => ({ ...prev, [name]: false }))
+    setFormData(prev => ({ ...prev, [name]: '' }))
   }
 
   const changeValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +61,6 @@ const RegisterForm = () => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     if (name === 'email') {
       const emailValidation = emailSchema.safeParse(value)
-      console.log('vali', emailValidation)
       if (!emailValidation.success) {
         setError(prev => ({
           ...prev,

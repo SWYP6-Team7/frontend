@@ -1,5 +1,3 @@
-import InputField from '@/components/designSystem/input/InputField'
-import InfoText from '@/components/designSystem/text/InfoText'
 import GoogleIcon from '@/components/icons/GoogleIcon'
 import KakaoIcon from '@/components/icons/KakaoIcon'
 import NaverIcon from '@/components/icons/NaverIcon'
@@ -33,7 +31,7 @@ const Login = () => {
         />
       </TopArea>
       <EmailLoginForm />
-      {/* <BottomArea>
+      <BottomArea>
         <SimpleLoginText>
           <Bar />
           <span>간편 로그인</span>
@@ -52,16 +50,10 @@ const Login = () => {
             <GoogleIcon />
           </button>
         </LoginIconContainer>
-      </BottomArea> */}
+      </BottomArea>
     </Container>
   )
 }
-
-const Title = styled.h1`
-  font-weight: 700;
-  font-size: 20px;
-  font-family: 'Mitr', sans-serif;
-`
 
 const Container = styled.div`
   height: 100svh;
