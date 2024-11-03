@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef, MouseEventHandler } from 'react'
-import RecruitingPickerView from './RecruitingPickerView'
+import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import ThirdStepIcon from '@/components/icons/ThirdStepIcon'
 import { palette } from '@/styles/palette'
@@ -13,36 +12,10 @@ import Accordion from '@/components/Accordion'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 import { createTripStore } from '@/store/client/createTripStore'
 import { useCreateTrip } from '@/hooks/createTrip/useCreateTrip'
-import { useStore } from 'zustand'
-import { userStore } from '@/store/client/userStore'
-import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
-import { unknown } from 'zod'
 import { getCurrentFormattedDate } from '@/utils/time'
 import ButtonContainer from '@/components/ButtonContainer'
-
-const TAG_LIST = [
-  {
-    title: '태그 설정',
-    tags: [
-      '⏱️ 단기',
-      '✊ 즉흥',
-      '📝 계획',
-      '🧳 중장기',
-      '🏄‍♂️ 액티비티',
-      '☁️ 여유',
-      '🍔 먹방',
-      '💸 가성비',
-      '📷 핫플',
-      '🛍️ 쇼핑',
-      '🎨 예술',
-      '🗿 역사',
-      '🏔️ 자연',
-      '🥳 단체',
-      '😊 소수'
-    ] as const
-  }
-]
+import { TAG_LIST } from '@/constants/tags'
 
 const CreateTripDetail = () => {
   const {
@@ -53,8 +26,9 @@ const CreateTripDetail = () => {
     genderType,
     dueDate,
     periodType,
-    addPeriodType,
+    completionStatus,
     tags,
+    addPeriodType,
     addTags,
     addLocation,
     addTitle,
@@ -64,21 +38,21 @@ const CreateTripDetail = () => {
     addDueDate,
     addDetails
   } = createTripStore()
-  const { userId, accessToken } = authStore()
-  const navigate = useNavigate()
-  let completionStatus = true
-  if (
-    title === '' ||
-    location === '' ||
-    details === '' ||
-    maxPerson === 0 ||
-    genderType === '' ||
-    dueDate === '' ||
-    periodType === '' ||
-    tags.length === 0
-  ) {
-    completionStatus = false
+
+  const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
+  const [activeDuration, setActiveDuration] = useState<boolean[]>(
+    new Array(4).fill(false)
+  )
+
+  const [taggedArray, setTaggedArray] = useState<string[]>(tags)
+  const getTaggedCount = () => {
+    return taggedArray.length
   }
+
+  const { accessToken } = authStore()
+
+  const navigate = useNavigate()
+
   const travelData = {
     title,
     location,
@@ -90,16 +64,21 @@ const CreateTripDetail = () => {
     tags,
     completionStatus
   }
-  const { createTripMutate, isCreatedSuccess } = useCreateTrip(
-    travelData,
-    accessToken as string
-  ) // 여행 생성 api 요청.
-
-  useEffect(() => {
-    addCompletionStatus(true)
-  }, [])
+  const { createTripMutate } = useCreateTrip(travelData, accessToken as string) // 여행 생성 api 요청.
 
   const completeClickHandler = () => {
+    if (
+      title === '' ||
+      location === '' ||
+      details === '' ||
+      maxPerson === 0 ||
+      genderType === '' ||
+      dueDate === '' ||
+      periodType === '' ||
+      tags.length === 0
+    ) {
+      addCompletionStatus(false)
+    }
     createTripMutate(undefined, {
       onSuccess: () => {
         addTitle('')
@@ -117,39 +96,7 @@ const CreateTripDetail = () => {
         console.log(e, '여행 생성에 오류 발생.')
       }
     })
-    console.log(
-      title,
-      location,
-      details,
-      maxPerson,
-      genderType,
-      dueDate,
-      periodType,
-      tags
-    )
   }
-
-  //   useEffect(() => {
-  //     // 여행 생성 성공.
-  //     if (isCreatedSuccess) {
-  //       // 다시 빈 값으로 만들기.
-  //       addTitle('')
-  //       addLocation('')
-  //       addDetails('')
-  //       addMaxPerson(0)
-  //       addGenderType('')
-  //       addDueDate('')
-  //       addPeriodType('')
-  //       addTags([])
-  //       addCompletionStatus(false)
-  //       navigate('/')
-  //     }
-  //   }, [isCreatedSuccess])
-
-  const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
-  const [activeDuration, setActiveDuration] = useState<boolean[]>(
-    new Array(4).fill(false)
-  )
 
   const durationClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     const newActiveStates = [false, false, false, false]
@@ -157,12 +104,6 @@ const CreateTripDetail = () => {
     newActiveStates[parseInt(e.currentTarget.id)] = true
     addPeriodType(tripDuration[parseInt(e.currentTarget.id)])
     setActiveDuration(newActiveStates) // 상태 업데이트
-  }
-
-  // 태그
-  const [taggedArray, setTaggedArray] = useState<string[]>(tags)
-  const getTaggedCount = () => {
-    return taggedArray.length
   }
 
   const isActive = (tag: string) => {
@@ -178,9 +119,12 @@ const CreateTripDetail = () => {
   }
 
   const [initialChecked, setInitialChecked] = useState(false)
-  // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
-  const newRightPosition = window.innerWidth.toString() + 'px'
-  const [showModal, setShowModal] = useState(false)
+
+  useEffect(() => {
+    // 제출시에 값이 지정이 안된 부분은 false로 할당.
+    addCompletionStatus(true)
+  }, [])
+
   return (
     <CreateTripDetailWrapper>
       <CreateTripDetailContainer>
