@@ -28,15 +28,10 @@ const CreateTripDetail = () => {
     periodType,
     completionStatus,
     tags,
-    addPeriodType,
-    addTags,
-    addLocation,
-    addTitle,
-    addMaxPerson,
-    addGenderType,
     addCompletionStatus,
-    addDueDate,
-    addDetails
+    addTags,
+    addPeriodType,
+    resetCreateTripDetail
   } = createTripStore()
 
   const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
@@ -81,16 +76,8 @@ const CreateTripDetail = () => {
     }
     createTripMutate(undefined, {
       onSuccess: () => {
-        addTitle('')
-        addLocation('')
-        addDetails('')
-        addMaxPerson(0)
-        addGenderType('')
-        addDueDate(getCurrentFormattedDate())
-        addPeriodType('')
-        addTags([])
+        resetCreateTripDetail()
         navigate('/')
-        addCompletionStatus(false)
       },
       onError: e => {
         console.log(e, '여행 생성에 오류 발생.')
