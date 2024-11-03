@@ -7,16 +7,35 @@ import { useNavigate } from 'react-router-dom'
 import CategoryButton from '@/components/CategoryButton'
 import Spacing from '@/components/Spacing'
 import useAuth from '@/hooks/user/useAuth'
-import { authStore } from '@/store/client/authStore'
-import ButtonContainer from '@/components/ButtonContainer'
+
 import { palette } from '@/styles/palette'
-import useMyPage from '@/hooks/myPage/useMyPage'
+
 const TAGCOUNT = 18
+const categoryButtonTextArray = [
+  { label: '🇰🇷 국내', value: '국내' },
+  { label: '🌎 해외', value: '해외' },
+  { label: '⏱️ 단기', value: '단기' },
+  { label: '✊ 즉흥', value: '즉흥' },
+  { label: '📝 계획', value: '계획' },
+  { label: '🧳 중장기', value: '중장기' },
+  { label: '🏄 액티비티', value: '액티비티' },
+  { label: '☁️ 여유', value: '여유' },
+  { label: '🍔 먹방', value: '먹방' },
+  { label: '💸 가성비', value: '가성비' },
+  { label: '📷 핫플', value: '핫플' },
+  { label: '🛍️ 쇼핑', value: '쇼핑' },
+  { label: '🎨 예술', value: '예술' },
+  { label: '🗿 역사', value: '역사' },
+  { label: '🏔️ 자연', value: '자연' },
+  { label: '🥳 단체', value: '단체' },
+  { label: '🙂 소수', value: '소수' },
+  { label: '⭐️ 동성선호', value: '동선선호' }
+]
+
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
   const { registerEmail } = useAuth()
 
-  const { userId, accessToken } = authStore()
   const {
     addName,
     addEmail,
@@ -25,44 +44,31 @@ const RegisterTripStyle = () => {
     password,
     sex,
     agegroup,
-    tripStyle,
-    addTripStyle
+    resetAge,
+    resetForm,
+    resetGender,
+    resetName
   } = userStore()
 
-  console.log(name, email, password, sex, agegroup, tripStyle)
+  useEffect(() => {
+    if (!email && !name && !agegroup && !sex) {
+      resetName()
+      resetForm()
+      resetAge()
+      resetGender()
+      navigate('/registerForm')
+    }
+  }, [email, name, agegroup])
 
   // 버튼 활성화상태.
   const [activeStates, setActiveStates] = useState<boolean[]>(
     new Array(TAGCOUNT).fill(false)
   )
 
-  const categoryButtonTextArray = [
-    { label: '🇰🇷 국내', value: '국내' },
-    { label: '🌎 해외', value: '해외' },
-    { label: '⏱️ 단기', value: '단기' },
-    { label: '✊ 즉흥', value: '즉흥' },
-    { label: '📝 계획', value: '계획' },
-    { label: '🧳 중장기', value: '중장기' },
-    { label: '🏄 액티비티', value: '액티비티' },
-    { label: '☁️ 여유', value: '여유' },
-    { label: '🍔 먹방', value: '먹방' },
-    { label: '💸 가성비', value: '가성비' },
-    { label: '📷 핫플', value: '핫플' },
-    { label: '🛍️ 쇼핑', value: '쇼핑' },
-    { label: '🎨 예술', value: '예술' },
-    { label: '🗿 역사', value: '역사' },
-    { label: '🏔️ 자연', value: '자연' },
-    { label: '🥳 단체', value: '단체' },
-    { label: '🙂 소수', value: '소수' },
-    { label: '⭐️ 동성선호', value: '동선선호' }
-  ]
-
   // 최종적으로 선택된 여행 스타일 담은 배열
   const tripStyleArray = categoryButtonTextArray
     .filter((_, idx) => activeStates[idx])
     .map(item => item.value)
-  console.log(tripStyleArray)
-  const tags: { tagName: string }[] = tripStyleArray.map(v => ({ tagName: v }))
 
   // 버튼 클릭 핸들러
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = e => {

@@ -12,14 +12,14 @@ interface userState {
   addName: (name: string) => void
   sex: Gender
   addSex: (sex: Gender) => void
-  phoneNumber: string
-  addPhoneNumber: (phoneNumber: string) => void
+
   agegroup?: string
   addAgegroup: (agegroup: string) => void
-  tripStyle: string[]
-  addTripStyle: (tripStyle: string) => void
-  tripTheme: string[]
-  addTripTheme: (tripTheme: string) => void
+  resetForm: () => void
+  resetGender: () => void
+  resetAge: () => void
+  resetName: () => void
+  reset: () => void
 }
 
 export const userStore = create<userState>(set => ({
@@ -31,21 +31,9 @@ export const userStore = create<userState>(set => ({
   addSex: sex => {
     set(state => ({ sex: sex }))
   },
-  phoneNumber: '',
-  addPhoneNumber: phoneNumber => {
-    set(state => ({ phoneNumber: phoneNumber }))
-  },
   agegroup: undefined,
   addAgegroup: age => {
     set(state => ({ agegroup: age }))
-  },
-  tripStyle: [],
-  addTripStyle: style => {
-    set(state => ({ tripStyle: [...state.tripStyle, style] }))
-  },
-  tripTheme: [],
-  addTripTheme: theme => {
-    set(state => ({ tripTheme: [...state.tripTheme, theme] }))
   },
   email: '',
   addEmail: email => {
@@ -54,5 +42,20 @@ export const userStore = create<userState>(set => ({
   password: '',
   addPassword: password => {
     set(state => ({ password: password }))
+  },
+  resetAge: () => {
+    set({ agegroup: undefined })
+  },
+  resetForm: () => {
+    set({ email: '', password: '' })
+  },
+  resetName: () => {
+    set({ name: '' })
+  },
+  resetGender: () => {
+    set({ sex: '' })
+  },
+  reset: () => {
+    set({ sex: '', name: '', email: '', password: '', agegroup: undefined })
   }
 }))

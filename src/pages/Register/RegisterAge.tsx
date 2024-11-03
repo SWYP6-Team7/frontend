@@ -2,27 +2,19 @@ import SecondStepIcon from '@/components/icons/SecondStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-
-import { z } from 'zod'
 import { authStore } from '@/store/client/authStore'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 import { palette } from '@/styles/palette'
 import ButtonContainer from '@/components/ButtonContainer'
-// // 전화번호 유효성 검사.
-// const phoneNumberValid = z
-//   .string() // 문자열로 시작
-//   .regex(/^\d+$/, { message: '숫자만 입력해야 합니다.' }) // 숫자만 포함하는지 확인
-//   .min(10, { message: '최소 10자리여야 합니다.' }) // 최소 10자리
-//   .max(11, { message: '최대 11자리여야 합니다.' }) // 최대 11자리
 
 const AGE_LIST = ['10대', '20대', '30대', '40대', '50대 이상']
 
 const RegisterAge = () => {
   const navigate = useNavigate()
-  const { agegroup, addAgegroup } = userStore()
-  const { userId, accessToken } = authStore()
+  const { agegroup, addAgegroup, email, name, resetForm, resetName } =
+    userStore()
   const [genderCheck, setGenderCheck] = useState(false)
 
   const nextStepClickHandler = () => {
@@ -38,6 +30,14 @@ const RegisterAge = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (!email && !name) {
+      resetName()
+      resetForm()
+      navigate('/registerForm')
+    }
+  }, [email, name])
 
   const handleClickage = (age: string) => {
     addAgegroup(age)

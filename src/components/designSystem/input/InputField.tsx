@@ -1,5 +1,4 @@
 import CheckIcon from '@/components/icons/CheckIcon'
-import XIcon from '@/components/icons/XIcon'
 import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import React, { FocusEventHandler, forwardRef, useState } from 'react'
@@ -8,7 +7,7 @@ import { palette } from '@/styles/palette'
 
 // React.InputHTMLAttributes<HTMLInputElement
 // input element의 property 타입들도 상속받아서 사용할 수 있음
-interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   hasError?: boolean
   success?: boolean
   shake?: boolean
@@ -40,7 +39,10 @@ interface InputProps {
 // hasError: error 상태인지
 // success: 검증을 통과한 상태인지
 // shake: true로 바뀌면 0.3초동안 애니메이션 실행 (처음 true인채로 렌더링 되거나 false에서 true가 되는 순간에만 실행)
-const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
+// icon: input 내에 icon 컴포넌트
+// showIcon: 우측 상호작용을 보여줄 건지
+// height: InputField의 높이 설정
+const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   (
     {
       hasError = false,
@@ -59,16 +61,17 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
   ) => {
     const [focused, setFocused] = useState(false)
 
+    const SuccessIcon = showSuccessIcon ? CheckIcon : React.Fragment
     // 우선순위 1.에러가 있는지? 2. 포커싱 되어있는지
     const borderColor = hasError
-      ? '#ED1E1E'
+      ? palette.errorBorder
       : focused
         ? palette.keycolor
         : 'none'
     const bgColor = hasError
-      ? '#FFF7F7'
+      ? palette.errorVariant
       : focused
-        ? 'rgba(252, 255, 250, 1)'
+        ? palette.greenVariant
         : props.value === ''
           ? palette.검색창
           : '#F5F5F5'
@@ -103,17 +106,11 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
             (success ? (
               focused ? (
                 <RemoveButton onClick={handleRemoveValue} />
-              ) : showSuccessIcon ? (
-                <CheckIcon status="done" />
               ) : (
-                <></>
+                <SuccessIcon />
               )
             ) : props.value === '' ? (
-              showSuccessIcon ? (
-                <CheckIcon />
-              ) : (
-                <></>
-              )
+              <SuccessIcon />
             ) : (
               <RemoveButton onClick={handleRemoveValue} />
             ))}

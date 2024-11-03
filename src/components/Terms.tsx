@@ -21,7 +21,7 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
   const [isToastShow, setIsToastShow] = useState(false)
   const navigate = useNavigate()
   const handleBackButton = () => {
-    navigate(-1)
+    navigate('/login')
   }
 
   const handleCheck = (item: 'privacy' | 'service') => {
