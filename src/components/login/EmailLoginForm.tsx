@@ -1,26 +1,12 @@
 import styled from '@emotion/styled'
-import React, { ChangeEvent, FormEvent, useState } from 'react'
-import LoginInput from './LoginInput'
-import { z } from 'zod'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import Spacing from '../Spacing'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../Button'
 import InfoText from '../designSystem/text/InfoText'
 import useAuth from '@/hooks/user/useAuth'
 import InputField from '../designSystem/input/InputField'
-
-export const emailSchema = z
-  .string()
-  .email('이메일 주소를 정확하게 입력해주세요.')
-export const passwordSchema = z
-  .string()
-  .min(8, '영문 대문자, 특수문자 포함 8~20자')
-  .max(20, '영문 대문자, 특수문자 포함 8~20자')
-  .refine(value => /[A-Z]/.test(value), '영문 대문자, 특수문자 포함 8~20자')
-  .refine(
-    value => /[!@#$%^&*(),.?":{}|<>]/.test(value),
-    '영문 대문자, 특수문자 포함 8~20자'
-  )
+import { emailSchema, passwordSchema } from '@/utils/schema'
 
 const EmailLoginForm = () => {
   const navigate = useNavigate()
@@ -37,7 +23,6 @@ const EmailLoginForm = () => {
   const [shake, setShake] = useState(false)
 
   const handleRemoveValue = (name: 'email' | 'password') => {
-    console.log('name', name)
     if (name === 'email') {
       setSuccess(prev => ({ ...prev, email: false }))
       setFormData(prev => ({ ...prev, email: '' }))
@@ -57,7 +42,7 @@ const EmailLoginForm = () => {
       return
     } catch (error: any) {
       setError('로그인 정보를 다시 확인해주세요.')
-      setShake(true)
+      setShake(prev => (prev ? prev : true))
 
       setTimeout(() => {
         setShake(false)
@@ -142,30 +127,21 @@ const EmailLoginForm = () => {
         </Link>
       </SignUpLinkContainer>
       <Spacing size={26} />
-      {success.email && success.password ? (
-        <Button
-          text="로그인"
-          type="submit"
-        />
-      ) : (
-        <Button
-          text="로그인"
-          disabled
-          onClick={() => {}}
-          addStyle={{
-            backgroundColor: 'rgba(220, 220, 220, 1)',
-            color: 'rgba(132, 132, 132, 1)',
-            boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.1)'
-          }}
-        />
-      )}
-      <button
-        onClick={() => {
-          throw new Error('This is your first error!')
-        }}>
-        Break the world
-      </button>
-      ;
+
+      <Button
+        text="로그인"
+        disabled={!(success.email && success.password)}
+        type="submit"
+        addStyle={
+          success.email && success.password
+            ? undefined
+            : {
+                backgroundColor: 'rgba(220, 220, 220, 1)',
+                color: 'rgba(132, 132, 132, 1)',
+                boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.1)'
+              }
+        }
+      />
     </Container>
   )
 }

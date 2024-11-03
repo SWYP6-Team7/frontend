@@ -2,11 +2,10 @@ import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
-import { authStore } from '@/store/client/authStore'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import InputField from '@/components/designSystem/input/InputField'
-import { isValid, z } from 'zod'
+import { z } from 'zod'
 import InfoText from '@/components/designSystem/text/InfoText'
 import Spacing from '@/components/Spacing'
 import ButtonContainer from '@/components/ButtonContainer'
@@ -20,10 +19,15 @@ const RegisterName = () => {
   const location = useLocation()
 
   const navigate = useNavigate()
-  const { name, addName, email, password } = userStore()
-  const { userId, accessToken } = authStore()
 
+  const { name, addName, email, password, resetName } = userStore()
   const [userName, setUserName] = useState(name)
+  useEffect(() => {
+    if (!email || !password) {
+      resetName()
+      navigate('/registerForm')
+    }
+  }, [email, password])
 
   const handleRemoveValue = () => setUserName('')
   const nextStepClickHandler = () => {
@@ -110,12 +114,6 @@ const RegisterName = () => {
 
 export default RegisterName
 
-const ButtonWrapper = styled.div`
-  right: 24px;
-  left: 24px;
-  position: absolute;
-  bottom: 4.7svh;
-`
 const RegisterNameWrapper = styled.div`
   padding: 0px 24px;
 

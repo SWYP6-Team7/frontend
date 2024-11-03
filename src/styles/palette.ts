@@ -10,5 +10,8 @@ export const palette = {
   비강조5: 'rgba(237, 237, 237, 1)',
   검색창: 'rgba(245, 245, 245, 1)',
   BG: 'rgba(253, 253, 253, 1)',
-  like: '#EA2A2A'
+  like: '#EA2A2A',
+  errorVariant: '#FFF7F7',
+  errorBorder: '#ED1E1E',
+  greenVariant: 'rgba(252, 255, 250, 1)'
 }

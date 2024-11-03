@@ -1,12 +1,14 @@
+import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { styleText } from 'util'
 
 export default function RegisterDone() {
   const navigate = useNavigate()
+  const { reset } = userStore()
   useEffect(() => {
     setTimeout(() => {
+      reset()
       navigate('/login') // refresh 토큰 받을려면 로그인으로 접속해야함.
     }, 2000)
   }, [])

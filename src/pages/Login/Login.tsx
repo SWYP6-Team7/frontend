@@ -1,5 +1,3 @@
-import InputField from '@/components/designSystem/input/InputField'
-import InfoText from '@/components/designSystem/text/InfoText'
 import GoogleIcon from '@/components/icons/GoogleIcon'
 import KakaoIcon from '@/components/icons/KakaoIcon'
 import NaverIcon from '@/components/icons/NaverIcon'
@@ -33,12 +31,7 @@ const Login = () => {
         />
       </TopArea>
       <EmailLoginForm />
-      {/* <BottomArea>
-        <SimpleLoginText>
-          <Bar />
-          <span>간편 로그인</span>
-          <Bar />
-        </SimpleLoginText>
+      <BottomArea>
         <Spacing size="2.3svh" />
         <LoginIconContainer>
           <button onClick={() => handleSimpleLogin('naver')}>
@@ -52,16 +45,10 @@ const Login = () => {
             <GoogleIcon />
           </button>
         </LoginIconContainer>
-      </BottomArea> */}
+      </BottomArea>
     </Container>
   )
 }
-
-const Title = styled.h1`
-  font-weight: 700;
-  font-size: 20px;
-  font-family: 'Mitr', sans-serif;
-`
 
 const Container = styled.div`
   height: 100svh;
@@ -85,7 +72,7 @@ const BottomArea = styled.div`
   padding: 0 24px;
 
   padding-top: 6.3svh;
-  flex: 1;
+
   display: flex;
   align-items: end;
   width: 100%;
@@ -93,19 +80,6 @@ const BottomArea = styled.div`
   color: rgba(132, 132, 132, 1);
   font-size: 14px;
   line-height: 16.71px;
-`
-
-const SimpleLoginText = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 17px;
-`
-const Bar = styled.div`
-  background-color: rgba(232, 232, 232, 1);
-  height: 1px;
-
-  flex: 1;
 `
 
 const LoginIconContainer = styled.div`

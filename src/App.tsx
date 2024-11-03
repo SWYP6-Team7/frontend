@@ -1,43 +1,36 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home/Home'
-import NotFound from './components/NotFound'
-import Login from './pages/Login'
-
-import RegisterForm from './pages/RegisterForm'
-import RegisterName from './pages/RegisterName'
-import RegisterTripStyle from './pages/RegisterTripStyle'
-import RegisterGender from './pages/RegisterGender'
-import OauthKakao from './pages/OauthKakao'
-import OauthNaver from './pages/OauthNaver'
-import OauthGoogle from './pages/OauthGoogle'
+import Login from './pages/Login/Login'
+import RegisterForm from './pages/Register/RegisterForm'
+import RegisterName from './pages/Register/RegisterName'
+import RegisterTripStyle from './pages/Register/RegisterTripStyle'
+import RegisterGender from './pages/Register/RegisterGender'
+import OauthKakao from './pages/Login/OauthKakao'
+import OauthNaver from './pages/Login/OauthNaver'
+import OauthGoogle from './pages/Login/OauthGoogle'
 import SearchTravel from './pages/Seacrh/SearchTravel'
 import MyPage from './pages/MyPage/MyPage'
 import Bookmark from './pages/Bookmark/Bookmark'
 import Community from './pages/Community/Community'
 import CreateTripDetail from './pages/CreateTrip/CreateTripDetail/CreateTripDetail'
-
 import CreateTripPlace from './pages/CreateTrip/CreateTripPlace'
 import CreateTripIntroduce from './pages/CreateTrip/CreateTripIntroduce'
-import RegisterAge from './pages/RegisterAge'
+import RegisterAge from './pages/Register/RegisterAge'
 import ApplyTrip from './pages/ApplyTrip'
 import TripDetail from './pages/TripDetail/TripDetail'
 import TripEnrollmentList from './pages/TripAcceptance/TripEnrollmentList'
 import Notifications from './pages/Notifications'
-import TripDetailEdit from './pages/TripDetail/TripEdit'
 import TripEdit from './pages/TripDetail/TripEdit'
 import EditTripPlace from './pages/TripDetail/EditTripPlace'
 import TripList from './pages/TripList/TripList'
 import ServiceTerms from './pages/Terms/ServiceTerms'
-import axios from 'axios'
 import MyTrip from './pages/MyTrip/MyTrip'
 import EditMyInfo from './pages/MyPage/EditMyInfo'
 import EditMyName from './pages/MyPage/EditMyName'
 import TripComment from './pages/Comment/TripComment'
-import RegisterDone from './pages/RegisterDone'
-
+import RegisterDone from './pages/Register/RegisterDone'
 import OnBoarding from './pages/OnBoarding/OnBoarding'
-
 import CreateCommunity from './pages/Community/CreateCommunity'
 import SearchCommunity from './pages/Seacrh/SearchCommunity'
 import DetailCommunity from './pages/Community/DetailCommunity'
@@ -48,14 +41,11 @@ import Withdrawal from './pages/MyPage/Withdrawal'
 import NewPassword from './pages/MyPage/NewPassword'
 import Announcement from './pages/MyPage/Announcement'
 import RequestedTrip from './pages/MyTrip/RequestedTrip'
-import MetaTag from './components/MetaTag'
-import { homeMeta } from './utils/meta'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
-    errorElement: <NotFound />,
     children: [
       {
         path: '',
@@ -262,7 +252,6 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
-  axios.defaults.withCredentials = true
   return (
     <>
       <RouterProvider router={router} />

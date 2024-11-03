@@ -1,7 +1,7 @@
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import { userStore } from '@/store/client/userStore'
 
 interface ContextType {
@@ -12,9 +12,11 @@ interface ContextType {
 const RegisterGender = () => {
   // Outlet으로 렌더링 될 하위 컴포넌트에 Props로 성별 선택확인 변수 전달.
   const { setGenderCheck } = useOutletContext<ContextType>()
-  const { sex, addSex } = userStore()
+  const { sex, addSex, name, email, agegroup, resetAge, resetName, resetForm } =
+    userStore()
   const [maleClicked, setMaleClicked] = useState(sex == 'M' ? true : false)
   const [femaleClicked, setFemaleClicked] = useState(sex == 'F' ? true : false)
+  const navigate = useNavigate()
 
   const clickedMale = () => {
     if (!maleClicked) {
@@ -32,6 +34,16 @@ const RegisterGender = () => {
       addSex('F')
     }
   }
+
+  useEffect(() => {
+    if (!email && !name && !agegroup) {
+      resetName()
+      resetForm()
+      resetAge()
+      navigate('/registerForm')
+    }
+  }, [email, name, agegroup])
+
   // 이전 화면으로 돌아왔을 때, 이미 체크 했다면, true값을 할당해주기.
   useEffect(() => {
     if (!maleClicked && !femaleClicked) setGenderCheck(false)

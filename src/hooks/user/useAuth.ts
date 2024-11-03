@@ -4,6 +4,7 @@ import { axiosInstance } from '@/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getJWTHeader } from '@/utils/user'
 import { useNavigate } from 'react-router-dom'
+import RequestError from '@/context/ReqeustError'
 
 interface IRegisterEmail {
   email: string
@@ -19,6 +20,15 @@ interface IRegisterEmail {
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
+
+function checkNetworkConnection() {
+  if (!navigator.onLine) {
+    console.log('offline network')
+    return false
+  }
+  return true
+}
+
 const useAuth = () => {
   const { setLoginData, clearLoginData, accessToken, resetData } = authStore()
 
@@ -30,16 +40,21 @@ const useAuth = () => {
     password: string
   }): Promise<void> {
     try {
+      if (!checkNetworkConnection()) {
+        return
+      }
       const response = await axiosInstance.post(
         '/api/login',
         {
           email,
           password
         },
+
         {
           withCredentials: true
         }
       )
+
       const data = response.data
 
       setLoginData({
@@ -48,11 +63,14 @@ const useAuth = () => {
       })
     } catch (error: any) {
       console.error(error)
-      throw new Error(error)
+      throw new RequestError(error)
     }
   }
   async function registerEmail(formData: IRegisterEmail): Promise<void> {
     try {
+      if (!checkNetworkConnection()) {
+        return
+      }
       const response = await axiosInstance.post('/api/users/new', formData, {
         withCredentials: true
       })
@@ -70,6 +88,9 @@ const useAuth = () => {
 
   async function logout(): Promise<void> {
     try {
+      if (!checkNetworkConnection()) {
+        return
+      }
       await axiosInstance.post(
         '/api/logout',
         {},
