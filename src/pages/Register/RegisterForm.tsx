@@ -107,7 +107,6 @@ const RegisterForm = () => {
         password: passwordValidation.success && !passwordError
       }))
     } else {
-      console.log(formData.password, formData.confirmPassword)
       if (formData.password !== value) {
         setError(prev => ({
           ...prev,

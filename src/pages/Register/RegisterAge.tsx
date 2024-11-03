@@ -2,7 +2,7 @@ import SecondStepIcon from '@/components/icons/SecondStepIcon'
 import Button from '@/components/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { authStore } from '@/store/client/authStore'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
@@ -13,8 +13,8 @@ const AGE_LIST = ['10대', '20대', '30대', '40대', '50대 이상']
 
 const RegisterAge = () => {
   const navigate = useNavigate()
-  const { agegroup, addAgegroup } = userStore()
-  const { userId, accessToken } = authStore()
+  const { agegroup, addAgegroup, email, name, resetForm, resetName } =
+    userStore()
   const [genderCheck, setGenderCheck] = useState(false)
 
   const nextStepClickHandler = () => {
@@ -30,6 +30,14 @@ const RegisterAge = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (!email && !name) {
+      resetName()
+      resetForm()
+      navigate('/registerForm')
+    }
+  }, [email, name])
 
   const handleClickage = (age: string) => {
     addAgegroup(age)

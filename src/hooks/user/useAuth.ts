@@ -19,6 +19,15 @@ interface IRegisterEmail {
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
+
+function checkNetworkConnection() {
+  if (!navigator.onLine) {
+    console.log('offline network')
+    return false
+  }
+  return true
+}
+
 const useAuth = () => {
   const { setLoginData, clearLoginData, accessToken, resetData } = authStore()
 
@@ -30,12 +39,16 @@ const useAuth = () => {
     password: string
   }): Promise<void> {
     try {
+      if (!checkNetworkConnection()) {
+        return
+      }
       const response = await axiosInstance.post(
         '/api/login',
         {
           email,
           password
         },
+
         {
           withCredentials: true
         }
@@ -53,6 +66,9 @@ const useAuth = () => {
   }
   async function registerEmail(formData: IRegisterEmail): Promise<void> {
     try {
+      if (!checkNetworkConnection()) {
+        return
+      }
       const response = await axiosInstance.post('/api/users/new', formData, {
         withCredentials: true
       })
@@ -70,6 +86,9 @@ const useAuth = () => {
 
   async function logout(): Promise<void> {
     try {
+      if (!checkNetworkConnection()) {
+        return
+      }
       await axiosInstance.post(
         '/api/logout',
         {},

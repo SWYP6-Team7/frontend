@@ -1,12 +1,12 @@
 import styled from '@emotion/styled'
-import React from 'react'
 import BackIcon from './icons/BackIcon'
-import { useMatch, useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 import AlarmIcon from './icons/AlarmIcon'
 import { palette } from '@/styles/palette'
-import { authStore } from '@/store/client/authStore'
+
 import CommunityHeader from './community/CommunityHeader'
+import { userStore } from '@/store/client/userStore'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -19,8 +19,6 @@ const Header = () => {
   const isTripEnrollment = location.pathname.startsWith('/trip/enrollmentList')
   const isNotification = location.pathname.startsWith('/notification')
   const isTripDetailEdit = location.pathname.startsWith('/trip/edit')
-  const isTripEditPlace = location.pathname.startsWith('/editPlace')
-  const isTripApply = location.pathname.startsWith('/trip/apply')
   const isMyTrip = location.pathname.startsWith('/myTrip')
   const isCommunityCreate = location.pathname.startsWith('/community/create')
   const isApply = location.pathname.startsWith('/trip/apply')
@@ -35,6 +33,16 @@ const Header = () => {
   const isWithdrawal = location.pathname.startsWith('/withdrawal')
   const isAnnouncement = location.pathname.startsWith('/announcement')
   const isRequestedTrip = location.pathname.startsWith('/requestedTrip')
+
+  const isRegisterGender = location.pathname.startsWith(
+    '/registerAge/registerGender'
+  )
+  const isRegisterAge = location.pathname.startsWith('/registerAge')
+  const isRegisterForm = location.pathname.startsWith('/registerForm')
+  const isRegisterName = location.pathname.startsWith('/registerName')
+
+  const { resetAge, resetForm, resetGender, resetName } = userStore()
+
   const handleBack = () => {
     if (isTripDetail) {
       navigate(-1)
@@ -46,10 +54,18 @@ const Header = () => {
       navigate('/community')
       return
     }
+
+    if (isRegisterForm) {
+      resetForm()
+    } else if (isRegisterName) {
+      resetName()
+    } else if (isRegisterAge) {
+      resetAge()
+    } else if (isRegisterGender) {
+      resetGender()
+    }
     navigate(-1)
   }
-
-  const { userId, accessToken } = authStore()
   return (
     <HeaderContainer>
       {isMyTrip ? (
