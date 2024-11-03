@@ -4,6 +4,7 @@ import { axiosInstance } from '@/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getJWTHeader } from '@/utils/user'
 import { useNavigate } from 'react-router-dom'
+import RequestError from '@/context/ReqeustError'
 
 interface IRegisterEmail {
   email: string
@@ -53,6 +54,7 @@ const useAuth = () => {
           withCredentials: true
         }
       )
+
       const data = response.data
 
       setLoginData({
@@ -61,7 +63,7 @@ const useAuth = () => {
       })
     } catch (error: any) {
       console.error(error)
-      throw new Error(error)
+      throw new RequestError(error)
     }
   }
   async function registerEmail(formData: IRegisterEmail): Promise<void> {

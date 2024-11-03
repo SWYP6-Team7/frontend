@@ -33,7 +33,6 @@ const Header = () => {
   const isWithdrawal = location.pathname.startsWith('/withdrawal')
   const isAnnouncement = location.pathname.startsWith('/announcement')
   const isRequestedTrip = location.pathname.startsWith('/requestedTrip')
-
   const isRegisterGender = location.pathname.startsWith(
     '/registerAge/registerGender'
   )
