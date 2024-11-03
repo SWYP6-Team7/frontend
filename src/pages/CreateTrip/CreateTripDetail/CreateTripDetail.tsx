@@ -265,39 +265,6 @@ const DetailTitle = styled.div`
   opacity: 0px;
 `
 
-const RecruitingContainer = styled.div`
-  margin-top: 48px;
-`
-const RecruitingBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-  width: 106px;
-  height: 48px;
-  padding: 12px 16px;
-  gap: 0px;
-  border-radius: 20px;
-  border: 1px solid ${palette.비강조3};
-  opacity: 0px;
-`
-const ButtonWrapper = styled.div<{ width: string }>`
-  width: 390px;
-  @media (max-width: 389px) {
-    width: ${props => props.width};
-  }
-  @media (max-width: 450px) {
-    width: ${props => props.width};
-  }
-  /* pointer-events: none; */
-  position: fixed;
-  /* top: 0; */
-  bottom: 4.7svh;
-  /* z-index: 1001; */
-
-  padding: 0px 24px;
-  z-index: 10;
-`
 const CreateTripDetailWrapper = styled.div`
   position: relative;
 `
