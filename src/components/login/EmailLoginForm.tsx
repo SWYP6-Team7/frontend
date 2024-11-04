@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Spacing from '../Spacing'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../Button'
@@ -10,7 +10,11 @@ import { emailSchema, passwordSchema } from '@/utils/schema'
 
 const EmailLoginForm = () => {
   const navigate = useNavigate()
-  const { loginEmail } = useAuth()
+  const {
+    loginEmail,
+    loginEmailMutation: { isError, isPending, isSuccess }
+  } = useAuth()
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -21,6 +25,24 @@ const EmailLoginForm = () => {
   })
   const [error, setError] = useState<undefined | string>()
   const [shake, setShake] = useState(false)
+
+  useEffect(() => {
+    if (isSuccess) {
+      setFormData({ email: '', password: '' })
+      navigate('/')
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (!isPending && isError) {
+      setError('로그인 정보를 다시 확인해주세요.')
+      setShake(prev => (prev ? prev : true))
+
+      setTimeout(() => {
+        setShake(false)
+      }, 500)
+    }
+  }, [isError, isPending])
 
   const handleRemoveValue = (name: 'email' | 'password') => {
     if (name === 'email') {
@@ -35,9 +57,7 @@ const EmailLoginForm = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     try {
-      await loginEmail(formData)
-      setFormData({ email: '', password: '' })
-      navigate('/')
+      loginEmail(formData)
 
       return
     } catch (error: any) {

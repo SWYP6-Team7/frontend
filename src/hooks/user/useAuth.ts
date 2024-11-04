@@ -1,9 +1,8 @@
 import { authStore } from '@/store/client/authStore'
-import useUser from './useUser'
+
 import { axiosInstance } from '@/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getJWTHeader } from '@/utils/user'
-import { useNavigate } from 'react-router-dom'
+
 import RequestError from '@/context/ReqeustError'
 
 interface IRegisterEmail {
@@ -28,111 +27,104 @@ function checkNetworkConnection() {
   }
   return true
 }
-
 const useAuth = () => {
+  const queryClient = useQueryClient()
   const { setLoginData, clearLoginData, accessToken, resetData } = authStore()
 
-  async function loginEmail({
-    email,
-    password
-  }: {
-    email: string
-    password: string
-  }): Promise<void> {
-    try {
-      if (!checkNetworkConnection()) {
-        return
-      }
+  const loginEmailMutation = useMutation({
+    mutationFn: async ({
+      email,
+      password
+    }: {
+      email: string
+      password: string
+    }) => {
+      if (!checkNetworkConnection()) return
+
       const response = await axiosInstance.post(
         '/api/login',
-        {
-          email,
-          password
-        },
-
-        {
-          withCredentials: true
-        }
+        { email, password },
+        { withCredentials: true }
       )
-
-      const data = response.data
-
-      setLoginData({
-        userId: Number(response.data.userId),
-        accessToken: data.accessToken
-      })
-    } catch (error: any) {
-      console.error(error)
-      throw new RequestError(error)
-    }
-  }
-  async function registerEmail(formData: IRegisterEmail): Promise<void> {
-    try {
-      if (!checkNetworkConnection()) {
-        return
-      }
-      const response = await axiosInstance.post('/api/users/new', formData, {
-        withCredentials: true
-      })
-      const data = response.data
-
-      setLoginData({
-        userId: Number(response.data.userNumber),
-        accessToken: data.accessToken
-      })
-    } catch (error: any) {
-      console.error(error)
-      throw new Error(error)
-    }
-  }
-
-  async function logout(): Promise<void> {
-    try {
-      if (!checkNetworkConnection()) {
-        return
-      }
-      await axiosInstance.post(
-        '/api/logout',
-        {},
-        {
-          headers: getJWTHeader(accessToken!)
-        }
-      )
-      clearLoginData()
-      resetData()
-    } catch (error: any) {
-      console.error(error)
-      throw new Error(error)
-    }
-  }
-
-  // 유저가 로그인을 했는지 & 새로고침을 해도 accessToken을 유지하도록 하는 refresh 요청 api
-  async function userPostRefreshToken(): Promise<void> {
-    try {
-      const response = await axiosInstance.post(
-        '/api/token/refresh',
-        {},
-        {
-          withCredentials: true
-        }
-      )
-      const data = response.data
-
+      return response.data
+    },
+    onSuccess: data => {
       setLoginData({
         userId: Number(data.userId),
         accessToken: data.accessToken
       })
-    } catch (error: any) {
+    },
+    onError: (error: any) => {
       console.error(error)
-      throw new Error(error)
+      throw new RequestError(error)
     }
-  }
+  })
+
+  const registerEmailMutation = useMutation({
+    mutationFn: async (formData: IRegisterEmail) => {
+      if (!checkNetworkConnection()) return
+
+      const response = await axiosInstance.post('/api/users/new', formData, {
+        withCredentials: true
+      })
+      return response.data
+    },
+    onSuccess: data => {
+      setLoginData({
+        userId: Number(data.userNumber),
+        accessToken: data.accessToken
+      })
+    },
+    onError: (error: any) => {
+      console.error(error)
+      throw new RequestError(error)
+    }
+  })
+
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      if (!checkNetworkConnection()) return
+
+      return await axiosInstance.post('/api/logout', {})
+    },
+    onSuccess: () => {
+      clearLoginData()
+      resetData()
+      queryClient.clear()
+    },
+    onError: (error: any) => {
+      console.error(error)
+      throw new RequestError(error)
+    }
+  })
+
+  const refreshTokenMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axiosInstance.post('/api/token/refresh', {})
+      return response.data
+    },
+    onSuccess: data => {
+      setLoginData({
+        userId: Number(data.userId),
+        accessToken: data.accessToken
+      })
+    },
+    onError: (error: any) => {
+      console.error(error)
+      throw new RequestError(error)
+    }
+  })
 
   return {
-    loginEmail,
-    registerEmail,
-    logout,
-    userPostRefreshToken
+    loginEmail: loginEmailMutation.mutate,
+    registerEmail: registerEmailMutation.mutate,
+    logout: logoutMutation.mutate,
+    userPostRefreshToken: refreshTokenMutation.mutate,
+
+    loginEmailMutation,
+    registerEmailMutation,
+    logoutMutation,
+    refreshTokenMutation
   }
 }
 

@@ -11,6 +11,8 @@ const Severity = {
 }
 
 export function sendLogToSentry(error: Error) {
-  Sentry.getCurrentScope().setLevel(Severity.fatal as SeverityLevel)
-  Sentry.captureException(error)
+  Sentry.withScope(scope => {
+    scope.setLevel(Severity.error as SeverityLevel)
+    Sentry.captureException(error)
+  })
 }
