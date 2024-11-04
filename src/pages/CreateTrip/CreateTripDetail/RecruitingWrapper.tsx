@@ -4,21 +4,28 @@ import Vector from '@/components/icons/Vector'
 import Spacing from '@/components/Spacing'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import RecruitingPickerView from './RecruitingPickerView'
 import Button from '@/components/Button'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
+import { useLocation } from 'react-router-dom'
+import { createTripStore } from '@/store/client/createTripStore'
 
 export default function RecruitingWrapper() {
+  const { pathname } = useLocation()
+  const isCreateTripDetailPage = pathname === '/createTripDetail'
   const { maxPerson } = tripDetailStore()
+  const { maxPerson: maxPersonForCreateTrip } = createTripStore()
   const [showModal, setShowModal] = useState(false)
-  const [count, setCount] = useState(maxPerson)
+
+  const [count, setCount] = useState(
+    isCreateTripDetailPage ? maxPersonForCreateTrip : maxPerson
+  )
   const handleCloseModal = () => {
     setShowModal(false)
   }
   const recruitingSubmitHandler = () => {
     setShowModal(false)
-    // zustand에 채용 인원 및 성별 저장 로직 필수.
   }
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = window.innerWidth.toString() + 'px'
@@ -122,13 +129,9 @@ const ButtonWrapper = styled.div<{ width: string; showModal: boolean }>`
   @media (max-width: 450px) {
     width: ${props => props.width};
   }
-  /* pointer-events: none; */
-  position: fixed;
-  /* top: 0; */
-  bottom: 4.7svh;
-  /* z-index: 1001; */
 
-  /* margin-left: ${props => (props.showModal ? '0px' : '-24px')}; */
+  position: fixed;
+  bottom: 4.7svh;
   padding: 0px 24px;
   z-index: 10;
 `
