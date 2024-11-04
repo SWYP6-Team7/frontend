@@ -12,8 +12,8 @@ import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function CreateTripPlace() {
-  const { location, addLocation } = createTripStore()
-  const [keyword, setKeyword] = useState(location)
+  const [keyword, setKeyword] = useState('')
+  const { addLocation } = createTripStore()
   const [showRelationList, setShowRelationList] = useState(true)
   const navigate = useNavigate()
 

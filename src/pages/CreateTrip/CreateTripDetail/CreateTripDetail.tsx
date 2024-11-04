@@ -112,6 +112,17 @@ const CreateTripDetail = () => {
     addCompletionStatus(true)
   }, [])
 
+  useEffect(() => {
+    if (periodType === '일주일 이하') {
+      setActiveDuration([true, false, false, false])
+    } else if (periodType === '1~2주') {
+      setActiveDuration([false, true, false, false])
+    } else if (periodType === '3~4주') {
+      setActiveDuration([false, false, true, false])
+    } else {
+      setActiveDuration([false, false, false, true])
+    }
+  }, [periodType])
   return (
     <CreateTripDetailWrapper>
       <CreateTripDetailContainer>

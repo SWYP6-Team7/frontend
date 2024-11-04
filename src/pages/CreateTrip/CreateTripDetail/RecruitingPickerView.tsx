@@ -52,7 +52,7 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
   const pickerRef = useRef<HTMLDivElement>(null)
   const [value, setValue] = useState(
     isCreateTripDetailPage
-      ? { gender: '모두', count: 1 }
+      ? { gender: genderType, count: count }
       : {
           gender: genderTypeEdit,
           count: maxPersonForEdit
