@@ -4,9 +4,8 @@ import TextareaField from '@/components/designSystem/input/TextareaField'
 import SecondStepIcon from '@/components/icons/SecondStepIcon'
 import Spacing from '@/components/Spacing'
 import { createTripStore } from '@/store/client/createTripStore'
-import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const CreateTripIntroduce = () => {

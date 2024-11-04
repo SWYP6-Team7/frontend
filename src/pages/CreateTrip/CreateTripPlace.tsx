@@ -13,12 +13,12 @@ import { useNavigate } from 'react-router-dom'
 
 export default function CreateTripPlace() {
   const [keyword, setKeyword] = useState('')
+  const { addLocation } = createTripStore()
   const [showRelationList, setShowRelationList] = useState(true)
   const navigate = useNavigate()
-  const { addLocation } = createTripStore()
+
   const { data, isLoading, error } = useRelationKeyword(keyword)
 
-  // const { data, isLoading } = useRelationKeyword(keyword)
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
     if (!showRelationList) {
@@ -93,19 +93,6 @@ export default function CreateTripPlace() {
     </Container>
   )
 }
-
-// const ButtonContainer = styled.div`
-//   position: absolute;
-//   left: 0;
-//   bottom: 0;
-//   width: 100%;
-
-//   position: absolute;
-//   padding: 0 24px;
-//   background-color: white;
-//   padding-bottom: 40px;
-//   left: 0;
-// `
 
 const StepIconContainer = styled.div`
   margin-top: 24px;

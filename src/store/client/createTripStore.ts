@@ -23,6 +23,7 @@ interface CreateTripState {
   addTags: (tags: string[]) => void
   completionStatus: boolean
   addCompletionStatus: (completionStatus: boolean) => void
+  resetCreateTripDetail: () => void
 }
 
 export const createTripStore = create<CreateTripState>(set => ({
@@ -38,7 +39,7 @@ export const createTripStore = create<CreateTripState>(set => ({
   addDetails: details => {
     set({ details })
   },
-  maxPerson: 0,
+  maxPerson: 1,
   addMaxPerson: maxPerson => {
     set({ maxPerson })
   },
@@ -65,5 +66,19 @@ export const createTripStore = create<CreateTripState>(set => ({
   completionStatus: true,
   addCompletionStatus: completionStatus => {
     set({ completionStatus })
+  },
+
+  resetCreateTripDetail: () => {
+    set({
+      title: '',
+      location: '',
+      details: '',
+      maxPerson: 1,
+      genderType: '',
+      dueDate: getCurrentFormattedDate().split(' ')[0],
+      periodType: '',
+      tags: [],
+      completionStatus: false
+    })
   }
 }))
