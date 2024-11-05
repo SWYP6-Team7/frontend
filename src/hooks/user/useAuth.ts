@@ -4,6 +4,7 @@ import { axiosInstance } from '@/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import RequestError from '@/context/ReqeustError'
+import { useNavigate } from 'react-router-dom'
 
 interface IRegisterEmail {
   email: string
@@ -29,6 +30,7 @@ function checkNetworkConnection() {
 }
 const useAuth = () => {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const { setLoginData, clearLoginData, accessToken, resetData } = authStore()
 
   const loginEmailMutation = useMutation({
@@ -90,6 +92,7 @@ const useAuth = () => {
     onSuccess: () => {
       clearLoginData()
       resetData()
+      navigate('/login')
       queryClient.clear()
     },
     onError: (error: any) => {
@@ -111,6 +114,7 @@ const useAuth = () => {
     },
     onError: (error: any) => {
       console.error(error)
+      navigate('/login')
       throw new RequestError(error)
     }
   })
