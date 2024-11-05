@@ -3,7 +3,11 @@ import KakaoIcon from '@/components/icons/KakaoIcon'
 import NaverIcon from '@/components/icons/NaverIcon'
 import EmailLoginForm from '@/components/login/EmailLoginForm'
 import Spacing from '@/components/Spacing'
-import { GOOGLE_LINK, KAKAO_LINK, NAVER_AUTH_URL } from '@/utils/constants'
+import {
+  GOOGLE_LINK,
+  KAKAO_LINK,
+  NAVER_AUTH_URL
+} from '@/constants/socialLogin'
 import styled from '@emotion/styled'
 
 const Login = () => {
