@@ -34,7 +34,10 @@ const categoryButtonTextArray = [
 
 const RegisterTripStyle = () => {
   const navigate = useNavigate()
-  const { registerEmail } = useAuth()
+  const {
+    registerEmail,
+    registerEmailMutation: { isSuccess }
+  } = useAuth()
 
   const {
     addName,
@@ -60,6 +63,14 @@ const RegisterTripStyle = () => {
     }
   }, [email, name, agegroup])
 
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/registerDone')
+      addName('')
+      addEmail('')
+    }
+  }, [isSuccess])
+
   // 버튼 활성화상태.
   const [activeStates, setActiveStates] = useState<boolean[]>(
     new Array(TAGCOUNT).fill(false)
@@ -83,7 +94,6 @@ const RegisterTripStyle = () => {
   }
 
   const completeHandler = () => {
-    navigate('/registerDone')
     registerEmail({
       email,
       password,
@@ -92,9 +102,6 @@ const RegisterTripStyle = () => {
       agegroup: agegroup as string,
       preferredTags: tripStyleArray
     })
-
-    addName('')
-    addEmail('')
   }
 
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
