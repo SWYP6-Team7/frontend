@@ -5,18 +5,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import RequestError from '@/context/ReqeustError'
 import { useNavigate } from 'react-router-dom'
-
-interface IRegisterEmail {
-  email: string
-  password: string
-  name: string
-  gender: string
-
-  agegroup: string
-  // DB에서 현재 제외된 상태.
-  // introduce: 'string'
-  preferredTags: string[]
-}
+import { IRegisterEmail, IRegisterGoogle, IRegisterKakao } from '@/model/auth'
+import { userStore } from '@/store/client/userStore'
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
@@ -32,7 +22,7 @@ const useAuth = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { setLoginData, clearLoginData, accessToken, resetData } = authStore()
-
+  const { setSocialLogin } = userStore()
   const loginEmailMutation = useMutation({
     mutationFn: async ({
       email,
@@ -46,6 +36,35 @@ const useAuth = () => {
       const response = await axiosInstance.post(
         '/api/login',
         { email, password },
+        { withCredentials: true }
+      )
+      return response.data
+    },
+    onSuccess: data => {
+      setLoginData({
+        userId: Number(data.userId),
+        accessToken: data.accessToken
+      })
+    },
+    onError: (error: any) => {
+      console.error(error)
+      throw new RequestError(error)
+    }
+  })
+
+  const socialLoginMutation = useMutation({
+    mutationFn: async ({
+      socialLoginId,
+      email
+    }: {
+      socialLoginId: string
+      email: string
+    }) => {
+      if (!checkNetworkConnection()) return
+
+      const response = await axiosInstance.post(
+        '/api/social/login',
+        { email, socialLoginId },
         { withCredentials: true }
       )
       return response.data
@@ -83,6 +102,35 @@ const useAuth = () => {
     }
   })
 
+  const registerSocialMutation = useMutation({
+    mutationFn: async (formData: IRegisterGoogle | IRegisterKakao) => {
+      if (!checkNetworkConnection()) return
+      const path =
+        formData.social === 'google'
+          ? '/api/social/google/complete-signup'
+          : '/api/social/kakao/complete-signup'
+
+      const response = await axiosInstance.post(path, formData, {
+        withCredentials: true
+      })
+      return response.data
+    },
+    onSuccess: data => {
+      setLoginData({
+        userId: Number(data.userNumber),
+        accessToken: data.accessToken
+      })
+      socialLoginMutation.mutate({
+        email: data?.email as string,
+        socialLoginId: data?.socialLoginId as string
+      })
+    },
+    onError: (error: any) => {
+      console.error(error)
+      throw new RequestError(error)
+    }
+  })
+
   const logoutMutation = useMutation({
     mutationFn: async () => {
       if (!checkNetworkConnection()) return
@@ -92,6 +140,7 @@ const useAuth = () => {
     onSuccess: () => {
       clearLoginData()
       resetData()
+      setSocialLogin(null)
       navigate('/login')
       queryClient.clear()
     },
@@ -124,7 +173,10 @@ const useAuth = () => {
     registerEmail: registerEmailMutation.mutate,
     logout: logoutMutation.mutate,
     userPostRefreshToken: refreshTokenMutation.mutate,
-
+    socialLogin: socialLoginMutation.mutate,
+    registerSocial: registerSocialMutation.mutate,
+    registerSocialMutation,
+    socialLoginMutation,
     loginEmailMutation,
     registerEmailMutation,
     logoutMutation,

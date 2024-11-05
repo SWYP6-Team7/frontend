@@ -20,14 +20,29 @@ const RegisterName = () => {
 
   const navigate = useNavigate()
 
-  const { name, addName, email, password, resetName } = userStore()
+  const {
+    name,
+    addName,
+    email,
+    password,
+    resetName,
+    socialLogin,
+    resetForm,
+    setSocialLogin
+  } = userStore()
   const [userName, setUserName] = useState(name)
   useEffect(() => {
+    if (socialLogin !== null) {
+      resetName()
+      resetForm()
+      setSocialLogin(null)
+      navigate('/login')
+    }
     if (!email || !password) {
       resetName()
       navigate('/registerForm')
     }
-  }, [email, password])
+  }, [email, password, socialLogin])
 
   const handleRemoveValue = () => setUserName('')
   const nextStepClickHandler = () => {

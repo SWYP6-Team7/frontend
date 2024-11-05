@@ -5,7 +5,7 @@ import Spacing from '@/components/Spacing'
 import Terms from '@/components/Terms'
 import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { checkEmail } from '@/api/user'
 import ButtonContainer from '@/components/ButtonContainer'
@@ -17,7 +17,14 @@ interface ErrorProps {
 }
 
 const RegisterForm = () => {
-  const { addEmail, addPassword, email, password } = userStore()
+  const {
+    addEmail,
+    addPassword,
+    email,
+    password,
+    socialLogin,
+    setSocialLogin
+  } = userStore()
   const [showTerms, setShowTerms] = useState(true)
   const [formData, setFormData] = useState({
     email: email,
@@ -42,11 +49,21 @@ const RegisterForm = () => {
 
   const navigate = useNavigate()
 
-  const allSuccess = Object.values(success).every(value => value)
+  const allSuccess =
+    socialLogin === 'kakao'
+      ? success.email
+      : Object.values(success).every(value => value)
 
   const closeShowTerms = () => {
     setShowTerms(false)
   }
+
+  useEffect(() => {
+    if (socialLogin === 'google' || socialLogin === 'naver') {
+      setSocialLogin(null)
+      navigate('/login')
+    }
+  }, [socialLogin])
 
   const handleRemoveValue = (
     name: 'email' | 'password' | 'confirmPassword'
@@ -142,8 +159,12 @@ const RegisterForm = () => {
       }
 
       addEmail(formData.email)
-      addPassword(formData.password)
-      navigate('/registerName')
+      if (socialLogin === 'kakao') {
+        navigate('/registerGender')
+      } else {
+        addPassword(formData.password)
+        navigate('/registerName')
+      }
     } else {
       setShake({
         email: Boolean(error.email),
@@ -184,50 +205,54 @@ const RegisterForm = () => {
         </FieldContainer>
 
         <Spacing size={'6svh'} />
-        <FieldContainer>
-          <Label htmlFor="password">비밀번호</Label>
-          <Spacing size={16} />
-          <InputField
-            handleRemoveValue={() => handleRemoveValue('password')}
-            type="password"
-            onChange={changeValue}
-            shake={shake.password}
-            name="password"
-            placeholder="비밀번호 입력"
-            hasError={Boolean(error.password)}
-            value={formData.password}
-            success={success.password}
-          />
-          <Spacing size={10} />
-          {error.password ? (
-            <InfoText hasError>{error.password}</InfoText>
-          ) : success.password ? (
-            <InfoText success>영문 대문자, 특수문자 포함 8~20자</InfoText>
-          ) : (
-            <InfoText>영문 대문자, 특수문자 포함 8~20자</InfoText>
-          )}
-        </FieldContainer>
+        {Boolean(socialLogin) && (
+          <>
+            <FieldContainer>
+              <Label htmlFor="password">비밀번호</Label>
+              <Spacing size={16} />
+              <InputField
+                handleRemoveValue={() => handleRemoveValue('password')}
+                type="password"
+                onChange={changeValue}
+                shake={shake.password}
+                name="password"
+                placeholder="비밀번호 입력"
+                hasError={Boolean(error.password)}
+                value={formData.password}
+                success={success.password}
+              />
+              <Spacing size={10} />
+              {error.password ? (
+                <InfoText hasError>{error.password}</InfoText>
+              ) : success.password ? (
+                <InfoText success>영문 대문자, 특수문자 포함 8~20자</InfoText>
+              ) : (
+                <InfoText>영문 대문자, 특수문자 포함 8~20자</InfoText>
+              )}
+            </FieldContainer>
 
-        <Spacing size={14} />
-        <FieldContainer>
-          <InputField
-            shake={shake.confirmPassword}
-            handleRemoveValue={() => handleRemoveValue('confirmPassword')}
-            type="password"
-            name="confirmPassword"
-            placeholder="비밀번호 재입력"
-            onChange={changeValue}
-            hasError={Boolean(error.confirmPassword)}
-            value={formData.confirmPassword}
-            success={success.confirmPassword}
-          />
-          <Spacing size={10} />
-          {error.confirmPassword ? (
-            <InfoText hasError>{error.confirmPassword}</InfoText>
-          ) : (
-            <Spacing size={16} />
-          )}
-        </FieldContainer>
+            <Spacing size={14} />
+            <FieldContainer>
+              <InputField
+                shake={shake.confirmPassword}
+                handleRemoveValue={() => handleRemoveValue('confirmPassword')}
+                type="password"
+                name="confirmPassword"
+                placeholder="비밀번호 재입력"
+                onChange={changeValue}
+                hasError={Boolean(error.confirmPassword)}
+                value={formData.confirmPassword}
+                success={success.confirmPassword}
+              />
+              <Spacing size={10} />
+              {error.confirmPassword ? (
+                <InfoText hasError>{error.confirmPassword}</InfoText>
+              ) : (
+                <Spacing size={16} />
+              )}
+            </FieldContainer>
+          </>
+        )}
         <ButtonContainer>
           {allSuccess ? (
             <Button text="다음" />

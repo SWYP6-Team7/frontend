@@ -9,6 +9,7 @@ import Spacing from '@/components/Spacing'
 import useAuth from '@/hooks/user/useAuth'
 
 import { palette } from '@/styles/palette'
+import { IRegisterGoogle, IRegisterKakao } from '@/model/auth'
 
 const TAGCOUNT = 18
 const categoryButtonTextArray = [
@@ -36,8 +37,14 @@ const RegisterTripStyle = () => {
   const navigate = useNavigate()
   const {
     registerEmail,
-    registerEmailMutation: { isSuccess }
+    registerEmailMutation: { isSuccess },
+    socialLogin: socialLoginApi,
+    socialLoginMutation,
+    registerSocial
   } = useAuth()
+
+  const { isSuccess: isSocialSuccess, isError: isSocialError } =
+    socialLoginMutation
 
   const {
     addName,
@@ -50,26 +57,71 @@ const RegisterTripStyle = () => {
     resetAge,
     resetForm,
     resetGender,
-    resetName
+    resetName,
+    socialLogin,
+    setSocialLogin
   } = userStore()
 
   useEffect(() => {
-    if (!email && !name && !agegroup && !sex) {
+    if (socialLogin === 'google') {
+      if (!agegroup || !sex) {
+        setSocialLogin(null)
+        resetName()
+        resetForm()
+        resetAge()
+        resetGender()
+        navigate('/login')
+      }
+    } else if (socialLogin === 'kakao') {
+      if (!email || !agegroup || !sex) {
+        resetForm()
+        resetAge()
+        resetGender()
+        navigate('/registerForm')
+      }
+    } else if (socialLogin === 'naver') {
+      setSocialLogin(null)
       resetName()
       resetForm()
       resetAge()
       resetGender()
-      navigate('/registerForm')
+      navigate('/login')
+    } else {
+      if (!email || !name || !agegroup || !sex) {
+        resetName()
+        resetForm()
+        resetAge()
+        resetGender()
+        navigate('/registerForm')
+      }
     }
   }, [email, name, agegroup])
 
   useEffect(() => {
     if (isSuccess) {
       navigate('/registerDone')
-      addName('')
-      addEmail('')
+      resetName()
+      resetForm()
+      resetAge()
+      resetGender()
     }
   }, [isSuccess])
+
+  useEffect(() => {
+    if (isSocialSuccess) {
+      navigate('/registerDone')
+      resetName()
+      resetForm()
+      resetAge()
+      resetGender()
+      setSocialLogin(null)
+    }
+    if (isSocialError) {
+      alert(isSocialError)
+      setSocialLogin(null)
+      navigate('/login')
+    }
+  }, [isSocialError, isSocialSuccess])
 
   // 버튼 활성화상태.
   const [activeStates, setActiveStates] = useState<boolean[]>(
@@ -94,14 +146,31 @@ const RegisterTripStyle = () => {
   }
 
   const completeHandler = () => {
-    registerEmail({
-      email,
-      password,
-      name,
-      gender: sex,
-      agegroup: agegroup as string,
-      preferredTags: tripStyleArray
-    })
+    if (socialLogin === null) {
+      registerEmail({
+        email,
+        password,
+        name,
+        gender: sex,
+        agegroup: agegroup as string,
+        preferredTags: tripStyleArray
+      })
+    } else if (socialLogin === 'google') {
+      registerSocial({
+        gender: sex,
+        agegroup: agegroup as string,
+        preferredTags: tripStyleArray,
+        social: 'google'
+      } as IRegisterGoogle)
+    } else if (socialLogin === 'kakao') {
+      registerSocial({
+        gender: sex,
+        email: email,
+        agegroup: agegroup as string,
+        preferredTags: tripStyleArray,
+        social: 'kakao'
+      } as IRegisterKakao)
+    }
   }
 
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.

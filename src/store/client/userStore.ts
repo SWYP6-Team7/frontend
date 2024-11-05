@@ -4,6 +4,8 @@ import { create } from 'zustand'
 type Gender = 'F' | 'M' | ''
 
 interface userState {
+  socialLogin: null | 'kakao' | 'naver' | 'google'
+  setSocialLogin: (social: null | 'kakao' | 'naver' | 'google') => void
   email: string
   addEmail: (email: string) => void
   password: string
@@ -23,6 +25,10 @@ interface userState {
 }
 
 export const userStore = create<userState>(set => ({
+  socialLogin: null,
+  setSocialLogin: social => {
+    set({ socialLogin: social })
+  },
   name: '',
   addName: name => {
     set(state => ({ name: name }))
