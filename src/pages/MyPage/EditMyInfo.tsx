@@ -82,8 +82,6 @@ export default function EditMyInfo() {
       addLogoutCheck(true) // 로그아웃 예정 표시 => 자동 토큰 재발급 요청을 막기 위한 값.
       logout()
       setCheckingLogoutModalClicked(false)
-
-      navigate('/login') // 홈으로.
     }
   }, [isLogoutClicked])
 
