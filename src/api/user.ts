@@ -41,7 +41,7 @@ export const getToken = async (
         : domain === `google`
           ? `/login/google/oauth/callback?code=${code}`
           : `/login/naver/oauth/callback?code=${code}`
-    const response = await axios.get(url)
+    const response = await axiosInstance.get(url)
 
     const user = response.data
 
