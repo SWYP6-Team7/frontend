@@ -40,20 +40,67 @@ const Header = () => {
   const isRegisterForm = location.pathname.startsWith('/registerForm')
   const isRegisterName = location.pathname.startsWith('/registerName')
 
-  const { resetAge, resetForm, resetGender, resetName } = userStore()
+  const {
+    resetAge,
+    resetForm,
+    resetGender,
+    resetName,
+    socialLogin,
+    setSocialLogin
+  } = userStore()
+
+  const isSocialLoginGoogle = socialLogin === 'google'
+  const isSocialLoginKakao = socialLogin === 'kakao'
 
   const handleBack = () => {
     if (isTripDetail) {
       navigate(-1)
       return
-    } else if (isSearchTravel || isSearchCommunity) {
+    }
+    if (isSearchTravel || isSearchCommunity) {
       navigate('/')
       return
-    } else if (isCommunityDetail) {
+    }
+    if (isCommunityDetail) {
       navigate('/community')
       return
     }
+    if (isSocialLoginGoogle) {
+      if (isRegisterAge) {
+        resetAge()
+        navigate('/login')
+        setSocialLogin(null)
+        return
+      }
+      if (isRegisterGender) {
+        resetGender()
+        navigate(-1)
+        return
+      }
+      navigate(-1)
+      return
+    }
+    if (isSocialLoginKakao) {
+      if (isRegisterAge) {
+        resetAge()
+        navigate('/registerForm')
+        return
+      }
+      if (isRegisterGender) {
+        resetGender()
+        navigate(-1)
+        return
+      }
+      if (isRegisterForm) {
+        navigate('/login')
+        resetForm()
+        setSocialLogin(null)
+        return
+      }
+      navigate(-1)
 
+      return
+    }
     if (isRegisterForm) {
       resetForm()
     } else if (isRegisterName) {
@@ -64,6 +111,7 @@ const Header = () => {
       resetGender()
     }
     navigate(-1)
+    return
   }
   return (
     <HeaderContainer>
