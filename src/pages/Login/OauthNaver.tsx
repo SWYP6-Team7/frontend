@@ -10,6 +10,7 @@ const OauthNaver = () => {
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
   const code = searchParams.get('code') // 네이버에서 받은 인증 코드
+  const state = searchParams.get('state')
   const { socialLogin, socialLoginMutation } = useAuth()
   const { setSocialLogin } = userStore()
   const { isSuccess, isPending, isError } = socialLoginMutation
@@ -25,10 +26,10 @@ const OauthNaver = () => {
   }, [isSuccess, isError])
 
   useEffect(() => {
-    if (code) {
+    if (code && state) {
       // 네이버 인증 코드를 이용해 서버에서 토큰을 요청
 
-      getToken('naver', code)
+      getToken('naver', code, state)
         .then(user => {
           console.log('user client', user)
           socialLogin({
@@ -41,7 +42,7 @@ const OauthNaver = () => {
           navigate('/login')
         })
     }
-  }, [code])
+  }, [code, state])
 
   return null
 }

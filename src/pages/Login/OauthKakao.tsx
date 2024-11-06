@@ -10,6 +10,7 @@ const OauthKakao = () => {
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
   const code = searchParams.get('code') // 카카오에서 받은 인증 코드
+  const state = searchParams.get('state')
   const { setSocialLogin } = userStore()
   const { socialLogin, socialLoginMutation } = useAuth()
   const { isError, isSuccess } = socialLoginMutation
@@ -25,10 +26,10 @@ const OauthKakao = () => {
   }, [isSuccess, isError])
 
   useEffect(() => {
-    if (code) {
+    if (code && state) {
       // 카카오 인증 코드를 이용해 서버에서 토큰을 요청
 
-      getToken('kakao', code)
+      getToken('kakao', code, state)
         .then(user => {
           console.log('user client', user)
           if (user?.userStatus === 'PENDING') {
@@ -46,7 +47,7 @@ const OauthKakao = () => {
           navigate('/login')
         })
     }
-  }, [code])
+  }, [code, state])
 
   return null
 }

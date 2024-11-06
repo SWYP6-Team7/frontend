@@ -10,6 +10,7 @@ const OauthGoogle = () => {
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
   const code = searchParams.get('code')
+  const state = searchParams.get('state')
   const { setSocialLogin } = userStore()
   const { socialLogin, socialLoginMutation } = useAuth()
   const { isError, isSuccess } = socialLoginMutation
@@ -25,8 +26,8 @@ const OauthGoogle = () => {
   }, [isSuccess, isError])
 
   useEffect(() => {
-    if (code) {
-      getToken('google', code)
+    if (code && state) {
+      getToken('google', code, state)
         .then(user => {
           console.log('user client', user)
           if (user?.userStatus === 'PENDING') {
@@ -44,7 +45,7 @@ const OauthGoogle = () => {
           navigate('/login')
         })
     }
-  }, [code])
+  }, [code, state])
 
   return null
 }
