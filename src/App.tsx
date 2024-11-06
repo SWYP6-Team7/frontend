@@ -56,15 +56,15 @@ export const router = createBrowserRouter([
         )
       },
       {
-        path: 'login/oauth/kakao',
+        path: 'login/oauth/kakao/callback',
         element: <OauthKakao />
       },
       {
-        path: 'login/oauth/naver',
+        path: 'login/oauth/naver/callback',
         element: <OauthNaver />
       },
       {
-        path: 'login/oauth/google',
+        path: 'login/oauth/google/callback',
         element: <OauthGoogle />
       },
       {
