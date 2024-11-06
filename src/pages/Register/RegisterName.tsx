@@ -31,8 +31,11 @@ const RegisterName = () => {
     setSocialLogin
   } = userStore()
   const [userName, setUserName] = useState(name)
+
+  const isEmailRegister = socialLogin === null
+
   useEffect(() => {
-    if (socialLogin !== null) {
+    if (isEmailRegister) {
       resetName()
       resetForm()
       setSocialLogin(null)

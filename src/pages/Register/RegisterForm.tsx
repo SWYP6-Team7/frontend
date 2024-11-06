@@ -48,18 +48,20 @@ const RegisterForm = () => {
   })
 
   const navigate = useNavigate()
+  const isSocialLoginGoogle = socialLogin === 'google'
+  const isSocialLoginKakao = socialLogin === 'kakao'
+  const isSocialLoginNaver = socialLogin === 'naver'
 
-  const allSuccess =
-    socialLogin === 'kakao'
-      ? success.email
-      : Object.values(success).every(value => value)
+  const allSuccess = isSocialLoginKakao
+    ? success.email
+    : Object.values(success).every(value => value)
 
   const closeShowTerms = () => {
     setShowTerms(false)
   }
 
   useEffect(() => {
-    if (socialLogin === 'google' || socialLogin === 'naver') {
+    if (isSocialLoginGoogle || isSocialLoginNaver) {
       setSocialLogin(null)
       navigate('/login')
     }
@@ -159,7 +161,7 @@ const RegisterForm = () => {
       }
 
       addEmail(formData.email)
-      if (socialLogin === 'kakao') {
+      if (isSocialLoginKakao) {
         navigate('/registerGender')
       } else {
         addPassword(formData.password)

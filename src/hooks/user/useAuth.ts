@@ -7,6 +7,7 @@ import RequestError from '@/context/ReqeustError'
 import { useNavigate } from 'react-router-dom'
 import { IRegisterEmail, IRegisterGoogle, IRegisterKakao } from '@/model/auth'
 import { userStore } from '@/store/client/userStore'
+import { getJWTHeader } from '@/utils/user'
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
@@ -33,11 +34,10 @@ const useAuth = () => {
     }) => {
       if (!checkNetworkConnection()) return
 
-      const response = await axiosInstance.post(
-        '/api/login',
-        { email, password },
-        { withCredentials: true }
-      )
+      const response = await axiosInstance.post('/api/login', {
+        email,
+        password
+      })
       return response.data
     },
     onSuccess: data => {
@@ -62,11 +62,10 @@ const useAuth = () => {
     }) => {
       if (!checkNetworkConnection()) return
 
-      const response = await axiosInstance.post(
-        '/api/social/login',
-        { email, socialLoginId },
-        { withCredentials: true }
-      )
+      const response = await axiosInstance.post('/api/social/login', {
+        email,
+        socialLoginId
+      })
       return response.data
     },
     onSuccess: data => {
@@ -85,9 +84,7 @@ const useAuth = () => {
     mutationFn: async (formData: IRegisterEmail) => {
       if (!checkNetworkConnection()) return
 
-      const response = await axiosInstance.post('/api/users/new', formData, {
-        withCredentials: true
-      })
+      const response = await axiosInstance.post('/api/users/new', formData)
       return response.data
     },
     onSuccess: data => {
@@ -110,9 +107,7 @@ const useAuth = () => {
           ? '/api/social/google/complete-signup'
           : '/api/social/kakao/complete-signup'
 
-      const response = await axiosInstance.post(path, formData, {
-        withCredentials: true
-      })
+      const response = await axiosInstance.put(path, formData)
       return response.data
     },
     onSuccess: data => {
@@ -135,7 +130,11 @@ const useAuth = () => {
     mutationFn: async () => {
       if (!checkNetworkConnection()) return
 
-      return await axiosInstance.post('/api/logout', {})
+      return await axiosInstance.post(
+        '/api/logout',
+        {},
+        { headers: getJWTHeader(accessToken as string) }
+      )
     },
     onSuccess: () => {
       clearLoginData()

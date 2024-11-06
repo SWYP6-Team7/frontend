@@ -49,57 +49,69 @@ const Header = () => {
     setSocialLogin
   } = userStore()
 
+  const isSocialLoginGoogle = socialLogin === 'google'
+  const isSocialLoginKakao = socialLogin === 'kakao'
+
   const handleBack = () => {
     if (isTripDetail) {
       navigate(-1)
       return
-    } else if (isSearchTravel || isSearchCommunity) {
+    }
+    if (isSearchTravel || isSearchCommunity) {
       navigate('/')
       return
-    } else if (isCommunityDetail) {
+    }
+    if (isCommunityDetail) {
       navigate('/community')
       return
     }
-    if (socialLogin === 'google') {
+    if (isSocialLoginGoogle) {
       if (isRegisterAge) {
         resetAge()
         navigate('/login')
         setSocialLogin(null)
-      } else if (isRegisterGender) {
-        resetGender()
-        navigate(-1)
-      } else {
-        navigate(-1)
+        return
       }
-      return
-    } else if (socialLogin === 'kakao') {
-      if (isRegisterAge) {
-        resetAge()
-        navigate('/registerForm')
-      } else if (isRegisterGender) {
+      if (isRegisterGender) {
         resetGender()
         navigate(-1)
-      } else if (isRegisterForm) {
-        navigate('/login')
-        resetForm()
-        setSocialLogin(null)
-      } else {
-        navigate(-1)
-      }
-      return
-    } else {
-      if (isRegisterForm) {
-        resetForm()
-      } else if (isRegisterName) {
-        resetName()
-      } else if (isRegisterAge) {
-        resetAge()
-      } else if (isRegisterGender) {
-        resetGender()
+        return
       }
       navigate(-1)
       return
     }
+    if (isSocialLoginKakao) {
+      if (isRegisterAge) {
+        resetAge()
+        navigate('/registerForm')
+        return
+      }
+      if (isRegisterGender) {
+        resetGender()
+        navigate(-1)
+        return
+      }
+      if (isRegisterForm) {
+        navigate('/login')
+        resetForm()
+        setSocialLogin(null)
+        return
+      }
+      navigate(-1)
+
+      return
+    }
+    if (isRegisterForm) {
+      resetForm()
+    } else if (isRegisterName) {
+      resetName()
+    } else if (isRegisterAge) {
+      resetAge()
+    } else if (isRegisterGender) {
+      resetGender()
+    }
+    navigate(-1)
+    return
   }
   return (
     <HeaderContainer>

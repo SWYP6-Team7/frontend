@@ -28,6 +28,10 @@ const RegisterGender = () => {
   const [femaleClicked, setFemaleClicked] = useState(sex == 'F' ? true : false)
   const navigate = useNavigate()
 
+  const isSocialLoginKakao = socialLogin === 'kakao'
+  const isSocialLoginNaver = socialLogin === 'naver'
+  const isSocialLoginGoogle = socialLogin === 'google'
+
   const clickedMale = () => {
     if (!maleClicked) {
       setMaleClicked(true)
@@ -46,21 +50,21 @@ const RegisterGender = () => {
   }
 
   useEffect(() => {
-    if (socialLogin === 'google') {
+    if (isSocialLoginGoogle) {
       if (!agegroup) {
         resetAge()
         setSocialLogin(null)
         resetName()
         navigate('/login')
       }
-    } else if (socialLogin === 'kakao') {
+    } else if (isSocialLoginKakao) {
       if (!email || !agegroup) {
         resetName()
         resetForm()
         resetAge()
         navigate('/registerForm')
       }
-    } else if (socialLogin === 'naver') {
+    } else if (isSocialLoginNaver) {
       resetName()
       resetForm()
       resetAge()

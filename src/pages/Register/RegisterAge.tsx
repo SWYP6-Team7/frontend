@@ -24,6 +24,9 @@ const RegisterAge = () => {
     setSocialLogin
   } = userStore()
   const [genderCheck, setGenderCheck] = useState(false)
+  const isEmailRegister = socialLogin === null
+  const isSocialLoginKakao = socialLogin === 'kakao'
+  const isSocialLoginNaver = socialLogin === 'naver'
 
   const nextStepClickHandler = () => {
     if (agegroup) {
@@ -40,12 +43,12 @@ const RegisterAge = () => {
   }
 
   useEffect(() => {
-    if (socialLogin === 'naver') {
+    if (isSocialLoginNaver) {
       resetName()
       resetForm()
       setSocialLogin(null)
       navigate('/login')
-    } else if (socialLogin === 'kakao' || socialLogin === null) {
+    } else if (isSocialLoginKakao || isEmailRegister) {
       if (!email && !name) {
         resetName()
         resetForm()
