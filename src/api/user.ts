@@ -37,10 +37,10 @@ export const getToken = async (
   try {
     const url =
       domain === 'kakao'
-        ? '/api/kakao/oauth'
+        ? '/login/kakao/oauth'
         : domain === 'google'
-          ? '/api/google/oauth'
-          : '/api/naver/oauth'
+          ? '/login/google/oauth'
+          : '/login/naver/oauth'
     const response = await axios.post(url, {
       code
     })
