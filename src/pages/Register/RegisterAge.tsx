@@ -13,9 +13,20 @@ const AGE_LIST = ['10대', '20대', '30대', '40대', '50대 이상']
 
 const RegisterAge = () => {
   const navigate = useNavigate()
-  const { agegroup, addAgegroup, email, name, resetForm, resetName } =
-    userStore()
+  const {
+    agegroup,
+    addAgegroup,
+    email,
+    name,
+    resetForm,
+    resetName,
+    socialLogin,
+    setSocialLogin
+  } = userStore()
   const [genderCheck, setGenderCheck] = useState(false)
+  const isEmailRegister = socialLogin === null
+  const isSocialLoginKakao = socialLogin === 'kakao'
+  const isSocialLoginNaver = socialLogin === 'naver'
 
   const nextStepClickHandler = () => {
     if (agegroup) {
@@ -32,10 +43,17 @@ const RegisterAge = () => {
   }
 
   useEffect(() => {
-    if (!email && !name) {
+    if (isSocialLoginNaver) {
       resetName()
       resetForm()
-      navigate('/registerForm')
+      setSocialLogin(null)
+      navigate('/login')
+    } else if (isSocialLoginKakao || isEmailRegister) {
+      if (!email && !name) {
+        resetName()
+        resetForm()
+        navigate('/registerForm')
+      }
     }
   }, [email, name])
 
