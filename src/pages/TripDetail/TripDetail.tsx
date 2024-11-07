@@ -80,7 +80,9 @@ export default function TripDetail() {
   const { editToastShow, setEditToastShow } = editStore()
   const { companions } = useTripDetail(travelNumber)
   const allCompanions = companions.data?.data.companions
-  console.log(allCompanions, '모집 인원들 댓글 열람 권한 처리.')
+
+  const alreadyApplied = !!enrollmentNumber
+
   useEffect(() => {
     if (applySuccess) {
       setIsApplyToast(true)
@@ -362,24 +364,24 @@ export default function TripDetail() {
             addStyle={{
               backgroundColor: hostUserCheck
                 ? nowEnrollmentCount > 0
-                  ? palette.keycolor
+                  ? palette.기본
                   : palette.비강조3
-                : enrollmentNumber
-                  ? palette.keycolorBG
-                  : palette.keycolor,
+                : alreadyApplied
+                  ? palette.비강조3
+                  : palette.기본,
               color: hostUserCheck
                 ? nowEnrollmentCount > 0
-                  ? palette.BG
+                  ? palette.비강조4
                   : palette.비강조
-                : enrollmentNumber
-                  ? palette.keycolor
-                  : palette.BG,
+                : alreadyApplied
+                  ? palette.비강조
+                  : palette.비강조4,
               fontWeight: '600'
             }}
             text={
               hostUserCheck
                 ? '참가신청목록'
-                : enrollmentNumber
+                : alreadyApplied
                   ? '참가신청취소'
                   : '참가신청하기'
             }>
