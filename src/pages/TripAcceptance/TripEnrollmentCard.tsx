@@ -163,7 +163,7 @@ const AcceptBtn = styled.div`
   gap: 10px;
   border-radius: 40px;
   opacity: 0px;
-  background-color: ${palette.keycolor};
+  background-color: ${palette.기본};
   color: ${palette.비강조4};
 `
 const NewMark = styled.div`

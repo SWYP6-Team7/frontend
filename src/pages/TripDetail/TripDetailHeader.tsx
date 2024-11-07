@@ -87,6 +87,7 @@ export default function TripDetailHeader({
         bookmarked,
         profileUrl
       } = tripInfos
+
       const [year, month, day] = dueDate.split('-').map((v: string) => +v)
       const DUEDATE = {
         year,
