@@ -51,7 +51,7 @@ const RegisterForm = () => {
   const isSocialLoginGoogle = socialLogin === 'google'
   const isSocialLoginKakao = socialLogin === 'kakao'
   const isSocialLoginNaver = socialLogin === 'naver'
-
+  const isRegisterEmail = socialLogin === null
   const allSuccess = isSocialLoginKakao
     ? success.email
     : Object.values(success).every(value => value)
@@ -207,7 +207,7 @@ const RegisterForm = () => {
         </FieldContainer>
 
         <Spacing size={'6svh'} />
-        {Boolean(socialLogin) && (
+        {isRegisterEmail && (
           <>
             <FieldContainer>
               <Label htmlFor="password">비밀번호</Label>
