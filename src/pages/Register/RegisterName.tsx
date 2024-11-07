@@ -35,7 +35,7 @@ const RegisterName = () => {
   const isEmailRegister = socialLogin === null
 
   useEffect(() => {
-    if (isEmailRegister) {
+    if (!isEmailRegister) {
       resetName()
       resetForm()
       setSocialLogin(null)
