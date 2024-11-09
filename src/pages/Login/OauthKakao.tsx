@@ -26,10 +26,9 @@ const OauthKakao = () => {
   }, [isSuccess, isError])
 
   useEffect(() => {
-    if (code) {
-      // 카카오 인증 코드를 이용해 서버에서 토큰을 요청
-
-      getToken('kakao', code)
+    console.log(code, state, 'code')
+    if (code && state) {
+      getToken('kakao', code, state)
         .then(user => {
           console.log('user client', user)
           if (user?.userStatus === 'PENDING') {
@@ -47,7 +46,7 @@ const OauthKakao = () => {
           navigate('/login')
         })
     }
-  }, [code])
+  }, [code, state])
 
   return null
 }

@@ -32,16 +32,22 @@ export async function checkEmail(email: string) {
 
 export const getToken = async (
   domain: 'naver' | 'kakao' | 'google',
-  code: string
+  code: string,
+  state: string
 ) => {
   try {
     const url =
       domain === 'kakao'
-        ? `/login/kakao/oauth/callback?code=${code}`
+        ? `/api/login/oauth/kakao/callback`
         : domain === `google`
-          ? `/login/google/oauth/callback?code=${code}`
-          : `/login/naver/oauth/callback?code=${code}`
-    const response = await axiosInstance.get(url)
+          ? `/api/login/oauth/google/callback`
+          : `/api/login/oauth/naver/callback`
+    const response = await axiosInstance.get(url, {
+      params: {
+        code,
+        state
+      }
+    })
 
     const user = response.data
 
