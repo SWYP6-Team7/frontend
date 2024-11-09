@@ -26,8 +26,9 @@ const OauthGoogle = () => {
   }, [isSuccess, isError])
 
   useEffect(() => {
-    if (code) {
-      getToken('google', code)
+    console.log(code, state, 'code')
+    if (code && state) {
+      getToken('google', code, state)
         .then(user => {
           console.log('user client', user)
           if (user?.userStatus === 'PENDING') {
@@ -45,7 +46,7 @@ const OauthGoogle = () => {
           navigate('/login')
         })
     }
-  }, [code])
+  }, [code, state])
 
   return null
 }

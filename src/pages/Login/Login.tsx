@@ -1,3 +1,4 @@
+import { axiosInstance } from '@/api'
 import GoogleIcon from '@/components/icons/GoogleIcon'
 import KakaoIcon from '@/components/icons/KakaoIcon'
 import NaverIcon from '@/components/icons/NaverIcon'
@@ -11,16 +12,16 @@ import {
 import styled from '@emotion/styled'
 
 const Login = () => {
-  const handleSimpleLogin = (domain: 'naver' | 'kakao' | 'google') => {
+  const handleSimpleLogin = async (domain: 'naver' | 'kakao' | 'google') => {
     switch (domain) {
       case 'naver':
-        window.location.href = NAVER_AUTH_URL
+        await axiosInstance.get('/api/login/oauth/naver')
         return
       case 'kakao':
-        window.location.href = KAKAO_LINK
+        await axiosInstance.get('/api/login/oauth/kakao')
         return
       case 'google':
-        window.location.href = GOOGLE_LINK
+        await axiosInstance.get('/api/login/oauth/google')
     }
   }
 
