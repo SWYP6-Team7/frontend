@@ -134,7 +134,7 @@ export default function TripDetailHeader({
     if (isEditBtnClicked) {
       setThreeDotsClick(false)
       setIsEditBtnClicked(false)
-      navigate(`trip/edit/${travelNumber}`)
+      navigate(`/trip/edit/${travelNumber}`)
     }
     if (checkingModalClicked) {
       // 삭제 요청.
