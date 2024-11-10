@@ -189,10 +189,13 @@ export async function postVerifyPassword(
         headers: getJWTHeader(accessToken)
       }
     )
+    if (response.status >= 200 && response.status < 300) {
+      return response.data
+    }
 
-    return response.data
+    throw new Error(`Request failed with status ${response.status}`)
   } catch (err) {
-    console.log(err)
+    console.log('비밀번호 체크 에러', err)
   }
 }
 

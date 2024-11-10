@@ -313,7 +313,7 @@ export default function ProfileEditModal({
                   }}
                 />
               )}
-              <div css={{ position: 'absolute' }}>
+              <div css={{ position: 'absolute', pointerEvents: 'none' }}>
                 {isShowingGallery === false && <PictureIcon />}
               </div>
 
@@ -392,7 +392,7 @@ export default function ProfileEditModal({
                   }}
                 />
               )}
-              <div css={{ position: 'absolute' }}>
+              <div css={{ position: 'absolute', pointerEvents: 'none' }}>
                 {showImageCamera === '' && <CameraIconForUploadMypage />}
               </div>
 
@@ -493,6 +493,7 @@ const UploadImg = styled.label`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   max-height: 72px;
   aspect-ratio: 1 / 1;
   width: 100%;
