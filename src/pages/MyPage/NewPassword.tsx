@@ -9,7 +9,7 @@ import { myPageStore } from '@/store/client/myPageStore'
 import { userStore } from '@/store/client/userStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 interface ErrorProps {
   password: undefined | string
@@ -18,7 +18,6 @@ interface ErrorProps {
 
 export default function NewPassword() {
   const { addIsPasswordUpdated } = myPageStore()
-  const [showTerms, setShowTerms] = useState(true)
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: ''
@@ -35,15 +34,12 @@ export default function NewPassword() {
     password: false,
     confirmPassword: false
   })
-  const { addEmail, addPassword, email } = userStore()
-  const { updatePasswordMutation } = useMyPage()
+  const { addPassword, email } = userStore()
+  const { updatePasswordMutation, isUpatedPassword, isUpdatedPasswordError } =
+    useMyPage()
   const navigate = useNavigate()
 
   const allSuccess = Object.values(success).every(value => value)
-
-  const closeShowTerms = () => {
-    setShowTerms(false)
-  }
 
   const handleRemoveValue = (name: 'password' | 'confirmPassword') => {
     if (name === 'password') {
@@ -116,10 +112,6 @@ export default function NewPassword() {
           newPassword: formData.password,
           newPasswordConfirm: formData.confirmPassword
         })
-
-        addPassword(formData.password)
-        addIsPasswordUpdated(true)
-        navigate('/editMyInfo')
       } catch (e) {
         console.log(e, '새 비밀번호 업데이트 에러')
         setShake(prev => ({
@@ -146,6 +138,28 @@ export default function NewPassword() {
       }, 500)
     }
   }
+
+  useEffect(() => {
+    if (isUpatedPassword) addPassword(formData.password)
+    addIsPasswordUpdated(true)
+    navigate('/editMyInfo')
+  }, [isUpatedPassword])
+
+  useEffect(() => {
+    if (isUpdatedPasswordError) {
+      setShake(prev => ({
+        ...prev,
+        email: true
+      }))
+      setError(prev => ({
+        ...prev,
+        password: '새 비밀번호가 일치하지 않습니다.'
+      }))
+      setTimeout(() => {
+        setShake({ password: false, confirmPassword: false })
+      }, 500)
+    }
+  }, [isUpdatedPasswordError])
 
   return (
     <Container onSubmit={handleSubmit}>

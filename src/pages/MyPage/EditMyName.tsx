@@ -20,21 +20,20 @@ const koreanOnly = z
   .max(10, { message: '최대 10자까지 입력 가능합니다.' })
 export default function EditMyName() {
   const navigate = useNavigate()
-  const { name, addName, agegroup, email, preferredTags, addIsNameUpdated } =
-    myPageStore()
-  const { userId, accessToken } = authStore()
-  //   const [isToastShow, setIsToastShow] = useState(false) // 수정 완료 메시지.
+  const { name, addName, addIsNameUpdated } = myPageStore()
   const [userName, setUserName] = useState(name)
   const { updateMyPageMutation, isUpdatedSuccess } = useMyPage()
   const handleRemoveValue = () => setUserName('')
   const completeClickHandler = () => {
     //   변경 요청 보냄
+    if (userName === name) {
+      return
+    }
     updateMyPageMutation()
     addName(userName)
   }
   useEffect(() => {
     if (isUpdatedSuccess) {
-      console.log('이름을 변경했어요.')
       addIsNameUpdated(true)
       navigate(-1)
     }
@@ -81,7 +80,9 @@ export default function EditMyName() {
         <Button
           text="변경 완료"
           onClick={completeClickHandler}
-          disabled={!(userName.length > 0 && !nameValidError)}
+          disabled={
+            !(userName.length > 0 && !nameValidError) || userName === name
+          }
           addStyle={
             location.pathname == '/registerName'
               ? userName.length > 0 && !nameValidError
