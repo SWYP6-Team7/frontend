@@ -357,7 +357,7 @@ export default function TripDetail() {
           <ArrowIcon />
         </PersonWrapper>
         <Spacing size={100} />
-        <ButtonContainer>
+        <ButtonContainer backgroundColor={palette.검색창}>
           <Button
             onClick={buttonClickHandler}
             disabled={hostUserCheck && nowEnrollmentCount === 0}
