@@ -179,6 +179,7 @@ const SmallTitle = styled.div`
   font-size: 16px;
   font-weight: 400;
   line-height: 16px;
+  cursor: pointer;
   text-align: center;
   color: ${palette.기본};
   height: 52px;

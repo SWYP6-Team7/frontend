@@ -260,6 +260,8 @@ export default function ProfileEditModal({
     }
   }, []) //컴포넌트 언마운트 시에만 실행
 
+  console.log('check', showImage, showImageCamera)
+
   console.log(isCustomImgUpload, 'isCustomImgUpload')
   // 갤러리 부분에 사진을 보여줘야하는 경우.
   const isShowingGallery = // 이미지가 존재하고, 커스텀이며, 클릭되어있거나 or 클릭안해도 업로드는 해둔상태.
@@ -277,14 +279,19 @@ export default function ProfileEditModal({
           <Spacing size={32} />
           <ProfileContainer>
             <ShowImg
-              onClick={() =>
+              onClick={
+                e => {
+                  e.stopPropagation()
+                  if (showImage !== '' && isCustomImg) setActive('custom')
+                }
                 // 이미지가 존재하고, 현재 보여진 이미지가 커스텀일 때만 active 보더 표시.
-                showImage !== '' && isCustomImg && setActive('custom')
               }
               isCustomImg={active === 'custom'}>
               {showImage === '' && (
                 <>
-                  <UploadImg htmlFor="imageInput"></UploadImg>
+                  <UploadImg
+                    onClick={e => e.stopPropagation()}
+                    htmlFor="imageInput"></UploadImg>
                   <input
                     onChange={event => addImageFileGalary(event)}
                     type="file"
@@ -351,14 +358,17 @@ export default function ProfileEditModal({
           </ProfileContainer>
           <ProfileContainer css={{ marginTop: '16px' }}>
             <ShowImg
-              onClick={() =>
+              onClick={e => {
+                e.stopPropagation()
                 // 이미지가 존재하고, 현재 보여진 이미지가 커스텀일 때만 active 보더 표시.
-                showImageCamera !== '' && isCustomImg && setActive('camera')
-              }
+                if (showImageCamera !== '' && isCustomImg) setActive('camera')
+              }}
               isCustomImg={active === 'camera'}>
               {showImageCamera === '' && (
                 <>
-                  <UploadImg htmlFor="cameraInput"></UploadImg>
+                  <UploadImg
+                    onClick={e => e.stopPropagation()}
+                    htmlFor="cameraInput"></UploadImg>
                   <input
                     onChange={event => addImageFileCamera(event)}
                     type="file"

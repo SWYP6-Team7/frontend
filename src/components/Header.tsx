@@ -97,6 +97,7 @@ const Header = () => {
         setSocialLogin(null)
         return
       }
+
       navigate(-1)
 
       return
@@ -109,6 +110,11 @@ const Header = () => {
       resetAge()
     } else if (isRegisterGender) {
       resetGender()
+    }
+
+    if (isEditMyInfo) {
+      navigate('/myPage')
+      return
     }
     navigate(-1)
     return
