@@ -287,7 +287,7 @@ export default function ProfileEditModal({
                 // 이미지가 존재하고, 현재 보여진 이미지가 커스텀일 때만 active 보더 표시.
               }
               isCustomImg={active === 'custom'}>
-              {showImage === '' && (
+              {(showImage === '' || !isCustomImg) && (
                 <>
                   <UploadImg
                     onClick={e => e.stopPropagation()}
@@ -364,7 +364,7 @@ export default function ProfileEditModal({
                 if (showImageCamera !== '' && isCustomImg) setActive('camera')
               }}
               isCustomImg={active === 'camera'}>
-              {showImageCamera === '' && (
+              {(showImageCamera === '' || !isCustomImg) && (
                 <>
                   <UploadImg
                     onClick={e => e.stopPropagation()}
