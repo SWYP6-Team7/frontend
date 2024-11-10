@@ -1,23 +1,16 @@
-import BottomModal from '@/components/BottomModal'
-import Button from '@/components/Button'
-import ButtonContainer from '@/components/ButtonContainer'
 import Badge from '@/components/designSystem/Badge'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
-import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import CameraIconForProfileEdit from '@/components/icons/CameraIconForProfileEdit'
 import RightVector from '@/components/icons/RightVector'
 import Spacing from '@/components/Spacing'
-import useMyPage from '@/hooks/myPage/useMyPage'
 import useAuth from '@/hooks/user/useAuth'
-import { ImyPage } from '@/model/myPages'
 import { authStore } from '@/store/client/authStore'
 import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { symbol } from 'zod'
 import ProfileEditModal from './ProfileEditModal'
 
 export default function EditMyInfo() {
@@ -218,9 +211,11 @@ export default function EditMyInfo() {
         <Spacing size={8} />
 
         <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
-          <div>로그아웃</div>
+          <LogoutButton>로그아웃</LogoutButton>
           <VerticalLine>|</VerticalLine>
-          <div onClick={() => navigate('/withdrawal')}>탈퇴하기</div>
+          <DrawalButton onClick={() => navigate('/withdrawal')}>
+            탈퇴하기
+          </DrawalButton>
         </LogoutBox>
         <Spacing size={150} />
         {showModal && (
@@ -233,6 +228,13 @@ export default function EditMyInfo() {
     </Container>
   )
 }
+
+const LogoutButton = styled.div`
+  cursor: pointer;
+`
+const DrawalButton = styled.div`
+  cursor: pointer;
+`
 const VerticalLine = styled.div`
   height: 16px;
   color: rgba(231, 231, 231, 1);
@@ -244,6 +246,7 @@ const VerticalLine = styled.div`
 const LogoutBox = styled.div`
   height: 16px;
   font-size: 14px;
+
   font-weight: 400;
   line-height: 16px;
   text-align: left;
@@ -305,7 +308,7 @@ const Box = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  cursor: pointer;
   width: 100%;
   height: 52px;
   padding: 14px 8px;

@@ -41,32 +41,38 @@ const useMyPage = () => {
       }
     })
   // 비밀번호 변경시 현재 비밀번호 확인
-  const { mutateAsync: verifyPasswordMutation, isSuccess: isVerified } =
-    useMutation({
-      mutationFn: (password: string) => {
-        return postVerifyPassword(accessToken!, password)
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['myPage']
-        })
-      }
-    })
-  const { mutateAsync: updatePasswordMutation, isSuccess: isUpatedPassword } =
-    useMutation({
-      mutationFn: (formData: NewPasswordProps) => {
-        return putPassword(
-          accessToken!,
-          formData.newPassword,
-          formData.newPassword
-        )
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['myPage']
-        })
-      }
-    })
+  const {
+    mutateAsync: verifyPasswordMutation,
+    isSuccess: isVerified,
+    isError: isVerifiedError
+  } = useMutation({
+    mutationFn: (password: string) => {
+      return postVerifyPassword(accessToken!, password)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['myPage']
+      })
+    }
+  })
+  const {
+    mutateAsync: updatePasswordMutation,
+    isSuccess: isUpatedPassword,
+    isError: isUpdatedPasswordError
+  } = useMutation({
+    mutationFn: (formData: NewPasswordProps) => {
+      return putPassword(
+        accessToken!,
+        formData.newPassword,
+        formData.newPassword
+      )
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['myPage']
+      })
+    }
+  })
 
   // 마이페이지 프로필 이미지 부분
   // 사진을 업로드 해서 response의 url를 통해 화면에 보여주기.
@@ -164,16 +170,21 @@ const useMyPage = () => {
       return deleteTempProfileImage(accessToken!, deletedTempUrl)
     }
   })
-  const { mutateAsync: withdrawMutation, isSuccess: isWithDrawSuccess } =
-    useMutation({
-      mutationFn: () => {
-        return deleteMyAccount(accessToken!)
-      }
-    })
+  const {
+    mutateAsync: withdrawMutation,
+    isSuccess: isWithDrawSuccess,
+    isError: isWithDrawError
+  } = useMutation({
+    mutationFn: () => {
+      return deleteMyAccount(accessToken!)
+    }
+  })
 
   return {
     withdrawMutation,
     isWithDrawSuccess,
+    isWithDrawError,
+
     data,
     isLoading,
     updateMyPageMutation,
@@ -182,9 +193,10 @@ const useMyPage = () => {
     isLoadingImage,
     verifyPasswordMutation,
     isVerified,
+    isVerifiedError,
     updatePasswordMutation,
     isUpatedPassword,
-
+    isUpdatedPasswordError,
     profileImage,
     firstProfileImageMutation,
     isFirstProfileImagePostSuccess,

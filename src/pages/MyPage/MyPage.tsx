@@ -1,50 +1,34 @@
 import Badge from '@/components/designSystem/Badge'
-import BoxLayoutTag from '@/components/designSystem/BoxLayoutTag'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
-import ResultToast from '@/components/designSystem/toastMessage/resultToast'
-import ArrowIcon from '@/components/icons/ArrowIcon'
 import RightVector from '@/components/icons/RightVector'
-import Vector from '@/components/icons/Vector'
 import Spacing from '@/components/Spacing'
-
-import useMyPage from '@/hooks/myPage/useMyPage'
-import { ImyPage } from '@/model/myPages'
 import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function MyPage() {
   const { name, agegroup, email, preferredTags, profileUrl } = myPageStore()
 
   const navigate = useNavigate()
-  console.log(profileUrl, '마이페이지 프로필 이미지')
   const cutTags =
     preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags
-
-  console.log(name, agegroup, email, preferredTags)
-  const announcement = () => {
+  const onLinkAnnouncement = () => {
     navigate('/announcement')
   }
   return (
     <Container>
       <UserInfo>
         <ProfileImg>
-          <img
+          <RoundedImage
             src={profileUrl}
-            css={{
-              width: '80px',
-              height: '100%',
-              borderRadius: '50%'
-            }}
+            size={80}
           />
         </ProfileImg>
         <div css={{ width: '100%' }}>
           <MoreBox onClick={() => navigate('/editMyInfo')}>
             <UserName>{name}</UserName>
             <div css={{ display: 'flex', padding: '8px 5px' }}>
-              {' '}
               <RightVector />
             </div>
           </MoreBox>
@@ -88,10 +72,10 @@ export default function MyPage() {
       <Menu>
         <Box>
           <Title>모잉 소식</Title>
-          <SmallTitle onClick={announcement}>
+          <SmallTitle onClick={onLinkAnnouncement}>
             <img
               src="/images/createTripBtn.png"
-              alt=""
+              alt="small moing logo (공지사항)"
             />
             공지사항
           </SmallTitle>
@@ -101,7 +85,7 @@ export default function MyPage() {
           <SmallTitle onClick={() => navigate('/requestedTrip')}>
             <img
               src="/images/createTripBtn.png"
-              alt=""
+              alt="small moing logo (참가 신청한 여행)"
             />
             참가 신청한 여행
           </SmallTitle>
@@ -149,6 +133,7 @@ const Container = styled.div`
 `
 const MoreBox = styled.div`
   display: flex;
+  cursor: pointer;
   align-items: center;
 `
 const UserName = styled.div`

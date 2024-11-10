@@ -6,13 +6,12 @@ import useMyPage from '@/hooks/myPage/useMyPage'
 import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { symbol } from 'zod'
 
 export default function Withdrawal() {
   const [isClicked, setIsClicked] = useState(false)
-  const { withdrawMutation } = useMyPage()
+  const { withdrawMutation, isWithDrawError, isWithDrawSuccess } = useMyPage()
   const { name } = myPageStore()
   const navigate = useNavigate()
   const completeClickHandler = async () => {
@@ -20,12 +19,23 @@ export default function Withdrawal() {
     console.log('탈퇴')
     try {
       await withdrawMutation()
-      console.log('탈퇴 성공!')
-      navigate('/login')
     } catch (e) {
       console.log(e, '탈퇴 오류 발생')
     }
   }
+
+  useEffect(() => {
+    if (isWithDrawSuccess) {
+      console.log('탈퇴 성공!')
+      navigate('/login')
+    }
+  }, [isWithDrawSuccess])
+
+  useEffect(() => {
+    if (isWithDrawError) {
+      console.log('탈퇴 오류 발생')
+    }
+  }, [isWithDrawError])
   return (
     <Container>
       <TitleBox>

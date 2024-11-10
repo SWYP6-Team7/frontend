@@ -54,6 +54,7 @@ const ButtonContainer = styled.button<{ disabled: boolean }>`
   width: 100%;
   height: 48px;
   border-radius: 40px;
+  cursor: pointer;
   justify-content: center;
   font-size: 18px;
   padding: 10px 20px 10px 20px;

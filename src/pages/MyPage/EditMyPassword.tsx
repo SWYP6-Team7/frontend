@@ -10,14 +10,14 @@ import useMyPage from '@/hooks/myPage/useMyPage'
 import { userStore } from '@/store/client/userStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 interface ErrorProps {
   password: undefined | string
 }
 
 export default function EditMyPassword() {
-  const { verifyPasswordMutation, isVerified } = useMyPage()
+  const { verifyPasswordMutation, isVerifiedError } = useMyPage()
   const [showTerms, setShowTerms] = useState(true)
   const [formData, setFormData] = useState({
     password: ''
@@ -31,11 +31,10 @@ export default function EditMyPassword() {
   const [shake, setShake] = useState({
     password: false
   })
-  const { addEmail, addPassword } = userStore()
+  const { addPassword } = userStore()
   const navigate = useNavigate()
   const allSuccess = Object.values(success).every(value => value)
 
-  console.log(success)
   const handleRemoveValue = () => {
     console.log(name)
     setSuccess(prev => ({ password: false }))
@@ -97,21 +96,6 @@ export default function EditMyPassword() {
         }, 500)
         return
       }
-
-      //   if (!(checking.data.status === 200)) {
-      //     setShake(prev => ({
-      //       ...prev,
-      //       password: true
-      //     }))
-      //     setError(prev => ({ ...prev, email: '비밀 번호가 틀렸습니다' }))
-      //     setTimeout(() => {
-      //       setShake({ password: false })
-      //     }, 500)
-      //     return
-      //   }
-
-      //   addPassword(formData.password)
-      //   navigate('/editMyPassword2')
     } else {
       setShake({
         password: Boolean(error.password)
@@ -122,6 +106,15 @@ export default function EditMyPassword() {
       }, 500)
     }
   }
+
+  useEffect(() => {
+    if (isVerifiedError) {
+      setShake(prev => ({
+        ...prev,
+        password: true
+      }))
+    }
+  }, [isVerifiedError])
 
   return (
     <>
