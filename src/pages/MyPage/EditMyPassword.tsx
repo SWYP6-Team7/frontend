@@ -78,6 +78,7 @@ export default function EditMyPassword() {
     if (allSuccess) {
       try {
         const checking = await verifyPasswordMutation(formData.password)
+        return
       } catch (e) {
         // 틀리면 500에러
         console.log(e)
@@ -116,6 +117,11 @@ export default function EditMyPassword() {
         ...prev,
         password: true
       }))
+      setSuccess({ password: false })
+      setError(prev => ({ ...prev, password: '비밀 번호가 틀렸습니다' }))
+      setTimeout(() => {
+        setShake({ password: false })
+      }, 500)
     }
   }, [isVerifiedError])
 
