@@ -112,6 +112,9 @@ export default function NewPassword() {
           newPassword: formData.password,
           newPasswordConfirm: formData.confirmPassword
         })
+        if (res === undefined) {
+          throw new Error('비밀번호 업데이트 에러')
+        }
       } catch (e) {
         console.log(e, '새 비밀번호 업데이트 에러')
         setShake(prev => ({
