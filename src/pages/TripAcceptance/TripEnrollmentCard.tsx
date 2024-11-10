@@ -45,7 +45,7 @@ export default function TripEnrollmentCard({
   // 수락 후 완료 모달
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
 
-  // 현재 주최자 인가!!!! 그거 조심.
+  // 현재 유저가 주최자 인지 확인.
 
   useEffect(() => {
     if (isAcceptBtnClicked) {
