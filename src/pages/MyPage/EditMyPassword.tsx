@@ -17,7 +17,7 @@ interface ErrorProps {
 }
 
 export default function EditMyPassword() {
-  const { verifyPasswordMutation, isVerifiedError } = useMyPage()
+  const { verifyPasswordMutation, isVerifiedError, isVerified } = useMyPage()
   const [showTerms, setShowTerms] = useState(true)
   const [formData, setFormData] = useState({
     password: ''
@@ -78,10 +78,6 @@ export default function EditMyPassword() {
     if (allSuccess) {
       try {
         const checking = await verifyPasswordMutation(formData.password)
-        console.log(checking, ': 비번 verity response')
-
-        addPassword(formData.password)
-        navigate('/editMyPassword2')
       } catch (e) {
         // 틀리면 500에러
         console.log(e)
@@ -106,6 +102,13 @@ export default function EditMyPassword() {
       }, 500)
     }
   }
+
+  useEffect(() => {
+    if (isVerified) {
+      addPassword(formData.password)
+      navigate('/editMyPassword2')
+    }
+  }, [isVerified])
 
   useEffect(() => {
     if (isVerifiedError) {
