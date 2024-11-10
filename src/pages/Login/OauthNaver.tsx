@@ -29,7 +29,7 @@ const OauthNaver = () => {
     if (code && state) {
       // 네이버 인증 코드를 이용해 서버에서 토큰을 요청
 
-      getToken('naver', code)
+      getToken('naver', code, state)
         .then(user => {
           console.log('user client', user)
           socialLogin({
@@ -42,7 +42,7 @@ const OauthNaver = () => {
           navigate('/login')
         })
     }
-  }, [code])
+  }, [code, state])
 
   return null
 }

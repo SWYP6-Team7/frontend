@@ -1,7 +1,6 @@
 import BottomModal from '@/components/BottomModal'
 import Button from '@/components/Button'
 import ButtonContainer from '@/components/ButtonContainer'
-import CameraIcon from '@/components/icons/CameraIcon'
 import CameraIconForUploadMypage from '@/components/icons/CameraIconForUploadMypage'
 import PictureIcon from '@/components/icons/PictureIcon'
 import ProfileRemoveIcon from '@/components/icons/ProfileRemoveIcon'
@@ -49,7 +48,6 @@ export default function ProfileEditModal({
 
   const { accessToken } = authStore()
 
-  const [image, setImage] = useState<FileData | null>()
   const [clickedSave, setClickedSave] = useState(false)
 
   // 일단 업로드를 하면, 저장할 용도 (추후에 미리보기 api 추가 되면 수정 예정.)
@@ -75,9 +73,6 @@ export default function ProfileEditModal({
     ret.length === 0 ? true : false
   )
 
-  // const [isCameraImgUpload, setIsCameraImgUpload] = useState(
-  //   ret.length === 0 ? true : false
-  // )
   const [changed, setChanged] = useState(false)
   const navigate = useNavigate()
   const handleCloseModal = () => {
@@ -183,24 +178,21 @@ export default function ProfileEditModal({
       console.log('기본 프로필 업로드 오류')
     }
   }
-  const check = (url: string) => {
-    return profileUrl.includes(url)
-  }
 
   // 임시 등록된 카메라 프로필 삭제
   const deleteProfileCameraImgHandler = async (event: React.MouseEvent) => {
     event.stopPropagation()
 
-    setShowImageCamera('')
-
-    try {
-      await deleteTempProfileImgMutation(showImageCamera)
-      setActive(1)
-      setChanged(true)
-      console.log('카메라 임시 등록한 이미지 삭제 완료.')
-    } catch (e) {
-      console.log('카메라 임시 등록 이미지 삭제 실패')
-    }
+    deleteTempProfileImgMutation(showImageCamera)
+      .then(() => {
+        setActive(1)
+        setChanged(true)
+        setShowImageCamera('')
+        console.log('카메라 임시 등록한 이미지 삭제 완료.')
+      })
+      .catch(e => {
+        console.log('카메라 임시 등록 이미지 삭제 실패')
+      })
   }
   // 프로필 삭제.
   const deleteProfileImgHandler = async (event: React.MouseEvent) => {
@@ -209,27 +201,29 @@ export default function ProfileEditModal({
     setShowImage('')
     if (showImage === profileUrl) {
       // 현재 보여지는 이미지가 지금의 프로필 사진과 같은 거라면 프로필 삭제.
-      try {
-        await deleteMyProfileImgMutation() // 프로필 삭제.
-        await firstProfileImageMutation(accessToken!) // 삭제했으니 기본 이미지로 등록 요청.
-
-        setActive(1)
-        setChanged(true)
-        // addProfileUrl('')
-        console.log('실제 프로필 삭제& 삭제 후 기본 이미지 등록 완료.')
-      } catch (e) {
-        console.log('실제 프로필 삭제 실패 & 기본 이미지 등록 ')
-      }
+      deleteMyProfileImgMutation()
+        .then(() => {
+          firstProfileImageMutation(accessToken!).then(() => {
+            setActive(1)
+            setChanged(true)
+            // addProfileUrl('')
+            console.log('실제 프로필 삭제& 삭제 후 기본 이미지 등록 완료.')
+          })
+        })
+        .catch(() => {
+          console.log('실제 프로필 삭제 실패 & 기본 이미지 등록 ')
+        })
     } else {
       // 아니라면. 임시 저장된 것 삭제.
-      try {
-        await deleteTempProfileImgMutation(showImage)
-        setActive(1)
-        setChanged(true)
-        console.log('갤러리 임시 등록한 이미지 삭제 완료.')
-      } catch (e) {
-        console.log('갤러리 임시 등록 이미지 삭제 실패')
-      }
+      deleteTempProfileImgMutation(showImage)
+        .then(() => {
+          setActive(1)
+          setChanged(true)
+          console.log('갤러리 임시 등록한 이미지 삭제 완료.')
+        })
+        .catch(() => {
+          console.log('갤러리 임시 등록 이미지 삭제 실패')
+        })
     }
   }
   console.log(active)
@@ -288,14 +282,18 @@ export default function ProfileEditModal({
                 showImage !== '' && isCustomImg && setActive('custom')
               }
               isCustomImg={active === 'custom'}>
-              <UploadImg htmlFor="imageInput"></UploadImg>
-              <input
-                onChange={event => addImageFileGalary(event)}
-                type="file"
-                id="imageInput"
-                accept="image/*"
-                css={{ display: 'none' }}
-              />
+              {showImage === '' && (
+                <>
+                  <UploadImg htmlFor="imageInput"></UploadImg>
+                  <input
+                    onChange={event => addImageFileGalary(event)}
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                    css={{ display: 'none' }}
+                  />
+                </>
+              )}
               {/* 직접 올린 이미지만 show 함. */}
               {isShowingGallery && (
                 <img
@@ -358,15 +356,19 @@ export default function ProfileEditModal({
                 showImageCamera !== '' && isCustomImg && setActive('camera')
               }
               isCustomImg={active === 'camera'}>
-              <UploadImg htmlFor="cameraInput"></UploadImg>
-              <input
-                onChange={event => addImageFileCamera(event)}
-                type="file"
-                id="cameraInput"
-                capture="environment"
-                accept="image/*"
-                css={{ display: 'none' }}
-              />
+              {showImageCamera === '' && (
+                <>
+                  <UploadImg htmlFor="cameraInput"></UploadImg>
+                  <input
+                    onChange={event => addImageFileCamera(event)}
+                    type="file"
+                    id="cameraInput"
+                    capture="environment"
+                    accept="image/*"
+                    css={{ display: 'none' }}
+                  />
+                </>
+              )}
               {/* 커스텀 이미지만 show 함. */}
 
               {showImageCamera !== '' && (
@@ -458,6 +460,7 @@ const DefaultProfile = styled.div<{ isSelected: boolean }>`
 const Profile = styled.img`
   display: block;
   object-fit: cover;
+  cursor: pointer;
   width: 100%;
   height: 100%;
 `
@@ -466,6 +469,7 @@ const ShowImg = styled.div<{ isCustomImg: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   max-height: 72px;
   aspect-ratio: 1 / 1;
   width: 100%;

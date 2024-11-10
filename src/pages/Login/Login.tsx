@@ -39,21 +39,25 @@ const Login = () => {
       <BottomArea>
         <Spacing size="2.3svh" />
         <LoginIconContainer>
-          <button onClick={() => handleSimpleLogin('naver')}>
+          <Button onClick={() => handleSimpleLogin('naver')}>
             <NaverIcon />
-          </button>
+          </Button>
 
-          <button onClick={() => handleSimpleLogin('kakao')}>
+          <Button onClick={() => handleSimpleLogin('kakao')}>
             <KakaoIcon />
-          </button>
-          <button onClick={() => handleSimpleLogin('google')}>
+          </Button>
+          <Button onClick={() => handleSimpleLogin('google')}>
             <GoogleIcon />
-          </button>
+          </Button>
         </LoginIconContainer>
       </BottomArea>
     </Container>
   )
 }
+
+const Button = styled.button`
+  cursor: pointer;
+`
 
 const Container = styled.div`
   height: 100svh;
