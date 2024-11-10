@@ -77,7 +77,13 @@ export default function EditMyPassword() {
     e.preventDefault()
     if (allSuccess) {
       try {
-        const checking = await verifyPasswordMutation(formData.password)
+        const result = await verifyPasswordMutation(formData.password)
+        if (result === undefined) {
+          throw new Error('비밀번호가 틀렸습니다.')
+        }
+
+        addPassword(formData.password)
+        navigate('/editMyPassword2')
         return
       } catch (e) {
         // 틀리면 500에러
@@ -103,27 +109,6 @@ export default function EditMyPassword() {
       }, 500)
     }
   }
-
-  useEffect(() => {
-    if (isVerified) {
-      addPassword(formData.password)
-      navigate('/editMyPassword2')
-    }
-  }, [isVerified])
-
-  useEffect(() => {
-    if (isVerifiedError) {
-      setShake(prev => ({
-        ...prev,
-        password: true
-      }))
-      setSuccess({ password: false })
-      setError(prev => ({ ...prev, password: '비밀 번호가 틀렸습니다' }))
-      setTimeout(() => {
-        setShake({ password: false })
-      }, 500)
-    }
-  }, [isVerifiedError])
 
   return (
     <>
