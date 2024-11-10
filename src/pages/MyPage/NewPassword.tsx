@@ -140,9 +140,11 @@ export default function NewPassword() {
   }
 
   useEffect(() => {
-    if (isUpatedPassword) addPassword(formData.password)
-    addIsPasswordUpdated(true)
-    navigate('/editMyInfo')
+    if (isUpatedPassword) {
+      addPassword(formData.password)
+      addIsPasswordUpdated(true)
+      navigate('/editMyInfo')
+    }
   }, [isUpatedPassword])
 
   useEffect(() => {
