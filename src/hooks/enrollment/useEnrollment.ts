@@ -70,7 +70,7 @@ const useEnrollment = (travelNumber: number) => {
     },
     onSuccess: () => {
       // 완료 수락 모달 메시지를 보여주기 위해 약간의 delay
-      console.log('123')
+
       setTimeout(() => {
         queryClient.invalidateQueries({
           queryKey: ['enrollment', travelNumber]

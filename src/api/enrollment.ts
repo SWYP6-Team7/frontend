@@ -1,13 +1,14 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 import { IPostEnrollment } from '@/model/enrollment'
+import { ERROR_MESSAGES } from '@/constants/errorMessages'
 // 신청자 - 참가 신청
 export async function postEnrollment(
   data: IPostEnrollment,
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.post('/api/enrollment', data, {
       headers: getJWTHeader(accessToken)
     })
@@ -21,7 +22,7 @@ export async function cancelEnrollment(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.delete(`/api/enrollment/${enrollmentNumber}`, {
       headers: getJWTHeader(accessToken)
     })
@@ -35,7 +36,7 @@ export async function getEnrollments(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.get(`/api/travel/${travelNumber}/enrollments`, {
       headers: getJWTHeader(accessToken)
     })
@@ -49,7 +50,7 @@ export async function getLastViewed(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     const response = await axiosInstance.get(
       `/api/travel/${travelNumber}/enrollments/last-viewed`,
       {
@@ -69,7 +70,7 @@ export async function putLastViewed(
   viewedAt: string
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.put(
       `/api/travel/${travelNumber}/enrollments/last-viewed`,
       {
@@ -90,7 +91,7 @@ export async function rejectEnrollment(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.put(
       `/api/enrollment/${enrollmentNumber}/rejection`,
       {},
@@ -108,7 +109,7 @@ export async function acceptEnrollment(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.put(
       `/api/enrollment/${enrollmentNumber}/acceptance`,
       {},
