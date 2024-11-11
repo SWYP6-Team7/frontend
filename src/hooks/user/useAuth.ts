@@ -103,12 +103,13 @@ const useAuth = () => {
     mutationFn: async (formData: IRegisterGoogle | IRegisterKakao) => {
       if (!checkNetworkConnection()) return
       const { social, ...data } = formData
+      const finalData = { ...data, ageGroup: data.agegroup }
       const path =
         formData.social === 'google'
           ? '/api/social/google/complete-signup'
           : '/api/social/kakao/complete-signup'
 
-      const response = await axiosInstance.put(path, data)
+      const response = await axiosInstance.put(path, finalData)
       return response.data
     },
     onSuccess: data => {
