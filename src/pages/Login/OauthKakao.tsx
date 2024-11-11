@@ -34,7 +34,7 @@ const OauthKakao = () => {
           if (user?.userStatus === 'PENDING' && user?.userNumber) {
             navigate('/registerForm')
             setSocialLogin('kakao', Number(user.userNumber) as number)
-          } else {
+          } else if (user?.userStatus === 'ABLE') {
             socialLogin({
               socialLoginId: user?.socialLoginId as string,
               email: user?.userEmail as string
