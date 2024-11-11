@@ -23,13 +23,11 @@ export const kakaoLogin = async () => {
       maxRedirects: 0
     })
 
-    if (response.headers.location) {
-      window.location.href = response.headers.location
+    if (response.data) {
+      window.location.href = response.data.redirectUrl
     }
   } catch (error: any) {
-    if (error.response?.status === 302) {
-      window.location.href = error.response.headers.location
-    }
+    console.log('kakao login error', error)
   }
 }
 
@@ -39,13 +37,11 @@ export const googleLogin = async () => {
       maxRedirects: 0
     })
 
-    if (response.headers.location) {
-      window.location.href = response.headers.location
+    if (response.data) {
+      window.location.href = response.data.redirectUrl
     }
   } catch (error: any) {
-    if (error.response?.status === 302) {
-      window.location.href = error.response.headers.location
-    }
+    console.log('google login error', error)
   }
 }
 
@@ -55,13 +51,11 @@ export const naverLogin = async () => {
       maxRedirects: 0
     })
 
-    if (response.headers.location) {
-      window.location.href = response.headers.location
+    if (response.data) {
+      window.location.href = response.data.redirectUrl
     }
   } catch (error: any) {
-    if (error.response?.status === 302) {
-      window.location.href = error.response.headers.location
-    }
+    console.log('naver login error', error)
   }
 }
 
