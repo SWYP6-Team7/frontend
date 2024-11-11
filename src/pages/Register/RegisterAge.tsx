@@ -46,7 +46,7 @@ const RegisterAge = () => {
     if (isSocialLoginNaver) {
       resetName()
       resetForm()
-      setSocialLogin(null)
+      setSocialLogin(null, null)
       navigate('/login')
     } else if (isSocialLoginKakao || isEmailRegister) {
       if (!email && !name) {

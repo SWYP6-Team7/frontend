@@ -69,7 +69,7 @@ const Header = () => {
       if (isRegisterAge) {
         resetAge()
         navigate('/login')
-        setSocialLogin(null)
+        setSocialLogin(null, null)
         return
       }
       if (isRegisterGender) {
@@ -94,7 +94,7 @@ const Header = () => {
       if (isRegisterForm) {
         navigate('/login')
         resetForm()
-        setSocialLogin(null)
+        setSocialLogin(null, null)
         return
       }
 

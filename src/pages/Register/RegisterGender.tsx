@@ -53,7 +53,7 @@ const RegisterGender = () => {
     if (isSocialLoginGoogle) {
       if (!agegroup) {
         resetAge()
-        setSocialLogin(null)
+        setSocialLogin(null, null)
         resetName()
         navigate('/login')
       }
@@ -68,7 +68,7 @@ const RegisterGender = () => {
       resetName()
       resetForm()
       resetAge()
-      setSocialLogin(null)
+      setSocialLogin(null, null)
       navigate('/login')
     } else {
       if (!email || !name || !agegroup) {
