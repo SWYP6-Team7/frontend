@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 const TripRecommendation = () => {
   const { data } = useTripList('recommend')
   const { name } = userStore()
-
+  console.log('recommend data', data)
   const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
   const cutTrips = trips?.length > 9 ? trips.slice(0, 9) : trips
 

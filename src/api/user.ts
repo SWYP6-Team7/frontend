@@ -17,6 +17,54 @@ export async function getUser(userId: number, accessToken: string) {
   }
 }
 
+export const kakaoLogin = async () => {
+  try {
+    const response = await axiosInstance.get('/api/login/oauth/kakao', {
+      maxRedirects: 0
+    })
+
+    if (response.headers.location) {
+      window.location.href = response.headers.location
+    }
+  } catch (error: any) {
+    if (error.response?.status === 302) {
+      window.location.href = error.response.headers.location
+    }
+  }
+}
+
+export const googleLogin = async () => {
+  try {
+    const response = await axiosInstance.get('/api/login/oauth/google', {
+      maxRedirects: 0
+    })
+
+    if (response.headers.location) {
+      window.location.href = response.headers.location
+    }
+  } catch (error: any) {
+    if (error.response?.status === 302) {
+      window.location.href = error.response.headers.location
+    }
+  }
+}
+
+export const naverLogin = async () => {
+  try {
+    const response = await axiosInstance.get('/api/login/oauth/naver', {
+      maxRedirects: 0
+    })
+
+    if (response.headers.location) {
+      window.location.href = response.headers.location
+    }
+  } catch (error: any) {
+    if (error.response?.status === 302) {
+      window.location.href = error.response.headers.location
+    }
+  }
+}
+
 export async function checkEmail(email: string) {
   try {
     const response = await axiosInstance.get('/api/users-email', {
