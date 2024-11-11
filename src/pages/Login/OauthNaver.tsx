@@ -32,10 +32,12 @@ const OauthNaver = () => {
       getToken('naver', code, state)
         .then(user => {
           console.log('user client', user)
-          socialLogin({
-            socialLoginId: user?.socialLoginId as string,
-            email: user?.email as string
-          })
+          if (user?.userStatus === 'ABLE') {
+            socialLogin({
+              socialLoginId: user?.socialLoginId as string,
+              email: user?.email as string
+            })
+          }
         })
         .catch(error => {
           alert(error)

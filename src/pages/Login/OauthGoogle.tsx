@@ -34,7 +34,7 @@ const OauthGoogle = () => {
           if (user?.userStatus === 'PENDING' && user?.userNumber) {
             navigate('/registerAge')
             setSocialLogin('google', Number(user.userNumber) as number)
-          } else {
+          } else if (user?.userStatus === 'ABLE') {
             socialLogin({
               socialLoginId: user?.socialLoginId as string,
               email: user?.userEmail as string
