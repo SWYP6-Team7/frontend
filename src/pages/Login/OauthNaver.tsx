@@ -37,6 +37,9 @@ const OauthNaver = () => {
               socialLoginId: user?.socialLoginId as string,
               email: user?.email as string
             })
+          } else {
+            alert('탈퇴한 계정입니다.')
+            navigate('/login')
           }
         })
         .catch(error => {
