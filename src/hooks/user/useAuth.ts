@@ -102,12 +102,13 @@ const useAuth = () => {
   const registerSocialMutation = useMutation({
     mutationFn: async (formData: IRegisterGoogle | IRegisterKakao) => {
       if (!checkNetworkConnection()) return
+      const { social, ...data } = formData
       const path =
         formData.social === 'google'
           ? '/api/social/google/complete-signup'
           : '/api/social/kakao/complete-signup'
 
-      const response = await axiosInstance.put(path, formData)
+      const response = await axiosInstance.put(path, data)
       return response.data
     },
     onSuccess: data => {
@@ -139,7 +140,7 @@ const useAuth = () => {
     onSuccess: () => {
       clearLoginData()
       resetData()
-      setSocialLogin(null)
+      setSocialLogin(null, null)
       navigate('/login')
       queryClient.clear()
     },

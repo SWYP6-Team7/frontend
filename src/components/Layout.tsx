@@ -92,7 +92,7 @@ const Layout = () => {
   ]
   const isAccessTokenNoNeedpages = (path: string) => {
     // 필요없는 페이지 인지 확인하는 함수.
-    return noNeedPages.some(url => url === path)
+    return noNeedPages.some(url => path.startsWith(url))
   }
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)

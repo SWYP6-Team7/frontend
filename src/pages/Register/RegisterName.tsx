@@ -38,7 +38,7 @@ const RegisterName = () => {
     if (!isEmailRegister) {
       resetName()
       resetForm()
-      setSocialLogin(null)
+      setSocialLogin(null, null)
       navigate('/login')
     }
     if (!email || !password) {

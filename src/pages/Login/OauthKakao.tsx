@@ -31,9 +31,9 @@ const OauthKakao = () => {
       getToken('kakao', code, state)
         .then(user => {
           console.log('user client', user)
-          if (user?.userStatus === 'PENDING') {
+          if (user?.userStatus === 'PENDING' && user?.userNumber) {
             navigate('/registerForm')
-            setSocialLogin('kakao')
+            setSocialLogin('kakao', Number(user.userNumber) as number)
           } else {
             socialLogin({
               socialLoginId: user?.socialLoginId as string,

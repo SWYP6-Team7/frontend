@@ -62,7 +62,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (isSocialLoginGoogle || isSocialLoginNaver) {
-      setSocialLogin(null)
+      setSocialLogin(null, null)
       navigate('/login')
     }
   }, [socialLogin])

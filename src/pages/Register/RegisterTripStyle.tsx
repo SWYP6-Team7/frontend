@@ -57,6 +57,7 @@ const RegisterTripStyle = () => {
     resetAge,
     resetForm,
     resetGender,
+    userNumber,
     resetName,
     socialLogin,
     setSocialLogin
@@ -70,7 +71,7 @@ const RegisterTripStyle = () => {
   useEffect(() => {
     if (isSocialLoginGoogle) {
       if (!agegroup || !sex) {
-        setSocialLogin(null)
+        setSocialLogin(null, null)
         resetName()
         resetForm()
         resetAge()
@@ -85,7 +86,7 @@ const RegisterTripStyle = () => {
         navigate('/registerForm')
       }
     } else if (isSocialLoginNaver) {
-      setSocialLogin(null)
+      setSocialLogin(null, null)
       resetName()
       resetForm()
       resetAge()
@@ -119,11 +120,11 @@ const RegisterTripStyle = () => {
       resetForm()
       resetAge()
       resetGender()
-      setSocialLogin(null)
+      setSocialLogin(null, null)
     }
     if (isSocialError) {
       alert(isSocialError)
-      setSocialLogin(null)
+      setSocialLogin(null, null)
       navigate('/login')
     }
   }, [isSocialError, isSocialSuccess])
@@ -165,7 +166,8 @@ const RegisterTripStyle = () => {
         gender: sex,
         agegroup: agegroup as string,
         preferredTags: tripStyleArray,
-        social: 'google'
+        social: 'google',
+        userNumber
       } as IRegisterGoogle)
     } else if (isSocialLoginKakao) {
       registerSocial({
@@ -173,7 +175,8 @@ const RegisterTripStyle = () => {
         email: email,
         agegroup: agegroup as string,
         preferredTags: tripStyleArray,
-        social: 'kakao'
+        social: 'kakao',
+        userNumber
       } as IRegisterKakao)
     }
   }
