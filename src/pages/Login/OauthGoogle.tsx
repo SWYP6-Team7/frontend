@@ -31,7 +31,7 @@ const OauthGoogle = () => {
       getToken('google', code, state)
         .then(user => {
           console.log('user client', user)
-          if (user?.userStatus === 'PENDING' && user?.number) {
+          if (user?.userStatus === 'PENDING' && user?.userNumber) {
             navigate('/registerAge')
             setSocialLogin('google', Number(user.userNumber) as number)
           } else {
