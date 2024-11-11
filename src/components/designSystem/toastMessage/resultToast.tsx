@@ -45,7 +45,7 @@ export default function ResultToast({
           />
           <path
             d="M5.40039 9.23268L8.33327 12.1656L13.2214 6.2998"
-            stroke="#3E8D00"
+            stroke={palette.비강조}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -79,7 +79,7 @@ const ToastMsg = styled.div<{ height: number }>`
   bottom: ${(props: { height: number }) => props.height}px;
   height: 42px;
   border-radius: 20px;
-  background-color: ${palette.keycolor};
+  background-color: ${palette.기본};
   padding: 10px 16px;
   display: flex;
   justify-content: center;
