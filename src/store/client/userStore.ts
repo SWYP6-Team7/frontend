@@ -5,7 +5,10 @@ type Gender = 'F' | 'M' | ''
 
 interface userState {
   socialLogin: null | 'kakao' | 'naver' | 'google'
-  setSocialLogin: (social: null | 'kakao' | 'naver' | 'google') => void
+  setSocialLogin: (
+    social: null | 'kakao' | 'naver' | 'google',
+    userNumber: number | null
+  ) => void
   email: string
   addEmail: (email: string) => void
   password: string
@@ -14,7 +17,7 @@ interface userState {
   addName: (name: string) => void
   sex: Gender
   addSex: (sex: Gender) => void
-
+  userNumber: number | null
   agegroup?: string
   addAgegroup: (agegroup: string) => void
   resetForm: () => void
@@ -26,8 +29,9 @@ interface userState {
 
 export const userStore = create<userState>(set => ({
   socialLogin: null,
-  setSocialLogin: social => {
-    set({ socialLogin: social })
+  userNumber: null,
+  setSocialLogin: (social, userNumber) => {
+    set({ socialLogin: social, userNumber })
   },
   name: '',
   addName: name => {
