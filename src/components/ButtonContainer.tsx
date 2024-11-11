@@ -9,6 +9,7 @@ interface ButtonContainerProps {
   paddingTop?: number
   blur?: string
   isWithdrawal?: boolean
+  backgroundColor?: string
 }
 
 const ButtonContainer = ({
@@ -16,7 +17,8 @@ const ButtonContainer = ({
   paddingBottom = 40,
   paddingTop = 16,
   blur,
-  isWithdrawal = false
+  isWithdrawal = false,
+  backgroundColor = palette.BG
 }: ButtonContainerProps) => {
   useKeyboardResizeEffect()
   return (
@@ -24,7 +26,8 @@ const ButtonContainer = ({
       isWithdrawal={isWithdrawal}
       paddingBottom={paddingBottom}
       paddingTop={paddingTop}
-      blur={blur}>
+      blur={blur}
+      backgroundColor={backgroundColor}>
       {children}
     </Container>
   )
@@ -35,6 +38,7 @@ const Container = styled.div<{
   paddingTop: number
   blur?: string
   isWithdrawal: boolean
+  backgroundColor: string
 }>`
   display: flex;
   flex-direction: ${props => props.isWithdrawal && 'column'};
@@ -52,7 +56,7 @@ const Container = styled.div<{
   }
 
   padding: 0 24px;
-  background-color: ${palette.BG};
+  background-color: ${props => props.backgroundColor};
   backdrop-filter: ${props => (props.blur ? props.blur : 'none')};
   padding-top: ${props => Math.abs(props.paddingTop / 844) * 100}svh;
   padding-bottom: ${props => Math.abs(props.paddingBottom / 844) * 100}svh;

@@ -9,15 +9,17 @@ import {
 } from '@/api/enrollment'
 import { IPostEnrollment } from '@/model/enrollment'
 import { authStore } from '@/store/client/authStore'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const useEnrollment = (travelNumber: number) => {
   const { userId, accessToken } = authStore()
+  const { hostUserCheck } = tripDetailStore()
   // 주최자 - 목록 조회
   const enrollmentList = useQuery({
     queryKey: ['enrollment', travelNumber],
     queryFn: () => getEnrollments(travelNumber, accessToken),
-    enabled: !!travelNumber && !!accessToken
+    enabled: !!travelNumber && !!accessToken && hostUserCheck
   })
   // 주최자 - 가장 최근에 봤던 글.
 
@@ -68,7 +70,7 @@ const useEnrollment = (travelNumber: number) => {
     },
     onSuccess: () => {
       // 완료 수락 모달 메시지를 보여주기 위해 약간의 delay
-      console.log('123')
+
       setTimeout(() => {
         queryClient.invalidateQueries({
           queryKey: ['enrollment', travelNumber]

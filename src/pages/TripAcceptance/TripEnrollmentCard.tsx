@@ -45,7 +45,7 @@ export default function TripEnrollmentCard({
   // 수락 후 완료 모달
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
 
-  // 현재 주최자 인가!!!! 그거 조심.
+  // 현재 유저가 주최자 인지 확인.
 
   useEffect(() => {
     if (isAcceptBtnClicked) {
@@ -163,7 +163,7 @@ const AcceptBtn = styled.div`
   gap: 10px;
   border-radius: 40px;
   opacity: 0px;
-  background-color: ${palette.keycolor};
+  background-color: ${palette.기본};
   color: ${palette.비강조4};
 `
 const NewMark = styled.div`
