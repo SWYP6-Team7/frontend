@@ -41,7 +41,6 @@ import Withdrawal from './pages/MyPage/Withdrawal'
 import NewPassword from './pages/MyPage/NewPassword'
 import Announcement from './pages/MyPage/Announcement'
 import RequestedTrip from './pages/MyTrip/RequestedTrip'
-import SocialRegisterGender from './pages/Register/SocialRegisterGender'
 
 export const router = createBrowserRouter([
   {
@@ -200,7 +199,6 @@ export const router = createBrowserRouter([
         path: 'trip/list',
         element: <TripList />
       },
-      { path: 'registerGender', element: <SocialRegisterGender /> },
       { path: 'trip/comment/:travelNumber', element: <TripComment /> },
       {
         path: 'terms',

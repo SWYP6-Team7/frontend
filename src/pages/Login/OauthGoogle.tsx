@@ -32,7 +32,7 @@ const OauthGoogle = () => {
         .then(user => {
           console.log('user client', user)
           if (user?.userStatus === 'PENDING') {
-            navigate('/registerGender')
+            navigate('/registerAge')
             setSocialLogin('google')
           } else {
             socialLogin({
