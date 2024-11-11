@@ -199,7 +199,7 @@ export const router = createBrowserRouter([
         path: 'trip/list',
         element: <TripList />
       },
-
+      { path: 'registerGender', element: <RegisterGender /> },
       { path: 'trip/comment/:travelNumber', element: <TripComment /> },
       {
         path: 'terms',
