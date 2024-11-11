@@ -142,7 +142,7 @@ export default function TripEdit() {
         onSuccess: () => {
           setEditToastShow(true)
 
-          navigate(`trip/detail/${travelNumber}`)
+          navigate(`/trip/detail/${travelNumber}`)
         },
         onError: e => {
           console.log(e, '여행 수정에 오류 발생')
