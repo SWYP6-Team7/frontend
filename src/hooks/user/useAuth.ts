@@ -73,6 +73,7 @@ const useAuth = () => {
         userId: Number(data.userId),
         accessToken: data.accessToken
       })
+      navigate('/')
     },
     onError: (error: any) => {
       console.error(error)
