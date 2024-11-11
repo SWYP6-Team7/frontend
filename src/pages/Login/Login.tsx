@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/api'
+import { googleLogin, kakaoLogin, naverLogin } from '@/api/user'
 import GoogleIcon from '@/components/icons/GoogleIcon'
 import KakaoIcon from '@/components/icons/KakaoIcon'
 import NaverIcon from '@/components/icons/NaverIcon'
@@ -15,13 +16,13 @@ const Login = () => {
   const handleSimpleLogin = async (domain: 'naver' | 'kakao' | 'google') => {
     switch (domain) {
       case 'naver':
-        await axiosInstance.get('/api/login/oauth/naver')
+        await naverLogin()
         return
       case 'kakao':
-        await axiosInstance.get('/api/login/oauth/kakao')
+        await kakaoLogin()
         return
       case 'google':
-        await axiosInstance.get('/api/login/oauth/google')
+        await googleLogin()
     }
   }
 
