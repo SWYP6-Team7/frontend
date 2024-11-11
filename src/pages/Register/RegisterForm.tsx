@@ -162,7 +162,7 @@ const RegisterForm = () => {
 
       addEmail(formData.email)
       if (isSocialLoginKakao) {
-        navigate('/registerGender')
+        navigate('/registerAge')
       } else {
         addPassword(formData.password)
         navigate('/registerName')
