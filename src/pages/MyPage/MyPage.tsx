@@ -101,7 +101,7 @@ export default function MyPage() {
           <Title>약관 및 정책</Title>
           <SmallTitle css={{ margin: 0 }}>
             <a
-              href={'/pdf/service_terms(241006).pdf'}
+              href={'/pdf/service_terms(241115).pdf'}
               target="_blank">
               서비스이용약관
             </a>

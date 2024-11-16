@@ -59,7 +59,7 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
           </button>
           <TermTitle>(필수) 서비스 이용 약관</TermTitle>
           <a
-            href="/pdf/service_terms(241006).pdf"
+            href="/pdf/service_terms(241115).pdf"
             target="_blank">
             <TermMore>보기</TermMore>
           </a>
