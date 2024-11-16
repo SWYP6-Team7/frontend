@@ -9,7 +9,7 @@ const Footer = () => {
         <Team>TEAM 모잉</Team>
         <Policy>
           <a
-            href={'/pdf/service_terms(241006).pdf'}
+            href={'/pdf/service_terms(241115).pdf'}
             target="_blank">
             서비스이용약관
           </a>

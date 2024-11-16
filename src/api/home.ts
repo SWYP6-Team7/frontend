@@ -19,23 +19,8 @@ export const getAvailableTrips = async (
     },
     headers: getJWTHeader(accessToken)
   })
-  let data = response.data as ITripList | undefined
-  if (response.data) {
-    data = {
-      ...response.data,
-      content: (response.data as ITripList).content.filter(
-        item =>
-          dayjs(item.registerDue, 'YYYY-MM-DD').diff(
-            dayjs().startOf('day'),
-            'day'
-          ) >= 0
-      )
-    }
-  } else {
-    return response.data
-  }
 
-  return data
+  return response.data
 }
 
 //api/home.ts
@@ -58,23 +43,8 @@ export const getRecommendationTrips = async (
     },
     headers: getJWTHeader(accessToken)
   })
-  let data = response.data as ITripList | undefined
-  if (response.data) {
-    data = {
-      ...response.data,
-      content: (response.data as ITripList).content.filter(
-        item =>
-          dayjs(item.registerDue, 'YYYY-MM-DD').diff(
-            dayjs().startOf('day'),
-            'day'
-          ) >= 0
-      )
-    }
-  } else {
-    return response.data
-  }
 
-  return data
+  return response.data
 }
 
 //api/home.ts
