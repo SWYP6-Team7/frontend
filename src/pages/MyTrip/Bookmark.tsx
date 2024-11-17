@@ -1,16 +1,12 @@
-import HorizonBoxLayout from '@/components/HorizonBoxLayout'
-import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
-import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import MyTripHorizonBoxLayout from '@/components/MyTripHorizonBoxLayout'
 import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React, { useState } from 'react'
+import React from 'react'
 import { useInView } from 'react-intersection-observer'
 import { Link } from 'react-router-dom'
-import { tuple } from 'zod'
 import BookmarkIconBtns from './BookmarkIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
@@ -20,7 +16,7 @@ import { daysAgo } from '@/utils/time'
 
 export default function Bookmark() {
   const [ref, inView] = useInView()
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
     useBookmark()
   useInfiniteScroll(() => {
     if (inView) {
@@ -54,7 +50,7 @@ export default function Bookmark() {
         data &&
         data.pages.map((page, pageIndex) => (
           <React.Fragment key={pageIndex}>
-            {page.content?.map((content, itemIndex) => (
+            {page.content?.map(content => (
               <BoxContainer key={content.travelNumber}>
                 <Link to={`/trip/detail/${content.travelNumber}`}>
                   <MyTripHorizonBoxLayout
@@ -115,16 +111,6 @@ const Container = styled.div<{ isNodata: boolean | undefined }>`
   justify-content: center;
   align-items: center;
 `
-
-const TopContainer = styled.div`
-  margin-bottom: 16px;
-`
-const Title = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
-`
-
 const BoxContainer = styled.div`
   position: relative;
   padding: 11px 16px;
