@@ -1,6 +1,4 @@
-import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import MyTripHorizonBoxLayout from '@/components/MyTripHorizonBoxLayout'
-import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import { useMyTrip } from '@/hooks/myTrip/useMyTrip'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { palette } from '@/styles/palette'
@@ -18,7 +16,7 @@ import { daysAgo } from '@/utils/time'
 
 export default function HostTrip() {
   const [ref, inView] = useInView()
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
     useMyTrip()
   useInfiniteScroll(() => {
     if (inView) {
@@ -113,16 +111,6 @@ const Container = styled.div<{ isNodata: boolean | undefined }>`
   justify-content: center;
   align-items: center;
 `
-
-const TopContainer = styled.div`
-  margin-bottom: 16px;
-`
-const Title = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
-`
-
 const BoxContainer = styled.div`
   padding: 11px 16px;
   gap: 8px;
