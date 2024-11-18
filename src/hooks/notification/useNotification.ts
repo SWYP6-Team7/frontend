@@ -7,7 +7,7 @@ import { authStore } from '@/store/client/authStore'
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
 const useNotification = () => {
-  const { userId, accessToken } = authStore()
+  const { accessToken } = authStore()
   const {
     data,
     isLoading,

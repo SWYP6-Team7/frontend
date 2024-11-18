@@ -1,3 +1,4 @@
+import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 interface BadgeProps {
   daysLeft?: number
@@ -9,6 +10,7 @@ interface BadgeProps {
   borderRadius?: string
   height?: string
   fontWeight?: string
+  isClose?: boolean
   padding?: string
 }
 // 사용 방식
@@ -23,6 +25,7 @@ interface BadgeProps {
 const Badge = ({
   daysLeft,
   text,
+  isClose = false,
   isDueDate = true,
   width = 'max-content',
   backgroundColor = 'rgba(62, 141, 0, 1)',
@@ -31,26 +34,35 @@ const Badge = ({
   height = '23px',
   fontWeight = '700'
 }: BadgeProps) => {
+  const bgColor = isClose ? palette.비강조2 : backgroundColor
+  const textColor = isClose ? 'white' : color
+
   return (
     <>
       {isDueDate ? (
         <BadgeContainer
           css={{
             width,
-            backgroundColor,
-            color,
+            backgroundColor: bgColor,
+            color: textColor,
             borderRadius,
             height,
             fontWeight
           }}>
-          {text}&nbsp;D-{daysLeft}
+          {isClose ? (
+            '마감'
+          ) : (
+            <>
+              {text}&nbsp;D-{daysLeft}
+            </>
+          )}
         </BadgeContainer>
       ) : (
         <BadgeContainer
           css={{
             width,
-            backgroundColor,
-            color,
+            backgroundColor: bgColor,
+            color: textColor,
             borderRadius,
             fontWeight,
             height
@@ -68,6 +80,7 @@ const BadgeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  min-weight: 69px;
   line-height: 14.32px;
   gap: 10px;
   text-align: center;
