@@ -77,6 +77,9 @@ const useAuth = () => {
     },
     onError: (error: any) => {
       console.error(error)
+      alert(
+        error?.error ? error.error : '소셜 로그인 과정에서 문제가 발생했습니다.'
+      )
       throw new RequestError(
         error?.error ? error.error : '소셜 로그인 과정에서 문제가 발생했습니다.'
       )
