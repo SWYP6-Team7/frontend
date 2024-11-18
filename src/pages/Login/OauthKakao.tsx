@@ -45,7 +45,11 @@ const OauthKakao = () => {
           }
         })
         .catch(error => {
-          alert(error)
+          alert(
+            error?.error
+              ? error.error
+              : '소셜 로그인 과정에서 문제가 발생했습니다.'
+          )
           navigate('/login')
         })
     }
