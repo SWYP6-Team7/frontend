@@ -19,11 +19,7 @@ const OauthNaver = () => {
       navigate('/')
       setSocialLogin('naver', null)
     }
-    if (socialLoginMutation.isError) {
-      alert(socialLoginMutation.isError)
-      navigate('/login')
-    }
-  }, [isSuccess, isError])
+  }, [isSuccess])
 
   useEffect(() => {
     if (code && state) {
