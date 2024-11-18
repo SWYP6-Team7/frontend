@@ -19,11 +19,7 @@ const OauthKakao = () => {
     if (socialLoginMutation.isSuccess) {
       navigate('/')
     }
-    if (socialLoginMutation.isError) {
-      alert(socialLoginMutation.isError)
-      navigate('/login')
-    }
-  }, [isSuccess, isError])
+  }, [isSuccess])
 
   useEffect(() => {
     console.log(code, state, 'code')

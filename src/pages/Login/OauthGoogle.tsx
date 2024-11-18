@@ -13,17 +13,13 @@ const OauthGoogle = () => {
   const state = searchParams.get('state')
   const { setSocialLogin } = userStore()
   const { socialLogin, socialLoginMutation } = useAuth()
-  const { isError, isSuccess } = socialLoginMutation
+  const { isSuccess } = socialLoginMutation
 
   useEffect(() => {
     if (socialLoginMutation.isSuccess) {
       navigate('/')
     }
-    if (socialLoginMutation.isError) {
-      alert(socialLoginMutation.isError)
-      navigate('/login')
-    }
-  }, [isSuccess, isError])
+  }, [isSuccess])
 
   useEffect(() => {
     console.log(code, state, 'code')
