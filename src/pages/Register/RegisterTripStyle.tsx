@@ -120,7 +120,6 @@ const RegisterTripStyle = () => {
       resetForm()
       resetAge()
       resetGender()
-      setSocialLogin(null, null)
     }
     if (isSocialError) {
       alert(isSocialError)
