@@ -83,7 +83,7 @@ const useAuth = () => {
 
       console.error('Error:', errorMessage)
       alert(errorMessage)
-
+      navigate('/login')
       throw new RequestError(errorMessage)
     }
   })
