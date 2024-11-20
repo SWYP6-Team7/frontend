@@ -47,18 +47,21 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
           <Content>{data.content}</Content>
         </TextContainer>
       </TopContainer>
-      {data?.travelDueDate && data?.travelTitle && (
-        <TravelContainer>
-          <Badge
-            text="마감"
-            backgroundColor={palette.keycolorBG}
-            color={palette.keycolor}
-            daysLeft={daysLeft(data.travelDueDate)}
-            isDueDate
-          />
-          <TravelTitle>{data.travelTitle}</TravelTitle>
-        </TravelContainer>
-      )}
+      {data?.travelTitle !== '멤버 댓글 알림' &&
+        data?.travelTitle !== '커뮤니티' && (
+          <TravelContainer>
+            <Badge
+              text="마감"
+              backgroundColor={palette.keycolorBG}
+              color={palette.keycolor}
+              daysLeft={
+                data?.travelDueDate ? daysLeft(data?.travelDueDate) : undefined
+              }
+              isDueDate={Boolean(data?.travelDueDate)}
+            />
+            <TravelTitle>{data.travelTitle}</TravelTitle>
+          </TravelContainer>
+        )}
     </Container>
   )
 }
