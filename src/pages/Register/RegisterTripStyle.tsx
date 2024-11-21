@@ -93,7 +93,11 @@ const RegisterTripStyle = () => {
       resetGender()
       navigate('/login')
     } else {
-      if (!isSuccess && (!email || !name || !agegroup || !sex)) {
+      if (
+        isRegisterEmail &&
+        !isSuccess &&
+        (!email || !name || !agegroup || !sex)
+      ) {
         resetName()
         resetForm()
         resetAge()
