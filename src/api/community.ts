@@ -13,6 +13,7 @@ import {
   UploadImage
 } from '@/store/client/imageStore'
 import { IListParams } from '@/hooks/useCommunity'
+import { ERROR_MESSAGES } from '@/constants/errorMessages'
 
 export async function getCommunities(
   accessToken: string,
@@ -56,7 +57,7 @@ export async function postCommunity(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     const result = await axiosInstance.post(`/api/community/posts`, data, {
       headers: getJWTHeader(accessToken!)
     })
@@ -77,7 +78,7 @@ export async function updateCommunity(
       title: data.title,
       content: data.content
     }
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     const result = await axiosInstance.put(
       `/api/community/posts/${communityNumber}`,
       contentData,
@@ -96,7 +97,7 @@ export async function deleteCommunity(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.delete(`/api/community/posts/${communityNumber}`, {
       headers: getJWTHeader(accessToken!)
     })
@@ -110,7 +111,7 @@ export async function likeCommunity(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.post(
       `/api/community/${communityNumber}/like`,
       {},
@@ -128,7 +129,7 @@ export async function unlikeCommunity(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     return axiosInstance.post(
       `/api/community/${communityNumber}/like`,
       {},
@@ -184,7 +185,7 @@ export async function updateImage(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     const result = await axiosInstance.put(
       `/api/community/${communityNumber}/images`,
       data,
@@ -204,7 +205,7 @@ export async function postImage(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
+    if (!accessToken) throw new Error(ERROR_MESSAGES.needLogin)
     const result = await axiosInstance.post(
       `/api/community/${communityNumber}/images`,
       data,
