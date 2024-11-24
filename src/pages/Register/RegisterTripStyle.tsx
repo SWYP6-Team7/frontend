@@ -38,13 +38,12 @@ const RegisterTripStyle = () => {
   const {
     registerEmail,
     registerEmailMutation: { isSuccess },
-    socialLogin: socialLoginApi,
-    socialLoginMutation,
+    registerSocialMutation: {
+      isSuccess: isSocialSuccess,
+      isError: isSocialError
+    },
     registerSocial
   } = useAuth()
-
-  const { isSuccess: isSocialSuccess, isError: isSocialError } =
-    socialLoginMutation
 
   const {
     addName,

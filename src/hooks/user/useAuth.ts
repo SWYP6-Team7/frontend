@@ -125,10 +125,6 @@ const useAuth = () => {
         userId: Number(data.userNumber),
         accessToken: data.accessToken
       })
-      socialLoginMutation.mutate({
-        email: data?.email as string,
-        socialLoginId: data?.socialLoginId as string
-      })
     },
     onError: (error: any) => {
       console.error(error)

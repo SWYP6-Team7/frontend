@@ -18,6 +18,8 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
   const onclickLink = () => {
     if (data.title === '멤버 댓글 알림') {
       navigate(`/trip/comment/${data.travelNumber}`)
+    } else if (data.title === '커뮤니티') {
+      navigate(`/community/detail/${data.travelNumber}`)
     } else {
       navigate(`/trip/detail/${data.travelNumber}`)
     }
@@ -57,6 +59,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
               daysLeft={
                 data?.travelDueDate ? daysLeft(data?.travelDueDate) : undefined
               }
+              isClose={Boolean(data?.travelDueDate)}
               isDueDate={Boolean(data?.travelDueDate)}
             />
             <TravelTitle>{data.travelTitle}</TravelTitle>
