@@ -1,18 +1,13 @@
 import styled from '@emotion/styled'
-import ArrowIcon from '@/components/icons/ArrowIcon'
 import { useNavigate } from 'react-router-dom'
-import Badge from '@/components/designSystem/Badge'
 import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import TitleContainer from './ContentTitleContainer'
-import { daysLeft, daysAgo } from '@/utils/time'
-import { palette } from '@/styles/palette'
-import { ITripList } from '@/model/trip'
+import { daysAgo } from '@/utils/time'
 import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
 import { IMyTripList } from '@/model/myTrip'
 const BookmarkContainer = () => {
   const navigate = useNavigate()
-  // 북마크 가져오기
 
   const { data } = useBookmark()
   const bookmarks = data?.pages[0].content as IMyTripList['content']
@@ -33,7 +28,7 @@ const BookmarkContainer = () => {
                 // 클릭시,여행 찾기 페이지로 이동 예정
                 onClick={() => navigate('/search/travel')}
                 src="/images/bookmarkPlus.png"
-                alt=""
+                alt="여행 찾기 페이지 이동 이미지"
               />
               <span>여행을 즐겨찾기 해보세요!</span>
             </Empty>
@@ -109,38 +104,7 @@ const BookmarkList = styled.div`
     display: none;
   }
 `
-const ImgBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  img {
-    width: 71px;
-    height: 71px;
-    border-radius: 50px;
-  }
-`
-const Info = styled.div`
-  width: 130px;
-  height: 69px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  div:nth-of-type(1) {
-    margin-bottom: 5px;
-  }
-  div:nth-of-type(2) {
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 22.4px;
-  }
-  div:nth-of-type(3) {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 16.71px;
-    color: rgba(132, 132, 132, 1);
-  }
-`
+
 const BookmarkBox = styled.div`
   margin-top: 32px;
 `

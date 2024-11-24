@@ -59,7 +59,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
               daysLeft={
                 data?.travelDueDate ? daysLeft(data?.travelDueDate) : undefined
               }
-              isClose={Boolean(data?.travelDueDate)}
+              isClose={!Boolean(data?.travelDueDate)}
               isDueDate={Boolean(data?.travelDueDate)}
             />
             <TravelTitle>{data.travelTitle}</TravelTitle>

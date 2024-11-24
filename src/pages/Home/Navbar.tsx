@@ -12,13 +12,6 @@ import React, { MouseEventHandler, useState } from 'react'
 import { NavLink, useLocation, useMatch, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
-  const [isHome, setIsHome] = useState(true)
-  const [isTrip, setIsTrip] = useState(false)
-  const [isBookmark, setIsBookmark] = useState(false)
-  const [isCommnunity, setIsCommnunity] = useState(false)
-  const [isMyPage, setIsMyPage] = useState(false)
-  const navigate = useNavigate()
-
   const { pathname } = useLocation()
   // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
   const pages = ['/', '/trip/list', '/myTrip', '/community', '/myPage']
@@ -41,8 +34,6 @@ const Navbar = () => {
       height={20}
     />
   ]
-  console.log(pathname)
-  // const iconNames = ['홈', '검색', '즐겨찾기', '커뮤니티', 'MY']
   const iconNames = ['홈', '여행 찾기', '내 여행', '커뮤니티', 'MY']
 
   const getIsActive = (page: string) => {
