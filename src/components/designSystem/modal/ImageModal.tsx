@@ -62,7 +62,7 @@ const TopText = styled.button`
   top: 6.2svh;
   left: 50%;
   transform: translateX(-50%);
-  ]font-size: 16px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 20px;
   color: white;

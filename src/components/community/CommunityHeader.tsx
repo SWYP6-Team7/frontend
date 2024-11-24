@@ -5,6 +5,7 @@ import AlarmIcon from '@/components/icons/AlarmIcon'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import MoreIcon from '@/components/icons/MoreIcon'
+import { COMMUNITY_MODAL_MESSAGES } from '@/constants/modalMessages'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import useCommunity from '@/hooks/useCommunity'
@@ -81,9 +82,9 @@ export default function CommunityHeader() {
       />
       <CheckingModal
         isModalOpen={isResultModalOpen}
-        modalMsg={`작성한 글을 삭제합니다.`}
-        modalTitle="정말 삭제할까요?"
-        modalButtonText="삭제하기"
+        modalMsg={COMMUNITY_MODAL_MESSAGES.deleteMessage}
+        modalTitle={COMMUNITY_MODAL_MESSAGES.askingDelete}
+        modalButtonText={COMMUNITY_MODAL_MESSAGES.delete}
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
