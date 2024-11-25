@@ -65,6 +65,7 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       setContent(community.data.content)
     }
   }, [isEdit, JSON.stringify(community.data)])
+
   const submitCommunity = () => {
     if (!value || title === '' || content === '') {
       return
@@ -182,7 +183,9 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
       }
     }
   }, [postMutation.isSuccess && postMutation.data, JSON.stringify(finalImages)])
+
   const handleRemoveValue = () => setTitle('')
+
   return (
     <>
       <Container>

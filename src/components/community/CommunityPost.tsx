@@ -10,6 +10,7 @@ import useCommunity from '@/hooks/useCommunity'
 import { useParams } from 'react-router-dom'
 import ResultToast from '../designSystem/toastMessage/resultToast'
 import { editStore } from '@/store/client/editStore'
+import { COMMUNITY_TOAST_MESSAGES } from '@/constants/toastMessages'
 
 const CommunityPost = () => {
   const { communityNumber } = useParams()
@@ -40,7 +41,7 @@ const CommunityPost = () => {
         height={120}
         isShow={editToastShow}
         setIsShow={setEditToastShow}
-        text="게시글이 수정되었어요."
+        text={COMMUNITY_TOAST_MESSAGES.editPost}
       />
       <MainContent>
         <BadgeContainer>

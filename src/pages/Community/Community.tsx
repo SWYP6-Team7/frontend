@@ -20,9 +20,10 @@ import EllipsisIcon from '@/components/icons/EllipsisIcon'
 import CommunityInfinite from '@/components/community/CommunityInfinite'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import { editStore } from '@/store/client/editStore'
+import { COMMUNITY_TOAST_MESSAGES } from '@/constants/toastMessages'
 
 const LIST = ['최신순', '추천순', '등록일순']
-
+const COMMUNITY_CATEGORY = ['전체', '잡담', '여행팁', '후기']
 const Community = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [fixed, setFixed] = useState(true)
@@ -63,7 +64,7 @@ const Community = () => {
         bottom="80px"
         isShow={removeToastShow}
         setIsShow={setRemoveToastShow}
-        text="게시글이 삭제되었어요."
+        text={COMMUNITY_TOAST_MESSAGES.deletePost}
       />
       <div>
         <SearchContainer>
@@ -95,7 +96,7 @@ const Community = () => {
             <CategoryList
               type={category}
               setType={onClickCategory}
-              list={['전체', '잡담', '여행팁', '후기']}
+              list={COMMUNITY_CATEGORY}
             />
           </SortHeader>
         </SortContainer>
