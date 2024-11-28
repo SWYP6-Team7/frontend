@@ -1,18 +1,11 @@
 import { getBookmark } from '@/api/bookmark'
 import { IMyTripList } from '@/model/myTrip'
-import { ITripList } from '@/model/trip'
 import { authStore } from '@/store/client/authStore'
-import {
-  useQuery,
-  useQueryClient,
-  useMutation,
-  useInfiniteQuery,
-  InfiniteData
-} from '@tanstack/react-query'
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query'
 import axios from 'axios'
 
 export const useBookmark = () => {
-  const { userId, accessToken } = authStore()
+  const { accessToken } = authStore()
   const {
     data,
     isLoading,
@@ -32,9 +25,14 @@ export const useBookmark = () => {
       return getBookmark(pageParam as number, accessToken!)
     },
     enabled: !!accessToken,
+    retry: Boolean(accessToken),
+    staleTime: 0,
     initialPageParam: 0,
     getNextPageParam: lastPage => {
-      if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
+      if (
+        lastPage?.page?.number + 1 === lastPage?.page?.totalPages ||
+        lastPage.page?.totalPages === 0
+      ) {
         return undefined
       } else {
         if (lastPage?.page?.number + 1 === 3) return undefined //30개까지만 요청

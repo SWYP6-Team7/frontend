@@ -50,31 +50,44 @@ export default function Bookmark() {
         data &&
         data.pages.map((page, pageIndex) => (
           <React.Fragment key={pageIndex}>
-            {page.content?.map(content => (
-              <BoxContainer key={content.travelNumber}>
-                <Link to={`/trip/detail/${content.travelNumber}`}>
-                  <MyTripHorizonBoxLayout
-                    travelNumber={content.travelNumber}
-                    userName={content.userName}
-                    location={content.location}
-                    title={content.title}
-                    tags={content.tags}
-                    total={content.maxPerson}
-                    daysAgo={daysAgo(content?.createdAt)}
-                    daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
-                      dayjs().startOf('day'),
-                      'day'
-                    )}
-                    recruits={content.nowPerson}
-                    bookmarked={content.bookmarked}
+            {page.content?.map(
+              ({
+                travelNumber,
+                userName,
+                location,
+                title,
+                tags,
+                maxPerson,
+                createdAt,
+                registerDue,
+                nowPerson,
+                bookmarked
+              }) => (
+                <BoxContainer key={travelNumber}>
+                  <Link to={`/trip/detail/${travelNumber}`}>
+                    <MyTripHorizonBoxLayout
+                      travelNumber={travelNumber}
+                      userName={userName}
+                      location={location}
+                      title={title}
+                      tags={tags}
+                      total={maxPerson}
+                      daysAgo={daysAgo(createdAt)}
+                      daysLeft={dayjs(registerDue, 'YYYY-MM-DD').diff(
+                        dayjs().startOf('day'),
+                        'day'
+                      )}
+                      recruits={nowPerson}
+                      bookmarked={bookmarked}
+                    />
+                  </Link>
+                  <BookmarkIconBtns
+                    travelNumber={travelNumber}
+                    bookmarked={bookmarked}
                   />
-                </Link>
-                <BookmarkIconBtns
-                  travelNumber={content.travelNumber}
-                  bookmarked={content.bookmarked}
-                />
-              </BoxContainer>
-            ))}
+                </BoxContainer>
+              )
+            )}
           </React.Fragment>
         ))}
 

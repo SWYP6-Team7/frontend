@@ -32,9 +32,14 @@ export const useMyTrip = () => {
       return getMyTrips(pageParam as number, accessToken!)
     },
     enabled: !!accessToken,
+    retry: Boolean(accessToken),
+    staleTime: 0,
     initialPageParam: 0,
     getNextPageParam: lastPage => {
-      if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
+      if (
+        lastPage?.page?.number + 1 === lastPage?.page?.totalPages ||
+        lastPage?.page?.totalPages === 0
+      ) {
         return undefined
       } else {
         if (lastPage?.page?.number + 1 === 3) return undefined //30개까지만 요청

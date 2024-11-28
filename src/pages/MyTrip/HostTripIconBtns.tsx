@@ -37,11 +37,11 @@ export default function HostTripIconBtns({
   const [threeDotsClick, setThreeDotsClick] = useState(false)
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
 
-  const {
-    postBookmarkMutation,
-    deleteBookmarkMutation,
-    isBookmarkDeleteSuccess
-  } = useUpdateBookmark(accessToken!, userId!, travelNumber)
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    travelNumber
+  )
   const bookmarkClickHandler = () => {
     if (bookmarked) {
       setBookmarkModalOpen(true)

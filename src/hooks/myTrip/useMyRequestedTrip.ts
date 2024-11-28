@@ -1,7 +1,5 @@
-import { deleteMyApplyTrips, getApplyTrips, getMyTrips } from '@/api/myTrip'
 import { deleteRequestedTrips, getRequestedTrips } from '@/api/requestedTrip'
 import { IMyTripList } from '@/model/myTrip'
-import { ITripList } from '@/model/trip'
 import { authStore } from '@/store/client/authStore'
 import {
   useMutation,
@@ -33,9 +31,14 @@ export const useRequestedTrip = () => {
       return getRequestedTrips(pageParam as number, accessToken!)
     },
     enabled: !!accessToken,
+    retry: Boolean(accessToken),
+    staleTime: 0,
     initialPageParam: 0,
     getNextPageParam: lastPage => {
-      if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
+      if (
+        lastPage?.page?.number + 1 === lastPage?.page?.totalPages ||
+        lastPage?.page?.totalPages === 0
+      ) {
         return undefined
       } else {
         if (lastPage?.page?.number + 1 === 3) return undefined //30개까지만 요청
