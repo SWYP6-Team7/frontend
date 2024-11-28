@@ -5,14 +5,11 @@ import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import MoreIcon from '@/components/icons/MoreIcon'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
-import useEnrollment from '@/hooks/enrollment/useEnrollment'
 import { useMyApplyTrip } from '@/hooks/myTrip/useMyApplyTrip'
-import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 interface ApplyTripIconBtnsProps {
   bookmarked: boolean
@@ -22,7 +19,6 @@ export default function ApplyTripIconBtns({
   bookmarked,
   travelNumber
 }: ApplyTripIconBtnsProps) {
-  const navigate = useNavigate()
   const { accessToken, userId } = authStore()
   const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false)
   const [bookmarkCancelClicked, setBookmarkCancelClicked] = useState(false)
@@ -31,7 +27,6 @@ export default function ApplyTripIconBtns({
   //  내가 참가한 여행
   const { deleteMyApplyTripsMutation } = useMyApplyTrip()
 
-  const { deleteTripDetailMutation } = useTripDetail(travelNumber)
   // 모달 관리.
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
@@ -40,11 +35,11 @@ export default function ApplyTripIconBtns({
   const [threeDotsClick, setThreeDotsClick] = useState(false)
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
 
-  const {
-    postBookmarkMutation,
-    deleteBookmarkMutation,
-    isBookmarkDeleteSuccess
-  } = useUpdateBookmark(accessToken!, userId!, travelNumber)
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    travelNumber
+  )
   const bookmarkClickHandler = () => {
     if (bookmarked) {
       setBookmarkModalOpen(true)

@@ -1,28 +1,20 @@
-import HorizonBoxLayout from '@/components/HorizonBoxLayout'
-import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
-import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import MyTripHorizonBoxLayout from '@/components/MyTripHorizonBoxLayout'
-import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React, { useState } from 'react'
+import React from 'react'
 import { useInView } from 'react-intersection-observer'
 import { Link } from 'react-router-dom'
-import { tuple } from 'zod'
 import BookmarkIconBtns from './BookmarkIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
-
 import { IMyTripList } from '@/model/myTrip'
-
 import { daysAgo } from '@/utils/time'
 import { useRequestedTrip } from '@/hooks/myTrip/useMyRequestedTrip'
-import Spacing from '@/components/Spacing'
 
 export default function RequestedTrip() {
   const [ref, inView] = useInView()
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
     useRequestedTrip()
   useInfiniteScroll(() => {
     if (inView) {
@@ -56,31 +48,44 @@ export default function RequestedTrip() {
         data &&
         data.pages.map((page, pageIndex) => (
           <React.Fragment key={pageIndex}>
-            {page.content?.map((content, itemIndex) => (
-              <BoxContainer key={content.travelNumber}>
-                <Link to={`/trip/detail/${content.travelNumber}`}>
-                  <MyTripHorizonBoxLayout
-                    travelNumber={content.travelNumber}
-                    userName={content.userName}
-                    location={content.location}
-                    title={content.title}
-                    tags={content.tags}
-                    total={content.maxPerson}
-                    daysAgo={daysAgo(content?.createdAt)}
-                    daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
-                      dayjs().startOf('day'),
-                      'day'
-                    )}
-                    recruits={content.nowPerson}
-                    bookmarked={content.bookmarked}
+            {page.content?.map(
+              ({
+                travelNumber,
+                userName,
+                location,
+                title,
+                tags,
+                maxPerson,
+                nowPerson,
+                createdAt,
+                registerDue,
+                bookmarked
+              }) => (
+                <BoxContainer key={travelNumber}>
+                  <Link to={`/trip/detail/${travelNumber}`}>
+                    <MyTripHorizonBoxLayout
+                      travelNumber={travelNumber}
+                      userName={userName}
+                      location={location}
+                      title={title}
+                      tags={tags}
+                      total={maxPerson}
+                      daysAgo={daysAgo(createdAt)}
+                      daysLeft={dayjs(registerDue, 'YYYY-MM-DD').diff(
+                        dayjs().startOf('day'),
+                        'day'
+                      )}
+                      recruits={nowPerson}
+                      bookmarked={bookmarked}
+                    />
+                  </Link>
+                  <BookmarkIconBtns
+                    travelNumber={travelNumber}
+                    bookmarked={bookmarked}
                   />
-                </Link>
-                <BookmarkIconBtns
-                  travelNumber={content.travelNumber}
-                  bookmarked={content.bookmarked}
-                />
-              </BoxContainer>
-            ))}
+                </BoxContainer>
+              )
+            )}
           </React.Fragment>
         ))}
 

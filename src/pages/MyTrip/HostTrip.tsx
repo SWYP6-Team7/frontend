@@ -51,31 +51,44 @@ export default function HostTrip() {
         data &&
         data.pages.map((page, pageIndex) => (
           <React.Fragment key={pageIndex}>
-            {page.content?.map((content, itemIndex) => (
-              <BoxContainer key={content.travelNumber}>
-                <Link to={`/trip/detail/${content.travelNumber}`}>
-                  <MyTripHorizonBoxLayout
-                    travelNumber={content.travelNumber}
-                    location={content.location}
-                    userName={content.userName}
-                    title={content.title}
-                    tags={content.tags}
-                    total={content.maxPerson}
-                    daysAgo={daysAgo(content?.createdAt)}
-                    daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
-                      dayjs().startOf('day'),
-                      'day'
-                    )}
-                    recruits={content.nowPerson}
-                    bookmarked={content.bookmarked}
+            {page.content?.map(
+              ({
+                travelNumber,
+                location,
+                userName,
+                title,
+                tags,
+                maxPerson,
+                createdAt,
+                registerDue,
+                bookmarked,
+                nowPerson
+              }) => (
+                <BoxContainer key={travelNumber}>
+                  <Link to={`/trip/detail/${travelNumber}`}>
+                    <MyTripHorizonBoxLayout
+                      travelNumber={travelNumber}
+                      location={location}
+                      userName={userName}
+                      title={title}
+                      tags={tags}
+                      total={maxPerson}
+                      daysAgo={daysAgo(createdAt)}
+                      daysLeft={dayjs(registerDue, 'YYYY-MM-DD').diff(
+                        dayjs().startOf('day'),
+                        'day'
+                      )}
+                      recruits={nowPerson}
+                      bookmarked={bookmarked}
+                    />
+                  </Link>
+                  <HostTripIconBtns
+                    travelNumber={travelNumber}
+                    bookmarked={bookmarked}
                   />
-                </Link>
-                <HostTripIconBtns
-                  travelNumber={content.travelNumber}
-                  bookmarked={content.bookmarked}
-                />
-              </BoxContainer>
-            ))}
+                </BoxContainer>
+              )
+            )}
           </React.Fragment>
         ))}
       <div

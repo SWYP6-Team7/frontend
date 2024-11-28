@@ -20,11 +20,11 @@ export default function BookmarkIconBtns({
   const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false)
   const [bookmarkCancelClicked, setBookmarkCancelClicked] = useState(false)
   const [bookmarkCancelToast, setBookmarkCancelToast] = useState(false)
-  const {
-    postBookmarkMutation,
-    deleteBookmarkMutation,
-    isBookmarkDeleteSuccess
-  } = useUpdateBookmark(accessToken!, userId!, travelNumber)
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    travelNumber
+  )
   const bookmarkClickHandler = () => {
     if (bookmarked) {
       setBookmarkModalOpen(true)
@@ -44,7 +44,6 @@ export default function BookmarkIconBtns({
     }
   }, [bookmarked, bookmarkCancelClicked])
 
-  const editOrDeleteClickHandler = () => {}
   return (
     <div>
       <HeartBtn
