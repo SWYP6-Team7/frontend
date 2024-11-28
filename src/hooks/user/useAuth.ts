@@ -76,8 +76,15 @@ const useAuth = () => {
       navigate('/')
     },
     onError: (error: any) => {
-      console.error(error)
-      throw new RequestError(error)
+      const errorMessage =
+        error?.response?.data?.error ||
+        error?.response?.data?.message ||
+        '소셜 로그인 과정에서 문제가 발생했습니다.'
+
+      console.error('Error:', errorMessage)
+      alert(errorMessage)
+      navigate('/login')
+      throw new RequestError(errorMessage)
     }
   })
 
@@ -117,10 +124,6 @@ const useAuth = () => {
       setLoginData({
         userId: Number(data.userNumber),
         accessToken: data.accessToken
-      })
-      socialLoginMutation.mutate({
-        email: data?.email as string,
-        socialLoginId: data?.socialLoginId as string
       })
     },
     onError: (error: any) => {

@@ -124,11 +124,15 @@ const SearchCommunity = () => {
 
               {data.pages.map((page, pageIndex) => (
                 <React.Fragment key={pageIndex}>
-                  {page.content.map((content, itemIndex) => (
-                    <Link to={`/community/detail/${content.postNumber}`}>
-                      <CommunityItem data={content} />
-                    </Link>
-                  ))}
+                  {page.content.map((content, itemIndex) =>
+                    content ? (
+                      <Link to={`/community/detail/${content.postNumber}`}>
+                        <CommunityItem data={content} />
+                      </Link>
+                    ) : (
+                      <div>오류가 발생했습니다.</div>
+                    )
+                  )}
                 </React.Fragment>
               ))}
 

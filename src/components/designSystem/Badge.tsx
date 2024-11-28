@@ -80,7 +80,7 @@ const BadgeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-weight: 69px;
+  min-width: max-content;
   line-height: 14.32px;
   gap: 10px;
   text-align: center;

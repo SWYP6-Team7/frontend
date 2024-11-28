@@ -38,13 +38,12 @@ const RegisterTripStyle = () => {
   const {
     registerEmail,
     registerEmailMutation: { isSuccess },
-    socialLogin: socialLoginApi,
-    socialLoginMutation,
+    registerSocialMutation: {
+      isSuccess: isSocialSuccess,
+      isError: isSocialError
+    },
     registerSocial
   } = useAuth()
-
-  const { isSuccess: isSocialSuccess, isError: isSocialError } =
-    socialLoginMutation
 
   const {
     addName,
@@ -93,7 +92,11 @@ const RegisterTripStyle = () => {
       resetGender()
       navigate('/login')
     } else {
-      if (!isSuccess && (!email || !name || !agegroup || !sex)) {
+      if (
+        isRegisterEmail &&
+        !isSuccess &&
+        (!email || !name || !agegroup || !sex)
+      ) {
         resetName()
         resetForm()
         resetAge()
@@ -120,7 +123,6 @@ const RegisterTripStyle = () => {
       resetForm()
       resetAge()
       resetGender()
-      setSocialLogin(null, null)
     }
     if (isSocialError) {
       alert(isSocialError)

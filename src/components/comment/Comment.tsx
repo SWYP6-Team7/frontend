@@ -15,6 +15,7 @@ import FullHeartIcon from '../icons/FullHeartIcon'
 import useComment from '@/hooks/comment/useComment'
 import { authStore } from '@/store/client/authStore'
 import { commentStore } from '@/store/client/commentStore'
+import { COMMENT_MODAL_MESSAGES } from '@/constants/modalMessages'
 
 interface CommentProps {
   comment: IComment
@@ -167,9 +168,9 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
       />
       <CheckingModal
         isModalOpen={isResultModalOpen}
-        modalMsg={`작성된 댓글을 삭제할까요?`}
-        modalTitle="댓글 삭제"
-        modalButtonText="삭제하기"
+        modalMsg={COMMENT_MODAL_MESSAGES.deleteMessage}
+        modalTitle={COMMENT_MODAL_MESSAGES.title}
+        modalButtonText={COMMENT_MODAL_MESSAGES.text}
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
