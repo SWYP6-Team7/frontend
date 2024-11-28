@@ -29,8 +29,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
       <TopContainer>
         {data.title === '커뮤니티' ? (
           <CommunityNotification />
-        ) : data.title === '여행 신청 알림' ||
-          data.title === '멤버 댓글 알림' ? (
+        ) : Boolean(data.travelHostUser) ? (
           <TripNotificationIcon
             heartColor={palette.keycolorBG}
             circleColor={palette.keycolor}
