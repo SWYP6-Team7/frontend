@@ -4,6 +4,7 @@ export interface INotificationContent {
   content: string
   isRead: boolean
   travelNumber?: number
+  travelHostUser?: boolean
   travelTitle?: string
   travelDueDate?: string
 }
