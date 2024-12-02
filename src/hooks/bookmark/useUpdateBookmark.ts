@@ -16,6 +16,9 @@ export function useUpdateBookmark(
         queryKey: ['bookmarks']
       }),
         queryClient.invalidateQueries({
+          queryKey: ['search']
+        }),
+        queryClient.invalidateQueries({
           queryKey: ['myTrips']
         }),
         queryClient.invalidateQueries({
