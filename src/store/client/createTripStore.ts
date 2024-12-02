@@ -43,7 +43,7 @@ export const createTripStore = create<CreateTripState>(set => ({
   addMaxPerson: maxPerson => {
     set({ maxPerson })
   },
-  genderType: '',
+  genderType: '모두',
   addGenderType: genderType => {
     set({ genderType })
   },
