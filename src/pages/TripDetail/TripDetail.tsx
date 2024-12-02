@@ -28,6 +28,7 @@ import useComment from '@/hooks/comment/useComment'
 import ResultModal from '@/components/designSystem/modal/ResultModal'
 import NoticeModal from '@/components/designSystem/modal/NoticeModal'
 import { editStore } from '@/store/client/editStore'
+import Opengraph from '@/components/Opengraph'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 
 interface Companion {
@@ -170,6 +171,11 @@ export default function TripDetail() {
 
   return (
     <>
+      <Opengraph
+        title={title}
+        description={details}
+        image={'https://www.moing.shop/images/tokyo.png'}
+      />
       <ResultToast
         height={120}
         isShow={editToastShow}
