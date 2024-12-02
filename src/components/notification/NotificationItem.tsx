@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import RoundedImage from '../designSystem/profile/RoundedImage'
 import { palette } from '@/styles/palette'
-import { daysLeft, formatTime } from '@/utils/time'
+import { daysAgo, daysLeft, formatTime } from '@/utils/time'
 import Badge from '../designSystem/Badge'
 import { useNavigate } from 'react-router-dom'
 import CommunityNotification from '../icons/CommunityNotification'
@@ -41,7 +41,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
           <InfoContainer>
             <div>{data.title}</div>
             <TimeContainer>
-              <div>{formatTime(data.createdAt)}</div>
+              <div>{daysAgo(data.createdAt)}</div>
               {!data.isRead && <RedDot />}
             </TimeContainer>
           </InfoContainer>

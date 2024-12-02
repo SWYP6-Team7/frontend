@@ -10,12 +10,12 @@ export async function getSearch(
   filters: Filters,
   accessToken: string
 ) {
-  const { tags, period, person, gender, location, sort } = filters
+  const { tags, period, person, gender, location, sortingType } = filters
   const response = await axiosInstance.get('/api/travels/search', {
     params: {
       keyword: keyword,
       page: pageParams,
-      sort,
+      sortingType,
       tags: tags.join(','),
       period: period.join(','),
       person: person.join(','),
@@ -25,22 +25,8 @@ export async function getSearch(
     headers: getJWTHeader(accessToken)
   })
   let data = response.data as ISearchData | undefined
-  if (response.data) {
-    data = {
-      ...response.data,
-      content: (response.data as ISearchData).content.filter(
-        item =>
-          dayjs(item.registerDue, 'YYYY-MM-DD').diff(
-            dayjs().startOf('day'),
-            'day'
-          ) >= 0
-      )
-    }
-  } else {
-    return response.data
-  }
 
-  return data
+  return response.data
 }
 
 export async function getSearchRelation(keyword: string, accessToken: string) {
