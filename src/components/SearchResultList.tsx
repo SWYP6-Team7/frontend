@@ -57,7 +57,7 @@ const SearchResultList = ({
                 tags={content.tags}
                 location={content.location}
                 total={content.maxPerson}
-                daysAgo={daysAgo(content.createdAt)}
+                daysAgo={formatTime(content.createdAt)}
                 daysLeft={dayjs(content.registerDue, 'YYYY-MM-DD').diff(
                   dayjs().startOf('day'),
                   'day'

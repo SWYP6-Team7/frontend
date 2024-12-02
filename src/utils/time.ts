@@ -18,7 +18,7 @@ dayjs.updateLocale('en', {
     hh: '%d시간 ',
     d: '어제',
     dd: '%d일 ',
-    M: '1달 전',
+    M: '1달',
     MM: '%d달 ',
     y: '1년 ',
     yy: '%d년 '

@@ -10,12 +10,12 @@ export async function getSearch(
   filters: Filters,
   accessToken: string
 ) {
-  const { tags, period, person, gender, location, sortingType } = filters
+  const { tags, period, person, gender, location, sorting } = filters
   const response = await axiosInstance.get('/api/travels/search', {
     params: {
       keyword: keyword,
       page: pageParams,
-      sortingType,
+      sorting,
       tags: tags.join(','),
       period: period.join(','),
       person: person.join(','),
