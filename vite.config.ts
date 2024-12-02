@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import prerender from '@prerenderer/rollup-plugin'
+// import prerender from '@prerenderer/rollup-plugin'
 // import { getAvailableTrips } from '@/api/home'
 
 // interface Travel {
@@ -45,14 +45,6 @@ export default defineConfig({
   plugins: [
     react({
       jsxImportSource: '@emotion/react'
-    }),
-    prerender({
-      routes: ['/trip/detail/132'],
-      renderer: '@prerenderer/renderer-puppeteer',
-      rendererOptions: {
-        maxConcurrentRoutes: 1,
-        renderAfterTime: 500
-      }
     })
   ],
   root: './src', // src 폴더를 루트로
