@@ -71,7 +71,9 @@ const HorizonBoxLayout = ({
             text={'마감'}
             backgroundColor={'rgba(227, 239, 217, 1)'}
             color={`${palette.keycolor}`}
-            daysLeft={daysLeft}
+            daysLeft={daysLeft >= 0 ? daysLeft : undefined}
+            isClose={!Boolean(daysLeft >= 0)}
+            isDueDate={Boolean(daysLeft >= 0)}
           />
           {bookmarkPosition === 'top' && bookmarkNeed && (
             <BookmarkButton

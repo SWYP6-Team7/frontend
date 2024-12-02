@@ -41,7 +41,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
           <InfoContainer>
             <div>{data.title}</div>
             <TimeContainer>
-              <div>{daysAgo(data.createdAt)}</div>
+              <div>{formatTime(data.createdAt)}</div>
               {!data.isRead && <RedDot />}
             </TimeContainer>
           </InfoContainer>

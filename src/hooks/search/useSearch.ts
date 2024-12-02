@@ -14,7 +14,7 @@ export interface Filters {
   tags: string[]
   location: string[]
   gender: string[]
-  sortingType: string
+  sorting: string
   person: string[]
   period: string[]
 }
@@ -25,7 +25,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   console.log('access2', accessToken)
   const filters = {
     tags: style,
-    sortingType: sort,
+    sorting: sort,
     location: place,
     gender,
     person: people,
