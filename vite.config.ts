@@ -2,44 +2,44 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import prerender from '@prerenderer/rollup-plugin'
-import { getAvailableTrips } from '@/api/home'
+// import { getAvailableTrips } from '@/api/home'
 
-interface Travel {
-  travelNumber: number
-  title: string
-  userNumber: number
-  userName: string
-  tags: string[]
-  nowPerson: number
-  maxPerson: number
-  createdAt: string
-  registerDue: string
-  location: string
-  bookmarked: boolean
-}
+// interface Travel {
+//   travelNumber: number
+//   title: string
+//   userNumber: number
+//   userName: string
+//   tags: string[]
+//   nowPerson: number
+//   maxPerson: number
+//   createdAt: string
+//   registerDue: string
+//   location: string
+//   bookmarked: boolean
+// }
 
-async function generateTripRoutes(accessToken: string) {
-  const staticRoutes = ['/']
-  const dynamicRoutes = await fetchTripIds(accessToken)
-  return staticRoutes.concat(dynamicRoutes)
-}
+// async function generateTripRoutes(accessToken: string) {
+//   const staticRoutes = ['/']
+//   const dynamicRoutes = await fetchTripIds(accessToken)
+//   return staticRoutes.concat(dynamicRoutes)
+// }
 
-async function fetchTripIds(accessToken: string) {
-  try {
-    const response = await getAvailableTrips(1, accessToken)
+// async function fetchTripIds(accessToken: string) {
+//   try {
+//     const response = await getAvailableTrips(1, accessToken)
 
-    const trips: Travel[] = response.content
+//     const trips: Travel[] = response.content
 
-    const validTripRoutes = trips.map(
-      (trip: Travel) => `/trip/detail/${trip.travelNumber}`
-    )
+//     const validTripRoutes = trips.map(
+//       (trip: Travel) => `/trip/detail/${trip.travelNumber}`
+//     )
 
-    return validTripRoutes
-  } catch (error) {
-    console.error('Error fetching trip IDs:', error)
-    return []
-  }
-}
+//     return validTripRoutes
+//   } catch (error) {
+//     console.error('Error fetching trip IDs:', error)
+//     return []
+//   }
+// }
 
 export default defineConfig({
   plugins: [
