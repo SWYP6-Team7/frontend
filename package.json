@@ -37,6 +37,8 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@prerenderer/renderer-puppeteer": "^1.2.4",
+    "@prerenderer/rollup-plugin": "^0.3.12",
     "@types/node": "^22.5.1",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
@@ -50,7 +52,8 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.35.0",
     "msw": "^2.4.2",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "puppeteer": "^23.9.0"
   },
   "msw": {
     "workerDirectory": [
