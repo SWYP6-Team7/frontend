@@ -2,7 +2,6 @@ import { ISearchData } from '@/model/search'
 import { axiosInstance } from '.'
 import { Filters } from '@/hooks/search/useSearch'
 import { getJWTHeader } from '@/utils/user'
-import { daysAgo } from '@/utils/time'
 import dayjs from 'dayjs'
 
 export async function getSearch(
@@ -11,11 +10,12 @@ export async function getSearch(
   filters: Filters,
   accessToken: string
 ) {
-  const { tags, period, person, gender, location } = filters
+  const { tags, period, person, gender, location, sort } = filters
   const response = await axiosInstance.get('/api/travels/search', {
     params: {
       keyword: keyword,
       page: pageParams,
+      sort,
       tags: tags.join(','),
       period: period.join(','),
       person: person.join(','),

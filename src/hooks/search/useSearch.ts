@@ -14,6 +14,7 @@ export interface Filters {
   tags: string[]
   location: string[]
   gender: string[]
+  sort: string
   person: string[]
   period: string[]
 }
