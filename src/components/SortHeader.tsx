@@ -93,7 +93,7 @@ const ShowSortButton = styled.div`
 `
 
 const SortButton = styled.button<{ selected: boolean }>`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 19.09px;
   width: 100%;

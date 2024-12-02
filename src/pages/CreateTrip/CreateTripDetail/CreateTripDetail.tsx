@@ -119,7 +119,7 @@ const CreateTripDetail = () => {
       setActiveDuration([false, true, false, false])
     } else if (periodType === '3~4주') {
       setActiveDuration([false, false, true, false])
-    } else {
+    } else if (periodType === '한 달 이상') {
       setActiveDuration([false, false, false, true])
     }
   }, [periodType])
