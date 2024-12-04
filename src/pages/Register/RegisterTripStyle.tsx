@@ -192,7 +192,7 @@ const RegisterTripStyle = () => {
       </StepIconContainer>
       <TripStyleStep>
         <ContentName>
-          <UserName>{tempName && name}</UserName> 님은 어떤
+          <UserName>{tempName ?? name}</UserName> 님은 어떤
         </ContentName>
 
         <ContentText>어떤 여행을 선호하세요?</ContentText>
