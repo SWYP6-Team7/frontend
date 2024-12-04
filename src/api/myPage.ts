@@ -14,6 +14,7 @@ export const intialPostMyProfileImage = async (accessToken: string) => {
     const response = await axiosInstance.post('/api/profile/image', null, {
       headers: getJWTHeader(accessToken)
     })
+    return response.data
   } catch (err) {
     console.log(err, '초기 이미지 등록 오류')
   }
