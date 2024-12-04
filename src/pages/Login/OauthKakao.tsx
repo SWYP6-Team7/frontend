@@ -11,7 +11,7 @@ const OauthKakao = () => {
   const searchParams = new URLSearchParams(location.search)
   const code = searchParams.get('code') // 카카오에서 받은 인증 코드
   const state = searchParams.get('state')
-  const { setSocialLogin } = userStore()
+  const { setSocialLogin, setTempName } = userStore()
   const { socialLogin, socialLoginMutation } = useAuth()
   const { isError, isSuccess } = socialLoginMutation
 
@@ -27,9 +27,14 @@ const OauthKakao = () => {
       getToken('kakao', code, state)
         .then(user => {
           console.log('user client', user)
-          if (user?.userStatus === 'PENDING' && user?.userNumber) {
-            navigate('/registerForm')
+          if (
+            user?.userStatus === 'PENDING' &&
+            user?.userNumber &&
+            user?.userName
+          ) {
+            setTempName(user.userName)
             setSocialLogin('kakao', Number(user.userNumber) as number)
+            navigate('/registerForm')
           } else if (user?.userStatus === 'ABLE') {
             socialLogin({
               socialLoginId: user?.socialLoginId as string,
