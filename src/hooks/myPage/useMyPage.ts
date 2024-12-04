@@ -20,7 +20,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const useMyPage = () => {
   const { userId, accessToken } = authStore()
-  const { name, preferredTags, agegroup } = myPageStore()
+  const { name, preferredTags, agegroup, addProfileUrl } = myPageStore()
   const queryClient = useQueryClient()
 
   const { data, isLoading } = useQuery({
@@ -88,10 +88,13 @@ const useMyPage = () => {
     mutationFn: (accessToken: string) => {
       return intialPostMyProfileImage(accessToken!)
     },
-    onSuccess: () => {
+    onSuccess: data => {
       queryClient.invalidateQueries({
         queryKey: ['profileImg']
       })
+      if (data?.url) {
+        addProfileUrl(data.url)
+      }
     }
   })
   // 임시 저장 post 요청
