@@ -25,6 +25,8 @@ interface userState {
   resetAge: () => void
   resetName: () => void
   reset: () => void
+  tempName: string | null
+  setTempName: (tempName: string) => void
 }
 
 export const userStore = create<userState>(set => ({
@@ -65,7 +67,18 @@ export const userStore = create<userState>(set => ({
   resetGender: () => {
     set({ sex: '' })
   },
+  tempName: null,
+  setTempName: tempName => {
+    set({ tempName })
+  },
   reset: () => {
-    set({ sex: '', name: '', email: '', password: '', agegroup: undefined })
+    set({
+      sex: '',
+      name: '',
+      email: '',
+      password: '',
+      agegroup: undefined,
+      tempName: null
+    })
   }
 }))
