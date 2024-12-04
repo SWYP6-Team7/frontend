@@ -26,7 +26,9 @@ const useMyPage = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['myPage'],
     queryFn: () => getMyPage(accessToken!),
-    enabled: !!accessToken
+    enabled: !!accessToken,
+    retry: !!accessToken,
+    staleTime: 0
   })
 
   const { mutateAsync: updateMyPageMutation, isSuccess: isUpdatedSuccess } =
@@ -116,7 +118,7 @@ const useMyPage = () => {
       return putMyProfileImage(accessToken!, formData)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: ['profileImg']
       })
     }
