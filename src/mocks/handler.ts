@@ -197,7 +197,7 @@ export const handlers = [
       )
     }
   }),
-  http.get('/api/notifications/:userId', async ({ request }) => {
+  http.get('/api/notifications', async ({ request }) => {
     const url = new URL(request.url)
 
     const pageParams = url.searchParams.get('page')

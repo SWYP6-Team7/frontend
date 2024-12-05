@@ -1,5 +1,6 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
+import RequestError from '@/context/ReqeustError'
 
 export const getMyPage = (accessToken: string) => {
   return axiosInstance.get('/api/profile/me', {
@@ -136,8 +137,9 @@ export const putMyProfileDefaultImage = async (
     )
 
     return response.data
-  } catch (err) {
+  } catch (err: any) {
     console.log(err, '기본 프로필 이미지로 수정 요청 에러 발생')
+    throw new RequestError(err)
   }
 }
 
