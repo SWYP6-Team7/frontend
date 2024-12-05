@@ -1,5 +1,6 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
+import RequestError from '@/context/ReqeustError'
 // 만든 여행 조회.
 export const getMyTrips = async (pageParam: number, accessToken: string) => {
   try {
@@ -11,8 +12,8 @@ export const getMyTrips = async (pageParam: number, accessToken: string) => {
       }
     })
     return response.data
-  } catch (e) {
-    console.log(e)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 참가 여행 조회.
@@ -27,8 +28,8 @@ export const getApplyTrips = async (pageParam: number, accessToken: string) => {
       }
     })
     return response.data
-  } catch (e) {
-    console.log(e)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -37,10 +38,14 @@ export const deleteMyApplyTrips = (
   accessToken: string,
   travelNumber: number
 ) => {
-  return axiosInstance.delete(
-    `/api/my-applied-travels/${travelNumber}/cancel`,
-    {
-      headers: getJWTHeader(accessToken)
-    }
-  )
+  try {
+    return axiosInstance.delete(
+      `/api/my-applied-travels/${travelNumber}/cancel`,
+      {
+        headers: getJWTHeader(accessToken)
+      }
+    )
+  } catch (err: any) {
+    throw new RequestError(err)
+  }
 }

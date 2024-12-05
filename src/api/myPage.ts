@@ -3,9 +3,13 @@ import { axiosInstance } from '.'
 import RequestError from '@/context/ReqeustError'
 
 export const getMyPage = (accessToken: string) => {
-  return axiosInstance.get('/api/profile/me', {
-    headers: getJWTHeader(accessToken)
-  })
+  try {
+    return axiosInstance.get('/api/profile/me', {
+      headers: getJWTHeader(accessToken)
+    })
+  } catch (err: any) {
+    throw new RequestError(err)
+  }
 }
 // 프로필 이미지
 export const intialPostMyProfileImage = async (accessToken: string) => {
@@ -16,8 +20,9 @@ export const intialPostMyProfileImage = async (accessToken: string) => {
       headers: getJWTHeader(accessToken)
     })
     return response.data
-  } catch (err) {
+  } catch (err: any) {
     console.log(err, '초기 이미지 등록 오류')
+    throw new RequestError(err)
   }
 }
 // 임시저장 Post요청
@@ -38,8 +43,9 @@ export const postTempMyProfileImage = async (
       }
     )
     return response.data
-  } catch (err) {
-    console.log(err, '프로필 임시 저장 등록 오류')
+  } catch (err: any) {
+    console.log(err, '임시 등록 오류')
+    throw new RequestError(err)
   }
 }
 
@@ -51,8 +57,8 @@ export const getMyProfileImage = async (accessToken: string) => {
     })
 
     return response.data
-  } catch (err) {
-    console.log(err, '현재 프로필 이미지 가져오기 오류')
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 export const putMyProfileImage = async (
@@ -68,8 +74,8 @@ export const putMyProfileImage = async (
       }
     })
     return response.data
-  } catch (err) {
-    console.log(err, '프로필 이미지 수정하기 오류')
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 프로필 이미지 정식 저장 요청.
@@ -87,8 +93,8 @@ export const putRealMyProfileImage = async (
       }
     )
     return response.data
-  } catch (err) {
-    console.log(err, '프로필 이미지 수정하기 오류')
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 export const deleteMyProfileImage = async (accessToken: string) => {
@@ -98,8 +104,8 @@ export const deleteMyProfileImage = async (accessToken: string) => {
       headers: getJWTHeader(accessToken)
     })
     return response.data
-  } catch (err) {
-    console.log(err, '프로필 삭제.')
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -115,8 +121,8 @@ export const deleteTempProfileImage = async (
       headers: getJWTHeader(accessToken) // 헤더 전달
     })
     return response.data
-  } catch (err) {
-    console.log(err, '임시 저장된 미리 보기 프로필 삭제.')
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -150,18 +156,22 @@ export const putMyPage = (
   preferredTags: string[],
   ageGroup: string
 ) => {
-  return axiosInstance.put(
-    '/api/profile/update',
-    {
-      name,
-      proIntroduce,
-      preferredTags,
-      ageGroup
-    },
-    {
-      headers: getJWTHeader(accessToken)
-    }
-  )
+  try {
+    return axiosInstance.put(
+      '/api/profile/update',
+      {
+        name,
+        proIntroduce,
+        preferredTags,
+        ageGroup
+      },
+      {
+        headers: getJWTHeader(accessToken)
+      }
+    )
+  } catch (err: any) {
+    throw new RequestError(err)
+  }
 }
 
 // 탈퇴하기
@@ -172,8 +182,8 @@ export async function deleteMyAccount(accessToken: string) {
       headers: getJWTHeader(accessToken)
     })
     return response.data
-  } catch (e) {
-    console.log(e)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 비번 확인 조회
@@ -197,8 +207,8 @@ export async function postVerifyPassword(
     }
 
     throw new Error(`Request failed with status ${response.status}`)
-  } catch (err) {
-    console.log('비밀번호 체크 에러', err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -221,7 +231,7 @@ export async function putPassword(
     )
 
     return response.data
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }

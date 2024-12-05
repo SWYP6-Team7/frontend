@@ -41,8 +41,8 @@ export async function getCompanions(
     return axiosInstance.get(`/api/travel/${travelNumber}/companions`, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 export async function updateTripDetail(
@@ -57,8 +57,8 @@ export async function updateTripDetail(
       headers: getJWTHeader(accessToken)
     })
     return true
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -71,7 +71,7 @@ export async function deleteTripDetail(
     return axiosInstance.delete(`/api/travel/${travelNumber}`, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }

@@ -1,3 +1,4 @@
+import RequestError from '@/context/ReqeustError'
 import { axiosInstance } from '.'
 import { getJWTHeader } from '@/utils/user'
 // 여행 관련 필요한 API요청들.
@@ -18,7 +19,11 @@ export const createTrip = (
   accessToken: string
 ) => {
   const newData = { ...travelData, locationName: travelData.location }
-  return axiosInstance.post('/api/travel', newData, {
-    headers: getJWTHeader(accessToken)
-  })
+  try {
+    return axiosInstance.post('/api/travel', newData, {
+      headers: getJWTHeader(accessToken)
+    })
+  } catch (err: any) {
+    throw new RequestError(err)
+  }
 }
