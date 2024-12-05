@@ -1,6 +1,7 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 import { ITripDetail } from '@/model/tripDetail'
+import RequestError from '@/context/ReqeustError'
 
 export async function getTripDetail(
   travelNumber: number,
@@ -9,10 +10,10 @@ export async function getTripDetail(
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.get(`/api/travel/detail/${travelNumber}`, {
-      headers: getJWTHeader(accessToken)
+      headers: getJWTHeader(accessToken!)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -26,8 +27,8 @@ export async function getTripEnrollmentCount(
     return axiosInstance.get(`/api/travel/${travelNumber}/enrollmentCount`, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 모집한 인원 목록 조회

@@ -16,7 +16,16 @@ const QueryClientBoundary = ({ children }: React.PropsWithChildren) => {
     }),
     mutationCache: new MutationCache({
       onError: (error: Error) => updateError(error)
-    })
+    }),
+    defaultOptions: {
+      // 에러 전파를 위한 설정.
+      queries: {
+        throwOnError: true
+      },
+      mutations: {
+        throwOnError: true
+      }
+    }
   })
 
   return (

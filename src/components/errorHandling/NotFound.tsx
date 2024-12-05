@@ -1,13 +1,15 @@
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React from 'react'
-import InfoIcon from './icons/InfoIcon'
-import ArrowIcon from './icons/ArrowIcon'
-import BackIcon from './icons/BackIcon'
+import InfoIcon from '../icons/InfoIcon'
+import ArrowIcon from '../icons/ArrowIcon'
+import BackIcon from '../icons/BackIcon'
 import { useNavigate } from 'react-router-dom'
+import { errorStore } from '@/store/client/errorStore'
 
 const NotFound = () => {
   const navigate = useNavigate()
+
   return (
     <Container>
       <Body>
@@ -102,6 +104,7 @@ const BackButton = styled.button`
   line-height: 16.71px;
   align-items: center;
   border-radius: 20px;
+  border: none;
 `
 
 export default NotFound
