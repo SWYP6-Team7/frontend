@@ -8,22 +8,20 @@ import MoreIcon from '@/components/icons/MoreIcon'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
+import { useBackPathStore } from '@/store/client/backPathStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-interface TripDetailHeaderProps {
-  isTripDetailEdit?: boolean // 해당 컴포넌트에서 여행 상세 정보를 들고오고 있으며 edit에서도 바로 값을 받을 수있도록 함.
-}
 // 헤더부터 주최자인지에 따라 화면이 달라서, 헤더에서 여행 정보를 들고 오기.
-export default function TripDetailHeader({
-  isTripDetailEdit = false
-}: TripDetailHeaderProps) {
+export default function TripDetailHeader() {
   const { userId, accessToken } = authStore()
   const { travelNumber } = useParams<{ travelNumber: string }>()
   const { tripDetail } = useTripDetail(parseInt(travelNumber!))
+  const location = useLocation()
+  const isTripDetailEdit = location.pathname.startsWith('/trip/edit')
 
   const navigate = useNavigate()
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
@@ -58,7 +56,7 @@ export default function TripDetailHeader({
     addBookmarked,
     bookmarked
   } = tripDetailStore()
-
+  const { setNotification } = useBackPathStore()
   const tripInfos = tripDetail.data?.data
   useEffect(() => {
     console.log(tripInfos)
@@ -127,6 +125,13 @@ export default function TripDetailHeader({
     userId!,
     parseInt(travelNumber!)
   )
+
+  const handleNotification = () => {
+    setNotification(
+      travelNumber ? `/trip/detail/${travelNumber}` : '/trip/list'
+    )
+    navigate(`/notification`)
+  }
   useEffect(() => {
     if (isDeleteBtnClicked) {
       setIsResultModalOpen(true)
@@ -166,7 +171,7 @@ export default function TripDetailHeader({
       hostUserCheck={hostUserCheck}
       isTripDetailEdit={isTripDetailEdit}>
       {hostUserCheck && (
-        <div onClick={() => navigate(`/notification`)}>
+        <div onClick={handleNotification}>
           <AlarmIcon
             size={23}
             stroke={palette.기본}
