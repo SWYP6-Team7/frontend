@@ -21,6 +21,7 @@ import CommunityInfinite from '@/components/community/CommunityInfinite'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import { editStore } from '@/store/client/editStore'
 import { COMMUNITY_TOAST_MESSAGES } from '@/constants/toastMessages'
+import { useBackPathStore } from '@/store/client/backPathStore'
 
 const LIST = ['최신순', '추천순', '등록일순']
 const COMMUNITY_CATEGORY = ['전체', '잡담', '여행팁', '후기']
@@ -29,7 +30,8 @@ const Community = () => {
   const [fixed, setFixed] = useState(true)
   const category = searchParams.get('categoryName') ?? '전체'
   const sort = searchParams.get('sortingTypeName') ?? '최신순'
-  const { userId } = authStore()
+  const { setNotification } = useBackPathStore()
+  const navigate = useNavigate()
   const { setRemoveToastShow, removeToastShow } = editStore()
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
@@ -37,6 +39,10 @@ const Community = () => {
     newSearchParams.set('sortingTypeName', value)
 
     setSearchParams(newSearchParams)
+  }
+  const handleNotification = () => {
+    setNotification('/community')
+    navigate(`/notification`)
   }
 
   const onClickCategory = (value: string) => {
@@ -79,9 +85,11 @@ const Community = () => {
               </Link>
             </LinkContainer>
             <LinkContainer>
-              <Link to={`/notification`}>
+              <div
+                onClick={handleNotification}
+                style={{ cursor: 'pointer' }}>
                 <AlarmIcon stroke={palette.기본} />
-              </Link>
+              </div>
             </LinkContainer>
           </IconContainer>
         </SearchContainer>
