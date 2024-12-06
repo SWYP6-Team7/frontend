@@ -10,6 +10,7 @@ import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import useCommunity from '@/hooks/useCommunity'
 import { authStore } from '@/store/client/authStore'
+import { useBackPathStore } from '@/store/client/backPathStore'
 import { editStore } from '@/store/client/editStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
@@ -28,12 +29,19 @@ export default function CommunityHeader() {
   const [checkingModalClicked, setCheckingModalClicked] = useState(false)
   const [threeDotsClick, setThreeDotsClick] = useState(false)
   const { removeToastShow, setRemoveToastShow } = editStore()
-
+  const { setNotification } = useBackPathStore()
   const {
     community: { data, isLoading },
     removeMutation,
     remove
   } = useCommunity(Number(communityNumber))
+
+  const handleNotification = () => {
+    setNotification(
+      data?.postNumber ? `/comunity/${data?.postNumber}` : '/community'
+    )
+    navigate(`/notification`)
+  }
 
   useEffect(() => {
     if (isDeleteBtnClicked) {
@@ -61,7 +69,7 @@ export default function CommunityHeader() {
   return (
     <Container>
       {data?.userNumber === userId && (
-        <div onClick={() => navigate(`/notification`)}>
+        <div onClick={handleNotification}>
           <AlarmIcon
             size={23}
             stroke={palette.기본}

@@ -11,16 +11,23 @@ import Footer from './Footer'
 import CreateTripButton from './CreateTripButton'
 import { palette } from '@/styles/palette'
 import { myPageStore } from '@/store/client/myPageStore'
+import { useBackPathStore } from '@/store/client/backPathStore'
 
 const Home = () => {
   const { name } = myPageStore()
-
+  const { setSearchTravel, setNotification } = useBackPathStore()
   const navigate = useNavigate()
 
-  const onFocusHandler = () => navigate('/search/travel') // 검색화면으로 이동.
+  const onFocusHandler = () => {
+    setSearchTravel('/')
+    navigate('/search/travel')
+  } // 검색화면으로 이동.
 
   // 이 부분 추후 유저 id로 대채해야함
-  const onClickAlarm = () => navigate(`/notification`)
+  const onClickAlarm = () => {
+    setNotification('/')
+    navigate(`/notification`)
+  }
 
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
