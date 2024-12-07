@@ -29,6 +29,7 @@ import ResultModal from '@/components/designSystem/modal/ResultModal'
 import NoticeModal from '@/components/designSystem/modal/NoticeModal'
 import { editStore } from '@/store/client/editStore'
 import Opengraph from '@/components/Opengraph'
+import { isGuestUser } from '@/utils/user'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 
 interface Companion {
@@ -36,10 +37,17 @@ interface Companion {
   userName: string
   ageGroup: string
 }
+const LOGIN_ASKING_FOR_WATCHING_COMMENT = `여행에 참여한 멤버만 볼 수 있어요.\n로그인 하시겠어요?`
+const LOGIN_ASKING_FOR_APPLY_TRIP = `로그인하여 설레는 여행에\n참가해 보세요!`
 
 export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false)
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
+  const [modalTextForLogin, setModalTextForLogin] = useState(
+    LOGIN_ASKING_FOR_WATCHING_COMMENT
+  )
+
   const [isApplyToast, setIsApplyToast] = useState(false)
   const [isCancelToast, setIsCancelToast] = useState(false)
 
@@ -67,12 +75,8 @@ export default function TripDetail() {
     enrollmentNumber,
     travelNumber,
     nowPerson,
-    userAgeGroup,
-    addUserAgeGroup,
     applySuccess,
     setApplySuccess,
-    commentLength,
-    addCommentLength,
     profileUrl
   } = tripDetailStore()
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
@@ -110,7 +114,10 @@ export default function TripDetail() {
   const [personViewClicked, setPersonViewClicked] = useState(false)
 
   const buttonClickHandler = () => {
-    if (hostUserCheck) {
+    if (isGuestUser()) {
+      setShowLoginModal(true)
+      setModalTextForLogin(LOGIN_ASKING_FOR_APPLY_TRIP)
+    } else if (hostUserCheck) {
       navigate(`/trip/enrollmentList/${travelNumber}`)
     } else {
       if (enrollmentNumber) {
@@ -158,7 +165,11 @@ export default function TripDetail() {
   // // }, [data])
 
   const commentClickHandler = () => {
-    if (!hostUserCheck && !enrollmentNumber) {
+    if (isGuestUser()) {
+      // 로그인을 하지 않은 게스트 유저.
+      setShowLoginModal(true)
+      setModalTextForLogin(LOGIN_ASKING_FOR_WATCHING_COMMENT)
+    } else if (!hostUserCheck && !enrollmentNumber) {
       // 주최자가 아니며, 신청 번호가 없는 사람은 댓글을 볼 수 없음.
       setShowApplyModal(true)
     } else if (isAccepted || hostUserCheck) {
@@ -200,6 +211,16 @@ export default function TripDetail() {
         setIsShow={setIsApplyToast}
         text="여행 신청이 완료 되었어요."
       />
+
+      <CheckingModal
+        isModalOpen={showLoginModal}
+        onClick={() => navigate('/login')}
+        modalMsg={modalTextForLogin}
+        modalTitle="로그인 안내"
+        modalButtonText="로그인"
+        setModalOpen={setShowLoginModal}
+      />
+
       <CheckingModal
         isModalOpen={showApplyModal}
         onClick={() => navigate(`/trip/apply/${travelNumber}`)}

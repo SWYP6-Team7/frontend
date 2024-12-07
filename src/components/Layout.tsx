@@ -88,7 +88,10 @@ const Layout = () => {
     '/registerAge',
     '/registerAge/registerGender',
     '/registerTripStyle',
-    '/onBoarding'
+    '/onBoarding',
+    '/',
+    '/trip/detail',
+    '/myTrip'
   ]
   const isAccessTokenNoNeedpages = (path: string) => {
     // 필요없는 페이지 인지 확인하는 함수.
@@ -105,7 +108,7 @@ const Layout = () => {
         } catch (error) {
           console.error('Failed to refresh token:', error)
 
-          navigate('/login') // 로그인 이동.
+          // navigate('/login') // 로그인 이동.
         }
       }
 
