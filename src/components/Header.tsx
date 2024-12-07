@@ -1,6 +1,11 @@
 import styled from '@emotion/styled'
 import BackIcon from './icons/BackIcon'
-import { useNavigate, useLocation } from 'react-router-dom'
+import {
+  useNavigate,
+  useLocation,
+  useSearchParams,
+  Link
+} from 'react-router-dom'
 import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 import AlarmIcon from './icons/AlarmIcon'
 import { palette } from '@/styles/palette'
@@ -18,6 +23,7 @@ const Header = () => {
     checkRoute,
     handleBack
   } = useHeaderNavigation()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const { setNotification } = useBackPathStore()
   const handleNotification = () => {
@@ -30,9 +36,23 @@ const Header = () => {
   return (
     <HeaderContainer>
       {!shouldShowAlarmIcon() && (
-        <ButotnContainer onClick={handleBack}>
+        <ButtonContainer onClick={handleBack}>
           <BackIcon />
-        </ButotnContainer>
+          {(checkRoute.startsWith(ROUTES.TRIP.DETAIL) ||
+            checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL)) &&
+            searchParams.get('share') === 'true' && (
+              <Link
+                to="/"
+                style={{ marginLeft: 14 }}>
+                <img
+                  src={'/images/homeLogo.png'}
+                  width={96}
+                  height={24}
+                  alt="홈 모잉의 로고입니다"
+                />
+              </Link>
+            )}
+        </ButtonContainer>
       )}
 
       <Title>{getPageTitle()}</Title>
@@ -53,7 +73,7 @@ const Header = () => {
 }
 
 // button에 cursor pointer 추가
-const ButotnContainer = styled.button`
+const ButtonContainer = styled.button`
   cursor: pointer;
 `
 
