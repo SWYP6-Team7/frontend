@@ -14,6 +14,7 @@ import {
 } from '@/store/client/imageStore'
 import { IListParams } from '@/hooks/useCommunity'
 import { ERROR_MESSAGES } from '@/constants/errorMessages'
+import RequestError from '@/context/ReqeustError'
 
 export async function getCommunities(
   accessToken: string,
@@ -29,8 +30,8 @@ export async function getCommunities(
       }
     )
     return result.data
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -47,8 +48,8 @@ export async function getCommunity(
       }
     )
     return result.data as Community
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -62,8 +63,8 @@ export async function postCommunity(
       headers: getJWTHeader(accessToken!)
     })
     return result.data as Community
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -87,8 +88,8 @@ export async function updateCommunity(
       }
     )
     return result.data as Community
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -101,8 +102,8 @@ export async function deleteCommunity(
     return axiosInstance.delete(`/api/community/posts/${communityNumber}`, {
       headers: getJWTHeader(accessToken!)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -119,8 +120,8 @@ export async function likeCommunity(
         headers: getJWTHeader(accessToken!)
       }
     )
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -137,8 +138,8 @@ export async function unlikeCommunity(
         headers: getJWTHeader(accessToken!)
       }
     )
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -152,8 +153,8 @@ export async function getImages(communityNumber: number, accessToken: string) {
       }
     )
     return result.data as Image[]
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -173,9 +174,8 @@ export const uploadImage = async (file: File, accessToken: string) => {
       }
     )
     return response.data
-  } catch (error) {
-    console.error('Error uploading image:', error)
-    throw error
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -194,8 +194,8 @@ export async function updateImage(
       }
     )
     return result.data as Community
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -214,7 +214,7 @@ export async function postImage(
       }
     )
     return result.data as Community
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }

@@ -1,4 +1,5 @@
 import { errorStore } from '@/store/client/errorStore'
+import { errorToastUI } from '@/store/client/toastUI'
 import {
   MutationCache,
   QueryCache,
@@ -8,15 +9,24 @@ import {
 import React from 'react'
 
 const QueryClientBoundary = ({ children }: React.PropsWithChildren) => {
-  const { updateError } = errorStore()
+  const { updateError, setIsMutationError } = errorStore()
 
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: (error: Error) => updateError(error)
     }),
     mutationCache: new MutationCache({
-      onError: (error: Error) => updateError(error)
-    })
+      onError: (error: Error) => {
+        updateError(error)
+        setIsMutationError(true)
+      }
+    }),
+    defaultOptions: {
+      // 에러 전파를 위한 설정.
+      queries: {
+        throwOnError: false
+      }
+    }
   })
 
   return (
@@ -25,3 +35,6 @@ const QueryClientBoundary = ({ children }: React.PropsWithChildren) => {
 }
 
 export default QueryClientBoundary
+function setIsMutationError(arg0: boolean) {
+  throw new Error('Function not implemented.')
+}

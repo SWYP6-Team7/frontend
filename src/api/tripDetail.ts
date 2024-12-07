@@ -1,6 +1,7 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 import { ITripDetail } from '@/model/tripDetail'
+import RequestError from '@/context/ReqeustError'
 
 export async function getTripDetail(
   travelNumber: number,
@@ -9,10 +10,10 @@ export async function getTripDetail(
   try {
     if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.get(`/api/travel/detail/${travelNumber}`, {
-      headers: getJWTHeader(accessToken)
+      headers: getJWTHeader(accessToken!)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -26,8 +27,8 @@ export async function getTripEnrollmentCount(
     return axiosInstance.get(`/api/travel/${travelNumber}/enrollmentCount`, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 모집한 인원 목록 조회
@@ -40,8 +41,8 @@ export async function getCompanions(
     return axiosInstance.get(`/api/travel/${travelNumber}/companions`, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 export async function updateTripDetail(
@@ -56,8 +57,8 @@ export async function updateTripDetail(
       headers: getJWTHeader(accessToken)
     })
     return true
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -70,7 +71,7 @@ export async function deleteTripDetail(
     return axiosInstance.delete(`/api/travel/${travelNumber}`, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
