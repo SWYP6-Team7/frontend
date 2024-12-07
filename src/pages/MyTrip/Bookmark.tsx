@@ -6,13 +6,15 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React from 'react'
 import { useInView } from 'react-intersection-observer'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BookmarkIconBtns from './BookmarkIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
 import { IMyTripList } from '@/model/myTrip'
 
 import { daysAgo } from '@/utils/time'
+import { isGuestUser } from '@/utils/user'
+import LoginButtonForGuest from '@/components/LoginButtonForGuest'
 
 export default function Bookmark() {
   const [ref, inView] = useInView()
@@ -27,6 +29,8 @@ export default function Bookmark() {
   const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
 
   const isNoData = trips.length === 0
+  const navigate = useNavigate()
+
   return (
     <Container isNodata={isNoData}>
       {isNoData && (
@@ -35,14 +39,17 @@ export default function Bookmark() {
             size={80}
             src="/images/noData.png"
           />
-          <NoData
-            css={{
-              marginTop: '16px',
-              display: 'flex',
-              justifyContent: 'center',
-              textAlign: 'center'
-            }}>
-            아직 저장된 <br /> 여행이 없어요
+          <NoData>
+            {isGuestUser() ? (
+              <>
+                로그인 후 <br /> 다양한 여행을 만나 보세요
+              </>
+            ) : (
+              <>
+                아직 저장된 <br /> 여행이 없어요
+              </>
+            )}
+            <LoginButtonForGuest />
           </NoData>
         </Empty>
       )}
@@ -98,10 +105,17 @@ export default function Bookmark() {
     </Container>
   )
 }
+
 const NoData = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   font-family: Pretendard;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 22.4px;
   letter-spacing: -0.025em;
   text-align: center;
