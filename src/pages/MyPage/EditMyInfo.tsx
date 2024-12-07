@@ -107,7 +107,7 @@ export default function EditMyInfo() {
       <CheckingModal
         isModalOpen={checkingLogoutModalClicked}
         modalMsg="정말 로그아웃 하시겠어요?"
-        modalTitle="로그 아웃"
+        modalTitle="로그아웃"
         modalButtonText="로그아웃"
         setIsSelected={setIsLogoutClicked}
         setModalOpen={setCheckingLogoutModalClicked}
