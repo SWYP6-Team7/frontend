@@ -1,6 +1,6 @@
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ResultToast from '../designSystem/toastMessage/resultToast'
-import { useState } from 'node_modules/@types/react'
+import { useState } from 'react'
 
 interface ShareIconProps {
   width?: number
