@@ -1,167 +1,64 @@
 import styled from '@emotion/styled'
 import BackIcon from './icons/BackIcon'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 import AlarmIcon from './icons/AlarmIcon'
 import { palette } from '@/styles/palette'
 
 import CommunityHeader from './community/CommunityHeader'
-import { userStore } from '@/store/client/userStore'
+import { useHeaderNavigation } from '@/hooks/useHeaderNavigation'
+import { useBackPathStore } from '@/store/client/backPathStore'
 
 const Header = () => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const isRegister = location.pathname.startsWith('/register')
-  const isCreateTrip = location.pathname.startsWith('/createTrip')
-  const isSearchTravel = location.pathname === '/search/travel'
-  const isSearchCommunity = location.pathname === '/search/community'
-  const isTripDetail = location.pathname.startsWith('/trip/detail')
-  const isTripEnrollment = location.pathname.startsWith('/trip/enrollmentList')
-  const isNotification = location.pathname.startsWith('/notification')
-  const isTripDetailEdit = location.pathname.startsWith('/trip/edit')
-  const isMyTrip = location.pathname.startsWith('/myTrip')
-  const isCommunityCreate = location.pathname.startsWith('/community/create')
-  const isApply = location.pathname.startsWith('/trip/apply')
-  const isMyPage = location.pathname.startsWith('/myPage')
-  const isEditMyInfo = location.pathname.startsWith('/editMyInfo')
-  const isEditMyName = location.pathname.startsWith('/editMyName')
-  const isTripComment = location.pathname.startsWith('/trip/comment')
-  const isCommunityDetail = location.pathname.startsWith('/community/detail')
-  const isCommunityEdit = location.pathname.startsWith('/community/edit')
-  const isEditMyPassword = location.pathname.startsWith('/editMyPassword')
-  const isEditMyTag = location.pathname.startsWith('/editMyTag')
-  const isWithdrawal = location.pathname.startsWith('/withdrawal')
-  const isAnnouncement = location.pathname.startsWith('/announcement')
-  const isRequestedTrip = location.pathname.startsWith('/requestedTrip')
-  const isRegisterGender = location.pathname.startsWith(
-    '/registerAge/registerGender'
-  )
-  const isRegisterAge = location.pathname.startsWith('/registerAge')
-  const isRegisterForm = location.pathname.startsWith('/registerForm')
-  const isRegisterName = location.pathname.startsWith('/registerName')
-
   const {
-    resetAge,
-    resetForm,
-    resetGender,
-    resetName,
-    socialLogin,
-    setSocialLogin
-  } = userStore()
-
-  const isSocialLoginGoogle = socialLogin === 'google'
-  const isSocialLoginKakao = socialLogin === 'kakao'
-
-  const handleBack = () => {
-    if (isTripDetail) {
-      navigate(-1)
-      return
-    }
-    if (isSearchTravel || isSearchCommunity) {
-      navigate('/')
-      return
-    }
-    if (isCommunityDetail) {
-      navigate('/community')
-      return
-    }
-    if (isSocialLoginGoogle) {
-      if (isRegisterAge) {
-        resetAge()
-        navigate('/login')
-        setSocialLogin(null, null)
-        return
-      }
-      if (isRegisterGender) {
-        resetGender()
-        navigate(-1)
-        return
-      }
-      navigate(-1)
-      return
-    }
-    if (isSocialLoginKakao) {
-      if (isRegisterAge) {
-        resetAge()
-        navigate('/registerForm')
-        return
-      }
-      if (isRegisterGender) {
-        resetGender()
-        navigate(-1)
-        return
-      }
-      if (isRegisterForm) {
-        navigate('/login')
-        resetForm()
-        setSocialLogin(null, null)
-        return
-      }
-
-      navigate(-1)
-
-      return
-    }
-    if (isRegisterForm) {
-      resetForm()
-    } else if (isRegisterName) {
-      resetName()
-    } else if (isRegisterAge) {
-      resetAge()
-    } else if (isRegisterGender) {
-      resetGender()
-    }
-
-    if (isEditMyInfo) {
-      navigate('/myPage')
-      return
-    }
-    navigate(-1)
-    return
+    getPageTitle,
+    shouldShowAlarmIcon,
+    shouldShowSkip,
+    ROUTES,
+    checkRoute,
+    handleBack
+  } = useHeaderNavigation()
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const { setNotification } = useBackPathStore()
+  const handleNotification = () => {
+    setNotification(
+      checkRoute.exact(ROUTES.MY.PAGE) ? ROUTES.MY.PAGE : ROUTES.MY.TRIP
+    )
+    navigate('/notification')
   }
+
   return (
     <HeaderContainer>
-      {isMyTrip ? (
-        <Title>내 여행</Title>
-      ) : isMyPage ? (
-        <Title>마이 페이지</Title>
-      ) : (
-        <ButotnContainer onClick={handleBack}>
-          <BackIcon />
-        </ButotnContainer>
+      {!shouldShowAlarmIcon() && (
+        <>
+          <ButtonContainer onClick={handleBack}>
+            <BackIcon />
+          </ButtonContainer>
+          {(checkRoute.startsWith(ROUTES.TRIP.DETAIL) ||
+            checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL)) &&
+            searchParams.get('share') === 'true' && (
+              <Link
+                to="/"
+                style={{ marginLeft: 14 }}>
+                <img
+                  src={'/images/homeLogo.png'}
+                  width={96}
+                  height={24}
+                  alt="홈 모잉의 로고입니다"
+                />
+              </Link>
+            )}
+        </>
       )}
 
-      <Title>
-        {isRegister && '회원가입'}
-        {isSearchTravel && '여행검색'}
-        {isSearchCommunity && '검색'}
-        {isCreateTrip && '여행 만들기'}
-        {isApply && '참가 신청'}
-        {isTripEnrollment && '참가 신청 목록'}
-        {isTripComment && '멤버 댓글'}
-        {isNotification && '알림'}
-        {isEditMyInfo && '내 정보 수정'}
-        {isEditMyName && '이름 변경'}
-        {isCommunityCreate && '글쓰기'}
-        {isCommunityEdit && '수정하기'}
-        {isEditMyPassword && '비밀번호 변경'}
-        {isEditMyTag && '태그 수정'}
-        {isWithdrawal && '탈퇴하기'}
-        {isAnnouncement && '공지사항'}
-        {isRequestedTrip && '참가 신청한 여행'}
-        {isTripDetailEdit && (
-            <TripDetailHeader isTripDetailEdit={isTripDetailEdit} />
-          ) &&
-          '게시글 수정'}
-      </Title>
-      {location.pathname == '/registerTripStyle' && (
-        <Skip onClick={() => navigate('/')}>건너뛰기</Skip>
-      )}
-      {location.pathname != '/registerTripStyle' && <VoidArea />}
-      {isTripDetail && <TripDetailHeader />}
-      {isCommunityDetail && <CommunityHeader />}
-      {(isMyTrip || isMyPage) && (
-        <div onClick={() => navigate(`/notification`)}>
+      <Title>{getPageTitle()}</Title>
+      {shouldShowSkip() && <Skip onClick={() => navigate('/')}>건너뛰기</Skip>}
+      {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) && <VoidArea />}
+      {checkRoute.startsWith(ROUTES.TRIP.DETAIL) && <TripDetailHeader />}
+      {checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL) && <CommunityHeader />}
+      {shouldShowAlarmIcon() && (
+        <div onClick={handleNotification}>
           <AlarmIcon
             size={23}
             stroke={palette.기본}
@@ -173,7 +70,7 @@ const Header = () => {
 }
 
 // button에 cursor pointer 추가
-const ButotnContainer = styled.button`
+const ButtonContainer = styled.button`
   cursor: pointer;
 `
 

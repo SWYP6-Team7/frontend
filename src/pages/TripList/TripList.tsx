@@ -14,12 +14,15 @@ import TripInfiniteList from '@/components/triplist/TripInfiniteList'
 import SortHeader from '@/components/SortHeader'
 import { useTripList } from '@/hooks/useTripList'
 import CreateTripButton from '../Home/CreateTripButton'
+import { useBackPathStore } from '@/store/client/backPathStore'
 
 const LIST = ['최신순', '추천순']
 
 const TripList = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [fixed, setFixed] = useState(true)
+  const { setSearchTravel, setNotification } = useBackPathStore()
+
   const sort = (() => {
     const value = searchParams.get('sort')
     if (!value || (value !== 'recent' && value !== 'recommend')) {
@@ -34,7 +37,7 @@ const TripList = () => {
     }
     return value
   })()
-  const { userId } = authStore()
+
   const navigate = useNavigate()
   const { data } = useTripList(engSort)
   const onClickSort = (value: string) => {
@@ -45,8 +48,14 @@ const TripList = () => {
     }
   }
 
+  const handleNotification = () => {
+    setNotification('/community')
+    navigate(`/notification`)
+  }
+
   const onClickSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
+    setSearchTravel('/trip/list')
     navigate('/search/travel')
   }
 
@@ -72,9 +81,11 @@ const TripList = () => {
             </button>
           </div>
 
-          <Link to={`/notification`}>
+          <div
+            style={{ cursor: 'pointer' }}
+            onClick={handleNotification}>
             <AlarmIcon />
-          </Link>
+          </div>
         </SearchContainer>
         <Spacing size={8} />
         <PopularPlaceList />

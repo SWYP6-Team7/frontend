@@ -1,8 +1,9 @@
 import AddIcon from '@/components/icons/AddIcon'
+import { useBackPathStore } from '@/store/client/backPathStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface CreateTripButtonProps {
   type?: 'trip' | 'community'
@@ -13,6 +14,8 @@ export default function CreateTripButton({
 }: CreateTripButtonProps) {
   const [isClicked, setIsClicked] = useState(false)
   const addRef = useRef<HTMLButtonElement>(null) // 버튼 참조
+  const location = useLocation()
+  const { setCreateTripPlace } = useBackPathStore()
   const createButtonRef = useRef<HTMLButtonElement>(null) // 버튼 참조
   const toggleRotation = () => {
     setIsClicked(!isClicked)
@@ -44,6 +47,7 @@ export default function CreateTripButton({
   }, [])
 
   const onClickCreate = () => {
+    setCreateTripPlace(location.pathname === '/trip/list' ? '/trip/list' : '/')
     if (type === 'community') {
       navigate('/community/create')
     } else {

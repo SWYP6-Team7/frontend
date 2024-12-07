@@ -19,7 +19,6 @@ export default function EditAndDeleteModal({
 }: EditAndDeleteModalProps) {
   const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
   const [isListening, setIsListening] = useState(false) // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
-
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       setIsOpen(false) // 외부 클릭 시 모달 닫기
