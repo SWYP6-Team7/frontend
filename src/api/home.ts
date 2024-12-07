@@ -3,6 +3,7 @@ import { axiosInstance } from '.'
 import { ITripList } from '@/model/trip'
 import { daysAgo } from '@/utils/time'
 import dayjs from 'dayjs'
+import RequestError from '@/context/ReqeustError'
 
 export const getUserProfile = (accessToken: string) => {
   return axiosInstance.get(`/api/profile/me?userNumber=${accessToken}`)
@@ -12,15 +13,19 @@ export const getAvailableTrips = async (
   pageParams: number,
   accessToken: string
 ) => {
-  const response = await axiosInstance.get('/api/travels/recent', {
-    params: {
-      page: pageParams,
-      size: 10
-    },
-    headers: getJWTHeader(accessToken)
-  })
+  try {
+    const response = await axiosInstance.get('/api/travels/recent', {
+      params: {
+        page: pageParams,
+        size: 10
+      },
+      headers: getJWTHeader(accessToken)
+    })
 
-  return response.data
+    return response.data
+  } catch (err: any) {
+    throw new RequestError(err)
+  }
 }
 
 //api/home.ts
@@ -36,15 +41,19 @@ export const getRecommendationTrips = async (
   pageParams: number,
   accessToken: string
 ) => {
-  const response = await axiosInstance.get('/api/travels/recommend', {
-    params: {
-      page: pageParams,
-      size: 10
-    },
-    headers: getJWTHeader(accessToken)
-  })
+  try {
+    const response = await axiosInstance.get('/api/travels/recommend', {
+      params: {
+        page: pageParams,
+        size: 10
+      },
+      headers: getJWTHeader(accessToken)
+    })
 
-  return response.data
+    return response.data
+  } catch (err: any) {
+    throw new RequestError(err)
+  }
 }
 
 //api/home.ts

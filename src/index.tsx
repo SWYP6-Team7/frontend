@@ -10,6 +10,9 @@ import { Helmet, HelmetProvider } from 'react-helmet-async'
 import * as Sentry from '@sentry/react'
 import QueryClientBoundary from './context/QueryClientBoundary'
 import ErrorCatcher from './context/ErrorCatcher'
+import { ErrorBoundary } from 'react-error-boundary'
+import Fallback from './components/errorHandling/Fallback'
+import { GlobalErrorBoundary } from './components/errorHandling/GlobalErrorBoundary'
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
@@ -29,7 +32,7 @@ const prepare = async (): Promise<void> => {
 
 prepare().then(() => {
   reactDOM.createRoot(reactRoot as HTMLElement).render(
-    <HelmetProvider>
+    <GlobalErrorBoundary>
       <QueryClientBoundary>
         <ErrorCatcher />
         <HelmetProvider>
@@ -39,6 +42,6 @@ prepare().then(() => {
           <ReactQueryDevtools initialIsOpen={false} />
         </HelmetProvider>
       </QueryClientBoundary>
-    </HelmetProvider>
+    </GlobalErrorBoundary>
   )
 })

@@ -2,6 +2,7 @@ import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 import { IPostEnrollment } from '@/model/enrollment'
 import { ERROR_MESSAGES } from '@/constants/errorMessages'
+import RequestError from '@/context/ReqeustError'
 // 신청자 - 참가 신청
 export async function postEnrollment(
   data: IPostEnrollment,
@@ -12,8 +13,8 @@ export async function postEnrollment(
     return axiosInstance.post('/api/enrollment', data, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 신청자 - 참가신청 취소
@@ -26,8 +27,8 @@ export async function cancelEnrollment(
     return axiosInstance.delete(`/api/enrollment/${enrollmentNumber}`, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 주최자 - 참가 신청 목록 조회.
@@ -40,8 +41,8 @@ export async function getEnrollments(
     return axiosInstance.get(`/api/travel/${travelNumber}/enrollments`, {
       headers: getJWTHeader(accessToken)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 최근 열람 조회
@@ -59,8 +60,8 @@ export async function getLastViewed(
     )
 
     return response.data
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 최근 신청 열람 시점 업데이트
@@ -80,8 +81,8 @@ export async function putLastViewed(
         headers: getJWTHeader(accessToken)
       }
     )
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -99,8 +100,8 @@ export async function rejectEnrollment(
         headers: getJWTHeader(accessToken)
       }
     )
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 // 참가 신청 수락.
@@ -117,7 +118,7 @@ export async function acceptEnrollment(
         headers: getJWTHeader(accessToken)
       }
     )
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }

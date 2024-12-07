@@ -1,6 +1,7 @@
 import { getJWTHeader } from '@/utils/user'
 import { axiosInstance } from '.'
 import { IComment, ICommentPost } from '@/model/comment'
+import RequestError from '@/context/ReqeustError'
 
 export async function getComments(
   relatedType: 'travel' | 'community',
@@ -19,8 +20,8 @@ export async function getComments(
     )
 
     return result.data
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -39,8 +40,8 @@ export async function postComment(
         headers: getJWTHeader(accessToken!)
       }
     )
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -55,8 +56,8 @@ export async function updateComment(
     return axiosInstance.put(`/api/comments/${commentNumber}`, contentData, {
       headers: getJWTHeader(accessToken!)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -69,8 +70,8 @@ export async function deleteComment(
     return axiosInstance.delete(`/api/comments/${commentNumber}`, {
       headers: getJWTHeader(accessToken!)
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -87,8 +88,8 @@ export async function likeComment(
         headers: getJWTHeader(accessToken!)
       }
     )
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
 
@@ -105,7 +106,7 @@ export async function unlikeComment(
         headers: getJWTHeader(accessToken!)
       }
     )
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    throw new RequestError(err)
   }
 }
