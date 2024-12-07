@@ -314,6 +314,9 @@ const Box = styled.div`
   padding: 14px 8px;
 
   opacity: 0px;
+  &:active {
+    background-color: ${palette.buttonActive};
+  }
 `
 const Line = styled.div`
   height: 1px;

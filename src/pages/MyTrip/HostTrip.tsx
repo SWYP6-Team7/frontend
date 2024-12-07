@@ -143,6 +143,7 @@ const BoxContainer = styled.div`
   border-radius: 20px;
   opacity: 0px;
   box-shadow: 0px 2px 4px 3px #aaaaaa14;
+
   margin-bottom: 16px;
   background-color: ${palette.BG};
   position: relative;

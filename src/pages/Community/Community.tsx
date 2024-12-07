@@ -120,7 +120,7 @@ const SearchContainer = styled.div`
   display: flex;
   padding: 0 24px;
   padding-top: 52px;
-  height: 100px;
+  height: 116px;
   align-items: center;
   gap: 22px;
   position: sticky;

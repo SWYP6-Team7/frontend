@@ -41,16 +41,17 @@ export default function ResultToast({
             width="18"
             height="18"
             rx="9"
-            fill="#E3EFD9"
+            fill="#FDFDFD"
           />
           <path
-            d="M5.40039 9.23268L8.33327 12.1656L13.2214 6.2998"
-            stroke={palette.비강조}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            d="M5.40002 9.23286L8.3329 12.1657L13.221 6.29999"
+            stroke={palette.keycolor}
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
         </svg>
+
         <Text>{text}</Text>
       </ToastMsg>
     </Container>
@@ -79,7 +80,7 @@ const ToastMsg = styled.div<{ height: number }>`
   bottom: ${(props: { height: number }) => props.height}px;
   height: 42px;
   border-radius: 20px;
-  background-color: ${palette.기본};
+  background-color: ${palette.keycolor};
   padding: 10px 16px;
   display: flex;
   justify-content: center;
