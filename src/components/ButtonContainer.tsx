@@ -58,9 +58,9 @@ const Container = styled.div<{
   padding: 0 24px;
   background-color: ${props => props.backgroundColor};
   backdrop-filter: ${props => (props.blur ? props.blur : 'none')};
-  padding-top: ${props => Math.abs(props.paddingTop / 844) * 100}svh;
-  padding-bottom: ${props => Math.abs(props.paddingBottom / 844) * 100}svh;
 
+  height: 104px;
+  padding: 16px 24px 40px 24px;
   width: calc(100%);
 `
 

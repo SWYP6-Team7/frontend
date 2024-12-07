@@ -112,15 +112,16 @@ const TripList = () => {
 const SearchContainer = styled.div`
   display: flex;
   padding: 0 24px;
-  padding-top: 36px;
+  padding-top: 52px;
   padding-bottom: 16px;
   align-items: center;
   gap: 22px;
   position: sticky;
   top: 0px;
-  height: 100px;
+  height: 116px;
   background-color: ${palette.BG};
   z-index: 1000;
+  justify-content: space-between;
 `
 const CountContainer = styled.div`
   font-size: 14px;

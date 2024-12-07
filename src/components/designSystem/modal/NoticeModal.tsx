@@ -132,6 +132,9 @@ const CloseBtn = styled.button`
   justify-content: center;
   align-items: center;
   width: 100%;
+  &:active {
+    background-color: ${palette.buttonActive};
+  }
 `
 
 const ModalContainer = styled.div<{ isModalOpen: boolean }>`

@@ -107,7 +107,7 @@ export default function EditMyInfo() {
       <CheckingModal
         isModalOpen={checkingLogoutModalClicked}
         modalMsg="정말 로그아웃 하시겠어요?"
-        modalTitle="로그 아웃"
+        modalTitle="로그아웃"
         modalButtonText="로그아웃"
         setIsSelected={setIsLogoutClicked}
         setModalOpen={setCheckingLogoutModalClicked}
@@ -314,6 +314,9 @@ const Box = styled.div`
   padding: 14px 8px;
 
   opacity: 0px;
+  &:active {
+    background-color: ${palette.buttonActive};
+  }
 `
 const Line = styled.div`
   height: 1px;

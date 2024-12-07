@@ -94,11 +94,9 @@ const HomeContainer = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
   padding: 0px 24px;
-
-  margin-top: calc(100px);
 `
 const SearchBox = styled.div`
-  padding-top: 40px;
+  padding-top: 16px;
 `
 const Greeting = styled.div`
   font-size: 22px;
@@ -114,38 +112,25 @@ const Greeting = styled.div`
 
 const HomeHeader = styled.div<{ scrolled: boolean }>`
   background-color: ${palette.검색창};
-  transition: background-color 0.3s ease;
-
-  @media (max-width: 440px) {
-    width: 100%;
-  }
-  @media (min-width: 440px) {
-    width: 390px;
-    left: 50%;
-    transform: translateX(-50%);
-    overflow-x: hidden;
-  }
-  height: 100px;
-  position: fixed;
+  display: flex;
+  align-items: center;
+  height: 116px;
+  position: sticky;
   top: 0;
-  left: 0;
+  justify-content: space-between;
   z-index: 1000;
-  padding-top: 40px;
+  padding-top: 52px;
   padding-left: 24px;
   padding-right: 24px;
+  padding-bottom: 16px;
 `
 
 const HeaderTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
-`
-const Text = styled.div`
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 28.64px;
-  text-align: left;
+  height: 48px;
+  width: 100%;
 `
 const Alarm = styled.div`
   width: 48px;

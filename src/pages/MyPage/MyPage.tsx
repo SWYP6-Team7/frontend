@@ -189,6 +189,9 @@ const SmallTitle = styled.div`
   margin-bottom: 8px;
   display: flex;
   align-items: center;
+  &:active {
+    background-color: ${palette.buttonActive};
+  }
 `
 const Box = styled.div`
   border-bottom: 1px solid #e7e7e7;

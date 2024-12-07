@@ -13,5 +13,6 @@ export const palette = {
   like: '#EA2A2A',
   errorVariant: '#FFF7F7',
   errorBorder: '#ED1E1E',
+  buttonActive: '#F1F7EC',
   greenVariant: 'rgba(252, 255, 250, 1)'
 }

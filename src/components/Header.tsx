@@ -77,14 +77,17 @@ const ButtonContainer = styled.button`
 // header container
 // 상단 헤더 스타일
 const HeaderContainer = styled.header`
-  width: 100%;
-  height: 68px;
-  padding: 20px 24px;
-  background-color: transparent;
   display: flex;
-  justify-content: space-between;
+  padding: 52px 24px 16px 24px;
+  height: 116px;
   align-items: center;
-  margin-top: 32px; // 헤더 높이 100px.
+  gap: 22px;
+  position: sticky;
+  top: 0px;
+  background-color: ${palette.검색창};
+  z-index: 1000;
+  justify-content: space-between;
+  width: 100%;
 `
 
 const Title = styled.h2`
