@@ -1,11 +1,6 @@
 import styled from '@emotion/styled'
 import BackIcon from './icons/BackIcon'
-import {
-  useNavigate,
-  useLocation,
-  useSearchParams,
-  Link
-} from 'react-router-dom'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 import AlarmIcon from './icons/AlarmIcon'
 import { palette } from '@/styles/palette'
@@ -36,8 +31,10 @@ const Header = () => {
   return (
     <HeaderContainer>
       {!shouldShowAlarmIcon() && (
-        <ButtonContainer onClick={handleBack}>
-          <BackIcon />
+        <>
+          <ButtonContainer onClick={handleBack}>
+            <BackIcon />
+          </ButtonContainer>
           {(checkRoute.startsWith(ROUTES.TRIP.DETAIL) ||
             checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL)) &&
             searchParams.get('share') === 'true' && (
@@ -52,7 +49,7 @@ const Header = () => {
                 />
               </Link>
             )}
-        </ButtonContainer>
+        </>
       )}
 
       <Title>{getPageTitle()}</Title>
