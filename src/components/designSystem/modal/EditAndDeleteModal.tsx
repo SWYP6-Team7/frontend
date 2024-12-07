@@ -80,6 +80,9 @@ const CloseBtn = styled.button`
   line-height: 16px;
   text-align: center;
   color: ${palette.기본};
+  &:active {
+    background-color: ${palette.비강조3};
+  }
 `
 const EditBtn = styled.button`
   height: 50%;
@@ -94,6 +97,9 @@ const EditBtn = styled.button`
   line-height: 16px;
   text-align: center;
   color: ${palette.기본};
+  &:active {
+    background-color: ${palette.비강조3};
+  }
 `
 const DeleteBtn = styled.button<{ isMyApplyTrip: boolean }>`
   height: ${props => (props.isMyApplyTrip ? '100%' : '50%')};
@@ -106,6 +112,9 @@ const DeleteBtn = styled.button<{ isMyApplyTrip: boolean }>`
   line-height: 16px;
   text-align: center;
   color: ${palette.like};
+  &:active {
+    background-color: ${palette.비강조3};
+  }
 `
 const BtnBox = styled.div<{ isMyApplyTrip: boolean }>`
   display: flex;

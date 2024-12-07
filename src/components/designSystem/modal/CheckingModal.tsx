@@ -90,6 +90,9 @@ const CloseBtn = styled.button`
   justify-content: center;
   align-items: center;
   width: 50%;
+  &:active {
+    background-color: ${palette.buttonActive};
+  }
 `
 const SelectBtn = styled.button`
   font-size: 16px;
@@ -101,6 +104,9 @@ const SelectBtn = styled.button`
   justify-content: center;
   align-items: center;
   width: 50%;
+  &:active {
+    background-color: ${palette.buttonActive};
+  }
 `
 const ModalContainer = styled.div<{ isModalOpen: boolean }>`
   height: 100svh;

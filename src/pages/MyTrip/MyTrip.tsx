@@ -96,7 +96,8 @@ const Slider = styled.div<{ index: number }>`
   height: 100%;
   background-color: white;
   border-radius: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 4px 1px #aaaaaa2e;
+
   transition: left 0.3s ease;
   z-index: 1; // 슬라이더는 탭 뒤에 위치
 `
