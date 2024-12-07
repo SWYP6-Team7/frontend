@@ -13,6 +13,8 @@ import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import { IMyTripList } from '@/model/myTrip'
 
 import { daysAgo } from '@/utils/time'
+import { isGuestUser } from '@/utils/user'
+import LoginButtonForGuest from '@/components/LoginButtonForGuest'
 
 export default function ApplyTrip() {
   const [ref, inView] = useInView()
@@ -36,14 +38,19 @@ export default function ApplyTrip() {
             size={80}
             src="/images/noData.png"
           />
-          <NoData
-            css={{
-              marginTop: '16px',
-              display: 'flex',
-              justifyContent: 'center',
-              textAlign: 'center'
-            }}>
-            아직 신청한 여행이 없어요 <br /> 지금 설레는 첫 여행을 찾아볼까요?
+          <NoData>
+            {isGuestUser() ? (
+              <>
+                로그인 후 <br />
+                설레는 여행에 참가해 보세요
+              </>
+            ) : (
+              <>
+                아직 신청한 여행이 없어요 <br /> 지금 설레는 첫 여행을
+                찾아볼까요?
+              </>
+            )}
+            <LoginButtonForGuest />
           </NoData>
         </Empty>
       )}
@@ -100,9 +107,15 @@ export default function ApplyTrip() {
 }
 
 const NoData = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   font-family: Pretendard;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 22.4px;
   letter-spacing: -0.025em;
   text-align: center;
