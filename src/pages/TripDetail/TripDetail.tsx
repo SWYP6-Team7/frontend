@@ -383,7 +383,7 @@ export default function TripDetail() {
           </div>
           <ArrowIcon />
         </PersonWrapper>
-        <Spacing size={100} />
+        <Spacing size={120} />
         <ButtonContainer backgroundColor={palette.검색창}>
           <Button
             onClick={buttonClickHandler}
