@@ -5,6 +5,7 @@ import AlarmIcon from '@/components/icons/AlarmIcon'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import MoreIcon from '@/components/icons/MoreIcon'
+import ShareIcon from '@/components/icons/ShareIcon'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
@@ -178,7 +179,7 @@ export default function TripDetailHeader() {
           />
         </div>
       )}
-      <div onClick={bookmarkClickHandler}>
+      {/* <div onClick={bookmarkClickHandler}>
         {bookmarked ? (
           <FullHeartIcon width={22} />
         ) : (
@@ -187,7 +188,9 @@ export default function TripDetailHeader() {
             stroke={palette.기본}
           />
         )}
-      </div>
+      </div> */}
+
+      <ShareIcon />
 
       {hostUserCheck && (
         <div onClick={() => setThreeDotsClick(true)}>
