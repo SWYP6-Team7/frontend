@@ -28,8 +28,15 @@ const Header = () => {
     navigate('/notification')
   }
 
+  const headerBackgroundColorIsGrey = () => {
+    return (
+      checkRoute.exact(ROUTES.HOME) ||
+      checkRoute.exact(ROUTES.MY.TRIP) ||
+      checkRoute.startsWith(ROUTES.TRIP.DETAIL)
+    )
+  }
   return (
-    <HeaderContainer>
+    <HeaderContainer isBackGroundColorIsGrey={headerBackgroundColorIsGrey()}>
       {!shouldShowAlarmIcon() && (
         <>
           <ButtonContainer onClick={handleBack}>
@@ -76,7 +83,7 @@ const ButtonContainer = styled.button`
 
 // header container
 // 상단 헤더 스타일
-const HeaderContainer = styled.header`
+const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean }>`
   display: flex;
   padding: 52px 24px 16px 24px;
   height: 116px;
@@ -84,7 +91,8 @@ const HeaderContainer = styled.header`
   gap: 22px;
   position: sticky;
   top: 0px;
-  background-color: ${palette.검색창};
+  background-color: ${props =>
+    props.isBackGroundColorIsGrey ? palette.BG : palette.검색창};
   z-index: 1000;
   justify-content: space-between;
   width: 100%;

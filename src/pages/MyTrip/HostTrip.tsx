@@ -43,6 +43,7 @@ export default function HostTrip() {
               <>
                 로그인 후 <br />
                 설레는 여행을 만들어 보세요
+                <LoginButtonForGuest />
               </>
             ) : (
               <>
@@ -50,7 +51,6 @@ export default function HostTrip() {
                 볼까요?
               </>
             )}
-            <LoginButtonForGuest />
           </NoData>
         </Empty>
       )}
