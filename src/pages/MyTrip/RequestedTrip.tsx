@@ -11,6 +11,8 @@ import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import { IMyTripList } from '@/model/myTrip'
 import { daysAgo } from '@/utils/time'
 import { useRequestedTrip } from '@/hooks/myTrip/useMyRequestedTrip'
+import LoginButtonForGuest from '@/components/LoginButtonForGuest'
+import { isGuestUser } from '@/utils/user'
 
 export default function RequestedTrip() {
   const [ref, inView] = useInView()
@@ -40,7 +42,16 @@ export default function RequestedTrip() {
               justifyContent: 'center',
               textAlign: 'center'
             }}>
-            아직 신청 대기 중인 <br /> 여행이 없어요
+            {isGuestUser() ? (
+              <>
+                <>로그인 후 이용할 수 있어요</>
+                <LoginButtonForGuest />
+              </>
+            ) : (
+              <>
+                아직 신청 대기 중인 <br /> 여행이 없어요
+              </>
+            )}
           </NoData>
         </Empty>
       )}

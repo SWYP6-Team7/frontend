@@ -12,6 +12,7 @@ import CreateTripButton from './CreateTripButton'
 import { palette } from '@/styles/palette'
 import { myPageStore } from '@/store/client/myPageStore'
 import { useBackPathStore } from '@/store/client/backPathStore'
+import { isGuestUser } from '@/utils/user'
 
 const Home = () => {
   const { name } = myPageStore()
@@ -50,9 +51,13 @@ const Home = () => {
             height={24}
             alt="홈 모잉의 로고입니다"
           />
-          <Alarm onClick={onClickAlarm}>
-            <AlarmIcon />
-          </Alarm>
+          {isGuestUser() ? (
+            <Alarm></Alarm>
+          ) : (
+            <Alarm onClick={onClickAlarm}>
+              <AlarmIcon />
+            </Alarm>
+          )}
         </HeaderTitle>
       </HomeHeader>
 
@@ -65,7 +70,7 @@ const Home = () => {
       <ContentWrapper>
         <SearchBox>
           <Greeting>
-            <span>{name}</span>님, 반가워요!
+            <span>{name ?? '모잉'}</span>님, 반가워요!
           </Greeting>
 
           <HomeInputField
@@ -94,9 +99,11 @@ const HomeContainer = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
   padding: 0px 24px;
+
+  margin-top: calc(100px);
 `
 const SearchBox = styled.div`
-  padding-top: 16px;
+  padding-top: 40px;
 `
 const Greeting = styled.div`
   font-size: 22px;
@@ -112,25 +119,38 @@ const Greeting = styled.div`
 
 const HomeHeader = styled.div<{ scrolled: boolean }>`
   background-color: ${palette.검색창};
-  display: flex;
-  align-items: center;
-  height: 116px;
-  position: sticky;
+  transition: background-color 0.3s ease;
+
+  @media (max-width: 440px) {
+    width: 100%;
+  }
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
+  height: 100px;
+  position: fixed;
   top: 0;
-  justify-content: space-between;
+  left: 0;
   z-index: 1000;
-  padding-top: 52px;
+  padding-top: 40px;
   padding-left: 24px;
   padding-right: 24px;
-  padding-bottom: 16px;
 `
 
 const HeaderTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 48px;
-  width: 100%;
+  height: 60px;
+`
+const Text = styled.div`
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 28.64px;
+  text-align: left;
 `
 const Alarm = styled.div`
   width: 48px;
