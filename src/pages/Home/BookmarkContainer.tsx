@@ -6,13 +6,21 @@ import { daysAgo } from '@/utils/time'
 import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
 import { IMyTripList } from '@/model/myTrip'
+import { isGuestUser } from '@/utils/user'
+import { palette } from '@/styles/palette'
 const BookmarkContainer = () => {
   const navigate = useNavigate()
 
   const { data } = useBookmark()
   const bookmarks = data?.pages[0].content as IMyTripList['content']
 
-  console.log(bookmarks, 'bookmarks')
+  const handleClickEmpty = () => {
+    if (isGuestUser()) {
+      navigate('/login')
+    } else {
+      navigate('/search/travel')
+    }
+  }
   return (
     <BookmarkBox>
       <TitleContainer
@@ -26,11 +34,18 @@ const BookmarkContainer = () => {
             <Empty>
               <img
                 // 클릭시,여행 찾기 페이지로 이동 예정
-                onClick={() => navigate('/search/travel')}
+                onClick={handleClickEmpty}
                 src="/images/bookmarkPlus.png"
                 alt="여행 찾기 페이지 이동 이미지"
               />
-              <span>여행을 즐겨찾기 해보세요!</span>
+              {isGuestUser() ? (
+                <span style={{ color: palette.비강조 }}>
+                  로그인 후 여행을 즐겨찾기
+                  <br /> 해보세요.
+                </span>
+              ) : (
+                <span>여행을 즐겨찾기 해보세요!</span>
+              )}
             </Empty>
           </EmptyBox>
         )}

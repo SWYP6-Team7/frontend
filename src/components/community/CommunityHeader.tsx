@@ -35,7 +35,7 @@ export default function CommunityHeader() {
 
   const handleNotification = () => {
     setNotification(
-      data?.postNumber ? `/comunity/${data?.postNumber}` : '/community'
+      data?.postNumber ? `/community/${data?.postNumber}` : '/community'
     )
     navigate(`/notification`)
   }
