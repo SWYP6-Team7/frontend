@@ -43,6 +43,7 @@ export default function ApplyTrip() {
               <>
                 로그인 후 <br />
                 설레는 여행에 참가해 보세요
+                <LoginButtonForGuest />
               </>
             ) : (
               <>
@@ -50,7 +51,6 @@ export default function ApplyTrip() {
                 찾아볼까요?
               </>
             )}
-            <LoginButtonForGuest />
           </NoData>
         </Empty>
       )}

@@ -25,7 +25,7 @@ const Fallback = () => {
           alt="No Data Logo Image"
         />
         <Title>{error?.message}</Title>
-        <BackButton onClick={() => window.history.go(-1)}>
+        <BackButton onClick={() => (window.location.href = '/')}>
           {/* back icon */}
           <svg
             width="6"

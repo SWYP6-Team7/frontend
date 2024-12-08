@@ -24,7 +24,7 @@ const NotFound = () => {
           alt="No Data Logo Image"
         />
         <Title>페이지를 찾을 수 없습니다.</Title>
-        <BackButton onClick={() => navigate(-1)}>
+        <BackButton onClick={() => (window.location.href = '/')}>
           {/* back icon */}
           <svg
             width="6"
@@ -85,7 +85,7 @@ const Container = styled.div`
 `
 
 const Title = styled.h2`
-  diplay: block;
+  display: block;
   font-size: 18px;
   font-weight: 500;
   line-height: 25.2px;
@@ -105,6 +105,7 @@ const BackButton = styled.button`
   align-items: center;
   border-radius: 20px;
   border: none;
+  cursor: pointer;
 `
 
 export default NotFound

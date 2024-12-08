@@ -130,12 +130,20 @@ export default function TripDetail() {
   }
   const onClickCancelApply = async () => {
     if (enrollmentNumber) {
-      await cancel(enrollmentNumber)
-      if (cancelMutation.isSuccess) {
-        setIsCancelToast(true)
+      try {
+        await cancel(enrollmentNumber)
+      } catch (err) {
+        console.log(err, 'cancelMutation ERROR')
       }
     }
   }
+
+  useEffect(() => {
+    if (cancelMutation.isSuccess) {
+      setIsCancelToast(true)
+    }
+  }, [cancelMutation.isSuccess])
+
   const companionsViewHandler = () => {
     setPersonViewClicked(true)
   }

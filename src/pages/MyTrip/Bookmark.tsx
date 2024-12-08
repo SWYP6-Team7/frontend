@@ -43,13 +43,13 @@ export default function Bookmark() {
             {isGuestUser() ? (
               <>
                 로그인 후 <br /> 다양한 여행을 만나 보세요
+                <LoginButtonForGuest />
               </>
             ) : (
               <>
                 아직 저장된 <br /> 여행이 없어요
               </>
             )}
-            <LoginButtonForGuest />
           </NoData>
         </Empty>
       )}
