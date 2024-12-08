@@ -70,7 +70,7 @@ const Home = () => {
       <ContentWrapper>
         <SearchBox>
           <Greeting>
-            <span>{name ?? '모잉'}</span>님, 반가워요!
+            <span>{name === '' ? '모잉' : name}</span>님, 반가워요!
           </Greeting>
 
           <HomeInputField
