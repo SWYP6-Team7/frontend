@@ -8,6 +8,7 @@ import { palette } from '@/styles/palette'
 import CommunityHeader from './community/CommunityHeader'
 import { useHeaderNavigation } from '@/hooks/useHeaderNavigation'
 import { useBackPathStore } from '@/store/client/backPathStore'
+import { isGuestUser } from '@/utils/user'
 
 const Header = () => {
   const {
@@ -57,14 +58,17 @@ const Header = () => {
       {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) && <VoidArea />}
       {checkRoute.startsWith(ROUTES.TRIP.DETAIL) && <TripDetailHeader />}
       {checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL) && <CommunityHeader />}
-      {shouldShowAlarmIcon() && (
-        <div onClick={handleNotification}>
-          <AlarmIcon
-            size={23}
-            stroke={palette.기본}
-          />
-        </div>
-      )}
+      {shouldShowAlarmIcon() &&
+        (isGuestUser() ? (
+          <Alarm></Alarm>
+        ) : (
+          <Alarm onClick={handleNotification}>
+            <AlarmIcon
+              size={23}
+              stroke={palette.기본}
+            />
+          </Alarm>
+        ))}
     </HeaderContainer>
   )
 }
@@ -109,5 +113,13 @@ const Skip = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+
+const Alarm = styled.div`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 export default Header
