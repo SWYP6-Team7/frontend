@@ -86,7 +86,7 @@ const Container = styled.div`
 `
 
 const Title = styled.h2`
-  diplay: block;
+  display: block;
   font-size: 18px;
   font-weight: 500;
   line-height: 25.2px;
