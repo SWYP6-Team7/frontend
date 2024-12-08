@@ -8,7 +8,7 @@ import { commentStore } from '@/store/client/commentStore'
 import useComment from '@/hooks/comment/useComment'
 import ResultToast from '../designSystem/toastMessage/resultToast'
 import { isGuestUser } from '@/utils/user'
-import { useNavigate } from 'node_modules/react-router/dist'
+import { useNavigate } from 'react-router-dom'
 
 interface CommentFormProps {
   paddingBottom?: number

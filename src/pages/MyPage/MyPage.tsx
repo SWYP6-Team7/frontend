@@ -7,7 +7,7 @@ import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import { isGuestUser } from '@/utils/user'
 import styled from '@emotion/styled'
-import { useState } from 'node_modules/@types/react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function MyPage() {
