@@ -48,7 +48,8 @@ const ROUTES = {
   LOGIN: '/login',
   NOTIFICATION: '/notification',
   ANNOUNCEMENT: '/announcement',
-  REQUESTED_TRIP: '/requestedTrip'
+  REQUESTED_TRIP: '/requestedTrip',
+  HOME: '/'
 }
 
 export const useHeaderNavigation = () => {

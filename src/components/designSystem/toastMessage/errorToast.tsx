@@ -17,8 +17,9 @@ export default function ErrorToast() {
       }, 1500)
     }
   }, [errorToastShow])
+  const noPageError = error?.message.includes('404')!
   return (
-    <Container isShow={errorToastShow}>
+    <Container isShow={errorToastShow && !noPageError}>
       <ToastMsg height={50}>
         <Warning />
         <Text>{error?.message}</Text>

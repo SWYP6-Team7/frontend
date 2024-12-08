@@ -158,7 +158,7 @@ export default function MyPage() {
 const ProfileImg = styled.div``
 const Container = styled.div`
   padding: 0px 24px;
-  margin-top: 4px;
+  margin-top: 8px;
 `
 const MoreBox = styled.div`
   display: flex;
