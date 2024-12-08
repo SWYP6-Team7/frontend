@@ -96,7 +96,7 @@ const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean }>`
   position: sticky;
   top: 0px;
   background-color: ${props =>
-    props.isBackGroundColorIsGrey ? palette.BG : palette.검색창};
+    props.isBackGroundColorIsGrey ? palette.검색창 : palette.BG};
   z-index: 1000;
   justify-content: space-between;
   width: 100%;
