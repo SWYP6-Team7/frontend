@@ -7,6 +7,8 @@ import UpArrowIcon from '../icons/UpArrowIcon'
 import { commentStore } from '@/store/client/commentStore'
 import useComment from '@/hooks/comment/useComment'
 import ResultToast from '../designSystem/toastMessage/resultToast'
+import { isGuestUser } from '@/utils/user'
+import { useNavigate } from 'node_modules/react-router/dist'
 
 interface CommentFormProps {
   paddingBottom?: number
@@ -23,6 +25,7 @@ const CommentForm = ({
 }: CommentFormProps) => {
   const { isEdit, edit, parentNumber, commentNumber, setReset, isReply } =
     commentStore()
+  const navigate = useNavigate()
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [focused, setFocused] = useState(false)
   const [isToastShow, setIsToastShow] = useState(false)
@@ -80,7 +83,22 @@ const CommentForm = ({
     setReset()
   }
 
-  return (
+  return isGuestUser() ? (
+    <Container
+      paddingBottom={paddingBottom}
+      paddingTop={paddingTop}
+      onClick={() => navigate('/login')}>
+      <InputContainer focused={false}>
+        <Input
+          placeholder="로그인 후 댓글을 달아보세요."
+          readOnly
+        />
+        <Button canSubmit={false}>
+          <UpArrowIcon />
+        </Button>
+      </InputContainer>
+    </Container>
+  ) : (
     <Container
       onSubmit={submitComment}
       paddingBottom={paddingBottom}
@@ -90,6 +108,11 @@ const CommentForm = ({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           ref={inputRef}
+          placeholder={
+            isGuestUser()
+              ? '댓글을 입력해주세요.'
+              : '로그인 후 댓글을 달아보세요.'
+          }
           onChange={handleInput}
           value={value}
         />

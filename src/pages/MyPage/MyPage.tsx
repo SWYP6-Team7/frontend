@@ -1,15 +1,18 @@
 import Badge from '@/components/designSystem/Badge'
+import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import RightVector from '@/components/icons/RightVector'
 import Spacing from '@/components/Spacing'
 import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
+import { isGuestUser } from '@/utils/user'
 import styled from '@emotion/styled'
+import { useState } from 'node_modules/@types/react'
 import { useNavigate } from 'react-router-dom'
 
 export default function MyPage() {
   const { name, agegroup, email, preferredTags, profileUrl } = myPageStore()
-
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const navigate = useNavigate()
   const cutTags =
     preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags
@@ -21,51 +24,68 @@ export default function MyPage() {
       <UserInfo>
         <ProfileImg>
           <RoundedImage
-            src={profileUrl}
+            src={isGuestUser() ? '/images/defaultProfile.png' : profileUrl}
             size={80}
           />
         </ProfileImg>
         <div css={{ width: '100%' }}>
-          <MoreBox onClick={() => navigate('/editMyInfo')}>
-            <UserName>{name}</UserName>
-            <div css={{ display: 'flex', padding: '8px 5px' }}>
-              <RightVector />
-            </div>
-          </MoreBox>
-          <Email>{email}</Email>
-          <Tags>
-            <div css={{ marginRight: '8px' }}>
-              <Badge
-                isDueDate={false}
-                fontWeight="600"
-                color={palette.keycolor}
-                backgroundColor={palette.keycolorBG}
-                text={agegroup}
-              />
-            </div>
+          {!isGuestUser() ? (
+            <>
+              <MoreBox onClick={() => navigate('/editMyInfo')}>
+                <UserName>{name}</UserName>
+                <div css={{ display: 'flex', padding: '8px 5px' }}>
+                  <RightVector />
+                </div>
+              </MoreBox>
+              <Email>{email}</Email>
+              <Tags>
+                <div css={{ marginRight: '8px' }}>
+                  <Badge
+                    isDueDate={false}
+                    fontWeight="600"
+                    color={palette.keycolor}
+                    backgroundColor={palette.keycolorBG}
+                    text={agegroup}
+                  />
+                </div>
 
-            {cutTags.map((text: string) => (
-              <div css={{ marginRight: '8px' }}>
-                <Badge
-                  key={text}
-                  isDueDate={false}
-                  fontWeight="500"
-                  color={palette.비강조}
-                  backgroundColor="white"
-                  text={text}
-                />
-              </div>
-            ))}
-            {preferredTags.length > cutTags.length ? (
-              <Badge
-                isDueDate={false}
-                fontWeight="500"
-                color={palette.비강조}
-                backgroundColor="white"
-                text={`+${preferredTags.length - cutTags.length}`}
-              />
-            ) : null}
-          </Tags>
+                {cutTags.map((text: string) => (
+                  <div css={{ marginRight: '8px' }}>
+                    <Badge
+                      key={text}
+                      isDueDate={false}
+                      fontWeight="500"
+                      color={palette.비강조}
+                      backgroundColor="white"
+                      text={text}
+                    />
+                  </div>
+                ))}
+                {preferredTags.length > cutTags.length ? (
+                  <Badge
+                    isDueDate={false}
+                    fontWeight="500"
+                    color={palette.비강조}
+                    backgroundColor="white"
+                    text={`+${preferredTags.length - cutTags.length}`}
+                  />
+                ) : null}
+              </Tags>
+            </>
+          ) : (
+            <>
+              <MoreBox onClick={() => setShowLoginModal(true)}>
+                <UserName>로그인 & 회원가입</UserName>
+                <div css={{ display: 'flex', padding: '8px 5px' }}>
+                  <RightVector />
+                </div>
+              </MoreBox>
+              <LoginInfo>
+                로그인 후 모잉에서
+                <br /> 설레는 여행을 떠나보세요.
+              </LoginInfo>
+            </>
+          )}
         </div>
       </UserInfo>
 
@@ -123,6 +143,15 @@ export default function MyPage() {
           <Spacing size={150} />
         </div>
       </Menu>
+
+      <CheckingModal
+        isModalOpen={showLoginModal}
+        onClick={() => navigate('/login')}
+        modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}
+        modalTitle="로그인 안내"
+        modalButtonText="로그인"
+        setModalOpen={setShowLoginModal}
+      />
     </Container>
   )
 }
@@ -147,6 +176,18 @@ const UserName = styled.div`
 const Tags = styled.div`
   display: flex;
 `
+const LoginInfo = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.8px;
+  letter-spacing: -0.25px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+
+  color: ${palette.비강조};
+`
+
 const Email = styled.div`
   font-size: 14px;
   font-weight: 400;
@@ -189,9 +230,6 @@ const SmallTitle = styled.div`
   margin-bottom: 8px;
   display: flex;
   align-items: center;
-  &:active {
-    background-color: ${palette.buttonActive};
-  }
 `
 const Box = styled.div`
   border-bottom: 1px solid #e7e7e7;
