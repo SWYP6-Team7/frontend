@@ -39,7 +39,7 @@ const Header = () => {
   return (
     <HeaderContainer isBackGroundColorIsGrey={headerBackgroundColorIsGrey()}>
       {!shouldShowAlarmIcon() && (
-        <>
+        <RightFlex>
           <ButtonContainer onClick={handleBack}>
             <BackIcon />
           </ButtonContainer>
@@ -57,7 +57,7 @@ const Header = () => {
                 />
               </Link>
             )}
-        </>
+        </RightFlex>
       )}
 
       <Title>{getPageTitle()}</Title>
@@ -100,6 +100,11 @@ const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean }>`
   z-index: 1000;
   justify-content: space-between;
   width: 100%;
+`
+
+const RightFlex = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const Title = styled.h2`

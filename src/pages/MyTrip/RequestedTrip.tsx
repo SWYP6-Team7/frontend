@@ -44,7 +44,7 @@ export default function RequestedTrip() {
             }}>
             {isGuestUser() ? (
               <>
-                <>로그인 후 이용할 수 있어요</>
+                <div>로그인 후 이용할 수 있어요</div>
                 <LoginButtonForGuest />
               </>
             ) : (
