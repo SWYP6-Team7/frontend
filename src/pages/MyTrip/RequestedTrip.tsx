@@ -39,6 +39,7 @@ export default function RequestedTrip() {
             css={{
               marginTop: '16px',
               display: 'flex',
+              flexDirection: 'column',
               justifyContent: 'center',
               textAlign: 'center'
             }}>

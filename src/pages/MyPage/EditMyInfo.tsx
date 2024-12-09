@@ -12,6 +12,7 @@ import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ProfileEditModal from './ProfileEditModal'
+import { isGuestUser } from '@/utils/user'
 
 export default function EditMyInfo() {
   const navigate = useNavigate()
@@ -210,13 +211,15 @@ export default function EditMyInfo() {
         <Line></Line>
         <Spacing size={8} />
 
-        <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
-          <LogoutButton>로그아웃</LogoutButton>
-          <VerticalLine>|</VerticalLine>
-          <DrawalButton onClick={() => navigate('/withdrawal')}>
-            탈퇴하기
-          </DrawalButton>
-        </LogoutBox>
+        {!isGuestUser() && (
+          <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
+            <LogoutButton>로그아웃</LogoutButton>
+            <VerticalLine>|</VerticalLine>
+            <DrawalButton onClick={() => navigate('/withdrawal')}>
+              탈퇴하기
+            </DrawalButton>
+          </LogoutBox>
+        )}
         <Spacing size={150} />
         {showModal && (
           <ProfileEditModal
