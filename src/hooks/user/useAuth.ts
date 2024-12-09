@@ -4,13 +4,30 @@ import { axiosInstance } from '@/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import RequestError from '@/context/ReqeustError'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { IRegisterEmail, IRegisterGoogle, IRegisterKakao } from '@/model/auth'
 import { userStore } from '@/store/client/userStore'
 import { getJWTHeader } from '@/utils/user'
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
+
+const noNeedPages = [
+  '/login',
+  '/registerForm',
+  '/registerName',
+  '/registerAge',
+  '/registerAge/registerGender',
+  '/registerTripStyle',
+  '/onBoarding',
+  '/',
+  '/trip/detail',
+  '/myTrip'
+]
+const isAccessTokenNoNeedpages = (path: string) => {
+  // 필요없는 페이지 인지 확인하는 함수.
+  return noNeedPages.some(url => path.startsWith(url))
+}
 
 function checkNetworkConnection() {
   if (!navigator.onLine) {
@@ -20,6 +37,7 @@ function checkNetworkConnection() {
   return true
 }
 const useAuth = () => {
+  const { pathname } = useLocation()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { setLoginData, clearLoginData, accessToken, resetData } = authStore()
@@ -168,8 +186,10 @@ const useAuth = () => {
     },
     onError: (error: any) => {
       console.error(error)
-      navigate('/login')
-      throw new RequestError(error)
+      // if (!isAccessTokenNoNeedpages(pathname)) {
+      //   navigate('/login')
+      // }
+      // throw new RequestError(error)
     }
   })
 

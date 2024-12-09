@@ -81,40 +81,16 @@ const Layout = () => {
       firstProfileImageMutation(accessToken)
     }
   }, [accessToken, isLoadingImage, profileImg, isFirstProfileImagePostSuccess])
-  const noNeedPages = [
-    '/login',
-    '/registerForm',
-    '/registerName',
-    '/registerAge',
-    '/registerAge/registerGender',
-    '/registerTripStyle',
-    '/onBoarding',
-    '/',
-    '/trip/detail',
-    '/myTrip'
-  ]
-  const isAccessTokenNoNeedpages = (path: string) => {
-    // 필요없는 페이지 인지 확인하는 함수.
-    return noNeedPages.some(url => path.startsWith(url))
-  }
+
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
     if (!accessToken && !logoutCheck) {
       // 토큰이 없으면 리프레쉬 토큰 api 요청.
       const refreshAccessToken = async () => {
-        try {
-          // refresh 토큰을 이용해 accessToken 재발급 요청
-          await userPostRefreshToken()
-        } catch (error) {
-          console.error('Failed to refresh token:', error)
-
-          // navigate('/login') // 로그인 이동.
-        }
+        userPostRefreshToken()
       }
 
-      if (!isAccessTokenNoNeedpages(pathname)) {
-        refreshAccessToken()
-      }
+      refreshAccessToken()
     }
   }, [accessToken])
 
