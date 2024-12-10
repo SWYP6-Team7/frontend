@@ -6,7 +6,10 @@
   "scripts": {
     "start": "npx vite dev",
     "start:host": "npx vite dev --host",
-    "build": "npx vite optimize & npx vite build"
+    "build": "npx vite optimize & npx vite build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "keywords": [],
   "author": "",
@@ -42,6 +45,15 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.2",
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/addon-interactions": "^8.4.7",
+    "@storybook/addon-onboarding": "^8.4.7",
+    "@storybook/blocks": "^8.4.7",
+    "@storybook/builder-vite": "^8.4.7",
+    "@storybook/react": "^8.4.7",
+    "@storybook/react-vite": "^8.4.7",
+    "@storybook/test": "^8.4.7",
     "@types/node": "^22.5.1",
     "@types/react": "^18.3.14",
     "@types/react-copy-to-clipboard": "^5.0.7",
@@ -51,12 +63,15 @@
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "chromatic": "^11.20.0",
     "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-storybook": "^0.11.1",
     "msw": "^2.4.2",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "storybook": "^8.4.7"
   },
   "msw": {
     "workerDirectory": [
