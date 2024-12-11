@@ -196,4 +196,44 @@ export default css`
     box-sizing: border-box;
     font-family: 'Noto Color Emoji', sans-serif; // 이모지가 모든 운영체제에서 일관되게 보이도록.
   }
+
+  /* View Transition Slide Animations */
+  @keyframes slide-from-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-to-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  ::view-transition-old(root) {
+    animation-name: slide-to-left;
+  }
+
+  ::view-transition-new(root) {
+    animation-name: slide-from-right;
+  }
+
+  /* Fallback for browsers without View Transitions */
+  @media (forced-colors: active) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+    }
+  }
 `

@@ -42,6 +42,7 @@ import NewPassword from './pages/MyPage/NewPassword'
 import Announcement from './pages/MyPage/Announcement'
 import RequestedTrip from './pages/MyTrip/RequestedTrip'
 import NotFound from './components/errorHandling/NotFound'
+import useViewTransition from './hooks/useViewTransition'
 
 export const router = createBrowserRouter([
   {
@@ -254,6 +255,7 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
+  useViewTransition()
   return (
     <>
       <RouterProvider router={router} />
