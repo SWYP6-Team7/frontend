@@ -1,18 +1,23 @@
 import { useEffect } from 'react'
-import { useLocation } from 'react-router'
-
+import { To, useLocation, useNavigate } from 'react-router-dom'
 const useViewTransition = () => {
   const location = useLocation()
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    // Check if the browser supports View Transitions API
-    if (!document.startViewTransition) return
+  const navigateWithTransition = (to: To) => {
+    // Check browser support for View Transitions
+    if (!document.startViewTransition) {
+      navigate(to)
+      return
+    }
 
-    // Start view transition for route changes
+    // Start view transition
     document.startViewTransition(() => {
-      // This will trigger the native transition
+      navigate(to)
     })
-  }, [location.pathname])
+  }
+
+  return navigateWithTransition
 }
 
 export default useViewTransition
