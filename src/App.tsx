@@ -1,4 +1,9 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  Outlet,
+  RouterProvider,
+  useLocation
+} from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
@@ -43,6 +48,7 @@ import Announcement from './pages/MyPage/Announcement'
 import RequestedTrip from './pages/MyTrip/RequestedTrip'
 import NotFound from './components/errorHandling/NotFound'
 import useViewTransition from './hooks/useViewTransition'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 export const router = createBrowserRouter([
   {
@@ -255,10 +261,16 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
-  useViewTransition()
+  const location = useLocation()
   return (
-    <>
-      <RouterProvider router={router} />
-    </>
+    <TransitionGroup>
+      <CSSTransition
+        key={location.pathname} // 경로가 바뀔 때마다 트랜지션이 실행되도록 설정
+        timeout={300}
+        classNames="slide"
+        unmountOnExit>
+        <RouterProvider router={router} />
+      </CSSTransition>
+    </TransitionGroup>
   )
 }
