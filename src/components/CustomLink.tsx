@@ -11,6 +11,7 @@ const CustomLink = ({ to, children, ...props }: CustomLinkProps) => {
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
+    document.documentElement.style.viewTransitionName = 'forward'
     navigateWithTransition(to)
   }
 
