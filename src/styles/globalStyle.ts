@@ -197,7 +197,6 @@ export default css`
     font-family: 'Noto Color Emoji', sans-serif; // 이모지가 모든 운영체제에서 일관되게 보이도록.
   }
 
-  /* View Transition Slide Animations */
   @keyframes slide-from-right {
     from {
       transform: translateX(100%);
@@ -206,8 +205,7 @@ export default css`
       transform: translateX(0);
     }
   }
-
-  @keyframes slide-to-left {
+  @keyframes slide-to-right {
     from {
       transform: translateX(0);
     }
@@ -216,23 +214,34 @@ export default css`
     }
   }
 
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  @media (max-width: 440px) {
+    ::view-transition-old(forward),
+    ::view-transition-new(forward) {
+      animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    ::view-transition-old(back),
+    ::view-transition-new(back) {
+      animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    ::view-transition-new(forward) {
+      animation-name: slide-from-right;
+    }
+
+    ::view-transition-old(back) {
+      animation-name: slide-to-right;
+      z-index: 100;
+    }
   }
 
-  ::view-transition-old(root) {
-    animation-name: slide-to-left;
-  }
-
-  ::view-transition-new(root) {
-    animation-name: slide-from-right;
-  }
-
-  /* Fallback for browsers without View Transitions */
   @media (forced-colors: active) {
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
+    ::view-transition-old(forward),
+    ::view-transition-new(forward) {
+      animation: none;
+    }
+    ::view-transition-old(back),
+    ::view-transition-new(back) {
       animation: none;
     }
   }

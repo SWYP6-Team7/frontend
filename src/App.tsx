@@ -47,8 +47,6 @@ import NewPassword from './pages/MyPage/NewPassword'
 import Announcement from './pages/MyPage/Announcement'
 import RequestedTrip from './pages/MyTrip/RequestedTrip'
 import NotFound from './components/errorHandling/NotFound'
-import useViewTransition from './hooks/useViewTransition'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 export const router = createBrowserRouter([
   {
@@ -261,16 +259,5 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
-  const location = useLocation()
-  return (
-    <TransitionGroup>
-      <CSSTransition
-        key={location.pathname} // 경로가 바뀔 때마다 트랜지션이 실행되도록 설정
-        timeout={300}
-        classNames="slide"
-        unmountOnExit>
-        <RouterProvider router={router} />
-      </CSSTransition>
-    </TransitionGroup>
-  )
+  return <RouterProvider router={router} />
 }
