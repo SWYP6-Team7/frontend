@@ -179,16 +179,6 @@ export default function TripDetailHeader() {
           />
         </div>
       )}
-      {/* <div onClick={bookmarkClickHandler}>
-        {bookmarked ? (
-          <FullHeartIcon width={22} />
-        ) : (
-          <EmptyHeartIcon
-            width={22}
-            stroke={palette.기본}
-          />
-        )}
-      </div> */}
 
       <ShareIcon />
 
