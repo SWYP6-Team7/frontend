@@ -5,7 +5,7 @@ import WhiteXIcon from './icons/WhiteXIcon'
 import { keyframes } from '@emotion/react'
 import Spacing from './Spacing'
 import CheckIcon from './icons/CheckIcon'
-import Button from './Button'
+import Button from './designSystem/Buttons/Button'
 import { palette } from '@/styles/palette'
 import ResultToast from './designSystem/toastMessage/resultToast'
 

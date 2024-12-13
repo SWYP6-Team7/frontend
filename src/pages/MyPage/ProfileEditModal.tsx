@@ -1,5 +1,5 @@
 import BottomModal from '@/components/BottomModal'
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import CameraIconForUploadMypage from '@/components/icons/CameraIconForUploadMypage'
 import PictureIcon from '@/components/icons/PictureIcon'

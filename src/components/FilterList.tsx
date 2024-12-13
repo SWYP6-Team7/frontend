@@ -5,7 +5,7 @@ import Accordion from './Accordion'
 import BottomModal from './BottomModal'
 import SearchFilterTag from './designSystem/tag/SearchFilterTag'
 import ResetIcon from './icons/ResetIcon'
-import Button from './Button'
+import Button from './designSystem/Buttons/Button'
 import Spacing from './Spacing'
 
 import {
