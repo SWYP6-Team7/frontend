@@ -12,7 +12,11 @@ const RemoveButton = ({ onClick }: { onClick: () => void }) => {
 }
 const XIconButton = styled.button`
   cursor: pointer;
-  display: flex;
+  display: inline-block;
+  border: none;
+  outline: none;
+  background-color: transparent;
+
   justify-items: center;
   align-items: center;
 `

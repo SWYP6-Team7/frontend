@@ -5,7 +5,7 @@ import useSearch from '@/hooks/search/useSearch'
 import styled from '@emotion/styled'
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
-import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
+import InputField from '@/components/designSystem/input/InputField'
 import { Link, useSearchParams } from 'react-router-dom'
 import SortHeader from '@/components/SortHeader'
 import CategoryList from '@/components/community/CategoryList'
@@ -93,7 +93,7 @@ const SearchCommunity = () => {
   return (
     <Container>
       <Spacing size={'4.2svh'} />
-      <CreateTripInputField
+      <InputField
         value={keyword}
         onChange={changeKeyword}
         onKeyDown={handleKeyDown}

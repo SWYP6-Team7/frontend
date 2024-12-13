@@ -1,4 +1,4 @@
-import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
+import CreateTripInputField from '@/components/CreateTripInputField'
 import TextareaField from '@/components/designSystem/input/TextareaField'
 import Spacing from '@/components/Spacing'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
