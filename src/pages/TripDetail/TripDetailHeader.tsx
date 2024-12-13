@@ -181,12 +181,12 @@ export default function TripDetailHeader() {
       )}
 
       <ShareIcon />
-
-      {hostUserCheck && (
-        <div onClick={() => setThreeDotsClick(true)}>
-          <MoreIcon />
-        </div>
-      )}
+      {/* 
+      {hostUserCheck && ( */}
+      <div onClick={() => setThreeDotsClick(true)}>
+        <MoreIcon />
+      </div>
+      {/* )} */}
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}
         setIsDeleteBtnClicked={setIsDeleteBtnClicked}

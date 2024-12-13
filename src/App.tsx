@@ -261,7 +261,7 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
-  const location = useLocation()
+  // const location = useLocation()
   return (
     <TransitionGroup>
       <CSSTransition
