@@ -3,7 +3,6 @@ import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 interface ApplyListButtonProps {
-  canCount: boolean
   nowEnrollmentCount: number
   text: string
   addStyle?: {
@@ -29,7 +28,6 @@ interface ApplyListButtonProps {
 // 다음, 로그인 등에 쓰이는 버튼.
 
 const ApplyListButton = ({
-  canCount = false,
   text = '다음',
   type = 'submit',
   addStyle = {
@@ -41,7 +39,6 @@ const ApplyListButton = ({
   onClick = () => {},
   bookmarkOnClick = () => {},
   disabled = false,
-
   nowEnrollmentCount,
   bookmarked = false
 }: ApplyListButtonProps) => {
@@ -65,7 +62,7 @@ const ApplyListButton = ({
         onClick={onClick}
         css={!disabled && addStyle}>
         {text}
-        {canCount && !disabled && (
+        {!disabled && (
           <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
         )}
       </ButtonContainer>

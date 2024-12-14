@@ -412,7 +412,6 @@ export default function TripDetail() {
         <Spacing size={120} />
         <ButtonContainer backgroundColor={palette.검색창}>
           <ApplyListButton
-            canCount={hostUserCheck && nowEnrollmentCount > 0}
             nowEnrollmentCount={nowEnrollmentCount}
             bookmarkOnClick={bookmarkClickHandler}
             bookmarked={bookmarked}

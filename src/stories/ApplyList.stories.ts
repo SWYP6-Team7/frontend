@@ -19,9 +19,6 @@ const meta = {
     nowEnrollmentCount: {
       control: 'number'
     },
-    canCount: {
-      control: 'boolean'
-    },
     bookmarked: {
       control: 'boolean'
     },
@@ -63,7 +60,10 @@ const meta = {
         }
       }
     },
-    disabled: { control: 'boolean' },
+    disabled: {
+      control: 'boolean',
+      description: '주최자인데, 신청자수가 없다면 disabled 됨'
+    },
     children: {
       control: 'text',
       description: '신청 목록 개수 표시'
@@ -79,7 +79,6 @@ type Story = StoryObj<typeof meta>
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    canCount: true,
     nowEnrollmentCount: 1,
     text: '참가 신청 목록',
     type: 'submit',
@@ -92,23 +91,5 @@ export const Default: Story = {
     disabled: false,
     children: '',
     bookmarked: true
-  }
-}
-
-export const DisabledState: Story = {
-  args: {
-    canCount: false,
-    nowEnrollmentCount: 0,
-    text: '참가 신청 목록',
-    type: 'submit',
-    addStyle: {
-      backgroundColor: palette.비강조3,
-      color: palette.비강조,
-      boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
-      fontWeight: '600'
-    },
-    disabled: true,
-    children: '',
-    bookmarked: false
   }
 }
