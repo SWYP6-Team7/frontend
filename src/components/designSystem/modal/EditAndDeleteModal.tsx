@@ -1,6 +1,8 @@
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { SetStateAction, useEffect, useRef, useState } from 'react'
+import CloseButton from '../Buttons/CloseButton'
+import EditAndDeleteButton from '../Buttons/EditAndDeleteButton'
 interface EditAndDeleteModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<SetStateAction<boolean>>
@@ -40,91 +42,28 @@ export default function EditAndDeleteModal({
         isOpen={isOpen}
         nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
         {!isMyApplyTrip ? (
-          <BtnBox isMyApplyTrip={isMyApplyTrip}>
-            <EditBtn onClick={editHandler}>수정하기</EditBtn>
-            <DeleteBtn
-              isMyApplyTrip={isMyApplyTrip}
-              onClick={deleteHandler}>
-              삭제하기
-            </DeleteBtn>
-          </BtnBox>
+          <EditAndDeleteButton
+            isMyApplyTrip={isMyApplyTrip}
+            editClickHandler={editHandler}
+            deleteClickHandler={deleteHandler}
+          />
         ) : (
-          <BtnBox isMyApplyTrip={isMyApplyTrip}>
-            <DeleteBtn
-              isMyApplyTrip={isMyApplyTrip}
-              onClick={deleteHandler}>
-              {deleteText}
-            </DeleteBtn>
-          </BtnBox>
+          <EditAndDeleteButton
+            isMyApplyTrip={isMyApplyTrip}
+            editClickHandler={editHandler}
+            deleteClickHandler={deleteHandler}
+            deleteText={deleteText}
+          />
         )}
 
-        <CloseBtn onClick={() => setIsOpen(false)}>닫기</CloseBtn>
+        <CloseButton setIsOpen={setIsOpen} />
       </Modal>
 
       <DarkWrapper onClick={handleClickOutside}></DarkWrapper>
     </Container>
   )
 }
-const CloseBtn = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 48px;
-  background-color: #fdfdfd;
-  border-radius: 40px;
-  padding: 10px 20px;
-  margin-top: 16px;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 16px;
-  text-align: center;
-  color: ${palette.기본};
-  &:active {
-    background-color: ${palette.비강조3};
-  }
-`
-const EditBtn = styled.button`
-  height: 50%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid #e2e2e2;
 
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
-  text-align: center;
-  color: ${palette.기본};
-  &:active {
-    background-color: ${palette.비강조3};
-  }
-`
-const DeleteBtn = styled.button<{ isMyApplyTrip: boolean }>`
-  height: ${props => (props.isMyApplyTrip ? '100%' : '50%')};
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
-  text-align: center;
-  color: ${palette.like};
-  &:active {
-    background-color: ${palette.비강조3};
-  }
-`
-const BtnBox = styled.div<{ isMyApplyTrip: boolean }>`
-  display: flex;
-  flex-direction: column;
-  /* justify-content: center; */
-  align-items: center;
-  background-color: #f0f0f0;
-  border-radius: 20px;
-  height: ${props => (props.isMyApplyTrip ? '52px' : '104px')};
-`
 const Modal = styled.div<{ isOpen: boolean; nowWidth: number }>`
   width: ${({ nowWidth }) => `calc(${nowWidth}px - 48px)`};
   position: absolute;
