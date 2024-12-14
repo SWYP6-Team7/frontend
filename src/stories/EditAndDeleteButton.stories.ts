@@ -15,6 +15,12 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
+    isOpen: {
+      control: 'boolean',
+      description:
+        '버튼이 보이는지에 대한 상태값. 이에 따라 y축으로 인터렉션 변동 생김.',
+      defaultValue: false
+    },
     isMyApplyTrip: {
       control: 'boolean',
       description: '내 여행에서 케밥 누르면, 여행 취소 버튼으로 사용되는 여부'
@@ -38,4 +44,10 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {}
+
+export const Default: Story = {
+  args: {
+    isOpen: false,
+    isMyApplyTrip: false
+  }
+}

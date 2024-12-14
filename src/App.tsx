@@ -259,20 +259,5 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
-<<<<<<< HEAD
   return <RouterProvider router={router} />
-=======
-  // const location = useLocation()
-  return (
-    <TransitionGroup>
-      <CSSTransition
-        key={location.pathname} // 경로가 바뀔 때마다 트랜지션이 실행되도록 설정
-        timeout={300}
-        classNames="slide"
-        unmountOnExit>
-        <RouterProvider router={router} />
-      </CSSTransition>
-    </TransitionGroup>
-  )
->>>>>>> b3a183c4581ea30cf84c4f9aeb5ff36543a1f93f
 }

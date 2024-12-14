@@ -22,8 +22,8 @@ const tripDetail = {
 
   loginMemberRelatedInfo: {
     hostUser: true,
-    enrollmentNumber: 4,
-    bookmarked: true
+    enrollmentNumber: null,
+    bookmarked: false
   }
 }
 const companions = {

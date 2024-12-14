@@ -62,7 +62,7 @@ const ApplyListButton = ({
         onClick={onClick}
         css={!disabled && addStyle}>
         {text}
-        {!disabled && (
+        {!disabled && nowEnrollmentCount > 0 && (
           <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
         )}
       </ButtonContainer>
