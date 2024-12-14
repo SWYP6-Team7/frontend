@@ -2,7 +2,8 @@ import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React from 'react'
 
-interface CloseButtonProps {
+interface EditAndDeleteButtonProps {
+  isOpen: boolean
   isMyApplyTrip?: boolean // 여행 참가 취소 버튼에도 공용으로 쓰기 위함.
   editClickHandler: (event: React.MouseEvent<HTMLButtonElement>) => void
   deleteClickHandler: (event: React.MouseEvent<HTMLButtonElement>) => void
@@ -12,10 +13,13 @@ export default function EditAndDeleteButton({
   editClickHandler,
   deleteClickHandler,
   isMyApplyTrip = false,
-  deleteText = '삭제하기'
-}: CloseButtonProps) {
+  deleteText = '삭제하기',
+  isOpen
+}: EditAndDeleteButtonProps) {
   return (
-    <BtnBox isMyApplyTrip={isMyApplyTrip}>
+    <BtnBox
+      isMyApplyTrip={isMyApplyTrip}
+      isOpen={isOpen}>
       {!isMyApplyTrip && <EditBtn onClick={editClickHandler}>수정하기</EditBtn>}
 
       <DeleteBtn
@@ -27,7 +31,7 @@ export default function EditAndDeleteButton({
   )
 }
 
-const BtnBox = styled.div<{ isMyApplyTrip: boolean }>`
+const BtnBox = styled.div<{ isMyApplyTrip: boolean; isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
@@ -35,6 +39,10 @@ const BtnBox = styled.div<{ isMyApplyTrip: boolean }>`
   background-color: #f0f0f0;
   border-radius: 20px;
   height: ${props => (props.isMyApplyTrip ? '52px' : '104px')};
+
+  transform: ${props => (props.isOpen ? 'translateY(-5%)' : 'translateY(20%)')};
+
+  transition: transform 0.5s ease;
 `
 
 const EditBtn = styled.button`

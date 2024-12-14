@@ -43,12 +43,14 @@ export default function EditAndDeleteModal({
         nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
         {!isMyApplyTrip ? (
           <EditAndDeleteButton
+            isOpen={isOpen}
             isMyApplyTrip={isMyApplyTrip}
             editClickHandler={editHandler}
             deleteClickHandler={deleteHandler}
           />
         ) : (
           <EditAndDeleteButton
+            isOpen={isOpen}
             isMyApplyTrip={isMyApplyTrip}
             editClickHandler={editHandler}
             deleteClickHandler={deleteHandler}
