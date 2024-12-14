@@ -79,12 +79,14 @@ export default function TripDetailHeader() {
         nowPerson,
         bookmarkCount,
         viewCount,
-        hostUserCheck,
-        enrollmentNumber,
         enrollCount,
         userAgeGroup,
-        bookmarked,
-        profileUrl
+        profileUrl,
+        loginMemberRelatedInfo: {
+          hostUser: hostUserCheck,
+          enrollmentNumber,
+          bookmarked
+        }
       } = tripInfos
 
       const [year, month, day] = dueDate.split('-').map((v: string) => +v)

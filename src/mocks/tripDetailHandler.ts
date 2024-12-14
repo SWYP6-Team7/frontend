@@ -19,9 +19,12 @@ const tripDetail = {
   periodType: '일주일 이하',
   tags: ['✊ 즉흥', '🏔️ 자연', '🍔 먹방'],
   postStatus: '진행중',
-  hostUserCheck: false,
-  enrollmentNumber: 4,
-  bookmarked: true
+
+  loginMemberRelatedInfo: {
+    hostUser: true,
+    enrollmentNumber: 4,
+    bookmarked: true
+  }
 }
 const companions = {
   totalCount: 5,
