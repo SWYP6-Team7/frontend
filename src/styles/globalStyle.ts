@@ -214,6 +214,19 @@ export default css`
     }
   }
 
+  @keyframes slideOut {
+    to {
+      opacity: 0;
+      transform: translateX(15px);
+    }
+  }
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-15px);
+    }
+  }
+
   @media (max-width: 440px) {
     ::view-transition-old(forward),
     ::view-transition-new(forward) {
@@ -233,6 +246,19 @@ export default css`
       animation-name: slide-to-right;
       z-index: 100;
     }
+  }
+  // 내 여행 탭 화면 전환시, transition
+  ::view-transition-old(tabView),
+  ::view-transition-new(tabView) {
+    animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  ::view-transition-old(tabView) {
+    animation-name: slideOut;
+  }
+
+  ::view-transition-new(tabView) {
+    animation-name: slideIn;
   }
 
   @media (forced-colors: active) {
