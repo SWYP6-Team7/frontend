@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import ButtonContainer from './ButtonContainer'
-import Button from './Button'
+import Button from './designSystem/Buttons/Button'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { authStore } from '@/store/client/authStore'
 
@@ -127,7 +127,6 @@ const ThreeRowCarousel = ({
               <Button
                 onClick={onClickNext}
                 text={currentSlideNumber === 2 ? '시작하기' : '다음'}
-                id={currentSlideNumber === 2 ? '시작하기' : '다음'}
                 addStyle={{
                   backgroundColor: palette.keycolor,
                   color: palette.BG,

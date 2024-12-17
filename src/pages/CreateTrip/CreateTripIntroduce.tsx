@@ -1,4 +1,4 @@
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
 import TextareaField from '@/components/designSystem/input/TextareaField'
 import SecondStepIcon from '@/components/icons/SecondStepIcon'

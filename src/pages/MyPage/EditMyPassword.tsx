@@ -1,5 +1,5 @@
 import { checkEmail } from '@/api/user'
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import InputField from '@/components/designSystem/input/InputField'
 import InfoText from '@/components/designSystem/text/InfoText'
