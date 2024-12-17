@@ -11,7 +11,7 @@ interface ApplyListButtonProps {
     backgroundColor?: string
     color?: string
     boxShadow?: string
-    size?: 'regular' | 'medium' | 'semiBold' | 'bold'
+    weight?: 'regular' | 'medium' | 'semiBold' | 'bold'
   }
   type?: 'button' | 'reset' | 'submit' | undefined
   children?: React.ReactNode
@@ -36,7 +36,7 @@ const ApplyListButton = ({
     backgroundColor: 'rgba(62, 141, 0, 1)',
     color: 'white',
     boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
-    size: 'semiBold'
+    weight: 'semiBold'
   },
   onClick = () => {},
   bookmarkOnClick = () => {},
@@ -62,7 +62,7 @@ const ApplyListButton = ({
         type={type}
         disabled={disabled}
         onClick={onClick}
-        className={`Button--weight-${addStyle.size}`}
+        className={`Button--weight-${addStyle.weight}`}
         css={!disabled && addStyle}>
         {text}
         {!disabled && (

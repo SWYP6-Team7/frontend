@@ -47,7 +47,7 @@ const meta = {
             description: '글자색',
             defaultValue: 'white'
           },
-          size: {
+          weight: {
             control: 'text',
             description: '글자굵기',
             defaultValue: 'semiBold'
@@ -86,7 +86,7 @@ export const Default: Story = {
       backgroundColor: 'rgba(62, 141, 0, 1)',
       color: 'white',
       boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
-      size: 'semiBold'
+      weight: 'semiBold'
     },
     disabled: false,
     children: '',
