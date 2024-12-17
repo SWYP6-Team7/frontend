@@ -79,12 +79,14 @@ export default function TripDetailHeader() {
         nowPerson,
         bookmarkCount,
         viewCount,
-        hostUserCheck,
-        enrollmentNumber,
         enrollCount,
         userAgeGroup,
-        bookmarked,
-        profileUrl
+        profileUrl,
+        loginMemberRelatedInfo: {
+          hostUser: hostUserCheck,
+          enrollmentNumber,
+          bookmarked
+        }
       } = tripInfos
 
       const [year, month, day] = dueDate.split('-').map((v: string) => +v)
@@ -181,12 +183,12 @@ export default function TripDetailHeader() {
       )}
 
       <ShareIcon />
-      {/* 
-      {hostUserCheck && ( */}
-      <div onClick={() => setThreeDotsClick(true)}>
-        <MoreIcon />
-      </div>
-      {/* )} */}
+
+      {hostUserCheck && (
+        <div onClick={() => setThreeDotsClick(true)}>
+          <MoreIcon />
+        </div>
+      )}
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}
         setIsDeleteBtnClicked={setIsDeleteBtnClicked}

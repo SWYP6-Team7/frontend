@@ -65,7 +65,7 @@ const ApplyListButton = ({
         className={`Button--weight-${addStyle.weight}`}
         css={!disabled && addStyle}>
         {text}
-        {!disabled && (
+        {!disabled && nowEnrollmentCount > 0 && (
           <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
         )}
       </ButtonContainer>

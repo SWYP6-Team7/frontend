@@ -2,23 +2,79 @@ import React, { useState } from 'react'
 import Bookmark from './Bookmark'
 import HostTrip from './HostTrip'
 import ApplyTrip from './ApplyTrip'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { palette } from '@/styles/palette'
+import { useMyApplyTrip } from '@/hooks/myTrip/useMyApplyTrip'
+import { IMyTripList } from '@/model/myTrip'
+import { useBookmark } from '@/hooks/bookmark/useBookmark'
+import { useMyTrip } from '@/hooks/myTrip/useMyTrip'
+
+const tabView = document.querySelector('.tab-view')! as HTMLElement
 
 export default function MyTrip() {
   const [activeTab, setActiveTab] = useState<number>(0) // 현재 선택된 탭을 상태로 관리
+  // 신청한 여행.
+  const { data: applyTripData } = useMyApplyTrip()
+
+  const applyTrips =
+    (applyTripData?.pages[0].content as IMyTripList['content']) ?? []
+
+  const isApplyTripNoData = applyTrips.length === 0
+
+  // 북마크 여행.
+  const { data: bookmarkTripData } = useBookmark()
+
+  const bookmarkTrips =
+    (bookmarkTripData?.pages[0].content as IMyTripList['content']) ?? []
+
+  const isBookmarkTripsNoData = bookmarkTrips.length === 0
+
+  // 주최한 여행
+  const { data: hostTripData } = useMyTrip()
+
+  const hostTrips =
+    (hostTripData?.pages[0].content as IMyTripList['content']) ?? []
+
+  const isHostTripNoData = hostTrips.length === 0
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 0:
-        return <Bookmark />
+        return (
+          <div className="tab-view">
+            <Bookmark />
+          </div>
+        )
+
       case 1:
-        return <HostTrip />
+        return (
+          <div className="tab-view">
+            <HostTrip />
+          </div>
+        )
       case 2:
-        return <ApplyTrip />
+        return (
+          <div className="tab-view">
+            <ApplyTrip />
+          </div>
+        )
       default:
         return null
     }
+  }
+
+  const tabClickHandler = (tab: number) => {
+    if (!document.startViewTransition) {
+      return
+    }
+    document.startViewTransition(() => {
+      // 3가지 탭 모두 데이터가 없는 경우에만 transition 넣음.
+      if (isApplyTripNoData && isBookmarkTripsNoData && isHostTripNoData) {
+        tabView.style.viewTransitionName = 'tabView'
+      }
+    })
+    setActiveTab(tab)
   }
   return (
     <Container>
@@ -27,17 +83,17 @@ export default function MyTrip() {
           <Slider index={activeTab} />
           <Tab
             active={activeTab === 0}
-            onClick={() => setActiveTab(0)}>
+            onClick={() => tabClickHandler(0)}>
             북마크
           </Tab>
           <Tab
             active={activeTab === 1}
-            onClick={() => setActiveTab(1)}>
+            onClick={() => tabClickHandler(1)}>
             만든 여행
           </Tab>
           <Tab
             active={activeTab === 2}
-            onClick={() => setActiveTab(2)}>
+            onClick={() => tabClickHandler(2)}>
             참가한 여행
           </Tab>
         </TabContainer>

@@ -46,10 +46,10 @@ export default function HostTrip() {
                 <LoginButtonForGuest />
               </>
             ) : (
-              <>
+              <div>
                 아직 만든 여행이 없어요 <br /> 지금 첫 여행 게시글을 등록해
                 볼까요?
-              </>
+              </div>
             )}
           </NoData>
         </Empty>
@@ -123,7 +123,7 @@ const NoData = styled.div`
 const Empty = styled.div`
   position: fixed;
   top: 0;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

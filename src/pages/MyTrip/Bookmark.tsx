@@ -46,9 +46,9 @@ export default function Bookmark() {
                 <LoginButtonForGuest />
               </>
             ) : (
-              <>
+              <div>
                 아직 저장된 <br /> 여행이 없어요
-              </>
+              </div>
             )}
           </NoData>
         </Empty>
@@ -124,7 +124,7 @@ const NoData = styled.div`
 const Empty = styled.div`
   position: fixed;
   top: 0;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
