@@ -431,8 +431,7 @@ export default function TripDetail() {
                   : palette.비강조
                 : alreadyApplied
                   ? palette.비강조
-                  : palette.비강조4,
-              fontWeight: '600'
+                  : palette.비강조4
             }}
             text={
               hostUserCheck

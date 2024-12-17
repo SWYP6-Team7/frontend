@@ -2,6 +2,8 @@ import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import './Button.css'
+
 interface ApplyListButtonProps {
   nowEnrollmentCount: number
   text: string
@@ -9,7 +11,7 @@ interface ApplyListButtonProps {
     backgroundColor?: string
     color?: string
     boxShadow?: string
-    fontWeight?: string
+    size?: 'regular' | 'medium' | 'semiBold' | 'bold'
   }
   type?: 'button' | 'reset' | 'submit' | undefined
   children?: React.ReactNode
@@ -34,7 +36,7 @@ const ApplyListButton = ({
     backgroundColor: 'rgba(62, 141, 0, 1)',
     color: 'white',
     boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
-    fontWeight: '700'
+    size: 'semiBold'
   },
   onClick = () => {},
   bookmarkOnClick = () => {},
@@ -60,6 +62,7 @@ const ApplyListButton = ({
         type={type}
         disabled={disabled}
         onClick={onClick}
+        className={`Button--weight-${addStyle.size}`}
         css={!disabled && addStyle}>
         {text}
         {!disabled && (
@@ -108,7 +111,6 @@ const ButtonContainer = styled.button<{ disabled: boolean }>`
   font-size: 18px;
   padding: 10px 20px 10px 20px;
   display: flex;
-  font-weight: '700';
   align-items: center;
   background-color: ${props => props.disabled && 'rgba(220, 220, 220, 1)'};
   color: ${props => props.disabled && palette.비강조};
