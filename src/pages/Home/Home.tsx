@@ -76,7 +76,7 @@ const Home = () => {
           <CustomLink to="/search/travel">
             <HomeInputField
               placeholder="어디로 여행을 떠날까요? ☁️ "
-              onFocus={onFocusHandler}
+              readOnly
             />
           </CustomLink>
         </SearchBox>
