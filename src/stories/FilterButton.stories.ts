@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
 
-import Button from '../components/designSystem/Buttons/Button'
+import FilterButton from '../components/designSystem/Buttons/FilterButton'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Buttons/Button',
-  component: Button,
+  title: 'Buttons/FilterButton',
+  component: FilterButton,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered'
@@ -41,7 +41,7 @@ const meta = {
           },
           weight: {
             control: 'text',
-            description: '글자 굵기',
+            description: '글자굵기',
             defaultValue: 'semiBold'
           },
           boxShadow: {
@@ -60,7 +60,7 @@ const meta = {
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() }
-} satisfies Meta<typeof Button>
+} satisfies Meta<typeof FilterButton>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -68,7 +68,7 @@ type Story = StoryObj<typeof meta>
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    text: '다음',
+    text: 'n개 필터 검색',
     type: 'submit',
     addStyle: {
       backgroundColor: 'rgba(62, 141, 0, 1)',
@@ -78,5 +78,13 @@ export const Default: Story = {
     },
     disabled: false,
     children: ''
+  }
+}
+
+export const DisabledState: Story = {
+  args: {
+    ...Default.args,
+    text: '검색',
+    disabled: true
   }
 }

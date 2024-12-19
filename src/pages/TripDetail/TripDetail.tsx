@@ -1,4 +1,4 @@
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import Badge from '@/components/designSystem/Badge'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
@@ -30,6 +30,8 @@ import NoticeModal from '@/components/designSystem/modal/NoticeModal'
 import { editStore } from '@/store/client/editStore'
 import Opengraph from '@/components/Opengraph'
 import { isGuestUser } from '@/utils/user'
+import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
+import ApplyListButton from '@/components/designSystem/Buttons/ApplyListButton'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 
 interface Companion {
@@ -55,7 +57,7 @@ export default function TripDetail() {
   const [noticeModal, setNoticeModal] = useState(false)
 
   const [isAccepted, setIsAccepted] = useState(false)
-  const { userId } = authStore()
+  const { userId, accessToken } = authStore()
   const [isCommentUpdated, setIsCommentUpdated] = useState(false)
   const {
     location,
@@ -77,7 +79,8 @@ export default function TripDetail() {
     nowPerson,
     applySuccess,
     setApplySuccess,
-    profileUrl
+    profileUrl,
+    bookmarked
   } = tripDetailStore()
   const { cancel, cancelMutation } = useEnrollment(travelNumber)
   const { tripEnrollmentCount } = useTripDetail(travelNumber!)
@@ -87,6 +90,21 @@ export default function TripDetail() {
   const allCompanions = companions.data?.data.companions
 
   const alreadyApplied = !!enrollmentNumber
+  //북마크
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    travelNumber!
+  )
+
+  const bookmarkClickHandler = () => {
+    if (bookmarked) {
+      deleteBookmarkMutation()
+    } else {
+      // 북마크 추가.
+      postBookmarkMutation()
+    }
+  }
 
   useEffect(() => {
     if (applySuccess) {
@@ -393,25 +411,27 @@ export default function TripDetail() {
         </PersonWrapper>
         <Spacing size={120} />
         <ButtonContainer backgroundColor={palette.검색창}>
-          <Button
+          <ApplyListButton
+            nowEnrollmentCount={nowEnrollmentCount}
+            bookmarkOnClick={bookmarkClickHandler}
+            bookmarked={bookmarked}
             onClick={buttonClickHandler}
             disabled={hostUserCheck && nowEnrollmentCount === 0}
             addStyle={{
               backgroundColor: hostUserCheck
                 ? nowEnrollmentCount > 0
-                  ? palette.기본
+                  ? palette.keycolor
                   : palette.비강조3
                 : alreadyApplied
                   ? palette.비강조3
-                  : palette.기본,
+                  : palette.keycolor,
               color: hostUserCheck
                 ? nowEnrollmentCount > 0
                   ? palette.비강조4
                   : palette.비강조
                 : alreadyApplied
                   ? palette.비강조
-                  : palette.비강조4,
-              fontWeight: '600'
+                  : palette.비강조4
             }}
             text={
               hostUserCheck
@@ -419,11 +439,7 @@ export default function TripDetail() {
                 : alreadyApplied
                   ? '참가신청취소'
                   : '참가신청하기'
-            }>
-            {hostUserCheck && nowEnrollmentCount > 0 && (
-              <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
-            )}
-          </Button>
+            }></ApplyListButton>
         </ButtonContainer>
         <CompanionsView
           isOpen={personViewClicked}
@@ -438,7 +454,7 @@ const AppliedPersonCircle = styled.div`
   color: ${palette.keycolor};
   width: 16px;
   height: 16px;
-  padding: 1px 5px;
+  padding: 1px 5px 1px 4px;
   gap: 10px;
   border-radius: 20px;
   opacity: 0px;

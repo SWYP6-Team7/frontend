@@ -7,18 +7,44 @@ import { palette } from '@/styles/palette'
 
 export default function MyTrip() {
   const [activeTab, setActiveTab] = useState<number>(0) // 현재 선택된 탭을 상태로 관리
+  // 신청한 여행.
+
+  const tabView = document.querySelector('.tab-view')! as HTMLElement
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 0:
-        return <Bookmark />
+        return (
+          <div className="tab-view">
+            <Bookmark />
+          </div>
+        )
+
       case 1:
-        return <HostTrip />
+        return (
+          <div className="tab-view">
+            <HostTrip />
+          </div>
+        )
       case 2:
-        return <ApplyTrip />
+        return (
+          <div className="tab-view">
+            <ApplyTrip />
+          </div>
+        )
       default:
         return null
     }
+  }
+
+  const tabClickHandler = (tab: number) => {
+    if (!document.startViewTransition) {
+      return
+    }
+    document.startViewTransition(() => {
+      tabView.style.viewTransitionName = 'tabView'
+    })
+    setActiveTab(tab)
   }
   return (
     <Container>
@@ -27,17 +53,17 @@ export default function MyTrip() {
           <Slider index={activeTab} />
           <Tab
             active={activeTab === 0}
-            onClick={() => setActiveTab(0)}>
+            onClick={() => tabClickHandler(0)}>
             북마크
           </Tab>
           <Tab
             active={activeTab === 1}
-            onClick={() => setActiveTab(1)}>
+            onClick={() => tabClickHandler(1)}>
             만든 여행
           </Tab>
           <Tab
             active={activeTab === 2}
-            onClick={() => setActiveTab(2)}>
+            onClick={() => tabClickHandler(2)}>
             참가한 여행
           </Tab>
         </TabContainer>
