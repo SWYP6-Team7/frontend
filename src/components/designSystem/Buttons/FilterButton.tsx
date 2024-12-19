@@ -7,7 +7,7 @@ interface FilterButtonProps {
     backgroundColor?: string
     color?: string
     boxShadow?: string
-    fontWeight?: string
+    weight?: 'regular' | 'medium' | 'semiBold' | 'bold'
   }
   type?: 'button' | 'reset' | 'submit' | undefined
   children?: React.ReactNode
@@ -31,7 +31,7 @@ const FilterButton = ({
     backgroundColor: 'rgba(62, 141, 0, 1)',
     color: 'white',
     boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
-    fontWeight: '700'
+    weight: 'semiBold'
   },
   onClick = () => {},
   intializeOnClick = () => {},
@@ -49,6 +49,7 @@ const FilterButton = ({
         type={type}
         disabled={disabled}
         onClick={onClick}
+        className={`Button--weight-${addStyle.weight}`}
         css={!disabled && addStyle}>
         {text}
         {children}
@@ -79,7 +80,6 @@ const ButtonContainer = styled.button<{ disabled: boolean }>`
   font-size: 18px;
   padding: 10px 20px 10px 20px;
   display: flex;
-  font-weight: '700';
   align-items: center;
   background-color: ${props => props.disabled && 'rgba(220, 220, 220, 1)'};
   color: ${props => props.disabled && palette.비강조};
