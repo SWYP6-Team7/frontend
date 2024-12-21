@@ -38,13 +38,13 @@ export default function MyTrip() {
   }
 
   const tabClickHandler = (tab: number) => {
+    setActiveTab(tab)
     if (!document.startViewTransition) {
       return
     }
     document.startViewTransition(() => {
       tabView.style.viewTransitionName = 'tabView'
     })
-    setActiveTab(tab)
   }
   return (
     <Container>
