@@ -3,6 +3,7 @@ import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import './Button.css'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
 
 interface ApplyListButtonProps {
   nowEnrollmentCount: number
@@ -44,6 +45,7 @@ const ApplyListButton = ({
   nowEnrollmentCount,
   bookmarked = false
 }: ApplyListButtonProps) => {
+  const { hostUserCheck } = tripDetailStore()
   return (
     <ApplyListButtonWrapper>
       <button
@@ -65,7 +67,7 @@ const ApplyListButton = ({
         className={`Button--weight-${addStyle.weight}`}
         css={!disabled && addStyle}>
         {text}
-        {!disabled && nowEnrollmentCount > 0 && (
+        {!disabled && nowEnrollmentCount > 0 && hostUserCheck && (
           <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
         )}
       </ButtonContainer>
