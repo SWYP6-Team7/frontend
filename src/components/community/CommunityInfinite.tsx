@@ -16,7 +16,7 @@ import CommunityItem from './CommunityItem'
 import useCommunity from '@/hooks/useCommunity'
 import CustomLink from '../CustomLink'
 
-const CommunityInfinite = () => {
+const CommunityInfinite = ({ isMine = false }: { isMine?: boolean }) => {
   const [ref, inView] = useInView()
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -24,10 +24,14 @@ const CommunityInfinite = () => {
   const categoryName = searchParams.get('categoryName') ?? '전체'
   const {
     communityList: { data, isFetching, hasNextPage, fetchNextPage, isLoading }
-  } = useCommunity(undefined, {
-    sortingTypeName: sort,
-    categoryName: categoryName
-  })
+  } = useCommunity(
+    undefined,
+    {
+      sortingTypeName: sort,
+      categoryName: categoryName
+    },
+    isMine
+  )
 
   useInfiniteScroll(() => {
     if (inView) {

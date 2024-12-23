@@ -47,6 +47,7 @@ import NewPassword from './pages/MyPage/NewPassword'
 import Announcement from './pages/MyPage/Announcement'
 import RequestedTrip from './pages/MyTrip/RequestedTrip'
 import NotFound from './components/errorHandling/NotFound'
+import MyCommunity from './pages/MyCommunities'
 
 export const router = createBrowserRouter([
   {
@@ -221,6 +222,10 @@ export const router = createBrowserRouter([
             element: <ServiceTerms />
           }
         ]
+      },
+      {
+        path: '/myCommunity',
+        element: <MyCommunity />
       },
       {
         path: 'myTrip',
