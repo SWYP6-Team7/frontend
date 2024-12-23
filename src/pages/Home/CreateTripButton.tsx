@@ -1,4 +1,5 @@
 import AddIcon from '@/components/icons/AddIcon'
+import useViewTransition from '@/hooks/useViewTransition'
 import { useBackPathStore } from '@/store/client/backPathStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
@@ -20,6 +21,7 @@ export default function CreateTripButton({
   const toggleRotation = () => {
     setIsClicked(!isClicked)
   }
+  const navigateWithTransition = useViewTransition()
   //가로화면 길이가 좁아질 경우 right 조절.
   const newRightPosition = (24 + 390 - window.innerWidth).toString() + 'px'
 
@@ -48,10 +50,12 @@ export default function CreateTripButton({
 
   const onClickCreate = () => {
     setCreateTripPlace(location.pathname === '/trip/list' ? '/trip/list' : '/')
+    document.documentElement.style.viewTransitionName = 'forward'
+
     if (type === 'community') {
-      navigate('/community/create')
+      navigateWithTransition('/community/create')
     } else {
-      navigate('/createTripPlace')
+      navigateWithTransition('/createTripPlace')
     }
   }
   return (

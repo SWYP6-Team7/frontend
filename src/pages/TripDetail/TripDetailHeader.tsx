@@ -8,6 +8,7 @@ import MoreIcon from '@/components/icons/MoreIcon'
 import ShareIcon from '@/components/icons/ShareIcon'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
+import useViewTransition from '@/hooks/useViewTransition'
 import { authStore } from '@/store/client/authStore'
 import { useBackPathStore } from '@/store/client/backPathStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
@@ -120,7 +121,7 @@ export default function TripDetailHeader() {
       addBookmarked(bookmarked)
     }
   }, [tripDetail.isFetched, tripInfos])
-
+  const navigateWithTransition = useViewTransition()
   const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!))
   const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
@@ -143,7 +144,8 @@ export default function TripDetailHeader() {
     if (isEditBtnClicked) {
       setThreeDotsClick(false)
       setIsEditBtnClicked(false)
-      navigate(`/trip/edit/${travelNumber}`)
+      document.documentElement.style.viewTransitionName = 'forward'
+      navigateWithTransition(`/trip/edit/${travelNumber}`)
     }
     if (checkingModalClicked) {
       // 삭제 요청.

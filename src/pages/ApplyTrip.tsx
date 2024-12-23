@@ -10,6 +10,7 @@ import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import { FormEvent, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import useViewTransition from '@/hooks/useViewTransition'
 
 const ApplyTrip = () => {
   const [message, setMessage] = useState('')
@@ -18,6 +19,7 @@ const ApplyTrip = () => {
   const { setApplySuccess } = tripDetailStore()
   const { apply, applyMutation } = useEnrollment(Number(travelNumber))
   const navigate = useNavigate()
+  const navigateWithTransition = useViewTransition()
   const handleSubmit = async () => {
     try {
       if (Number.isNaN(Number(travelNumber))) {
@@ -42,7 +44,8 @@ const ApplyTrip = () => {
   useEffect(() => {
     if (applyMutation.isSuccess) {
       setApplySuccess(true)
-      navigate(`/trip/detail/${travelNumber}`)
+      document.documentElement.style.viewTransitionName = 'forward'
+      navigateWithTransition(`/trip/detail/${travelNumber}`)
     }
   }, [applyMutation.isSuccess, navigate, setApplySuccess, travelNumber])
 

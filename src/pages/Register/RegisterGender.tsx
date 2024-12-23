@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { userStore } from '@/store/client/userStore'
+import useViewTransition from '@/hooks/useViewTransition'
 
 interface ContextType {
   setGenderCheck: React.Dispatch<React.SetStateAction<boolean>>
@@ -27,7 +28,7 @@ const RegisterGender = () => {
   const [maleClicked, setMaleClicked] = useState(sex == 'M' ? true : false)
   const [femaleClicked, setFemaleClicked] = useState(sex == 'F' ? true : false)
   const navigate = useNavigate()
-
+  const navigateWithTransition = useViewTransition()
   const isSocialLoginKakao = socialLogin === 'kakao'
   const isSocialLoginNaver = socialLogin === 'naver'
   const isSocialLoginGoogle = socialLogin === 'google'
