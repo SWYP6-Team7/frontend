@@ -1,7 +1,7 @@
 import { checkEmail } from '@/api/user'
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
-import InputField from '@/components/designSystem/input/InputField'
+import StateInputField from '@/components/designSystem/input/StateInputField'
 import InfoText from '@/components/designSystem/text/InfoText'
 import { passwordSchema } from '@/utils/schema'
 import Spacing from '@/components/Spacing'
@@ -116,7 +116,7 @@ export default function EditMyPassword() {
         <FieldContainer>
           <Label htmlFor="password">현재 비밀번호를 입력해주세요</Label>
           <Spacing size={16} />
-          <InputField
+          <StateInputField
             handleRemoveValue={handleRemoveValue}
             type="password"
             onChange={changeValue}

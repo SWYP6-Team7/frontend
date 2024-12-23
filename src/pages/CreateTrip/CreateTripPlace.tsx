@@ -1,6 +1,6 @@
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
-import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
+import InputField from '@/components/designSystem/input/InputField'
 import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
@@ -55,7 +55,7 @@ export default function CreateTripPlace() {
       </StepIconContainer>
       <Title>어디로 떠나볼까요?</Title>
       <Spacing size={8} />
-      <CreateTripInputField
+      <InputField
         value={keyword}
         handleRemoveValue={handleRemoveValue}
         onChange={changeKeyword}

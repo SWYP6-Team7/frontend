@@ -1,9 +1,4 @@
-import {
-  createBrowserRouter,
-  Outlet,
-  RouterProvider,
-  useLocation
-} from 'react-router-dom'
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
@@ -259,5 +254,9 @@ export const router = createBrowserRouter([
 ])
 
 export default function App() {
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  )
 }

@@ -79,12 +79,14 @@ export default function TripDetailHeader() {
         nowPerson,
         bookmarkCount,
         viewCount,
-        hostUserCheck,
-        enrollmentNumber,
         enrollCount,
         userAgeGroup,
-        bookmarked,
-        profileUrl
+        profileUrl,
+        loginMemberRelatedInfo: {
+          hostUser: hostUserCheck,
+          enrollmentNumber,
+          bookmarked
+        }
       } = tripInfos
 
       const [year, month, day] = dueDate.split('-').map((v: string) => +v)
@@ -179,16 +181,6 @@ export default function TripDetailHeader() {
           />
         </div>
       )}
-      {/* <div onClick={bookmarkClickHandler}>
-        {bookmarked ? (
-          <FullHeartIcon width={22} />
-        ) : (
-          <EmptyHeartIcon
-            width={22}
-            stroke={palette.기본}
-          />
-        )}
-      </div> */}
 
       <ShareIcon />
 

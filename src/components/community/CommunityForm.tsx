@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import ButtonContainer from '../ButtonContainer'
-import Button from '../Button'
+import Button from '../designSystem/Buttons/Button'
 import Spacing from '../Spacing'
 import AddImage from './AddImage'
 import TextareaField from '../designSystem/input/TextareaField'
-import CreateTripInputField from '../designSystem/input/CreateTripInputField'
+import InputField from '../designSystem/input/InputField'
 import Select from '../designSystem/Select'
 import styled from '@emotion/styled'
 import useCommunity from '@/hooks/useCommunity'
@@ -197,7 +197,7 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           setValue={changeValue}
         />
         <Spacing size={'3.8svh'} />
-        <CreateTripInputField
+        <InputField
           value={title}
           placeholder="제목을 입력해주세요. (최대 20자)"
           isRemove={true}

@@ -1,10 +1,10 @@
 import FirstStepIcon from '@/components/icons/FirstStepIcon'
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, Outlet } from 'react-router-dom'
-import InputField from '@/components/designSystem/input/InputField'
+import StateInputField from '@/components/designSystem/input/StateInputField'
 import { z } from 'zod'
 import InfoText from '@/components/designSystem/text/InfoText'
 import Spacing from '@/components/Spacing'
@@ -74,7 +74,7 @@ const RegisterName = () => {
         이름을 설정해주세요.
       </StepContent>
       <div css={{ marginTop: '14px' }}>
-        <InputField
+        <StateInputField
           shake={nameValidError && userName.length > 0}
           success={userName.length > 0 && !nameValidError}
           hasError={nameValidError && userName.length > 0}

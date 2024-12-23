@@ -1,0 +1,12 @@
+.Button--weight-regular {
+    font-weight: 400;
+  }
+  .Button--weight-medium {
+    font-weight: 500;
+  }
+  .Button--weight-semiBold {
+    font-weight: 600;
+  }
+  .Button--weight-bold {
+    font-weight: 700;
+  }

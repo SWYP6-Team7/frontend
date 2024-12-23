@@ -1,4 +1,4 @@
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import CategoryButton from '@/components/CategoryButton'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'

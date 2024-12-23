@@ -1,4 +1,4 @@
-import InputField from '@/components/designSystem/input/InputField'
+import StateInputField from '@/components/designSystem/input/StateInputField'
 import FilterList from '@/components/FilterList'
 import RecommendKeyword from '@/components/RecommendKeyword'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
@@ -11,7 +11,7 @@ import styled from '@emotion/styled'
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
-import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
+import InputField from '@/components/designSystem/input/InputField'
 import { useSearchParams } from 'react-router-dom'
 
 const RECOMMEND_TAGS1 = ['유럽', '강릉', '제주']
@@ -79,7 +79,7 @@ const SearchTravel = () => {
   return (
     <Container>
       <Spacing size={'4.2svh'} />
-      <CreateTripInputField
+      <InputField
         value={keyword}
         onChange={changeKeyword}
         onKeyDown={handleKeyDown}

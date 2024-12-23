@@ -1,6 +1,6 @@
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
-import InputField from '@/components/designSystem/input/InputField'
+import StateInputField from '@/components/designSystem/input/StateInputField'
 import InfoText from '@/components/designSystem/text/InfoText'
 import { emailSchema, passwordSchema } from '@/utils/schema'
 import Spacing from '@/components/Spacing'
@@ -171,7 +171,7 @@ export default function NewPassword() {
       <FieldContainer>
         <Label htmlFor="password">새로운 비밀번호를 입력해주세요</Label>
         <Spacing size={16} />
-        <InputField
+        <StateInputField
           handleRemoveValue={() => handleRemoveValue('password')}
           type="password"
           onChange={changeValue}
@@ -194,7 +194,7 @@ export default function NewPassword() {
 
       <Spacing size={14} />
       <FieldContainer>
-        <InputField
+        <StateInputField
           shake={shake.confirmPassword}
           handleRemoveValue={() => handleRemoveValue('confirmPassword')}
           type="password"

@@ -2,10 +2,10 @@ import styled from '@emotion/styled'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Spacing from '../Spacing'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../Button'
+import Button from '../designSystem/Buttons/Button'
 import InfoText from '../designSystem/text/InfoText'
 import useAuth from '@/hooks/user/useAuth'
-import InputField from '../designSystem/input/InputField'
+import StateInputField from '../designSystem/input/StateInputField'
 import { emailSchema, passwordSchema } from '@/utils/schema'
 
 const EmailLoginForm = () => {
@@ -102,7 +102,7 @@ const EmailLoginForm = () => {
   }
   return (
     <Container onSubmit={onSubmit}>
-      <InputField
+      <StateInputField
         handleRemoveValue={() => handleRemoveValue('email')}
         type="email"
         value={formData.email}
@@ -115,7 +115,7 @@ const EmailLoginForm = () => {
         onChange={changeValue}
       />
       <Spacing size={16} />
-      <InputField
+      <StateInputField
         showSuccessIcon={false}
         handleRemoveValue={() => handleRemoveValue('password')}
         type="password"
