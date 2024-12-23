@@ -22,6 +22,7 @@ import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import { editStore } from '@/store/client/editStore'
 import { COMMUNITY_TOAST_MESSAGES } from '@/constants/toastMessages'
 import { useBackPathStore } from '@/store/client/backPathStore'
+import CustomLink from '@/components/CustomLink'
 
 const LIST = ['최신순', '추천순', '등록일순']
 const COMMUNITY_CATEGORY = ['전체', '잡담', '여행팁', '후기']
@@ -77,12 +78,12 @@ const Community = () => {
           <Title>커뮤니티</Title>
           <IconContainer>
             <LinkContainer>
-              <Link to={`/search/community`}>
+              <CustomLink to={`/search/community`}>
                 <SearchIcon
                   width={24}
                   height={22}
                 />
-              </Link>
+              </CustomLink>
             </LinkContainer>
             <LinkContainer>
               <div

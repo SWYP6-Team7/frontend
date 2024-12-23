@@ -3,6 +3,7 @@ import CreateTripInputField from '@/components/designSystem/input/CreateTripInpu
 import TextareaField from '@/components/designSystem/input/TextareaField'
 import SecondStepIcon from '@/components/icons/SecondStepIcon'
 import Spacing from '@/components/Spacing'
+import useViewTransition from '@/hooks/useViewTransition'
 import { createTripStore } from '@/store/client/createTripStore'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
@@ -17,7 +18,7 @@ const CreateTripIntroduce = () => {
   } = createTripStore()
   const [title, setTitle] = useState(initTitle)
   const [details, setDetails] = useState(initDetails)
-  const navigate = useNavigate()
+  const navigateWithTransition = useViewTransition()
 
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -33,7 +34,8 @@ const CreateTripIntroduce = () => {
     }
     addTitle(title)
     addDetails(details)
-    navigate('/createTripDetail')
+    document.documentElement.style.viewTransitionName = 'forward'
+    navigateWithTransition('/createTripDetail')
   }
 
   return (

@@ -19,6 +19,7 @@ import {
   useUploadStore
 } from '@/store/client/imageStore'
 import { editStore } from '@/store/client/editStore'
+import useViewTransition from '@/hooks/useViewTransition'
 
 const LIST = ['잡담', '여행팁', '후기']
 
@@ -31,7 +32,7 @@ interface CommunityFormProps {
 
 const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
   const { communityNumber } = useParams()
-  const navigate = useNavigate()
+  const navigateWithTransition = useViewTransition()
   const { editToastShow, setEditToastShow } = editStore()
 
   const {
@@ -148,7 +149,10 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
         })
       } else {
         setEditToastShow(true)
-        navigate(`/community/detail/${updateMutation.data?.postNumber}`)
+        document.documentElement.style.viewTransitionName = 'forward'
+        navigateWithTransition(
+          `/community/detail/${updateMutation.data?.postNumber}`
+        )
       }
     }
   }, [
@@ -160,14 +164,20 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
     if (updateImageMutation.isSuccess) {
       editReset()
       setEditToastShow(true)
-      navigate(`/community/detail/${updateMutation.data?.postNumber}`)
+      document.documentElement.style.viewTransitionName = 'forward'
+      navigateWithTransition(
+        `/community/detail/${updateMutation.data?.postNumber}`
+      )
     }
   }, [updateImageMutation.isSuccess, updateMutation.data?.postNumber])
 
   useEffect(() => {
     if (postImageMutation.isSuccess) {
       reset()
-      navigate(`/community/detail/${postMutation.data?.postNumber}`)
+      document.documentElement.style.viewTransitionName = 'forward'
+      navigateWithTransition(
+        `/community/detail/${postMutation.data?.postNumber}`
+      )
     }
   }, [postImageMutation.isSuccess, postMutation.data?.postNumber])
 
@@ -179,7 +189,10 @@ const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
           communityNumber: postMutation.data?.postNumber
         })
       } else {
-        navigate(`/community/detail/${postMutation.data?.postNumber}`)
+        document.documentElement.style.viewTransitionName = 'forward'
+        navigateWithTransition(
+          `/community/detail/${postMutation.data?.postNumber}`
+        )
       }
     }
   }, [postMutation.isSuccess && postMutation.data, JSON.stringify(finalImages)])

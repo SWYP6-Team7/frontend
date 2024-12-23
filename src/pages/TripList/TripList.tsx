@@ -15,6 +15,7 @@ import SortHeader from '@/components/SortHeader'
 import { useTripList } from '@/hooks/useTripList'
 import CreateTripButton from '../Home/CreateTripButton'
 import { useBackPathStore } from '@/store/client/backPathStore'
+import useViewTransition from '@/hooks/useViewTransition'
 
 const LIST = ['최신순', '추천순']
 
@@ -38,7 +39,7 @@ const TripList = () => {
     return value
   })()
 
-  const navigate = useNavigate()
+  const navigateWithTransition = useViewTransition()
   const { data } = useTripList(engSort)
   const onClickSort = (value: string) => {
     if (value === '추천순') {
@@ -50,13 +51,15 @@ const TripList = () => {
 
   const handleNotification = () => {
     setNotification('/community')
-    navigate(`/notification`)
+    document.documentElement.style.viewTransitionName = 'forward'
+    navigateWithTransition(`/notification`)
   }
 
   const onClickSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     setSearchTravel('/trip/list')
-    navigate('/search/travel')
+    document.documentElement.style.viewTransitionName = 'forward'
+    navigateWithTransition('/search/travel')
   }
 
   const handleFixed = (type: boolean) => {

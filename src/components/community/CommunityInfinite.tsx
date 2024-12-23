@@ -14,6 +14,7 @@ import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import { daysAgo } from '@/utils/time'
 import CommunityItem from './CommunityItem'
 import useCommunity from '@/hooks/useCommunity'
+import CustomLink from '../CustomLink'
 
 const CommunityInfinite = () => {
   const [ref, inView] = useInView()
@@ -40,9 +41,9 @@ const CommunityInfinite = () => {
         data.pages.map((page, pageIndex) => (
           <React.Fragment key={pageIndex}>
             {page.content.map((content, itemIndex) => (
-              <Link to={`/community/detail/${content.postNumber}`}>
+              <CustomLink to={`/community/detail/${content.postNumber}`}>
                 <CommunityItem data={content} />
-              </Link>
+              </CustomLink>
             ))}
           </React.Fragment>
         ))}

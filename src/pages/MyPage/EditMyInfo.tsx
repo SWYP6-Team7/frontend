@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ProfileEditModal from './ProfileEditModal'
 import { isGuestUser } from '@/utils/user'
+import useViewTransition from '@/hooks/useViewTransition'
 
 export default function EditMyInfo() {
   const navigate = useNavigate()
@@ -33,6 +34,7 @@ export default function EditMyInfo() {
     addIsTagUpdated,
     profileUrl
   } = myPageStore()
+  const navigateWithTransition = useViewTransition()
   const [isNameChangeToastShow, setIsNameChangeToastShow] = useState(false) // 변경시 보이게 해줄 토스트 메시지
   const [isProfileChangeToastShow, setIsProfileChangeToastShow] =
     useState(false) // 변경시 보이게 해줄 토스트 메시지
@@ -137,7 +139,11 @@ export default function EditMyInfo() {
         </div>
       </ProfileImg>
       <div>
-        <Box onClick={() => navigate('/editMyName')}>
+        <Box
+          onClick={() => {
+            document.documentElement.style.viewTransitionName = 'forward'
+            navigateWithTransition('/editMyName')
+          }}>
           <SmallTitle>이름</SmallTitle>
           <Name>
             <Value css={{ marginRight: '8px' }}>{name}</Value>
@@ -158,7 +164,11 @@ export default function EditMyInfo() {
         <Spacing size={8} />
         <Line></Line>
         <Spacing size={8} />
-        <Box onClick={() => navigate('/editMyPassword')}>
+        <Box
+          onClick={() => {
+            document.documentElement.style.viewTransitionName = 'forward'
+            navigateWithTransition('/editMyPassword')
+          }}>
           <SmallTitle>비밀번호 변경</SmallTitle>
           <div css={{ padding: '8px 9px' }}>
             <RightVector />
@@ -167,7 +177,11 @@ export default function EditMyInfo() {
         <Spacing size={8} />
         <Line></Line>
         <Spacing size={8} />
-        <TagBox onClick={() => navigate('/editMyTag')}>
+        <TagBox
+          onClick={() => {
+            document.documentElement.style.viewTransitionName = 'forward'
+            navigateWithTransition('/editMyTag')
+          }}>
           <Box css={{ padding: '18px 8px', display: 'flex' }}>
             <SmallTitle css={{ display: 'flex' }}>나의 태그</SmallTitle>
             <div css={{ padding: '8px 9px' }}>
@@ -215,7 +229,11 @@ export default function EditMyInfo() {
           <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
             <LogoutButton>로그아웃</LogoutButton>
             <VerticalLine>|</VerticalLine>
-            <DrawalButton onClick={() => navigate('/withdrawal')}>
+            <DrawalButton
+              onClick={() => {
+                document.documentElement.style.viewTransitionName = 'forward'
+                navigateWithTransition('/withdrawal')
+              }}>
               탈퇴하기
             </DrawalButton>
           </LogoutBox>
