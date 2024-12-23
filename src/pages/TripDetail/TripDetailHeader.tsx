@@ -92,7 +92,7 @@ export default function TripDetailHeader() {
         month,
         day
       }
-      if (loginMemberRelatedInfo) {
+      if (!loginMemberRelatedInfo) {
         addHostUserCheck(false)
         addEnrollmentNumber(null)
         addBookmarked(false)
