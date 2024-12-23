@@ -16,7 +16,8 @@ const XIconButton = styled.button`
   border: none;
   outline: none;
   background-color: transparent;
-
+  width: 18px
+  height: 18px;
   justify-items: center;
   align-items: center;
 `

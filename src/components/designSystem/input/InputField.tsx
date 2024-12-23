@@ -37,13 +37,12 @@ const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
   ) => {
     const [focused, setFocused] = useState(false)
 
-    const borderColor = focused ? palette.keycolor : 'none'
     const bgColor = focused
       ? palette.greenVariant
       : props.value === ''
         ? palette.검색창
         : palette.비강조4
-
+    const borderColor = focused ? palette.keycolor : bgColor
     const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
       setFocused(true)
       onFocus?.(event)

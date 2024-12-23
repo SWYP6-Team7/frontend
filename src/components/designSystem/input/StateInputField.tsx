@@ -61,11 +61,7 @@ const StateInputField = forwardRef<HTMLInputElement, InputFieldProps>(
 
     const SuccessIcon = showSuccessIcon ? CheckIcon : React.Fragment
     // 우선순위 1.에러가 있는지? 2. 포커싱 되어있는지
-    const borderColor = hasError
-      ? palette.errorBorder
-      : focused
-        ? palette.keycolor
-        : 'none'
+
     const bgColor = hasError
       ? palette.errorVariant
       : focused
@@ -73,7 +69,11 @@ const StateInputField = forwardRef<HTMLInputElement, InputFieldProps>(
         : props.value === ''
           ? palette.검색창
           : '#F5F5F5'
-
+    const borderColor = hasError
+      ? palette.errorBorder
+      : focused
+        ? palette.keycolor
+        : bgColor
     const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
       setFocused(true)
       onFocus?.(event)
@@ -98,13 +98,13 @@ const StateInputField = forwardRef<HTMLInputElement, InputFieldProps>(
           onFocus={handleFocus}
           {...props}
         />
-        <div>
+        <div css={{ boxSizing: 'border-box' }}>
           {showIcon &&
             (success ? (
               focused ? (
                 <RemoveButton onClick={handleRemoveValue} />
               ) : (
-                <SuccessIcon />
+                <SuccessIcon status="done" />
               )
             ) : props.value === '' ? (
               <SuccessIcon />
@@ -150,11 +150,12 @@ const Input = styled.input<InputProps>`
   width: 100%;
   &::placeholder {
     color: #cdcdcd;
+    font-weight: 300;
   }
   font-family: Pretendard;
   height: 100%;
   outline: none;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   background-color: ${props => props.bgColor};
   font-size: 16px;

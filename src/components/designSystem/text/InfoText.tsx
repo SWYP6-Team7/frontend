@@ -61,6 +61,7 @@ const Container = styled.div<ContainerProps>`
   color: ${props => props.color};
   font-size: 14px;
   line-height: 16px;
+  font-weight: 400;
   animation: ${props =>
     props.shake
       ? css`

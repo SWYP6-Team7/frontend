@@ -6,14 +6,14 @@ interface CheckIconProps {
 const CheckIcon = ({ status = 'default', size = 18 }: CheckIconProps) => {
   return (
     <svg
-      width={size}
-      height={size}
+      width={size - 1}
+      height={size - 1}
       viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
       <rect
-        width="18"
-        height="18"
+        width={size}
+        height={size}
         rx="9"
         fill={status === 'default' ? '#CDCDCD' : '#3E8D00'}
       />
