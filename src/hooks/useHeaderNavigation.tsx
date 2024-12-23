@@ -49,6 +49,7 @@ const ROUTES = {
   NOTIFICATION: '/notification',
   ANNOUNCEMENT: '/announcement',
   REQUESTED_TRIP: '/requestedTrip',
+  MY_COMMUNITY: '/myCommunity',
   HOME: '/'
 }
 
@@ -82,6 +83,7 @@ export const useHeaderNavigation = () => {
   const getPageTitle = () => {
     const titleMap: { [key: string]: ReactNode } = {
       [ROUTES.MY.TRIP]: '내 여행',
+      [ROUTES.MY_COMMUNITY]: '작성한 글',
       [ROUTES.MY.PAGE]: '마이 페이지',
       [ROUTES.REGISTER]: '회원가입',
       [ROUTES.SEARCH.TRAVEL]: '여행검색',
@@ -263,6 +265,13 @@ export const useHeaderNavigation = () => {
       // 참가 신청한 여행 파트
       {
         condition: () => pathname.startsWith(ROUTES.REQUESTED_TRIP),
+        action: () => {
+          navigate(ROUTES.MY.PAGE)
+        }
+      },
+      // 작성한 글
+      {
+        condition: () => pathname.startsWith(ROUTES.MY_COMMUNITY),
         action: () => {
           navigate(ROUTES.MY.PAGE)
         }

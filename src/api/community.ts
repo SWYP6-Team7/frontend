@@ -35,6 +35,25 @@ export async function getCommunities(
   }
 }
 
+export async function getMyCommunities(
+  accessToken: string | null,
+  params: IListParams & { page: number }
+) {
+  try {
+    const result = await axiosInstance.get(
+      `/api/my-communities`,
+
+      {
+        params: params,
+        ...(accessToken && { headers: getJWTHeader(accessToken) })
+      }
+    )
+    return result.data
+  } catch (err: any) {
+    throw new RequestError(err)
+  }
+}
+
 export async function getCommunity(
   communityNumber: number,
   accessToken: string | null
