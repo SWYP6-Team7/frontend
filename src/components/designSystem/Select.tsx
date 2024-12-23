@@ -170,6 +170,7 @@ const OptionList = styled.div<{ active: boolean }>`
 const Label = styled.button`
   width: 100%;
   font-size: 14px;
+  font-weight: 400;
   color: ${palette.비강조};
   min-width: 95px;
   padding: 12px 16px;
@@ -220,6 +221,7 @@ const StyledOptionList = styled.ul<{ active: boolean }>`
 
   font-size: 16px;
   line-height: 20px;
+  font-weight: 400;
   border-radius: 20px; // 동글동글하게 아래부분을 만들어야해서 border-radius를 줌.
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;

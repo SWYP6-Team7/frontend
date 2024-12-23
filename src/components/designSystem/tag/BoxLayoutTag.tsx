@@ -19,7 +19,6 @@ const BoxLayoutTag = ({
     backgroundColor: `${palette.비강조4}`,
     padding: '4px 10px 4px 10px',
     color: `${palette.비강조}`,
-    height: '22px',
     borderRadius: '20px',
     fontSize: '12px'
   }
@@ -32,6 +31,8 @@ const Tag = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 6px;
+  font-weight: 600;
+  transition: all 0.1s ease;
 `
 
 export default BoxLayoutTag
