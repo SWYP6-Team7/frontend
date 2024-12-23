@@ -11,7 +11,7 @@ export const getUserProfile = (accessToken: string) => {
 
 export const getAvailableTrips = async (
   pageParams: number,
-  accessToken: string
+  accessToken: string | null
 ) => {
   try {
     const response = await axiosInstance.get('/api/travels/recent', {
@@ -19,7 +19,7 @@ export const getAvailableTrips = async (
         page: pageParams,
         size: 10
       },
-      headers: getJWTHeader(accessToken)
+      ...(accessToken && { headers: getJWTHeader(accessToken) })
     })
 
     return response.data
@@ -39,7 +39,7 @@ export const getAvailableTrips = async (
 
 export const getRecommendationTrips = async (
   pageParams: number,
-  accessToken: string
+  accessToken: string | null
 ) => {
   try {
     const response = await axiosInstance.get('/api/travels/recommend', {
@@ -47,7 +47,7 @@ export const getRecommendationTrips = async (
         page: pageParams,
         size: 10
       },
-      headers: getJWTHeader(accessToken)
+      ...(accessToken && { headers: getJWTHeader(accessToken) })
     })
 
     return response.data
