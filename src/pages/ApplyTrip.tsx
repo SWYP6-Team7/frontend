@@ -1,5 +1,5 @@
 import ApplyTripProfile from '@/components/ApplyTripProfile'
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import TextareaField from '@/components/designSystem/input/TextareaField'
 import useEnrollment from '@/hooks/enrollment/useEnrollment'

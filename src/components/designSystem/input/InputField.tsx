@@ -84,7 +84,7 @@ const Container = styled.div<ContainerProps>`
   width: 100%;
   height: 48px;
   padding: 0px 16px;
-  border-radius: 18px;
+  border-radius: 50px;
   overflow-x: hidden;
   box-sizing: border-box;
   border: 1px solid ${props => props.borderColor};

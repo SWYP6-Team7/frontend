@@ -5,7 +5,7 @@ import Accordion from './Accordion'
 import BottomModal from './BottomModal'
 import SearchFilterTag from './designSystem/tag/SearchFilterTag'
 import ResetIcon from './icons/ResetIcon'
-import Button from './Button'
+import Button from './designSystem/Buttons/Button'
 import Spacing from './Spacing'
 
 import {
@@ -20,6 +20,7 @@ import { palette } from '@/styles/palette'
 import useSearch from '@/hooks/search/useSearch'
 import WhiteXIcon from './icons/WhiteXIcon'
 import { useSearchParams } from 'react-router-dom'
+import FilterButton from './designSystem/Buttons/FilterButton'
 
 const FILTER_LIST = [
   { title: '장소', tags: ['국내', '해외'] as const },
@@ -211,11 +212,8 @@ const FilterList = () => {
               ))}
 
               <ButtonContainer>
-                <button onClick={handleReset}>
-                  <ResetIcon />
-                </button>
-
-                <Button
+                <FilterButton
+                  intializeOnClick={handleReset}
                   onClick={handleSearch}
                   addStyle={
                     getAllFilterCount() === 0
@@ -280,9 +278,6 @@ const ModalContainer = styled.div`
 `
 
 const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
   left: 0;
   bottom: 0;
   position: absolute;

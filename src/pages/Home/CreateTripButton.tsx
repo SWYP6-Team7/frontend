@@ -56,23 +56,22 @@ export default function CreateTripButton({
   }
   return (
     <CreatedTripWrapper>
-      {isClicked && (
-        <CreateBtn
-          right={newRightPosition}
-          onClick={onClickCreate}
-          ref={createButtonRef}>
-          <img
-            src={
-              type === 'community'
-                ? '/images/createCommunityBtn.png'
-                : '/images/createTripBtn.png'
-            }
-            alt=""
-            css={{ marginRight: '13px' }}
-          />
-          {type === 'trip' ? '여행 만들기' : '글쓰기'}
-        </CreateBtn>
-      )}
+      <CreateBtn
+        isClicked={isClicked}
+        right={newRightPosition}
+        onClick={onClickCreate}
+        ref={createButtonRef}>
+        <img
+          src={
+            type === 'community'
+              ? '/images/createCommunityBtn.png'
+              : '/images/createTripBtn.png'
+          }
+          alt=""
+          css={{ marginRight: '13px' }}
+        />
+        {type === 'trip' ? '여행 만들기' : '글쓰기'}
+      </CreateBtn>
 
       <IconContainer
         ref={addRef}
@@ -111,7 +110,7 @@ const CreatedTripWrapper = styled.div`
   top: 0;
   z-index: 1001;
 `
-const CreateBtn = styled.button<{ right: string }>`
+const CreateBtn = styled.button<{ right: string; isClicked: boolean }>`
   position: absolute;
   bottom: 210px;
   right: 24px;
@@ -128,6 +127,13 @@ const CreateBtn = styled.button<{ right: string }>`
   line-height: 19.09px;
   color: ${palette.기본};
   z-index: 1003;
+  opacity: ${props => (props.isClicked ? 1 : 0)};
+  transform: ${props =>
+    props.isClicked ? 'translateY(-5px)' : 'translateY(35px)'};
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
   @media (max-width: 390px) {
     right: ${props => props.right};
   }

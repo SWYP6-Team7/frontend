@@ -1,4 +1,4 @@
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import CreateTripInputField from '@/components/CreateTripInputField'
 import FirstStepIcon from '@/components/icons/FirstStepIcon'

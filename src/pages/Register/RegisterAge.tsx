@@ -1,5 +1,5 @@
 import SecondStepIcon from '@/components/icons/SecondStepIcon'
-import Button from '@/components/Button'
+import Button from '@/components/designSystem/Buttons/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
 import { useEffect, useState } from 'react'

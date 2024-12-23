@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import ButtonContainer from '../ButtonContainer'
-import Button from '../Button'
+import Button from '../designSystem/Buttons/Button'
 import Spacing from '../Spacing'
 import AddImage from './AddImage'
 import TextareaField from '../designSystem/input/TextareaField'

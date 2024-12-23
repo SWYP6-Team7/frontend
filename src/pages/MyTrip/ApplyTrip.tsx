@@ -11,7 +11,6 @@ import ApplyTripIconBtns from './ApplyTripIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
 import { IMyTripList } from '@/model/myTrip'
-
 import { daysAgo } from '@/utils/time'
 import { isGuestUser } from '@/utils/user'
 import LoginButtonForGuest from '@/components/LoginButtonForGuest'
@@ -46,10 +45,10 @@ export default function ApplyTrip() {
                 <LoginButtonForGuest />
               </>
             ) : (
-              <>
+              <div>
                 아직 신청한 여행이 없어요 <br /> 지금 설레는 첫 여행을
                 찾아볼까요?
-              </>
+              </div>
             )}
           </NoData>
         </Empty>
@@ -124,7 +123,7 @@ const NoData = styled.div`
 const Empty = styled.div`
   position: fixed;
   top: 0;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
