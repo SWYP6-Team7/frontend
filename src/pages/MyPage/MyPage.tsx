@@ -120,13 +120,13 @@ export default function MyPage() {
             />
             참가 신청한 여행
           </SmallTitle>
-          {/* <SmallTitle onClick={() => navigate('/community')}>
+          <SmallTitle onClick={() => navigate('/community')}>
             <img
               src="/images/createTripBtn.png"
               alt=""
             />
-            내 커뮤니티
-          </SmallTitle> */}
+            작성한 글
+          </SmallTitle>
         </Box>
         <div css={{ marginTop: '16px' }}>
           <Title>약관 및 정책</Title>
