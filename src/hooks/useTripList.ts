@@ -33,12 +33,11 @@ export const useTripList = (sort: 'recommend' | 'recent') => {
 
     queryFn: ({ pageParam }) => {
       if (sort === 'recent') {
-        return getAvailableTrips(pageParam as number, accessToken!)
+        return getAvailableTrips(pageParam as number, accessToken)
       } else {
-        return getRecommendationTrips(pageParam as number, accessToken!)
+        return getRecommendationTrips(pageParam as number, accessToken)
       }
     },
-    enabled: !!accessToken,
     initialPageParam: 0,
     getNextPageParam: lastPage => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
