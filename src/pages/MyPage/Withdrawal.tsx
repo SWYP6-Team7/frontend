@@ -8,12 +8,13 @@ import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useViewTransition from '@/hooks/useViewTransition'
 
 export default function Withdrawal() {
   const [isClicked, setIsClicked] = useState(false)
   const { withdrawMutation, isWithDrawError, isWithDrawSuccess } = useMyPage()
   const { name } = myPageStore()
-  const navigate = useNavigate()
+  const navigateWithTransition = useViewTransition()
   const completeClickHandler = async () => {
     // 탈퇴 api 요청
     console.log('탈퇴')
@@ -27,7 +28,8 @@ export default function Withdrawal() {
   useEffect(() => {
     if (isWithDrawSuccess) {
       console.log('탈퇴 성공!')
-      navigate('/login')
+      document.documentElement.style.viewTransitionName = 'easeout'
+      navigateWithTransition('/')
     }
   }, [isWithDrawSuccess])
 

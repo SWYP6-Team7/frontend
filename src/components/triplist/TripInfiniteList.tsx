@@ -12,6 +12,7 @@ import { palette } from '@/styles/palette'
 import { authStore } from '@/store/client/authStore'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import { daysAgo } from '@/utils/time'
+import CustomLink from '../CustomLink'
 
 const TripInfiniteList = () => {
   const [ref, inView] = useInView()
@@ -39,7 +40,7 @@ const TripInfiniteList = () => {
           <React.Fragment key={pageIndex}>
             {page.content.map((content, itemIndex) => (
               <BoxContainer key={content.travelNumber}>
-                <Link to={`/trip/detail/${content.travelNumber}`}>
+                <CustomLink to={`/trip/detail/${content.travelNumber}`}>
                   <HorizonBoxLayout
                     bookmarkNeed={false}
                     bookmarked={content.bookmarked}
@@ -56,7 +57,7 @@ const TripInfiniteList = () => {
                     )}
                     recruits={content.nowPerson}
                   />
-                </Link>
+                </CustomLink>
                 <BookmarkButton
                   travelNumber={content.travelNumber}
                   bookmarked={content.bookmarked}
