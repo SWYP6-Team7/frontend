@@ -83,11 +83,7 @@ export default function TripDetailHeader() {
         enrollCount,
         userAgeGroup,
         profileUrl,
-        loginMemberRelatedInfo: {
-          hostUser: hostUserCheck,
-          enrollmentNumber,
-          bookmarked
-        }
+        loginMemberRelatedInfo
       } = tripInfos
 
       const [year, month, day] = dueDate.split('-').map((v: string) => +v)
@@ -96,9 +92,18 @@ export default function TripDetailHeader() {
         month,
         day
       }
+      if (loginMemberRelatedInfo) {
+        addHostUserCheck(false)
+        addEnrollmentNumber(null)
+        addBookmarked(false)
+      } else {
+        addHostUserCheck(loginMemberRelatedInfo.hostUser)
+        addEnrollmentNumber(loginMemberRelatedInfo.enrollmentNumber)
+        addBookmarked(loginMemberRelatedInfo.bookmarked)
+      }
       addProfileUrl(profileUrl)
       addTravelNumber(travelNumber)
-      addEnrollmentNumber(enrollmentNumber)
+
       addEnrollCount(enrollCount)
       addCreatedAt(createdAt)
       addUserNumber(userNumber)
@@ -114,11 +119,10 @@ export default function TripDetailHeader() {
       addPostStatus(postStatus)
       addBookmarkCount(bookmarkCount)
       addViewCount(viewCount)
-      addHostUserCheck(hostUserCheck)
+
       addNowPerson(nowPerson)
       addUserAgeGroup(userAgeGroup)
       addPostStatus(postStatus)
-      addBookmarked(bookmarked)
     }
   }, [tripDetail.isFetched, tripInfos])
   const navigateWithTransition = useViewTransition()
