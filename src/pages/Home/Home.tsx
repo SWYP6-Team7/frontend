@@ -132,14 +132,13 @@ const HomeHeader = styled.div<{ scrolled: boolean }>`
     transform: translateX(-50%);
     overflow-x: hidden;
   }
-  height: 100px;
+  height: 116px;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
-  padding-top: 40px;
-  padding-left: 24px;
-  padding-right: 24px;
+  overflow: hidden;
+  padding: 52px 24px 16px 24px;
 `
 
 const HeaderTitle = styled.div`
