@@ -8,7 +8,6 @@ export async function getTripDetail(
   accessToken: string | null
 ) {
   try {
-    if (!accessToken) throw new Error('로그인을 해주세요.')
     return axiosInstance.get(`/api/travel/detail/${travelNumber}`, {
       ...(accessToken && { headers: getJWTHeader(accessToken) })
     })

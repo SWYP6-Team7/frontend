@@ -210,10 +210,9 @@ export default css`
       transform: translateX(0);
     }
     to {
-      transform: translateX(-100%);
+      transform: translateX(100%);
     }
   }
-
 
   @keyframes slideOut {
     to {
@@ -228,13 +227,11 @@ export default css`
     }
   }
 
-
   @media (max-width: 440px) {
     ::view-transition-old(forward),
     ::view-transition-new(forward) {
       animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
 
     ::view-transition-old(back),
     ::view-transition-new(back) {
@@ -263,7 +260,6 @@ export default css`
   ::view-transition-new(tabView) {
     animation-name: slideIn;
 
-
     ::view-transition-old(back),
     ::view-transition-new(back) {
       animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -277,7 +273,6 @@ export default css`
       animation-name: slide-to-right;
       z-index: 100;
     }
-
   }
 
   @media (forced-colors: active) {
