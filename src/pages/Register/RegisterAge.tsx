@@ -8,6 +8,7 @@ import { authStore } from '@/store/client/authStore'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 import { palette } from '@/styles/palette'
 import ButtonContainer from '@/components/ButtonContainer'
+import useViewTransition from '@/hooks/useViewTransition'
 
 const AGE_LIST = ['10대', '20대', '30대', '40대', '50대 이상']
 
@@ -27,7 +28,7 @@ const RegisterAge = () => {
   const isEmailRegister = socialLogin === null
   const isSocialLoginKakao = socialLogin === 'kakao'
   const isSocialLoginNaver = socialLogin === 'naver'
-
+  const navigateWithTransition = useViewTransition()
   const nextStepClickHandler = () => {
     if (agegroup) {
       if (location.pathname == '/registerAge') {
@@ -37,7 +38,8 @@ const RegisterAge = () => {
         genderCheck &&
         location.pathname == '/registerAge/registerGender'
       ) {
-        navigate('/registerTripStyle')
+        document.documentElement.style.viewTransitionName = 'forward'
+        navigateWithTransition('/registerTripStyle')
       }
     }
   }

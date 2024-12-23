@@ -13,6 +13,7 @@ import { daysAgo } from '@/utils/time'
 import { useRequestedTrip } from '@/hooks/myTrip/useMyRequestedTrip'
 import LoginButtonForGuest from '@/components/LoginButtonForGuest'
 import { isGuestUser } from '@/utils/user'
+import CustomLink from '@/components/CustomLink'
 
 export default function RequestedTrip() {
   const [ref, inView] = useInView()
@@ -74,7 +75,7 @@ export default function RequestedTrip() {
                 bookmarked
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <Link to={`/trip/detail/${travelNumber}`}>
+                  <CustomLink to={`/trip/detail/${travelNumber}`}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       userName={userName}
@@ -90,7 +91,7 @@ export default function RequestedTrip() {
                       recruits={nowPerson}
                       bookmarked={bookmarked}
                     />
-                  </Link>
+                  </CustomLink>
                   <BookmarkIconBtns
                     travelNumber={travelNumber}
                     bookmarked={bookmarked}

@@ -17,6 +17,7 @@ import FullHeartIcon from './icons/FullHeartIcon'
 import { authStore } from '@/store/client/authStore'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import { daysAgo, formatTime } from '@/utils/time'
+import CustomLink from './CustomLink'
 dayjs.extend(customParseFormat)
 
 const LIST = ['추천순', '최신순', '등록일순']
@@ -47,7 +48,7 @@ const SearchResultList = ({
       {searchResult.map(page =>
         page.content.map(content => (
           <BoxContainer>
-            <Link to={`/trip/detail/${content.travelNumber}`}>
+            <CustomLink to={`/trip/detail/${content.travelNumber}`}>
               <HorizonBoxLayout
                 bookmarkNeed={false}
                 bookmarked={content.bookmarked}
@@ -64,7 +65,7 @@ const SearchResultList = ({
                 )}
                 recruits={content.nowPerson}
               />
-            </Link>
+            </CustomLink>
             <BookmarkButton
               travelNumber={content.travelNumber}
               bookmarked={content.bookmarked}
