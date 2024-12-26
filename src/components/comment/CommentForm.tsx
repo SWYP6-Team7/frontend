@@ -110,8 +110,8 @@ const CommentForm = ({
           ref={inputRef}
           placeholder={
             isGuestUser()
-              ? '댓글을 입력해주세요.'
-              : '로그인 후 댓글을 달아보세요.'
+              ? '로그인 후 댓글을 달아보세요.'
+              : '댓글을 입력해주세요.'
           }
           onChange={handleInput}
           value={value}
