@@ -133,6 +133,15 @@ export default function TripDetail() {
   const dayOfWeek = WEEKDAY[DAY.getDay()]
   const [personViewClicked, setPersonViewClicked] = useState(false)
 
+  const paddedMonth = String(month).padStart(2, '0')
+  const paddedDay = String(day).padStart(2, '0')
+  const daysLeft = dayjs(
+    `${year}-${paddedMonth}-${paddedDay}`,
+    'YYYY-MM-DD'
+  ).diff(dayjs().startOf('day'), 'day')
+
+  const isClose = !Boolean(daysLeft >= 0)
+
   const buttonClickHandler = () => {
     if (isGuestUser()) {
       setShowLoginModal(true)
@@ -285,7 +294,7 @@ export default function TripDetail() {
               </PlaceBadge>
               <Badge
                 isDueDate={false}
-                text={postStatus}
+                text={isClose ? '마감' : '진행중'}
                 height="22px"
                 backgroundColor={palette.비강조4}
                 color={palette.비강조}
