@@ -104,6 +104,7 @@ const Background = styled.div`
   top: 0;
   left: 0;
   right: 0;
+
   transition: 0.2s all ease-in-out;
   bottom: 0;
   background-color: rgba(26, 26, 26, 0.3);
@@ -213,12 +214,12 @@ const StyledOptionList = styled.ul<{ active: boolean }>`
   list-style-type: none; // ul을 커스텀할 때 필요한 부분.
   width: 100%;
   position: absolute;
-  max-height: ${({ active }) => (active ? '150px' : '0')};
+  max-height: ${({ active }) => (active ? '170px' : '0')};
   top: 43px;
   left: 0;
   right: 0;
   z-index: 1005;
-
+  padding-bottom: 4px;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;

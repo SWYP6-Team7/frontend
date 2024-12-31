@@ -34,10 +34,37 @@ const InfoText = ({
       {hasError ? (
         <InfoIcon color={color} />
       ) : success ? (
-        <CheckIcon
-          status="done"
-          size={14}
-        />
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_3968_110)">
+            <circle
+              cx="7"
+              cy="7"
+              r="7"
+              fill="#3E8D00"
+            />
+            <path
+              d="M4 7L6.25 9L10 5"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3968_110">
+              <rect
+                width="14"
+                height="14"
+                fill="white"
+              />
+            </clipPath>
+          </defs>
+        </svg>
       ) : (
         <InfoIcon color={color} />
       )}

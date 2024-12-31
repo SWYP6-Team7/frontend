@@ -44,13 +44,15 @@ export default function ValidationInputField({
         shake={shake}
       />
       <Spacing size={8} />
-      {hasError ? (
-        <InfoText hasError>{message}</InfoText>
-      ) : showSuccess && success ? (
-        <InfoText success>{message}</InfoText>
-      ) : (
-        <Spacing size={16} />
-      )}
+      <div css={{ paddingLeft: 6 }}>
+        {hasError ? (
+          <InfoText hasError>{message}</InfoText>
+        ) : showSuccess && success ? (
+          <InfoText success>{message}</InfoText>
+        ) : (
+          <Spacing size={16} />
+        )}
+      </div>
     </>
   )
 }

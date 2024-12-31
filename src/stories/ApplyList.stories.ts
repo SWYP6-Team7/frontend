@@ -22,6 +22,9 @@ const meta = {
     bookmarked: {
       control: 'boolean'
     },
+    hostUserCheck: {
+      control: 'boolean'
+    },
     text: {
       control: 'text',
       description: '버튼 텍스트',
@@ -88,6 +91,7 @@ export const Default: Story = {
       boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
       weight: 'semiBold'
     },
+    hostUserCheck: true,
     disabled: false,
     children: '',
     bookmarked: true

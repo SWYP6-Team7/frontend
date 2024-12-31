@@ -61,7 +61,7 @@ const meta = {
           fontWeight: {
             control: 'text',
             description: 'font weight',
-            defaultValue: '400'
+            defaultValue: '600'
           },
           fontSize: {
             control: 'text',

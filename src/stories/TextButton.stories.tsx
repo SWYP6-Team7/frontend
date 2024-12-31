@@ -34,6 +34,11 @@ const meta = {
       control: 'text',
       description: 'text 영역(빈 문자열일시 없음)',
       defaultValue: '모잉'
+    },
+    titleWeight: {
+      control: 'text',
+      description: 'text fontWeight(semibold or regular)',
+      defaultValue: 'regular'
     }
   },
   args: { onClick: fn() },
@@ -57,6 +62,7 @@ export const Default: Story = {
     rightText: '',
     isLeftVector: true,
     leftIconSrc: '/images/createTripBtn.png',
-    text: '공지사항'
+    text: '공지사항',
+    titleWeight: 'regular'
   }
 }

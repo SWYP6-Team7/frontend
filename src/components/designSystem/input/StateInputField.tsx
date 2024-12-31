@@ -134,7 +134,7 @@ const Container = styled.div<ContainerProps>`
   padding: 0px 16px;
   border-radius: 50px;
   overflow-x: hidden;
-  box-sizing: border-box;
+  box-sizing: content-box;
   border: 1px solid ${props => props.borderColor};
   background-color: ${props => props.bgColor};
   animation: ${props =>
@@ -155,7 +155,7 @@ const Input = styled.input<InputProps>`
   font-family: Pretendard;
   height: 100%;
   outline: none;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   background-color: ${props => props.bgColor};
   font-size: 16px;

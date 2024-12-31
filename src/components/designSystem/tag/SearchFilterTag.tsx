@@ -48,7 +48,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         border: active ? `1px solid ${palette.keycolor}` : 'none',
         borderRadius: '15px',
         padding: '8px 16px',
-        fontWeight: '400',
+        fontWeight: '600',
         fontSize: '14px'
       },
       ...props

@@ -7,13 +7,19 @@ const meta = {
   parameters: {
     layout: 'centered'
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
+  decorators: [
+    Story => (
+      <div style={{ height: 242 }}>
+        <Story />
+      </div>
+    )
+  ]
 } satisfies Meta<typeof Select>
 
 export default meta
 type Story = StoryObj<typeof Select>
 
-// Wrapper 컴포넌트를 만들어 상태 관리
 const SelectWrapper = ({
   list,
   noneValue
@@ -24,19 +30,21 @@ const SelectWrapper = ({
   const [value, setValue] = useState<string>()
 
   return (
-    <Select
-      list={list}
-      value={value}
-      setValue={setValue}
-      noneValue={noneValue}
-    />
+    <div style={{ margin: 50 }}>
+      <Select
+        list={list}
+        value={value}
+        setValue={setValue}
+        noneValue={noneValue}
+      />
+    </div>
   )
 }
 
 export const Default: Story = {
   render: () => (
     <SelectWrapper
-      list={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
+      list={['Option 1', 'Option 2', 'Option 3']}
       noneValue="Select an option"
     />
   )

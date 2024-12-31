@@ -9,6 +9,7 @@ interface TextButtonProps {
   rightText?: string
   isLeftVector: boolean
   leftIconSrc: string
+  titleWeight?: 'regular' | 'semibold'
 }
 
 const TextButton = ({
@@ -17,7 +18,8 @@ const TextButton = ({
   text,
   rightText = '',
   leftIconSrc = '',
-  isLeftVector
+  isLeftVector,
+  titleWeight = 'regular'
 }: TextButtonProps) => {
   return (
     <Box onClick={onClick}>
@@ -28,7 +30,7 @@ const TextButton = ({
             alt="icon"
           />
         )}
-        <SmallTitle>{text}</SmallTitle>
+        <SmallTitle fontWeight={titleWeight}>{text}</SmallTitle>
       </div>
       <Right>
         {rightText !== '' && (
@@ -65,10 +67,10 @@ const Box = styled.div`
   }
 `
 
-const SmallTitle = styled.span`
+const SmallTitle = styled.span<{ fontWeight: 'regular' | 'semibold' }>`
   font-family: Pretendard;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: ${props => (props.fontWeight === 'regular' ? '500' : '600')};
   line-height: 16px;
   letter-spacing: -0.25px;
   text-align: center;
