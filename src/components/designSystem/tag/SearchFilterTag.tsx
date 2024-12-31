@@ -73,7 +73,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
 
 const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   height: ${props => (props.isCreateTrip ? '42px' : 'auto')};
-  line-height: ${props => (props.isCreateTrip ? '22.4px' : 'auto')};
+  line-height: ${props => (props.isCreateTrip ? '22.4px' : 'normal')};
   padding: 8px 14px;
   display: flex;
   align-items: center;
