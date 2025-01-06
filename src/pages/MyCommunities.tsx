@@ -1,21 +1,18 @@
-import AlarmIcon from '@/components/icons/AlarmIcon'
 import Spacing from '@/components/Spacing'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import Navbar from './Home/Navbar'
 import SortHeader from '@/components/SortHeader'
-import CreateTripButton from './Home/CreateTripButton'
-import CategoryList from '@/components/community/CategoryList'
-import SearchIcon from '@/components/icons/SearchIcon'
 import CommunityInfinite from '@/components/community/CommunityInfinite'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import { editStore } from '@/store/client/editStore'
 import { COMMUNITY_TOAST_MESSAGES } from '@/constants/toastMessages'
-import { useBackPathStore } from '@/store/client/backPathStore'
-import CustomLink from '@/components/CustomLink'
 import useCommunity from '@/hooks/useCommunity'
+import { isGuestUser } from '@/utils/user'
+import LoginButtonForGuest from '@/components/LoginButtonForGuest'
+import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
 const LIST = ['최신순', '추천순', '등록일순']
 const MyCommunity = () => {
@@ -33,6 +30,8 @@ const MyCommunity = () => {
     },
     true
   )
+
+  const isNoData = data?.pages[0] && data?.pages[0].page.totalPages === 0
   const { setRemoveToastShow, removeToastShow } = editStore()
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
@@ -55,6 +54,33 @@ const MyCommunity = () => {
         text={COMMUNITY_TOAST_MESSAGES.deletePost}
       />
       <div>
+        {isNoData && (
+          <Container isNodata={isNoData}>
+            <Empty>
+              <RoundedImage
+                size={80}
+                src="/images/noData.png"
+              />
+              <NoData
+                css={{
+                  marginTop: '16px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  textAlign: 'center'
+                }}>
+                {isGuestUser() ? (
+                  <>
+                    <div>로그인 후 이용할 수 있어요</div>
+                    <LoginButtonForGuest />
+                  </>
+                ) : (
+                  <>아직 작성한 글이 없어요</>
+                )}
+              </NoData>
+            </Empty>
+          </Container>
+        )}
         <Spacing size={24} />
         <SortContainer>
           <SortHeader
@@ -97,23 +123,32 @@ const SortContainer = styled.div`
   box-sizing: border-box;
 `
 
-const Title = styled.h1`
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 26.25px;
-  flex: 1;
-`
-const IconContainer = styled.div`
-  display: flex;
+const Container = styled.div<{ isNodata: boolean | undefined }>`
+  padding: 0 24px;
+  position: relative;
+  display: ${props => (props.isNodata ? 'flex' : 'auto')};
+  justify-content: center;
   align-items: center;
 `
 
-const LinkContainer = styled.div`
+const NoData = styled.div`
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22.4px;
+  letter-spacing: -0.025em;
+  text-align: center;
+  color: ${palette.기본};
+`
+const Empty = styled.div`
+  position: fixed;
+  top: 0;
+
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  height: 100svh;
 `
 
 export default MyCommunity
