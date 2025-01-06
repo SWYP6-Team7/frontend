@@ -164,7 +164,7 @@ const useAuth = () => {
       clearLoginData()
       resetData()
       setSocialLogin(null, null)
-      navigate('/login')
+      navigate('/')
       queryClient.clear()
     },
     onError: (error: any) => {

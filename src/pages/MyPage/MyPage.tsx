@@ -120,7 +120,11 @@ export default function MyPage() {
             />
             참가 신청한 여행
           </SmallTitle>
-          <SmallTitle onClick={() => navigate('/community')}>
+          <SmallTitle
+            onClick={() => {
+              document.documentElement.style.viewTransitionName = 'forward'
+              navigateWithTransition('/myCommunity')
+            }}>
             <img
               src="/images/createTripBtn.png"
               alt=""
