@@ -1,23 +1,16 @@
-import Button from '@/components/Button'
-import ButtonContainer from '@/components/ButtonContainer'
 import styled from '@emotion/styled'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 
-import React, { ButtonHTMLAttributes, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React from 'react'
 import { useTripList } from '@/hooks/useTripList'
 import { userStore } from '@/store/client/userStore'
 import { IMyTripList } from '@/model/myTrip'
-import HorizonBoxLayout from '@/components/HorizonBoxLayout'
-import { daysAgo } from '@/utils/time'
-import dayjs from 'dayjs'
 import OnBoardingOne from '@/components/icons/OnBoardingOne'
 import OnBoardingTwo from '@/components/icons/OnBoardingTwo'
 import OnBoardingThree from '@/components/icons/OnBoardingThree'
 import { palette } from '@/styles/palette'
-import { authStore } from '@/store/client/authStore'
 interface OnBoardingData {
   title: string
   description: string
