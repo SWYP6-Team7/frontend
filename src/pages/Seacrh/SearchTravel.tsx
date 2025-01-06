@@ -78,7 +78,6 @@ const SearchTravel = () => {
 
   return (
     <Container>
-      <Spacing size={'4.2svh'} />
       <CreateTripInputField
         value={keyword}
         onChange={changeKeyword}

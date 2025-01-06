@@ -58,8 +58,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       }
     },
     queryFn: ({ pageParam }) =>
-      getSearch(pageParam as number, keyword, { ...filters }, accessToken!),
-    enabled: Boolean(keyword) && Boolean(accessToken),
+      getSearch(pageParam as number, keyword, { ...filters }, accessToken),
+    enabled: Boolean(keyword),
 
     retry: Boolean(accessToken),
     staleTime: 0
