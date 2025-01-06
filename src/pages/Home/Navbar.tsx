@@ -14,7 +14,14 @@ import { NavLink, useLocation, useMatch, useNavigate } from 'react-router-dom'
 const Navbar = () => {
   const { pathname } = useLocation()
   // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
-  const pages = ['/', '/trip/list', '/myTrip', '/community', '/myPage']
+  const pages = [
+    '/',
+    '/trip/list',
+    '/myTrip',
+    '/community',
+    '/myPage',
+    '/myCommunity'
+  ]
   const icons = [
     <HomeIcon
       width={20}
