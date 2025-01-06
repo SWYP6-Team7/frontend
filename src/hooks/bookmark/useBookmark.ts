@@ -22,9 +22,8 @@ export const useBookmark = () => {
   >({
     queryKey: ['bookmarks'],
     queryFn: ({ pageParam }) => {
-      return getBookmark(pageParam as number, accessToken!)
+      return getBookmark(pageParam as number, accessToken)
     },
-    enabled: !!accessToken,
     retry: Boolean(accessToken),
     staleTime: 0,
     initialPageParam: 0,
