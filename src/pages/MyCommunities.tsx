@@ -53,7 +53,7 @@ const MyCommunity = () => {
         text={COMMUNITY_TOAST_MESSAGES.deletePost}
       />
       <div>
-        {isGuestUser() && (
+        {isGuestUser() ? (
           <Container isNodata={true}>
             <Empty>
               <RoundedImage
@@ -75,20 +75,24 @@ const MyCommunity = () => {
               </NoData>
             </Empty>
           </Container>
+        ) : (
+          <>
+            <Spacing size={24} />
+            <SortContainer>
+              <SortHeader
+                list={LIST}
+                clickSort={onClickSort}
+                setFixed={handleFixed}
+                sort={sort}>
+                <CountContainer>
+                  총&nbsp;
+                  <Count>{data?.pages[0].page.totalElements ?? 0}건</Count>
+                </CountContainer>
+              </SortHeader>
+            </SortContainer>
+            <CommunityInfinite isMine={true} />
+          </>
         )}
-        <Spacing size={24} />
-        <SortContainer>
-          <SortHeader
-            list={LIST}
-            clickSort={onClickSort}
-            setFixed={handleFixed}
-            sort={sort}>
-            <CountContainer>
-              총&nbsp;<Count>{data?.pages[0].page.totalElements ?? 0}건</Count>
-            </CountContainer>
-          </SortHeader>
-        </SortContainer>
-        <CommunityInfinite isMine={true} />
       </div>
       <Navbar />
     </>
