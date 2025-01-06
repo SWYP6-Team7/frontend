@@ -31,7 +31,6 @@ const MyCommunity = () => {
     true
   )
 
-  const isNoData = data?.pages[0] && data?.pages[0].page.totalPages === 0
   const { setRemoveToastShow, removeToastShow } = editStore()
   const onClickSort = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
@@ -54,8 +53,8 @@ const MyCommunity = () => {
         text={COMMUNITY_TOAST_MESSAGES.deletePost}
       />
       <div>
-        {isNoData && (
-          <Container isNodata={isNoData}>
+        {isGuestUser() && (
+          <Container isNodata={true}>
             <Empty>
               <RoundedImage
                 size={80}
@@ -69,14 +68,10 @@ const MyCommunity = () => {
                   justifyContent: 'center',
                   textAlign: 'center'
                 }}>
-                {isGuestUser() ? (
-                  <>
-                    <div>로그인 후 이용할 수 있어요</div>
-                    <LoginButtonForGuest />
-                  </>
-                ) : (
-                  <>아직 작성한 글이 없어요</>
-                )}
+                <>
+                  <div>로그인 후 이용할 수 있어요</div>
+                  <LoginButtonForGuest />
+                </>
               </NoData>
             </Empty>
           </Container>
