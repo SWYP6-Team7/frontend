@@ -65,7 +65,7 @@ const Input = styled.input`
   background-color: transparent;
   height: 32px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 22px;
   font-family: Pretendard;
   padding: 5px 16px;

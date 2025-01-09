@@ -155,7 +155,7 @@ const Input = styled.input<InputProps>`
   font-family: Pretendard;
   height: 100%;
   outline: none;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
   background-color: ${props => props.bgColor};
   font-size: 16px;

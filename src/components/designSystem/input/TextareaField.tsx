@@ -50,7 +50,7 @@ const DetailTextArea = styled.textarea<{
     color: ${palette.비강조2};
 
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 22.4px;
     letter-spacing: -0.025em;
   }
