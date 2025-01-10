@@ -1,0 +1,81 @@
+import useEnrollment from '@/hooks/enrollment/useEnrollment'
+import { palette } from '@/styles/palette'
+import styled from '@emotion/styled'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import TripEnrollmentCard from './TripEnrollmentCard'
+import { tripDetailStore } from '@/store/client/tripDetailStore'
+import { todayFormattedDate, isNewApply } from '@/utils/time'
+
+interface enrollment {
+  enrollmentNumber: number
+  userName: string
+  userAgeGroup: string
+  enrolledAt: string
+  message: string
+  status: string
+  profileUrl: string
+}
+export default function TripEnrollmentList() {
+  const { travelNumber } = useParams<{ travelNumber: string }>()
+  const { createdAt } = tripDetailStore()
+  const { enrollmentList, enrollmentsLastViewed, updateLastViewed } =
+    useEnrollment(parseInt(travelNumber!))
+  // 최근에 본 시점.
+  const list = enrollmentList.data?.data
+
+  // 처음에는 null 값이니, 생성했을 때 시간 으로 두기.
+  const lastViewed =
+    enrollmentsLastViewed.data?.lastViewedAt === null
+      ? createdAt
+      : enrollmentsLastViewed.data?.lastViewedAt
+
+  useEffect(() => {
+    // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.
+    return () => {
+      updateLastViewed(todayFormattedDate())
+    }
+  }, [])
+
+  return (
+    <Container>
+      {list && lastViewed && (
+        <>
+          <Count>
+            총
+            <p css={{ marginLeft: '4px', color: palette.keycolor }}>
+              {!list.totalCount ? 0 : list.totalCount}
+            </p>
+            건
+          </Count>
+          <div css={{ marginTop: '16px' }}>
+            {list.enrollments?.map((enrollment: enrollment) => (
+              <TripEnrollmentCard
+                key={enrollment.enrollmentNumber}
+                isNew={isNewApply(lastViewed, enrollment.enrolledAt)}
+                enrollmentNumber={enrollment.enrollmentNumber}
+                userName={enrollment.userName}
+                ageGroup={enrollment.userAgeGroup}
+                enrolledAt={enrollment.enrolledAt}
+                message={enrollment.message}
+                profileUrl={enrollment.profileUrl}
+              />
+            ))}
+          </div>
+        </>
+      )}
+      <div></div>
+    </Container>
+  )
+}
+
+const Container = styled.div`
+  padding: 0px 24px;
+`
+const Count = styled.div`
+  display: flex;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: left;
+`
