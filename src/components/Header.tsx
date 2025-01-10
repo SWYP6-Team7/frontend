@@ -33,7 +33,8 @@ const Header = () => {
     return (
       checkRoute.exact(ROUTES.HOME) ||
       checkRoute.exact(ROUTES.MY.TRIP) ||
-      checkRoute.startsWith(ROUTES.TRIP.DETAIL)
+      checkRoute.startsWith(ROUTES.TRIP.DETAIL) ||
+      checkRoute.startsWith(ROUTES.REQUESTED_TRIP)
     )
   }
   return (

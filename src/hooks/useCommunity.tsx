@@ -3,6 +3,7 @@ import {
   getCommunities,
   getCommunity,
   getImages,
+  getMyCommunities,
   likeCommunity,
   postCommunity,
   postImage,
@@ -39,7 +40,8 @@ const useCommunity = (
     sortingTypeName: '최신순',
     keyword: '',
     categoryName: ''
-  }
+  },
+  isMine = false
 ) => {
   const {
     sortingTypeName = '최신순',
@@ -53,21 +55,28 @@ const useCommunity = (
     InfiniteData<ICommunityList>,
     [
       _1: string,
-      { categoryName: string; sortingTypeName: string; keyword: string }
+      { categoryName: string; sortingTypeName: string; keyword: string },
+      _3: boolean
     ]
   >({
     queryKey: [
       'community',
-      { categoryName: categoryName, sortingTypeName, keyword }
+      { categoryName: categoryName, sortingTypeName, keyword },
+      isMine
     ],
 
     queryFn: ({ pageParam }) => {
-      return getCommunities(accessToken!, {
+      if (isMine) {
+        return getMyCommunities(accessToken, {
+          ...params,
+          page: pageParam as number
+        })
+      }
+      return getCommunities(accessToken, {
         ...params,
         page: pageParam as number
       })
     },
-    enabled: !!accessToken,
     initialPageParam: 0,
     getNextPageParam: lastPage => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
@@ -79,14 +88,14 @@ const useCommunity = (
   })
   const community = useQuery({
     queryKey: ['community', communityNumber],
-    queryFn: () => getCommunity(communityNumber!, accessToken!),
-    enabled: !!accessToken && !!communityNumber
+    queryFn: () => getCommunity(communityNumber!, accessToken),
+    enabled: !!communityNumber
   })
 
   const images = useQuery({
     queryKey: ['community', 'images', communityNumber],
-    queryFn: () => getImages(communityNumber!, accessToken!),
-    enabled: !!accessToken && !!communityNumber
+    queryFn: () => getImages(communityNumber!, accessToken),
+    enabled: !!communityNumber
   })
 
   const postImageMutation = useMutation({

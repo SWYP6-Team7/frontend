@@ -85,23 +85,14 @@ const ThreeRowCarousel = ({
     } else {
       // 유저가 접속을 새로운 탭에서 시작했을 때, 온보딩 화면 보여줌.
       // 시작하기로 갈 때 만약 액세스 토큰이 없다면 로그인으로 아니면 홈으로.
-      if (accessToken === null) {
-        setTimeout(() => {
-          navigate('/login')
-        }, 300)
-      } else {
-        setTimeout(() => {
-          navigate('/')
-        }, 300)
-      }
+
+      setTimeout(() => {
+        navigate('/')
+      }, 300)
     }
   }
   const onClickSkip = () => {
-    if (accessToken === null) {
-      navigate('/login')
-    } else {
-      navigate('/')
-    }
+    navigate('/')
   }
   const { pathname } = useLocation()
   return (

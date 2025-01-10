@@ -9,6 +9,7 @@ import { z } from 'zod'
 import InfoText from '@/components/designSystem/text/InfoText'
 import Spacing from '@/components/Spacing'
 import ButtonContainer from '@/components/ButtonContainer'
+import useViewTransition from '@/hooks/useViewTransition'
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
@@ -46,11 +47,12 @@ const RegisterName = () => {
       navigate('/registerForm')
     }
   }, [email, password, socialLogin])
-
+  const navigateWithTransition = useViewTransition()
   const handleRemoveValue = () => setUserName('')
   const nextStepClickHandler = () => {
     if (userName.length > 0) {
-      navigate('/registerAge')
+      document.documentElement.style.viewTransitionName = 'forward'
+      navigateWithTransition('/registerAge')
     }
   }
 

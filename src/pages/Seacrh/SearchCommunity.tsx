@@ -12,6 +12,7 @@ import CategoryList from '@/components/community/CategoryList'
 import { palette } from '@/styles/palette'
 import CommunityItem from '@/components/community/CommunityItem'
 import useCommunity from '@/hooks/useCommunity'
+import CustomLink from '@/components/CustomLink'
 
 const LIST = ['최신순', '추천순', '등록일순']
 
@@ -92,7 +93,6 @@ const SearchCommunity = () => {
 
   return (
     <Container>
-      <Spacing size={'4.2svh'} />
       <InputField
         value={keyword}
         onChange={changeKeyword}
@@ -126,9 +126,10 @@ const SearchCommunity = () => {
                 <React.Fragment key={pageIndex}>
                   {page.content.map((content, itemIndex) =>
                     content ? (
-                      <Link to={`/community/detail/${content.postNumber}`}>
+                      <CustomLink
+                        to={`/community/detail/${content.postNumber}`}>
                         <CommunityItem data={content} />
-                      </Link>
+                      </CustomLink>
                     ) : (
                       <div>오류가 발생했습니다.</div>
                     )

@@ -17,7 +17,7 @@ import { ERROR_MESSAGES } from '@/constants/errorMessages'
 import RequestError from '@/context/ReqeustError'
 
 export async function getCommunities(
-  accessToken: string,
+  accessToken: string | null,
   params: IListParams & { page: number }
 ) {
   try {
@@ -25,8 +25,27 @@ export async function getCommunities(
       `/api/community/posts`,
 
       {
-        headers: getJWTHeader(accessToken!),
-        params: params
+        params: params,
+        ...(accessToken && { headers: getJWTHeader(accessToken) })
+      }
+    )
+    return result.data
+  } catch (err: any) {
+    throw new RequestError(err)
+  }
+}
+
+export async function getMyCommunities(
+  accessToken: string | null,
+  params: IListParams & { page: number }
+) {
+  try {
+    const result = await axiosInstance.get(
+      `/api/my-communities`,
+
+      {
+        params: params,
+        ...(accessToken && { headers: getJWTHeader(accessToken) })
       }
     )
     return result.data
@@ -37,14 +56,14 @@ export async function getCommunities(
 
 export async function getCommunity(
   communityNumber: number,
-  accessToken: string
+  accessToken: string | null
 ) {
   try {
     const result = await axiosInstance.get(
       `api/community/posts/${communityNumber}`,
 
       {
-        headers: getJWTHeader(accessToken!)
+        ...(accessToken && { headers: getJWTHeader(accessToken) })
       }
     )
     return result.data as Community
@@ -143,13 +162,16 @@ export async function unlikeCommunity(
   }
 }
 
-export async function getImages(communityNumber: number, accessToken: string) {
+export async function getImages(
+  communityNumber: number,
+  accessToken: string | null
+) {
   try {
     const result = await axiosInstance.get(
       `api/community/${communityNumber}/images`,
 
       {
-        headers: getJWTHeader(accessToken!)
+        ...(accessToken && { headers: getJWTHeader(accessToken) })
       }
     )
     return result.data as Image[]

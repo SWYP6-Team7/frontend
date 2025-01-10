@@ -3,6 +3,7 @@ import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import RightVector from '@/components/icons/RightVector'
 import Spacing from '@/components/Spacing'
+import useViewTransition from '@/hooks/useViewTransition'
 import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import { isGuestUser } from '@/utils/user'
@@ -11,13 +12,15 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function MyPage() {
+  const navigateWithTransition = useViewTransition()
   const { name, agegroup, email, preferredTags, profileUrl } = myPageStore()
   const [showLoginModal, setShowLoginModal] = useState(false)
   const navigate = useNavigate()
   const cutTags =
     preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags
   const onLinkAnnouncement = () => {
-    navigate('/announcement')
+    document.documentElement.style.viewTransitionName = 'forward'
+    navigateWithTransition('/announcement')
   }
   return (
     <Container>
@@ -31,7 +34,11 @@ export default function MyPage() {
         <div css={{ width: '100%' }}>
           {!isGuestUser() ? (
             <>
-              <MoreBox onClick={() => navigate('/editMyInfo')}>
+              <MoreBox
+                onClick={() => {
+                  document.documentElement.style.viewTransitionName = 'forward'
+                  navigateWithTransition('/editMyInfo')
+                }}>
                 <UserName>{name}</UserName>
                 <div css={{ display: 'flex', padding: '8px 5px' }}>
                   <RightVector />
@@ -102,20 +109,28 @@ export default function MyPage() {
         </Box>
         <Box>
           <Title>내 여행 현황</Title>
-          <SmallTitle onClick={() => navigate('/requestedTrip')}>
+          <SmallTitle
+            onClick={() => {
+              document.documentElement.style.viewTransitionName = 'forward'
+              navigateWithTransition('/requestedTrip')
+            }}>
             <img
               src="/images/createTripBtn.png"
               alt="small moing logo (참가 신청한 여행)"
             />
             참가 신청한 여행
           </SmallTitle>
-          {/* <SmallTitle onClick={() => navigate('/community')}>
+          <SmallTitle
+            onClick={() => {
+              document.documentElement.style.viewTransitionName = 'forward'
+              navigateWithTransition('/myCommunity')
+            }}>
             <img
               src="/images/createTripBtn.png"
               alt=""
             />
-            내 커뮤니티
-          </SmallTitle> */}
+            작성한 글
+          </SmallTitle>
         </Box>
         <div css={{ marginTop: '16px' }}>
           <Title>약관 및 정책</Title>

@@ -32,6 +32,7 @@ import Opengraph from '@/components/Opengraph'
 import { isGuestUser } from '@/utils/user'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import ApplyListButton from '@/components/designSystem/Buttons/ApplyListButton'
+import useViewTransition from '@/hooks/useViewTransition'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 
 interface Companion {
@@ -126,6 +127,7 @@ export default function TripDetail() {
 
   const isEditing = false
   const navigate = useNavigate()
+  const navigateWithTransition = useViewTransition()
   const { year, month, day } = dueDate
   const DAY = new Date(`${year}/${month}/${day}`)
   const dayOfWeek = WEEKDAY[DAY.getDay()]
@@ -136,13 +138,15 @@ export default function TripDetail() {
       setShowLoginModal(true)
       setModalTextForLogin(LOGIN_ASKING_FOR_APPLY_TRIP)
     } else if (hostUserCheck) {
-      navigate(`/trip/enrollmentList/${travelNumber}`)
+      document.documentElement.style.viewTransitionName = 'forward'
+      navigateWithTransition(`/trip/enrollmentList/${travelNumber}`)
     } else {
       if (enrollmentNumber) {
         setShowCancelModal(true)
       } else {
         // 신청하러 바로 이동.
-        navigate(`/trip/apply/${travelNumber}`)
+        document.documentElement.style.viewTransitionName = 'forward'
+        navigateWithTransition(`/trip/apply/${travelNumber}`)
       }
     }
   }
@@ -199,7 +203,8 @@ export default function TripDetail() {
       // 주최자가 아니며, 신청 번호가 없는 사람은 댓글을 볼 수 없음.
       setShowApplyModal(true)
     } else if (isAccepted || hostUserCheck) {
-      navigate(`/trip/comment/${travelNumber}`)
+      document.documentElement.style.viewTransitionName = 'forward'
+      navigateWithTransition(`/trip/comment/${travelNumber}`)
     } else {
       // 신청 대기중인 경우.
       setNoticeModal(true)
@@ -249,7 +254,10 @@ export default function TripDetail() {
 
       <CheckingModal
         isModalOpen={showApplyModal}
-        onClick={() => navigate(`/trip/apply/${travelNumber}`)}
+        onClick={() => {
+          document.documentElement.style.viewTransitionName = 'forward'
+          navigateWithTransition(`/trip/apply/${travelNumber}`)
+        }}
         modalMsg="여행에 참여한 멤버만 볼 수 있어요.
 여행 참가 신청을 할까요?"
         modalTitle="참가 신청 안내"
@@ -436,10 +444,10 @@ export default function TripDetail() {
             }}
             text={
               hostUserCheck
-                ? '참가신청목록'
+                ? '참가 신청 목록'
                 : alreadyApplied
-                  ? '참가신청취소'
-                  : '참가신청하기'
+                  ? '참가 신청 취소'
+                  : '참가 신청 하기'
             }></ApplyListButton>
         </ButtonContainer>
         <CompanionsView

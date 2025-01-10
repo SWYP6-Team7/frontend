@@ -18,6 +18,7 @@ import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import { editStore } from '@/store/client/editStore'
+import useViewTransition from '@/hooks/useViewTransition'
 const TAG_LIST = [
   {
     title: '태그 설정',
@@ -60,6 +61,7 @@ export default function TripEdit() {
   const [editingTitle, setEditingTitle] = useState(title)
   const [editingDetails, setEditingDetails] = useState(details)
   const handleRemoveValue = () => setEditingTitle('')
+  const navigateWithTransition = useViewTransition()
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     // setEditingTitle(e.target.value)
     addTitle(e.target.value)
@@ -170,7 +172,8 @@ export default function TripEdit() {
   }
   console.log(title, details, genderType, maxPerson, dueDate, periodType, tags)
   const editLocationHandler = () => {
-    navigate(`/editPlace/${travelNumber}`)
+    document.documentElement.style.viewTransitionName = 'forward'
+    navigateWithTransition(`/editPlace/${travelNumber}`)
   }
   return (
     <Container>

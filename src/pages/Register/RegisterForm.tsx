@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { checkEmail } from '@/api/user'
 import ButtonContainer from '@/components/ButtonContainer'
 import { emailSchema, passwordSchema } from '@/utils/schema'
+import useViewTransition from '@/hooks/useViewTransition'
 interface ErrorProps {
   email: undefined | string
   password: undefined | string
@@ -46,7 +47,7 @@ const RegisterForm = () => {
     password: false,
     confirmPassword: false
   })
-
+  const navigateWithTransition = useViewTransition()
   const navigate = useNavigate()
   const isSocialLoginGoogle = socialLogin === 'google'
   const isSocialLoginKakao = socialLogin === 'kakao'
@@ -162,10 +163,12 @@ const RegisterForm = () => {
 
       addEmail(formData.email)
       if (isSocialLoginKakao) {
-        navigate('/registerAge')
+        document.documentElement.style.viewTransitionName = 'forward'
+        navigateWithTransition('/registerAge')
       } else {
         addPassword(formData.password)
-        navigate('/registerName')
+        document.documentElement.style.viewTransitionName = 'forward'
+        navigateWithTransition('/registerName')
       }
     } else {
       setShake({

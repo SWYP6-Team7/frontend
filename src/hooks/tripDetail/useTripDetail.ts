@@ -15,7 +15,7 @@ const useTripDetail = (travelNumber: number) => {
   const tripDetail = useQuery({
     queryKey: ['tripDetail', travelNumber],
     queryFn: () => getTripDetail(travelNumber, accessToken),
-    enabled: !!travelNumber && !!accessToken
+    enabled: !!travelNumber
   })
   // 현재 신청 온 사람 수
   const tripEnrollmentCount = useQuery({

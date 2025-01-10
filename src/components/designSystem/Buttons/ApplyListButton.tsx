@@ -49,18 +49,20 @@ const ApplyListButton = ({
 }: ApplyListButtonProps) => {
   return (
     <ApplyListButtonWrapper>
-      <button
-        style={{ border: 'none', backgroundColor: 'transparent' }}
-        onClick={bookmarkOnClick}>
-        {bookmarked ? (
-          <FullHeartIcon width={24} />
-        ) : (
-          <EmptyHeartIcon
-            width={24}
-            stroke={palette.기본}
-          />
-        )}
-      </button>
+      {hostUserCheck && (
+        <button
+          style={{ border: 'none', backgroundColor: 'transparent' }}
+          onClick={bookmarkOnClick}>
+          {bookmarked ? (
+            <FullHeartIcon width={24} />
+          ) : (
+            <EmptyHeartIcon
+              width={24}
+              stroke={palette.기본}
+            />
+          )}
+        </button>
+      )}
       <ButtonContainer
         type={type}
         disabled={disabled}

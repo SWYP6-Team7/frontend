@@ -1,4 +1,3 @@
-import StateInputField from '@/components/designSystem/input/StateInputField'
 import FilterList from '@/components/FilterList'
 import RecommendKeyword from '@/components/RecommendKeyword'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
@@ -6,7 +5,6 @@ import SearchResultList from '@/components/SearchResultList'
 import Spacing from '@/components/Spacing'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import useSearch from '@/hooks/search/useSearch'
-import { searchStore } from '@/store/client/searchStore'
 import styled from '@emotion/styled'
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
@@ -78,7 +76,6 @@ const SearchTravel = () => {
 
   return (
     <Container>
-      <Spacing size={'4.2svh'} />
       <InputField
         value={keyword}
         onChange={changeKeyword}

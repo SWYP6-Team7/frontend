@@ -14,7 +14,7 @@ export async function getComments(
     const result = await axiosInstance.get(
       `/api/${relatedType}/${relatedNumber}/comments`,
       {
-        headers: getJWTHeader(accessToken!),
+        ...(accessToken && { headers: getJWTHeader(accessToken) }),
         params: { page }
       }
     )

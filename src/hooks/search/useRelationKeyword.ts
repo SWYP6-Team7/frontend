@@ -8,8 +8,8 @@ const useRelationKeyword = (keyword: string) => {
   const { accessToken } = authStore()
   const { data, isLoading, error } = useQuery({
     queryKey: ['search', 'relation', debouncedKeyword],
-    queryFn: () => getSearchRelation(debouncedKeyword, accessToken!),
-    enabled: keyword !== '' && !!accessToken
+    queryFn: () => getSearchRelation(debouncedKeyword, accessToken),
+    enabled: keyword !== ''
   })
 
   useEffect(() => {

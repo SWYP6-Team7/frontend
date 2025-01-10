@@ -10,12 +10,13 @@ import { createTripStore } from '@/store/client/createTripStore'
 import styled from '@emotion/styled'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useViewTransition from '@/hooks/useViewTransition'
 
 export default function CreateTripPlace() {
   const [keyword, setKeyword] = useState('')
   const { addLocation } = createTripStore()
   const [showRelationList, setShowRelationList] = useState(true)
-  const navigate = useNavigate()
+  const navigateWithTransition = useViewTransition()
 
   const { data, isLoading, error } = useRelationKeyword(keyword)
 
@@ -38,7 +39,8 @@ export default function CreateTripPlace() {
     //   return
     // }
     addLocation(keyword)
-    navigate('/createTripIntroduce')
+    document.documentElement.style.viewTransitionName = 'forward'
+    navigateWithTransition('/createTripIntroduce')
   }
 
   // const isMatchedKeyword = useMemo(() => {

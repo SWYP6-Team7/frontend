@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import CustomLink from '../CustomLink'
 
 const TAG_LIST = [
   { value: '뉴욕', src: '/images/newyork.png' },
@@ -16,14 +17,14 @@ const PopularPlaceList = () => {
       <Title>인기 여행 장소</Title>
       <TagContainer>
         {TAG_LIST.map((item, idx) => (
-          <Link
+          <CustomLink
             key={item.value}
             to={`/search/travel?keyword=${item.value}`}>
             <PlaceImage src={item.src}>
               <Background />
               <Text>{item.value}</Text>
             </PlaceImage>
-          </Link>
+          </CustomLink>
         ))}
       </TagContainer>
     </Container>
