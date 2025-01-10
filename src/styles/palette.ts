@@ -14,5 +14,6 @@ export const palette = {
   errorVariant: '#FFF7F7',
   errorBorder: '#ED1E1E',
   buttonActive: '#F1F7EC',
+  buttonHover: 'rgba(241, 247, 236, 1)',
   greenVariant: 'rgba(252, 255, 250, 1)'
 }

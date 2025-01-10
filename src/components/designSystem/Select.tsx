@@ -104,6 +104,7 @@ const Background = styled.div`
   top: 0;
   left: 0;
   right: 0;
+
   transition: 0.2s all ease-in-out;
   bottom: 0;
   background-color: rgba(26, 26, 26, 0.3);
@@ -170,6 +171,7 @@ const OptionList = styled.div<{ active: boolean }>`
 const Label = styled.button`
   width: 100%;
   font-size: 14px;
+  font-weight: 400;
   color: ${palette.비강조};
   min-width: 95px;
   padding: 12px 16px;
@@ -212,14 +214,15 @@ const StyledOptionList = styled.ul<{ active: boolean }>`
   list-style-type: none; // ul을 커스텀할 때 필요한 부분.
   width: 100%;
   position: absolute;
-  max-height: ${({ active }) => (active ? '150px' : '0')};
+  max-height: ${({ active }) => (active ? '170px' : '0')};
   top: 43px;
   left: 0;
   right: 0;
   z-index: 1005;
-
+  padding-bottom: 4px;
   font-size: 16px;
   line-height: 20px;
+  font-weight: 400;
   border-radius: 20px; // 동글동글하게 아래부분을 만들어야해서 border-radius를 줌.
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;

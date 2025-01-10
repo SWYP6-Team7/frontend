@@ -32,16 +32,16 @@ const prepare = async (): Promise<void> => {
 
 prepare().then(() => {
   reactDOM.createRoot(reactRoot as HTMLElement).render(
-    // <GlobalErrorBoundary>
-    <QueryClientBoundary>
-      {/* <ErrorCatcher /> */}
-      <HelmetProvider>
-        {/* globalstyle 적용  */}
-        <Global styles={globalStyle} />
-        <App />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </HelmetProvider>
-    </QueryClientBoundary>
-    // </GlobalErrorBoundary>
+    <GlobalErrorBoundary>
+      <QueryClientBoundary>
+        <ErrorCatcher />
+        <HelmetProvider>
+          {/* globalstyle 적용  */}
+          <Global styles={globalStyle} />
+          <App />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </HelmetProvider>
+      </QueryClientBoundary>
+    </GlobalErrorBoundary>
   )
 })

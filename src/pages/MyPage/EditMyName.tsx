@@ -1,6 +1,6 @@
 import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
-import InputField from '@/components/designSystem/input/InputField'
+import StateInputField from '@/components/designSystem/input/StateInputField'
 import InfoText from '@/components/designSystem/text/InfoText'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import Spacing from '@/components/Spacing'
@@ -53,7 +53,7 @@ export default function EditMyName() {
     <Wrapper>
       <StepContent>새로운 이름을 입력해주세요</StepContent>
       <div css={{ marginTop: '14px' }}>
-        <InputField
+        <StateInputField
           showIcon={false}
           shake={nameValidError && userName.length > 0}
           success={userName.length > 0 && !nameValidError}

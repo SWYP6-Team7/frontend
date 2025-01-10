@@ -326,24 +326,13 @@ export const useHeaderNavigation = () => {
     const pathname = location.pathname
     const rules = createNavigationRules(pathname)
     const matchedRule = rules.find(rule => rule.condition())
-    if (!document.startViewTransition) {
-      if (matchedRule) {
-        matchedRule.action()
-        return
-      }
 
-      navigate(-1)
+    if (matchedRule) {
+      matchedRule.action()
       return
     }
-    document.documentElement.style.viewTransitionName = 'back'
-    document.startViewTransition(() => {
-      if (matchedRule) {
-        matchedRule.action()
-        return
-      }
 
-      navigate(-1)
-    })
+    navigate(-1)
   }
 
   const shouldShowAlarmIcon = () =>

@@ -109,35 +109,28 @@ const Layout = () => {
   }, [pathname])
 
   return (
-    <>
-      <Container
-        pathname={pathname}
-        className="container">
-        <Splash />
-
-        <Body
-          pathname={pathname}
-          className="body">
-          {/* {isSignup && <Header />} */}
-          {/* 홈 화면 헤더는 다른 형태. */}
-          {pathname !== '/' &&
-            !isOnboarding &&
-            pathname !== '/registerDone' &&
-            pathname !== '/login' &&
-            pathname !== '/trip/list' &&
-            pathname !== '/community' && <Header />}
-          <Outlet />
-          {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
+    <Container pathname={pathname}>
+      <Splash />
+      <Body pathname={pathname}>
+        {/* {isSignup && <Header />} */}
+        {/* 홈 화면 헤더는 다른 형태. */}
+        {pathname !== '/' &&
+          !isOnboarding &&
+          pathname !== '/registerDone' &&
+          pathname !== '/login' &&
+          pathname !== '/trip/list' &&
+          pathname !== '/community' && <Header />}
+        <Outlet />
+        {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
           <Outlet />
         ) : (
           <Navigate to="/login" />
         )} */}
 
-          {/* 로그인을 해야만 보이는거 처리. */}
-          <Navbar />
-        </Body>
-      </Container>
-    </>
+        {/* 로그인을 해야만 보이는거 처리. */}
+        <Navbar />
+      </Body>
+    </Container>
   )
 }
 

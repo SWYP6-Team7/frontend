@@ -1,4 +1,4 @@
-import CreateTripInputField from '@/components/designSystem/input/CreateTripInputField'
+import InputField from '@/components/designSystem/input/InputField'
 import AlarmIcon from '@/components/icons/AlarmIcon'
 import RelationSearchIcon from '@/components/icons/RelationSearchIcon'
 import Spacing from '@/components/Spacing'
@@ -73,7 +73,7 @@ const TripList = () => {
             <button
               css={{ width: '100%' }}
               onClick={onClickSearch}>
-              <CreateTripInputField
+              <InputField
                 isRemove={false}
                 placeholder="어디로 여행을 떠날까요?"
                 icon={<RelationSearchIcon />}

@@ -1,8 +1,6 @@
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import { forwardRef } from 'react'
-import { useLocation } from 'react-router-dom'
-
 interface SearchFilterTagProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string
@@ -48,16 +46,16 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         backgroundColor: active ? palette.keycolorBG : palette.검색창,
         color: active ? palette.keycolor : palette.기본,
         border: active ? `1px solid ${palette.keycolor}` : 'none',
-        borderRadius: '16px',
-        padding: '8px 14px',
-        fontWeight: '400',
+        borderRadius: '15px',
+        padding: '8px 16px',
+        fontWeight: '600',
         fontSize: '14px'
       },
       ...props
     },
     ref
   ) => {
-    const { pathname } = useLocation()
+    const { pathname } = window.location
     const isCreateTrip = pathname === '/createTripDetail'
     return (
       <SearchFilterTagContainer
@@ -75,7 +73,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
 
 const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   height: ${props => (props.isCreateTrip ? '42px' : 'auto')};
-  line-height: ${props => (props.isCreateTrip ? '22.4px' : 'auto')};
+  line-height: ${props => (props.isCreateTrip ? '22.4px' : 'normal')};
   padding: 8px 14px;
   display: flex;
   align-items: center;

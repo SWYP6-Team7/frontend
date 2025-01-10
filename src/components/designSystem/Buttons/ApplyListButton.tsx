@@ -20,6 +20,7 @@ interface ApplyListButtonProps {
   bookmarked: boolean
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
   bookmarkOnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  hostUserCheck: boolean
 }
 // 사용 방식
 {
@@ -43,9 +44,9 @@ const ApplyListButton = ({
   bookmarkOnClick = () => {},
   disabled = false,
   nowEnrollmentCount,
-  bookmarked = false
+  bookmarked = false,
+  hostUserCheck
 }: ApplyListButtonProps) => {
-  const { hostUserCheck } = tripDetailStore()
   return (
     <ApplyListButtonWrapper>
       {hostUserCheck && (
@@ -79,7 +80,9 @@ const ApplyListButton = ({
 const AppliedPersonCircle = styled.div`
   background-color: ${palette.BG};
   color: ${palette.keycolor};
-  width: 16px;
+  padding: 1px 5px;
+  min-width: 16px;
+  text-align: center;
   height: 16px;
   /* padding: 1px 5px 1px 4px; */
   gap: 10px;

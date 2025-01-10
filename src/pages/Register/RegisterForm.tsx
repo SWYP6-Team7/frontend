@@ -1,5 +1,5 @@
 import Button from '@/components/designSystem/Buttons/Button'
-import InputField from '@/components/designSystem/input/InputField'
+import StateInputField from '@/components/designSystem/input/StateInputField'
 import InfoText from '@/components/designSystem/text/InfoText'
 import Spacing from '@/components/Spacing'
 import Terms from '@/components/Terms'
@@ -190,7 +190,7 @@ const RegisterForm = () => {
         <FieldContainer>
           <Label htmlFor="email">이메일</Label>
           <Spacing size={16} />
-          <InputField
+          <StateInputField
             handleRemoveValue={() => handleRemoveValue('email')}
             type="email"
             name="email"
@@ -215,7 +215,7 @@ const RegisterForm = () => {
             <FieldContainer>
               <Label htmlFor="password">비밀번호</Label>
               <Spacing size={16} />
-              <InputField
+              <StateInputField
                 handleRemoveValue={() => handleRemoveValue('password')}
                 type="password"
                 onChange={changeValue}
@@ -238,7 +238,7 @@ const RegisterForm = () => {
 
             <Spacing size={14} />
             <FieldContainer>
-              <InputField
+              <StateInputField
                 shake={shake.confirmPassword}
                 handleRemoveValue={() => handleRemoveValue('confirmPassword')}
                 type="password"

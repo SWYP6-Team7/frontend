@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import HomeInputField from '@/components/designSystem/input/HomeInputField'
 import AlarmIcon from '@/components/icons/AlarmIcon'
 import BookmarkContainer from './BookmarkContainer'
@@ -13,7 +13,6 @@ import { palette } from '@/styles/palette'
 import { myPageStore } from '@/store/client/myPageStore'
 import { useBackPathStore } from '@/store/client/backPathStore'
 import { isGuestUser } from '@/utils/user'
-import CustomLink from '@/components/CustomLink'
 
 const Home = () => {
   const { name } = myPageStore()
@@ -73,12 +72,11 @@ const Home = () => {
           <Greeting>
             <span>{name === '' ? '모잉' : name}</span>님, 반가워요!
           </Greeting>
-          <CustomLink to="/search/travel">
-            <HomeInputField
-              placeholder="어디로 여행을 떠날까요? ☁️ "
-              readOnly
-            />
-          </CustomLink>
+
+          <HomeInputField
+            placeholder="어디로 여행을 떠날까요? ☁️ "
+            onFocus={onFocusHandler}
+          />
         </SearchBox>
         {/* 북마크 부분 */}
         <BookmarkContainer />
