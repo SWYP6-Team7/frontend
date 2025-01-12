@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import React from 'react'
 import Spacing from './Spacing'

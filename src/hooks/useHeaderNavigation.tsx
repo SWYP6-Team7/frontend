@@ -1,4 +1,5 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+'use client'
+import { useRouter, usePathname } from 'next/navigation'
 import { userStore } from '@/store/client/userStore'
 import { ReactNode } from 'react'
 import { useBackPathStore } from '@/store/client/backPathStore'
@@ -54,7 +55,7 @@ const ROUTES = {
 }
 
 export const useHeaderNavigation = () => {
-  const navigate = useNavigate()
+  const router = useRouter()
   const {
     searchTravel,
     setSearchTravel,
@@ -65,7 +66,7 @@ export const useHeaderNavigation = () => {
     travelDetail,
     setTravelDetail
   } = useBackPathStore()
-  const location = useLocation()
+  const pathname = usePathname()
   const {
     resetAge,
     resetForm,
@@ -76,8 +77,8 @@ export const useHeaderNavigation = () => {
   } = userStore()
 
   const checkRoute = {
-    startsWith: (route: string) => location.pathname.startsWith(route),
-    exact: (route: string) => location.pathname === route
+    startsWith: (route: string) => pathname?.startsWith(route),
+    exact: (route: string) => pathname === route
   }
 
   const getPageTitle = () => {
@@ -123,7 +124,7 @@ export const useHeaderNavigation = () => {
           if (isKakaoLogin) {
             setSocialLogin(null, null)
           }
-          navigate(ROUTES.LOGIN)
+          router.push(ROUTES.LOGIN)
           resetForm()
         }
       },
@@ -131,7 +132,7 @@ export const useHeaderNavigation = () => {
         condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.NAME),
         action: () => {
           resetName()
-          navigate(ROUTES.REGISTER_PROCESS.FORM)
+          router.push(ROUTES.REGISTER_PROCESS.FORM)
         }
       },
       {
@@ -139,31 +140,31 @@ export const useHeaderNavigation = () => {
         action: () => {
           if (isGoogleLogin) {
             resetAge()
-            navigate(ROUTES.LOGIN)
+            router.push(ROUTES.LOGIN)
             setSocialLogin(null, null)
             return
           }
           if (isKakaoLogin) {
             resetAge()
-            navigate(ROUTES.REGISTER_PROCESS.FORM)
+            router.push(ROUTES.REGISTER_PROCESS.FORM)
             return
           }
           resetAge()
-          navigate(ROUTES.REGISTER_PROCESS.FORM)
+          router.push(ROUTES.REGISTER_PROCESS.FORM)
         }
       },
       {
         condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.GENDER),
         action: () => {
           resetGender()
-          navigate(ROUTES.REGISTER_PROCESS.AGE)
+          router.push(ROUTES.REGISTER_PROCESS.AGE)
         }
       },
       {
         condition: () =>
           pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
         action: () => {
-          navigate(ROUTES.REGISTER_PROCESS.AGE)
+          router.push(ROUTES.REGISTER_PROCESS.AGE)
         }
       },
 
@@ -171,14 +172,14 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.SEARCH.TRAVEL),
         action: () => {
-          navigate(searchTravel)
+          router.push(searchTravel)
           setSearchTravel('/')
         }
       },
       {
         condition: () => pathname.startsWith(ROUTES.SEARCH.COMMUNITY),
         action: () => {
-          navigate(ROUTES.COMMUNITY.INDEX)
+          router.push(ROUTES.COMMUNITY.INDEX)
         }
       },
 
@@ -187,7 +188,7 @@ export const useHeaderNavigation = () => {
         condition: () => pathname.startsWith(ROUTES.NOTIFICATION),
         action: () => {
           setNotification('/')
-          navigate(notification)
+          router.push(notification)
         }
       },
 
@@ -196,26 +197,26 @@ export const useHeaderNavigation = () => {
         condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.PLACE),
         action: () => {
           setCreateTripPlace('/')
-          navigate(createTripPlace)
+          router.push(createTripPlace)
         }
       },
       {
         condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.INTRODUCE),
         action: () => {
-          navigate(ROUTES.CREATE_TRIP.PLACE)
+          router.push(ROUTES.CREATE_TRIP.PLACE)
         }
       },
       {
         condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.DETAIL),
         action: () => {
-          navigate(ROUTES.CREATE_TRIP.INTRODUCE)
+          router.push(ROUTES.CREATE_TRIP.INTRODUCE)
         }
       },
 
       // 여행 상세 파트
       {
         condition: () => pathname.startsWith(ROUTES.TRIP.DETAIL),
-        action: () => navigate(ROUTES.TRIP.LIST)
+        action: () => router.push(ROUTES.TRIP.LIST)
       },
 
       // 여행 수정 파트
@@ -223,16 +224,16 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.TRIP.EDIT),
         action: () => {
-          navigate(-1)
+          router.back()
         }
       },
       //여행 댓글
       {
         condition: () => pathname.startsWith(ROUTES.TRIP.COMMENT),
         action: () => {
-          const parts = location.pathname.split('/')
+          const parts = pathname.split('/')
           const id = parts[parts.length - 1]
-          navigate(`/trip/detail/${id}`)
+          router.push(`/trip/detail/${id}`)
         }
       },
 
@@ -240,18 +241,18 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.TRIP.APPLY),
         action: () => {
-          const parts = location.pathname.split('/')
+          const parts = pathname.split('/')
           const id = parts[parts.length - 1]
-          navigate(`/trip/detail/${id}`)
+          router.push(`/trip/detail/${id}`)
         }
       },
       // 참가 신청 목록
       {
         condition: () => pathname.startsWith(ROUTES.TRIP.ENROLLMENT_LIST),
         action: () => {
-          const parts = location.pathname.split('/')
+          const parts = pathname.split('/')
           const id = parts[parts.length - 1]
-          navigate(`/trip/detail/${id}`)
+          router.push(`/trip/detail/${id}`)
         }
       },
 
@@ -259,21 +260,21 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.ANNOUNCEMENT),
         action: () => {
-          navigate(ROUTES.MY.PAGE)
+          router.push(ROUTES.MY.PAGE)
         }
       },
       // 참가 신청한 여행 파트
       {
         condition: () => pathname.startsWith(ROUTES.REQUESTED_TRIP),
         action: () => {
-          navigate(ROUTES.MY.PAGE)
+          router.push(ROUTES.MY.PAGE)
         }
       },
       // 작성한 글
       {
         condition: () => pathname.startsWith(ROUTES.MY_COMMUNITY),
         action: () => {
-          navigate(ROUTES.MY.PAGE)
+          router.push(ROUTES.MY.PAGE)
         }
       },
 
@@ -281,41 +282,41 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.MY.EDIT_NAME),
         action: () => {
-          navigate(ROUTES.MY.EDIT_INFO)
+          router.push(ROUTES.MY.EDIT_INFO)
         }
       },
       {
         condition: () => pathname.startsWith(ROUTES.MY.EDIT_PASSWORD),
         action: () => {
-          navigate(ROUTES.MY.EDIT_INFO)
+          router.push(ROUTES.MY.EDIT_INFO)
         }
       },
       {
         condition: () => pathname.startsWith(ROUTES.MY.EDIT_TAG),
         action: () => {
-          navigate(ROUTES.MY.EDIT_INFO)
+          router.push(ROUTES.MY.EDIT_INFO)
         }
       },
 
       // 커뮤니티 글쓰기 파트
       {
         condition: () => pathname.startsWith(ROUTES.COMMUNITY.CREATE),
-        action: () => navigate(ROUTES.COMMUNITY.INDEX)
+        action: () => router.push(ROUTES.COMMUNITY.INDEX)
       },
 
       // 커뮤니티 상세 파트
       {
         condition: () => pathname.startsWith(ROUTES.COMMUNITY.DETAIL),
-        action: () => navigate(ROUTES.COMMUNITY.INDEX)
+        action: () => router.push(ROUTES.COMMUNITY.INDEX)
       },
 
       // 커뮤니티 수정
       {
         condition: () => pathname.startsWith(ROUTES.COMMUNITY.EDIT),
         action: () => {
-          const parts = location.pathname.split('/')
+          const parts = pathname.split('/')
           const id = parts[parts.length - 1]
-          navigate(`/community/detail/${id}`)
+          router.push(`/community/detail/${id}`)
         }
       }
     ]
@@ -323,7 +324,7 @@ export const useHeaderNavigation = () => {
 
   // 뒤로가기 핸들러
   const handleBack = () => {
-    const pathname = location.pathname
+    const pathname = usePathname() || '/'
     const rules = createNavigationRules(pathname)
     const matchedRule = rules.find(rule => rule.condition())
 
@@ -332,15 +333,14 @@ export const useHeaderNavigation = () => {
       return
     }
 
-    navigate(-1)
+    router.back()
   }
 
   const shouldShowAlarmIcon = () =>
     checkRoute.startsWith(ROUTES.MY.TRIP) ||
     checkRoute.startsWith(ROUTES.MY.PAGE)
 
-  const shouldShowSkip = () =>
-    location.pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE
+  const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE
 
   return {
     ROUTES,

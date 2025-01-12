@@ -1,18 +1,19 @@
+'use client'
 import useAuth from '@/hooks/user/useAuth'
 import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
+import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export default function RegisterDone() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { reset } = userStore()
   const { setSocialLogin } = userStore()
   useEffect(() => {
     setTimeout(() => {
       reset()
       setSocialLogin(null, null)
-      navigate('/login') // refresh 토큰 받을려면 로그인으로 접속해야함.
+      router.replace('/login') // refresh 토큰 받을려면 로그인으로 접속해야함.
     }, 2000)
   }, [])
   return (

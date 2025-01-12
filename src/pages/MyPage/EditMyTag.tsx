@@ -1,6 +1,6 @@
+'use client'
 import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
-import CategoryButton from '@/components/CategoryButton'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 import Spacing from '@/components/Spacing'
 import useMyPage from '@/hooks/myPage/useMyPage'
@@ -8,7 +8,7 @@ import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { MouseEventHandler, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 const TAG_LIST = [
   {
     title: '태그 설정',
@@ -53,7 +53,7 @@ export default function EditMyTag() {
     tagArrayExceptLocation
   )
   const [age, setAge] = useState(agegroup)
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const completeClickHandler = () => {
     addPreferredTags([...taggedArray, ...tempArray])
@@ -64,7 +64,7 @@ export default function EditMyTag() {
     if (isUpdatedSuccess) {
       console.log('태그 변경 성공.')
       addIsTagUpdated(true)
-      navigate(-1)
+      router.back()
     }
   }, [isUpdatedSuccess])
   // 버튼 활성화상태.

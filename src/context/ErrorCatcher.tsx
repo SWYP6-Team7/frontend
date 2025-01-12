@@ -1,3 +1,4 @@
+'use client'
 import ErrorToast from '@/components/designSystem/toastMessage/errorToast'
 import { errorStore } from '@/store/client/errorStore'
 import { errorToastUI } from '@/store/client/toastUI'

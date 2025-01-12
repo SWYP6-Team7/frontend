@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react'
 import ButtonContainer from '../ButtonContainer'
 import Button from '../designSystem/Buttons/Button'
@@ -8,9 +9,7 @@ import InputField from '../designSystem/input/InputField'
 import Select from '../designSystem/Select'
 import styled from '@emotion/styled'
 import useCommunity from '@/hooks/useCommunity'
-import { useNavigate, useParams } from 'react-router-dom'
-import ResultToast from '../designSystem/toastMessage/resultToast'
-import { Image } from '@/model/community'
+
 import {
   EditFinalImages,
   EditImage,
@@ -20,6 +19,7 @@ import {
 } from '@/store/client/imageStore'
 import { editStore } from '@/store/client/editStore'
 import useViewTransition from '@/hooks/useViewTransition'
+import { useParams } from 'next/navigation'
 
 const LIST = ['잡담', '여행팁', '후기']
 
@@ -31,7 +31,8 @@ interface CommunityFormProps {
 }
 
 const CommunityForm = ({ isEdit = false }: CommunityFormProps) => {
-  const { communityNumber } = useParams()
+  const params = useParams()
+  const communityNumber = params?.communityNumber as string
   const navigateWithTransition = useViewTransition()
   const { editToastShow, setEditToastShow } = editStore()
 

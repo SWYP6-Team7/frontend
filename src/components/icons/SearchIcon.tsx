@@ -1,5 +1,4 @@
-import { palette } from '@/styles/palette'
-
+'use client'
 interface NavbarIconProps {
   width?: number
   height?: number

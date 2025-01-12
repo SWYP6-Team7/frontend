@@ -1,3 +1,4 @@
+'use client'
 import Communityform from '@/components/community/CommunityForm'
 
 const EditCommunity = () => {

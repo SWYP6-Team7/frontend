@@ -1,19 +1,18 @@
-import { useEffect } from 'react'
-import { To, useLocation, useNavigate } from 'react-router-dom'
+'use client'
+import { useRouter } from 'next/navigation'
 const useViewTransition = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
+  const router = useRouter()
 
-  const navigateWithTransition = (to: To) => {
+  const navigateWithTransition = (to: string) => {
     // Check browser support for View Transitions
     if (!document.startViewTransition) {
-      navigate(to)
+      router.push(to)
       return
     }
 
     // Start view transition
     document.startViewTransition(() => {
-      navigate(to)
+      router.push(to)
     })
   }
 

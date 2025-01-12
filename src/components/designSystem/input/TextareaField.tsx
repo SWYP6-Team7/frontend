@@ -1,3 +1,4 @@
+'use client'
 import { useTextAreaScroll } from '@/hooks/createTrip/useInputScroll'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'

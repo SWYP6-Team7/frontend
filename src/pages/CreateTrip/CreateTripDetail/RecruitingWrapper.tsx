@@ -1,18 +1,19 @@
+'use client'
 import BottomModal from '@/components/BottomModal'
 import PersonIcon from '@/components/icons/PersonIcon'
 import Vector from '@/components/icons/Vector'
 import Spacing from '@/components/Spacing'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import RecruitingPickerView from './RecruitingPickerView'
 import Button from '@/components/designSystem/Buttons/Button'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
-import { useLocation } from 'react-router-dom'
+import { usePathname } from 'next/navigation'
 import { createTripStore } from '@/store/client/createTripStore'
 
 export default function RecruitingWrapper() {
-  const { pathname } = useLocation()
+  const pathname = usePathname()
   const isCreateTripDetailPage = pathname === '/createTripDetail'
   const { maxPerson } = tripDetailStore()
   const { maxPerson: maxPersonForCreateTrip } = createTripStore()
@@ -21,21 +22,49 @@ export default function RecruitingWrapper() {
   const [count, setCount] = useState(
     isCreateTripDetailPage ? maxPersonForCreateTrip : maxPerson
   )
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0
+  })
+
+  useEffect(() => {
+    // 초기값 설정
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+    // resize 이벤트 핸들러
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
+    // 이벤트 리스너 등록
+    window.addEventListener('resize', handleResize)
+
+    // 클린업
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   const handleCloseModal = () => {
     setShowModal(false)
   }
   const recruitingSubmitHandler = () => {
     setShowModal(false)
   }
+
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
-  const newRightPosition = window.innerWidth.toString() + 'px'
+  const newRightPosition = windowSize.width.toString() + 'px'
   return (
     <>
       <RecruitingContainer>
         <DetailTitle>모집 인원</DetailTitle>
         <RecruitingBtn onClick={e => setShowModal(true)}>
           <div
-            css={{
+            style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
@@ -54,10 +83,10 @@ export default function RecruitingWrapper() {
       </RecruitingContainer>
       {showModal && (
         <BottomModal
-          initialHeight={window.innerHeight <= 700 ? 58 : 50} // height 비율이 짧아 진다면 58%로 맞추기.
+          initialHeight={windowSize.height <= 700 ? 58 : 50} // height 비율이 짧아 진다면 58%로 맞추기.
           closeModal={handleCloseModal}>
-          <ModalWrapper css={{ marginTop: '6px' }}>
-            <ModalContainer css={{ padding: '0px 24px' }}>
+          <ModalWrapper style={{ marginTop: '6px' }}>
+            <ModalContainer style={{ padding: '0px 24px' }}>
               <DetailTitle>모집 인원</DetailTitle>
               <Spacing size={40} />
               <RecruitingPickerView

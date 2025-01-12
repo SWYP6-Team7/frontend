@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import RoundedImage from './designSystem/profile/RoundedImage'
 import BoxLayoutTag from './BoxLayoutTag'

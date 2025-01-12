@@ -1,3 +1,4 @@
+'use client'
 import { RequestErrorType } from '@/model/error'
 
 const HTTP_STATUS = {

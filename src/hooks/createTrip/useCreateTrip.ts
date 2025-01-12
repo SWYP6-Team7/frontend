@@ -1,8 +1,8 @@
-import { axiosInstance } from '@/api'
+'use client'
 import { createTrip } from '@/api/trip'
 
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
-import axios from 'axios'
+import { useQueryClient, useMutation } from '@tanstack/react-query'
+
 interface CreateTripReqData {
   location: string
   title: string

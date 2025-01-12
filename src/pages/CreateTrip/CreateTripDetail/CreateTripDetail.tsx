@@ -1,9 +1,10 @@
+'use client'
 import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import ThirdStepIcon from '@/components/icons/ThirdStepIcon'
 import { palette } from '@/styles/palette'
 import Button from '@/components/designSystem/Buttons/Button'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 import Spacing from '@/components/Spacing'
 import RecruitingWrapper from './RecruitingWrapper'
 import DuedateWrapper from './DuedateWrapper'
@@ -13,7 +14,6 @@ import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 import { createTripStore } from '@/store/client/createTripStore'
 import { useCreateTrip } from '@/hooks/createTrip/useCreateTrip'
 import { authStore } from '@/store/client/authStore'
-import { getCurrentFormattedDate } from '@/utils/time'
 import ButtonContainer from '@/components/ButtonContainer'
 import { TAG_LIST } from '@/constants/tags'
 
@@ -46,7 +46,7 @@ const CreateTripDetail = () => {
 
   const { accessToken } = authStore()
 
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const travelData = {
     title,
@@ -77,7 +77,7 @@ const CreateTripDetail = () => {
     createTripMutate(undefined, {
       onSuccess: () => {
         resetCreateTripDetail()
-        navigate('/')
+        router.push('/')
       },
       onError: e => {
         console.log(e, '여행 생성에 오류 발생.')
@@ -159,7 +159,7 @@ const CreateTripDetail = () => {
         </DurationContainer>
         {/* 회색 끝 선 표시 */}
         <div></div>
-        <div css={{ marginTop: '29.5px' }}>
+        <div style={{ marginTop: '29.5px' }}>
           {TAG_LIST.map(item => (
             <Accordion
               count={getTaggedCount()}

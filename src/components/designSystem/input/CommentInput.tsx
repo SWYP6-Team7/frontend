@@ -1,3 +1,4 @@
+'use client'
 import UpArrowIcon from '@/components/icons/UpArrowIcon'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'

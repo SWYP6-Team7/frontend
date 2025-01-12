@@ -1,3 +1,4 @@
+'use client'
 import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import CheckIcon from '@/components/icons/CheckIcon'
@@ -7,7 +8,7 @@ import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+
 import useViewTransition from '@/hooks/useViewTransition'
 
 export default function Withdrawal() {

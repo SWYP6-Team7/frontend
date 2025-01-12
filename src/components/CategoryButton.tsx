@@ -1,3 +1,4 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 // id 는 어느 버튼을 눌렀는지 확인하기 위한 값.
@@ -45,7 +46,7 @@ const CategoryButton = ({
     <CategoryButtonContainer
       id={`${id}`}
       onClick={onClick}
-      css={active ? activeStyle : addStyle}>
+      style={active ? activeStyle : addStyle}>
       {text}
     </CategoryButtonContainer>
   )

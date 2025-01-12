@@ -1,11 +1,12 @@
+'use client'
 import useEnrollment from '@/hooks/enrollment/useEnrollment'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import TripEnrollmentCard from './TripEnrollmentCard'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { todayFormattedDate, isNewApply } from '@/utils/time'
+import { useParams } from 'next/navigation'
 
 interface enrollment {
   enrollmentNumber: number
@@ -17,7 +18,8 @@ interface enrollment {
   profileUrl: string
 }
 export default function TripEnrollmentList() {
-  const { travelNumber } = useParams<{ travelNumber: string }>()
+  const params = useParams()
+  const travelNumber = params?.travelNumber as string
   const { createdAt } = tripDetailStore()
   const { enrollmentList, enrollmentsLastViewed, updateLastViewed } =
     useEnrollment(parseInt(travelNumber!))
@@ -43,12 +45,12 @@ export default function TripEnrollmentList() {
         <>
           <Count>
             총
-            <p css={{ marginLeft: '4px', color: palette.keycolor }}>
+            <p style={{ marginLeft: '4px', color: palette.keycolor }}>
               {!list.totalCount ? 0 : list.totalCount}
             </p>
             건
           </Count>
-          <div css={{ marginTop: '16px' }}>
+          <div style={{ marginTop: '16px' }}>
             {list.enrollments?.map((enrollment: enrollment) => (
               <TripEnrollmentCard
                 key={enrollment.enrollmentNumber}

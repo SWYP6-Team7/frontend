@@ -1,6 +1,7 @@
+'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import styled from '@emotion/styled'
-import { css, keyframes } from '@emotion/react'
+import { keyframes } from '@emotion/react'
 
 const BottomModal = ({
   children,
@@ -14,7 +15,20 @@ const BottomModal = ({
   const [touchY, setTouchY] = useState(0)
   const [modalHeight, setModalHeight] = useState(initialHeight)
   const [isClosing, setIsClosing] = useState(false)
+  const [windowHeight, setWindowHeight] = useState(0)
   const contentRef = useRef<HTMLDivElement>(null)
+
+  // window 객체를 안전하게 사용하기 위한 useEffect
+  useEffect(() => {
+    setWindowHeight(window.innerHeight)
+
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     if (contentRef.current) {
@@ -37,13 +51,13 @@ const BottomModal = ({
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    const currentY = e.changedTouches[0].pageY
+    if (!windowHeight) return // windowHeight가 0이면 early return
 
+    const currentY = e.changedTouches[0].pageY
     const newHeight = Math.max(
       0,
-      Math.min(100, 100 - (currentY / window.innerHeight) * 100)
+      Math.min(100, 100 - (currentY / windowHeight) * 100)
     )
-    console.log(currentY, newHeight)
     setModalHeight(newHeight)
   }
 
@@ -52,8 +66,10 @@ const BottomModal = ({
   }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!windowHeight) return // windowHeight가 0이면 early return
+
     const distanceY = e.changedTouches[0].pageY - touchY
-    const percentMoved = Math.abs(distanceY) / window.innerHeight
+    const percentMoved = Math.abs(distanceY) / windowHeight
 
     if (distanceY > 0 && percentMoved > 0.2) {
       setIsClosing(true)
@@ -63,6 +79,11 @@ const BottomModal = ({
     } else {
       setModalHeight(100)
     }
+  }
+
+  // 서버 사이드 렌더링 시 초기 상태
+  if (typeof window === 'undefined') {
+    return null
   }
 
   return (
@@ -84,6 +105,7 @@ const BottomModal = ({
   )
 }
 
+// 나머지 스타일 컴포넌트들은 동일하게 유지...
 const slideUpMobile = keyframes`
   from {
     transform: translateY(100%);
@@ -147,23 +169,17 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
-
   bottom: 0;
   @media (min-width: 440px) {
     width: 390px;
   }
-
   z-index: 2000;
   position: fixed;
-
   max-height: 100%;
-
   left: 0;
-
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
-
   animation: ${props => (props.isClosing ? slideDownMobile : slideUpMobile)}
     0.3s ease-out forwards;
   @media (min-width: 440px) {
@@ -187,7 +203,6 @@ const Bar = styled.div`
 const BarContainer = styled.div`
   display: flex;
   padding: 2.84svh 0;
-
   position: relative;
 `
 

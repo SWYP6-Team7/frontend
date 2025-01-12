@@ -1,3 +1,4 @@
+'use client'
 import MyTripHorizonBoxLayout from '@/components/MyTripHorizonBoxLayout'
 import { useMyApplyTrip } from '@/hooks/myTrip/useMyApplyTrip'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
@@ -6,7 +7,7 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React from 'react'
 import { useInView } from 'react-intersection-observer'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import ApplyTripIconBtns from './ApplyTripIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
@@ -71,7 +72,7 @@ export default function ApplyTrip() {
                 bookmarked
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <Link to={`/trip/detail/${travelNumber}`}>
+                  <Link href={`/trip/detail/${travelNumber}`}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       userName={userName}
@@ -99,7 +100,7 @@ export default function ApplyTrip() {
         ))}
       <div
         ref={ref}
-        css={{ height: 80 }}
+        style={{ height: 80 }}
       />
     </Container>
   )

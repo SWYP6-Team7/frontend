@@ -1,3 +1,4 @@
+'use client'
 import InputField from '@/components/designSystem/input/InputField'
 import AlarmIcon from '@/components/icons/AlarmIcon'
 import RelationSearchIcon from '@/components/icons/RelationSearchIcon'
@@ -8,7 +9,6 @@ import { authStore } from '@/store/client/authStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Navbar from '../Home/Navbar'
 import TripInfiniteList from '@/components/triplist/TripInfiniteList'
 import SortHeader from '@/components/SortHeader'
@@ -16,23 +16,26 @@ import { useTripList } from '@/hooks/useTripList'
 import CreateTripButton from '../Home/CreateTripButton'
 import { useBackPathStore } from '@/store/client/backPathStore'
 import useViewTransition from '@/hooks/useViewTransition'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const LIST = ['최신순', '추천순']
 
 const TripList = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const searchParams = useSearchParams()
   const [fixed, setFixed] = useState(true)
   const { setSearchTravel, setNotification } = useBackPathStore()
+  const router = useRouter()
+  const pathname = usePathname()
 
   const sort = (() => {
-    const value = searchParams.get('sort')
+    const value = searchParams?.get('sort')
     if (!value || (value !== 'recent' && value !== 'recommend')) {
       return '최신순'
     }
     return value === 'recent' ? '최신순' : '추천순'
   })()
   const engSort = (() => {
-    const value = searchParams.get('sort')
+    const value = searchParams?.get('sort')
     if (!value || (value !== 'recent' && value !== 'recommend')) {
       return 'recent'
     }
@@ -43,9 +46,15 @@ const TripList = () => {
   const { data } = useTripList(engSort)
   const onClickSort = (value: string) => {
     if (value === '추천순') {
-      setSearchParams({ sort: 'recommend' })
+      const params = new URLSearchParams(searchParams?.toString())
+      params.set('sort', 'recommend')
+
+      router.push(`${pathname}?${params.toString()}`)
     } else {
-      setSearchParams({ sort: 'recent' })
+      const params = new URLSearchParams(searchParams?.toString())
+      params.set('sort', 'recent')
+
+      router.push(`${pathname}?${params.toString()}`)
     }
   }
 
@@ -69,9 +78,9 @@ const TripList = () => {
     <>
       <div>
         <SearchContainer>
-          <div css={{ flex: 1 }}>
+          <div style={{ flex: 1 }}>
             <button
-              css={{ width: '100%' }}
+              style={{ width: '100%' }}
               onClick={onClickSearch}>
               <InputField
                 isRemove={false}

@@ -1,4 +1,4 @@
-import CheckIcon from '@/components/icons/CheckIcon'
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useRef, useState } from 'react'

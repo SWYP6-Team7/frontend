@@ -1,3 +1,4 @@
+'use client'
 import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import InputField from '@/components/designSystem/input/InputField'
@@ -9,7 +10,7 @@ import useRelationKeyword from '@/hooks/search/useRelationKeyword'
 import { createTripStore } from '@/store/client/createTripStore'
 import styled from '@emotion/styled'
 import React, { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+
 import useViewTransition from '@/hooks/useViewTransition'
 
 export default function CreateTripPlace() {

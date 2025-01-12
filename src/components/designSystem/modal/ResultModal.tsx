@@ -1,3 +1,4 @@
+'use client'
 import CheckIcon from '@/components/icons/CheckIcon'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'

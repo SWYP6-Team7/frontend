@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 
 const WhiteXIcon = ({ size = 25 }: { size?: number }) => {

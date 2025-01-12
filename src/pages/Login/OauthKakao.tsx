@@ -1,23 +1,21 @@
 import React, { useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import axios from 'axios'
 import { getToken } from '@/api/user'
 import { userStore } from '@/store/client/userStore'
 import useAuth from '@/hooks/user/useAuth'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const OauthKakao = () => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const searchParams = new URLSearchParams(location.search)
-  const code = searchParams.get('code') // 카카오에서 받은 인증 코드
-  const state = searchParams.get('state')
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const code = searchParams?.get('code') // 카카오에서 받은 인증 코드
+  const state = searchParams?.get('state')
   const { setSocialLogin, setTempName } = userStore()
   const { socialLogin, socialLoginMutation } = useAuth()
   const { isError, isSuccess } = socialLoginMutation
 
   useEffect(() => {
     if (socialLoginMutation.isSuccess) {
-      navigate('/')
+      router.push('/')
     }
   }, [isSuccess])
 
@@ -34,7 +32,7 @@ const OauthKakao = () => {
           ) {
             setTempName(user.userName)
             setSocialLogin('kakao', Number(user.userNumber) as number)
-            navigate('/registerForm')
+            router.push('/registerForm')
           } else if (user?.userStatus === 'ABLE') {
             socialLogin({
               socialLoginId: user?.socialLoginId as string,
@@ -42,7 +40,7 @@ const OauthKakao = () => {
             })
           } else {
             alert('소셜 로그인 과정에서 문제가 발생했습니다.')
-            navigate('/login')
+            router.push('/login')
           }
         })
         .catch(error => {
@@ -51,7 +49,7 @@ const OauthKakao = () => {
               ? error.error
               : '소셜 로그인 과정에서 문제가 발생했습니다.'
           )
-          navigate('/login')
+          router.replace('/login')
         })
     }
   }, [code, state])

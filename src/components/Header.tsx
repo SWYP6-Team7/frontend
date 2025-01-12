@@ -1,6 +1,6 @@
+'use client'
 import styled from '@emotion/styled'
 import BackIcon from './icons/BackIcon'
-import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import TripDetailHeader from '@/pages/TripDetail/TripDetailHeader'
 import AlarmIcon from './icons/AlarmIcon'
 import { palette } from '@/styles/palette'
@@ -9,6 +9,8 @@ import CommunityHeader from './community/CommunityHeader'
 import { useHeaderNavigation } from '@/hooks/useHeaderNavigation'
 import { useBackPathStore } from '@/store/client/backPathStore'
 import { isGuestUser } from '@/utils/user'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 const Header = () => {
   const {
@@ -19,14 +21,14 @@ const Header = () => {
     checkRoute,
     handleBack
   } = useHeaderNavigation()
-  const [searchParams] = useSearchParams()
-  const navigate = useNavigate()
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const { setNotification } = useBackPathStore()
   const handleNotification = () => {
     setNotification(
       checkRoute.exact(ROUTES.MY.PAGE) ? ROUTES.MY.PAGE : ROUTES.MY.TRIP
     )
-    navigate('/notification')
+    router.push('/notification')
   }
 
   const headerBackgroundColorIsGrey = () => {
@@ -38,7 +40,8 @@ const Header = () => {
     )
   }
   return (
-    <HeaderContainer isBackGroundColorIsGrey={headerBackgroundColorIsGrey()}>
+    <HeaderContainer
+      isBackGroundColorIsGrey={Boolean(headerBackgroundColorIsGrey())}>
       {!shouldShowAlarmIcon() && (
         <RightFlex>
           <ButtonContainer onClick={handleBack}>
@@ -46,9 +49,9 @@ const Header = () => {
           </ButtonContainer>
           {(checkRoute.startsWith(ROUTES.TRIP.DETAIL) ||
             checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL)) &&
-            searchParams.get('share') === 'true' && (
+            searchParams?.get('share') === 'true' && (
               <Link
-                to="/"
+                href="/"
                 style={{ marginLeft: 14 }}>
                 <img
                   src={'/images/homeLogo.png'}
@@ -62,7 +65,9 @@ const Header = () => {
       )}
 
       <Title>{getPageTitle()}</Title>
-      {shouldShowSkip() && <Skip onClick={() => navigate('/')}>건너뛰기</Skip>}
+      {shouldShowSkip() && (
+        <Skip onClick={() => router.push('/')}>건너뛰기</Skip>
+      )}
       {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) && <VoidArea />}
       {checkRoute.startsWith(ROUTES.TRIP.DETAIL) && <TripDetailHeader />}
       {checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL) && <CommunityHeader />}

@@ -1,3 +1,4 @@
+'use client'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import EditAndDeleteModal from '@/components/designSystem/modal/EditAndDeleteModal'
 import AlarmIcon from '@/components/icons/AlarmIcon'
@@ -12,14 +13,15 @@ import { editStore } from '@/store/client/editStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import ShareIcon from '../icons/ShareIcon'
+import { useParams, useRouter } from 'next/navigation'
 
 export default function CommunityHeader() {
   const { userId, accessToken } = authStore()
-  const { communityNumber } = useParams<{ communityNumber: string }>()
+  const params = useParams()
+  const communityNumber = params?.communityNumber as string
 
-  const navigate = useNavigate()
+  const router = useRouter()
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
@@ -37,7 +39,7 @@ export default function CommunityHeader() {
     setNotification(
       data?.postNumber ? `/community/${data?.postNumber}` : '/community'
     )
-    navigate(`/notification`)
+    router.push(`/notification`)
   }
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function CommunityHeader() {
     if (isEditBtnClicked) {
       setThreeDotsClick(false)
       setIsEditBtnClicked(false)
-      navigate(`community/edit/${communityNumber}`)
+      router.push(`community/edit/${communityNumber}`)
     }
     if (checkingModalClicked) {
       remove({ communityNumber: Number(communityNumber) })
@@ -59,7 +61,7 @@ export default function CommunityHeader() {
     if (removeMutation.isSuccess) {
       setRemoveToastShow(true)
 
-      navigate('/community')
+      router.push('/community')
     }
   }, [removeMutation.isSuccess])
 

@@ -1,4 +1,4 @@
-import Button from '@/components/designSystem/Buttons/Button'
+'use client'
 import ButtonContainer from '@/components/ButtonContainer'
 import Badge from '@/components/designSystem/Badge'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
@@ -10,22 +10,17 @@ import Calendar from '@/components/icons/Calendar'
 import PersonIcon from '@/components/icons/PersonIcon'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import Spacing from '@/components/Spacing'
-import useSearch from '@/hooks/search/useSearch'
 import { authStore } from '@/store/client/authStore'
 import useEnrollment from '@/hooks/enrollment/useEnrollment'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import dayjs from 'dayjs'
 
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import CompanionsView from './CompanionsView'
 import { daysAgo } from '@/utils/time'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import NewIcon from '@/components/icons/NewIcon'
-import useComment from '@/hooks/comment/useComment'
-import ResultModal from '@/components/designSystem/modal/ResultModal'
 import NoticeModal from '@/components/designSystem/modal/NoticeModal'
 import { editStore } from '@/store/client/editStore'
 import Opengraph from '@/components/Opengraph'
@@ -33,6 +28,7 @@ import { isGuestUser } from '@/utils/user'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import ApplyListButton from '@/components/designSystem/Buttons/ApplyListButton'
 import useViewTransition from '@/hooks/useViewTransition'
+import { useRouter } from 'next/navigation'
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 
 interface Companion {
@@ -121,12 +117,9 @@ export default function TripDetail() {
       }
     })
   }, [allCompanions])
-  // 일시적인 값
-  // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
-  const newRightPosition = window.innerWidth.toString() + 'px'
 
   const isEditing = false
-  const navigate = useNavigate()
+  const router = useRouter()
   const navigateWithTransition = useViewTransition()
   const { year, month, day } = dueDate
   const DAY = new Date(`${year}/${month}/${day}`)
@@ -245,7 +238,7 @@ export default function TripDetail() {
 
       <CheckingModal
         isModalOpen={showLoginModal}
-        onClick={() => navigate('/login')}
+        onClick={() => router.replace('/login')}
         modalMsg={modalTextForLogin}
         modalTitle="로그인 안내"
         modalButtonText="로그인"
@@ -298,10 +291,10 @@ export default function TripDetail() {
                 src={profileUrl}
                 size={40}
               />
-              <div css={{ marginLeft: '8px' }}>
+              <div style={{ marginLeft: '8px' }}>
                 <UserName>{userName}</UserName>
                 <div
-                  css={{
+                  style={{
                     fontWeight: '400',
                     fontSize: '14px',
                     lineHeight: '16.71px',
@@ -332,21 +325,21 @@ export default function TripDetail() {
           </MainContent>
           <ViewsETC>
             <div>신청 {enrollCount}</div>
-            <div css={{ margin: '0px 4px' }}> · </div>
+            <div style={{ margin: '0px 4px' }}> · </div>
             <div>관심 {bookmarkCount}</div>
-            <div css={{ margin: '0px 4px' }}> · </div>
+            <div style={{ margin: '0px 4px' }}> · </div>
             <div>조회수 {viewCount}</div>
           </ViewsETC>
         </PostWrapper>
         <CommentWrapper onClick={commentClickHandler}>
-          <div css={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <img
               src="/images/createTripBtn.png"
               alt=""
-              css={{ marginRight: '13px' }}
+              style={{ marginRight: '13px' }}
             />
             <div
-              css={{
+              style={{
                 fontSize: '16px',
                 fontWeight: '600',
                 lineHeight: '14px',
@@ -362,7 +355,7 @@ export default function TripDetail() {
         </CommentWrapper>
         <DueDateWrapper>
           <div
-            css={{
+            style={{
               display: 'flex',
               alignItems: 'center',
               marginRight: '16px'
@@ -373,7 +366,7 @@ export default function TripDetail() {
 
           {/* 뱃지 추가 */}
           <div
-            css={{
+            style={{
               display: 'flex',
               alignItems: 'center'
             }}>
@@ -387,9 +380,9 @@ export default function TripDetail() {
           </div>
         </DueDateWrapper>
         <PersonWrapper onClick={companionsViewHandler}>
-          <div css={{ display: 'flex' }}>
+          <div style={{ display: 'flex' }}>
             <div
-              css={{
+              style={{
                 display: 'flex',
                 alignItems: 'center',
                 marginRight: '32px'
@@ -402,7 +395,7 @@ export default function TripDetail() {
               <ContentTitle>모집 인원</ContentTitle>
             </div>
 
-            <div css={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <PersonStatus>
                 {nowPerson}/{maxPerson}
               </PersonStatus>

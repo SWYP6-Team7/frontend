@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import Badge from '../designSystem/Badge'
 import { palette } from '@/styles/palette'
@@ -7,13 +8,15 @@ import DetailImages from './DetailImages'
 import SearchFilterTag from '../designSystem/tag/SearchFilterTag'
 import CommunityHeartIcon from '../icons/CommunityHeartIcon'
 import useCommunity from '@/hooks/useCommunity'
-import { useParams } from 'react-router-dom'
+
 import ResultToast from '../designSystem/toastMessage/resultToast'
 import { editStore } from '@/store/client/editStore'
 import { COMMUNITY_TOAST_MESSAGES } from '@/constants/toastMessages'
+import { useParams } from 'next/navigation'
 
 const CommunityPost = () => {
-  const { communityNumber } = useParams()
+  const params = useParams()
+  const communityNumber = params?.communityNumber as string
   const { editToastShow, setEditToastShow } = editStore()
 
   const {
@@ -60,10 +63,10 @@ const CommunityPost = () => {
             src={data.profileImageUrl}
             size={40}
           />
-          <div css={{ marginLeft: '8px' }}>
+          <div style={{ marginLeft: '8px' }}>
             <UserName>{data.postWriter}</UserName>
             <div
-              css={{
+              style={{
                 fontWeight: '400',
                 fontSize: '14px',
                 lineHeight: '16.71px',
@@ -103,9 +106,9 @@ const CommunityPost = () => {
       </MainContent>
       <ViewsETC>
         <div>댓글 {data.commentCount}</div>
-        <div css={{ margin: '0px 4px' }}> · </div>
+        <div style={{ margin: '0px 4px' }}> · </div>
         <div>좋아요 {data.likeCount}</div>
-        <div css={{ margin: '0px 4px' }}> · </div>
+        <div style={{ margin: '0px 4px' }}> · </div>
         <div>조회수 {data.viewCount}</div>
       </ViewsETC>
     </PostWrapper>

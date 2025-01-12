@@ -1,3 +1,4 @@
+'use client'
 import useNotification from '@/hooks/notification/useNotification'
 import styled from '@emotion/styled'
 

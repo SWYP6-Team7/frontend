@@ -1,15 +1,8 @@
-import { axiosInstance } from '@/api'
+'use client'
 import { getAvailableTrips, getRecommendationTrips } from '@/api/home'
 import { ITripList } from '@/model/trip'
 import { authStore } from '@/store/client/authStore'
-import {
-  useQuery,
-  useQueryClient,
-  useMutation,
-  useInfiniteQuery,
-  InfiniteData
-} from '@tanstack/react-query'
-import axios from 'axios'
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query'
 
 export const useTripList = (sort: 'recommend' | 'recent') => {
   const { accessToken } = authStore()

@@ -1,8 +1,9 @@
+'use client'
 import Spacing from '@/components/Spacing'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+
 import Navbar from './Home/Navbar'
 import SortHeader from '@/components/SortHeader'
 import CommunityInfinite from '@/components/community/CommunityInfinite'
@@ -13,13 +14,16 @@ import useCommunity from '@/hooks/useCommunity'
 import { isGuestUser } from '@/utils/user'
 import LoginButtonForGuest from '@/components/LoginButtonForGuest'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const LIST = ['최신순', '추천순', '등록일순']
 const MyCommunity = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const searchParams = useSearchParams()
   const [fixed, setFixed] = useState(true)
-  const sort = searchParams.get('sortingTypeName') ?? '최신순'
-  const categoryName = searchParams.get('categoryName') ?? '전체'
+  const router = useRouter()
+  const pathname = usePathname()
+  const sort = searchParams?.get('sortingTypeName') ?? '최신순'
+  const categoryName = searchParams?.get('categoryName') ?? '전체'
   const {
     communityList: { data }
   } = useCommunity(
@@ -33,11 +37,11 @@ const MyCommunity = () => {
 
   const { setRemoveToastShow, removeToastShow } = editStore()
   const onClickSort = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
+    const newSearchParams = new URLSearchParams(searchParams?.toString())
 
     newSearchParams.set('sortingTypeName', value)
 
-    setSearchParams(newSearchParams)
+    router.push(`${pathname}?${newSearchParams.toString()}`)
   }
 
   const handleFixed = (type: boolean) => {
@@ -61,7 +65,7 @@ const MyCommunity = () => {
                 src="/images/noData.png"
               />
               <NoData
-                css={{
+                style={{
                   marginTop: '16px',
                   display: 'flex',
                   flexDirection: 'column',

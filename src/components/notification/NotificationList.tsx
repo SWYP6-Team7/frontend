@@ -1,3 +1,4 @@
+'use client'
 import { INotification } from '@/model/notification'
 import React from 'react'
 import NotificationItem from './NotificationItem'

@@ -1,3 +1,4 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React from 'react'

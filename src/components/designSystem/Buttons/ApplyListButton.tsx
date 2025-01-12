@@ -1,9 +1,9 @@
+'use client'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import './Button.css'
-import { tripDetailStore } from '@/store/client/tripDetailStore'
 
 interface ApplyListButtonProps {
   nowEnrollmentCount: number
@@ -68,7 +68,7 @@ const ApplyListButton = ({
         disabled={disabled}
         onClick={onClick}
         className={`Button--weight-${addStyle.weight}`}
-        css={!disabled && addStyle}>
+        style={!disabled ? addStyle : {}}>
         {text}
         {!disabled && nowEnrollmentCount > 0 && hostUserCheck && (
           <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>

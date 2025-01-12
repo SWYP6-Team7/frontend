@@ -1,3 +1,4 @@
+'use client'
 const Korea = () => {
   return (
     <svg

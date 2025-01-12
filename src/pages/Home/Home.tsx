@@ -1,7 +1,7 @@
+'use client'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import HomeInputField from '@/components/designSystem/input/HomeInputField'
+import HomeInputField from '@/components/designSystem/input/InputField'
 import AlarmIcon from '@/components/icons/AlarmIcon'
 import BookmarkContainer from './BookmarkContainer'
 import TripAvailable from './TripAvailable'
@@ -14,24 +14,29 @@ import { myPageStore } from '@/store/client/myPageStore'
 import { useBackPathStore } from '@/store/client/backPathStore'
 import { isGuestUser } from '@/utils/user'
 
+import { useRouter } from 'next/navigation'
+
 const Home = () => {
   const { name } = myPageStore()
   const { setSearchTravel, setNotification } = useBackPathStore()
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const onFocusHandler = () => {
     setSearchTravel('/')
-    navigate('/search/travel')
+    router.push('/search/travel')
   } // 검색화면으로 이동.
 
   // 이 부분 추후 유저 id로 대채해야함
   const onClickAlarm = () => {
     setNotification('/')
-    navigate(`/notification`)
+    router.push(`/notification`)
   }
 
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
     const handleScroll = () => {
       setScrolled(window.scrollY >= 56)
     }
@@ -62,11 +67,11 @@ const Home = () => {
       </HomeHeader>
 
       {/* <CharacterBox>
-        <img
-          src="/images/homeCharacter.png"
-          alt=""
-        />
-      </CharacterBox> */}
+    <img
+      src="/images/homeCharacter.png"
+      alt=""
+    />
+  </CharacterBox> */}
       <ContentWrapper>
         <SearchBox>
           <Greeting>

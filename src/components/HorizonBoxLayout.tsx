@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import Badge from './designSystem/Badge'
 import PersonIcon from './icons/PersonIcon'

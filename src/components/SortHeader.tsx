@@ -1,7 +1,7 @@
+'use client'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import SortIcon from './icons/SortIcon'
-import { searchStore } from '@/store/client/searchStore'
 import BottomModal from './BottomModal'
 import Spacing from './Spacing'
 
@@ -47,7 +47,7 @@ const SortHeader = ({
                 <span>{value}</span>
                 {sort === value && (
                   <svg
-                    css={{ paddingRight: 6 }}
+                    style={{ paddingRight: 6 }}
                     width="21"
                     height="16"
                     viewBox="0 0 21 16"

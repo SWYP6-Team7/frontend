@@ -1,3 +1,4 @@
+'use client'
 import { deleteBookmark, postBookmark } from '@/api/bookmark'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 

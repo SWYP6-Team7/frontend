@@ -1,14 +1,8 @@
-import { deleteMyApplyTrips, getApplyTrips, getMyTrips } from '@/api/myTrip'
+'use client'
+import { getMyTrips } from '@/api/myTrip'
 import { IMyTripList } from '@/model/myTrip'
-import { ITripList } from '@/model/trip'
 import { authStore } from '@/store/client/authStore'
-import {
-  useMutation,
-  useQueryClient,
-  useQuery,
-  useInfiniteQuery,
-  InfiniteData
-} from '@tanstack/react-query'
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query'
 
 export const useMyTrip = () => {
   const { accessToken } = authStore()

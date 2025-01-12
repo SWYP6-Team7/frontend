@@ -1,5 +1,7 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import { usePathname } from 'next/navigation'
 import { forwardRef } from 'react'
 interface SearchFilterTagProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -55,7 +57,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
     },
     ref
   ) => {
-    const { pathname } = window.location
+    const pathname = usePathname()
     const isCreateTrip = pathname === '/createTripDetail'
     return (
       <SearchFilterTagContainer
@@ -63,7 +65,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         disabled={disabled}
         id={`${idx}`}
         onClick={onClick}
-        css={addStyle}>
+        style={addStyle}>
         {icon}
         <div>{text}</div>
       </SearchFilterTagContainer>

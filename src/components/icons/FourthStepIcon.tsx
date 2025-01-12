@@ -1,3 +1,4 @@
+'use client'
 interface FourthStepIconProps {
   width?: number
 }

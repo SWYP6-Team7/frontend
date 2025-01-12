@@ -1,7 +1,9 @@
+'use client'
 import React, { useEffect } from 'react'
 
-const useInputScroll = (ref: React.RefObject<HTMLInputElement>) => {
+const useInputScroll = (ref: React.RefObject<HTMLInputElement | null>) => {
   useEffect(() => {
+    if (typeof window === 'undefined') return
     window.addEventListener('touchmove', handleScroll)
     return () => {
       window.removeEventListener('touchmove', handleScroll)
@@ -18,8 +20,12 @@ const useInputScroll = (ref: React.RefObject<HTMLInputElement>) => {
   }
 }
 
-const useTextAreaScroll = (ref: React.RefObject<HTMLTextAreaElement>) => {
+const useTextAreaScroll = (
+  ref: React.RefObject<HTMLTextAreaElement | null>
+) => {
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     window.addEventListener('touchmove', handleScroll)
     return () => {
       window.removeEventListener('touchmove', handleScroll)

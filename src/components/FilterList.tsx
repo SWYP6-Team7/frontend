@@ -1,12 +1,10 @@
+'use client'
 import styled from '@emotion/styled'
 import React, { useState, MouseEvent } from 'react'
 import SelectArrow from './icons/SelectArrow'
 import Accordion from './Accordion'
 import BottomModal from './BottomModal'
 import SearchFilterTag from './designSystem/tag/SearchFilterTag'
-import ResetIcon from './icons/ResetIcon'
-import Button from './designSystem/Buttons/Button'
-import Spacing from './Spacing'
 
 import {
   IGender,
@@ -19,8 +17,8 @@ import {
 import { palette } from '@/styles/palette'
 import useSearch from '@/hooks/search/useSearch'
 import WhiteXIcon from './icons/WhiteXIcon'
-import { useSearchParams } from 'react-router-dom'
 import FilterButton from './designSystem/Buttons/FilterButton'
+import { useSearchParams } from 'next/navigation'
 
 const FILTER_LIST = [
   { title: '장소', tags: ['국내', '해외'] as const },
@@ -68,8 +66,8 @@ const FilterList = () => {
     gender,
     setOneFilterReset
   } = searchStore()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const keyword = searchParams.get('keyword') ?? ''
+  const searchParams = useSearchParams()
+  const keyword = searchParams?.get('keyword') ?? ''
   const { refetch } = useSearch({ keyword })
 
   const getCount = (type: '장소' | '인원' | '기간' | '스타일' | '성별') => {

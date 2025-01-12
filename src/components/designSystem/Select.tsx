@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import { forwardRef, SelectHTMLAttributes, useEffect, useState } from 'react'
 import SelectArrow from '../icons/SelectArrow'
@@ -56,9 +57,9 @@ const Select = ({ list, value, setValue, noneValue }: SelectProps) => {
             {value ? (
               value
             ) : (
-              <div css={{ color: palette.비강조 }}>{noneValue}</div>
+              <div style={{ color: palette.비강조 }}>{noneValue}</div>
             )}
-            <div css={{ transform: active ? 'rotate(180deg)' : 'rotate(0)' }}>
+            <div style={{ transform: active ? 'rotate(180deg)' : 'rotate(0)' }}>
               <SelectArrow />
             </div>
           </Label>

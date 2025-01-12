@@ -1,9 +1,8 @@
+'use client'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import EditAndDeleteModal from '@/components/designSystem/modal/EditAndDeleteModal'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import AlarmIcon from '@/components/icons/AlarmIcon'
-import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
-import FullHeartIcon from '@/components/icons/FullHeartIcon'
 import MoreIcon from '@/components/icons/MoreIcon'
 import ShareIcon from '@/components/icons/ShareIcon'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
@@ -14,18 +13,19 @@ import { useBackPathStore } from '@/store/client/backPathStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 // 헤더부터 주최자인지에 따라 화면이 달라서, 헤더에서 여행 정보를 들고 오기.
 export default function TripDetailHeader() {
   const { userId, accessToken } = authStore()
-  const { travelNumber } = useParams<{ travelNumber: string }>()
+  const params = useParams()
+  const pathname = usePathname()
+  const travelNumber = params?.travelNumber as string
   const { tripDetail } = useTripDetail(parseInt(travelNumber!))
-  const location = useLocation()
-  const isTripDetailEdit = location.pathname.startsWith('/trip/edit')
+  const isTripDetailEdit = pathname?.startsWith('/trip/edit')
 
-  const navigate = useNavigate()
+  const router = useRouter()
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
@@ -138,7 +138,7 @@ export default function TripDetailHeader() {
     setNotification(
       travelNumber ? `/trip/detail/${travelNumber}` : '/trip/list'
     )
-    navigate(`/notification`)
+    router.push(`/notification`)
   }
   useEffect(() => {
     if (isDeleteBtnClicked) {
@@ -159,7 +159,7 @@ export default function TripDetailHeader() {
         if (res?.data.status === 204) {
           setIsToastShow(true)
           setTimeout(() => {
-            navigate('/')
+            router.push('/')
           }, 1800)
         }
       })
@@ -178,7 +178,7 @@ export default function TripDetailHeader() {
   return (
     <Container
       hostUserCheck={hostUserCheck}
-      isTripDetailEdit={isTripDetailEdit}>
+      isTripDetailEdit={Boolean(isTripDetailEdit)}>
       {hostUserCheck && (
         <div onClick={handleNotification}>
           <AlarmIcon

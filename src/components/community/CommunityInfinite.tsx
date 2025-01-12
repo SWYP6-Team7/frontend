@@ -1,27 +1,24 @@
+'use client'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
-import { useTripList } from '@/hooks/useTripList'
 import styled from '@emotion/styled'
 import React from 'react'
 import { useInView } from 'react-intersection-observer'
-import HorizonBoxLayout from '../HorizonBoxLayout'
-import dayjs from 'dayjs'
-import { Link, useSearchParams } from 'react-router-dom'
 import FullHeartIcon from '../icons/FullHeartIcon'
 import EmptyHeartIcon from '../icons/EmptyHeartIcon'
 import { palette } from '@/styles/palette'
 import { authStore } from '@/store/client/authStore'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
-import { daysAgo } from '@/utils/time'
 import CommunityItem from './CommunityItem'
 import useCommunity from '@/hooks/useCommunity'
 import CustomLink from '../CustomLink'
+import { useSearchParams } from 'next/navigation'
 
 const CommunityInfinite = ({ isMine = false }: { isMine?: boolean }) => {
   const [ref, inView] = useInView()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const searchParams = useSearchParams()
 
-  const sort = searchParams.get('sortingTypeName') ?? '최신순'
-  const categoryName = searchParams.get('categoryName') ?? '전체'
+  const sort = searchParams?.get('sortingTypeName') ?? '최신순'
+  const categoryName = searchParams?.get('categoryName') ?? '전체'
   const {
     communityList: { data, isFetching, hasNextPage, fetchNextPage, isLoading }
   } = useCommunity(
@@ -53,7 +50,7 @@ const CommunityInfinite = ({ isMine = false }: { isMine?: boolean }) => {
         ))}
       <div
         ref={ref}
-        css={{ height: 130 }}
+        style={{ height: 130 }}
       />
     </Container>
   )

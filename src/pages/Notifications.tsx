@@ -1,3 +1,4 @@
+'use client'
 import NotificationList from '@/components/notification/NotificationList'
 import useNotification from '@/hooks/notification/useNotification'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
@@ -21,7 +22,7 @@ const Notifications = () => {
           <NotificationList data={data} />
           <div
             ref={ref}
-            css={{ height: 80 }}
+            style={{ height: 80 }}
           />
         </>
       )}

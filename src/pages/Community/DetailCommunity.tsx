@@ -1,5 +1,5 @@
+'use client'
 import CommunityComment from '@/components/community/CommunityComment'
-import CommunityHeader from '@/components/community/CommunityHeader'
 import CommunityPost from '@/components/community/CommunityPost'
 import styled from '@emotion/styled'
 

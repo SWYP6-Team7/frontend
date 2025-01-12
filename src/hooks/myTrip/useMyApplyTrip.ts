@@ -1,3 +1,4 @@
+'use client'
 import { deleteMyApplyTrips, getApplyTrips } from '@/api/myTrip'
 import { IMyTripList } from '@/model/myTrip'
 import { authStore } from '@/store/client/authStore'

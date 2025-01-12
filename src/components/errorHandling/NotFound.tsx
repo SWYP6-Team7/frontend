@@ -1,15 +1,12 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React from 'react'
 import InfoIcon from '../icons/InfoIcon'
-import ArrowIcon from '../icons/ArrowIcon'
-import BackIcon from '../icons/BackIcon'
-import { useNavigate } from 'react-router-dom'
-import { errorStore } from '@/store/client/errorStore'
+import { useRouter } from 'next/navigation'
 
 const NotFound = () => {
-  const navigate = useNavigate()
-
+  const router = useRouter()
   return (
     <Container>
       <Body>
@@ -24,7 +21,7 @@ const NotFound = () => {
           alt="No Data Logo Image"
         />
         <Title>페이지를 찾을 수 없습니다.</Title>
-        <BackButton onClick={() => (window.location.href = '/')}>
+        <BackButton onClick={() => router.replace('/')}>
           {/* back icon */}
           <svg
             width="6"
@@ -76,7 +73,12 @@ const Container = styled.div`
   /* height는 홈화면 스크롤을 보기 위해서 auto로 잡아두기. width는 가로스크롤이 생겨서 auto로. */
   height: 100svh;
   width: 100svw;
-
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  z-index: 9999;
   overflow-x: hidden;
 
   display: flex;

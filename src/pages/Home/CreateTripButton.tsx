@@ -1,10 +1,11 @@
+'use client'
 import AddIcon from '@/components/icons/AddIcon'
 import useViewTransition from '@/hooks/useViewTransition'
 import { useBackPathStore } from '@/store/client/backPathStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { usePathname, useRouter } from 'next/navigation'
 
 interface CreateTripButtonProps {
   type?: 'trip' | 'community'
@@ -15,17 +16,42 @@ export default function CreateTripButton({
 }: CreateTripButtonProps) {
   const [isClicked, setIsClicked] = useState(false)
   const addRef = useRef<HTMLButtonElement>(null) // 버튼 참조
-  const location = useLocation()
+  const pathname = usePathname()
   const { setCreateTripPlace } = useBackPathStore()
   const createButtonRef = useRef<HTMLButtonElement>(null) // 버튼 참조
   const toggleRotation = () => {
     setIsClicked(!isClicked)
   }
   const navigateWithTransition = useViewTransition()
-  //가로화면 길이가 좁아질 경우 right 조절.
-  const newRightPosition = (24 + 390 - window.innerWidth).toString() + 'px'
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0
+  })
 
-  const navigate = useNavigate()
+  useEffect(() => {
+    // 초기값 설정
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+    // resize 이벤트 핸들러
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
+    // 이벤트 리스너 등록
+    window.addEventListener('resize', handleResize)
+
+    // 클린업
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+  //가로화면 길이가 좁아질 경우 right 조절.
+  const newRightPosition = (24 + 390 - windowSize.width).toString() + 'px'
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       // 만약 클릭한 곳이 버튼이 아닌 경우
@@ -49,7 +75,7 @@ export default function CreateTripButton({
   }, [])
 
   const onClickCreate = () => {
-    setCreateTripPlace(location.pathname === '/trip/list' ? '/trip/list' : '/')
+    setCreateTripPlace(pathname === '/trip/list' ? '/trip/list' : '/')
     document.documentElement.style.viewTransitionName = 'forward'
 
     if (type === 'community') {
@@ -72,7 +98,7 @@ export default function CreateTripButton({
               : '/images/createTripBtn.png'
           }
           alt=""
-          css={{ marginRight: '13px' }}
+          style={{ marginRight: '13px' }}
         />
         {type === 'trip' ? '여행 만들기' : '글쓰기'}
       </CreateBtn>

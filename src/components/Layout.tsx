@@ -1,13 +1,8 @@
+'use client'
 import styled from '@emotion/styled'
 import React, { useEffect } from 'react'
 import Header from './Header'
-import {
-  Outlet,
-  useMatch,
-  useLocation,
-  useNavigate,
-  Navigate
-} from 'react-router-dom'
+
 import Navbar from '@/pages/Home/Navbar'
 import { authStore } from '@/store/client/authStore'
 import path from 'path'
@@ -18,9 +13,9 @@ import useMyPage from '@/hooks/myPage/useMyPage'
 import { ImyPage, IProfileImg } from '@/model/myPages'
 import Splash from '@/pages/Splash'
 import { splashOnStore } from '@/store/client/splashOnOffStore'
-const Layout = () => {
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
+import { usePathname } from 'next/navigation'
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname()
   const { userPostRefreshToken } = useAuth()
   const { userId, accessToken, logoutCheck } = authStore()
   // 유저 프로필 정보 불러오기
@@ -43,9 +38,9 @@ const Layout = () => {
     isFirstProfileImagePostSuccess
   } = useMyPage()
 
-  const isOnboarding = pathname.startsWith('/onBoarding')
+  const isOnboarding = pathname?.startsWith('/onBoarding')
 
-  const isCommunityDetail = pathname.startsWith('/community/detail')
+  const isCommunityDetail = pathname?.startsWith('/community/detail')
 
   const myPageData: ImyPage = data?.data
   const profileImg: IProfileImg = profileImage
@@ -103,7 +98,7 @@ const Layout = () => {
     if (themeColorMetaTag) {
       themeColorMetaTag.setAttribute(
         'content',
-        backGroundGrey.includes(pathname) ? '#F5F5F5' : `${palette.BG}`
+        backGroundGrey.includes(pathname ?? '') ? '#F5F5F5' : `${palette.BG}`
       )
     }
   }, [pathname])
@@ -120,7 +115,7 @@ const Layout = () => {
           pathname !== '/login' &&
           pathname !== '/trip/list' &&
           pathname !== '/community' && <Header />}
-        <Outlet />
+        {children}
         {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
           <Outlet />
         ) : (
@@ -136,7 +131,7 @@ const Layout = () => {
 
 // 대중적인 mobile device는 430px 미만
 // 그렇기 때문에 440px 이상이면 모바일 환경이 아니라고 생각하고 max-width를 figma layout에 맞춤
-const Body = styled.div<{ pathname: string }>`
+const Body = styled.div<{ pathname: string | null }>`
   width: 100svw;
   height: 100%;
   position: relative;
@@ -144,9 +139,9 @@ const Body = styled.div<{ pathname: string }>`
   background-color: ${props =>
     props.pathname === '/'
       ? '#f0f0f0'
-      : props.pathname.startsWith('/trip/detail') ||
-          props.pathname.startsWith('/myTrip') ||
-          props.pathname.startsWith('/requestedTrip')
+      : props.pathname?.startsWith('/trip/detail') ||
+          props.pathname?.startsWith('/myTrip') ||
+          props.pathname?.startsWith('/requestedTrip')
         ? `${palette.검색창}`
         : `${palette.BG}`};
 
@@ -162,7 +157,7 @@ const Body = styled.div<{ pathname: string }>`
   }
 `
 // pc환경에서 화면을 가운데 정렬하기 위한 레이아웃 스타일
-const Container = styled.div<{ pathname: string }>`
+const Container = styled.div<{ pathname: string | null }>`
   /* height는 홈화면 스크롤을 보기 위해서 auto로 잡아두기. width는 가로스크롤이 생겨서 auto로. */
   height: ${props => (props.pathname !== '/' ? '100svh' : 'auto')};
   width: ${props => (props.pathname !== '/' ? '100svw' : 'auto')};

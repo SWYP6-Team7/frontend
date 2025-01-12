@@ -1,3 +1,4 @@
+'use client'
 import Warning from '@/components/icons/Warning'
 import { errorStore } from '@/store/client/errorStore'
 import { errorToastUI } from '@/store/client/toastUI'

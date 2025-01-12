@@ -1,3 +1,4 @@
+'use client'
 import CheckIcon from '@/components/icons/CheckIcon'
 import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -98,7 +99,7 @@ const StateInputField = forwardRef<HTMLInputElement, InputFieldProps>(
           onFocus={handleFocus}
           {...props}
         />
-        <div css={{ boxSizing: 'border-box' }}>
+        <div style={{ boxSizing: 'border-box' }}>
           {showIcon &&
             (success ? (
               focused ? (

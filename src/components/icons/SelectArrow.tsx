@@ -1,3 +1,5 @@
+'use client'
+
 interface SelectArrowProps {
   width?: number
   height?: number

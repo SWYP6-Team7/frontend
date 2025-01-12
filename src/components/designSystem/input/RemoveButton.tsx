@@ -1,3 +1,4 @@
+'use client'
 import XIcon from '@/components/icons/XIcon'
 import styled from '@emotion/styled'
 

@@ -1,15 +1,16 @@
+'use client'
 import ThirdStepIcon from '@/components/icons/ThirdStepIcon'
 import Button from '@/components/designSystem/Buttons/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
 import { MouseEventHandler, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import CategoryButton from '@/components/CategoryButton'
 import Spacing from '@/components/Spacing'
 import useAuth from '@/hooks/user/useAuth'
 
 import { palette } from '@/styles/palette'
 import { IRegisterGoogle, IRegisterKakao } from '@/model/auth'
+import { useRouter } from 'next/navigation'
 
 const TAGCOUNT = 18
 const categoryButtonTextArray = [
@@ -34,7 +35,7 @@ const categoryButtonTextArray = [
 ]
 
 const RegisterTripStyle = () => {
-  const navigate = useNavigate()
+  const router = useRouter()
   const {
     registerEmail,
     registerEmailMutation: { isSuccess },
@@ -65,7 +66,32 @@ const RegisterTripStyle = () => {
   const isSocialLoginNaver = socialLogin === 'naver'
   const isRegisterEmail = socialLogin === null
   const isSocialLoginGoogle = socialLogin === 'google'
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0
+  })
 
+  useEffect(() => {
+    // 초기값 설정
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+    // resize 이벤트 핸들러
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
+    // 이벤트 리스너 등록
+    window.addEventListener('resize', handleResize)
+
+    // 클린업
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
   useEffect(() => {
     if (!isSocialSuccess && isSocialLoginGoogle) {
       if (!agegroup || !sex) {
@@ -74,14 +100,14 @@ const RegisterTripStyle = () => {
         resetForm()
         resetAge()
         resetGender()
-        navigate('/login')
+        router.push('/login')
       }
     } else if (!isSocialSuccess && isSocialLoginKakao) {
       if (!email || !agegroup || !sex) {
         resetForm()
         resetAge()
         resetGender()
-        navigate('/registerForm')
+        router.push('/registerForm')
       }
     } else if (!isSocialSuccess && isSocialLoginNaver) {
       setSocialLogin(null, null)
@@ -89,7 +115,7 @@ const RegisterTripStyle = () => {
       resetForm()
       resetAge()
       resetGender()
-      navigate('/login')
+      router.push('/login')
     } else {
       if (
         isRegisterEmail &&
@@ -100,14 +126,14 @@ const RegisterTripStyle = () => {
         resetForm()
         resetAge()
         resetGender()
-        navigate('/registerForm')
+        router.push('/registerForm')
       }
     }
   }, [email, name, agegroup, isSocialSuccess, isSuccess, socialLogin])
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/registerDone')
+      router.push('/registerDone')
       resetName()
       resetForm()
       resetAge()
@@ -117,7 +143,7 @@ const RegisterTripStyle = () => {
 
   useEffect(() => {
     if (isSocialSuccess) {
-      navigate('/registerDone')
+      router.push('/registerDone')
       resetName()
       resetForm()
       resetAge()
@@ -126,7 +152,7 @@ const RegisterTripStyle = () => {
     if (isSocialError) {
       alert(isSocialError)
       setSocialLogin(null, null)
-      navigate('/login')
+      router.push('/login')
     }
   }, [isSocialError, isSocialSuccess])
 
@@ -183,7 +209,7 @@ const RegisterTripStyle = () => {
   }
 
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
-  const newRightPosition = window.innerWidth.toString() + 'px'
+  const newRightPosition = windowSize.width.toString() + 'px'
 
   return (
     <RegisterTripStyleWrapper>

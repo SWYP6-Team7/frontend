@@ -1,5 +1,7 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+
 interface BadgeProps {
   daysLeft?: number
   text: string
@@ -41,7 +43,7 @@ const Badge = ({
     <>
       {isDueDate ? (
         <BadgeContainer
-          css={{
+          style={{
             width,
             backgroundColor: bgColor,
             color: textColor,
@@ -59,7 +61,7 @@ const Badge = ({
         </BadgeContainer>
       ) : (
         <BadgeContainer
-          css={{
+          style={{
             width,
             backgroundColor: bgColor,
             color: textColor,

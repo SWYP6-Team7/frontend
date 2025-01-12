@@ -1,17 +1,11 @@
+'use client'
 import styled from '@emotion/styled'
 import Badge from './designSystem/Badge'
 import PersonIcon from './icons/PersonIcon'
 import BoxLayoutTag from './designSystem/tag/BoxLayoutTag'
-import EmptyHeartIcon from './icons/EmptyHeartIcon'
 import { palette } from '@/styles/palette'
 import PlaceIcon from './icons/PlaceIcon'
-import FullHeartIcon from './icons/FullHeartIcon'
-import MoreIcon from './icons/MoreIcon'
 import { authStore } from '@/store/client/authStore'
-import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
-import CheckingModal from './designSystem/modal/CheckingModal'
-import { useEffect, useState } from 'react'
-import { env } from 'process'
 interface HorizonBoxProps {
   travelNumber: number
   daysLeft: number
@@ -65,7 +59,7 @@ const MyTripHorizonBoxLayout = ({
 
       <PostInfo>
         <div
-          css={{
+          style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -78,7 +72,7 @@ const MyTripHorizonBoxLayout = ({
             daysLeft={daysLeft}
           />
           {/* <button
-            css={{ display: 'flex' }}
+            style={{ display: 'flex' }}
             onClick={bookmarkClickHandler}>
             {bookmarked ? (
               <div>
@@ -99,7 +93,7 @@ const MyTripHorizonBoxLayout = ({
             {!bookmarkTabActive && (
               <div
                 onClick={editOrDeleteClickHandler}
-                css={{ marginLeft: '10px' }}>
+                style={{ marginLeft: '10px' }}>
                 <MoreIcon stroke={palette.비강조2} />
               </div>
             )}
@@ -114,7 +108,7 @@ const MyTripHorizonBoxLayout = ({
           <UserBox>
             <UserName>{userName}</UserName>
             <div
-              css={{
+              style={{
                 fontWeight: 500,
                 fontSize: '14px',
                 color: palette.비강조3
@@ -130,14 +124,14 @@ const MyTripHorizonBoxLayout = ({
               {recruits}/{total}
             </Recruiting>
             <div
-              css={{
+              style={{
                 fontWeight: 500,
                 fontSize: '14px',
                 color: palette.비강조3
               }}>
               ·
             </div>
-            <DaysAgo css={{ fontSize: '14px', fontWeight: 40 }}>
+            <DaysAgo style={{ fontSize: '14px', fontWeight: 40 }}>
               {daysAgo}
             </DaysAgo>
           </UserBox>

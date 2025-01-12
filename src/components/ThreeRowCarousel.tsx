@@ -1,10 +1,11 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import ButtonContainer from './ButtonContainer'
 import Button from './designSystem/Buttons/Button'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useRouter, usePathname } from 'next/navigation'
 import { authStore } from '@/store/client/authStore'
 
 interface ThreeRowCarouselProps {
@@ -66,7 +67,8 @@ const ThreeRowCarousel = ({
   const { accessToken } = authStore()
 
   const slickRef = useRef<Slider>(null) // Slider 타입으로 지정
-  const navigate = useNavigate()
+  const router = useRouter()
+  const pathname = usePathname()
   const [currentSlideNumber, setCurrentSlideNumber] = useState(0)
 
   const handleNext = useCallback(
@@ -87,17 +89,16 @@ const ThreeRowCarousel = ({
       // 시작하기로 갈 때 만약 액세스 토큰이 없다면 로그인으로 아니면 홈으로.
 
       setTimeout(() => {
-        navigate('/')
+        router.push('/')
       }, 300)
     }
   }
   const onClickSkip = () => {
-    navigate('/')
+    router.push('/')
   }
-  const { pathname } = useLocation()
   return (
     <ContentBox isOnboarding={pathname === '/onBoardingOne'}>
-      <div css={{ width: '100%', marginBottom: '32px' }}>
+      <div style={{ width: '100%', marginBottom: '32px' }}>
         <Slider
           beforeChange={(currentSlide: number, nextSlide: number) =>
             setCurrentSlideNumber(nextSlide)
@@ -109,7 +110,7 @@ const ThreeRowCarousel = ({
         {needNextBtn && (
           <ButtonContainer>
             <div
-              css={{
+              style={{
                 width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
@@ -126,7 +127,7 @@ const ThreeRowCarousel = ({
               />
               <Skip
                 onClick={onClickSkip}
-                css={{ marginTop: '16px', padding: '10px' }}>
+                style={{ marginTop: '16px', padding: '10px' }}>
                 건너뛰기
               </Skip>
             </div>
@@ -147,7 +148,12 @@ const ContentBox = styled.div<{ isOnboarding: boolean }>`
   margin-right: -24px;
   width: 100%;
   /* 온보딩 */
-  max-height: ${window.innerHeight < 740 ? '545px' : 'auto'};
+  @media screen and (max-height: 740px) {
+    max-height: 545px;
+  }
+  @media screen and (min-height: 741px) {
+    max-height: auto;
+  }
   overflow: hidden;
   /* 온보딩 */
   .dots-custom {

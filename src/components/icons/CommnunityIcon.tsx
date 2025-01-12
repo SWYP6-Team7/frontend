@@ -1,3 +1,4 @@
+'use client'
 import { palette } from '@/styles/palette'
 
 interface NavbarIconProps {

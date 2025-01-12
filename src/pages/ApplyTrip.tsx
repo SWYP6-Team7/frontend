@@ -1,24 +1,26 @@
+'use client'
 import ApplyTripProfile from '@/components/ApplyTripProfile'
 import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import TextareaField from '@/components/designSystem/input/TextareaField'
 import useEnrollment from '@/hooks/enrollment/useEnrollment'
-import useAuth from '@/hooks/user/useAuth'
 import { authStore } from '@/store/client/authStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import { FormEvent, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import useViewTransition from '@/hooks/useViewTransition'
+import { useParams, useRouter } from 'next/navigation'
 
 const ApplyTrip = () => {
   const [message, setMessage] = useState('')
   const { userId } = authStore()
-  const { travelNumber } = useParams()
+  const params = useParams()
+
+  const travelNumber = params?.travelNumber as string
   const { setApplySuccess } = tripDetailStore()
   const { apply, applyMutation } = useEnrollment(Number(travelNumber))
-  const navigate = useNavigate()
+  const router = useRouter()
   const navigateWithTransition = useViewTransition()
   const handleSubmit = async () => {
     try {
@@ -47,7 +49,7 @@ const ApplyTrip = () => {
       document.documentElement.style.viewTransitionName = 'forward'
       navigateWithTransition(`/trip/detail/${travelNumber}`)
     }
-  }, [applyMutation.isSuccess, navigate, setApplySuccess, travelNumber])
+  }, [applyMutation.isSuccess, setApplySuccess, travelNumber])
 
   return (
     <Container>

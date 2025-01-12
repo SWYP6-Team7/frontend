@@ -1,3 +1,4 @@
+'use client'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
@@ -47,7 +48,7 @@ export default function BookmarkIconBtns({
   return (
     <div>
       <HeartBtn
-        css={{ display: 'flex' }}
+        style={{ display: 'flex' }}
         onClick={bookmarkClickHandler}>
         {bookmarked ? (
           <div>

@@ -1,10 +1,11 @@
+'use client'
 import AlarmIcon from '@/components/icons/AlarmIcon'
 import Spacing from '@/components/Spacing'
 
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Navbar from '../Home/Navbar'
 import SortHeader from '@/components/SortHeader'
 import CreateTripButton from '../Home/CreateTripButton'
@@ -20,27 +21,28 @@ import CustomLink from '@/components/CustomLink'
 const LIST = ['최신순', '추천순', '등록일순']
 const COMMUNITY_CATEGORY = ['전체', '잡담', '여행팁', '후기']
 const Community = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const searchParams = useSearchParams()
   const [fixed, setFixed] = useState(true)
-  const category = searchParams.get('categoryName') ?? '전체'
-  const sort = searchParams.get('sortingTypeName') ?? '최신순'
+  const pathname = usePathname()
+  const category = searchParams?.get('categoryName') ?? '전체'
+  const sort = searchParams?.get('sortingTypeName') ?? '최신순'
   const { setNotification } = useBackPathStore()
-  const navigate = useNavigate()
+  const router = useRouter()
   const { setRemoveToastShow, removeToastShow } = editStore()
   const onClickSort = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
+    const newSearchParams = new URLSearchParams(searchParams?.toString())
 
     newSearchParams.set('sortingTypeName', value)
 
-    setSearchParams(newSearchParams)
+    router.push(pathname + '?' + newSearchParams)
   }
   const handleNotification = () => {
     setNotification('/community')
-    navigate(`/notification`)
+    router.push(`/notification`)
   }
 
   const onClickCategory = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
+    const newSearchParams = new URLSearchParams(searchParams?.toString())
 
     if (value === '잡담') {
       newSearchParams.set('categoryName', '잡담')
@@ -51,7 +53,7 @@ const Community = () => {
     } else {
       newSearchParams.set('categoryName', '전체')
     }
-    setSearchParams(newSearchParams)
+    router.push(pathname + '?' + newSearchParams)
   }
 
   const handleFixed = (type: boolean) => {

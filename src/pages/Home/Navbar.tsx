@@ -1,3 +1,4 @@
+'use client'
 import CommnunityIcon from '@/components/icons/CommnunityIcon'
 import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
 import HomeIcon from '@/components/icons/HomeIcon'
@@ -7,12 +8,13 @@ import SearchIcon from '@/components/icons/SearchIcon'
 
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import path from 'path'
 import React, { MouseEventHandler, useState } from 'react'
-import { NavLink, useLocation, useMatch, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
-  const { pathname } = useLocation()
+  const pathname = usePathname()
   // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
   const pages = ['/', '/trip/list', '/myTrip', '/community', '/myPage']
   const icons = [
@@ -75,10 +77,10 @@ const Navbar = () => {
             fill: isLinkActive ? `${palette.기본}` : 'none'
           }
           return (
-            <NavLink
+            <Link
               key={page}
-              to={page}
-              css={{
+              href={page}
+              style={{
                 width: '49px',
                 height: '48px',
                 display: 'flex',
@@ -87,12 +89,11 @@ const Navbar = () => {
                 justifyContent: 'center'
               }}>
               {React.cloneElement(Icon, iconProps)}
-
               <PageName
                 color={isLinkActive ? `${palette.기본}` : `${palette.비강조3}`}>
                 {iconNames[idx]}
               </PageName>
-            </NavLink>
+            </Link>
           )
         })}
       </Box>

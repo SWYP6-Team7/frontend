@@ -1,3 +1,4 @@
+'use client'
 import Button from '@/components/designSystem/Buttons/Button'
 import InputField from '@/components/designSystem/input/InputField'
 import TextareaField from '@/components/designSystem/input/TextareaField'
@@ -7,7 +8,6 @@ import useViewTransition from '@/hooks/useViewTransition'
 import { createTripStore } from '@/store/client/createTripStore'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 const CreateTripIntroduce = () => {
   const {

@@ -1,9 +1,10 @@
+'use client'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import SelectArrow from './icons/SelectArrow'
 import { palette } from '@/styles/palette'
-import { useLocation } from 'react-router-dom'
 import Vector from './icons/Vector'
+import { usePathname } from 'next/navigation'
 
 const Accordion = ({
   id,
@@ -19,22 +20,24 @@ const Accordion = ({
   initialChecked: boolean
 }) => {
   const [isChecked, setIsChecked] = useState(initialChecked)
-  const { pathname } = useLocation()
+  const pathname = usePathname()
   const isCreateTripPage = pathname === '/createTripDetail'
-  const isEditTripPage = pathname.startsWith('/trip/edit')
+  const isEditTripPage = pathname?.startsWith('/trip/edit')
 
   return (
     <List>
       <input
         type="checkbox"
         id={id}
-        css={{ display: 'none' }}
+        style={{ display: 'none' }}
         checked={isChecked}
         onChange={() => setIsChecked(!isChecked)}
       />
       <Tab
         htmlFor={id}
-        isCreateTripPage={(isCreateTripPage || isEditTripPage) && isChecked}>
+        isCreateTripPage={Boolean(
+          (isCreateTripPage || isEditTripPage) && isChecked
+        )}>
         <TitleContainer>
           {isCreateTripPage ? (
             <TitleTextCreateTrip
@@ -46,12 +49,13 @@ const Accordion = ({
           )}
 
           {count > 0 && (
-            <Count isCreateTripPage={isCreateTripPage || isEditTripPage}>
+            <Count
+              isCreateTripPage={isCreateTripPage || Boolean(isEditTripPage)}>
               {count}
             </Count>
           )}
         </TitleContainer>
-        <div css={{ transform: isChecked ? 'rotate(180deg)' : 'rotate(0)' }}>
+        <div style={{ transform: isChecked ? 'rotate(180deg)' : 'rotate(0)' }}>
           {isCreateTripPage ? (
             <Vector stroke={palette.비강조} />
           ) : (
@@ -64,12 +68,12 @@ const Accordion = ({
       </Tab>
       <Content
         checked={isChecked}
-        isCreateTripPage={isCreateTripPage || isEditTripPage}>
+        isCreateTripPage={isCreateTripPage || Boolean(isEditTripPage)}>
         {children}
       </Content>
       {isCreateTripPage && isChecked && (
         <div
-          css={{
+          style={{
             marginTop: '24px',
             height: '1px',
             border: '0.5px solid rgba(240, 240, 240, 1)'

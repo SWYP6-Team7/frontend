@@ -1,3 +1,4 @@
+'use client'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ResultToast from '../designSystem/toastMessage/resultToast'
 import { useState } from 'react'
@@ -13,7 +14,7 @@ export default function ShareIcon({ width = 16, height = 20 }: ShareIconProps) {
   return (
     <div>
       <CopyToClipboard
-        text={`${window.location.href}?share=true`}
+        text={`${window?.location.href}?share=true`}
         onCopy={() => setIsToastShow(true)}>
         <button>
           <svg

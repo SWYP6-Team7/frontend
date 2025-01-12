@@ -1,3 +1,4 @@
+'use client'
 import MyTripHorizonBoxLayout from '@/components/MyTripHorizonBoxLayout'
 import { useMyTrip } from '@/hooks/myTrip/useMyTrip'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
@@ -6,7 +7,6 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React from 'react'
 import { useInView } from 'react-intersection-observer'
-import { Link } from 'react-router-dom'
 import HostTripIconBtns from './HostTripIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
@@ -15,6 +15,7 @@ import { IMyTripList } from '@/model/myTrip'
 import { daysAgo } from '@/utils/time'
 import { isGuestUser } from '@/utils/user'
 import LoginButtonForGuest from '@/components/LoginButtonForGuest'
+import Link from 'next/link'
 
 export default function HostTrip() {
   const [ref, inView] = useInView()
@@ -72,7 +73,7 @@ export default function HostTrip() {
                 nowPerson
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <Link to={`/trip/detail/${travelNumber}`}>
+                  <Link href={`/trip/detail/${travelNumber}`}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       location={location}
@@ -100,7 +101,7 @@ export default function HostTrip() {
         ))}
       <div
         ref={ref}
-        css={{ height: 80 }}
+        style={{ height: 80 }}
       />
     </Container>
   )

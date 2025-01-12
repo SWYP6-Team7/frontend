@@ -1,17 +1,13 @@
+'use client'
 import BottomModal from '@/components/BottomModal'
-import PersonIcon from '@/components/icons/PersonIcon'
-import Spacing from '@/components/Spacing'
 import { palette } from '@/styles/palette'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@/components/designSystem/Buttons/Button'
 import styled from '@emotion/styled'
-import Vector from '@/components/icons/Vector'
-import Calendar from '@/components/icons/Calendar'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import BoxLayoutTag from '@/components/BoxLayoutTag'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
-import { all } from 'axios'
 
 interface CompanionsViewProps {
   isOpen: boolean
@@ -45,17 +41,43 @@ export default function CompanionsView({
   } = tripDetailStore()
   const { companions } = useTripDetail(travelNumber)
   const allCompanions = companions.data?.data.companions
-  console.log(companions, '모집 인원들 ')
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0
+  })
+
+  useEffect(() => {
+    // 초기값 설정
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+    // resize 이벤트 핸들러
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
+    // 이벤트 리스너 등록
+    window.addEventListener('resize', handleResize)
+
+    // 클린업
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
-  const newRightPosition = window.innerWidth.toString() + 'px'
+  const newRightPosition = windowSize.width.toString() + 'px'
   return (
     <>
       {isOpen && (
         <BottomModal
-          initialHeight={window.innerHeight <= 700 ? 75 : 65} // height 비율이 짧아 진다면 58%로 맞추기.
+          initialHeight={windowSize.height <= 700 ? 75 : 65} // height 비율이 짧아 진다면 58%로 맞추기.
           closeModal={handleCloseModal}>
-          <ModalWrapper css={{ marginTop: '6px' }}>
-            <ModalContainer css={{ padding: '0px 24px' }}>
+          <ModalWrapper style={{ marginTop: '6px' }}>
+            <ModalContainer style={{ padding: '0px 24px' }}>
               <OwnerBox>
                 <Title>주최자</Title>
 
@@ -81,7 +103,7 @@ export default function CompanionsView({
                 <Title>
                   모집 인원{' '}
                   <p
-                    css={{
+                    style={{
                       marginLeft: '4px',
                       fontWeight: '500',
                       color: palette.비강조2
@@ -93,7 +115,7 @@ export default function CompanionsView({
                   {allCompanions?.map((person: Companion) => (
                     <OwnerBox
                       key={person.userName}
-                      css={{ marginRight: '16px' }}>
+                      style={{ marginRight: '16px' }}>
                       <div>
                         <div>
                           <RoundedImage

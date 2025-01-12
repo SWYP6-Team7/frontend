@@ -1,6 +1,6 @@
+'use client'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import WhiteXIcon from './icons/WhiteXIcon'
 import { keyframes } from '@emotion/react'
 import Spacing from './Spacing'
@@ -8,6 +8,7 @@ import CheckIcon from './icons/CheckIcon'
 import Button from './designSystem/Buttons/Button'
 import { palette } from '@/styles/palette'
 import ResultToast from './designSystem/toastMessage/resultToast'
+import { useRouter } from 'next/navigation'
 
 interface TermsProps {
   closeShowTerms: () => void
@@ -19,9 +20,9 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
     privacy: true
   })
   const [isToastShow, setIsToastShow] = useState(false)
-  const navigate = useNavigate()
+  const router = useRouter()
   const handleBackButton = () => {
-    navigate('/login')
+    router.push('/login')
   }
 
   const handleCheck = (item: 'privacy' | 'service') => {

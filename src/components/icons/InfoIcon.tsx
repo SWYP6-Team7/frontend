@@ -1,3 +1,4 @@
+'use client'
 interface InfoIconProps {
   color?: string
   size?: number

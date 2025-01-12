@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import Badge from './designSystem/Badge'
 import Spacing from './Spacing'
@@ -5,11 +6,9 @@ import BoxLayoutTag from './BoxLayoutTag'
 import PersonIcon from './icons/PersonIcon'
 import { palette } from '@/styles/palette'
 import EmptyHeartIcon from './icons/EmptyHeartIcon'
-import { userStore } from '@/store/client/userStore'
-import { authStore } from '@/store/client/authStore'
+
 import FullHeartIcon from './icons/FullHeartIcon'
-import { useBookmark } from '@/hooks/bookmark/useBookmark'
-import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
+
 interface VerticalBoxProps {
   postId: string
   daysLeft: number

@@ -1,3 +1,4 @@
+'use client'
 import RightVector from '@/components/icons/RightVector'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
@@ -23,7 +24,7 @@ const TextButton = ({
 }: TextButtonProps) => {
   return (
     <Box onClick={onClick}>
-      <div css={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         {isLeftVector && (
           <img
             src={leftIconSrc === '' ? '/images/createTripBtn.png' : leftIconSrc}
@@ -34,10 +35,10 @@ const TextButton = ({
       </div>
       <Right>
         {rightText !== '' && (
-          <Value css={{ marginRight: '8px' }}>{rightText}</Value>
+          <Value style={{ marginRight: '8px' }}>{rightText}</Value>
         )}
         {isRightVector && (
-          <div css={{ padding: '8px 9px' }}>
+          <div style={{ padding: '8px 9px' }}>
             <RightVector />
           </div>
         )}

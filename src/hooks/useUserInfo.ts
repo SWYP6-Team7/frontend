@@ -1,3 +1,4 @@
+'use client'
 import { getUserProfile } from '@/api/home'
 import { useQuery } from '@tanstack/react-query'
 

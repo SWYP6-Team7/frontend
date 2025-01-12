@@ -1,6 +1,6 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
-import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
