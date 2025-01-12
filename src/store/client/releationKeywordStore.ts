@@ -1,13 +1,14 @@
-import { create } from 'zustand'
+"use client";
+import { create } from "zustand";
 
 interface RelationKeywordProps {
-  show: boolean
-  setShow: (show: boolean) => void
+  show: boolean;
+  setShow: (show: boolean) => void;
 }
 
-export const releationKeywordStore = create<RelationKeywordProps>(set => ({
+export const releationKeywordStore = create<RelationKeywordProps>((set) => ({
   show: false,
-  setShow: show => {
-    set({ show })
-  }
-}))
+  setShow: (show) => {
+    set({ show });
+  },
+}));

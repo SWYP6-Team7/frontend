@@ -1,19 +1,20 @@
-import { create } from 'zustand'
+"use client";
+import { create } from "zustand";
 
 interface ErrorStore {
-  error: null | Error
-  updateError: (error: Error) => void
-  isMutationError: boolean
-  setIsMutationError: (isMutation: boolean) => void
+  error: null | Error;
+  updateError: (error: Error) => void;
+  isMutationError: boolean;
+  setIsMutationError: (isMutation: boolean) => void;
 }
 
-export const errorStore = create<ErrorStore>(set => ({
+export const errorStore = create<ErrorStore>((set) => ({
   error: null,
   updateError: (error: Error) => {
-    set({ error: error })
+    set({ error: error });
   },
   isMutationError: false,
   setIsMutationError: (value: boolean) => {
-    set({ isMutationError: value })
-  }
-}))
+    set({ isMutationError: value });
+  },
+}));
