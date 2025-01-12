@@ -1,22 +1,22 @@
-'use client'
-import { useRouter } from 'next/navigation'
+"use client";
+import { useRouter } from "next/navigation";
 const useViewTransition = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const navigateWithTransition = (to: string) => {
     // Check browser support for View Transitions
-    if (!document.startViewTransition) {
-      router.push(to)
-      return
+    if (!(document as any).startViewTransition) {
+      router.push(to);
+      return;
     }
 
     // Start view transition
-    document.startViewTransition(() => {
-      router.push(to)
-    })
-  }
+    (document as any).startViewTransition(() => {
+      router.push(to);
+    });
+  };
 
-  return navigateWithTransition
-}
+  return navigateWithTransition;
+};
 
-export default useViewTransition
+export default useViewTransition;

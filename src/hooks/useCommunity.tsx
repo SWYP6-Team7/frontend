@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import {
   deleteCommunity,
   getCommunities,
@@ -10,208 +10,178 @@ import {
   postImage,
   unlikeCommunity,
   updateCommunity,
-  updateImage
-} from '@/api/community'
-import { ICommunityList, PostCommunity } from '@/model/community'
-import { authStore } from '@/store/client/authStore'
-import {
-  EditFinalImages,
-  EditImage,
-  FinalImages,
-  UploadImage
-} from '@/store/client/imageStore'
-import {
-  InfiniteData,
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient
-} from '@tanstack/react-query'
-import React from 'react'
+  updateImage,
+} from "@/api/community";
+import { ICommunityList, PostCommunity } from "@/model/community";
+import { authStore } from "@/store/client/authStore";
+import { EditFinalImages, EditImage, FinalImages, UploadImage } from "@/store/client/imageStore";
+import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import React from "react";
 
 export interface IListParams {
-  sortingTypeName?: string
-  categoryName?: string
-  keyword?: string
+  sortingTypeName?: string;
+  categoryName?: string;
+  keyword?: string;
 }
 
 const useCommunity = (
   communityNumber: number | undefined = undefined,
   params: IListParams = {
-    sortingTypeName: '최신순',
-    keyword: '',
-    categoryName: ''
+    sortingTypeName: "최신순",
+    keyword: "",
+    categoryName: "",
   },
   isMine = false
 ) => {
-  const {
-    sortingTypeName = '최신순',
-    keyword = '',
-    categoryName = '전체'
-  } = params
-  const { accessToken } = authStore()
+  const { sortingTypeName = "최신순", keyword = "", categoryName = "전체" } = params;
+  const { accessToken } = authStore();
   const communityList = useInfiniteQuery<
     ICommunityList,
     Object,
     InfiniteData<ICommunityList>,
-    [
-      _1: string,
-      { categoryName: string; sortingTypeName: string; keyword: string },
-      _3: boolean
-    ]
+    [_1: string, _2: { categoryName: string; sortingTypeName: string; keyword: string }, _3: boolean]
   >({
-    queryKey: [
-      'community',
-      { categoryName: categoryName, sortingTypeName, keyword },
-      isMine
-    ],
+    queryKey: ["community", { categoryName: categoryName, sortingTypeName, keyword }, isMine],
 
     queryFn: ({ pageParam }) => {
       if (isMine) {
         return getMyCommunities(accessToken, {
           ...params,
-          page: pageParam as number
-        })
+          page: pageParam as number,
+        });
       }
       return getCommunities(accessToken, {
         ...params,
-        page: pageParam as number
-      })
+        page: pageParam as number,
+      });
     },
     initialPageParam: 0,
-    getNextPageParam: lastPage => {
+    getNextPageParam: (lastPage) => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
-        return undefined
+        return undefined;
       } else {
-        return lastPage?.page?.number + 1
+        return lastPage?.page?.number + 1;
       }
-    }
-  })
+    },
+  });
   const community = useQuery({
-    queryKey: ['community', communityNumber],
+    queryKey: ["community", communityNumber],
     queryFn: () => getCommunity(communityNumber!, accessToken),
-    enabled: !!communityNumber
-  })
+    enabled: !!communityNumber,
+  });
 
   const images = useQuery({
-    queryKey: ['community', 'images', communityNumber],
+    queryKey: ["community", "images", communityNumber],
     queryFn: () => getImages(communityNumber!, accessToken),
-    enabled: !!communityNumber
-  })
+    enabled: !!communityNumber,
+  });
 
   const postImageMutation = useMutation({
-    mutationFn: (data: {
-      uploadImages: FinalImages
-      communityNumber: number
-    }) => postImage(data.uploadImages, data.communityNumber, accessToken),
+    mutationFn: (data: { uploadImages: FinalImages; communityNumber: number }) =>
+      postImage(data.uploadImages, data.communityNumber, accessToken),
     onSuccess: () => {
       if (images.data) {
         queryClient.invalidateQueries({
-          queryKey: ['community', 'images', communityNumber]
-        })
+          queryKey: ["community", "images", communityNumber],
+        });
       }
-    }
-  })
+    },
+  });
 
   const updateImageMutation = useMutation({
-    mutationFn: (data: {
-      editImages: EditFinalImages
-      communityNumber: number
-    }) => updateImage(data.editImages, data.communityNumber, accessToken),
+    mutationFn: (data: { editImages: EditFinalImages; communityNumber: number }) =>
+      updateImage(data.editImages, data.communityNumber, accessToken),
     onSuccess: () => {
       if (images.data) {
         queryClient.invalidateQueries({
-          queryKey: ['community', 'images', communityNumber]
-        })
+          queryKey: ["community", "images", communityNumber],
+        });
       }
-    }
-  })
+    },
+  });
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const postMutation = useMutation({
-    mutationFn: (data: PostCommunity) => postCommunity(data, accessToken)
-  })
+    mutationFn: (data: PostCommunity) => postCommunity(data, accessToken),
+  });
 
   const post = (data: PostCommunity) => {
     return postMutation.mutateAsync(data, {
       onSuccess: () => {
         if (communityList.data) {
           queryClient.invalidateQueries({
-            queryKey: ['community']
-          })
+            queryKey: ["community"],
+          });
         }
-      }
-    })
-  }
+      },
+    });
+  };
 
   const updateMutation = useMutation({
     mutationFn: (data: PostCommunity & { communityNumber: number }) =>
-      updateCommunity(data, data.communityNumber, accessToken)
-  })
+      updateCommunity(data, data.communityNumber, accessToken),
+  });
 
   const update = (data: PostCommunity & { communityNumber: number }) => {
     return updateMutation.mutateAsync(data, {
       onSuccess: () => {
         if (communityList.data) {
           queryClient.invalidateQueries({
-            queryKey: ['community']
-          })
+            queryKey: ["community"],
+          });
         }
-      }
-    })
-  }
+      },
+    });
+  };
 
   const removeMutation = useMutation({
-    mutationFn: (data: { communityNumber: number }) =>
-      deleteCommunity(data.communityNumber, accessToken)
-  })
+    mutationFn: (data: { communityNumber: number }) => deleteCommunity(data.communityNumber, accessToken),
+  });
 
   const remove = (data: { communityNumber: number }) => {
     return removeMutation.mutateAsync(data, {
       onSuccess: () => {
         if (communityList.data) {
           queryClient.invalidateQueries({
-            queryKey: ['community']
-          })
+            queryKey: ["community"],
+          });
         }
-      }
-    })
-  }
+      },
+    });
+  };
 
   const likeMutation = useMutation({
-    mutationFn: (data: { communityNumber: number }) =>
-      likeCommunity(data.communityNumber, accessToken)
-  })
+    mutationFn: (data: { communityNumber: number }) => likeCommunity(data.communityNumber, accessToken),
+  });
 
   const like = (data: { communityNumber: number }) => {
     return likeMutation.mutateAsync(data, {
       onSuccess: () => {
         if (communityList.data) {
           queryClient.invalidateQueries({
-            queryKey: ['community', data.communityNumber]
-          })
+            queryKey: ["community", data.communityNumber],
+          });
         }
-      }
-    })
-  }
+      },
+    });
+  };
 
   const unlikeMutation = useMutation({
-    mutationFn: (data: { communityNumber: number }) =>
-      unlikeCommunity(data.communityNumber, accessToken)
-  })
+    mutationFn: (data: { communityNumber: number }) => unlikeCommunity(data.communityNumber, accessToken),
+  });
 
   const unlike = (data: { communityNumber: number }) => {
     return unlikeMutation.mutateAsync(data, {
       onSuccess: () => {
         if (communityList.data) {
           queryClient.invalidateQueries({
-            queryKey: ['community', data.communityNumber]
-          })
+            queryKey: ["community", data.communityNumber],
+          });
         }
-      }
-    })
-  }
+      },
+    });
+  };
 
   return {
     post,
@@ -228,8 +198,8 @@ const useCommunity = (
     community,
     images,
     postImageMutation,
-    updateImageMutation
-  }
-}
+    updateImageMutation,
+  };
+};
 
-export default useCommunity
+export default useCommunity;

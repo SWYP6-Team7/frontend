@@ -2,10 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  distDir: '.next',
+  distDir: ".next",
   images: {
-    domains: [] // 필요한 외부 이미지 도메인 추가
-  }
-}
+    domains: [], // 필요한 외부 이미지 도메인 추가
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
