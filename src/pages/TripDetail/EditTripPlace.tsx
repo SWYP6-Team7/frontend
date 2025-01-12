@@ -1,19 +1,19 @@
+'use client'
 import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
-import CreateTripInputField from '@/components/CreateTripInputField'
-import FirstStepIcon from '@/components/icons/FirstStepIcon'
+import CreateTripInputField from '@/components/designSystem/input/InputField'
 import PlaceIcon from '@/components/icons/PlaceIcon'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
 import Spacing from '@/components/Spacing'
-import { createTripStore } from '@/store/client/createTripStore'
+
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 
 export default function EditTripPlace() {
   const [showRelationList, setShowRelationList] = useState(true)
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const { location, addLocation: addLocationForEdit } = tripDetailStore()
   const [keyword, setKeyword] = useState(location)
@@ -34,7 +34,7 @@ export default function EditTripPlace() {
 
   const handleDone = () => {
     addLocationForEdit(keyword)
-    navigate(-1)
+    router.back()
   }
 
   return (

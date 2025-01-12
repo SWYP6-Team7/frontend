@@ -1,3 +1,4 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 
@@ -56,7 +57,7 @@ const BoxLayoutTag = ({
             color: palette.keycolor
           }
     : addStyle
-  return <Tag css={style}>{text}</Tag>
+  return <Tag style={style}>{text}</Tag>
 }
 
 const Tag = styled.div`

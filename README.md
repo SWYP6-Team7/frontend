@@ -1,84 +1,36 @@
-# 로컬 환경에서 프로젝트 실행하기
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## 필요한 도구
+## Getting Started
 
-1. **Git**: 코드를 다운로드하기 위한 도구
-2. **Node.js**: JavaScript 실행 환경
-3. **npm** 또는 **Yarn**: 패키지 관리자 (Node.js와 함께 설치됨)
+First, run the development server:
 
-## 단계별 가이드
-
-### 1. Git 설치하기
-
-1. [Git 공식 웹사이트](https://git-scm.com/downloads)에 방문합니다.
-2. 운영 체제에 맞는 버전을 다운로드하고 설치합니다.
-
-
-### 2. Node.js 설치하기
-
-1. [Node.js 공식 웹사이트](https://nodejs.org/)에 방문합니다.
-2. LTS(Long Term Support) 버전을 다운로드하고 설치합니다.
-
-### 3. 프로젝트 다운로드하기
-
-1. 컴퓨터의 원하는 위치에 새 폴더를 만듭니다.
-2. 명령 프롬프트(Windows) 또는 터미널(Mac/Linux)을 엽니다.
-3. 생성한 폴더로 이동합니다. 예: `cd C:\Projects\MyProject`
-4. 다음 명령어를 입력하여 프로젝트를 다운로드합니다:
-   ```
-   git clone [GitHub 레포지토리 URL]
-   ```
-   (GitHub 레포지토리 URL을 실제 프로젝트 URL로 바꿔주세요)
-5. 다운로드가 완료되면 프로젝트 폴더로 이동합니다:
-   ```
-   cd [프로젝트 폴더 이름]
-   ```
-6. develop 브랜치로 이동하여 실행하기 위해 아래 명령어를 입력합니다.
-   ```
-   git fetch --all
-   ```
-
-   ```
-   git checkout -t origin/develop 
-   ```
-
-### 4. 의존성 설치하기
-
-프로젝트 폴더에서 다음 명령어를 실행합니다:
-
-```
-npm install
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-또는 Yarn을 사용하는 경우:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```
-yarn install
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### 5. 프로젝트 실행하기
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-의존성 설치가 완료되면, 다음 명령어로 프로젝트를 실행합니다:
+## Learn More
 
-```
-npm run start
-```
+To learn more about Next.js, take a look at the following resources:
 
-또는 Yarn을 사용하는 경우:
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-```
-yarn start
-```
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-### 6. 웹사이트 접속하기
+## Deploy on Vercel
 
-1. 웹 브라우저(Chromium 브라우저 권장)를 엽니다.
-2. 주소창에 `http://localhost:9999`을 입력합니다. (보통 실행하면 바로 창이 열림)
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### 7. 로그인/회원가입 테스트 시 localhost:9999/login 통해서 테스트하실 수 있습니다.
-## 중요!! .env 파일 설정이 필요합니다. 프론트엔드 파트에 꼭 연락주세요!
-
-
-## 문제 해결
-
-- 명령어 실행 중 오류가 발생하면, 프론트엔드 파트에 연락주세요.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

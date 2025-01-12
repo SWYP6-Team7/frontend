@@ -1,3 +1,4 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 interface ButtonProps {
@@ -41,7 +42,7 @@ const Button = ({
       disabled={disabled}
       onClick={onClick}
       className={`Button--weight-${addStyle.weight}`}
-      css={!disabled && addStyle}>
+      style={!disabled ? addStyle : {}}>
       {text}
       {children}
     </ButtonContainer>

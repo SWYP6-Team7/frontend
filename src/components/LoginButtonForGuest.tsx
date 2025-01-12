@@ -1,11 +1,12 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export default function LoginButtonForGuest() {
-  const navigate = useNavigate()
-  return <LoginButton onClick={() => navigate('/login')}>로그인</LoginButton>
+  const router = useRouter()
+  return <LoginButton onClick={() => router.push('/login')}>로그인</LoginButton>
 }
 const LoginButton = styled.button`
   margin-top: 16px;

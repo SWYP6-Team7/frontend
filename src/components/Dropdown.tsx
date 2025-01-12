@@ -1,3 +1,4 @@
+'use client'
 import { act, useState } from 'react'
 import styled from '@emotion/styled'
 interface DropdownProps {

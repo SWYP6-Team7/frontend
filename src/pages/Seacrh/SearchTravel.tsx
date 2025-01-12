@@ -1,3 +1,4 @@
+'use client'
 import FilterList from '@/components/FilterList'
 import RecommendKeyword from '@/components/RecommendKeyword'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
@@ -10,14 +11,16 @@ import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import RelationKeywordList from '@/components/relationKeyword/RelationKeywordList'
 import InputField from '@/components/designSystem/input/InputField'
-import { useSearchParams } from 'react-router-dom'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const RECOMMEND_TAGS1 = ['유럽', '강릉', '제주']
 const RECOMMEND_TAGS2 = ['호주', '미국']
 
 const SearchTravel = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const keywordParams = searchParams.get('keyword') ?? ''
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  const keywordParams = searchParams?.get('keyword') ?? ''
   const [keyword, setKeyword] = useState(keywordParams)
   const [finalKeyword, setFinalKeyword] = useState(keywordParams)
 
@@ -36,7 +39,11 @@ const SearchTravel = () => {
   useEffect(() => {
     if (finalKeyword !== '') {
       refetch()
-      setSearchParams({ keyword: finalKeyword })
+
+      const params = new URLSearchParams(searchParams?.toString())
+      params.set('keyword', finalKeyword)
+
+      router.push(`${pathname}?${params.toString()}`)
     }
   }, [finalKeyword, refetch])
 
@@ -94,7 +101,7 @@ const SearchTravel = () => {
               <SearchResultList searchResult={data.pages} />
               <div
                 ref={ref}
-                css={{ height: 20 }}
+                style={{ height: 20 }}
               />
             </>
           )}

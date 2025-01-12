@@ -1,3 +1,4 @@
+'use client'
 interface HeartProps {
   width?: number
   height?: number

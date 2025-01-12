@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import RelationSearchIcon from '../icons/RelationSearchIcon'
 import { splitByKeyword } from '@/utils/search'

@@ -1,6 +1,7 @@
+'use client'
 import styled from '@emotion/styled'
 import ArrowIcon from '@/components/icons/ArrowIcon'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 interface TitleContainerProps {
   text: React.ReactNode
   minWidth?: string
@@ -11,11 +12,11 @@ const TitleContainer = ({
   minWidth = 'auto',
   detailLink = '/'
 }: TitleContainerProps) => {
-  const navigate = useNavigate()
-  const clickHandler = () => navigate(`${detailLink}`) // 후에 보여줄 페이지 부분.
+  const router = useRouter()
+  const clickHandler = () => router.push(`${detailLink}`) // 후에 보여줄 페이지 부분.
   return (
     <ContentTitle>
-      <span css={{ minWidth }}>{text}</span>
+      <span style={{ minWidth }}>{text}</span>
       <More onClick={clickHandler}>
         <ArrowIcon />
       </More>

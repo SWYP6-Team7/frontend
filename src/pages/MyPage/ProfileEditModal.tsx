@@ -1,3 +1,4 @@
+'use client'
 import BottomModal from '@/components/BottomModal'
 import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
@@ -12,7 +13,6 @@ import { palette } from '@/styles/palette'
 import { isDefaultProfile } from '@/utils/profileUrl'
 import styled from '@emotion/styled'
 import React, { act, ChangeEvent, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 interface ModalProps {
   showModal: boolean
@@ -74,7 +74,6 @@ export default function ProfileEditModal({
   )
 
   const [changed, setChanged] = useState(false)
-  const navigate = useNavigate()
   const handleCloseModal = () => {
     setShowModal(false)
   }
@@ -268,13 +267,15 @@ export default function ProfileEditModal({
     showImage !== '' &&
     isCustomImg &&
     (active === 'custom' || isCustomImgUpload)
-
+  if (typeof window === 'undefined') {
+    return null
+  }
   return (
     <BottomModal
-      initialHeight={window.innerHeight <= 700 ? 60 : 50} // height 비율이 짧아 진다면 58%로 맞추기.
+      initialHeight={window?.innerHeight <= 700 ? 60 : 50} // height 비율이 짧아 진다면 58%로 맞추기.
       closeModal={handleCloseModal}>
-      <ModalWrapper css={{ marginTop: '6px' }}>
-        <ModalContainer css={{ padding: '0px 24px' }}>
+      <ModalWrapper style={{ marginTop: '6px' }}>
+        <ModalContainer style={{ padding: '0px 24px' }}>
           <DetailTitle>프로필 이미지를 선택해 주세요</DetailTitle>
           <Spacing size={32} />
           <ProfileContainer>
@@ -297,7 +298,7 @@ export default function ProfileEditModal({
                     type="file"
                     id="imageInput"
                     accept="image/*"
-                    css={{ display: 'none' }}
+                    style={{ display: 'none' }}
                   />
                 </>
               )}
@@ -305,7 +306,7 @@ export default function ProfileEditModal({
               {isShowingGallery && (
                 <img
                   src={showImage}
-                  css={{
+                  style={{
                     width: '100%',
                     height: '100%',
                     borderRadius: '50%',
@@ -313,14 +314,14 @@ export default function ProfileEditModal({
                   }}
                 />
               )}
-              <div css={{ position: 'absolute', pointerEvents: 'none' }}>
+              <div style={{ position: 'absolute', pointerEvents: 'none' }}>
                 {isShowingGallery === false && <PictureIcon />}
               </div>
 
               {active === 'custom' && (
                 <div
                   onClick={deleteProfileImgHandler}
-                  css={{ position: 'absolute', right: '0px', top: '0px' }}>
+                  style={{ position: 'absolute', right: '0px', top: '0px' }}>
                   <ProfileRemoveIcon />
                 </div>
               )}
@@ -356,7 +357,7 @@ export default function ProfileEditModal({
               />
             </DefaultProfile>
           </ProfileContainer>
-          <ProfileContainer css={{ marginTop: '16px' }}>
+          <ProfileContainer style={{ marginTop: '16px' }}>
             <ShowImg
               onClick={e => {
                 e.stopPropagation()
@@ -375,7 +376,7 @@ export default function ProfileEditModal({
                     id="cameraInput"
                     capture="environment"
                     accept="image/*"
-                    css={{ display: 'none' }}
+                    style={{ display: 'none' }}
                   />
                 </>
               )}
@@ -384,7 +385,7 @@ export default function ProfileEditModal({
               {showImageCamera !== '' && (
                 <img
                   src={showImageCamera}
-                  css={{
+                  style={{
                     width: '100%',
                     height: '100%',
                     borderRadius: '50%',
@@ -392,14 +393,14 @@ export default function ProfileEditModal({
                   }}
                 />
               )}
-              <div css={{ position: 'absolute', pointerEvents: 'none' }}>
+              <div style={{ position: 'absolute', pointerEvents: 'none' }}>
                 {showImageCamera === '' && <CameraIconForUploadMypage />}
               </div>
 
               {active === 'camera' && (
                 <div
                   onClick={deleteProfileCameraImgHandler}
-                  css={{ position: 'absolute', right: '0px', top: '0px' }}>
+                  style={{ position: 'absolute', right: '0px', top: '0px' }}>
                   <ProfileRemoveIcon />
                 </div>
               )}
@@ -435,7 +436,7 @@ export default function ProfileEditModal({
               />
             </DefaultProfile>
           </ProfileContainer>
-          <div css={{ marginTop: '16px' }}></div>
+          <div style={{ marginTop: '16px' }}></div>
         </ModalContainer>
       </ModalWrapper>
       <ButtonContainer>

@@ -1,3 +1,4 @@
+'use client'
 import { getNotifications } from '@/api/notification'
 import { INotification } from '@/model/notification'
 

@@ -1,14 +1,14 @@
+'use client'
 import EveryBodyIcon from '@/components/icons/EveryBodyIcon'
 import OnlyFemaleIcon from '@/components/icons/OnlyFemaleIcon'
 import OnlyMaleIcon from '@/components/icons/OnlyMaleIcon'
-import PersonIcon from '@/components/icons/PersonIcon'
 import { createTripStore } from '@/store/client/createTripStore'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import { usePathname } from 'next/navigation'
 import React, { useState, useEffect, useRef } from 'react'
 import Picker from 'react-mobile-picker'
-import { useLocation } from 'react-router-dom'
 
 const date = new Date()
 const year: number = date.getFullYear()
@@ -38,7 +38,7 @@ interface Props {
 }
 
 const RecruitingPickerView = ({ count, setCount }: Props) => {
-  const { pathname } = useLocation()
+  const pathname = usePathname()
   const isCreateTripDetailPage = pathname === '/createTripDetail'
 
   const { maxPerson, addMaxPerson, genderType, addGenderType } =
@@ -110,7 +110,7 @@ const RecruitingPickerView = ({ count, setCount }: Props) => {
       style={{ display: 'flex', justifyContent: 'center' }}
       ref={pickerRef}>
       <Picker
-        css={{ width: '270px' }}
+        style={{ width: '270px' }}
         value={value}
         onChange={setValue}
         wheelMode="normal"

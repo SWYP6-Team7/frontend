@@ -1,22 +1,23 @@
+'use client'
 import React, { useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { getToken } from '@/api/user'
 import { userStore } from '@/store/client/userStore'
 import useAuth from '@/hooks/user/useAuth'
 
 const OauthGoogle = () => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const searchParams = new URLSearchParams(location.search)
-  const code = searchParams.get('code')
-  const state = searchParams.get('state')
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const code = searchParams?.get('code')
+  const state = searchParams?.get('state')
   const { setSocialLogin, setTempName } = userStore()
   const { socialLogin, socialLoginMutation } = useAuth()
   const { isSuccess } = socialLoginMutation
 
   useEffect(() => {
     if (socialLoginMutation.isSuccess) {
-      navigate('/')
+      router.push('/')
     }
   }, [isSuccess])
 
@@ -34,7 +35,7 @@ const OauthGoogle = () => {
             setTempName(user.userName)
 
             setSocialLogin('google', Number(user.userNumber) as number)
-            navigate('/registerAge')
+            router.push('/registerAge')
           } else if (user?.userStatus === 'ABLE') {
             socialLogin({
               socialLoginId: user?.socialLoginId as string,
@@ -42,7 +43,7 @@ const OauthGoogle = () => {
             })
           } else {
             alert('소셜 로그인 과정에서 문제가 발생했습니다.')
-            navigate('/login')
+            router.push('/login')
           }
         })
         .catch(error => {
@@ -51,7 +52,7 @@ const OauthGoogle = () => {
               ? error.error
               : '소셜 로그인 과정에서 문제가 발생했습니다.'
           )
-          navigate('/login')
+          router.replace('/login')
         })
     }
   }, [code, state])

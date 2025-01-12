@@ -1,3 +1,4 @@
+'use client'
 import MyTripHorizonBoxLayout from '@/components/MyTripHorizonBoxLayout'
 import { useBookmark } from '@/hooks/bookmark/useBookmark'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
@@ -6,7 +7,6 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React from 'react'
 import { useInView } from 'react-intersection-observer'
-import { Link, useNavigate } from 'react-router-dom'
 import BookmarkIconBtns from './BookmarkIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 
@@ -15,6 +15,7 @@ import { IMyTripList } from '@/model/myTrip'
 import { daysAgo } from '@/utils/time'
 import { isGuestUser } from '@/utils/user'
 import LoginButtonForGuest from '@/components/LoginButtonForGuest'
+import Link from 'next/link'
 
 export default function Bookmark() {
   const [ref, inView] = useInView()
@@ -29,7 +30,6 @@ export default function Bookmark() {
   const trips = (data?.pages[0].content as IMyTripList['content']) ?? []
 
   const isNoData = trips.length === 0
-  const navigate = useNavigate()
 
   return (
     <Container isNodata={isNoData}>
@@ -71,7 +71,7 @@ export default function Bookmark() {
                 bookmarked
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <Link to={`/trip/detail/${travelNumber}`}>
+                  <Link href={`/trip/detail/${travelNumber}`}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       userName={userName}
@@ -100,7 +100,7 @@ export default function Bookmark() {
 
       <div
         ref={ref}
-        css={{ height: 80 }}
+        style={{ height: 80 }}
       />
     </Container>
   )

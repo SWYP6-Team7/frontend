@@ -1,3 +1,4 @@
+'use client'
 import ResetIcon from '@/components/icons/ResetIcon'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
@@ -50,7 +51,7 @@ const FilterButton = ({
         disabled={disabled}
         onClick={onClick}
         className={`Button--weight-${addStyle.weight}`}
-        css={!disabled && addStyle}>
+        style={!disabled ? addStyle : {}}>
         {text}
         {children}
       </ButtonContainer>

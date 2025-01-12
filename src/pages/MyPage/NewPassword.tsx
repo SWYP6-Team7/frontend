@@ -1,3 +1,4 @@
+'use client'
 import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import StateInputField from '@/components/designSystem/input/StateInputField'
@@ -10,7 +11,8 @@ import { userStore } from '@/store/client/userStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
+
 interface ErrorProps {
   password: undefined | string
   confirmPassword: undefined | string
@@ -37,7 +39,7 @@ export default function NewPassword() {
   const { addPassword, email } = userStore()
   const { updatePasswordMutation, isUpatedPassword, isUpdatedPasswordError } =
     useMyPage()
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const allSuccess = Object.values(success).every(value => value)
 
@@ -146,7 +148,7 @@ export default function NewPassword() {
     if (isUpatedPassword) {
       addPassword(formData.password)
       addIsPasswordUpdated(true)
-      navigate('/editMyInfo')
+      router.push('/editMyInfo')
     }
   }, [isUpatedPassword])
 

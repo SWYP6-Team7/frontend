@@ -1,3 +1,4 @@
+'use client'
 interface ArrowProps {
   size?: number
   stroke?: string

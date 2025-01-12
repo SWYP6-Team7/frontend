@@ -1,3 +1,5 @@
+'use client'
+
 import { palette } from '@/styles/palette'
 import React from 'react'
 

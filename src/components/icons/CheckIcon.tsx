@@ -1,3 +1,4 @@
+'use client'
 interface CheckIconProps {
   status?: 'default' | 'done'
   size?: number

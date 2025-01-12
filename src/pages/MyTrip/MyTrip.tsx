@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react'
 import Bookmark from './Bookmark'
 import HostTrip from './HostTrip'

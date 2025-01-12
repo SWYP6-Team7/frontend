@@ -1,3 +1,4 @@
+'use client'
 import { getSearchRelation } from '@/api/search'
 import { authStore } from '@/store/client/authStore'
 import { useQuery } from '@tanstack/react-query'

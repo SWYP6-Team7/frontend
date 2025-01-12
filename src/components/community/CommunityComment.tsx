@@ -1,15 +1,17 @@
+'use client'
 import styled from '@emotion/styled'
 import Comment from '../comment/Comment'
 import CommentForm from '../comment/CommentForm'
-import { useParams } from 'react-router-dom'
 import useComment from '@/hooks/comment/useComment'
 import { palette } from '@/styles/palette'
 import React from 'react'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { useInView } from 'react-intersection-observer'
+import { useParams } from 'next/navigation'
 
 const CommunityComment = () => {
-  const { communityNumber } = useParams()
+  const params = useParams()
+  const communityNumber = params?.communityNumber as string
   const [ref, inView] = useInView()
   if (!communityNumber) {
     return null
@@ -17,7 +19,6 @@ const CommunityComment = () => {
   const {
     commentList: { isLoading, data, isFetching, hasNextPage, fetchNextPage }
   } = useComment('community', Number(communityNumber))
-
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage()
@@ -43,7 +44,7 @@ const CommunityComment = () => {
 
       <div
         ref={ref}
-        css={{ height: 130 }}
+        style={{ height: 130 }}
       />
       <CommentForm
         relatedType="community"

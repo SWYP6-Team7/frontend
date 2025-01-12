@@ -1,16 +1,15 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React from 'react'
 import InfoIcon from '../icons/InfoIcon'
-import ArrowIcon from '../icons/ArrowIcon'
-import BackIcon from '../icons/BackIcon'
-import { useNavigate } from 'react-router-dom'
 import { errorStore } from '@/store/client/errorStore'
+import { useRouter } from 'next/navigation'
 
 const Fallback = () => {
   const { error } = errorStore()
   console.log(error, '=> 에러 발생')
-
+  const router = useRouter()
   return (
     <Container>
       <Body>
@@ -25,7 +24,7 @@ const Fallback = () => {
           alt="No Data Logo Image"
         />
         <Title>{error?.message}</Title>
-        <BackButton onClick={() => (window.location.href = '/')}>
+        <BackButton onClick={() => router.push('/')}>
           {/* back icon */}
           <svg
             width="6"

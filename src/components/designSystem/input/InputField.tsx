@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import React, { FocusEventHandler, forwardRef, useState } from 'react'
 import RemoveButton from './RemoveButton'

@@ -1,3 +1,4 @@
+'use client'
 import useKeyboardResizeEffect from '@/hooks/useKeyboardResizeEffect'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'

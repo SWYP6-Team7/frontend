@@ -1,3 +1,4 @@
+'use client'
 import { getSearch } from '@/api/search'
 import { ISearchData } from '@/model/search'
 import { authStore } from '@/store/client/authStore'

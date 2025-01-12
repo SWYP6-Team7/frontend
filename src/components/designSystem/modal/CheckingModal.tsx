@@ -1,7 +1,7 @@
+'use client'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useRef, useState } from 'react'
-import { styleText } from 'util'
 interface CheckingModalProps {
   isModalOpen: boolean
   modalMsg: string

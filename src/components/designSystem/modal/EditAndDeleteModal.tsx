@@ -1,4 +1,4 @@
-import { palette } from '@/styles/palette'
+'use client'
 import styled from '@emotion/styled'
 import React, { SetStateAction, useEffect, useRef, useState } from 'react'
 import CloseButton from '../Buttons/CloseButton'
@@ -34,6 +34,9 @@ export default function EditAndDeleteModal({
   const editHandler = () => {
     setIsEditBtnClicked(true)
     setIsOpen(false)
+  }
+  if (typeof window === 'undefined') {
+    return null
   }
   return (
     <Container isOpen={isOpen}>

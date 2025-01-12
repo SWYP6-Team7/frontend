@@ -1,4 +1,5 @@
-import CreateTripInputField from '@/components/CreateTripInputField'
+'use client'
+import CreateTripInputField from '@/components/designSystem/input/InputField'
 import TextareaField from '@/components/designSystem/input/TextareaField'
 import Spacing from '@/components/Spacing'
 import { tripDetailStore } from '@/store/client/tripDetailStore'
@@ -7,18 +8,16 @@ import React, { useEffect, useState } from 'react'
 import RecruitingWrapper from '../CreateTrip/CreateTripDetail/RecruitingWrapper'
 import DuedateWrapper from '../CreateTrip/CreateTripDetail/DuedateWrapper'
 import Accordion from '@/components/Accordion'
-import { useNavigate } from 'react-router-dom'
 import GreenCheckIcon from '@/components/icons/GreenCheckIcon'
 import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 import { palette } from '@/styles/palette'
 import Button from '@/components/designSystem/Buttons/Button'
 import PlaceIcon from '@/components/icons/PlaceIcon'
-import ArrowIcon from '@/components/icons/ArrowIcon'
 import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
-import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import { editStore } from '@/store/client/editStore'
 import useViewTransition from '@/hooks/useViewTransition'
+import { useRouter } from 'next/navigation'
 const TAG_LIST = [
   {
     title: '태그 설정',
@@ -67,9 +66,36 @@ export default function TripEdit() {
     addTitle(e.target.value)
   }
   const [initialChecked, setInitialChecked] = useState(false)
-  const navigate = useNavigate()
+  const router = useRouter()
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0
+  })
+
+  useEffect(() => {
+    // 초기값 설정
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+    // resize 이벤트 핸들러
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
+    // 이벤트 리스너 등록
+    window.addEventListener('resize', handleResize)
+
+    // 클린업
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
-  const newRightPosition = window.innerWidth.toString() + 'px'
+  const newRightPosition = windowSize.width.toString() + 'px'
   const { updateTripDetailMutation, isEditSuccess, updateTripDetailMutate } =
     useTripDetail(travelNumber)
 
@@ -144,7 +170,7 @@ export default function TripEdit() {
         onSuccess: () => {
           setEditToastShow(true)
 
-          navigate(`/trip/detail/${travelNumber}`)
+          router.push(`/trip/detail/${travelNumber}`)
         },
         onError: e => {
           console.log(e, '여행 수정에 오류 발생')
@@ -179,7 +205,7 @@ export default function TripEdit() {
     <Container>
       <City onClick={editLocationHandler}>
         <PlaceIcon />
-        <div css={{ marginRight: '4px' }}>{location}</div>
+        <div style={{ marginRight: '4px' }}>{location}</div>
         <svg
           width="6"
           height="11"
@@ -237,7 +263,7 @@ export default function TripEdit() {
       </DurationContainer>
       {/* 회색 끝 선 표시 */}
       <div></div>
-      <div css={{ marginTop: '29.5px' }}>
+      <div style={{ marginTop: '29.5px' }}>
         {TAG_LIST.map(item => (
           <Accordion
             count={getTaggedCount()}

@@ -1,8 +1,10 @@
+'use client'
 import useViewTransition from '@/hooks/useViewTransition'
+import Link from 'next/link'
 import React from 'react'
-import { Link, LinkProps as RouterLinkProps } from 'react-router-dom'
 
-type CustomLinkProps = RouterLinkProps & {
+type CustomLinkProps = {
+  to: string
   children: React.ReactNode
 }
 
@@ -17,7 +19,7 @@ const CustomLink = ({ to, children, ...props }: CustomLinkProps) => {
 
   return (
     <Link
-      to={to}
+      href={to}
       onClick={handleClick}
       {...props}>
       {children}

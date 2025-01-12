@@ -1,6 +1,7 @@
-import React, { FunctionComponent, ReactElement } from 'react'
-import { NavLink, useMatch } from 'react-router-dom'
-import HomeIcon from './icons/HomeIcon'
+'use client'
+import React, { FunctionComponent } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { palette } from '@/styles/palette'
 
 interface NavItemProps {
@@ -10,15 +11,16 @@ interface NavItemProps {
 }
 
 export default function NavItem({ url, Icon, text }: NavItemProps) {
-  const isURLMatched = useMatch(url)
+  const pathname = usePathname()
+  const isURLMatched = pathname === url
 
   return (
-    <NavLink to={url}>
+    <Link href={url}>
       <Icon
-        stroke={isURLMatched ? `${palette.기본}` : `${palette.비강조3}`}
-        fill={isURLMatched ? `${palette.기본}` : `${palette.비강조3}`}
+        stroke={isURLMatched ? palette.기본 : palette.비강조3}
+        fill={isURLMatched ? palette.기본 : palette.비강조3}
       />
       <p>{text}</p>
-    </NavLink>
+    </Link>
   )
 }

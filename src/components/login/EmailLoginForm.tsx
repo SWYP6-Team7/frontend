@@ -1,15 +1,17 @@
+'use client'
 import styled from '@emotion/styled'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Spacing from '../Spacing'
-import { Link, useNavigate } from 'react-router-dom'
 import Button from '../designSystem/Buttons/Button'
 import InfoText from '../designSystem/text/InfoText'
 import useAuth from '@/hooks/user/useAuth'
 import StateInputField from '../designSystem/input/StateInputField'
 import { emailSchema, passwordSchema } from '@/utils/schema'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const EmailLoginForm = () => {
-  const navigate = useNavigate()
+  const router = useRouter()
   const {
     loginEmail,
     loginEmailMutation: { isError, isPending, isSuccess }
@@ -29,7 +31,7 @@ const EmailLoginForm = () => {
   useEffect(() => {
     if (isSuccess) {
       setFormData({ email: '', password: '' })
-      navigate('/')
+      router.push('/')
     }
   }, [isSuccess])
 
@@ -139,10 +141,10 @@ const EmailLoginForm = () => {
       )}
       <Spacing size={24} />
       <SignUpLinkContainer>
-        <span css={{ color: '#848484' }}>처음 오셨나요?</span>
+        <span style={{ color: '#848484' }}>처음 오셨나요?</span>
         <Link
-          to="/registerForm"
-          css={{ textDecoration: 'underline' }}>
+          href="/registerForm"
+          style={{ textDecoration: 'underline' }}>
           회원가입
         </Link>
       </SignUpLinkContainer>

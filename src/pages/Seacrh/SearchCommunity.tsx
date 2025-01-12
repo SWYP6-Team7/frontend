@@ -1,28 +1,29 @@
-import SearchResultList from '@/components/SearchResultList'
+'use client'
 import Spacing from '@/components/Spacing'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
-import useSearch from '@/hooks/search/useSearch'
 import styled from '@emotion/styled'
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import InputField from '@/components/designSystem/input/InputField'
-import { Link, useSearchParams } from 'react-router-dom'
 import SortHeader from '@/components/SortHeader'
 import CategoryList from '@/components/community/CategoryList'
 import { palette } from '@/styles/palette'
 import CommunityItem from '@/components/community/CommunityItem'
 import useCommunity from '@/hooks/useCommunity'
 import CustomLink from '@/components/CustomLink'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const LIST = ['최신순', '추천순', '등록일순']
 
 const SearchCommunity = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const keywordParams = searchParams.get('keyword') ?? ''
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const router = useRouter()
+  const keywordParams = searchParams?.get('keyword') ?? ''
   const [keyword, setKeyword] = useState(keywordParams)
   const [finalKeyword, setFinalKeyword] = useState(keywordParams)
-  const category = searchParams.get('categoryName') ?? '전체'
-  const sort = searchParams.get('sortingTypeName') ?? '최신순'
+  const category = searchParams?.get('categoryName') ?? '전체'
+  const sort = searchParams?.get('sortingTypeName') ?? '최신순'
   const [ref, inView] = useInView()
   const {
     communityList: {
@@ -47,9 +48,9 @@ const SearchCommunity = () => {
   useEffect(() => {
     if (finalKeyword !== '') {
       refetch()
-      const newSearchParams = new URLSearchParams(searchParams)
+      const newSearchParams = new URLSearchParams(searchParams?.toString())
       newSearchParams.set('keyword', finalKeyword)
-      setSearchParams(newSearchParams)
+      router.push(pathname + '?' + newSearchParams)
     }
   }, [finalKeyword, refetch])
 
@@ -69,15 +70,14 @@ const SearchCommunity = () => {
   }
 
   const onClickSort = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
+    const newSearchParams = new URLSearchParams(searchParams?.toString())
 
     newSearchParams.set('sortingTypeName', value)
-
-    setSearchParams(newSearchParams)
+    router.push(pathname + '?' + newSearchParams)
   }
 
   const onClickCategory = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
+    const newSearchParams = new URLSearchParams(searchParams?.toString())
 
     if (value === '잡담') {
       newSearchParams.set('categoryName', '잡담')
@@ -88,7 +88,7 @@ const SearchCommunity = () => {
     } else {
       newSearchParams.set('categoryName', '전체')
     }
-    setSearchParams(newSearchParams)
+    router.push(pathname + '?' + newSearchParams)
   }
 
   return (
@@ -139,7 +139,7 @@ const SearchCommunity = () => {
 
               <div
                 ref={ref}
-                css={{ height: 80 }}
+                style={{ height: 80 }}
               />
             </>
           )}

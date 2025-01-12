@@ -1,3 +1,4 @@
+'use client'
 import useRelationKeyword from '@/hooks/search/useRelationKeyword'
 import styled from '@emotion/styled'
 import RelationKeyword from './RelationKeyword'
@@ -26,7 +27,7 @@ const RelationKeywordList = ({
         data.suggestions.length > 0 &&
         data?.suggestions?.map(data => (
           <button
-            css={{ display: 'block' }}
+            style={{ display: 'block' }}
             key={data}
             onClick={() => onClick(data)}>
             <RelationKeyword

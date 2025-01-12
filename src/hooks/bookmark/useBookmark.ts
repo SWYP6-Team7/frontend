@@ -1,8 +1,8 @@
+'use client'
 import { getBookmark } from '@/api/bookmark'
 import { IMyTripList } from '@/model/myTrip'
 import { authStore } from '@/store/client/authStore'
 import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query'
-import axios from 'axios'
 
 export const useBookmark = () => {
   const { accessToken } = authStore()

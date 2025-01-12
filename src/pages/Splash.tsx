@@ -1,21 +1,22 @@
+'use client'
 import MoingFullLogo from '@/components/icons/MoingFullLogo'
 import { authStore } from '@/store/client/authStore'
-import { myPageStore } from '@/store/client/myPageStore'
 import { splashOnStore } from '@/store/client/splashOnOffStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function Splash() {
   const { splashOn, addSplashOn } = splashOnStore()
 
   const { accessToken } = authStore()
-  const navigate = useNavigate()
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+  const router = useRouter()
+
   const backGroundGrey = ['/trip/detail', '/', 'myTrip', '/splash']
   useEffect(() => {
-    const revisit = sessionStorage.getItem('revisit')
+    const revisit =
+      typeof window !== 'undefined' ? sessionStorage.getItem('revisit') : null
 
     if (revisit === undefined || revisit === null) {
       setTimeout(() => {
@@ -36,12 +37,13 @@ export default function Splash() {
     }
   }, [])
   useEffect(() => {
-    const revisit = sessionStorage.getItem('revisit')
+    const revisit =
+      typeof window !== 'undefined' ? sessionStorage.getItem('revisit') : null
     if (splashOn === false && revisit !== 'true') {
       // 스플래쉬 닫혔고, 방문한 적이 없다면, 온보딩으로.
       console.log('스플래쉬 닫힘')
       if (!accessToken) {
-        navigate('/onBoarding')
+        router.replace('/onBoarding')
       }
     }
   }, [splashOn])

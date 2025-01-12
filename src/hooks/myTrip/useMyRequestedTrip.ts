@@ -1,3 +1,4 @@
+'use client'
 import { deleteRequestedTrips, getRequestedTrips } from '@/api/requestedTrip'
 import { IMyTripList } from '@/model/myTrip'
 import { authStore } from '@/store/client/authStore'

@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import TitleContainer from './ContentTitleContainer'
 import { useTripList } from '@/hooks/useTripList'
@@ -8,7 +9,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import ThreeRowCarousel from '@/components/ThreeRowCarousel'
 import { IMyTripList } from '@/model/myTrip'
 import { daysAgo } from '@/utils/time'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 const TripAvailable = () => {
   const { data } = useTripList('recent')
@@ -30,12 +31,11 @@ const TripAvailable = () => {
       <ThreeRowCarousel>
         {cutTrips &&
           cutTrips?.map(post => {
-            console.log('cut', cutTrips)
             return (
               <div
-                css={{ padding: '18px 16px' }}
+                style={{ padding: '18px 16px' }}
                 key={post.travelNumber}>
-                <Link to={`/trip/detail/${post.travelNumber}`}>
+                <Link href={`/trip/detail/${post.travelNumber}`}>
                   <HorizonBoxLayout
                     travelNumber={post.travelNumber}
                     location={post.location}

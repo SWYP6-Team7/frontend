@@ -1,3 +1,4 @@
+'use client'
 import Button from '@/components/designSystem/Buttons/Button'
 import StateInputField from '@/components/designSystem/input/StateInputField'
 import InfoText from '@/components/designSystem/text/InfoText'
@@ -6,11 +7,11 @@ import Terms from '@/components/Terms'
 import { userStore } from '@/store/client/userStore'
 import styled from '@emotion/styled'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { checkEmail } from '@/api/user'
 import ButtonContainer from '@/components/ButtonContainer'
 import { emailSchema, passwordSchema } from '@/utils/schema'
 import useViewTransition from '@/hooks/useViewTransition'
+import { useRouter } from 'next/navigation'
 interface ErrorProps {
   email: undefined | string
   password: undefined | string
@@ -48,7 +49,7 @@ const RegisterForm = () => {
     confirmPassword: false
   })
   const navigateWithTransition = useViewTransition()
-  const navigate = useNavigate()
+  const router = useRouter()
   const isSocialLoginGoogle = socialLogin === 'google'
   const isSocialLoginKakao = socialLogin === 'kakao'
   const isSocialLoginNaver = socialLogin === 'naver'
@@ -64,7 +65,7 @@ const RegisterForm = () => {
   useEffect(() => {
     if (isSocialLoginGoogle || isSocialLoginNaver) {
       setSocialLogin(null, null)
-      navigate('/login')
+      router.replace('/login')
     }
   }, [socialLogin])
 

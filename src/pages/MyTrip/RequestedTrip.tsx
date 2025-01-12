@@ -1,3 +1,4 @@
+'use client'
 import MyTripHorizonBoxLayout from '@/components/MyTripHorizonBoxLayout'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { palette } from '@/styles/palette'
@@ -5,7 +6,6 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React from 'react'
 import { useInView } from 'react-intersection-observer'
-import { Link } from 'react-router-dom'
 import BookmarkIconBtns from './BookmarkIconBtns'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import { IMyTripList } from '@/model/myTrip'
@@ -37,7 +37,7 @@ export default function RequestedTrip() {
             src="/images/noData.png"
           />
           <NoData
-            css={{
+            style={{
               marginTop: '16px',
               display: 'flex',
               flexDirection: 'column',
@@ -104,7 +104,7 @@ export default function RequestedTrip() {
 
       <div
         ref={ref}
-        css={{ height: 80 }}
+        style={{ height: 80 }}
       />
     </Container>
   )

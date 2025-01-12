@@ -1,17 +1,16 @@
-import ApplyTripProfile from '@/components/ApplyTripProfile'
-import BoxLayoutTag from '@/components/BoxLayoutTag'
+'use client'
 import Badge from '@/components/designSystem/Badge'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import ResultModal from '@/components/designSystem/modal/ResultModal'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import useEnrollment from '@/hooks/enrollment/useEnrollment'
-import { authStore } from '@/store/client/authStore'
+
 import { palette } from '@/styles/palette'
 import { daysAgo } from '@/utils/time'
 import styled from '@emotion/styled'
+import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 
 interface enrollmentCardProps {
   enrollmentNumber: number
@@ -31,7 +30,8 @@ export default function TripEnrollmentCard({
   isNew,
   profileUrl
 }: enrollmentCardProps) {
-  const { travelNumber } = useParams<{ travelNumber: string }>()
+  const params = useParams()
+  const travelNumber = params?.travelNumber as string
   const { enrollmentAcceptanceMutate, enrollmentRejectionMutate } =
     useEnrollment(parseInt(travelNumber!))
   // 수락 모달
@@ -84,7 +84,7 @@ export default function TripEnrollmentCard({
             backgroundColor={palette.keycolorBG}
           />
         </Profile>
-        <div css={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <TimeAgo>{daysAgo(enrolledAt)}</TimeAgo>
           {/* 최신인가 아닌가 부분. */}
           {isNew && <NewMark></NewMark>}

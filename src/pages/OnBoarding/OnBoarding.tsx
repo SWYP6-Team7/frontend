@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -50,7 +51,7 @@ export default function OnBoarding() {
         itemCountProp={0}>
         {steps.map(step => (
           <div
-            css={{ padding: '18px 16px' }}
+            style={{ padding: '18px 16px' }}
             key={step.title}>
             <TextBox>
               <Title>{step.title}</Title>

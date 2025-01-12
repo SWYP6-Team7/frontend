@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 const HomeInputField = ({ ...props }: InputProps) => {

@@ -1,3 +1,4 @@
+'use client'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { useTripList } from '@/hooks/useTripList'
 import styled from '@emotion/styled'
@@ -5,7 +6,6 @@ import React from 'react'
 import { useInView } from 'react-intersection-observer'
 import HorizonBoxLayout from '../HorizonBoxLayout'
 import dayjs from 'dayjs'
-import { Link, useSearchParams } from 'react-router-dom'
 import FullHeartIcon from '../icons/FullHeartIcon'
 import EmptyHeartIcon from '../icons/EmptyHeartIcon'
 import { palette } from '@/styles/palette'
@@ -13,12 +13,13 @@ import { authStore } from '@/store/client/authStore'
 import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
 import { daysAgo } from '@/utils/time'
 import CustomLink from '../CustomLink'
+import { useSearchParams } from 'next/navigation'
 
 const TripInfiniteList = () => {
   const [ref, inView] = useInView()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const searchParams = useSearchParams()
   const engSort = (() => {
-    const value = searchParams.get('sort')
+    const value = searchParams?.get('sort')
     if (!value || (value !== 'recent' && value !== 'recommend')) {
       return 'recent'
     }
@@ -68,7 +69,7 @@ const TripInfiniteList = () => {
         ))}
       <div
         ref={ref}
-        css={{ height: 80 }}
+        style={{ height: 80 }}
       />
     </Container>
   )

@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import ImageModal from '../designSystem/modal/ImageModal'

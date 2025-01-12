@@ -1,15 +1,17 @@
+'use client'
 import FirstStepIcon from '@/components/icons/FirstStepIcon'
 import Button from '@/components/designSystem/Buttons/Button'
 import styled from '@emotion/styled'
 import { userStore } from '@/store/client/userStore'
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate, Outlet } from 'react-router-dom'
+
 import StateInputField from '@/components/designSystem/input/StateInputField'
 import { z } from 'zod'
 import InfoText from '@/components/designSystem/text/InfoText'
 import Spacing from '@/components/Spacing'
 import ButtonContainer from '@/components/ButtonContainer'
 import useViewTransition from '@/hooks/useViewTransition'
+import { usePathname, useRouter } from 'next/navigation'
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
@@ -17,9 +19,8 @@ const koreanOnly = z
   .max(10, { message: '최대 10자까지 입력 가능합니다.' })
 
 const RegisterName = () => {
-  const location = useLocation()
-
-  const navigate = useNavigate()
+  const pathname = usePathname()
+  const router = useRouter()
 
   const {
     name,
@@ -40,11 +41,11 @@ const RegisterName = () => {
       resetName()
       resetForm()
       setSocialLogin(null, null)
-      navigate('/login')
+      router.replace('/login')
     }
     if (!email || !password) {
       resetName()
-      navigate('/registerForm')
+      router.replace('/registerForm')
     }
   }, [email, password, socialLogin])
   const navigateWithTransition = useViewTransition()
@@ -75,7 +76,7 @@ const RegisterName = () => {
         환영합니다! <br />
         이름을 설정해주세요.
       </StepContent>
-      <div css={{ marginTop: '14px' }}>
+      <div style={{ marginTop: '14px' }}>
         <StateInputField
           shake={nameValidError && userName.length > 0}
           success={userName.length > 0 && !nameValidError}
@@ -85,7 +86,7 @@ const RegisterName = () => {
           onChange={e => inputChangeHandler(e)}
           handleRemoveValue={handleRemoveValue}
         />
-        <div css={{ marginTop: 14, padding: '0 6px' }}>
+        <div style={{ marginTop: 14, padding: '0 6px' }}>
           {nameValidError && userName.length > 0 ? (
             <InfoText
               shake={userName.length > 0 && nameValidError}
@@ -104,7 +105,7 @@ const RegisterName = () => {
           onClick={nextStepClickHandler}
           disabled={!(userName.length > 0 && !nameValidError)}
           addStyle={
-            location.pathname == '/registerName'
+            pathname == '/registerName'
               ? userName.length > 0 && !nameValidError
                 ? {
                     backgroundColor: 'rgba(62, 141, 0, 1)',

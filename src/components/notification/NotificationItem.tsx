@@ -1,27 +1,27 @@
+'use client'
 import { INotificationContent } from '@/model/notification'
 import styled from '@emotion/styled'
 import React from 'react'
-import RoundedImage from '../designSystem/profile/RoundedImage'
 import { palette } from '@/styles/palette'
 import { daysAgo, daysLeft, formatTime } from '@/utils/time'
 import Badge from '../designSystem/Badge'
-import { useNavigate } from 'react-router-dom'
 import CommunityNotification from '../icons/CommunityNotification'
 import TripNotificationIcon from '../icons/TripNotificationIcon'
+import { useRouter } from 'next/navigation'
 
 interface NotificationItemProps {
   data: INotificationContent
 }
 
 const NotificationItem = ({ data }: NotificationItemProps) => {
-  const navigate = useNavigate()
+  const router = useRouter()
   const onclickLink = () => {
     if (data.title === '멤버 댓글 알림') {
-      navigate(`/trip/comment/${data.travelNumber}`)
+      router.push(`/trip/comment/${data.travelNumber}`)
     } else if (data.title === '커뮤니티') {
-      navigate(`/community/detail/${data.travelNumber}`)
+      router.push(`/community/detail/${data.travelNumber}`)
     } else {
-      navigate(`/trip/detail/${data.travelNumber}`)
+      router.push(`/trip/detail/${data.travelNumber}`)
     }
   }
   return (

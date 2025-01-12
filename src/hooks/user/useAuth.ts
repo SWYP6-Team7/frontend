@@ -1,13 +1,14 @@
+'use client'
 import { authStore } from '@/store/client/authStore'
 
 import { axiosInstance } from '@/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import RequestError from '@/context/ReqeustError'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { IRegisterEmail, IRegisterGoogle, IRegisterKakao } from '@/model/auth'
 import { userStore } from '@/store/client/userStore'
 import { getJWTHeader } from '@/utils/user'
+import { usePathname, useRouter } from 'next/navigation'
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
@@ -37,9 +38,9 @@ function checkNetworkConnection() {
   return true
 }
 const useAuth = () => {
-  const { pathname } = useLocation()
+  const pathname = usePathname()
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
+  const router = useRouter()
   const { setLoginData, clearLoginData, accessToken, resetData } = authStore()
   const { setSocialLogin } = userStore()
   const loginEmailMutation = useMutation({
@@ -91,7 +92,7 @@ const useAuth = () => {
         userId: Number(data.userId),
         accessToken: data.accessToken
       })
-      navigate('/')
+      router.push('/')
     },
     onError: (error: any) => {
       const errorMessage =
@@ -101,7 +102,7 @@ const useAuth = () => {
 
       console.error('Error:', errorMessage)
       alert(errorMessage)
-      navigate('/login')
+      router.replace('/login')
       throw new RequestError(errorMessage)
     }
   })
@@ -164,7 +165,7 @@ const useAuth = () => {
       clearLoginData()
       resetData()
       setSocialLogin(null, null)
-      navigate('/')
+      router.push('/')
       queryClient.clear()
     },
     onError: (error: any) => {

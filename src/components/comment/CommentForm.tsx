@@ -1,14 +1,14 @@
+'use client'
 import useKeyboardResizeEffect from '@/hooks/useKeyboardResizeEffect'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import ArrowIcon from '../icons/ArrowIcon'
 import UpArrowIcon from '../icons/UpArrowIcon'
 import { commentStore } from '@/store/client/commentStore'
 import useComment from '@/hooks/comment/useComment'
 import ResultToast from '../designSystem/toastMessage/resultToast'
 import { isGuestUser } from '@/utils/user'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 
 interface CommentFormProps {
   paddingBottom?: number
@@ -25,7 +25,7 @@ const CommentForm = ({
 }: CommentFormProps) => {
   const { isEdit, edit, parentNumber, commentNumber, setReset, isReply } =
     commentStore()
-  const navigate = useNavigate()
+  const router = useRouter()
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [focused, setFocused] = useState(false)
   const [isToastShow, setIsToastShow] = useState(false)
@@ -87,7 +87,7 @@ const CommentForm = ({
     <Container
       paddingBottom={paddingBottom}
       paddingTop={paddingTop}
-      onClick={() => navigate('/login')}>
+      onClick={() => router.push('/login')}>
       <InputContainer focused={false}>
         <Input
           placeholder="로그인 후 댓글을 달아보세요."

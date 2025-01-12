@@ -1,3 +1,4 @@
+'use client'
 import Spacing from '@/components/Spacing'
 import StateInputField from './StateInputField'
 import InfoText from '../text/InfoText'
@@ -44,7 +45,7 @@ export default function ValidationInputField({
         shake={shake}
       />
       <Spacing size={8} />
-      <div css={{ paddingLeft: 6 }}>
+      <div style={{ paddingLeft: 6 }}>
         {hasError ? (
           <InfoText hasError>{message}</InfoText>
         ) : showSuccess && success ? (

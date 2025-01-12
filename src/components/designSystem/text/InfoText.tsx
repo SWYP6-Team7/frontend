@@ -1,4 +1,4 @@
-import CheckIcon from '@/components/icons/CheckIcon'
+'use client'
 import InfoIcon from '@/components/icons/InfoIcon'
 import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'

@@ -1,3 +1,4 @@
+'use client'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import EditAndDeleteModal from '@/components/designSystem/modal/EditAndDeleteModal'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
@@ -83,7 +84,7 @@ export default function ApplyTripIconBtns({
 
   return (
     <div>
-      <HeartBtn css={{ display: 'flex' }}>
+      <HeartBtn style={{ display: 'flex' }}>
         {bookmarked ? (
           <div onClick={bookmarkClickHandler}>
             <FullHeartIcon
@@ -102,7 +103,7 @@ export default function ApplyTripIconBtns({
         )}
         <div
           onClick={editOrDeleteClickHandler}
-          css={{ marginLeft: '10px' }}>
+          style={{ marginLeft: '10px' }}>
           <MoreIcon stroke={palette.비강조2} />
         </div>
       </HeartBtn>

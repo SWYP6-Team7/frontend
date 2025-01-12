@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 
 interface BoxLayoutTagProps {
@@ -25,7 +26,7 @@ const BoxLayoutTag = ({
 }: BoxLayoutTagProps) => {
   return (
     <Tag
-      css={{
+      style={{
         fontWeight,
         backgroundColor,
         padding,

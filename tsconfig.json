@@ -1,21 +1,35 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "@emotion/react",
-    "module": "ESNext",
-    "target": "ESNext",
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": false,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "baseUrl": "./",
-
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "node_modules/*": ["./node_modules/*"]
-    },
-    "types": ["vite/client"]
-  }
+      "@components/*": ["./src/components/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }

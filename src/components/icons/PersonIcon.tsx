@@ -1,3 +1,4 @@
+'use client'
 interface PersonIconProps {
   width?: number
   height?: number

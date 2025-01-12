@@ -1,3 +1,4 @@
+'use client'
 import Badge from '@/components/designSystem/Badge'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
@@ -10,13 +11,11 @@ import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import ProfileEditModal from './ProfileEditModal'
 import { isGuestUser } from '@/utils/user'
 import useViewTransition from '@/hooks/useViewTransition'
 
 export default function EditMyInfo() {
-  const navigate = useNavigate()
   const { addLogoutCheck } = authStore()
   const { logout } = useAuth()
   const {
@@ -118,17 +117,17 @@ export default function EditMyInfo() {
       <ProfileImg>
         <div
           onClick={() => setShowModal(true)}
-          css={{ position: 'relative' }}>
+          style={{ position: 'relative' }}>
           <img
             src={profileUrl}
-            css={{
+            style={{
               width: '80px',
               height: '100%',
               borderRadius: '50%'
             }}
           />
           <div
-            css={{
+            style={{
               height: '32px',
               position: 'absolute',
               right: '-4px',
@@ -146,8 +145,8 @@ export default function EditMyInfo() {
           }}>
           <SmallTitle>이름</SmallTitle>
           <Name>
-            <Value css={{ marginRight: '8px' }}>{name}</Value>
-            <div css={{ padding: '8px 9px' }}>
+            <Value style={{ marginRight: '8px' }}>{name}</Value>
+            <div style={{ padding: '8px 9px' }}>
               <RightVector />
             </div>
           </Name>
@@ -170,7 +169,7 @@ export default function EditMyInfo() {
             navigateWithTransition('/editMyPassword')
           }}>
           <SmallTitle>비밀번호 변경</SmallTitle>
-          <div css={{ padding: '8px 9px' }}>
+          <div style={{ padding: '8px 9px' }}>
             <RightVector />
           </div>
         </Box>
@@ -182,15 +181,15 @@ export default function EditMyInfo() {
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyTag')
           }}>
-          <Box css={{ padding: '18px 8px', display: 'flex' }}>
-            <SmallTitle css={{ display: 'flex' }}>나의 태그</SmallTitle>
-            <div css={{ padding: '8px 9px' }}>
+          <Box style={{ padding: '18px 8px', display: 'flex' }}>
+            <SmallTitle style={{ display: 'flex' }}>나의 태그</SmallTitle>
+            <div style={{ padding: '8px 9px' }}>
               <RightVector />
             </div>
           </Box>
           <MyTag>
-            <AgeBox css={{ display: 'flex' }}>
-              <LastTitle css={{ marginRight: '24px' }}>연령대</LastTitle>
+            <AgeBox style={{ display: 'flex' }}>
+              <LastTitle style={{ marginRight: '24px' }}>연령대</LastTitle>
               <Badge
                 isDueDate={false}
                 fontWeight="600"
@@ -200,7 +199,7 @@ export default function EditMyInfo() {
               />
             </AgeBox>
             <div
-              css={{
+              style={{
                 marginTop: '16px',
                 display: 'flex',
                 alignItems: 'center'

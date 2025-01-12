@@ -1,3 +1,4 @@
+'use client'
 import Badge from '@/components/designSystem/Badge'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
@@ -8,14 +9,14 @@ import { myPageStore } from '@/store/client/myPageStore'
 import { palette } from '@/styles/palette'
 import { isGuestUser } from '@/utils/user'
 import styled from '@emotion/styled'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export default function MyPage() {
   const navigateWithTransition = useViewTransition()
   const { name, agegroup, email, preferredTags, profileUrl } = myPageStore()
   const [showLoginModal, setShowLoginModal] = useState(false)
-  const navigate = useNavigate()
+  const router = useRouter()
   const cutTags =
     preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags
   const onLinkAnnouncement = () => {
@@ -31,7 +32,7 @@ export default function MyPage() {
             size={80}
           />
         </ProfileImg>
-        <div css={{ width: '100%' }}>
+        <div style={{ width: '100%' }}>
           {!isGuestUser() ? (
             <>
               <MoreBox
@@ -40,13 +41,13 @@ export default function MyPage() {
                   navigateWithTransition('/editMyInfo')
                 }}>
                 <UserName>{name}</UserName>
-                <div css={{ display: 'flex', padding: '8px 5px' }}>
+                <div style={{ display: 'flex', padding: '8px 5px' }}>
                   <RightVector />
                 </div>
               </MoreBox>
               <Email>{email}</Email>
               <Tags>
-                <div css={{ marginRight: '8px' }}>
+                <div style={{ marginRight: '8px' }}>
                   <Badge
                     isDueDate={false}
                     fontWeight="600"
@@ -57,7 +58,7 @@ export default function MyPage() {
                 </div>
 
                 {cutTags.map((text: string) => (
-                  <div css={{ marginRight: '8px' }}>
+                  <div style={{ marginRight: '8px' }}>
                     <Badge
                       key={text}
                       isDueDate={false}
@@ -83,7 +84,7 @@ export default function MyPage() {
             <>
               <MoreBox onClick={() => setShowLoginModal(true)}>
                 <UserName>로그인 & 회원가입</UserName>
-                <div css={{ display: 'flex', padding: '8px 5px' }}>
+                <div style={{ display: 'flex', padding: '8px 5px' }}>
                   <RightVector />
                 </div>
               </MoreBox>
@@ -132,23 +133,23 @@ export default function MyPage() {
             작성한 글
           </SmallTitle>
         </Box>
-        <div css={{ marginTop: '16px' }}>
+        <div style={{ marginTop: '16px' }}>
           <Title>약관 및 정책</Title>
-          <SmallTitle css={{ margin: 0 }}>
+          <SmallTitle style={{ margin: 0 }}>
             <a
               href={'/pdf/service_terms(241115).pdf'}
               target="_blank">
               서비스이용약관
             </a>
           </SmallTitle>
-          <SmallTitle css={{ margin: 0 }}>
+          <SmallTitle style={{ margin: 0 }}>
             <a
               href={'/pdf/privacy_policy(241006).pdf'}
               target="_blank">
               개인정보처리방침
             </a>
           </SmallTitle>
-          <SmallTitle css={{ margin: 0 }}>
+          <SmallTitle style={{ margin: 0 }}>
             <a
               href="/pdf/privacy_terms(241006).pdf"
               target="_blank">
@@ -161,7 +162,7 @@ export default function MyPage() {
 
       <CheckingModal
         isModalOpen={showLoginModal}
-        onClick={() => navigate('/login')}
+        onClick={() => router.push('/login')}
         modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}
         modalTitle="로그인 안내"
         modalButtonText="로그인"

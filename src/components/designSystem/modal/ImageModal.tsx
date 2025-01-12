@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import React from 'react'
 
@@ -21,7 +22,7 @@ const ImageModal = ({
     <Container onClick={handleCloseModal}>
       <TopText>
         사진{' '}
-        <span css={{ fontWeight: 400 }}>
+        <span style={{ fontWeight: 400 }}>
           {count}/{allCount}
         </span>
       </TopText>

@@ -1,3 +1,4 @@
+'use client'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import EditAndDeleteModal from '@/components/designSystem/modal/EditAndDeleteModal'
 import ResultToast from '@/components/designSystem/toastMessage/resultToast'
@@ -9,8 +10,8 @@ import useTripDetail from '@/hooks/tripDetail/useTripDetail'
 import { authStore } from '@/store/client/authStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 interface HostTripIconBtnsProps {
   bookmarked: boolean
@@ -20,7 +21,7 @@ export default function HostTripIconBtns({
   bookmarked,
   travelNumber
 }: HostTripIconBtnsProps) {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { accessToken, userId } = authStore()
   const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false)
   const [bookmarkCancelClicked, setBookmarkCancelClicked] = useState(false)
@@ -71,7 +72,7 @@ export default function HostTripIconBtns({
     if (isEditBtnClicked) {
       setThreeDotsClick(false)
       setIsEditBtnClicked(false)
-      navigate(`/trip/edit/${travelNumber}`)
+      router.push(`/trip/edit/${travelNumber}`)
     }
     if (checkingModalClicked) {
       // 삭제 요청.
@@ -90,7 +91,7 @@ export default function HostTripIconBtns({
   }
   return (
     <div>
-      <HeartBtn css={{ display: 'flex' }}>
+      <HeartBtn style={{ display: 'flex' }}>
         {bookmarked ? (
           <div onClick={bookmarkClickHandler}>
             <FullHeartIcon
@@ -109,7 +110,7 @@ export default function HostTripIconBtns({
         )}
         <div
           onClick={editOrDeleteClickHandler}
-          css={{ marginLeft: '10px' }}>
+          style={{ marginLeft: '10px' }}>
           <MoreIcon stroke={palette.비강조2} />
         </div>
       </HeartBtn>

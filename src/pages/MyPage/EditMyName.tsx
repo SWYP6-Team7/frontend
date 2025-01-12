@@ -2,24 +2,21 @@ import Button from '@/components/designSystem/Buttons/Button'
 import ButtonContainer from '@/components/ButtonContainer'
 import StateInputField from '@/components/designSystem/input/StateInputField'
 import InfoText from '@/components/designSystem/text/InfoText'
-import ResultToast from '@/components/designSystem/toastMessage/resultToast'
 import Spacing from '@/components/Spacing'
 import useMyPage from '@/hooks/myPage/useMyPage'
-import { authStore } from '@/store/client/authStore'
 import { myPageStore } from '@/store/client/myPageStore'
-import { userStore } from '@/store/client/userStore'
 import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
+import { useRouter } from 'next/navigation'
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
   .regex(/^[ㄱ-ㅎ|가-힣]+$/, { message: '한글만 입력 가능합니다.' })
   .max(10, { message: '최대 10자까지 입력 가능합니다.' })
 export default function EditMyName() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { name, addName, addIsNameUpdated } = myPageStore()
   const [userName, setUserName] = useState(name)
   const { updateMyPageMutation, isUpdatedSuccess } = useMyPage()
@@ -35,7 +32,7 @@ export default function EditMyName() {
   useEffect(() => {
     if (isUpdatedSuccess) {
       addIsNameUpdated(true)
-      navigate(-1)
+      router.back()
     }
   }, [isUpdatedSuccess])
 
@@ -52,7 +49,7 @@ export default function EditMyName() {
   return (
     <Wrapper>
       <StepContent>새로운 이름을 입력해주세요</StepContent>
-      <div css={{ marginTop: '14px' }}>
+      <div style={{ marginTop: '14px' }}>
         <StateInputField
           showIcon={false}
           shake={nameValidError && userName.length > 0}
@@ -63,7 +60,7 @@ export default function EditMyName() {
           onChange={e => inputChangeHandler(e)}
           handleRemoveValue={handleRemoveValue}
         />
-        <div css={{ marginTop: 14, padding: '0 6px' }}>
+        <div style={{ marginTop: 14, padding: '0 6px' }}>
           {nameValidError && userName.length > 0 ? (
             <InfoText
               shake={userName.length > 0 && nameValidError}

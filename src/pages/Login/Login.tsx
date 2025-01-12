@@ -1,15 +1,10 @@
-import { axiosInstance } from '@/api'
+'use client'
 import { googleLogin, kakaoLogin, naverLogin } from '@/api/user'
 import GoogleIcon from '@/components/icons/GoogleIcon'
 import KakaoIcon from '@/components/icons/KakaoIcon'
 import NaverIcon from '@/components/icons/NaverIcon'
 import EmailLoginForm from '@/components/login/EmailLoginForm'
 import Spacing from '@/components/Spacing'
-import {
-  GOOGLE_LINK,
-  KAKAO_LINK,
-  NAVER_AUTH_URL
-} from '@/constants/socialLogin'
 import styled from '@emotion/styled'
 
 const Login = () => {

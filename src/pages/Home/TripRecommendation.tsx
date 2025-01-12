@@ -1,3 +1,4 @@
+'use client'
 import styled from '@emotion/styled'
 import TitleContainer from './ContentTitleContainer'
 import { useTripList } from '@/hooks/useTripList'
@@ -6,7 +7,7 @@ import HorizonBoxLayout from '@/components/HorizonBoxLayout'
 import dayjs from 'dayjs'
 import { IMyTripList } from '@/model/myTrip'
 import { daysAgo } from '@/utils/time'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 const TripRecommendation = () => {
   const { data } = useTripList('recommend')
@@ -28,9 +29,9 @@ const TripRecommendation = () => {
         {cutTrips &&
           cutTrips?.map(post => (
             <div
-              css={{ padding: '18px 16px' }}
+              style={{ padding: '18px 16px' }}
               key={post.travelNumber}>
-              <Link to={`/trip/detail/${post.travelNumber}`}>
+              <Link href={`/trip/detail/${post.travelNumber}`}>
                 <HorizonBoxLayout
                   bookmarked={post.bookmarked}
                   location={post.location}

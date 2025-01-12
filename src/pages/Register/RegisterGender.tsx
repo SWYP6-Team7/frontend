@@ -1,18 +1,14 @@
+'use client'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { useNavigate, useOutletContext } from 'react-router-dom'
 import { userStore } from '@/store/client/userStore'
-import useViewTransition from '@/hooks/useViewTransition'
-
-interface ContextType {
-  setGenderCheck: React.Dispatch<React.SetStateAction<boolean>>
-  isVisible: boolean
-}
+import { useRegisterAge } from './RegisterAge'
+import { useRouter } from 'next/navigation'
 
 const RegisterGender = () => {
   // Outlet으로 렌더링 될 하위 컴포넌트에 Props로 성별 선택확인 변수 전달.
-  const { setGenderCheck } = useOutletContext<ContextType>()
+  const { setGenderCheck } = useRegisterAge()
   const {
     sex,
     addSex,
@@ -27,8 +23,7 @@ const RegisterGender = () => {
   } = userStore()
   const [maleClicked, setMaleClicked] = useState(sex == 'M' ? true : false)
   const [femaleClicked, setFemaleClicked] = useState(sex == 'F' ? true : false)
-  const navigate = useNavigate()
-  const navigateWithTransition = useViewTransition()
+  const router = useRouter()
   const isSocialLoginKakao = socialLogin === 'kakao'
   const isSocialLoginNaver = socialLogin === 'naver'
   const isSocialLoginGoogle = socialLogin === 'google'
@@ -56,27 +51,27 @@ const RegisterGender = () => {
         resetAge()
         setSocialLogin(null, null)
         resetName()
-        navigate('/login')
+        router.replace('/login')
       }
     } else if (isSocialLoginKakao) {
       if (!email || !agegroup) {
         resetName()
         resetForm()
         resetAge()
-        navigate('/registerForm')
+        router.replace('/registerForm')
       }
     } else if (isSocialLoginNaver) {
       resetName()
       resetForm()
       resetAge()
       setSocialLogin(null, null)
-      navigate('/login')
+      router.replace('/login')
     } else {
       if (!email || !name || !agegroup) {
         resetName()
         resetForm()
         resetAge()
-        navigate('/registerForm')
+        router.replace('/registerForm')
       }
     }
   }, [email, name, agegroup, socialLogin])
@@ -87,7 +82,7 @@ const RegisterGender = () => {
     else setGenderCheck(true)
   }, [])
   return (
-    <div css={{ position: 'relative' }}>
+    <div style={{ position: 'relative' }}>
       <GenderContainer>
         <StepContent>성별을 선택해주세요.</StepContent>
         <GenderImgContainer>
@@ -102,7 +97,7 @@ const RegisterGender = () => {
               alt=""
             />
             <p
-              css={
+              style={
                 maleClicked
                   ? { color: 'black', fontWeight: 700 }
                   : { color: 'rgba(171, 171, 171, 1)' }
@@ -121,7 +116,7 @@ const RegisterGender = () => {
               alt=""
             />
             <p
-              css={
+              style={
                 femaleClicked
                   ? { color: 'black', fontWeight: 700 }
                   : { color: 'rgba(171, 171, 171, 1)' }
