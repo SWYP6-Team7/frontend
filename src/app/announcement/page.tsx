@@ -1,8 +1,8 @@
 import Announcement from "@/page/MyPage/Announcement";
 import React from "react";
 
-const page = () => {
+const AnnouncementPage = () => {
   return <Announcement />;
 };
 
-export default page;
+export default AnnouncementPage;
