@@ -1,8 +1,8 @@
-import DetailCommunity from '@/pages/Community/DetailCommunity'
-import React from 'react'
+import DetailCommunity from "@/page/Community/DetailCommunity";
+import React from "react";
 
 const DetailPage = () => {
-  return <DetailCommunity />
-}
+  return <DetailCommunity />;
+};
 
-export default DetailPage
+export default DetailPage;

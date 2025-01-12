@@ -1,8 +1,8 @@
-import CreateTripDetail from '@/pages/CreateTrip/CreateTripDetail/CreateTripDetail'
-import React from 'react'
+import CreateTripDetail from "@/page/CreateTrip/CreateTripDetail/CreateTripDetail";
+import React from "react";
 
 const CreateTripDetailPage = () => {
-  return <CreateTripDetail />
-}
+  return <CreateTripDetail />;
+};
 
-export default CreateTripDetailPage
+export default CreateTripDetailPage;

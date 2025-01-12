@@ -1,8 +1,8 @@
-import SearchCommunity from '@/pages/Seacrh/SearchCommunity'
-import React from 'react'
+import SearchCommunity from "@/page/Seacrh/SearchCommunity";
+import React from "react";
 
 const SearchCommunityPage = () => {
-  return <SearchCommunity />
-}
+  return <SearchCommunity />;
+};
 
-export default SearchCommunityPage
+export default SearchCommunityPage;

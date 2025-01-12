@@ -1,8 +1,8 @@
-import CreateTripIntroduce from '@/pages/CreateTrip/CreateTripIntroduce'
-import React from 'react'
+import CreateTripIntroduce from "@/page/CreateTrip/CreateTripIntroduce";
+import React from "react";
 
 const CreateTripIntroducePage = () => {
-  return <CreateTripIntroduce />
-}
+  return <CreateTripIntroduce />;
+};
 
-export default CreateTripIntroducePage
+export default CreateTripIntroducePage;

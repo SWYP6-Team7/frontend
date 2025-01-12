@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import React, { useEffect } from "react";
 import Header from "./Header";
 
-import Navbar from "@/pages/Home/Navbar";
+import Navbar from "@/page/Home/Navbar";
 import { authStore } from "@/store/client/authStore";
 import path from "path";
 import { palette } from "@/styles/palette";
@@ -11,7 +11,7 @@ import useAuth from "@/hooks/user/useAuth";
 import { myPageStore } from "@/store/client/myPageStore";
 import useMyPage from "@/hooks/myPage/useMyPage";
 import { ImyPage, IProfileImg } from "@/model/myPages";
-import Splash from "@/pages/Splash";
+import Splash from "@/page/Splash";
 import { splashOnStore } from "@/store/client/splashOnOffStore";
 import { usePathname } from "next/navigation";
 const Layout = ({ children }: { children: React.ReactNode }) => {

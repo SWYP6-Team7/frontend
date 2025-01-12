@@ -1,8 +1,8 @@
-import Announcement from '@/pages/MyPage/Announcement'
-import React from 'react'
+import Announcement from "@/page/MyPage/Announcement";
+import React from "react";
 
 const page = () => {
-  return <Announcement />
-}
+  return <Announcement />;
+};
 
-export default page
+export default page;

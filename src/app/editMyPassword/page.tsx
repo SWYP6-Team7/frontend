@@ -1,8 +1,8 @@
-import EditMyPassword from '@/pages/MyPage/EditMyPassword'
-import React from 'react'
+import EditMyPassword from "@/page/MyPage/EditMyPassword";
+import React from "react";
 
 const EditMyPasswordPage = () => {
-  return <EditMyPassword />
-}
+  return <EditMyPassword />;
+};
 
-export default EditMyPasswordPage
+export default EditMyPasswordPage;

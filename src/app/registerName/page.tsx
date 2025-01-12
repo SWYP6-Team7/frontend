@@ -1,8 +1,8 @@
-import RegisterName from '@/pages/Register/RegisterName'
-import React from 'react'
+import RegisterName from "@/page/Register/RegisterName";
+import React from "react";
 
 const RegisterNamePage = () => {
-  return <RegisterName />
-}
+  return <RegisterName />;
+};
 
-export default RegisterNamePage
+export default RegisterNamePage;

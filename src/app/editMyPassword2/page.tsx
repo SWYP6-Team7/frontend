@@ -1,8 +1,8 @@
-import NewPassword from '@/pages/MyPage/NewPassword'
-import React from 'react'
+import NewPassword from "@/page/MyPage/NewPassword";
+import React from "react";
 
 const EditMyPassword2Page = () => {
-  return <NewPassword />
-}
+  return <NewPassword />;
+};
 
-export default EditMyPassword2Page
+export default EditMyPassword2Page;

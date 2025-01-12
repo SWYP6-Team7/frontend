@@ -1,8 +1,8 @@
-import SearchTravel from '@/pages/Seacrh/SearchTravel'
-import React from 'react'
+import SearchTravel from "@/page/Seacrh/SearchTravel";
+import React from "react";
 
 const SearchTravelPage = () => {
-  return <SearchTravel />
-}
+  return <SearchTravel />;
+};
 
-export default SearchTravelPage
+export default SearchTravelPage;

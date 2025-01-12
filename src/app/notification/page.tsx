@@ -1,8 +1,8 @@
-import Notifications from '@/pages/Notifications'
-import React from 'react'
+import Notifications from "@/page/Notifications";
+import React from "react";
 
 const NotificationPage = () => {
-  return <Notifications />
-}
+  return <Notifications />;
+};
 
-export default NotificationPage
+export default NotificationPage;

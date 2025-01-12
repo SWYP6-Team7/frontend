@@ -1,8 +1,8 @@
-import EditCommunity from '@/pages/Community/EditCommunity'
-import React from 'react'
+import EditCommunity from "@/page/Community/EditCommunity";
+import React from "react";
 
 const EditCommunityPage = () => {
-  return <EditCommunity />
-}
+  return <EditCommunity />;
+};
 
-export default EditCommunityPage
+export default EditCommunityPage;

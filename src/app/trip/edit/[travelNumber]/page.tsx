@@ -1,8 +1,8 @@
-import TripEdit from '@/pages/TripDetail/TripEdit'
-import React from 'react'
+import TripEdit from "@/page/TripDetail/TripEdit";
+import React from "react";
 
 const TripEditPage = () => {
-  return <TripEdit />
-}
+  return <TripEdit />;
+};
 
-export default TripEditPage
+export default TripEditPage;

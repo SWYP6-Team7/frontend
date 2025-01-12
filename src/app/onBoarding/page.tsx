@@ -1,8 +1,8 @@
-import OnBoarding from '@/pages/OnBoarding/OnBoarding'
-import React from 'react'
+import OnBoarding from "@/page/OnBoarding/OnBoarding";
+import React from "react";
 
 const OnBoardingPage = () => {
-  return <OnBoarding />
-}
+  return <OnBoarding />;
+};
 
-export default OnBoardingPage
+export default OnBoardingPage;

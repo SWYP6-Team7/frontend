@@ -1,8 +1,8 @@
-import CreateCommunity from '@/pages/Community/CreateCommunity'
-import React from 'react'
+import CreateCommunity from "@/page/Community/CreateCommunity";
+import React from "react";
 
 const CreateCommunityPage = () => {
-  return <CreateCommunity />
-}
+  return <CreateCommunity />;
+};
 
-export default CreateCommunityPage
+export default CreateCommunityPage;

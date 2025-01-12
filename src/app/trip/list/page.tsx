@@ -1,8 +1,8 @@
-import TripList from '@/pages/TripList/TripList'
-import React from 'react'
+import TripList from "@/page/TripList/TripList";
+import React from "react";
 
 const TripListPage = () => {
-  return <TripList />
-}
+  return <TripList />;
+};
 
-export default TripListPage
+export default TripListPage;

@@ -1,8 +1,8 @@
-import Withdrawal from '@/pages/MyPage/Withdrawal'
-import React from 'react'
+import Withdrawal from "@/page/MyPage/Withdrawal";
+import React from "react";
 
 const WithDrawalPage = () => {
-  return <Withdrawal />
-}
+  return <Withdrawal />;
+};
 
-export default WithDrawalPage
+export default WithDrawalPage;

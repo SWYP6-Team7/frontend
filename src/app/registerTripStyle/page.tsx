@@ -1,8 +1,8 @@
-import RegisterTripStyle from '@/pages/Register/RegisterTripStyle'
-import React from 'react'
+import RegisterTripStyle from "@/page/Register/RegisterTripStyle";
+import React from "react";
 
 const RegisterTripStylePage = () => {
-  return <RegisterTripStyle />
-}
+  return <RegisterTripStyle />;
+};
 
-export default RegisterTripStylePage
+export default RegisterTripStylePage;

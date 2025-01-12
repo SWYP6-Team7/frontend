@@ -1,8 +1,8 @@
-import TripComment from '@/pages/Comment/TripComment'
-import React from 'react'
+import TripComment from "@/page/Comment/TripComment";
+import React from "react";
 
 const TripCommentPage = () => {
-  return <TripComment />
-}
+  return <TripComment />;
+};
 
-export default TripCommentPage
+export default TripCommentPage;

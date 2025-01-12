@@ -1,8 +1,8 @@
-import OauthGoogle from '@/pages/Login/OauthGoogle'
-import React from 'react'
+import OauthGoogle from "@/page/Login/OauthGoogle";
+import React from "react";
 
 const OauthGooglePage = () => {
-  return <OauthGoogle />
-}
+  return <OauthGoogle />;
+};
 
-export default OauthGooglePage
+export default OauthGooglePage;

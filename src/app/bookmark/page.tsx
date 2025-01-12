@@ -1,8 +1,8 @@
-import Bookmark from '@/pages/MyTrip/Bookmark'
-import React from 'react'
+import Bookmark from "@/page/MyTrip/Bookmark";
+import React from "react";
 
 const BookmarkPage = () => {
-  return <Bookmark />
-}
+  return <Bookmark />;
+};
 
-export default BookmarkPage
+export default BookmarkPage;

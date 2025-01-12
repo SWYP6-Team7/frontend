@@ -1,8 +1,8 @@
-import MyTrip from '@/pages/MyTrip/MyTrip'
-import React from 'react'
+import MyTrip from "@/page/MyTrip/MyTrip";
+import React from "react";
 
 const MyTripPage = () => {
-  return <MyTrip />
-}
+  return <MyTrip />;
+};
 
-export default MyTripPage
+export default MyTripPage;

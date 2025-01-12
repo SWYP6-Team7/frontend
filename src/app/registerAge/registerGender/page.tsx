@@ -1,8 +1,8 @@
-import RegisterGender from '@/pages/Register/RegisterGender'
-import React from 'react'
+import RegisterGender from "@/page/Register/RegisterGender";
+import React from "react";
 
 const RegisterGenderPage = () => {
-  return <RegisterGender />
-}
+  return <RegisterGender />;
+};
 
-export default RegisterGenderPage
+export default RegisterGenderPage;

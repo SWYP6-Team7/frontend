@@ -1,8 +1,8 @@
-import EditMyTag from '@/pages/MyPage/EditMyTag'
-import React from 'react'
+import EditMyTag from "@/page/MyPage/EditMyTag";
+import React from "react";
 
 const EditMyTagPage = () => {
-  return <EditMyTag />
-}
+  return <EditMyTag />;
+};
 
-export default EditMyTagPage
+export default EditMyTagPage;

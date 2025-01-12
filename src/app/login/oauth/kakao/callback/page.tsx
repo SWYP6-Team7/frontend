@@ -1,8 +1,8 @@
-import OauthKakao from '@/pages/Login/OauthKakao'
-import React from 'react'
+import OauthKakao from "@/page/Login/OauthKakao";
+import React from "react";
 
 const OauthKakaoPage = () => {
-  return <OauthKakao />
-}
+  return <OauthKakao />;
+};
 
-export default OauthKakaoPage
+export default OauthKakaoPage;

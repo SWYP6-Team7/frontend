@@ -1,38 +1,39 @@
 "use client";
+import { useState, useEffect } from "react";
 import { errorStore } from "@/store/client/errorStore";
-import { errorToastUI } from "@/store/client/toastUI";
-import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+import { QueryClient, QueryClientProvider, defaultShouldDehydrateQuery, isServer } from "@tanstack/react-query";
 
-const QueryClientBoundary = ({ children }: React.PropsWithChildren) => {
-  const { updateError, setIsMutationError } = errorStore();
-
-  const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-      onError: (error: Error) => updateError(error),
-    }),
-    mutationCache: new MutationCache({
-      onError: (error: Error) => {
-        updateError(error);
-        setIsMutationError(true);
-      },
-    }),
+function makeQueryClient() {
+  return new QueryClient({
     defaultOptions: {
-      // 에러 전파를 위한 설정.
       queries: {
-        refetchOnWindowFocus: false,
-        retryOnMount: true,
-        refetchOnReconnect: false,
-        retry: false,
+        staleTime: 60 * 1000,
+      },
+      dehydrate: {
+        // include pending queries in dehydration
+        shouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === "pending",
       },
     },
   });
+}
+export function getQueryClient() {
+  if (isServer) {
+    // Server: always make a new query client
+    return makeQueryClient();
+  } else {
+    // Browser: make a new query client if we don't already have one
+    // This is very important, so we don't re-make a new client if React
+    // suspends during the initial render. This may not be needed if we
+    // have a suspense boundary BELOW the creation of the query client
+    if (!browserQueryClient) browserQueryClient = makeQueryClient();
+    return browserQueryClient;
+  }
+}
+
+let browserQueryClient: QueryClient | undefined = undefined;
+
+export default function QueryClientBoundary({ children }: React.PropsWithChildren) {
+  const queryClient = getQueryClient(); // QueryClient 상태 초기화
   console.log("queryClient", queryClient);
-
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
-};
-
-export default QueryClientBoundary;
-function setIsMutationError(arg0: boolean) {
-  throw new Error("Function not implemented.");
 }

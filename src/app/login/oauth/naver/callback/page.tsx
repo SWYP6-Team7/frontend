@@ -1,8 +1,8 @@
-import OauthNaver from '@/pages/Login/OauthNaver'
-import React from 'react'
+import OauthNaver from "@/page/Login/OauthNaver";
+import React from "react";
 
 const OauthNaverPage = () => {
-  return <OauthNaver />
-}
+  return <OauthNaver />;
+};
 
-export default OauthNaverPage
+export default OauthNaverPage;

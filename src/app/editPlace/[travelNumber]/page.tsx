@@ -1,8 +1,8 @@
-import EditTripPlace from '@/pages/TripDetail/EditTripPlace'
-import React from 'react'
+import EditTripPlace from "@/page/TripDetail/EditTripPlace";
+import React from "react";
 
 const EditTripPlacePage = () => {
-  return <EditTripPlace />
-}
+  return <EditTripPlace />;
+};
 
-export default EditTripPlacePage
+export default EditTripPlacePage;

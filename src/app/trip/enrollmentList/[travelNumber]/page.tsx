@@ -1,8 +1,8 @@
-import TripEnrollmentList from '@/pages/TripAcceptance/TripEnrollmentList'
-import React from 'react'
+import TripEnrollmentList from "@/page/TripAcceptance/TripEnrollmentList";
+import React from "react";
 
 const TripEnrollmentListPage = () => {
-  return <TripEnrollmentList />
-}
+  return <TripEnrollmentList />;
+};
 
-export default TripEnrollmentListPage
+export default TripEnrollmentListPage;

@@ -1,8 +1,8 @@
-import ApplyTrip from '@/pages/ApplyTrip'
-import React from 'react'
+import ApplyTrip from "@/page/ApplyTrip";
+import React from "react";
 
 const ApplyTripPage = () => {
-  return <ApplyTrip />
-}
+  return <ApplyTrip />;
+};
 
-export default ApplyTripPage
+export default ApplyTripPage;

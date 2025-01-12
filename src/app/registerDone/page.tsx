@@ -1,8 +1,8 @@
-import RegisterDone from '@/pages/Register/RegisterDone'
-import React from 'react'
+import RegisterDone from "@/page/Register/RegisterDone";
+import React from "react";
 
 const RegisterDonePage = () => {
-  return <RegisterDone />
-}
+  return <RegisterDone />;
+};
 
-export default RegisterDonePage
+export default RegisterDonePage;
