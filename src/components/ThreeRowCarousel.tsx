@@ -144,11 +144,11 @@ const ContentBox = styled.div<{ isOnboarding: boolean }>`
   margin-right: -24px;
   width: 100%;
 
-  & .slick-slide #box-container {
+  & .slick-slide .box-container {
     border-bottom: 1px solid ${palette.비강조4};
   }
 
-  & .slick-slide #box-container:last-child {
+  & .slick-slide .box-container:last-child {
     border-bottom: 0px;
   }
 

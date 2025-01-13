@@ -32,7 +32,7 @@ const TripAvailable = () => {
         {cutTrips &&
           cutTrips?.map((post) => {
             return (
-              <BoxContainer key={post.travelNumber} id="box-container">
+              <BoxContainer key={post.travelNumber} className="box-container">
                 <Link href={`/trip/detail/${post.travelNumber}`}>
                   <HorizonBoxLayout
                     travelNumber={post.travelNumber}
@@ -63,5 +63,6 @@ const Container = styled.div`
   width: 100%;
 `;
 const BoxContainer = styled.div`
-  padding: 18px 16px;
+  padding: 18px 0;
+  margin: 0 16px;
 `;
