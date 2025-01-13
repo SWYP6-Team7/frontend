@@ -32,23 +32,25 @@ const TripAvailable = () => {
         {cutTrips &&
           cutTrips?.map((post) => {
             return (
-              <BoxContainer key={post.travelNumber} className="box-container">
-                <Link href={`/trip/detail/${post.travelNumber}`}>
-                  <HorizonBoxLayout
-                    travelNumber={post.travelNumber}
-                    location={post.location}
-                    bookmarked={post.bookmarked}
-                    showTag={false}
-                    bookmarkPosition="middle"
-                    userName={post.userName}
-                    tags={post.tags}
-                    daysAgo={daysAgo(post?.createdAt)}
-                    daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
-                    title={post.title}
-                    recruits={post.nowPerson}
-                    total={post.maxPerson}
-                  />
-                </Link>
+              <BoxContainer key={post.travelNumber}>
+                <Box className="box-container">
+                  <Link href={`/trip/detail/${post.travelNumber}`}>
+                    <HorizonBoxLayout
+                      travelNumber={post.travelNumber}
+                      location={post.location}
+                      bookmarked={post.bookmarked}
+                      showTag={false}
+                      bookmarkPosition="middle"
+                      userName={post.userName}
+                      tags={post.tags}
+                      daysAgo={daysAgo(post?.createdAt)}
+                      daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
+                      title={post.title}
+                      recruits={post.nowPerson}
+                      total={post.maxPerson}
+                    />
+                  </Link>
+                </Box>
               </BoxContainer>
             );
           })}
@@ -64,5 +66,8 @@ const Container = styled.div`
 `;
 const BoxContainer = styled.div`
   padding: 18px 0;
+`;
+
+const Box = styled.div`
   margin: 0 16px;
 `;

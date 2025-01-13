@@ -28,23 +28,25 @@ const TripRecommendation = () => {
       <ThreeRowCarousel>
         {cutTrips &&
           cutTrips?.map((post) => (
-            <BoxContainer key={post.travelNumber} id="box-container">
-              <Link href={`/trip/detail/${post.travelNumber}`}>
-                <HorizonBoxLayout
-                  bookmarked={post.bookmarked}
-                  location={post.location}
-                  travelNumber={post.travelNumber}
-                  showTag={false}
-                  bookmarkPosition="middle"
-                  userName={post.userName}
-                  tags={post.tags}
-                  daysAgo={daysAgo(post?.createdAt)}
-                  daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
-                  title={post.title}
-                  recruits={post.nowPerson}
-                  total={post.maxPerson}
-                />
-              </Link>
+            <BoxContainer key={post.travelNumber} className="box-container">
+              <Box className="box-container">
+                <Link href={`/trip/detail/${post.travelNumber}`}>
+                  <HorizonBoxLayout
+                    bookmarked={post.bookmarked}
+                    location={post.location}
+                    travelNumber={post.travelNumber}
+                    showTag={false}
+                    bookmarkPosition="middle"
+                    userName={post.userName}
+                    tags={post.tags}
+                    daysAgo={daysAgo(post?.createdAt)}
+                    daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
+                    title={post.title}
+                    recruits={post.nowPerson}
+                    total={post.maxPerson}
+                  />
+                </Link>
+              </Box>
             </BoxContainer>
           ))}
       </ThreeRowCarousel>
@@ -58,4 +60,7 @@ const Container = styled.div`
 `;
 const BoxContainer = styled.div`
   padding: 18px 16px;
+`;
+const Box = styled.div`
+  margin: 0 16px;
 `;

@@ -148,7 +148,7 @@ const ContentBox = styled.div<{ isOnboarding: boolean }>`
     border-bottom: 1px solid ${palette.비강조4};
   }
 
-  & .slick-slide .box-container:last-child {
+  & .slick-slide .box-container:last-of-type {
     border-bottom: 0px;
   }
 
