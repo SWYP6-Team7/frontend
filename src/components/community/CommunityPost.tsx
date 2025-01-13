@@ -70,7 +70,7 @@ const CommunityPost = () => {
                 color: palette.비강조,
               }}
             >
-              {daysAgoFormatted(data.regDate)}
+              {daysAgoFormatted(data?.regDate)}
             </div>
           </div>
         </ProfileContainer>

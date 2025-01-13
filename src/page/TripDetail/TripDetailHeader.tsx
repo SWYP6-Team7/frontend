@@ -1,36 +1,37 @@
-'use client'
-import CheckingModal from '@/components/designSystem/modal/CheckingModal'
-import EditAndDeleteModal from '@/components/designSystem/modal/EditAndDeleteModal'
-import ResultToast from '@/components/designSystem/toastMessage/resultToast'
-import AlarmIcon from '@/components/icons/AlarmIcon'
-import MoreIcon from '@/components/icons/MoreIcon'
-import ShareIcon from '@/components/icons/ShareIcon'
-import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
-import useTripDetail from '@/hooks/tripDetail/useTripDetail'
-import useViewTransition from '@/hooks/useViewTransition'
-import { authStore } from '@/store/client/authStore'
-import { useBackPathStore } from '@/store/client/backPathStore'
-import { tripDetailStore } from '@/store/client/tripDetailStore'
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
-import { useParams, usePathname, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+"use client";
+import CheckingModal from "@/components/designSystem/modal/CheckingModal";
+import EditAndDeleteModal from "@/components/designSystem/modal/EditAndDeleteModal";
+import ResultToast from "@/components/designSystem/toastMessage/resultToast";
+import AlarmIcon from "@/components/icons/AlarmIcon";
+import MoreIcon from "@/components/icons/MoreIcon";
+import ShareIcon from "@/components/icons/ShareIcon";
+import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
+import useTripDetail from "@/hooks/tripDetail/useTripDetail";
+import useViewTransition from "@/hooks/useViewTransition";
+import { authStore } from "@/store/client/authStore";
+import { useBackPathStore } from "@/store/client/backPathStore";
+import { tripDetailStore } from "@/store/client/tripDetailStore";
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 // 헤더부터 주최자인지에 따라 화면이 달라서, 헤더에서 여행 정보를 들고 오기.
 export default function TripDetailHeader() {
-  const { userId, accessToken } = authStore()
-  const params = useParams()
-  const pathname = usePathname()
-  const travelNumber = params?.travelNumber as string
-  const { tripDetail } = useTripDetail(parseInt(travelNumber!))
-  const isTripDetailEdit = pathname?.startsWith('/trip/edit')
+  const { userId, accessToken } = authStore();
+  const params = useParams();
+  const pathname = usePathname();
+  const travelNumber = params?.travelNumber as string;
+  const { tripDetail } = useTripDetail(parseInt(travelNumber!));
+  console.log("tripDetail", tripDetail);
+  const isTripDetailEdit = pathname?.startsWith("/trip/edit");
 
-  const router = useRouter()
-  const [isEditBtnClicked, setIsEditBtnClicked] = useState(false)
-  const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false)
-  const [isResultModalOpen, setIsResultModalOpen] = useState(false)
-  const [checkingModalClicked, setCheckingModalClicked] = useState(false)
-  const [threeDotsClick, setThreeDotsClick] = useState(false)
+  const router = useRouter();
+  const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
+  const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [checkingModalClicked, setCheckingModalClicked] = useState(false);
+  const [threeDotsClick, setThreeDotsClick] = useState(false);
 
   const {
     addProfileUrl,
@@ -56,12 +57,12 @@ export default function TripDetailHeader() {
     hostUserCheck,
     addUserAgeGroup,
     addBookmarked,
-    bookmarked
-  } = tripDetailStore()
-  const { setNotification } = useBackPathStore()
-  const tripInfos = tripDetail.data?.data
+    bookmarked,
+  } = tripDetailStore();
+  const { setNotification } = useBackPathStore();
+  const tripInfos = tripDetail.data?.data;
   useEffect(() => {
-    console.log(tripInfos)
+    console.log(tripInfos);
     if (tripDetail.isFetched) {
       const {
         travelNumber,
@@ -83,108 +84,101 @@ export default function TripDetailHeader() {
         enrollCount,
         userAgeGroup,
         profileUrl,
-        loginMemberRelatedInfo
-      } = tripInfos
+        loginMemberRelatedInfo,
+      } = tripInfos;
 
-      const [year, month, day] = dueDate.split('-').map((v: string) => +v)
+      const [year, month, day] = dueDate.split("-").map((v: string) => +v);
       const DUEDATE = {
         year,
         month,
-        day
-      }
+        day,
+      };
       if (!loginMemberRelatedInfo) {
-        addHostUserCheck(false)
-        addEnrollmentNumber(null)
-        addBookmarked(false)
+        addHostUserCheck(false);
+        addEnrollmentNumber(null);
+        addBookmarked(false);
       } else {
-        addHostUserCheck(loginMemberRelatedInfo.hostUser)
-        addEnrollmentNumber(loginMemberRelatedInfo.enrollmentNumber)
-        addBookmarked(loginMemberRelatedInfo.bookmarked)
+        addHostUserCheck(loginMemberRelatedInfo.hostUser);
+        addEnrollmentNumber(loginMemberRelatedInfo.enrollmentNumber);
+        addBookmarked(loginMemberRelatedInfo.bookmarked);
       }
-      addProfileUrl(profileUrl)
-      addTravelNumber(travelNumber)
+      addProfileUrl(profileUrl);
+      addTravelNumber(travelNumber);
 
-      addEnrollCount(enrollCount)
-      addCreatedAt(createdAt)
-      addUserNumber(userNumber)
-      addUserName(userName)
-      addLocation(location)
-      addTitle(title)
-      addDetails(details)
-      addMaxPerson(maxPerson)
-      addGenderType(genderType)
-      addDueDate(DUEDATE)
-      addPeriodType(periodType)
-      addTags(tags)
-      addPostStatus(postStatus)
-      addBookmarkCount(bookmarkCount)
-      addViewCount(viewCount)
+      addEnrollCount(enrollCount);
+      addCreatedAt(createdAt);
+      addUserNumber(userNumber);
+      addUserName(userName);
+      addLocation(location);
+      addTitle(title);
+      addDetails(details);
+      addMaxPerson(maxPerson);
+      addGenderType(genderType);
+      addDueDate(DUEDATE);
+      addPeriodType(periodType);
+      addTags(tags);
+      addPostStatus(postStatus);
+      addBookmarkCount(bookmarkCount);
+      addViewCount(viewCount);
 
-      addNowPerson(nowPerson)
-      addUserAgeGroup(userAgeGroup)
-      addPostStatus(postStatus)
+      addNowPerson(nowPerson);
+      addUserAgeGroup(userAgeGroup);
+      addPostStatus(postStatus);
     }
-  }, [tripDetail.isFetched, tripInfos])
-  const navigateWithTransition = useViewTransition()
-  const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!))
-  const [isToastShow, setIsToastShow] = useState(false) // 삭제 완료 메시지.
+  }, [tripDetail.isFetched, tripInfos]);
+  const navigateWithTransition = useViewTransition();
+  const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!));
+  const [isToastShow, setIsToastShow] = useState(false); // 삭제 완료 메시지.
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
     accessToken!,
     userId!,
     parseInt(travelNumber!)
-  )
+  );
 
   const handleNotification = () => {
-    setNotification(
-      travelNumber ? `/trip/detail/${travelNumber}` : '/trip/list'
-    )
-    router.push(`/notification`)
-  }
+    setNotification(travelNumber ? `/trip/detail/${travelNumber}` : "/trip/list");
+    router.push(`/notification`);
+  };
   useEffect(() => {
     if (isDeleteBtnClicked) {
-      setIsResultModalOpen(true)
-      setIsDeleteBtnClicked(false)
+      setIsResultModalOpen(true);
+      setIsDeleteBtnClicked(false);
     }
     if (isEditBtnClicked) {
-      setThreeDotsClick(false)
-      setIsEditBtnClicked(false)
-      document.documentElement.style.viewTransitionName = 'forward'
-      navigateWithTransition(`/trip/edit/${travelNumber}`)
+      setThreeDotsClick(false);
+      setIsEditBtnClicked(false);
+      document.documentElement.style.viewTransitionName = "forward";
+      navigateWithTransition(`/trip/edit/${travelNumber}`);
     }
     if (checkingModalClicked) {
       // 삭제 요청.
 
-      deleteTripDetailMutation().then(res => {
-        console.log(res)
+      deleteTripDetailMutation().then((res) => {
+        console.log(res);
         if (res?.data.status === 204) {
-          setIsToastShow(true)
+          setIsToastShow(true);
           setTimeout(() => {
-            router.push('/')
-          }, 1800)
+            router.push("/");
+          }, 1800);
         }
-      })
+      });
     }
-  }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked])
+  }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked]);
 
   // 북마크
   const bookmarkClickHandler = () => {
     if (bookmarked) {
-      deleteBookmarkMutation()
+      deleteBookmarkMutation();
     } else {
       // 북마크 추가.
-      postBookmarkMutation()
+      postBookmarkMutation();
     }
-  }
+  };
   return (
-    <Container
-      hostUserCheck={hostUserCheck}
-      isTripDetailEdit={Boolean(isTripDetailEdit)}>
+    <Container hostUserCheck={hostUserCheck} isTripDetailEdit={Boolean(isTripDetailEdit)}>
       {hostUserCheck && (
         <div onClick={handleNotification}>
-          <AlarmIcon
-            size={23}
-            stroke={palette.기본}
-          />
+          <AlarmIcon size={23} stroke={palette.기본} />
         </div>
       )}
 
@@ -209,21 +203,16 @@ export default function TripDetailHeader() {
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
-      <ResultToast
-        bottom="80px"
-        isShow={isToastShow}
-        setIsShow={setIsToastShow}
-        text="여행 게시글이 삭제되었어요."
-      />
+      <ResultToast bottom="80px" isShow={isToastShow} setIsShow={setIsToastShow} text="여행 게시글이 삭제되었어요." />
     </Container>
-  )
+  );
 }
 const Container = styled.div<{
-  hostUserCheck: boolean
-  isTripDetailEdit: boolean
+  hostUserCheck: boolean;
+  isTripDetailEdit: boolean;
 }>`
-  display: ${props => (props.isTripDetailEdit ? 'none' : 'flex')};
+  display: ${(props) => (props.isTripDetailEdit ? "none" : "flex")};
   align-items: center;
   justify-content: space-around;
-  width: ${props => (props.hostUserCheck ? '136px' : 'auto')};
-`
+  width: ${(props) => (props.hostUserCheck ? "136px" : "auto")};
+`;
