@@ -6,9 +6,7 @@ import React from "react";
 const TripDetailPage = async ({ params }: { params: { travelNumber: string } }) => {
   const travelNumber = params.travelNumber;
   const queryClient = new QueryClient();
-  if (!travelNumber) {
-    throw new Error("Travel number is required");
-  }
+
   // 첫 페이지만 프리패치
   await queryClient.prefetchQuery({
     queryKey: ["tripDetail", travelNumber],
