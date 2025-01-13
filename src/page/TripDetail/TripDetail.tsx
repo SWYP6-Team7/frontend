@@ -1,61 +1,59 @@
-'use client'
-import ButtonContainer from '@/components/ButtonContainer'
-import Badge from '@/components/designSystem/Badge'
-import CheckingModal from '@/components/designSystem/modal/CheckingModal'
-import RoundedImage from '@/components/designSystem/profile/RoundedImage'
-import ResultToast from '@/components/designSystem/toastMessage/resultToast'
+"use client";
+import ButtonContainer from "@/components/ButtonContainer";
+import Badge from "@/components/designSystem/Badge";
+import CheckingModal from "@/components/designSystem/modal/CheckingModal";
+import RoundedImage from "@/components/designSystem/profile/RoundedImage";
+import ResultToast from "@/components/designSystem/toastMessage/resultToast";
 
-import ArrowIcon from '@/components/icons/ArrowIcon'
-import Calendar from '@/components/icons/Calendar'
-import PersonIcon from '@/components/icons/PersonIcon'
-import PlaceIcon from '@/components/icons/PlaceIcon'
-import Spacing from '@/components/Spacing'
-import { authStore } from '@/store/client/authStore'
-import useEnrollment from '@/hooks/enrollment/useEnrollment'
-import { tripDetailStore } from '@/store/client/tripDetailStore'
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
+import ArrowIcon from "@/components/icons/ArrowIcon";
+import Calendar from "@/components/icons/Calendar";
+import PersonIcon from "@/components/icons/PersonIcon";
+import PlaceIcon from "@/components/icons/PlaceIcon";
+import Spacing from "@/components/Spacing";
+import { authStore } from "@/store/client/authStore";
+import useEnrollment from "@/hooks/enrollment/useEnrollment";
+import { tripDetailStore } from "@/store/client/tripDetailStore";
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
 
-import React, { useEffect, useState } from 'react'
-import CompanionsView from './CompanionsView'
-import { daysAgo } from '@/utils/time'
-import useTripDetail from '@/hooks/tripDetail/useTripDetail'
-import NewIcon from '@/components/icons/NewIcon'
-import NoticeModal from '@/components/designSystem/modal/NoticeModal'
-import { editStore } from '@/store/client/editStore'
-import Opengraph from '@/components/Opengraph'
-import { isGuestUser } from '@/utils/user'
-import { useUpdateBookmark } from '@/hooks/bookmark/useUpdateBookmark'
-import ApplyListButton from '@/components/designSystem/Buttons/ApplyListButton'
-import useViewTransition from '@/hooks/useViewTransition'
-import { useRouter } from 'next/navigation'
-const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
+import React, { useEffect, useState } from "react";
+import CompanionsView from "./CompanionsView";
+import { daysAgo } from "@/utils/time";
+import useTripDetail from "@/hooks/tripDetail/useTripDetail";
+import NewIcon from "@/components/icons/NewIcon";
+import NoticeModal from "@/components/designSystem/modal/NoticeModal";
+import { editStore } from "@/store/client/editStore";
+import Opengraph from "@/components/Opengraph";
+import { isGuestUser } from "@/utils/user";
+import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
+import ApplyListButton from "@/components/designSystem/Buttons/ApplyListButton";
+import useViewTransition from "@/hooks/useViewTransition";
+import { useRouter } from "next/navigation";
+const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 interface Companion {
-  userNumber: number
-  userName: string
-  ageGroup: string
+  userNumber: number;
+  userName: string;
+  ageGroup: string;
 }
-const LOGIN_ASKING_FOR_WATCHING_COMMENT = `여행에 참여한 멤버만 볼 수 있어요.\n로그인 하시겠어요?`
-const LOGIN_ASKING_FOR_APPLY_TRIP = `로그인하여 설레는 여행에\n참가해 보세요!`
+const LOGIN_ASKING_FOR_WATCHING_COMMENT = `여행에 참여한 멤버만 볼 수 있어요.\n로그인 하시겠어요?`;
+const LOGIN_ASKING_FOR_APPLY_TRIP = `로그인하여 설레는 여행에\n참가해 보세요!`;
 
 export default function TripDetail() {
-  const [showApplyModal, setShowApplyModal] = useState(false)
-  const [showCancelModal, setShowCancelModal] = useState(false)
-  const [showLoginModal, setShowLoginModal] = useState(false)
-  const [modalTextForLogin, setModalTextForLogin] = useState(
-    LOGIN_ASKING_FOR_WATCHING_COMMENT
-  )
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [modalTextForLogin, setModalTextForLogin] = useState(LOGIN_ASKING_FOR_WATCHING_COMMENT);
 
-  const [isApplyToast, setIsApplyToast] = useState(false)
-  const [isCancelToast, setIsCancelToast] = useState(false)
+  const [isApplyToast, setIsApplyToast] = useState(false);
+  const [isCancelToast, setIsCancelToast] = useState(false);
 
   // 신청 대기 모달
-  const [noticeModal, setNoticeModal] = useState(false)
+  const [noticeModal, setNoticeModal] = useState(false);
 
-  const [isAccepted, setIsAccepted] = useState(false)
-  const { userId, accessToken } = authStore()
-  const [isCommentUpdated, setIsCommentUpdated] = useState(false)
+  const [isAccepted, setIsAccepted] = useState(false);
+  const { userId, accessToken } = authStore();
+  const [isCommentUpdated, setIsCommentUpdated] = useState(false);
   const {
     location,
     postStatus,
@@ -77,101 +75,97 @@ export default function TripDetail() {
     applySuccess,
     setApplySuccess,
     profileUrl,
-    bookmarked
-  } = tripDetailStore()
-  const { cancel, cancelMutation } = useEnrollment(travelNumber)
-  const { tripEnrollmentCount } = useTripDetail(travelNumber!)
-  const nowEnrollmentCount = tripEnrollmentCount.data?.data
-  const { editToastShow, setEditToastShow } = editStore()
-  const { companions } = useTripDetail(travelNumber)
-  const allCompanions = companions.data?.data.companions
+    bookmarked,
+  } = tripDetailStore();
+  const { cancel, cancelMutation } = useEnrollment(travelNumber);
+  const { tripEnrollmentCount } = useTripDetail(travelNumber!);
+  const nowEnrollmentCount = tripEnrollmentCount.data?.data;
+  const { editToastShow, setEditToastShow } = editStore();
+  const { companions } = useTripDetail(travelNumber);
+  const allCompanions = companions.data?.data.companions;
 
-  const alreadyApplied = !!enrollmentNumber
+  const alreadyApplied = !!enrollmentNumber;
   //북마크
-  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
-    accessToken!,
-    userId!,
-    travelNumber!
-  )
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber!);
 
   const bookmarkClickHandler = () => {
     if (bookmarked) {
-      deleteBookmarkMutation()
+      deleteBookmarkMutation();
     } else {
       // 북마크 추가.
-      postBookmarkMutation()
+      postBookmarkMutation();
     }
-  }
+  };
 
   useEffect(() => {
     if (applySuccess) {
-      setIsApplyToast(true)
-      setApplySuccess(false)
+      setIsApplyToast(true);
+      setApplySuccess(false);
     }
-  }, [applySuccess])
+  }, [applySuccess]);
 
   useEffect(() => {
     allCompanions?.map((company: Companion) => {
       if (company.userNumber === userId) {
-        setIsAccepted(true)
+        setIsAccepted(true);
       }
-    })
-  }, [allCompanions])
+    });
+  }, [allCompanions]);
 
-  const isEditing = false
-  const router = useRouter()
-  const navigateWithTransition = useViewTransition()
-  const { year, month, day } = dueDate
-  const DAY = new Date(`${year}/${month}/${day}`)
-  const dayOfWeek = WEEKDAY[DAY.getDay()]
-  const [personViewClicked, setPersonViewClicked] = useState(false)
+  const isEditing = false;
+  const router = useRouter();
+  const navigateWithTransition = useViewTransition();
+  const { year, month, day } = dueDate;
+  const DAY = new Date(`${year}/${month}/${day}`);
+  const dayOfWeek = WEEKDAY[DAY.getDay()];
+  const [personViewClicked, setPersonViewClicked] = useState(false);
 
   const buttonClickHandler = () => {
     if (isGuestUser()) {
-      setShowLoginModal(true)
-      setModalTextForLogin(LOGIN_ASKING_FOR_APPLY_TRIP)
+      setShowLoginModal(true);
+      setModalTextForLogin(LOGIN_ASKING_FOR_APPLY_TRIP);
     } else if (hostUserCheck) {
-      document.documentElement.style.viewTransitionName = 'forward'
-      navigateWithTransition(`/trip/enrollmentList/${travelNumber}`)
+      document.documentElement.style.viewTransitionName = "forward";
+      navigateWithTransition(`/trip/enrollmentList/${travelNumber}`);
     } else {
       if (enrollmentNumber) {
-        setShowCancelModal(true)
+        setShowCancelModal(true);
       } else {
         // 신청하러 바로 이동.
-        document.documentElement.style.viewTransitionName = 'forward'
-        navigateWithTransition(`/trip/apply/${travelNumber}`)
+        document.documentElement.style.viewTransitionName = "forward";
+        navigateWithTransition(`/trip/apply/${travelNumber}`);
       }
     }
-  }
+  };
   const onClickCancelApply = async () => {
     if (enrollmentNumber) {
       try {
-        await cancel(enrollmentNumber)
+        await cancel(enrollmentNumber);
       } catch (err) {
-        console.log(err, 'cancelMutation ERROR')
+        console.log(err, "cancelMutation ERROR");
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (cancelMutation.isSuccess) {
-      setIsCancelToast(true)
+      setIsCancelToast(true);
     }
-  }, [cancelMutation.isSuccess])
+  }, [cancelMutation.isSuccess]);
 
   const companionsViewHandler = () => {
-    setPersonViewClicked(true)
-  }
+    setPersonViewClicked(true);
+  };
   function timeUntilDate(year: number, month: number, day: number): number {
-    const today = new Date() // 오늘 날짜
-    const targetDate = new Date(year, month - 1, day) // 목표 날짜 (month는 0부터 시작하므로 -1)
+    const today = new Date(); // 오늘 날짜
+    const targetDate = new Date(year, month - 1, day); // 목표 날짜 (month는 0부터 시작하므로 -1)
 
     // 날짜 차이 계산
-    const timeDiff = targetDate.getTime() - today.getTime() // 밀리초 단위로 차이 계산
+    const timeDiff = targetDate.getTime() - today.getTime(); // 밀리초 단위로 차이 계산
     // 남은 일 수 계산
-    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-    return daysLeft
+    return daysLeft;
   }
   // 댓글 새로 업데이트 여부 표시
 
@@ -190,55 +184,35 @@ export default function TripDetail() {
   const commentClickHandler = () => {
     if (isGuestUser()) {
       // 로그인을 하지 않은 게스트 유저.
-      setShowLoginModal(true)
-      setModalTextForLogin(LOGIN_ASKING_FOR_WATCHING_COMMENT)
+      setShowLoginModal(true);
+      setModalTextForLogin(LOGIN_ASKING_FOR_WATCHING_COMMENT);
     } else if (!hostUserCheck && !enrollmentNumber) {
       // 주최자가 아니며, 신청 번호가 없는 사람은 댓글을 볼 수 없음.
-      setShowApplyModal(true)
+      setShowApplyModal(true);
     } else if (isAccepted || hostUserCheck) {
-      document.documentElement.style.viewTransitionName = 'forward'
-      navigateWithTransition(`/trip/comment/${travelNumber}`)
+      document.documentElement.style.viewTransitionName = "forward";
+      navigateWithTransition(`/trip/comment/${travelNumber}`);
     } else {
       // 신청 대기중인 경우.
-      setNoticeModal(true)
+      setNoticeModal(true);
     }
-  }
+  };
 
   return (
     <>
-      <Opengraph
-        title={title}
-        description={details}
-        image={'https://www.moing.shop/images/tokyo.png'}
-      />
-      <ResultToast
-        height={120}
-        isShow={editToastShow}
-        setIsShow={setEditToastShow}
-        text="게시글이 수정되었어요."
-      />
+      <ResultToast height={120} isShow={editToastShow} setIsShow={setEditToastShow} text="게시글이 수정되었어요." />
       <NoticeModal
         isModalOpen={noticeModal}
         modalMsg={`여행에 참가가 확정된\n 멤버만 볼 수 있어요.`}
         modalTitle="참가 신청 대기중"
         setModalOpen={setNoticeModal}
       />
-      <ResultToast
-        height={80}
-        isShow={isCancelToast}
-        setIsShow={setIsCancelToast}
-        text="여행 신청이 취소 되었어요."
-      />
-      <ResultToast
-        height={80}
-        isShow={isApplyToast}
-        setIsShow={setIsApplyToast}
-        text="여행 신청이 완료 되었어요."
-      />
+      <ResultToast height={80} isShow={isCancelToast} setIsShow={setIsCancelToast} text="여행 신청이 취소 되었어요." />
+      <ResultToast height={80} isShow={isApplyToast} setIsShow={setIsApplyToast} text="여행 신청이 완료 되었어요." />
 
       <CheckingModal
         isModalOpen={showLoginModal}
-        onClick={() => router.replace('/login')}
+        onClick={() => router.replace("/login")}
         modalMsg={modalTextForLogin}
         modalTitle="로그인 안내"
         modalButtonText="로그인"
@@ -248,8 +222,8 @@ export default function TripDetail() {
       <CheckingModal
         isModalOpen={showApplyModal}
         onClick={() => {
-          document.documentElement.style.viewTransitionName = 'forward'
-          navigateWithTransition(`/trip/apply/${travelNumber}`)
+          document.documentElement.style.viewTransitionName = "forward";
+          navigateWithTransition(`/trip/apply/${travelNumber}`);
         }}
         modalMsg="여행에 참여한 멤버만 볼 수 있어요.
 여행 참가 신청을 할까요?"
@@ -287,19 +261,17 @@ export default function TripDetail() {
             </BadgeContainer>
             <ProfileContainer>
               {/* 프로필 */}
-              <RoundedImage
-                src={profileUrl}
-                size={40}
-              />
-              <div style={{ marginLeft: '8px' }}>
+              <RoundedImage src={profileUrl} size={40} />
+              <div style={{ marginLeft: "8px" }}>
                 <UserName>{userName}</UserName>
                 <div
                   style={{
-                    fontWeight: '400',
-                    fontSize: '14px',
-                    lineHeight: '16.71px',
-                    color: palette.비강조
-                  }}>
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    lineHeight: "16.71px",
+                    color: palette.비강조,
+                  }}
+                >
                   {daysAgo(createdAt)}
                 </div>
               </div>
@@ -325,26 +297,23 @@ export default function TripDetail() {
           </MainContent>
           <ViewsETC>
             <div>신청 {enrollCount}</div>
-            <div style={{ margin: '0px 4px' }}> · </div>
+            <div style={{ margin: "0px 4px" }}> · </div>
             <div>관심 {bookmarkCount}</div>
-            <div style={{ margin: '0px 4px' }}> · </div>
+            <div style={{ margin: "0px 4px" }}> · </div>
             <div>조회수 {viewCount}</div>
           </ViewsETC>
         </PostWrapper>
         <CommentWrapper onClick={commentClickHandler}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img
-              src="/images/createTripBtn.png"
-              alt=""
-              style={{ marginRight: '13px' }}
-            />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img src="/images/createTripBtn.png" alt="" style={{ marginRight: "13px" }} />
             <div
               style={{
-                fontSize: '16px',
-                fontWeight: '600',
-                lineHeight: '14px',
-                marginRight: ' 8px'
-              }}>
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "14px",
+                marginRight: " 8px",
+              }}
+            >
               멤버 댓글
             </div>
             {hostUserCheck && isCommentUpdated && <NewIcon />}
@@ -356,10 +325,11 @@ export default function TripDetail() {
         <DueDateWrapper>
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginRight: '16px'
-            }}>
+              display: "flex",
+              alignItems: "center",
+              marginRight: "16px",
+            }}
+          >
             <Calendar />
             <ContentTitle>모집 마감일</ContentTitle>
           </div>
@@ -367,35 +337,30 @@ export default function TripDetail() {
           {/* 뱃지 추가 */}
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center'
-            }}>
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <DueDate>
               {year}.{month}.{day}({dayOfWeek})
             </DueDate>
-            <Badge
-              text={''}
-              daysLeft={timeUntilDate(year, month, day)}
-            />
+            <Badge text={""} daysLeft={timeUntilDate(year, month, day)} />
           </div>
         </DueDateWrapper>
         <PersonWrapper onClick={companionsViewHandler}>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: "flex" }}>
             <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginRight: '32px'
-              }}>
-              <PersonIcon
-                width={20}
-                height={20}
-                stroke={palette.keycolor}
-              />
+                display: "flex",
+                alignItems: "center",
+                marginRight: "32px",
+              }}
+            >
+              <PersonIcon width={20} height={20} stroke={palette.keycolor} />
               <ContentTitle>모집 인원</ContentTitle>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <PersonStatus>
                 {nowPerson}/{maxPerson}
               </PersonStatus>
@@ -433,23 +398,15 @@ export default function TripDetail() {
                   : palette.비강조
                 : alreadyApplied
                   ? palette.비강조
-                  : palette.비강조4
+                  : palette.비강조4,
             }}
-            text={
-              hostUserCheck
-                ? '참가 신청 목록'
-                : alreadyApplied
-                  ? '참가 신청 취소'
-                  : '참가 신청 하기'
-            }></ApplyListButton>
+            text={hostUserCheck ? "참가 신청 목록" : alreadyApplied ? "참가 신청 취소" : "참가 신청 하기"}
+          ></ApplyListButton>
         </ButtonContainer>
-        <CompanionsView
-          isOpen={personViewClicked}
-          setIsOpen={setPersonViewClicked}
-        />
+        <CompanionsView isOpen={personViewClicked} setIsOpen={setPersonViewClicked} />
       </TripDetailWrapper>
     </>
-  )
+  );
 }
 const AppliedPersonCircle = styled.div`
   background-color: ${palette.BG};
@@ -466,7 +423,7 @@ const AppliedPersonCircle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const PersonStatus = styled.div`
   font-size: 16px;
   font-weight: 600;
@@ -474,14 +431,14 @@ const PersonStatus = styled.div`
   text-align: center;
   color: ${palette.기본};
   margin-right: 4px;
-`
+`;
 const BtnContainer = styled.div<{ width: string }>`
   width: 390px;
   @media (max-width: 389px) {
-    width: ${props => props.width};
+    width: ${(props) => props.width};
   }
   @media (max-width: 450px) {
-    width: ${props => props.width};
+    width: ${(props) => props.width};
   }
   /* pointer-events: none; */
   position: fixed;
@@ -490,10 +447,10 @@ const BtnContainer = styled.div<{ width: string }>`
   margin-left: -24px;
   padding: 0 24px;
   z-index: 10;
-`
+`;
 const BadgeContainer = styled.div`
   display: flex;
-`
+`;
 const DueDate = styled.div`
   font-size: 16px;
   font-weight: 600;
@@ -501,19 +458,19 @@ const DueDate = styled.div`
   text-align: center;
   color: ${palette.기본};
   margin-right: 8px;
-`
+`;
 const ProfileContainer = styled.div`
   margin-top: 16px;
   display: flex;
   align-items: center;
-`
+`;
 const Title = styled.div`
   margin-top: 32px;
   font-size: 22px;
   font-weight: 600;
   line-height: 26.25px;
   text-align: left;
-`
+`;
 const Details = styled.div`
   margin-top: 16px;
   font-size: 16px;
@@ -521,7 +478,7 @@ const Details = styled.div`
   line-height: 22.4px;
   text-align: left;
   color: ${palette.기본};
-`
+`;
 const ContentTitle = styled.div`
   font-size: 14px;
   font-weight: 600;
@@ -530,17 +487,17 @@ const ContentTitle = styled.div`
   color: ${palette.비강조};
   max-width: 63px;
   margin-left: 8px;
-`
+`;
 const TagContainer = styled.div`
   margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-`
+`;
 const TripDetailWrapper = styled.div`
   padding: 0px 24px;
   background-color: ${palette.검색창};
-`
+`;
 const UserName = styled.div`
   font-size: 16px;
   font-weight: 600;
@@ -548,7 +505,7 @@ const UserName = styled.div`
   text-align: left;
   color: ${palette.기본};
   margin-bottom: 4px;
-`
+`;
 const PostWrapper = styled.div`
   background-color: ${palette.BG};
   padding: 24px;
@@ -558,8 +515,8 @@ const PostWrapper = styled.div`
   gap: 32px;
   border-radius: 20px;
   box-shadow: 0px 2px 6px 3px rgba(170, 170, 170, 0.18);
-`
-const MainContent = styled.div``
+`;
+const MainContent = styled.div``;
 
 const ViewsETC = styled.div`
   margin-top: 32px;
@@ -571,7 +528,7 @@ const ViewsETC = styled.div`
   line-height: 14.32px;
   text-align: left;
   color: ${palette.비강조2};
-`
+`;
 const PlaceBadge = styled.div`
   margin-right: 4px;
   display: flex;
@@ -588,7 +545,7 @@ const PlaceBadge = styled.div`
   gap: 4px;
   border-radius: 20px;
   opacity: 0px;
-`
+`;
 const CommentWrapper = styled.div`
   cursor: pointer;
   margin-top: 16px;
@@ -602,7 +559,7 @@ const CommentWrapper = styled.div`
   opacity: 0px;
   align-items: center;
   background-color: ${palette.BG};
-`
+`;
 const DueDateWrapper = styled.div`
   margin: 16px 0px;
   display: flex;
@@ -613,7 +570,7 @@ const DueDateWrapper = styled.div`
   border-radius: 20px;
   opacity: 0px;
   align-items: center;
-`
+`;
 const PersonWrapper = styled.div`
   display: flex;
   background-color: ${palette.비강조5};
@@ -623,4 +580,4 @@ const PersonWrapper = styled.div`
   border-radius: 20px;
   opacity: 0px;
   align-items: center;
-`
+`;
