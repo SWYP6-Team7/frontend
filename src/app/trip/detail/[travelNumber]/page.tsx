@@ -10,7 +10,10 @@ const TripDetailPage = async ({ params }: { params: { travelNumber: string } }) 
   // 첫 페이지만 프리패치
   await queryClient.prefetchQuery({
     queryKey: ["tripDetail", travelNumber],
-    queryFn: () => getTripDetail(parseInt(travelNumber), null),
+    queryFn: () => {
+      const data = getTripDetail(parseInt(travelNumber), null);
+      return JSON.parse(JSON.stringify(data));
+    },
   });
   const dehydratedstate = dehydrate(queryClient);
   return (
