@@ -144,14 +144,6 @@ const ContentBox = styled.div<{ isOnboarding: boolean }>`
   margin-right: -24px;
   width: 100%;
 
-  & .slick-slide .box-container {
-    border-bottom: 1px solid ${palette.비강조4};
-  }
-
-  & .slick-slide .box-container:last-of-type {
-    border-bottom: 0px;
-  }
-
   /* 온보딩 */
   @media screen and (max-height: 740px) {
     max-height: 545px;

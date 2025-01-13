@@ -10,6 +10,7 @@ import ThreeRowCarousel from "@/components/ThreeRowCarousel";
 import { IMyTripList } from "@/model/myTrip";
 import { daysAgo } from "@/utils/time";
 import Link from "next/link";
+import { palette } from "@/styles/palette";
 
 const TripAvailable = () => {
   const { data } = useTripList("recent");
@@ -64,10 +65,15 @@ const Container = styled.div`
   margin-top: 40px;
   width: 100%;
 `;
-const BoxContainer = styled.div`
-  padding: 18px 0;
-`;
+const BoxContainer = styled.div``;
 
 const Box = styled.div`
+  &:last-of-type {
+    border-bottom: 0px;
+  }
+
+  border-bottom: 1px solid ${palette.비강조4};
+
   margin: 0 16px;
+  padding: 18px 0;
 `;
