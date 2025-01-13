@@ -31,10 +31,10 @@ const TripAvailable = () => {
       />
       <ThreeRowCarousel>
         {cutTrips &&
-          cutTrips?.map((post) => {
+          cutTrips?.map((post, idx) => {
             return (
               <BoxContainer key={post.travelNumber}>
-                <Box className="box-container">
+                <Box style={idx === cutTrips.length - 1 ? { backgroundColor: "yellow" } : { borderBottom: 0 }}>
                   <Link href={`/trip/detail/${post.travelNumber}`}>
                     <HorizonBoxLayout
                       travelNumber={post.travelNumber}
@@ -68,10 +68,6 @@ const Container = styled.div`
 const BoxContainer = styled.div``;
 
 const Box = styled.div`
-  &:last-of-type {
-    border-bottom: 0px;
-  }
-
   border-bottom: 1px solid ${palette.비강조4};
 
   margin: 0 16px;

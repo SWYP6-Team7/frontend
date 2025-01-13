@@ -28,9 +28,9 @@ const TripRecommendation = () => {
       />
       <ThreeRowCarousel>
         {cutTrips &&
-          cutTrips?.map((post) => (
-            <BoxContainer key={post.travelNumber} className="box-container">
-              <Box className="box-container">
+          cutTrips?.map((post, idx) => (
+            <BoxContainer key={post.travelNumber}>
+              <Box style={idx === cutTrips.length - 1 ? { backgroundColor: "yellow" } : { borderBottom: 0 }}>
                 <Link href={`/trip/detail/${post.travelNumber}`}>
                   <HorizonBoxLayout
                     bookmarked={post.bookmarked}
