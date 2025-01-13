@@ -37,7 +37,7 @@ const CommunityPost = () => {
       like({ communityNumber: Number(communityNumber) });
     }
   };
-  console.log(daysAgoFormatted(data?.regDate));
+  console.log("date", daysAgoFormatted(data?.regDate));
   return (
     <PostWrapper>
       <ResultToast
