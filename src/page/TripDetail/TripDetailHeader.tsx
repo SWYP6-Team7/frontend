@@ -93,15 +93,15 @@ export default function TripDetailHeader() {
         month,
         day,
       };
-      if (!loginMemberRelatedInfo) {
-        addHostUserCheck(false);
-        addEnrollmentNumber(null);
-        addBookmarked(false);
-      } else {
-        addHostUserCheck(loginMemberRelatedInfo.hostUser);
-        addEnrollmentNumber(loginMemberRelatedInfo.enrollmentNumber);
-        addBookmarked(loginMemberRelatedInfo.bookmarked);
-      }
+      // if (!loginMemberRelatedInfo) {
+      //   addHostUserCheck(false);
+      //   addEnrollmentNumber(null);
+      //   addBookmarked(false);
+      // } else {
+      //   addHostUserCheck(loginMemberRelatedInfo.hostUser);
+      //   addEnrollmentNumber(loginMemberRelatedInfo.enrollmentNumber);
+      //   addBookmarked(loginMemberRelatedInfo.bookmarked);
+      // }
       addProfileUrl(profileUrl);
       addTravelNumber(travelNumber);
 

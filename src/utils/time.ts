@@ -79,7 +79,7 @@ export function daysAgoFormatted(date: string) {
   console.log(date, "date");
   const format = "YYYY년 MM월 DD일 HH시 mm분";
   const parsedDate = dayjs(date, format);
-
+  console.log("parse", parsedDate);
   return daysAgo(parsedDate.format("YYYY-MM-DD HH:mm"));
 }
 // 현재 시간을 2000-10-10 11:11 문자열로 반환.
