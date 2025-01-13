@@ -34,7 +34,7 @@ const TripAvailable = () => {
           cutTrips?.map((post, idx) => {
             return (
               <BoxContainer key={post.travelNumber}>
-                <Box style={idx === cutTrips.length - 1 ? { backgroundColor: "yellow" } : { borderBottom: 0 }}>
+                <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : {}}>
                   <Link href={`/trip/detail/${post.travelNumber}`}>
                     <HorizonBoxLayout
                       travelNumber={post.travelNumber}
