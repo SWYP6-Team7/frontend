@@ -2,6 +2,7 @@
 import Badge from '@/components/designSystem/Badge'
 import CheckingModal from '@/components/designSystem/modal/CheckingModal'
 import RoundedImage from '@/components/designSystem/profile/RoundedImage'
+import TextButton from '@/components/designSystem/text/TextButton'
 import RightVector from '@/components/icons/RightVector'
 import Spacing from '@/components/Spacing'
 import useViewTransition from '@/hooks/useViewTransition'
@@ -100,62 +101,53 @@ export default function MyPage() {
       <Menu>
         <Box>
           <Title>모잉 소식</Title>
-          <SmallTitle onClick={onLinkAnnouncement}>
-            <img
-              src="/images/createTripBtn.png"
-              alt="small moing logo (공지사항)"
-            />
-            공지사항
-          </SmallTitle>
+        
+          <TextButton  isLeftVector isRightVector={false} onClick={onLinkAnnouncement} text='공지사항' leftIconSrc="/images/createTripBtn.png" />
         </Box>
+
         <Box>
           <Title>내 여행 현황</Title>
-          <SmallTitle
-            onClick={() => {
+        
+          <TextButton  onClick={() => {
               document.documentElement.style.viewTransitionName = 'forward'
               navigateWithTransition('/requestedTrip')
-            }}>
-            <img
-              src="/images/createTripBtn.png"
-              alt="small moing logo (참가 신청한 여행)"
-            />
-            참가 신청한 여행
-          </SmallTitle>
-          <SmallTitle
-            onClick={() => {
+            }} isLeftVector isRightVector={false}  text='참가 신청한 여행' leftIconSrc="/images/createTripBtn.png" />
+          <Spacing size={8}/>
+         
+          <TextButton  onClick={() => {
               document.documentElement.style.viewTransitionName = 'forward'
               navigateWithTransition('/myCommunity')
-            }}>
-            <img
-              src="/images/createTripBtn.png"
-              alt=""
-            />
-            작성한 글
-          </SmallTitle>
+            }} isLeftVector isRightVector={false}  text='작성한 글' leftIconSrc="/images/createTripBtn.png" />
         </Box>
         <div style={{ marginTop: '16px' }}>
           <Title>약관 및 정책</Title>
-          <SmallTitle style={{ margin: 0 }}>
-            <a
-              href={'/pdf/service_terms(241115).pdf'}
-              target="_blank">
-              서비스이용약관
-            </a>
-          </SmallTitle>
-          <SmallTitle style={{ margin: 0 }}>
-            <a
-              href={'/pdf/privacy_policy(241006).pdf'}
-              target="_blank">
-              개인정보처리방침
-            </a>
-          </SmallTitle>
-          <SmallTitle style={{ margin: 0 }}>
-            <a
-              href="/pdf/privacy_terms(241006).pdf"
-              target="_blank">
-              개인정보 수집 ・ 이용 동의
-            </a>
-          </SmallTitle>
+         
+          <TextButton onClick={(e:MouseEvent) => {
+            e.preventDefault();
+            router.push('/pdf/service_terms(241115).pdf')
+            }}
+            text='서비스이용약관'
+            isLeftVector={false}
+            isRightVector={false}
+           />
+       
+          <TextButton onClick={(e:MouseEvent) => {
+            e.preventDefault();
+            router.push('/pdf/privacy_policy(241006).pdf')
+            }}
+            text='개인정보처리방침'
+            isLeftVector={false}
+            isRightVector={false}
+           />
+          
+          <TextButton onClick={(e:MouseEvent) => {
+            e.preventDefault();
+            router.push("/pdf/privacy_terms(241006).pdf")
+            }}
+            text='개인정보 수집 ・ 이용 동의'
+            isLeftVector={false}
+            isRightVector={false}
+           />
           <Spacing size={150} />
         </div>
       </Menu>

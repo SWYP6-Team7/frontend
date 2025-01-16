@@ -139,15 +139,17 @@ export default function EditMyInfo() {
         </div>
       </ProfileImg>
       <div>
-       
+
         <TextButton  onClick={() => {
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyName')
           }} isRightVector isLeftVector={false} text="이름" rightText={name} titleWeight="semibold" />
+               <Spacing size={8} />
         <Line></Line>
-
+        <Spacing size={8} />
         
         <TextButton isRightVector={false} isLeftVector={false} text="이메일" rightText={email} titleWeight="semibold" />
+
         <Line></Line>
         <Spacing size={8} />
       
@@ -155,7 +157,8 @@ export default function EditMyInfo() {
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyPassword')
           }} isRightVector={true} isLeftVector={false} text="비밀번호 변경"  titleWeight="semibold" />
-
+   
+    <Spacing size={8} />
         <Line></Line>
         <Spacing size={8} />
         <TagBox
@@ -163,12 +166,8 @@ export default function EditMyInfo() {
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyTag')
           }}>
-          <Box style={{ padding: '18px 8px', display: 'flex' }}>
-            <SmallTitle style={{ display: 'flex' }}>나의 태그</SmallTitle>
-            <div style={{ padding: '8px 9px' }}>
-              <RightVector />
-            </div>
-          </Box>
+      
+          <TextButton  isRightVector={true} isLeftVector={false} text="나의 태그"  titleWeight="semibold" />
           <MyTag>
             <AgeBox style={{ display: 'flex' }}>
               <LastTitle style={{ marginRight: '24px' }}>연령대</LastTitle>
