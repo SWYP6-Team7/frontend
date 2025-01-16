@@ -14,6 +14,7 @@ import React, { useEffect, useState } from 'react'
 import ProfileEditModal from './ProfileEditModal'
 import { isGuestUser } from '@/utils/user'
 import useViewTransition from '@/hooks/useViewTransition'
+import TextButton from '@/components/designSystem/text/TextButton'
 
 export default function EditMyInfo() {
   const { addLogoutCheck } = authStore()
@@ -177,16 +178,20 @@ export default function EditMyInfo() {
         <Line></Line>
         <Spacing size={8} />
         <TagBox
-          onClick={() => {
+          onClick={(e:MouseEvent) => {
+            e.stopPropagation()
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyTag')
           }}>
-          <Box style={{ padding: '18px 8px', display: 'flex' }}>
-            <SmallTitle style={{ display: 'flex' }}>나의 태그</SmallTitle>
-            <div style={{ padding: '8px 9px' }}>
-              <RightVector />
-            </div>
-          </Box>
+          <div style={{ padding: '18px 8px'}}>
+          
+            <TextButton onClick={(e:MouseEvent) => {
+            e.stopPropagation()
+            document.documentElement.style.viewTransitionName = 'forward'
+            navigateWithTransition('/editMyTag')
+          }} isRightVector isLeftVector={false} text="나의 태그" />
+          </div>
+          
           <MyTag>
             <AgeBox style={{ display: 'flex' }}>
               <LastTitle style={{ marginRight: '24px' }}>연령대</LastTitle>

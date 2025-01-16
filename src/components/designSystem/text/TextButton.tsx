@@ -4,12 +4,12 @@ import { palette } from '@/styles/palette'
 import styled from '@emotion/styled'
 
 interface TextButtonProps {
-  onClick?: () => void
+  onClick?: (e:MouseEvent) => void
   text: React.ReactNode
   isRightVector: boolean
   rightText?: string
   isLeftVector: boolean
-  leftIconSrc: string
+  leftIconSrc?: string
   titleWeight?: 'regular' | 'semibold'
 }
 
