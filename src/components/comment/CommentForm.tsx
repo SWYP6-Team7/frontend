@@ -21,12 +21,12 @@ interface CommentFormProps {
 const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, relatedNumber }: CommentFormProps) => {
   const { isEdit, edit, parentNumber, commentNumber, setReset, isReply } = commentStore();
   const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [focused, setFocused] = useState(false);
   const [isToastShow, setIsToastShow] = useState(false);
   const [value, setValue] = useState("");
   const { post, postMutation, updateMutation, update } = useComment(relatedType, relatedNumber);
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (inputRef.current) {
       inputRef.current.style.height = "32px";
       inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 84)}px`; // 내용에 맞게 높이 조정, 최대 100px

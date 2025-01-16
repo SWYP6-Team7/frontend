@@ -165,7 +165,12 @@ const useAuth = () => {
       clearLoginData()
       resetData()
       setSocialLogin(null, null)
-      router.push('/')
+      if(typeof window === 'undefined'){
+        router.replace('/')
+      }else {
+        window.location.href = '/'
+      }
+     
       queryClient.clear()
     },
     onError: (error: any) => {

@@ -191,6 +191,8 @@ const Content = styled.div`
   font-weight: 400;
   line-height: 22.4px;
   letter-spacing: -0.025em;
+  word-break: break-all;
+
 `;
 
 const BottomContainer = styled.div`

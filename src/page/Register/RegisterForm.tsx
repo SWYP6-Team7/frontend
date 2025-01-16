@@ -213,6 +213,7 @@ const RegisterForm = () => {
                 success={success.password}
               />
               <Spacing size={10} />
+              <div style={{ paddingLeft: 6 }}>
               {error.password ? (
                 <InfoText hasError>{error.password}</InfoText>
               ) : success.password ? (
@@ -220,6 +221,7 @@ const RegisterForm = () => {
               ) : (
                 <InfoText>영문 대문자, 특수문자 포함 8~20자</InfoText>
               )}
+              </div>
             </FieldContainer>
 
             <Spacing size={14} />

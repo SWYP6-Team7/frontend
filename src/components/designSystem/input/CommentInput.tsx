@@ -5,11 +5,11 @@ import styled from '@emotion/styled'
 import { forwardRef, useEffect, useState } from 'react'
 
 interface CommentInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   setReset: () => void
 }
 
-const CommentInput = forwardRef<HTMLInputElement, CommentInputProps>(
+const CommentInput = forwardRef<HTMLTextAreaElement, CommentInputProps>(
   ({ setReset, placeholder, value, onChange }, ref) => {
     const [focused, setFocused] = useState(false)
 
