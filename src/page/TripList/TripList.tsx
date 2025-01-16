@@ -152,7 +152,7 @@ const SortContainer = styled.div`
   padding-bottom: 11px;
   border-bottom: 1px solid rgb(240, 240, 240);
   position: sticky;
-  top: 100px;
+  top: 116px;
   z-index: 1001;
   background-color: ${palette.BG};
 `

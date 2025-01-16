@@ -155,7 +155,7 @@ export default function TripDetailHeader() {
 
       deleteTripDetailMutation().then((res) => {
         console.log("result", res);
-        if (res?.data.status === 204) {
+        if (res?.status === 204) {
           setIsToastShow(true);
           setTimeout(() => {
             router.push("/");
