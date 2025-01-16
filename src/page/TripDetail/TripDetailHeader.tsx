@@ -154,7 +154,7 @@ export default function TripDetailHeader() {
       // 삭제 요청.
 
       deleteTripDetailMutation().then((res) => {
-        console.log(res);
+        console.log("result", res);
         if (res?.data.status === 204) {
           setIsToastShow(true);
           setTimeout(() => {
