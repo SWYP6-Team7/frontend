@@ -6,6 +6,7 @@ import { forwardRef } from 'react'
 interface SearchFilterTagProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string
+  iconPosition?: 'start' | 'end' 
   idx: number
   addStyle?: {
     backgroundColor?: string
@@ -15,6 +16,7 @@ interface SearchFilterTagProps
     padding?: string
     fontWeight?: string
     fontSize?: string
+    
   }
   disabled?: boolean
   icon?: React.ReactNode
@@ -44,6 +46,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
       onClick,
       disabled = false,
       icon,
+      iconPosition = 'start',
       addStyle = {
         backgroundColor: active ? palette.keycolorBG : palette.검색창,
         color: active ? palette.keycolor : palette.기본,
@@ -66,8 +69,9 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         id={`${idx}`}
         onClick={onClick}
         style={addStyle}>
-        {icon}
+        {iconPosition === 'start' && icon}
         <div>{text}</div>
+        {iconPosition === 'end' && icon}
       </SearchFilterTagContainer>
     )
   }

@@ -234,26 +234,39 @@ const FilterList = () => {
         </BottomModal>
       )}
       <Container>
-        {FILTER_LIST.map(filter => (
-          <FilterContainer
-            active={getCount(filter.title) > 0}
-            onClick={e => handleShowModal(e, filter.title)}
-            key={filter.title}>
-            <div>
-              {getCount(filter.title) === 0
-                ? filter.title
-                : getCount(filter.title) === 1
-                  ? getFirstTag(filter.title)
-                  : `${filter.title} ${getCount(filter.title)}`}
-            </div>
-            {getCount(filter.title) > 0 ? (
-              <button onClick={e => handleOneFilterReset(e, filter.title)}>
+        {FILTER_LIST.map((filter, idx) => (
+          <SearchFilterTag
+          idx={idx}
+          text={
+            getCount(filter.title) === 0
+              ? filter.title
+              : getCount(filter.title) === 1
+              ? getFirstTag(filter.title)?? filter.title
+              : `${filter.title} ${getCount(filter.title)}`
+          }
+          active={getCount(filter.title) > 0}
+          onClick={(e) => handleShowModal(e, filter.title)}
+          addStyle={{
+            backgroundColor: getCount(filter.title) > 0 ? palette.keycolor : 'white',
+            color: getCount(filter.title) > 0 ? 'white' : 'black',
+            border: '1px solid #ababab',
+            borderRadius: '15px',
+            padding: '8px 14px',
+            fontWeight: '600',
+            fontSize: '14px'
+          }}
+          icon={
+            getCount(filter.title) > 0 ? (
+              <button onClick={(e) => handleOneFilterReset(e, filter.title)}>
                 <WhiteXIcon size={9} />
               </button>
             ) : (
               <SelectArrow />
-            )}
-          </FilterContainer>
+            )
+          }
+        />
+ 
+          
         ))}
       </Container>
     </>

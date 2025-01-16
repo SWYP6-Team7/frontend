@@ -139,7 +139,7 @@ export default function EditMyInfo() {
         </div>
       </ProfileImg>
       <div>
-
+      <Spacing size={24}/>
         <TextButton  onClick={() => {
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyName')

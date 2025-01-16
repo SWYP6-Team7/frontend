@@ -101,8 +101,9 @@ export default function MyPage() {
       <Menu>
         <Box>
           <Title>모잉 소식</Title>
-        
+          <Spacing size={8}/>
           <TextButton  isLeftVector isRightVector={false} onClick={onLinkAnnouncement} text='공지사항' leftIconSrc="/images/createTripBtn.png" />
+          <Spacing size={8}/>
         </Box>
 
         <Box>
@@ -118,6 +119,7 @@ export default function MyPage() {
               document.documentElement.style.viewTransitionName = 'forward'
               navigateWithTransition('/myCommunity')
             }} isLeftVector isRightVector={false}  text='작성한 글' leftIconSrc="/images/createTripBtn.png" />
+           <Spacing size={8}/>
         </Box>
         <div style={{ marginTop: '16px' }}>
           <Title>약관 및 정책</Title>
