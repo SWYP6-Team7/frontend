@@ -156,6 +156,7 @@ const Title = styled.div`
 `;
 const Details = styled.div`
   margin-top: 1.9svh;
+  white-space:pre-line;
   font-size: 16px;
   font-weight: 400;
   line-height: 22.4px;

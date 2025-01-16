@@ -186,7 +186,7 @@ const Day = styled.div`
 
 const Content = styled.div`
   padding: 4px 16px 10px 40px;
-
+  white-space:pre-line;
   font-size: 16px;
   font-weight: 400;
   line-height: 22.4px;

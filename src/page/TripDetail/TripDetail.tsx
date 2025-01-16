@@ -474,6 +474,8 @@ const Title = styled.div`
 const Details = styled.div`
   margin-top: 16px;
   font-size: 16px;
+
+  white-space:pre-line;
   font-weight: 400;
   line-height: 22.4px;
   text-align: left;

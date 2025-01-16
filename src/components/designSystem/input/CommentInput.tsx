@@ -72,6 +72,7 @@ const Input = styled.textarea`
   padding: 5px 16px;
   resize: none;
   height: 32px;
+  wrap:hard;
   overflow-y: auto; /* 내용이 넘칠 때 스크롤 생성 */
 `
 

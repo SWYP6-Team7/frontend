@@ -42,6 +42,7 @@ const DetailTextArea = styled.textarea<{
   bgColor: string
 }>`
   width: 100%;
+  wrap:hard;
   height: ${props =>
     typeof props.height === 'number' ? `${props.height}` : props.height};
   padding: 16px;

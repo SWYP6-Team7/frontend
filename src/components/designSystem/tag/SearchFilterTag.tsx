@@ -84,7 +84,7 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: width,background-color 0.2s ease-in-out;
+  transition: width,background-color 0.3s ease-in-out;
   min-width: fit-content; 
   white-space: nowrap; 
   border-radius: 16px;
