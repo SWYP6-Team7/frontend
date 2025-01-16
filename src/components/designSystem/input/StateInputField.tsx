@@ -1,32 +1,32 @@
-'use client'
-import CheckIcon from '@/components/icons/CheckIcon'
-import { css, keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
-import React, { FocusEventHandler, forwardRef, useState } from 'react'
-import RemoveButton from './RemoveButton'
-import { palette } from '@/styles/palette'
+"use client";
+import CheckIcon from "@/components/icons/CheckIcon";
+import { css, keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
+import React, { FocusEventHandler, forwardRef, useState } from "react";
+import RemoveButton from "./RemoveButton";
+import { palette } from "@/styles/palette";
 
 // React.InputHTMLAttributes<HTMLInputElement
 // input element의 property 타입들도 상속받아서 사용할 수 있음
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  hasError?: boolean
-  success?: boolean
-  shake?: boolean
-  height?: number
-  showSuccessIcon?: boolean
-  showIcon?: boolean
-  handleRemoveValue: () => void
+  hasError?: boolean;
+  success?: boolean;
+  shake?: boolean;
+  height?: number;
+  showSuccessIcon?: boolean;
+  showIcon?: boolean;
+  handleRemoveValue: () => void;
 }
 
 interface ContainerProps {
-  bgColor: string
-  shake: boolean
-  height: number
-  borderColor: string
+  bgColor: string;
+  shake: boolean;
+  height: number;
+  borderColor: string;
 }
 
 interface InputProps {
-  bgColor: string
+  bgColor: string;
 }
 
 // forwardRef : 부모 컴포넌트에서 자식 컴포넌트 안의 DOM element에 접근하고 싶을 때 사용한다.
@@ -58,39 +58,31 @@ const StateInputField = forwardRef<HTMLInputElement, InputFieldProps>(
     },
     ref
   ) => {
-    const [focused, setFocused] = useState(false)
+    const [focused, setFocused] = useState(false);
 
-    const SuccessIcon = showSuccessIcon ? CheckIcon : React.Fragment
+    const SuccessIcon = showSuccessIcon ? CheckIcon : React.Fragment;
     // 우선순위 1.에러가 있는지? 2. 포커싱 되어있는지
 
     const bgColor = hasError
       ? palette.errorVariant
       : focused
         ? palette.greenVariant
-        : props.value === ''
+        : props.value === ""
           ? palette.검색창
-          : '#F5F5F5'
-    const borderColor = hasError
-      ? palette.errorBorder
-      : focused
-        ? palette.keycolor
-        : bgColor
-    const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
-      setFocused(true)
-      onFocus?.(event)
-    }
+          : "#F5F5F5";
+    const borderColor = hasError ? palette.errorBorder : focused ? palette.keycolor : bgColor;
+    const handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
+      setFocused(true);
+      onFocus?.(event);
+    };
 
-    const handleBlur: FocusEventHandler<HTMLInputElement> = event => {
-      setFocused(false)
-      onBlur?.(event)
-    }
+    const handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
+      setFocused(false);
+      onBlur?.(event);
+    };
     // margin같은 속성은 유동적으로 나타나는 애들한테 주는게 좋음
     return (
-      <Container
-        shake={shake}
-        bgColor={bgColor}
-        height={height}
-        borderColor={borderColor}>
+      <Container shake={shake} bgColor={bgColor} height={height} borderColor={borderColor}>
         <Input
           bgColor={bgColor}
           ref={ref}
@@ -99,7 +91,7 @@ const StateInputField = forwardRef<HTMLInputElement, InputFieldProps>(
           onFocus={handleFocus}
           {...props}
         />
-        <div style={{ boxSizing: 'border-box' }}>
+        <div style={{ boxSizing: "border-box" }}>
           {showIcon &&
             (success ? (
               focused ? (
@@ -107,16 +99,16 @@ const StateInputField = forwardRef<HTMLInputElement, InputFieldProps>(
               ) : (
                 <SuccessIcon status="done" />
               )
-            ) : props.value === '' ? (
+            ) : props.value === "" ? (
               <SuccessIcon />
             ) : (
               <RemoveButton onClick={handleRemoveValue} />
             ))}
         </div>
       </Container>
-    )
+    );
   }
-)
+);
 
 const shake = keyframes`
   0% { transform: translateX(0); }
@@ -124,27 +116,27 @@ const shake = keyframes`
   50% { transform: translateX(5px); }
   75% { transform: translateX(-5px); }
   100% { transform: translateX(0); }
-`
+`;
 
 const Container = styled.div<ContainerProps>`
   display: flex;
   align-items: center;
-
   width: 100%;
-  height: ${props => props.height}px;
+  height: ${(props) => props.height}px;
   padding: 0px 16px;
   border-radius: 50px;
   overflow-x: hidden;
-  box-sizing: content-box;
-  border: 1px solid ${props => props.borderColor};
-  background-color: ${props => props.bgColor};
-  animation: ${props =>
+  box-sizing: border-box;
+
+  border: 1px solid ${(props) => props.borderColor};
+  background-color: ${(props) => props.bgColor};
+  animation: ${(props) =>
     props.shake
       ? css`
           ${shake} 0.3s
         `
-      : 'none'};
-`
+      : "none"};
+`;
 
 const Input = styled.input<InputProps>`
   flex: 1;
@@ -158,9 +150,9 @@ const Input = styled.input<InputProps>`
   outline: none;
   font-weight: 400;
   border: none;
-  background-color: ${props => props.bgColor};
+  background-color: ${(props) => props.bgColor};
   font-size: 16px;
   letter-spacing: -0.04px;
   border: #cdcdcd;
-`
-export default StateInputField
+`;
+export default StateInputField;

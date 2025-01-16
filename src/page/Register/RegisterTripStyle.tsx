@@ -11,6 +11,7 @@ import useAuth from '@/hooks/user/useAuth'
 import { palette } from '@/styles/palette'
 import { IRegisterGoogle, IRegisterKakao } from '@/model/auth'
 import { useRouter } from 'next/navigation'
+import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
 
 const TAGCOUNT = 18
 const categoryButtonTextArray = [
@@ -208,6 +209,10 @@ const RegisterTripStyle = () => {
     }
   }
 
+  const isActive = (idx: number) => {
+    return activeStates[idx]
+  }
+
   // width가 390px 미만인 경우에도 버튼의 위치가 고정될 수 있도록. width값 조정.
   const newRightPosition = windowSize.width.toString() + 'px'
 
@@ -227,12 +232,28 @@ const RegisterTripStyle = () => {
       <TripStyleContainer>
         <StyleBtns>
           {categoryButtonTextArray.map((item, idx) => (
-            <CategoryButton
-              id={idx}
-              text={item.label}
-              active={activeStates[idx]}
-              onClick={handleButtonClick}
-            />
+           
+            <SearchFilterTag
+                  key={item.label}
+                  idx={idx}
+                  addStyle={{
+                    backgroundColor: isActive(idx)
+                      ? 'rgba(227, 239, 217, 1)'
+                      : ' rgba(240, 240, 240, 1)',
+                    color: isActive(idx)
+                      ? `${palette.keycolor}`
+                      : 'rgba(52, 52, 52, 1)',
+                    border: isActive(idx)
+                      ? `1px solid ${palette.keycolor}`
+                      : `1px solid ${palette.검색창}`,
+                    borderRadius: '30px',
+                    padding: '10px 20px',
+                    fontWeight: isActive(idx) ? '600' : '400'
+                  }}
+             
+                  text={item.label}
+                  onClick={handleButtonClick}
+                />
           ))}
         </StyleBtns>
       </TripStyleContainer>

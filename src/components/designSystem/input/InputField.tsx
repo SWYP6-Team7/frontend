@@ -1,20 +1,21 @@
-'use client'
-import styled from '@emotion/styled'
-import React, { FocusEventHandler, forwardRef, useState } from 'react'
-import RemoveButton from './RemoveButton'
-import { palette } from '@/styles/palette'
+"use client";
+import styled from "@emotion/styled";
+import React, { FocusEventHandler, forwardRef, useState } from "react";
+import RemoveButton from "./RemoveButton";
+import { palette } from "@/styles/palette";
 
 // React.InputHTMLAttributes<HTMLInputElement
 // input element의 property 타입들도 상속받아서 사용할 수 있음
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  handleRemoveValue?: () => void
-  icon?: React.ReactNode
-  isRemove?: boolean
+  handleRemoveValue?: () => void;
+  icon?: React.ReactNode;
+  isRemove?: boolean;
+  isHome?: boolean;
 }
 
 interface ContainerProps {
-  bgColor: string
-  borderColor: string
+  bgColor: string;
+  borderColor: string;
 }
 
 // forwardRef : 부모 컴포넌트에서 자식 컴포넌트 안의 DOM element에 접근하고 싶을 때 사용한다.
@@ -25,57 +26,36 @@ interface ContainerProps {
 // 기본적으로 input 사용하듯이 props 사용하면 됨
 // onBlur와 onFocus 함수 추가 가능
 const InputField = forwardRef<HTMLInputElement, TextFieldProps>(
-  (
-    {
-      icon,
-      handleRemoveValue = () => {},
-      isRemove = true,
-      onFocus,
-      onBlur,
-      ...props
-    },
-    ref
-  ) => {
-    const [focused, setFocused] = useState(false)
+  ({ icon, handleRemoveValue = () => {}, isRemove = true, onFocus, onBlur, isHome = false, ...props }, ref) => {
+    const [focused, setFocused] = useState(false);
 
-    const bgColor = focused
-      ? palette.greenVariant
-      : props.value === ''
-        ? palette.검색창
-        : palette.비강조4
-    const borderColor = focused ? palette.keycolor : bgColor
-    const handleFocus: FocusEventHandler<HTMLInputElement> = event => {
-      setFocused(true)
-      onFocus?.(event)
-    }
+    const bgColor = isHome
+      ? "#fff"
+      : focused
+        ? palette.greenVariant
+        : props.value === ""
+          ? palette.검색창
+          : palette.비강조4;
+    const borderColor = focused ? palette.keycolor : bgColor;
+    const handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
+      setFocused(true);
+      onFocus?.(event);
+    };
 
-    const handleBlur: FocusEventHandler<HTMLInputElement> = event => {
-      setFocused(false)
-      onBlur?.(event)
-    }
+    const handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
+      setFocused(false);
+      onBlur?.(event);
+    };
 
     return (
-      <Container
-        bgColor={bgColor}
-        borderColor={borderColor}>
+      <Container bgColor={bgColor} borderColor={borderColor}>
         {icon && <IconContainer>{icon}</IconContainer>}
-        <Input
-          ref={ref}
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          {...props}
-        />
-        <div>
-          {props.value === '' ? (
-            <> </>
-          ) : (
-            isRemove && <RemoveButton onClick={handleRemoveValue} />
-          )}
-        </div>
+        <Input ref={ref} onBlur={handleBlur} onFocus={handleFocus} {...props} />
+        <div>{props.value === "" ? <> </> : isRemove && <RemoveButton onClick={handleRemoveValue} />}</div>
       </Container>
-    )
+    );
   }
-)
+);
 
 const Container = styled.div<ContainerProps>`
   display: flex;
@@ -87,18 +67,18 @@ const Container = styled.div<ContainerProps>`
   border-radius: 50px;
   overflow-x: hidden;
   box-sizing: border-box;
-  border: 1px solid ${props => props.borderColor};
-  background-color: ${props => props.bgColor};
-`
+  border: 1px solid ${(props) => props.borderColor};
+  background-color: ${(props) => props.bgColor};
+`;
 
 const IconContainer = styled.div`
   margin-right: 11px;
-`
+`;
 
 const Input = styled.input`
   flex: 1;
   width: 100%;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   &::placeholder {
     color: ${palette.비강조2};
   }
@@ -110,6 +90,6 @@ const Input = styled.input`
   font-size: 16px;
   letter-spacing: -0.04px;
   border: #cdcdcd;
-`
+`;
 
-export default InputField
+export default InputField;

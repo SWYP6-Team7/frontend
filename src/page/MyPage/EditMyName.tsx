@@ -11,6 +11,7 @@ import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import ValidationInputField from "@/components/designSystem/input/ValidationInputField";
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
@@ -51,8 +52,9 @@ export default function EditMyName() {
     <Wrapper>
       <StepContent>새로운 이름을 입력해주세요</StepContent>
       <div style={{ marginTop: "14px" }}>
-        <StateInputField
-          showIcon={false}
+        <ValidationInputField
+          type={"text"}
+          name={"newUserName"}
           shake={nameValidError && userName.length > 0}
           success={userName.length > 0 && !nameValidError}
           hasError={nameValidError && userName.length > 0}
@@ -60,16 +62,8 @@ export default function EditMyName() {
           value={userName}
           onChange={(e) => inputChangeHandler(e)}
           handleRemoveValue={handleRemoveValue}
+          message=" 최대 10자의 한글만 입력할 수 있습니다.(띄어쓰기 불가)"
         />
-        <div style={{ marginTop: 14, padding: "0 6px" }}>
-          {nameValidError && userName.length > 0 ? (
-            <InfoText shake={userName.length > 0 && nameValidError} hasError={userName.length > 0 && nameValidError}>
-              최대 10자의 한글만 입력할 수 있습니다.(띄어쓰기 불가)
-            </InfoText>
-          ) : (
-            <Spacing size={16} />
-          )}
-        </div>
       </div>
 
       <ButtonContainer>

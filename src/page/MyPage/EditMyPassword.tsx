@@ -1,8 +1,6 @@
 "use client";
 import Button from "@/components/designSystem/Buttons/Button";
 import ButtonContainer from "@/components/ButtonContainer";
-import StateInputField from "@/components/designSystem/input/StateInputField";
-import InfoText from "@/components/designSystem/text/InfoText";
 import { passwordSchema } from "@/utils/schema";
 import Spacing from "@/components/Spacing";
 import useMyPage from "@/hooks/myPage/useMyPage";
@@ -11,6 +9,7 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import ValidationInputField from "@/components/designSystem/input/ValidationInputField";
 interface ErrorProps {
   password: undefined | string;
 }
@@ -115,7 +114,7 @@ export default function EditMyPassword() {
         <FieldContainer>
           <Label htmlFor="password">현재 비밀번호를 입력해주세요</Label>
           <Spacing size={16} />
-          <StateInputField
+          <ValidationInputField
             handleRemoveValue={handleRemoveValue}
             type="password"
             onChange={changeValue}
@@ -125,9 +124,8 @@ export default function EditMyPassword() {
             hasError={Boolean(error.password)}
             value={formData.password}
             success={success.password}
+            message={error.password ?? ""}
           />
-          <Spacing size={10} />
-          {error.password && <InfoText hasError>{error.password}</InfoText>}
         </FieldContainer>
 
         <ButtonContainer>
