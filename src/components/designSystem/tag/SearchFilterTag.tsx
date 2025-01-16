@@ -70,7 +70,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         onClick={onClick}
         style={addStyle}>
         {iconPosition === 'start' && icon}
-        <div>{text}</div>
+        <TextContainer>{text}</TextContainer>
         {iconPosition === 'end' && icon}
       </SearchFilterTagContainer>
     )
@@ -84,6 +84,15 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: all 0.2s ease-in-out;
+  min-width: fit-content; 
+  white-space: nowrap; 
   border-radius: 16px;
+`
+
+const TextContainer = styled.div`
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 export default SearchFilterTag

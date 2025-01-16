@@ -244,6 +244,7 @@ const FilterList = () => {
               ? getFirstTag(filter.title)?? filter.title
               : `${filter.title} ${getCount(filter.title)}`
           }
+          iconPosition="end"
           active={getCount(filter.title) > 0}
           onClick={(e) => handleShowModal(e, filter.title)}
           addStyle={{

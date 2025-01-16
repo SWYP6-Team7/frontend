@@ -92,9 +92,10 @@ const CommunityPost = () => {
               padding: "11px 16px",
               fontSize: "16px",
               backgroundColor: data.liked ? palette.keycolorBG : palette.검색창,
-              color: data.liked ? palette.keycolor : palette.기본,
-              border: data.liked ? `1px solid ${palette.keycolor}` : "none",
+              color: data.liked ? palette.keycolor : palette.비강조,
+              border: data.liked ? `1px solid ${palette.keycolor}` : `1px solid ${palette.비강조3}`,
               borderRadius: "30px",
+              fontWeight: "400"
             }}
             icon={<CommunityHeartIcon />}
             text={data.likeCount > 0 ? `${data.likeCount}` : "좋아요"}
