@@ -86,7 +86,7 @@ const CommunityPost = () => {
           </ImageContainer>
         )}
 
-        <LikeContainer onClick={handleLikeToggle}>
+        {data && <LikeContainer onClick={handleLikeToggle}>
           <SearchFilterTag
             addStyle={{
               padding: "11px 16px",
@@ -102,6 +102,7 @@ const CommunityPost = () => {
             idx={0}
           />
         </LikeContainer>
+}
       </MainContent>
       <ViewsETC>
         <div>댓글 {data.commentCount}</div>
