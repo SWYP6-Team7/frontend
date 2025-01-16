@@ -139,59 +139,36 @@ export default function EditMyInfo() {
         </div>
       </ProfileImg>
       <div>
-        <Box
-          onClick={() => {
+       
+        <TextButton  onClick={() => {
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyName')
-          }}>
-          <SmallTitle>이름</SmallTitle>
-          <Name>
-            <Value style={{ marginRight: '8px' }}>{name}</Value>
-            <div style={{ padding: '8px 9px' }}>
-              <RightVector />
-            </div>
-          </Name>
-        </Box>
-        <Spacing size={8} />
+          }} isRightVector isLeftVector={false} text="이름" rightText={name} titleWeight="semibold" />
+        <Line></Line>
+
+        
+        <TextButton isRightVector={false} isLeftVector={false} text="이메일" rightText={email} titleWeight="semibold" />
         <Line></Line>
         <Spacing size={8} />
-        <Box>
-          <SmallTitle>이메일</SmallTitle>
-          <div>
-            <Value>{email}</Value>
-          </div>
-        </Box>
-        <Spacing size={8} />
-        <Line></Line>
-        <Spacing size={8} />
-        <Box
-          onClick={() => {
+      
+        <TextButton  onClick={() => {
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyPassword')
-          }}>
-          <SmallTitle>비밀번호 변경</SmallTitle>
-          <div style={{ padding: '8px 9px' }}>
-            <RightVector />
-          </div>
-        </Box>
-        <Spacing size={8} />
+          }} isRightVector={true} isLeftVector={false} text="비밀번호 변경"  titleWeight="semibold" />
+
         <Line></Line>
         <Spacing size={8} />
         <TagBox
-          onClick={(e:MouseEvent) => {
-            e.stopPropagation()
+          onClick={() => {
             document.documentElement.style.viewTransitionName = 'forward'
             navigateWithTransition('/editMyTag')
           }}>
-          <div style={{ padding: '18px 8px'}}>
-          
-            <TextButton onClick={(e:MouseEvent) => {
-            e.stopPropagation()
-            document.documentElement.style.viewTransitionName = 'forward'
-            navigateWithTransition('/editMyTag')
-          }} isRightVector isLeftVector={false} text="나의 태그" />
-          </div>
-          
+          <Box style={{ padding: '18px 8px', display: 'flex' }}>
+            <SmallTitle style={{ display: 'flex' }}>나의 태그</SmallTitle>
+            <div style={{ padding: '8px 9px' }}>
+              <RightVector />
+            </div>
+          </Box>
           <MyTag>
             <AgeBox style={{ display: 'flex' }}>
               <LastTitle style={{ marginRight: '24px' }}>연령대</LastTitle>
