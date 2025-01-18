@@ -16,6 +16,7 @@ import useComment from "@/hooks/comment/useComment";
 import { authStore } from "@/store/client/authStore";
 import { commentStore } from "@/store/client/commentStore";
 import { COMMENT_MODAL_MESSAGES } from "@/constants/modalMessages";
+import ReportModal from "../designSystem/modal/ReportModal";
 
 interface CommentProps {
   comment: IComment;
@@ -27,11 +28,13 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
   const { accessToken, userId } = authStore();
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false);
+  const [isReportBtnClicked, setIsReportBtnClicked] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [checkingModalClicked, setCheckingModalClicked] = useState(false);
   const [successEdit, setSuccessEdit] = useState(false);
   const [isToastShow, setIsToastShow] = useState(false); // 삭제 완료 메시지.
   const [threeDotsClick, setThreeDotsClick] = useState(false);
+  const [reportThreeDotsClick, setReportThreeDotsClick] = useState(false);
   const { setOpenEdit, setParentNumber, setCommentNumber, isEdit, isReply, parentNumber, commentNumber } =
     commentStore();
   const { removeMutation, remove, like, unlike, updateMutation } = useComment(relatedType, relatedNumber);
@@ -59,13 +62,24 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
       setOpenEdit(comment.content);
       setCommentNumber(comment.commentNumber);
     }
+    if (isReportBtnClicked) {
+      setIsReportBtnClicked(false);
+    }
     if (checkingModalClicked) {
       remove({ commentNumber: comment.commentNumber });
       if (removeMutation.isSuccess) {
         setIsToastShow(true);
       }
     }
-  }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked]);
+  }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked, isReportBtnClicked]);
+
+  const onClickThreeDots = () => {
+    if (comment.userNumber === userId || comment.travelWriterNumber === userId) {
+      setThreeDotsClick(true);
+    } else {
+      setReportThreeDotsClick(true);
+    }
+  };
 
   const onClickReply = () => {
     setParentNumber(comment.commentNumber);
@@ -88,11 +102,10 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
           <Dot>·</Dot>
           <Day>{daysAgoFormatted(comment.regDate)}</Day>
         </UserBox>
-        {(comment.userNumber === userId || comment.travelWriterNumber === userId) && (
-          <button onClick={() => setThreeDotsClick(true)}>
-            <EllipsisIcon />
-          </button>
-        )}
+
+        <button onClick={onClickThreeDots}>
+          <EllipsisIcon />
+        </button>
       </TopContainer>
       <Content>{comment.content}</Content>
       <BottomContainer>
@@ -126,6 +139,11 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
         setIsDeleteBtnClicked={setIsDeleteBtnClicked}
         isOpen={threeDotsClick}
         setIsOpen={setThreeDotsClick}
+      />
+      <ReportModal
+        setIsReportBtnClicked={setIsReportBtnClicked}
+        isOpen={reportThreeDotsClick}
+        setIsOpen={setReportThreeDotsClick}
       />
       <CheckingModal
         isModalOpen={isResultModalOpen}
@@ -186,13 +204,12 @@ const Day = styled.div`
 
 const Content = styled.div`
   padding: 4px 16px 10px 40px;
-  white-space:pre-line;
+  white-space: pre-line;
   font-size: 16px;
   font-weight: 400;
   line-height: 22.4px;
   letter-spacing: -0.025em;
   word-break: break-all;
-
 `;
 
 const BottomContainer = styled.div`
