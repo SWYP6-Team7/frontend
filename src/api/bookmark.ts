@@ -8,7 +8,6 @@ import RequestError from "@/context/ReqeustError";
 
 export const getBookmark = async (pageParams: number, accessToken: string) => {
   try {
-    console.log(accessToken);
     const response = await axiosInstance.get("/api/bookmarks", {
       params: {
         page: pageParams,
