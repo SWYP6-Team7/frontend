@@ -232,5 +232,6 @@ const Container = styled.div<{
   display: ${(props) => (props.isTripDetailEdit ? "none" : "flex")};
   align-items: center;
   justify-content: space-around;
+  gap: 17.5px;
   width: ${(props) => (props.hostUserCheck ? "136px" : "auto")};
 `;

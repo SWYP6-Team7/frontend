@@ -37,7 +37,7 @@ const BtnBox = styled.div<{ isOpen: boolean }>`
 `;
 
 const ReportBtn = styled.button`
-  height: ${(props) => (props.isMyApplyTrip ? "100%" : "50%")};
+  height: 100%;
   @media (max-width: 390px) {
     width: 100%;
   }
