@@ -6,6 +6,7 @@ import { useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
 
 export const useBookmark = () => {
   const { accessToken } = authStore();
+  console.log("accessToken", accessToken);
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery<
     IMyTripList,
     Object,
