@@ -1,65 +1,61 @@
-'use client'
-import styled from '@emotion/styled'
-import { forwardRef, SelectHTMLAttributes, useEffect, useState } from 'react'
-import SelectArrow from '../icons/SelectArrow'
-import Spacing from '../Spacing'
-import { palette } from '@/styles/palette'
-import { keyframes } from '@emotion/react'
+"use client";
+import styled from "@emotion/styled";
+import { forwardRef, SelectHTMLAttributes, useEffect, useState } from "react";
+import SelectArrow from "../icons/SelectArrow";
+import Spacing from "../Spacing";
+import { palette } from "@/styles/palette";
+import { keyframes } from "@emotion/react";
 
 interface SelectProps {
-  list: string[]
-  setValue: (element: string) => void
-  value?: string | number
-  noneValue?: string
+  id?: string;
+  list: string[];
+  setValue: (element: string) => void;
+  value?: string | number;
+  noneValue?: string;
+  width?: "fit-content" | "100%";
 }
 
 // none value는 일종의 label값 같은 느낌
 // value가 undefined인 초깃값일 때 보여주기 위한 값
 
-const Select = ({ list, value, setValue, noneValue }: SelectProps) => {
-  const [active, setActive] = useState(false)
-  const [animatedItems, setAnimatedItems] = useState<boolean[]>([])
+const Select = ({ list, id, width = "fit-content", value, setValue, noneValue }: SelectProps) => {
+  const [active, setActive] = useState(false);
+  const [animatedItems, setAnimatedItems] = useState<boolean[]>([]);
   const changeValue = (element: string) => {
-    setValue(element)
-    setActive(false)
-  }
+    setValue(element);
+    setActive(false);
+  };
 
   useEffect(() => {
     if (active) {
       // active가 true일 때 각 항목에 대해 애니메이션 추가
-      const timers: NodeJS.Timeout[] = []
-      const newAnimatedItems = Array(list.length).fill(false)
+      const timers: NodeJS.Timeout[] = [];
+      const newAnimatedItems = Array(list.length).fill(false);
 
       list.forEach((_, index) => {
         timers.push(
           setTimeout(() => {
-            newAnimatedItems[index] = true // 애니메이션 시작
-            setAnimatedItems([...newAnimatedItems])
+            newAnimatedItems[index] = true; // 애니메이션 시작
+            setAnimatedItems([...newAnimatedItems]);
           }, index * 200) // 200ms 간격으로 각 항목 보이기
-        )
-      })
+        );
+      });
 
       return () => {
-        timers.forEach(timer => clearTimeout(timer)) // 클린업
-      }
+        timers.forEach((timer) => clearTimeout(timer)); // 클린업
+      };
     } else {
-      setAnimatedItems(Array(list.length).fill(false)) // active가 false일 경우 초기화
+      setAnimatedItems(Array(list.length).fill(false)); // active가 false일 경우 초기화
     }
-  }, [active, list])
+  }, [active, list]);
   return (
-    <AllContainer>
+    <AllContainer id={id}>
       {active && <Background />}
-      <Container>
+      <Container width={width}>
         <OptionList active={active}>
-          <Label
-            value={value}
-            onClick={() => setActive(!active)}>
-            {value ? (
-              value
-            ) : (
-              <div style={{ color: palette.비강조 }}>{noneValue}</div>
-            )}
-            <div style={{ transform: active ? 'rotate(180deg)' : 'rotate(0)' }}>
+          <Label value={value} onClick={() => setActive(!active)}>
+            {value ? value : <div style={{ color: palette.비강조 }}>{noneValue}</div>}
+            <div style={{ transform: active ? "rotate(180deg)" : "rotate(0)" }}>
               <SelectArrow />
             </div>
           </Label>
@@ -70,22 +66,20 @@ const Select = ({ list, value, setValue, noneValue }: SelectProps) => {
                   <StyledOptionItem
                     key={element} // map을 쓰기 위해서는 해당 방식으로 key가 주어져야함.
                     onClick={() => changeValue(element)}
-                    active={animatedItems[index]}>
+                    active={animatedItems[index]}
+                  >
                     {element}
                   </StyledOptionItem>
-                  <Spacing
-                    direction="horizontal"
-                    size={12}
-                  />
+                  <Spacing direction="horizontal" size={12} />
                 </OptionItem>
-              )
+              );
             })}
           </StyledOptionList>
         </OptionList>
       </Container>
     </AllContainer>
-  )
-}
+  );
+};
 
 const OptionItem = styled.div`
   display: flex;
@@ -94,14 +88,14 @@ const OptionItem = styled.div`
   &:hover {
     background-color: ${palette.keycolorBG};
   }
-`
+`;
 
 const Background = styled.div`
   pointer-events: auto;
   position: fixed;
   width: 100%;
   height: 100svh;
-  z-index: 1001;
+  z-index: 1;
   top: 0;
   left: 0;
   right: 0;
@@ -117,7 +111,7 @@ const Background = styled.div`
     transform: translateX(-50%);
     overflow-x: hidden;
   }
-`
+`;
 
 const activeContainer = ({ active = true }) => {
   return `${
@@ -134,40 +128,40 @@ const activeContainer = ({ active = true }) => {
       &::-webkit-scrollbar {
     display: none;
 }`
-  }`
-}
+  }`;
+};
 
-const AllContainer = styled.div``
+const AllContainer = styled.div``;
 
-const Container = styled.div`
+const Container = styled.div<{ width: "fit-content" | "100%" }>`
   position: relative;
   &::-webkit-scrollbar {
     display: none;
   }
-  z-index: 1002;
-  width: fit-content;
+  z-index: 2;
+  width: ${(props) => props.width};
   border-radius: 20px;
   background-color: ${palette.BG};
   height: auto;
   cursor: pointer;
-`
+`;
 
 const OptionList = styled.div<{ active: boolean }>`
   border-radius: 20px;
-  border-bottom-left-radius: ${props => (props.active ? '0px' : '20px')};
-  border-bottom-right-radius: ${props => (props.active ? '0px' : '20px')};
+  border-bottom-left-radius: ${(props) => (props.active ? "0px" : "20px")};
+  border-bottom-right-radius: ${(props) => (props.active ? "0px" : "20px")};
   &::-webkit-scrollbar {
     display: none;
   }
   position: relative;
-  z-index: 1003;
-  border: 1px solid ${props => (props.active ? 'none' : palette.비강조3)};
+  z-index: 3;
+  border: 1px solid ${(props) => (props.active ? "none" : palette.비강조3)};
   height: max-content;
   min-height: 44px;
   ${activeContainer};
 
   background-color: white;
-`
+`;
 
 const Label = styled.button`
   width: 100%;
@@ -185,7 +179,7 @@ const Label = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const activeExist = ({ active = true }) => {
   return `${
@@ -198,9 +192,9 @@ const activeExist = ({ active = true }) => {
     // 화면 높이가 많이 작을 때의 드롭다운 높이 설정
     max-height: 241px;
   }`
-      : 'max-height:0;'
-  }`
-}
+      : "max-height:0;"
+  }`;
+};
 
 const fadeIn = keyframes`
   0% {
@@ -209,17 +203,17 @@ const fadeIn = keyframes`
   100% {
     opacity: 1;
   }
-`
+`;
 
 const StyledOptionList = styled.ul<{ active: boolean }>`
   list-style-type: none; // ul을 커스텀할 때 필요한 부분.
   width: 100%;
   position: absolute;
-  max-height: ${({ active }) => (active ? '170px' : '0')};
+  max-height: ${({ active }) => (active ? "170px" : "0")};
   top: 43px;
   left: 0;
   right: 0;
-  z-index: 1005;
+  z-index: 5;
   padding-bottom: 4px;
   font-size: 16px;
   line-height: 20px;
@@ -247,13 +241,13 @@ const StyledOptionList = styled.ul<{ active: boolean }>`
     height: 0;
     display: flex;
   }
-`
+`;
 
 const StyledOptionItem = styled.li<{ active: boolean }>`
   padding: 10px 0px;
 
   opacity: ${({ active }) => (active ? 1 : 0)};
-  transform: ${({ active }) => (active ? 'scale(100%)' : 'scale(0)')};
+  transform: ${({ active }) => (active ? "scale(100%)" : "scale(0)")};
   font-size: 14px;
   width: 100%;
   &:nth-child(n) {
@@ -262,6 +256,6 @@ const StyledOptionItem = styled.li<{ active: boolean }>`
       transform 0.15s cubic-bezier(0.25, 1.5, 0.5, 1);
   }
   font-weight: 500;
-`
+`;
 
-export default Select
+export default Select;

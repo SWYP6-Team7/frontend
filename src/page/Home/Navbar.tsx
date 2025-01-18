@@ -1,106 +1,91 @@
-'use client'
-import CommnunityIcon from '@/components/icons/CommnunityIcon'
-import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
-import HomeIcon from '@/components/icons/HomeIcon'
-import NavCommunityIcon from '@/components/icons/NavCommunityIcon'
-import NavPersonIcon from '@/components/icons/NavPersonIcon'
-import SearchIcon from '@/components/icons/SearchIcon'
+"use client";
+import CommnunityIcon from "@/components/icons/CommnunityIcon";
+import EmptyHeartIcon from "@/components/icons/EmptyHeartIcon";
+import HomeIcon from "@/components/icons/HomeIcon";
+import NavCommunityIcon from "@/components/icons/NavCommunityIcon";
+import NavPersonIcon from "@/components/icons/NavPersonIcon";
+import SearchIcon from "@/components/icons/SearchIcon";
 
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import path from 'path'
-import React, { MouseEventHandler, useState } from 'react'
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import path from "path";
+import React, { MouseEventHandler, useState } from "react";
 
 const Navbar = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
   // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
-  const pages = ['/', '/trip/list', '/myTrip', '/community', '/myPage']
+  const pages = ["/", "/trip/list", "/myTrip", "/community", "/myPage"];
   const icons = [
-    <HomeIcon
-      width={20}
-      height={20}
-    />,
-    <SearchIcon
-      width={22}
-      height={19}
-    />,
-    <EmptyHeartIcon
-      width={22}
-      height={20}
-    />,
+    <HomeIcon width={20} height={20} />,
+    <SearchIcon width={22} height={19} />,
+    <EmptyHeartIcon width={22} height={20} />,
     <NavCommunityIcon />,
-    <NavPersonIcon
-      width={20}
-      height={20}
-    />
-  ]
-  const iconNames = ['홈', '여행 찾기', '내 여행', '커뮤니티', 'MY']
+    <NavPersonIcon width={20} height={20} />,
+  ];
+  const iconNames = ["홈", "여행 찾기", "내 여행", "커뮤니티", "MY"];
 
   const getIsActive = (page: string) => {
     if (
-      page === '/myPage' &&
-      (pathname === '/editMyInfo' ||
-        pathname === '/announcement' ||
-        pathname === '/requestedTrip')
+      page === "/myPage" &&
+      (pathname === "/editMyInfo" || pathname === "/announcement" || pathname === "/requestedTrip")
     ) {
-      return true
+      return true;
     }
 
-    return pathname === page
-  }
+    return pathname === page;
+  };
   const condition = () => {
     if (
-      pathname === '/' ||
-      pathname === '/myTrip' ||
-      pathname === '/community' ||
-      pathname === '/myPage' ||
-      pathname === '/trip/list' ||
-      pathname === '/editMyInfo' ||
-      pathname === '/announcement' ||
-      pathname === '/requestedTrip' ||
-      pathname === '/myCommunity'
+      pathname === "/" ||
+      pathname === "/myTrip" ||
+      pathname === "/community" ||
+      pathname === "/myPage" ||
+      pathname === "/trip/list" ||
+      pathname === "/editMyInfo" ||
+      pathname === "/announcement" ||
+      pathname === "/requestedTrip" ||
+      pathname === "/myCommunity" ||
+      pathname.startsWith("/contact/")
     )
-      return true
-    return false
-  }
+      return true;
+    return false;
+  };
 
   return condition() ? (
     <Container>
       <Box>
         {pages.map((page, idx) => {
-          const Icon = icons[idx]
-          const isLinkActive = getIsActive(page)
+          const Icon = icons[idx];
+          const isLinkActive = getIsActive(page);
           const iconProps = {
             stroke: isLinkActive ? `${palette.기본}` : `${palette.비강조3}`,
-            fill: isLinkActive ? `${palette.기본}` : 'none'
-          }
+            fill: isLinkActive ? `${palette.기본}` : "none",
+          };
           return (
             <Link
               key={page}
               href={page}
               style={{
-                width: '49px',
-                height: '48px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+                width: "49px",
+                height: "48px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               {React.cloneElement(Icon, iconProps)}
-              <PageName
-                color={isLinkActive ? `${palette.기본}` : `${palette.비강조3}`}>
-                {iconNames[idx]}
-              </PageName>
+              <PageName color={isLinkActive ? `${palette.기본}` : `${palette.비강조3}`}>{iconNames[idx]}</PageName>
             </Link>
-          )
+          );
         })}
       </Box>
     </Container>
-  ) : null
-}
-export default Navbar
+  ) : null;
+};
+export default Navbar;
 
 const Container = styled.div`
   height: 92px;
@@ -122,7 +107,7 @@ const Container = styled.div`
   z-index: 1000;
   width: 100%;
   left: 0;
-`
+`;
 const PageName = styled.div<{ color: string }>`
   font-size: 12px;
   font-weight: 600;
@@ -130,10 +115,10 @@ const PageName = styled.div<{ color: string }>`
   text-align: center;
   width: 100%;
   margin-top: 8.45px;
-  color: ${props => props.color};
-`
+  color: ${(props) => props.color};
+`;
 const Box = styled.div`
   display: flex;
   margin-top: 12px;
   justify-content: space-evenly;
-`
+`;

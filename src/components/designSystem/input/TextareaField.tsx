@@ -1,30 +1,30 @@
-'use client'
-import { useTextAreaScroll } from '@/hooks/createTrip/useInputScroll'
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
-import { FocusEventHandler, useRef, useState } from 'react'
+"use client";
+import { useTextAreaScroll } from "@/hooks/createTrip/useInputScroll";
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
+import { FocusEventHandler, useRef, useState } from "react";
 
-interface TextareaFieldProps
-  extends React.InputHTMLAttributes<HTMLTextAreaElement> {
-  height?: number | string
+interface TextareaFieldProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
+  height?: number | string;
 }
 
-const TextareaField = ({ height = '31svh', ...rest }: TextareaFieldProps) => {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null)
-  const [focused, setFocused] = useState(false)
-  useTextAreaScroll(textAreaRef)
-  const borderColor = focused ? palette.keycolor : palette.검색창
-  const bgColor = focused ? palette.greenVariant : palette.검색창
+const TextareaField = ({ height = "31svh", ...rest }: TextareaFieldProps) => {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [focused, setFocused] = useState(false);
+  useTextAreaScroll(textAreaRef);
+  const borderColor = focused ? palette.keycolor : palette.검색창;
+  const bgColor = focused ? palette.greenVariant : palette.검색창;
 
-  const handleFocus: FocusEventHandler<HTMLTextAreaElement> = event => {
-    setFocused(true)
-  }
+  const handleFocus: FocusEventHandler<HTMLTextAreaElement> = (event) => {
+    setFocused(true);
+  };
 
-  const handleBlur: FocusEventHandler<HTMLTextAreaElement> = event => {
-    setFocused(false)
-  }
+  const handleBlur: FocusEventHandler<HTMLTextAreaElement> = (event) => {
+    setFocused(false);
+  };
   return (
     <DetailTextArea
+      wrap="hard"
       borderColor={borderColor}
       bgColor={bgColor}
       onFocus={handleFocus}
@@ -33,24 +33,23 @@ const TextareaField = ({ height = '31svh', ...rest }: TextareaFieldProps) => {
       ref={textAreaRef}
       {...rest}
     />
-  )
-}
+  );
+};
 
 const DetailTextArea = styled.textarea<{
-  height: string | number
-  borderColor: string
-  bgColor: string
+  height: string | number;
+  borderColor: string;
+  bgColor: string;
 }>`
   width: 100%;
-  wrap:hard;
-  height: ${props =>
-    typeof props.height === 'number' ? `${props.height}` : props.height};
+
+  height: ${(props) => (typeof props.height === "number" ? `${props.height}` : props.height)};
   padding: 16px;
-  font-family: 'Pretandard', sans-serif;
-  background-color: ${props => props.bgColor};
+  font-family: "Pretandard", sans-serif;
+  background-color: ${(props) => props.bgColor};
   &::placeholder {
     color: ${palette.비강조2};
-
+    word-break: keep-all;
     font-size: 16px;
     font-weight: 400;
     line-height: 22.4px;
@@ -84,9 +83,9 @@ const DetailTextArea = styled.textarea<{
   letter-spacing: -0.025em;
   text-align: left;
   border-radius: 20px;
-  border: 1px solid ${props => props.borderColor};
+  border: 1px solid ${(props) => props.borderColor};
   outline: none;
   resize: none;
-`
+`;
 
-export default TextareaField
+export default TextareaField;

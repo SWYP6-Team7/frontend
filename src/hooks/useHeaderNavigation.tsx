@@ -46,6 +46,7 @@ const ROUTES = {
     NAME: "/registerName",
     TRIP_STYLE: "/registerTripStyle",
   },
+  CONTACT: "/contact",
   LOGIN: "/login",
   NOTIFICATION: "/notification",
   ANNOUNCEMENT: "/announcement",
@@ -96,6 +97,7 @@ export const useHeaderNavigation = () => {
       [ROUTES.MY.WITHDRAWAL]: "탈퇴하기",
       [ROUTES.ANNOUNCEMENT]: "공지사항",
       [ROUTES.REQUESTED_TRIP]: "참가 신청한 여행",
+      [ROUTES.CONTACT]: "1:1 문의하기",
     };
 
     for (const [route, title] of Object.entries(titleMap)) {

@@ -50,6 +50,27 @@ export function formatTime(date: string) {
   }
 }
 
+export function formatTimeOnContact(date: string) {
+  const now = dayjs().utcOffset(9);
+  const inputDate = dayjs.utc(date).utcOffset(9);
+  console.log("inputDate", inputDate.format(), now.format());
+  const diffInMinutes = now.diff(inputDate, "minute");
+  const diffInHours = now.diff(inputDate, "hour");
+  const diffInDays = now.diff(inputDate, "day");
+
+  if (diffInMinutes < 60) {
+    return inputDate.fromNow();
+  } else if (diffInHours < 24) {
+    return inputDate.fromNow();
+  } else if (diffInDays === 1) {
+    return "어제";
+  } else if (diffInDays < 2) {
+    return inputDate.fromNow();
+  } else {
+    return inputDate.format("YYYY.MM.DD");
+  }
+}
+
 export function daysLeft(dateString: string) {
   const today = dayjs().utcOffset(9).toDate();
   const targetDate = dayjs.utc(dateString).utcOffset(9).toDate();
