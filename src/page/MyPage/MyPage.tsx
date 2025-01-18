@@ -139,7 +139,7 @@ export default function MyPage() {
         <div style={{ marginTop: "16px" }}>
           <TextButton
             onClick={(e: MouseEvent) => {
-              router.push("/contact/new");
+              router.push("/contact");
             }}
             text="1:1 문의하기"
             isLeftVector={false}
