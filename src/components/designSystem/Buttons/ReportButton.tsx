@@ -29,7 +29,7 @@ const BtnBox = styled.div<{ isOpen: boolean }>`
   align-items: center;
   background-color: #f0f0f0;
   border-radius: 20px;
-  height: 104px;
+  height: 52px;
 
   transform: ${(props) => (props.isOpen ? "translateY(-5%)" : "translateY(20%)")};
 

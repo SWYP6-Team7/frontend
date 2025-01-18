@@ -1,6 +1,7 @@
 "use client";
 import CheckingModal from "@/components/designSystem/modal/CheckingModal";
 import EditAndDeleteModal from "@/components/designSystem/modal/EditAndDeleteModal";
+import ReportModal from "@/components/designSystem/modal/ReportModal";
 import ResultToast from "@/components/designSystem/toastMessage/resultToast";
 import AlarmIcon from "@/components/icons/AlarmIcon";
 import MoreIcon from "@/components/icons/MoreIcon";
@@ -28,11 +29,12 @@ export default function TripDetailHeader() {
 
   const router = useRouter();
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
+  const [isReportBtnClicked, setIsReportBtnClicked] = useState(false);
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [checkingModalClicked, setCheckingModalClicked] = useState(false);
   const [threeDotsClick, setThreeDotsClick] = useState(false);
-
+  const [reportThreeDotsClick, setReportThreeDotsClick] = useState(false);
   const {
     addProfileUrl,
     addLocation,
@@ -150,6 +152,9 @@ export default function TripDetailHeader() {
       document.documentElement.style.viewTransitionName = "forward";
       navigateWithTransition(`/trip/edit/${travelNumber}`);
     }
+    if (isReportBtnClicked) {
+      setIsReportBtnClicked(false);
+    }
     if (checkingModalClicked) {
       // 삭제 요청.
 
@@ -163,7 +168,7 @@ export default function TripDetailHeader() {
         }
       });
     }
-  }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked]);
+  }, [isDeleteBtnClicked, isReportBtnClicked, isEditBtnClicked, checkingModalClicked]);
 
   // 북마크
   const bookmarkClickHandler = () => {
@@ -174,6 +179,15 @@ export default function TripDetailHeader() {
       postBookmarkMutation();
     }
   };
+
+  const onClickThreeDots = () => {
+    if (hostUserCheck) {
+      setThreeDotsClick(true);
+    } else {
+      setReportThreeDotsClick(true);
+    }
+  };
+
   return (
     <Container hostUserCheck={hostUserCheck} isTripDetailEdit={Boolean(isTripDetailEdit)}>
       {hostUserCheck && (
@@ -184,16 +198,20 @@ export default function TripDetailHeader() {
 
       <ShareIcon />
 
-      {hostUserCheck && (
-        <div onClick={() => setThreeDotsClick(true)}>
-          <MoreIcon />
-        </div>
-      )}
+      <div onClick={onClickThreeDots}>
+        <MoreIcon />
+      </div>
+
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}
         setIsDeleteBtnClicked={setIsDeleteBtnClicked}
         isOpen={threeDotsClick}
         setIsOpen={setThreeDotsClick}
+      />
+      <ReportModal
+        setIsReportBtnClicked={setIsReportBtnClicked}
+        isOpen={reportThreeDotsClick}
+        setIsOpen={setReportThreeDotsClick}
       />
       <CheckingModal
         isModalOpen={isResultModalOpen}
