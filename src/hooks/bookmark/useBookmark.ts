@@ -15,9 +15,11 @@ export const useBookmark = () => {
   >({
     queryKey: ["bookmarks"],
     queryFn: ({ pageParam }) => {
-      return getBookmark(pageParam as number, accessToken!);
+      console.log("accessToken2", accessToken);
+      return getBookmark(pageParam as number, accessToken);
     },
-    retry: Boolean(accessToken),
+    enabled: !!accessToken,
+    retry: !!accessToken,
     staleTime: 0,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
