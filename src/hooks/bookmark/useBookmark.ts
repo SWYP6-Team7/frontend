@@ -19,8 +19,7 @@ export const useBookmark = () => {
       return getBookmark(pageParam as number, accessToken);
     },
     enabled: !!accessToken,
-    retry: !!accessToken,
-    staleTime: 0,
+
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages || lastPage.page?.totalPages === 0) {
