@@ -6,7 +6,7 @@ import { daysAgo } from "@/utils/time";
 import dayjs from "dayjs";
 import RequestError from "@/context/ReqeustError";
 
-export const getBookmark = async (pageParams: number, accessToken: string | null) => {
+export const getBookmark = async (pageParams: number, accessToken: string) => {
   try {
     console.log(accessToken);
     const response = await axiosInstance.get("/api/bookmarks", {
