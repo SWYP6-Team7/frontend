@@ -54,7 +54,7 @@ const CreateContact = () => {
             />
           ) : (
             <EmailBox>
-              <EmailText>moing@moing.com</EmailText>
+              <EmailText>{email ?? ""}</EmailText>
               <div onClick={() => setIsChange(true)} style={{ cursor: "pointer" }}>
                 <BoxLayoutTag
                   size="small"
