@@ -137,43 +137,23 @@ export default function MyPage() {
           <Spacing size={8} />
         </Box>
         <div style={{ marginTop: "16px" }}>
-          <TextButton
+          {/* <TextButton
             onClick={(e: MouseEvent) => {
               router.push("/contact");
             }}
             text="1:1 문의하기"
             isLeftVector={false}
             isRightVector={false}
-          />
-          <TextButton
-            onClick={(e: MouseEvent) => {
-              e.preventDefault();
-              router.push("/pdf/service_terms(241115).pdf");
-            }}
-            text="서비스이용약관"
-            isLeftVector={false}
-            isRightVector={false}
-          />
-
-          <TextButton
-            onClick={(e: MouseEvent) => {
-              e.preventDefault();
-              router.push("/pdf/privacy_policy(241006).pdf");
-            }}
-            text="개인정보처리방침"
-            isLeftVector={false}
-            isRightVector={false}
-          />
-
-          <TextButton
-            onClick={(e: MouseEvent) => {
-              e.preventDefault();
-              router.push("/pdf/privacy_terms(241006).pdf");
-            }}
-            text="개인정보 수집 ・ 이용 동의"
-            isLeftVector={false}
-            isRightVector={false}
-          />
+          /> */}
+          <a href="/pdf/service_terms(241115).pdf" target="_blank">
+            <TextButton text="서비스이용약관" isLeftVector={false} isRightVector={false} />
+          </a>
+          <a href="/pdf/privacy_policy(241006).pdf" target="_blank">
+            <TextButton text="개인정보처리방침" isLeftVector={false} isRightVector={false} />
+          </a>
+          <a href="/pdf/privacy_terms(241006).pdf" target="_blank">
+            <TextButton text="개인정보 수집 ・ 이용 동의" isLeftVector={false} isRightVector={false} />
+          </a>
           <Spacing size={150} />
         </div>
       </Menu>

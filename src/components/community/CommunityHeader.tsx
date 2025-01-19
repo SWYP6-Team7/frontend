@@ -80,16 +80,18 @@ export default function CommunityHeader() {
 
   return (
     <Container>
-      {data?.userNumber === userId && (
+      {userId && (
         <div onClick={handleNotification}>
           <AlarmIcon size={23} stroke={palette.기본} />
         </div>
       )}
       <ShareIcon />
 
-      <div onClick={onClickThreeDots}>
-        <MoreIcon />
-      </div>
+      {data?.userNumber === userId && (
+        <div onClick={onClickThreeDots}>
+          <MoreIcon />
+        </div>
+      )}
 
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}
