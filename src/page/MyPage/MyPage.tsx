@@ -151,9 +151,7 @@ export default function MyPage() {
           <a href="/pdf/privacy_policy(241006).pdf" target="_blank">
             <TextButton text="개인정보처리방침" isLeftVector={false} isRightVector={false} />
           </a>
-          <a href="/pdf/privacy_terms(241006).pdf" target="_blank">
-            <TextButton text="개인정보 수집 ・ 이용 동의" isLeftVector={false} isRightVector={false} />
-          </a>
+
           <Spacing size={150} />
         </div>
       </Menu>
