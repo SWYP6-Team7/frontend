@@ -140,7 +140,7 @@ const EmailLoginForm = () => {
       <Spacing size={24} />
       <SignUpLinkContainer>
         <span style={{ color: "#848484" }}>처음 오셨나요?</span>
-        <Link href="/registerForm" style={{ textDecoration: "underline" }}>
+        <Link href="/registerEmail" style={{ textDecoration: "underline" }}>
           회원가입
         </Link>
       </SignUpLinkContainer>

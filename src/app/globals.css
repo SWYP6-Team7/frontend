@@ -1,37 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap");
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   src:
-    url('/fonts/Pretendard-Regular.woff2') format('woff2'),
-    url('/fonts/Pretendard-Regular.woff') format('woff');
+    url("/fonts/Pretendard-Regular.woff2") format("woff2"),
+    url("/fonts/Pretendard-Regular.woff") format("woff");
   font-weight: 400; /* Regular */
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   src:
-    url('/fonts/Pretendard-Regular.woff2') format('woff2'),
-    url('/fonts/Pretendard-Regular.woff') format('woff');
+    url("/fonts/Pretendard-Regular.woff2") format("woff2"),
+    url("/fonts/Pretendard-Regular.woff") format("woff");
   font-weight: 500; /* Regular */
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   src:
-    url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
-    url('/fonts/Pretendard-SemiBold.woff') format('woff');
+    url("/fonts/Pretendard-SemiBold.woff2") format("woff2"),
+    url("/fonts/Pretendard-SemiBold.woff") format("woff");
   font-weight: 600; /* Semi-Bold */
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   src:
-    url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
-    url('/fonts/Pretendard-SemiBold.woff') format('woff');
+    url("/fonts/Pretendard-SemiBold.woff2") format("woff2"),
+    url("/fonts/Pretendard-SemiBold.woff") format("woff");
   font-weight: 700; /* Semi-Bold */
 }
 
@@ -147,7 +147,7 @@ section {
 }
 body {
   line-height: 1;
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   letter-spacing: -0.4px !important;
 }
 ol,
@@ -162,7 +162,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
   content: none;
 }
 table {
@@ -174,8 +174,8 @@ input {
   -moz-appearance: none;
   -webkit-appearance: none;
   box-shadow: none;
+  font-family: "Pretendard", sans-serif;
 }
-
 button {
   border: none;
   margin: 0;
@@ -190,7 +190,7 @@ button {
 }
 * {
   box-sizing: border-box;
-  font-family: 'Noto Color Emoji', sans-serif;
+  font-family: "Noto Color Emoji", sans-serif;
 }
 
 @keyframes slide-from-right {

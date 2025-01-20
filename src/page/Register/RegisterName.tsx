@@ -36,7 +36,7 @@ const RegisterName = () => {
     }
     if (!email || !password) {
       resetName();
-      router.replace("/registerForm");
+      router.replace("/registerEmail");
     }
   }, [email, password, socialLogin]);
   const navigateWithTransition = useViewTransition();

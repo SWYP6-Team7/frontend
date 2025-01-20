@@ -1,7 +1,8 @@
+import VerifyEmail from "@/page/Register/VerifyEmail";
 import React from "react";
 
 const VerifyEmailPage = () => {
-  return <div></div>;
+  return <VerifyEmail />;
 };
 
 export default VerifyEmailPage;

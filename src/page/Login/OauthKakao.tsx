@@ -29,7 +29,7 @@ const OauthKakao = () => {
           if (user?.userStatus === "PENDING" && user?.userNumber && user?.userName) {
             setTempName(user.userName);
             setSocialLogin("kakao", Number(user.userNumber) as number);
-            router.push("/registerForm");
+            router.push("/registerEmail");
           } else if (user?.userStatus === "ABLE") {
             socialLogin({
               socialLoginId: user?.socialLoginId as string,

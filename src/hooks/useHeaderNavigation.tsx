@@ -6,6 +6,7 @@ import { useBackPathStore } from "@/store/client/backPathStore";
 
 const ROUTES = {
   REGISTER: "/register",
+  VERIFYCODE: "/verifyEmail",
   CREATE_TRIP: {
     INDEX: "/createTrip",
     PLACE: "/createTripPlace",
@@ -41,8 +42,10 @@ const ROUTES = {
   },
   REGISTER_PROCESS: {
     AGE: "/registerAge",
+
     GENDER: "/registerAge/registerGender",
-    FORM: "/registerForm",
+    EMAIL: "/registerEmail",
+    PASSWORD: "/registerPassword",
     NAME: "/registerName",
     TRIP_STYLE: "/registerTripStyle",
   },
@@ -81,6 +84,7 @@ export const useHeaderNavigation = () => {
       [ROUTES.MY_COMMUNITY]: "작성한 글",
       [ROUTES.MY.PAGE]: "마이 페이지",
       [ROUTES.REGISTER]: "회원가입",
+      [ROUTES.VERIFYCODE]: "회원가입",
       [ROUTES.SEARCH.TRAVEL]: "여행검색",
       [ROUTES.SEARCH.COMMUNITY]: "검색",
       [ROUTES.CREATE_TRIP.INDEX]: "여행 만들기",
@@ -114,7 +118,7 @@ export const useHeaderNavigation = () => {
     return [
       // 회원가입 파트
       {
-        condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.FORM),
+        condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.EMAIL),
         action: () => {
           if (isKakaoLogin) {
             setSocialLogin(null, null);
@@ -124,10 +128,17 @@ export const useHeaderNavigation = () => {
         },
       },
       {
+        condition: () => pathname.startsWith(ROUTES.VERIFYCODE),
+        action: () => {
+          router.push(ROUTES.REGISTER);
+          resetForm();
+        },
+      },
+      {
         condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.NAME),
         action: () => {
           resetName();
-          router.push(ROUTES.REGISTER_PROCESS.FORM);
+          router.push(ROUTES.REGISTER_PROCESS.PASSWORD);
         },
       },
       {
@@ -141,11 +152,11 @@ export const useHeaderNavigation = () => {
           }
           if (isKakaoLogin) {
             resetAge();
-            router.push(ROUTES.REGISTER_PROCESS.FORM);
+            router.push(ROUTES.REGISTER_PROCESS.EMAIL);
             return;
           }
           resetAge();
-          router.push(ROUTES.REGISTER_PROCESS.FORM);
+          router.push(ROUTES.REGISTER_PROCESS.NAME);
         },
       },
       {

@@ -57,7 +57,7 @@ const RegisterAge = ({ children }: { children: React.ReactNode }) => {
       if (!email && !name) {
         resetName();
         resetForm();
-        router.push("/registerForm");
+        router.push("/registerEmail");
       }
     }
   }, [email, name]);
