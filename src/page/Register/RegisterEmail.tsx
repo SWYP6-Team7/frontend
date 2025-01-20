@@ -112,7 +112,7 @@ const RegisterEmail = () => {
         return;
       }
 
-      verifyEmailSend.mutate({ email });
+      verifyEmailSend.mutate({ email: formData.email });
     } else {
       setShake({
         email: Boolean(error.email),
