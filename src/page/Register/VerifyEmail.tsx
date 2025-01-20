@@ -53,7 +53,7 @@ const VerifyEmail = () => {
         navigateWithTransition("/registerAge");
       } else {
         document.documentElement.style.viewTransitionName = "forward";
-        navigateWithTransition("/registerName");
+        navigateWithTransition("/registerPassword");
       }
     }
   }, [verifyEmail.isPending, verifyEmail.isError, verifyEmail.isSuccess]);

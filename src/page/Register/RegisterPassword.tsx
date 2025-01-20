@@ -113,8 +113,7 @@ const RegisterPassword = () => {
     e.preventDefault();
     if (allSuccess) {
       addPassword(formData.password);
-      document.documentElement.style.viewTransitionName = "forward";
-      navigateWithTransition("/registerName");
+
       if (isSocialLoginKakao) {
         document.documentElement.style.viewTransitionName = "forward";
         navigateWithTransition("/registerAge");
