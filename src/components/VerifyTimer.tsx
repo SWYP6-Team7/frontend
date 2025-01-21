@@ -9,7 +9,7 @@ import ResultToast from "./designSystem/toastMessage/resultToast";
 const MINUTES_IN_MS = 60 * 1000;
 const INTERVAL = 1000;
 
-const VerifyTimer = () => {
+const VerifyTimer = ({ setError }: { setError: React.Dispatch<React.SetStateAction<string>> }) => {
   const { email } = userStore();
   const [isToastShow, setIsToastShow] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(MINUTES_IN_MS);
@@ -43,6 +43,7 @@ const VerifyTimer = () => {
   }, [verifyEmailSend.isPending, verifyEmailSend.isError, verifyEmailSend.isSuccess]);
 
   const onClickRequest = () => {
+    setError("");
     verifyEmailSend.mutate({ email });
   };
 

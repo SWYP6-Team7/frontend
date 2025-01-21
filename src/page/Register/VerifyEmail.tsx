@@ -2,6 +2,7 @@
 import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
 import CodeInput from "@/components/designSystem/input/CodeInput";
+import InfoText from "@/components/designSystem/text/InfoText";
 import Spacing from "@/components/Spacing";
 import VerifyTimer from "@/components/VerifyTimer";
 import useVerifyEmail from "@/hooks/useVerifyEmail";
@@ -21,7 +22,7 @@ const VerifyEmail = () => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { verifyEmail } = useVerifyEmail();
   const { updateError, setIsMutationError } = errorStore();
-
+  const [error, setError] = useState("");
   const isSocialLoginGoogle = socialLogin === "google";
   const isSocialLoginKakao = socialLogin === "kakao";
   const isSocialLoginNaver = socialLogin === "naver";
@@ -44,10 +45,10 @@ const VerifyEmail = () => {
 
   useEffect(() => {
     if (!verifyEmail.isPending && verifyEmail.isError) {
-      updateError(new Error("이메일 발송 과정에서 에러가 발생했어요"));
-      setIsMutationError(true);
+      setError("유효하지 않은 인증번호입니다.");
     }
     if (verifyEmail.isSuccess) {
+      setError("");
       if (isSocialLoginKakao) {
         document.documentElement.style.viewTransitionName = "forward";
         navigateWithTransition("/registerAge");
@@ -67,8 +68,10 @@ const VerifyEmail = () => {
       </SubLabel>
       <Spacing size={28} />
       <CodeInput refs={inputRefs} onValueChange={handleValueChange} />
+      {error === "" ? <Spacing size={8} /> : <InfoText hasError>{error}</InfoText>}
+
       <Spacing size={40} />
-      <VerifyTimer />
+      <VerifyTimer setError={setError} />
       <ButtonContainer>
         {values.length === 6 ? (
           <Button text="다음" onClick={submitVerifyCode} />
