@@ -17,6 +17,7 @@ import { authStore } from "@/store/client/authStore";
 import { EditFinalImages, EditImage, FinalImages, UploadImage } from "@/store/client/imageStore";
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import useAuth from "./user/useAuth";
 
 export interface IListParams {
   sortingTypeName?: string;
@@ -34,6 +35,9 @@ const useCommunity = (
   isMine = false
 ) => {
   const { sortingTypeName = "최신순", keyword = "", categoryName = "전체" } = params;
+  const {
+    refreshTokenMutation: { isError: isRefreshTokenError, isSuccess: isRefreshTokenSuccess },
+  } = useAuth();
   const { accessToken } = authStore();
   const communityList = useInfiniteQuery<
     ICommunityList,
@@ -42,7 +46,7 @@ const useCommunity = (
     [_1: string, _2: { categoryName: string; sortingTypeName: string; keyword: string }, _3: boolean]
   >({
     queryKey: ["community", { categoryName: categoryName, sortingTypeName, keyword }, isMine],
-
+    enabled: isRefreshTokenError || isRefreshTokenSuccess,
     queryFn: ({ pageParam }) => {
       if (isMine) {
         return getMyCommunities(accessToken, {
@@ -67,7 +71,7 @@ const useCommunity = (
   const community = useQuery({
     queryKey: ["community", communityNumber],
     queryFn: () => getCommunity(communityNumber!, accessToken),
-    enabled: !!communityNumber,
+    enabled: !!communityNumber && (isRefreshTokenError || isRefreshTokenSuccess),
   });
 
   const images = useQuery({

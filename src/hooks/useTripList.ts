@@ -1,45 +1,40 @@
-'use client'
-import { getAvailableTrips, getRecommendationTrips } from '@/api/home'
-import { ITripList } from '@/model/trip'
-import { authStore } from '@/store/client/authStore'
-import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query'
+"use client";
+import { getAvailableTrips, getRecommendationTrips } from "@/api/home";
+import { ITripList } from "@/model/trip";
+import { authStore } from "@/store/client/authStore";
+import { useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
+import useAuth from "./user/useAuth";
 
-export const useTripList = (sort: 'recommend' | 'recent') => {
-  const { accessToken } = authStore()
-  const queryKey =
-    sort === 'recommend' ? 'tripRecommendation' : 'availableTrips'
+export const useTripList = (sort: "recommend" | "recent") => {
+  const { accessToken } = authStore();
   const {
-    data,
-    isLoading,
-    error,
-    fetchNextPage,
-    refetch,
-    isFetching,
-    hasNextPage
-  } = useInfiniteQuery<
+    refreshTokenMutation: { isError: isRefreshTokenError, isSuccess: isRefreshTokenSuccess },
+  } = useAuth();
+  const queryKey = sort === "recommend" ? "tripRecommendation" : "availableTrips";
+  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery<
     ITripList,
     Object,
     InfiniteData<ITripList>,
     [_1: string]
   >({
     queryKey: [queryKey],
-
+    enabled: isRefreshTokenError || isRefreshTokenSuccess,
     queryFn: ({ pageParam }) => {
-      if (sort === 'recent') {
-        return getAvailableTrips(pageParam as number, accessToken)
+      if (sort === "recent") {
+        return getAvailableTrips(pageParam as number, accessToken);
       } else {
-        return getRecommendationTrips(pageParam as number, accessToken)
+        return getRecommendationTrips(pageParam as number, accessToken);
       }
     },
     initialPageParam: 0,
-    getNextPageParam: lastPage => {
+    getNextPageParam: (lastPage) => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
-        return undefined
+        return undefined;
       } else {
-        return lastPage?.page?.number + 1
+        return lastPage?.page?.number + 1;
       }
-    }
-  })
+    },
+  });
   return {
     data,
     isLoading,
@@ -47,9 +42,9 @@ export const useTripList = (sort: 'recommend' | 'recent') => {
     fetchNextPage,
     refetch,
     isFetching,
-    hasNextPage
-  }
-}
+    hasNextPage,
+  };
+};
 
 // 홈화면 참가가능 여행 api 백엔드 연결 예정 주석 처리.
 // useTripAvailable.ts
