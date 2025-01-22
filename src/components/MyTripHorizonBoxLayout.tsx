@@ -1,24 +1,24 @@
-'use client'
-import styled from '@emotion/styled'
-import Badge from './designSystem/Badge'
-import PersonIcon from './icons/PersonIcon'
-import BoxLayoutTag from './designSystem/tag/BoxLayoutTag'
-import { palette } from '@/styles/palette'
-import PlaceIcon from './icons/PlaceIcon'
-import { authStore } from '@/store/client/authStore'
+"use client";
+import styled from "@emotion/styled";
+import Badge from "./designSystem/Badge";
+import PersonIcon from "./icons/PersonIcon";
+import BoxLayoutTag from "./designSystem/tag/BoxLayoutTag";
+import { palette } from "@/styles/palette";
+import PlaceIcon from "./icons/PlaceIcon";
+import { authStore } from "@/store/client/authStore";
 interface HorizonBoxProps {
-  travelNumber: number
-  daysLeft: number
-  title: string
-  recruits: number
-  total: number
-  location?: string
-  userName: string
-  daysAgo: string
-  imgSrc?: string // 이미지 없는 경우 대비.
-  tags: string[]
-  bookmarked: boolean
-  bookmarkTabActive?: boolean // false면 수정 삭제 버튼 생김.
+  travelNumber: number;
+  daysLeft: number;
+  title: string;
+  recruits: number;
+  total: number;
+  location?: string;
+  userName: string;
+  daysAgo: string;
+  imgSrc?: string; // 이미지 없는 경우 대비.
+  tags: string[];
+  bookmarked: boolean;
+  bookmarkTabActive?: boolean; // false면 수정 삭제 버튼 생김.
 }
 // 내 여행에서 사용할 박스 레이아웃 입니다! *********************
 // 사용 방식
@@ -42,16 +42,16 @@ const MyTripHorizonBoxLayout = ({
   title,
   recruits,
   total,
-  location = '',
+  location = "",
   userName,
   daysAgo,
-  imgSrc = '',
+  imgSrc = "",
   tags,
   bookmarked,
-  bookmarkTabActive = false
+  bookmarkTabActive = false,
 }: HorizonBoxProps) => {
-  const { accessToken, userId } = authStore()
-  const cutTags = tags.length > 2 ? tags.slice(0, 2) : tags
+  const { accessToken, userId } = authStore();
+  const cutTags = tags.length > 2 ? tags.slice(0, 2) : tags;
 
   return (
     <HorizonBoxContainer>
@@ -60,16 +60,19 @@ const MyTripHorizonBoxLayout = ({
       <PostInfo>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '5px 0px'
-          }}>
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "5px 0px",
+          }}
+        >
           <Badge
-            text={'마감'}
-            backgroundColor={'rgba(227, 239, 217, 1)'}
+            text={"마감"}
+            backgroundColor={"rgba(227, 239, 217, 1)"}
             color={`${palette.keycolor}`}
-            daysLeft={daysLeft}
+            daysLeft={daysLeft >= 0 ? daysLeft : undefined}
+            isClose={!Boolean(daysLeft >= 0)}
+            isDueDate={Boolean(daysLeft >= 0)}
           />
           {/* <button
             style={{ display: 'flex' }}
@@ -110,40 +113,33 @@ const MyTripHorizonBoxLayout = ({
             <div
               style={{
                 fontWeight: 500,
-                fontSize: '14px',
-                color: palette.비강조3
-              }}>
+                fontSize: "14px",
+                color: palette.비강조3,
+              }}
+            >
               ·
             </div>
-            <PersonIcon
-              width={11}
-              height={14}
-              stroke={`${palette.비강조}`}
-            />
+            <PersonIcon width={11} height={14} stroke={`${palette.비강조}`} />
             <Recruiting>
               {recruits}/{total}
             </Recruiting>
             <div
               style={{
                 fontWeight: 500,
-                fontSize: '14px',
-                color: palette.비강조3
-              }}>
+                fontSize: "14px",
+                color: palette.비강조3,
+              }}
+            >
               ·
             </div>
-            <DaysAgo style={{ fontSize: '14px', fontWeight: 40 }}>
-              {daysAgo}
-            </DaysAgo>
+            <DaysAgo style={{ fontSize: "14px", fontWeight: 40 }}>{daysAgo}</DaysAgo>
           </UserBox>
         </div>
         <Tags>
           <BoxLayoutTag
             text={
               <Location>
-                <PlaceIcon
-                  height={12}
-                  width={10}
-                />
+                <PlaceIcon height={12} width={10} />
                 <div>{location}</div>
               </Location>
             }
@@ -155,11 +151,11 @@ const MyTripHorizonBoxLayout = ({
             <BoxLayoutTag
               addStyle={{
                 backgroundColor: `${palette.비강조4}`,
-                padding: '4px 6px 4px 6px',
+                padding: "4px 6px 4px 6px",
                 color: `${palette.비강조}`,
-                height: '22px',
-                borderRadius: '20px',
-                fontSize: '12px'
+                height: "22px",
+                borderRadius: "20px",
+                fontSize: "12px",
               }}
               text={`+${tags.length - cutTags.length}`}
             />
@@ -167,33 +163,33 @@ const MyTripHorizonBoxLayout = ({
         </Tags>
       </PostInfo>
     </HorizonBoxContainer>
-  )
-}
+  );
+};
 const DaysAgo = styled.div`
   font-size: 12px;
   font-weight: 400;
   line-height: 14.32px;
   text-align: left;
   color: ${palette.비강조};
-`
+`;
 const HorizonBoxContainer = styled.div`
   width: 100%;
   /* height: 120px; */
   display: flex;
   justify-content: space-between;
-`
+`;
 const TitleBox = styled.div`
   margin-top: 8px;
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-`
+`;
 const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
   line-height: 19.09px;
   text-align: left;
-`
+`;
 
 const Description = styled.div`
   font-size: 14px;
@@ -205,7 +201,7 @@ const Description = styled.div`
   text-overflow: ellipsis; // 텍스트가 잘릴 때 줄임표(...)를 표시
   margin-bottom: 4px;
   line-height: 16.71px;
-`
+`;
 const Thumbnail = styled.div<{ src: string }>`
   margin-right: 12px;
   width: 100%;
@@ -216,32 +212,31 @@ const Thumbnail = styled.div<{ src: string }>`
   position: relative;
 
   border-radius: 20px;
-  background-image: url(${props => props.src});
-  background-color: ${props =>
-    props.src === '' ? 'rgba(217, 217, 217, 1)' : 'inherit'};
+  background-image: url(${(props) => props.src});
+  background-color: ${(props) => (props.src === "" ? "rgba(217, 217, 217, 1)" : "inherit")};
   background-size: cover;
-`
+`;
 const RecruitingBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const Recruiting = styled.div`
   font-weight: 400;
   font-size: 12px;
   color: ${palette.비강조};
   padding-left: 1.6px;
   line-height: 14.32px;
-`
+`;
 const PostInfo = styled.div`
   width: 100%;
-`
+`;
 
 const Location = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-`
+`;
 
 const UserBox = styled.div`
   display: flex;
@@ -251,14 +246,14 @@ const UserBox = styled.div`
   justify-content: start;
   border-bottom: 1px solid var(--4, #f0f0f0);
   padding-bottom: 8px;
-`
+`;
 const UserName = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: ${palette.기본};
-`
+`;
 const Tags = styled.div`
   display: flex;
   justify-content: space-betweens;
-`
-export default MyTripHorizonBoxLayout
+`;
+export default MyTripHorizonBoxLayout;
