@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import {
   deleteMyAccount,
   deleteMyProfileImage,
@@ -12,179 +12,153 @@ import {
   putMyProfileDefaultImage,
   putMyProfileImage,
   putPassword,
-  putRealMyProfileImage
-} from '@/api/myPage'
-import { NewPasswordProps } from '@/model/myPages'
-import { authStore } from '@/store/client/authStore'
-import { myPageStore } from '@/store/client/myPageStore'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+  putRealMyProfileImage,
+} from "@/api/myPage";
+import { NewPasswordProps } from "@/model/myPages";
+import { authStore } from "@/store/client/authStore";
+import { myPageStore } from "@/store/client/myPageStore";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const useMyPage = () => {
-  const { userId, accessToken } = authStore()
-  const { name, preferredTags, agegroup, addProfileUrl } = myPageStore()
-  const queryClient = useQueryClient()
+  const { userId, accessToken } = authStore();
+  const { name, preferredTags, agegroup, addProfileUrl } = myPageStore();
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['myPage'],
+    queryKey: ["myPage"],
     queryFn: () => getMyPage(accessToken!),
     enabled: !!accessToken,
     retry: !!accessToken,
-    staleTime: 0
-  })
+    staleTime: 0,
+  });
 
-  const { mutateAsync: updateMyPageMutation, isSuccess: isUpdatedSuccess } =
-    useMutation({
-      mutationFn: () => {
-        return putMyPage(accessToken!, name, '', preferredTags, agegroup)
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['myPage']
-        })
-      }
-    })
+  const { mutateAsync: updateMyPageMutation, isSuccess: isUpdatedSuccess } = useMutation({
+    mutationFn: () => {
+      return putMyPage(accessToken!, name, "", preferredTags, agegroup);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["myPage"],
+      });
+    },
+  });
   // 비밀번호 변경시 현재 비밀번호 확인
   const {
     mutateAsync: verifyPasswordMutation,
     isSuccess: isVerified,
-    isError: isVerifiedError
+    isError: isVerifiedError,
   } = useMutation({
     mutationFn: (password: string) => {
-      return postVerifyPassword(accessToken!, password)
+      return postVerifyPassword(accessToken!, password);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['myPage']
-      })
-    }
-  })
+        queryKey: ["myPage"],
+      });
+    },
+  });
   const {
     mutateAsync: updatePasswordMutation,
     isSuccess: isUpatedPassword,
-    isError: isUpdatedPasswordError
+    isError: isUpdatedPasswordError,
   } = useMutation({
     mutationFn: (formData: NewPasswordProps) => {
-      return putPassword(
-        accessToken!,
-        formData.newPassword,
-        formData.newPassword
-      )
+      return putPassword(accessToken!, formData.newPassword, formData.newPassword);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['myPage']
-      })
-    }
-  })
+        queryKey: ["myPage"],
+      });
+    },
+  });
 
   // 마이페이지 프로필 이미지 부분
   // 사진을 업로드 해서 response의 url를 통해 화면에 보여주기.
 
   // 첫 프로필 기본으로 post 요청
 
-  const {
-    mutateAsync: firstProfileImageMutation,
-    isSuccess: isFirstProfileImagePostSuccess
-  } = useMutation({
+  const { mutateAsync: firstProfileImageMutation, isSuccess: isFirstProfileImagePostSuccess } = useMutation({
     mutationFn: (accessToken: string) => {
-      return intialPostMyProfileImage(accessToken!)
+      return intialPostMyProfileImage(accessToken!);
     },
-    onSuccess: data => {
-      queryClient.invalidateQueries({
-        queryKey: ['profileImg']
-      })
+    onSuccess: (data) => {
+      queryClient.refetchQueries({
+        queryKey: ["profileImg"],
+      });
       if (data?.url) {
-        addProfileUrl(data.url)
+        addProfileUrl(data.url);
       }
-    }
-  })
+    },
+  });
   // 임시 저장 post 요청
-  const {
-    mutateAsync: tempProfileImageMutation,
-    isSuccess: isTempProfileImagePostSuccess
-  } = useMutation({
+  const { mutateAsync: tempProfileImageMutation, isSuccess: isTempProfileImagePostSuccess } = useMutation({
     mutationFn: (formData: FormData) => {
-      return postTempMyProfileImage(accessToken!, formData)
-    }
-  })
+      return postTempMyProfileImage(accessToken!, formData);
+    },
+  });
   // 현재 프로필 조회.
   const { data: profileImage, isLoading: isLoadingImage } = useQuery({
-    queryKey: ['profileImg'],
+    queryKey: ["profileImg"],
     queryFn: () => getMyProfileImage(accessToken!),
-    enabled: !!accessToken
-  })
+    enabled: !!accessToken,
+  });
   // 커스텀 이미지로 update
-  const {
-    mutateAsync: updateProfileImgMutation,
-    isSuccess: isUpdateProfileImgSuccess
-  } = useMutation({
+  const { mutateAsync: updateProfileImgMutation, isSuccess: isUpdateProfileImgSuccess } = useMutation({
     mutationFn: (formData: FormData) => {
-      return putMyProfileImage(accessToken!, formData)
+      return putMyProfileImage(accessToken!, formData);
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ['profileImg']
-      })
-    }
-  })
+        queryKey: ["profileImg"],
+      });
+    },
+  });
 
   // 정식 수정 등록.
   // 임시저장 로직 추가 되면 아래 코드로.
-  const {
-    mutateAsync: updateRealProfileImgMutation,
-    isSuccess: isUpdateRealProfileImgSuccess
-  } = useMutation({
+  const { mutateAsync: updateRealProfileImgMutation, isSuccess: isUpdateRealProfileImgSuccess } = useMutation({
     mutationFn: (imageUrl: string) => {
-      return putRealMyProfileImage(accessToken!, imageUrl)
+      return putRealMyProfileImage(accessToken!, imageUrl);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['profileImg']
-      })
-    }
-  })
+      queryClient.refetchQueries({
+        queryKey: ["profileImg"],
+      });
+    },
+  });
   //default 이미지로 update
-  const {
-    mutateAsync: updateDefaultProfileImgMutation,
-    isSuccess: isUpdateDefaultProfileImgSuccess
-  } = useMutation({
+  const { mutateAsync: updateDefaultProfileImgMutation, isSuccess: isUpdateDefaultProfileImgSuccess } = useMutation({
     mutationFn: (defaultNumber: number) => {
-      return putMyProfileDefaultImage(accessToken!, defaultNumber)
+      return putMyProfileDefaultImage(accessToken!, defaultNumber);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['profileImg']
-      })
-    }
-  })
+      queryClient.refetchQueries({
+        queryKey: ["profileImg"],
+      });
+    },
+  });
   // 프로필 이미지 db에서 삭제.
-  const {
-    mutateAsync: deleteMyProfileImgMutation,
-    isSuccess: isDeleteSuccessProfileImg
-  } = useMutation({
+  const { mutateAsync: deleteMyProfileImgMutation, isSuccess: isDeleteSuccessProfileImg } = useMutation({
     mutationFn: () => {
-      return deleteMyProfileImage(accessToken!)
-    }
-  })
+      return deleteMyProfileImage(accessToken!);
+    },
+  });
   // 임시 저장된 미리보기 프로필 삭제
 
-  const {
-    mutateAsync: deleteTempProfileImgMutation,
-    isSuccess: isDeleteSuccessTempProfileImg
-  } = useMutation({
+  const { mutateAsync: deleteTempProfileImgMutation, isSuccess: isDeleteSuccessTempProfileImg } = useMutation({
     mutationFn: (deletedTempUrl: string) => {
-      return deleteTempProfileImage(accessToken!, deletedTempUrl)
-    }
-  })
+      return deleteTempProfileImage(accessToken!, deletedTempUrl);
+    },
+  });
   const {
     mutateAsync: withdrawMutation,
     isSuccess: isWithDrawSuccess,
-    isError: isWithDrawError
+    isError: isWithDrawError,
   } = useMutation({
     mutationFn: () => {
-      return deleteMyAccount(accessToken!)
-    }
-  })
+      return deleteMyAccount(accessToken!);
+    },
+  });
 
   return {
     withdrawMutation,
@@ -219,7 +193,7 @@ const useMyPage = () => {
     isTempProfileImagePostSuccess,
     // 임시 프로필 삭제
     deleteTempProfileImgMutation,
-    isDeleteSuccessTempProfileImg
-  }
-}
-export default useMyPage
+    isDeleteSuccessTempProfileImg,
+  };
+};
+export default useMyPage;
