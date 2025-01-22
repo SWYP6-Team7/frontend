@@ -52,7 +52,7 @@ export default function CommunityHeader() {
     if (isEditBtnClicked) {
       setThreeDotsClick(false);
       setIsEditBtnClicked(false);
-      router.push(`community/edit/${communityNumber}`);
+      router.push(`/community/edit/${communityNumber}`);
     }
     if (isReportBtnClicked) {
       setIsReportBtnClicked(false);
