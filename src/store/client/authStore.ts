@@ -1,5 +1,4 @@
-import { isGuestUser } from "./../../utils/user";
-("use client");
+"use client";
 import { create } from "zustand";
 
 interface IAuthStore {
