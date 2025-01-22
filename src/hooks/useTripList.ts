@@ -6,10 +6,8 @@ import { useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
 import useAuth from "./user/useAuth";
 
 export const useTripList = (sort: "recommend" | "recent") => {
-  const { accessToken } = authStore();
-  const {
-    refreshTokenMutation: { isPending: isRefreshTokenPending, status },
-  } = useAuth();
+  const { accessToken, isGuestUser } = authStore();
+
   console.log("isPending", status);
   const queryKey = sort === "recommend" ? "tripRecommendation" : "availableTrips";
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery<
@@ -19,7 +17,7 @@ export const useTripList = (sort: "recommend" | "recent") => {
     [_1: string]
   >({
     queryKey: [queryKey],
-    enabled: !isRefreshTokenPending,
+    enabled: isGuestUser || !!accessToken,
     queryFn: ({ pageParam }) => {
       if (sort === "recent") {
         return getAvailableTrips(pageParam as number, accessToken);

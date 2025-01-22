@@ -7,10 +7,8 @@ import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient }
 import useAuth from "../user/useAuth";
 
 const useComment = (relatedType: "travel" | "community", relatedNumber: number) => {
-  const { userId, accessToken } = authStore();
-  const {
-    refreshTokenMutation: { isPending: isRefreshTokenPending },
-  } = useAuth();
+  const { userId, accessToken, isGuestUser } = authStore();
+
   const commentList = useInfiniteQuery<
     ICommentList,
     Object,
@@ -23,7 +21,7 @@ const useComment = (relatedType: "travel" | "community", relatedNumber: number) 
       return getComments(relatedType, relatedNumber, accessToken, pageParam as number);
     },
     initialPageParam: 0,
-    enabled: !isRefreshTokenPending,
+    enabled: isGuestUser || !!accessToken,
     getNextPageParam: (lastPage) => {
       if (lastPage?.page?.totalPages === 0) {
         return undefined;

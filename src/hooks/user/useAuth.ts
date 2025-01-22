@@ -41,7 +41,7 @@ const useAuth = () => {
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { setLoginData, clearLoginData, accessToken, resetData } = authStore();
+  const { setLoginData, clearLoginData, accessToken, resetData, setIsGuestUser } = authStore();
   const { setSocialLogin } = userStore();
   const loginEmailMutation = useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
@@ -171,6 +171,7 @@ const useAuth = () => {
       });
     },
     onError: (error: any) => {
+      setIsGuestUser(true);
       console.error(error);
       // if (!isAccessTokenNoNeedpages(pathname)) {
       //   navigate('/login')
