@@ -1,8 +1,9 @@
-'use client'
-import NotFound from '@/components/errorHandling/NotFound'
-import React from 'react'
+"use client";
+import Fallback from "@/components/errorHandling/Fallback";
+import NotFound from "@/components/errorHandling/NotFound";
+import React from "react";
 
 const ErrorPage = () => {
-  return <NotFound />
-}
-export default ErrorPage
+  return <Fallback />;
+};
+export default ErrorPage;
