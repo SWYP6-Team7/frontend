@@ -9,7 +9,7 @@ import useAuth from "../user/useAuth";
 const useComment = (relatedType: "travel" | "community", relatedNumber: number) => {
   const { userId, accessToken } = authStore();
   const {
-    refreshTokenMutation: { isError: isRefreshTokenError, isSuccess: isRefreshTokenSuccess },
+    refreshTokenMutation: { isPending: isRefreshTokenPending },
   } = useAuth();
   const commentList = useInfiniteQuery<
     ICommentList,
@@ -23,7 +23,7 @@ const useComment = (relatedType: "travel" | "community", relatedNumber: number) 
       return getComments(relatedType, relatedNumber, accessToken, pageParam as number);
     },
     initialPageParam: 0,
-    enabled: isRefreshTokenError || isRefreshTokenSuccess,
+    enabled: !isRefreshTokenPending,
     getNextPageParam: (lastPage) => {
       if (lastPage?.page?.totalPages === 0) {
         return undefined;

@@ -8,9 +8,9 @@ import useAuth from "./user/useAuth";
 export const useTripList = (sort: "recommend" | "recent") => {
   const { accessToken } = authStore();
   const {
-    refreshTokenMutation: { isError: isRefreshTokenError, isSuccess: isRefreshTokenSuccess },
+    refreshTokenMutation: { isPending: isRefreshTokenPending },
   } = useAuth();
-  console.log("refresh", isRefreshTokenError, isRefreshTokenSuccess);
+  console.log("isPending", isRefreshTokenPending);
   const queryKey = sort === "recommend" ? "tripRecommendation" : "availableTrips";
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery<
     ITripList,
@@ -19,7 +19,7 @@ export const useTripList = (sort: "recommend" | "recent") => {
     [_1: string]
   >({
     queryKey: [queryKey],
-    enabled: isRefreshTokenError || isRefreshTokenSuccess,
+    enabled: !isRefreshTokenPending,
     queryFn: ({ pageParam }) => {
       if (sort === "recent") {
         return getAvailableTrips(pageParam as number, accessToken);

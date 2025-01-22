@@ -36,7 +36,7 @@ const useCommunity = (
 ) => {
   const { sortingTypeName = "최신순", keyword = "", categoryName = "전체" } = params;
   const {
-    refreshTokenMutation: { isError: isRefreshTokenError, isSuccess: isRefreshTokenSuccess },
+    refreshTokenMutation: { isPending: isRefreshTokenPending },
   } = useAuth();
   const { accessToken } = authStore();
   const communityList = useInfiniteQuery<
@@ -46,7 +46,7 @@ const useCommunity = (
     [_1: string, _2: { categoryName: string; sortingTypeName: string; keyword: string }, _3: boolean]
   >({
     queryKey: ["community", { categoryName: categoryName, sortingTypeName, keyword }, isMine],
-    enabled: isRefreshTokenError || isRefreshTokenSuccess,
+    enabled: !isRefreshTokenPending,
     queryFn: ({ pageParam }) => {
       if (isMine) {
         return getMyCommunities(accessToken, {
@@ -71,7 +71,7 @@ const useCommunity = (
   const community = useQuery({
     queryKey: ["community", communityNumber],
     queryFn: () => getCommunity(communityNumber!, accessToken),
-    enabled: !!communityNumber && (isRefreshTokenError || isRefreshTokenSuccess),
+    enabled: !!communityNumber && isRefreshTokenPending,
   });
 
   const images = useQuery({
