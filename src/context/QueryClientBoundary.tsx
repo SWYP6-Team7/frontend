@@ -2,7 +2,9 @@
 import { useState, useEffect } from "react";
 import { errorStore } from "@/store/client/errorStore";
 import {
+  Mutation,
   MutationCache,
+  Query,
   QueryCache,
   QueryClient,
   QueryClientProvider,
@@ -16,9 +18,23 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
       onError: (error: Error) => updateError(error),
     }),
     mutationCache: new MutationCache({
-      onError: (error: Error) => {
+      onError: (
+        error: Error,
+        variables: unknown,
+        context: unknown,
+        mutation?: Mutation<unknown, unknown, unknown, unknown>
+      ) => {
         updateError(error);
         setIsMutationError(true);
+
+        const mutationKey = mutation?.meta?.mutationKey;
+
+        if (mutationKey?.[0] === "refresh") {
+          console.log("error handling", error);
+        } else {
+          updateError(error);
+          setIsMutationError(true);
+        }
       },
     }),
     defaultOptions: {

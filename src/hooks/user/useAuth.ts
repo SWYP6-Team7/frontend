@@ -170,6 +170,7 @@ const useAuth = () => {
         accessToken: data.accessToken,
       });
     },
+    mutationKey: ["refresh"],
     onError: (error: any) => {
       setIsGuestUser(true);
       console.error(error);
