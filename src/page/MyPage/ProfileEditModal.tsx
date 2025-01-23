@@ -73,6 +73,7 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
     // 프로필 저장. 실제 update api 요청.
     if (active !== "custom" && active !== "camera") {
       handleDefaultProfileUpload(active as number);
+      addIsProfileImgUpdated(true);
     } else {
       // 갤러리 이미지로 선택.
       if (active === "custom") {
