@@ -15,7 +15,15 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
   const { updateError, setIsMutationError } = errorStore();
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
-      onError: (error: Error) => updateError(error),
+      onError: (error: Error, query: Query<unknown, unknown, unknown, readonly unknown[]>) => {
+        const queryKey = query?.queryKey;
+
+        if (queryKey?.[0] === "profileImg") {
+          console.log("error handling", query);
+        } else {
+          updateError(error);
+        }
+      },
     }),
     mutationCache: new MutationCache({
       onError: (
@@ -29,7 +37,7 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
         if (
           mutationKey?.[0] === "refresh" ||
           mutationKey?.[0] === "verifyEmailCode" ||
-          mutationKey?.[0] === "profileImg"
+          mutationKey?.[0] === "firstProfileImage"
         ) {
           console.log("error handling", error);
         } else {
