@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 
 const useRelationKeyword = (keyword: string) => {
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
-  const { accessToken } = authStore();
+  const { accessToken, isGuestUser } = authStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["search", "relation", debouncedKeyword],
     queryFn: () => getSearchRelation(debouncedKeyword.replace(" ", ""), accessToken),
-    enabled: keyword !== "",
+    enabled: keyword !== "" && (isGuestUser || !!accessToken),
   });
 
   useEffect(() => {
