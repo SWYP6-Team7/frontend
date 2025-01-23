@@ -21,7 +21,6 @@ const VerifyEmail = () => {
   const router = useRouter();
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { verifyEmail } = useVerifyEmail();
-  const { updateError, setIsMutationError } = errorStore();
   const [error, setError] = useState("");
   const isSocialLoginGoogle = socialLogin === "google";
   const isSocialLoginKakao = socialLogin === "kakao";
