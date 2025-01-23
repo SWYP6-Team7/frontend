@@ -130,7 +130,7 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.VERIFYCODE),
         action: () => {
-          router.push(ROUTES.REGISTER);
+          router.push(ROUTES.REGISTER_PROCESS.EMAIL);
           resetForm();
         },
       },
