@@ -41,6 +41,7 @@ const useVerifyEmail = () => {
       });
       return response.data;
     },
+    mutationKey: ["verifyEmailCode"],
     onSuccess: (data) => {
       console.log(data, "data");
       if (data.success) {

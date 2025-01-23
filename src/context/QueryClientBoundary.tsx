@@ -26,7 +26,7 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
       ) => {
         const mutationKey = mutation?.options?.mutationKey;
         console.log("error handling", mutation);
-        if (mutationKey?.[0] === "refresh") {
+        if (mutationKey?.[0] === "refresh" || mutationKey?.[0] === "verifyEmailCode") {
           console.log("error handling", error);
         } else {
           updateError(error);
