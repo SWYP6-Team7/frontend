@@ -25,7 +25,7 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
         mutation?: Mutation<unknown, unknown, unknown, unknown>
       ) => {
         const mutationKey = mutation?.meta?.mutationKey;
-
+        console.log("error handling", mutation);
         if (mutationKey?.[0] === "refresh") {
           console.log("error handling", error);
         } else {
