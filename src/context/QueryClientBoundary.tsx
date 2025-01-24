@@ -11,6 +11,7 @@ import {
   defaultShouldDehydrateQuery,
   isServer,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 export default function QueryClientBoundary({ children }: React.PropsWithChildren) {
   const { updateError, setIsMutationError } = errorStore();
   const queryClient = new QueryClient({
@@ -60,5 +61,9 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
     },
   }); // QueryClient 상태 초기화
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children} <ReactQueryDevtools />
+    </QueryClientProvider>
+  );
 }
