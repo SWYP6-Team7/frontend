@@ -8,6 +8,7 @@ import RoundedImage from "@/components/designSystem/profile/RoundedImage";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 import BoxLayoutTag from "@/components/designSystem/tag/BoxLayoutTag";
+import { useParams, useRouter } from "next/navigation";
 
 interface CompanionsViewProps {
   isOpen: boolean;
@@ -28,8 +29,13 @@ export default function CompanionsView({ isOpen, setIsOpen }: CompanionsViewProp
     setIsOpen(false);
     // zustand에 채용 인원 및 성별 저장 로직 필수.
   };
-  const { profileUrl, userName, userAgeGroup, nowPerson, maxPerson, travelNumber } = tripDetailStore();
-  const { companions } = useTripDetail(travelNumber);
+  const { travelNumber } = useParams<{ travelNumber: string }>();
+  const router = useRouter();
+  if (isNaN(parseInt(travelNumber))) {
+    router.replace("/");
+  }
+  const { profileUrl, userName, userAgeGroup, nowPerson, maxPerson } = tripDetailStore();
+  const { companions } = useTripDetail(parseInt(travelNumber));
   const allCompanions = companions.data?.data.companions;
   const [windowSize, setWindowSize] = useState({
     width: 0,
