@@ -33,6 +33,7 @@ import { myPageStore } from "@/store/client/myPageStore";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
+  console.log("genderType", genderType, gender);
   if (!genderType) {
     return true;
   } else {
