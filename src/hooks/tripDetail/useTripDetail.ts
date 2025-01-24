@@ -55,6 +55,13 @@ const useTripDetail = (travelNumber: number) => {
       // queryClient.invalidateQueries({
       //   queryKey: ['tripDetail', travelNumber]
       // }),
+      queryClient.refetchQueries({
+        queryKey: ["tripRecommendation"],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["availableTrips"],
+      });
+
       setTimeout(() => {
         queryClient.invalidateQueries({
           queryKey: ["myTrips"],
