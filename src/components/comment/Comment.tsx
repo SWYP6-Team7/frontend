@@ -17,6 +17,7 @@ import { authStore } from "@/store/client/authStore";
 import { commentStore } from "@/store/client/commentStore";
 import { COMMENT_MODAL_MESSAGES } from "@/constants/modalMessages";
 import ReportModal from "../designSystem/modal/ReportModal";
+import { isGuestUser } from "@/utils/user";
 
 interface CommentProps {
   comment: IComment;
@@ -119,7 +120,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
           )}
           <div>좋아요{comment.likes > 0 && ` ${comment.likes}`}</div>
         </Like>
-        {comment.parentNumber === 0 && (
+        {comment.parentNumber === 0 && !isGuestUser() && (
           <Reply
             isReplied={(isReply && parentNumber === comment.commentNumber) || comment.commented}
             onClick={onClickReply}
