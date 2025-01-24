@@ -399,17 +399,20 @@ export default function TripDetail() {
             bookmarkOnClick={bookmarkClickHandler}
             bookmarked={bookmarked}
             onClick={buttonClickHandler}
-            disabled={(hostUserCheck && nowEnrollmentCount === 0) || !verifyGenderType(genderType, gender)}
+            disabled={
+              (hostUserCheck && nowEnrollmentCount === 0) || !verifyGenderType(genderType, gender) || isAccepted
+            }
             addStyle={{
-              backgroundColor: !verifyGenderType(genderType, gender)
-                ? palette.비강조3
-                : hostUserCheck
-                  ? nowEnrollmentCount > 0
-                    ? palette.keycolor
-                    : palette.비강조3
-                  : alreadyApplied
-                    ? palette.비강조3
-                    : palette.keycolor,
+              backgroundColor:
+                !verifyGenderType(genderType, gender) || isAccepted
+                  ? palette.비강조3
+                  : hostUserCheck
+                    ? nowEnrollmentCount > 0
+                      ? palette.keycolor
+                      : palette.비강조3
+                    : alreadyApplied
+                      ? palette.비강조3
+                      : palette.keycolor,
               color: !verifyGenderType(genderType, gender)
                 ? palette.비강조
                 : hostUserCheck
@@ -420,7 +423,15 @@ export default function TripDetail() {
                     ? palette.비강조
                     : palette.비강조4,
             }}
-            text={hostUserCheck ? "참가 신청 목록" : alreadyApplied ? "참가 신청 취소" : "참가 신청 하기"}
+            text={
+              hostUserCheck
+                ? "참가 신청 목록"
+                : alreadyApplied
+                  ? "참가 신청 취소"
+                  : isAccepted
+                    ? "참가 중인 여행"
+                    : "참가 신청 하기"
+            }
           ></ApplyListButton>
         </ButtonContainer>
         <CompanionsView isOpen={personViewClicked} setIsOpen={setPersonViewClicked} />
