@@ -37,7 +37,8 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
         if (
           mutationKey?.[0] === "refresh" ||
           mutationKey?.[0] === "verifyEmailCode" ||
-          mutationKey?.[0] === "firstProfileImage"
+          mutationKey?.[0] === "firstProfileImage" ||
+          mutationKey?.[0] === "emailLogin"
         ) {
           console.log("error handling", error);
         } else {

@@ -10,7 +10,7 @@ const useRelationKeyword = (keyword: string) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["search", "relation", debouncedKeyword],
     queryFn: () => getSearchRelation(debouncedKeyword.replace(" ", ""), accessToken),
-    enabled: keyword !== "" && (isGuestUser || !!accessToken),
+    enabled: debouncedKeyword.replace(" ", "") !== "" && (isGuestUser || !!accessToken),
   });
 
   useEffect(() => {
