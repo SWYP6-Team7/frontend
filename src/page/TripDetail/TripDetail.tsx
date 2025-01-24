@@ -28,7 +28,7 @@ import { isGuestUser } from "@/utils/user";
 import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import ApplyListButton from "@/components/designSystem/Buttons/ApplyListButton";
 import useViewTransition from "@/hooks/useViewTransition";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { myPageStore } from "@/store/client/myPageStore";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -70,6 +70,7 @@ export default function TripDetail() {
   const { userId, accessToken } = authStore();
   const { gender } = myPageStore();
   const [isCommentUpdated, setIsCommentUpdated] = useState(false);
+  const { travelNumber } = useParams<{ travelNumber: string }>();
   const {
     location,
     postStatus,
@@ -86,23 +87,31 @@ export default function TripDetail() {
     genderType,
     hostUserCheck,
     enrollmentNumber,
-    travelNumber,
+
     nowPerson,
     applySuccess,
     setApplySuccess,
     profileUrl,
     bookmarked,
   } = tripDetailStore();
-  const { cancel, cancelMutation } = useEnrollment(travelNumber);
-  const { tripEnrollmentCount } = useTripDetail(travelNumber!);
+  const router = useRouter();
+  if (isNaN(parseInt(travelNumber))) {
+    router.replace("/");
+  }
+  const { cancel, cancelMutation } = useEnrollment(parseInt(travelNumber));
+  const { tripEnrollmentCount } = useTripDetail(parseInt(travelNumber));
   const nowEnrollmentCount = tripEnrollmentCount.data?.data;
   const { editToastShow, setEditToastShow } = editStore();
-  const { companions } = useTripDetail(travelNumber);
+  const { companions } = useTripDetail(parseInt(travelNumber));
   const allCompanions = companions.data?.data.companions;
 
   const alreadyApplied = !!enrollmentNumber;
   //북마크
-  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber!);
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    parseInt(travelNumber)
+  );
 
   const bookmarkClickHandler = () => {
     if (bookmarked) {
@@ -129,7 +138,7 @@ export default function TripDetail() {
   }, [allCompanions]);
 
   const isEditing = false;
-  const router = useRouter();
+
   const navigateWithTransition = useViewTransition();
   const { year, month, day } = dueDate;
   const DAY = new Date(`${year}/${month}/${day}`);
