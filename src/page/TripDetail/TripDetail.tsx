@@ -29,7 +29,21 @@ import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import ApplyListButton from "@/components/designSystem/Buttons/ApplyListButton";
 import useViewTransition from "@/hooks/useViewTransition";
 import { useRouter } from "next/navigation";
+import { myPageStore } from "@/store/client/myPageStore";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
+
+function verifyGenderType(genderType: string | null, gender: string) {
+  if (!genderType) {
+    return true;
+  } else {
+    if (genderType === "남자만" && gender === "M") {
+      return true;
+    } else if (genderType === "여자만" && gender === "F") {
+      return true;
+    }
+    return false;
+  }
+}
 
 interface Companion {
   userNumber: number;
@@ -53,6 +67,7 @@ export default function TripDetail() {
 
   const [isAccepted, setIsAccepted] = useState(false);
   const { userId, accessToken } = authStore();
+  const { gender } = myPageStore();
   const [isCommentUpdated, setIsCommentUpdated] = useState(false);
   const {
     location,
@@ -383,22 +398,26 @@ export default function TripDetail() {
             bookmarkOnClick={bookmarkClickHandler}
             bookmarked={bookmarked}
             onClick={buttonClickHandler}
-            disabled={hostUserCheck && nowEnrollmentCount === 0}
+            disabled={hostUserCheck && nowEnrollmentCount === 0 && !verifyGenderType(genderType, gender)}
             addStyle={{
-              backgroundColor: hostUserCheck
-                ? nowEnrollmentCount > 0
-                  ? palette.keycolor
-                  : palette.비강조3
-                : alreadyApplied
-                  ? palette.비강조3
-                  : palette.keycolor,
-              color: hostUserCheck
-                ? nowEnrollmentCount > 0
-                  ? palette.비강조4
-                  : palette.비강조
-                : alreadyApplied
-                  ? palette.비강조
-                  : palette.비강조4,
+              backgroundColor: !verifyGenderType(genderType, gender)
+                ? palette.비강조3
+                : hostUserCheck
+                  ? nowEnrollmentCount > 0
+                    ? palette.keycolor
+                    : palette.비강조3
+                  : alreadyApplied
+                    ? palette.비강조3
+                    : palette.keycolor,
+              color: !verifyGenderType(genderType, gender)
+                ? palette.비강조
+                : hostUserCheck
+                  ? nowEnrollmentCount > 0
+                    ? palette.비강조4
+                    : palette.비강조
+                  : alreadyApplied
+                    ? palette.비강조
+                    : palette.비강조4,
             }}
             text={hostUserCheck ? "참가 신청 목록" : alreadyApplied ? "참가 신청 취소" : "참가 신청 하기"}
           ></ApplyListButton>
@@ -475,7 +494,7 @@ const Details = styled.div`
   margin-top: 16px;
   font-size: 16px;
 
-  white-space:pre-line;
+  white-space: pre-line;
   font-weight: 400;
   line-height: 22.4px;
   text-align: left;
