@@ -117,6 +117,7 @@ const RegisterTripStyle = () => {
     } else {
       if (isRegisterEmail && !isSuccess && (!email || !name || !agegroup || !sex)) {
         resetName();
+        sessionStorage.removeItem("sessionToken");
         resetForm();
         resetAge();
         resetGender();
