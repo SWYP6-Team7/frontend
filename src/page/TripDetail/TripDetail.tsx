@@ -34,7 +34,7 @@ const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
   console.log("genderType", genderType, gender);
-  if (!genderType) {
+  if (!genderType || genderType === "모두") {
     return true;
   } else {
     if (genderType === "남자만" && gender === "M") {
