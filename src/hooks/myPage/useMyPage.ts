@@ -81,6 +81,7 @@ const useMyPage = () => {
     mutationFn: (accessToken: string) => {
       return intialPostMyProfileImage(accessToken!);
     },
+    mutationKey: ["firstProfileImage"],
     onSuccess: (data) => {
       queryClient.refetchQueries({
         queryKey: ["profileImg"],

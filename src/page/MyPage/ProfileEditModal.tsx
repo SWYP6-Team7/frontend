@@ -73,8 +73,15 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
   const profileSaveHandler = () => {
     // 프로필 저장. 실제 update api 요청.
     if (active !== "custom" && active !== "camera") {
-      handleDefaultProfileUpload(active as number);
-      addIsProfileImgUpdated(true);
+      updateDefaultProfileImgMutation(active as number)
+        .then((res) => {
+          console.log("프로필 업데이트 후, res", res);
+
+          addIsProfileImgUpdated(true);
+        })
+        .catch((e) => {
+          console.log(e, "디폴트 프로필 정식 등록 요청 에러");
+        });
     } else {
       // 갤러리 이미지로 선택.
       if (active === "custom") {
@@ -102,7 +109,6 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
             console.log(e, "카메라 프로필 정식 등록 요청 에러");
           });
       }
-      router.refresh();
     }
 
     setShowModal(false);
