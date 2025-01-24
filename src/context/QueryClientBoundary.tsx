@@ -18,8 +18,7 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
     queryCache: new QueryCache({
       onError: (error: Error, query: Query<unknown, unknown, unknown, readonly unknown[]>) => {
         const queryKey = query?.queryKey;
-
-        if (queryKey?.[0] === "profileImg") {
+        if (queryKey?.[0] === "profileImg" || queryKey?.[1] === "relation") {
           console.log("error handling", query);
         } else {
           updateError(error);
@@ -61,9 +60,5 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
     },
   }); // QueryClient 상태 초기화
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children} <ReactQueryDevtools />
-    </QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }
