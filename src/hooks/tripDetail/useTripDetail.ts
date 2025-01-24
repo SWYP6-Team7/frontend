@@ -11,12 +11,12 @@ import { authStore } from "@/store/client/authStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const useTripDetail = (travelNumber: number) => {
-  const { userId, accessToken } = authStore();
+  const { userId, accessToken, isGuestUser } = authStore();
   const queryClient = useQueryClient();
   const tripDetail = useQuery({
     queryKey: ["tripDetail", travelNumber],
     queryFn: () => getTripDetail(travelNumber, accessToken),
-    enabled: !!travelNumber,
+    enabled: !!travelNumber && (isGuestUser || !!accessToken),
   });
   // 현재 신청 온 사람 수
   const tripEnrollmentCount = useQuery({
