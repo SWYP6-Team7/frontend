@@ -173,6 +173,7 @@ const RegisterTripStyle = () => {
         email,
         password,
         name,
+        sessionToken: sessionStorage.getItem("sessionToken") ?? "",
         gender: sex,
         agegroup: agegroup as string,
         preferredTags: tripStyleArray,

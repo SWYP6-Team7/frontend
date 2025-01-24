@@ -44,6 +44,7 @@ const useAuth = () => {
   const { setLoginData, clearLoginData, accessToken, resetData, setIsGuestUser } = authStore();
   const { setSocialLogin } = userStore();
   const loginEmailMutation = useMutation({
+    mutationKey: ["emailLogin"],
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
       if (!checkNetworkConnection()) return;
 
