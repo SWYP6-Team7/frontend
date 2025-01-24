@@ -22,13 +22,13 @@ const useTripDetail = (travelNumber: number) => {
   const tripEnrollmentCount = useQuery({
     queryKey: ["tripEnrollment", travelNumber],
     queryFn: () => getTripEnrollmentCount(travelNumber, accessToken),
-    enabled: !!travelNumber,
+    enabled: !!travelNumber && (isGuestUser || !!accessToken),
   });
 
   const companions = useQuery({
     queryKey: ["companions", travelNumber],
     queryFn: () => getCompanions(travelNumber, accessToken),
-    enabled: !!travelNumber,
+    enabled: !!travelNumber && (isGuestUser || !!accessToken),
   });
 
   const {
