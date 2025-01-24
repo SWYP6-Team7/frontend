@@ -13,6 +13,7 @@ import ResultToast from "../designSystem/toastMessage/resultToast";
 import { editStore } from "@/store/client/editStore";
 import { COMMUNITY_TOAST_MESSAGES } from "@/constants/toastMessages";
 import { useParams } from "next/navigation";
+import { isGuestUser } from "@/utils/user";
 
 const CommunityPost = () => {
   const params = useParams();
@@ -31,6 +32,9 @@ const CommunityPost = () => {
   }
 
   const handleLikeToggle = () => {
+    if (isGuestUser()) {
+      return;
+    }
     if (data.liked) {
       unlike({ communityNumber: Number(communityNumber) });
     } else {
@@ -86,23 +90,24 @@ const CommunityPost = () => {
           </ImageContainer>
         )}
 
-        {data && <LikeContainer onClick={handleLikeToggle}>
-          <SearchFilterTag
-            addStyle={{
-              padding: "11px 16px",
-              fontSize: "16px",
-              backgroundColor: data.liked ? palette.keycolorBG : palette.검색창,
-              color: data.liked ? palette.keycolor : palette.비강조,
-              border: data.liked ? `1px solid ${palette.keycolor}` : `1px solid ${palette.비강조3}`,
-              borderRadius: "30px",
-              fontWeight: "400"
-            }}
-            icon={<CommunityHeartIcon />}
-            text={data.likeCount > 0 ? `${data.likeCount}` : "좋아요"}
-            idx={0}
-          />
-        </LikeContainer>
-}
+        {data && (
+          <LikeContainer onClick={handleLikeToggle}>
+            <SearchFilterTag
+              addStyle={{
+                padding: "11px 16px",
+                fontSize: "16px",
+                backgroundColor: data.liked ? palette.keycolorBG : palette.검색창,
+                color: data.liked ? palette.keycolor : palette.비강조,
+                border: data.liked ? `1px solid ${palette.keycolor}` : `1px solid ${palette.비강조3}`,
+                borderRadius: "30px",
+                fontWeight: "400",
+              }}
+              icon={<CommunityHeartIcon />}
+              text={data.likeCount > 0 ? `${data.likeCount}` : "좋아요"}
+              idx={0}
+            />
+          </LikeContainer>
+        )}
       </MainContent>
       <ViewsETC>
         <div>댓글 {data.commentCount}</div>
@@ -156,7 +161,7 @@ const Title = styled.div`
 `;
 const Details = styled.div`
   margin-top: 1.9svh;
-  white-space:pre-line;
+  white-space: pre-line;
   font-size: 16px;
   font-weight: 400;
   line-height: 22.4px;

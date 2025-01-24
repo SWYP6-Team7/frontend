@@ -115,6 +115,9 @@ export default function TripDetail() {
   );
 
   const bookmarkClickHandler = () => {
+    if (isGuestUser()) {
+      return;
+    }
     if (bookmarked) {
       deleteBookmarkMutation();
     } else {

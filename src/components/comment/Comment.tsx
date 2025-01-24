@@ -86,6 +86,9 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
     setParentNumber(comment.commentNumber);
   };
   const onClickLike = () => {
+    if (isGuestUser()) {
+      return;
+    }
     if (comment.liked) {
       unlike({ commentNumber: comment.commentNumber });
     } else {
