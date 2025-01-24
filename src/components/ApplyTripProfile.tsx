@@ -7,10 +7,10 @@ import BoxLayoutTag from "./designSystem/tag/BoxLayoutTag";
 
 const ApplyTripProfile = () => {
   // 유저 정보 가져오는 로직 추가 필요
-  const { name, agegroup } = myPageStore();
+  const { name, agegroup, profileUrl } = myPageStore();
   return (
     <Container>
-      <RoundedImage src={""} size={48} />
+      <RoundedImage src={profileUrl ?? ""} size={48} />
       <TextContainer>
         <Name>{name}</Name>
         <BoxLayoutTag
