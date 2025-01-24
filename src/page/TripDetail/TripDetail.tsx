@@ -426,10 +426,10 @@ export default function TripDetail() {
             text={
               hostUserCheck
                 ? "참가 신청 목록"
-                : alreadyApplied
-                  ? "참가 신청 취소"
-                  : isAccepted
-                    ? "참가 중인 여행"
+                : isAccepted
+                  ? "참가 중인 여행"
+                  : alreadyApplied
+                    ? "참가 신청 취소"
                     : "참가 신청 하기"
             }
           ></ApplyListButton>
