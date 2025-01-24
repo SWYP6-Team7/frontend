@@ -147,6 +147,7 @@ const useCommunity = (
         if (communityList.data) {
           queryClient.invalidateQueries({
             queryKey: ["community"],
+            exact: true,
           });
         }
       },
