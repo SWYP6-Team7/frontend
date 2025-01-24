@@ -13,6 +13,7 @@ import { palette } from "@/styles/palette";
 import { isDefaultProfile } from "@/utils/profileUrl";
 import styled from "@emotion/styled";
 import React, { act, ChangeEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface ModalProps {
   showModal: boolean;
@@ -40,7 +41,7 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
     firstProfileImageMutation, // 삭제 후 등록 .
     isFirstProfileImagePostSuccess,
   } = useMyPage();
-
+  const router = useRouter();
   const { profileUrl, addIsProfileImgUpdated, addProfileUrl } = myPageStore();
 
   const { accessToken } = authStore();
@@ -101,6 +102,7 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
             console.log(e, "카메라 프로필 정식 등록 요청 에러");
           });
       }
+      router.refresh();
     }
 
     setShowModal(false);
