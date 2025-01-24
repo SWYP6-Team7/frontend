@@ -1,26 +1,26 @@
-'use client'
-import EmptyHeartIcon from '@/components/icons/EmptyHeartIcon'
-import FullHeartIcon from '@/components/icons/FullHeartIcon'
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
-import './Button.css'
+"use client";
+import EmptyHeartIcon from "@/components/icons/EmptyHeartIcon";
+import FullHeartIcon from "@/components/icons/FullHeartIcon";
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
+import "./Button.css";
 
 interface ApplyListButtonProps {
-  nowEnrollmentCount: number
-  text: string
+  nowEnrollmentCount: number;
+  text: string;
   addStyle?: {
-    backgroundColor?: string
-    color?: string
-    boxShadow?: string
-    weight?: 'regular' | 'medium' | 'semiBold' | 'bold'
-  }
-  type?: 'button' | 'reset' | 'submit' | undefined
-  children?: React.ReactNode
-  disabled?: boolean
-  bookmarked: boolean
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-  bookmarkOnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-  hostUserCheck: boolean
+    backgroundColor?: string;
+    color?: string;
+    boxShadow?: string;
+    weight?: "regular" | "medium" | "semiBold" | "bold";
+  };
+  type?: "button" | "reset" | "submit" | undefined;
+  children?: React.ReactNode;
+  disabled?: boolean;
+  bookmarked: boolean;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  bookmarkOnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  hostUserCheck: boolean;
 }
 // 사용 방식
 {
@@ -32,35 +32,26 @@ interface ApplyListButtonProps {
 // 다음, 로그인 등에 쓰이는 버튼.
 
 const ApplyListButton = ({
-  text = '다음',
-  type = 'submit',
+  text = "다음",
+  type = "submit",
   addStyle = {
-    backgroundColor: 'rgba(62, 141, 0, 1)',
-    color: 'white',
-    boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
-    weight: 'semiBold'
+    backgroundColor: "rgba(62, 141, 0, 1)",
+    color: "white",
+    boxShadow: "-2px 4px 5px 0px rgba(170, 170, 170, 0.14)",
+    weight: "semiBold",
   },
   onClick = () => {},
   bookmarkOnClick = () => {},
   disabled = false,
   nowEnrollmentCount,
   bookmarked = false,
-  hostUserCheck
+  hostUserCheck,
 }: ApplyListButtonProps) => {
   return (
     <ApplyListButtonWrapper>
-      {hostUserCheck && (
-        <button
-          style={{ border: 'none', backgroundColor: 'transparent' }}
-          onClick={bookmarkOnClick}>
-          {bookmarked ? (
-            <FullHeartIcon width={24} />
-          ) : (
-            <EmptyHeartIcon
-              width={24}
-              stroke={palette.기본}
-            />
-          )}
+      {!hostUserCheck && (
+        <button style={{ border: "none", backgroundColor: "transparent" }} onClick={bookmarkOnClick}>
+          {bookmarked ? <FullHeartIcon width={24} /> : <EmptyHeartIcon width={24} stroke={palette.기본} />}
         </button>
       )}
       <ButtonContainer
@@ -68,15 +59,16 @@ const ApplyListButton = ({
         disabled={disabled}
         onClick={onClick}
         className={`Button--weight-${addStyle.weight}`}
-        style={!disabled ? addStyle : {}}>
+        style={!disabled ? addStyle : {}}
+      >
         {text}
         {!disabled && nowEnrollmentCount > 0 && hostUserCheck && (
           <AppliedPersonCircle>{nowEnrollmentCount}</AppliedPersonCircle>
         )}
       </ButtonContainer>
     </ApplyListButtonWrapper>
-  )
-}
+  );
+};
 const AppliedPersonCircle = styled.div`
   background-color: ${palette.BG};
   color: ${palette.keycolor};
@@ -94,7 +86,7 @@ const AppliedPersonCircle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const ApplyListButtonWrapper = styled.div`
   width: 100%;
@@ -103,7 +95,7 @@ const ApplyListButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-`
+`;
 const ButtonContainer = styled.button<{ disabled: boolean }>`
   @media (max-width: 390px) {
     width: 100%;
@@ -119,9 +111,9 @@ const ButtonContainer = styled.button<{ disabled: boolean }>`
   padding: 10px 20px 10px 20px;
   display: flex;
   align-items: center;
-  background-color: ${props => props.disabled && 'rgba(220, 220, 220, 1)'};
-  color: ${props => props.disabled && palette.비강조};
+  background-color: ${(props) => props.disabled && "rgba(220, 220, 220, 1)"};
+  color: ${(props) => props.disabled && palette.비강조};
   border: none;
-`
+`;
 
-export default ApplyListButton
+export default ApplyListButton;

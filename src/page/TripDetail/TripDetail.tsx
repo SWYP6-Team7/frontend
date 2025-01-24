@@ -398,7 +398,7 @@ export default function TripDetail() {
             bookmarkOnClick={bookmarkClickHandler}
             bookmarked={bookmarked}
             onClick={buttonClickHandler}
-            disabled={hostUserCheck && nowEnrollmentCount === 0 && !verifyGenderType(genderType, gender)}
+            disabled={(hostUserCheck && nowEnrollmentCount === 0) || !verifyGenderType(genderType, gender)}
             addStyle={{
               backgroundColor: !verifyGenderType(genderType, gender)
                 ? palette.비강조3
