@@ -2,6 +2,7 @@
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 interface CheckingModalProps {
   isModalOpen: boolean;
   modalMsg: string;
@@ -38,7 +39,9 @@ export default function CheckingModal({
     setModalOpen(false);
   };
 
-  return (
+  if (!isModalOpen) return null;
+
+  return createPortal(
     <ModalContainer isModalOpen={isModalOpen}>
       <DarkWrapper onClick={handleClickOutside}></DarkWrapper>
       <Modal onClick={(e: any) => e.stopPropagation()} ref={modalRef} isModalOpen={isModalOpen}>
@@ -51,7 +54,8 @@ export default function CheckingModal({
           <SelectBtn onClick={clickHandler}>{modalButtonText}</SelectBtn>
         </ButtonBox>
       </Modal>
-    </ModalContainer>
+    </ModalContainer>,
+    document.getElementById("checking-modal") as HTMLElement
   );
 }
 const Title = styled.div`

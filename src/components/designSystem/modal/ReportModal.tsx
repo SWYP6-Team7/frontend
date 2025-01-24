@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import CloseButton from "../Buttons/CloseButton";
 import ReportButton from "../Buttons/ReportButton";
+import { createPortal } from "react-dom";
 interface ReportModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -33,7 +34,9 @@ export default function ReportModal({
   if (typeof window === "undefined") {
     return null;
   }
-  return (
+  if (!isOpen) return null;
+
+  return createPortal(
     <Container isOpen={isOpen}>
       <Modal ref={modalRef} isOpen={isOpen} nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
         <ReportButton isOpen={isOpen} reportClickHandler={reportHandler} reportText={reportText} />
@@ -42,7 +45,8 @@ export default function ReportModal({
       </Modal>
 
       <DarkWrapper onClick={handleClickOutside}></DarkWrapper>
-    </Container>
+    </Container>,
+    document.getElementById("checking-modal") as HTMLElement
   );
 }
 

@@ -8,6 +8,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           <Layout>{children}</Layout>
+          <div id="checking-modal" />
+          <div id="end-modal" />
         </Providers>
       </body>
     </html>

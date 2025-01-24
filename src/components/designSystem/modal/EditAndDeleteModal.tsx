@@ -1,15 +1,16 @@
-'use client'
-import styled from '@emotion/styled'
-import React, { SetStateAction, useEffect, useRef, useState } from 'react'
-import CloseButton from '../Buttons/CloseButton'
-import EditAndDeleteButton from '../Buttons/EditAndDeleteButton'
+"use client";
+import styled from "@emotion/styled";
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import CloseButton from "../Buttons/CloseButton";
+import EditAndDeleteButton from "../Buttons/EditAndDeleteButton";
+import { createPortal } from "react-dom";
 interface EditAndDeleteModalProps {
-  isOpen: boolean
-  setIsOpen: React.Dispatch<SetStateAction<boolean>>
-  setIsEditBtnClicked: React.Dispatch<SetStateAction<boolean>>
-  setIsDeleteBtnClicked: React.Dispatch<SetStateAction<boolean>>
-  isMyApplyTrip?: boolean // 내가 참가한 여행에서도 사용하기 위함.
-  deleteText?: string
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<SetStateAction<boolean>>;
+  setIsEditBtnClicked: React.Dispatch<SetStateAction<boolean>>;
+  setIsDeleteBtnClicked: React.Dispatch<SetStateAction<boolean>>;
+  isMyApplyTrip?: boolean; // 내가 참가한 여행에서도 사용하기 위함.
+  deleteText?: string;
 }
 export default function EditAndDeleteModal({
   setIsEditBtnClicked,
@@ -17,33 +18,33 @@ export default function EditAndDeleteModal({
   isOpen,
   setIsOpen,
   isMyApplyTrip = false,
-  deleteText = '삭제하기'
+  deleteText = "삭제하기",
 }: EditAndDeleteModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null) // 모달 참조
-  const [isListening, setIsListening] = useState(false) // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
+  const modalRef = useRef<HTMLDivElement>(null); // 모달 참조
+  const [isListening, setIsListening] = useState(false); // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      setIsOpen(false) // 외부 클릭 시 모달 닫기
+      setIsOpen(false); // 외부 클릭 시 모달 닫기
     }
-  }
+  };
 
   const deleteHandler = () => {
-    setIsDeleteBtnClicked(true)
-    setIsOpen(false)
-  }
+    setIsDeleteBtnClicked(true);
+    setIsOpen(false);
+  };
   const editHandler = () => {
-    setIsEditBtnClicked(true)
-    setIsOpen(false)
+    setIsEditBtnClicked(true);
+    setIsOpen(false);
+  };
+  if (typeof window === "undefined") {
+    return null;
   }
-  if (typeof window === 'undefined') {
-    return null
-  }
-  return (
+
+  if (!isOpen) return null;
+
+  return createPortal(
     <Container isOpen={isOpen}>
-      <Modal
-        ref={modalRef}
-        isOpen={isOpen}
-        nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
+      <Modal ref={modalRef} isOpen={isOpen} nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
         {!isMyApplyTrip ? (
           <EditAndDeleteButton
             isOpen={isOpen}
@@ -65,8 +66,9 @@ export default function EditAndDeleteModal({
       </Modal>
 
       <DarkWrapper onClick={handleClickOutside}></DarkWrapper>
-    </Container>
-  )
+    </Container>,
+    document.getElementById("end-modal") as HTMLElement
+  );
 }
 
 const Modal = styled.div<{ isOpen: boolean; nowWidth: number }>`
@@ -81,9 +83,9 @@ const Modal = styled.div<{ isOpen: boolean; nowWidth: number }>`
   gap: 16px;
   border-radius: 20px;
   opacity: 0px;
-  transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(30%)')};
+  transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(30%)")};
   transition: transform 0.3s ease-in-out;
-`
+`;
 const Container = styled.div<{ isOpen: boolean }>`
   height: 100svh;
   width: 100%;
@@ -94,13 +96,13 @@ const Container = styled.div<{ isOpen: boolean }>`
   z-index: 1001;
   display: flex;
   justify-content: center;
-  white-space: 'pre-line';
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
+  white-space: "pre-line";
+  visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   transition:
     opacity 0.3s ease-in-out,
     visibility 0.3s ease-in-out;
-`
+`;
 const DarkWrapper = styled.div`
   pointer-events: auto;
   position: absolute;
@@ -118,4 +120,4 @@ const DarkWrapper = styled.div`
     transform: translateX(-50%);
     overflow-x: hidden;
   }
-`
+`;
