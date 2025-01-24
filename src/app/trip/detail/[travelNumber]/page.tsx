@@ -16,27 +16,12 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
   const tripDetail = await getTripDetail(parseInt(travelNumber), null);
 
   return {
-    title: tripDetail.data?.data?.title || "여행 상세보기",
+    title: tripDetail.data?.title || "여행 상세보기",
   };
 }
 
 const TripDetailPage = async ({ params }: { params: { travelNumber: string } }) => {
-  const travelNumber = params.travelNumber;
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ["tripDetail", travelNumber],
-    queryFn: async () => {
-      const data = await getTripDetail(parseInt(travelNumber), null);
-      return JSON.parse(JSON.stringify(data));
-    },
-  });
-  const dehydratedstate = dehydrate(queryClient);
-  return (
-    <HydrationBoundary state={dehydratedstate}>
-      <TripDetail />
-    </HydrationBoundary>
-  );
+  return <TripDetail />;
 };
 
 export default TripDetailPage;
