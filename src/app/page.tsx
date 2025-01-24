@@ -21,8 +21,8 @@ export default async function HomePage() {
   //     }
   //   },
   // });
-  const data = queryClient.getQueryData(["availableTrips"]);
-  console.log(data, "data");
-  const dehydratedstate = dehydrate(queryClient);
+  // const data = queryClient.getQueryData(["availableTrips"]);
+  // console.log(data, "data");
+  // const dehydratedstate = dehydrate(queryClient);
   return <Home />;
 }
