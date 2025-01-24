@@ -24,7 +24,6 @@ export default function TripDetailHeader() {
   const pathname = usePathname();
   const travelNumber = params?.travelNumber as string;
   const { tripDetail } = useTripDetail(parseInt(travelNumber!));
-  console.log("tripDetail", tripDetail);
   const isTripDetailEdit = pathname?.startsWith("/trip/edit");
 
   const router = useRouter();
