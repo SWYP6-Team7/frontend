@@ -71,7 +71,14 @@ export const useHeaderNavigation = () => {
     setTravelDetail,
   } = useBackPathStore();
   const pathname = usePathname() || "/";
-  const { resetAge, resetForm, resetGender, resetName, socialLogin, setSocialLogin } = userStore();
+  const {
+    resetAge,
+    resetForm,
+    resetGender,
+    resetName,
+    socialLogin,
+    setSocialLogin,
+  } = userStore();
 
   const checkRoute = {
     startsWith: (route: string) => pathname?.startsWith(route),
@@ -167,7 +174,8 @@ export const useHeaderNavigation = () => {
         },
       },
       {
-        condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
+        condition: () =>
+          pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
         action: () => {
           router.push(ROUTES.REGISTER_PROCESS.AGE);
         },
@@ -193,7 +201,7 @@ export const useHeaderNavigation = () => {
         condition: () => pathname.startsWith(ROUTES.NOTIFICATION),
         action: () => {
           setNotification("/");
-          router.push(notification);
+          router.back();
         },
       },
 
@@ -340,7 +348,9 @@ export const useHeaderNavigation = () => {
     router.back();
   };
 
-  const shouldShowAlarmIcon = () => checkRoute.startsWith(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.MY.PAGE);
+  const shouldShowAlarmIcon = () =>
+    checkRoute.startsWith(ROUTES.MY.TRIP) ||
+    checkRoute.startsWith(ROUTES.MY.PAGE);
 
   const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE;
 
