@@ -98,18 +98,19 @@ const useEnrollment = (travelNumber: number) => {
     return applyMutation.mutateAsync(data, {
       onSuccess: () => {
         if (!enrollmentList.data) {
-          setTimeout(() => {
-            queryClient.invalidateQueries({
-              queryKey: ["enrollment", travelNumber],
-            });
-          }, 1500);
+          // setTimeout(() => {
+          //   queryClient.invalidateQueries({
+          //     queryKey: ["enrollment", travelNumber],
+          //   });
+          // }, 1500);
         }
       },
     });
   };
 
   const cancelMutation = useMutation({
-    mutationFn: (enrollmentNumber: number) => cancelEnrollment(enrollmentNumber, accessToken),
+    mutationFn: (enrollmentNumber: number) =>
+      cancelEnrollment(enrollmentNumber, accessToken),
   });
 
   const cancel = (enrollmentNumber: number) => {
@@ -119,11 +120,11 @@ const useEnrollment = (travelNumber: number) => {
           queryKey: ["tripDetail", travelNumber],
         });
         if (!enrollmentList.data) {
-          setTimeout(() => {
-            queryClient.invalidateQueries({
-              queryKey: ["enrollment", travelNumber],
-            });
-          }, 1500);
+          // setTimeout(() => {
+          //   queryClient.invalidateQueries({
+          //     queryKey: ["enrollment", travelNumber],
+          //   });
+          // }, 1500);
         }
       },
     });
