@@ -95,9 +95,11 @@ const TripList = () => {
             </button>
           </div>
 
-          <AlarmContainer onClick={handleNotification}>
-            {!isGuestUser() && <AlarmIcon />}
-          </AlarmContainer>
+          {!isGuestUser() && (
+            <AlarmContainer onClick={handleNotification}>
+              <AlarmIcon />
+            </AlarmContainer>
+          )}
         </SearchContainer>
         <Spacing size={8} />
         <PopularPlaceList />

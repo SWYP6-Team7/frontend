@@ -78,13 +78,13 @@ const Community = () => {
                 <SearchIcon width={24} height={22} />
               </CustomLink>
             </LinkContainer>
-            <LinkContainer>
-              {!isGuestUser() && (
+            {!isGuestUser() && (
+              <LinkContainer>
                 <div onClick={handleNotification} style={{ cursor: "pointer" }}>
                   <AlarmIcon stroke={palette.기본} />
                 </div>
-              )}
-            </LinkContainer>
+              </LinkContainer>
+            )}
           </IconContainer>
         </SearchContainer>
 
