@@ -10,9 +10,8 @@ const useViewTransition = () => {
       return;
     }
 
-    const transition = (document as any).startViewTransition(async () => {
+    (document as any).startViewTransition(async () => {
       router.push(to);
-      await transition.finished;
     });
   };
 
