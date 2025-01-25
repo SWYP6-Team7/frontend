@@ -17,11 +17,11 @@ const useEnrollment = (travelNumber: number) => {
   const { userId, accessToken } = authStore();
   const { hostUserCheck } = tripDetailStore();
   // 주최자 - 목록 조회
-  const enrollmentList = useQuery({
-    queryKey: ["enrollment", travelNumber],
-    queryFn: () => getEnrollments(travelNumber, accessToken),
-    enabled: !!travelNumber && !!accessToken && hostUserCheck,
-  });
+  // const enrollmentList = useQuery({
+  //   queryKey: ["enrollment", travelNumber],
+  //   queryFn: () => getEnrollments(travelNumber, accessToken),
+  //   enabled: !!travelNumber && !!accessToken && hostUserCheck,
+  // });
   // 주최자 - 가장 최근에 봤던 글.
 
   const enrollmentsLastViewed = useQuery({
@@ -96,15 +96,7 @@ const useEnrollment = (travelNumber: number) => {
 
   const apply = (data: IPostEnrollment) => {
     return applyMutation.mutateAsync(data, {
-      onSuccess: () => {
-        if (!enrollmentList.data) {
-          // setTimeout(() => {
-          //   queryClient.invalidateQueries({
-          //     queryKey: ["enrollment", travelNumber],
-          //   });
-          // }, 1500);
-        }
-      },
+      onSuccess: () => {},
     });
   };
 
@@ -119,13 +111,6 @@ const useEnrollment = (travelNumber: number) => {
         queryClient.invalidateQueries({
           queryKey: ["tripDetail", travelNumber],
         });
-        if (!enrollmentList.data) {
-          // setTimeout(() => {
-          //   queryClient.invalidateQueries({
-          //     queryKey: ["enrollment", travelNumber],
-          //   });
-          // }, 1500);
-        }
       },
     });
   };
@@ -135,7 +120,7 @@ const useEnrollment = (travelNumber: number) => {
     cancel,
     cancelMutation,
     applyMutation,
-    enrollmentList,
+
     enrollmentRejectionMutate,
     enrollmentAcceptanceMutate,
     enrollmentsLastViewed,
