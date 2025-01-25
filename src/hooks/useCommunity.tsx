@@ -14,8 +14,19 @@ import {
 } from "@/api/community";
 import { ICommunityList, PostCommunity } from "@/model/community";
 import { authStore } from "@/store/client/authStore";
-import { EditFinalImages, EditImage, FinalImages, UploadImage } from "@/store/client/imageStore";
-import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  EditFinalImages,
+  EditImage,
+  FinalImages,
+  UploadImage,
+} from "@/store/client/imageStore";
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import React from "react";
 import useAuth from "./user/useAuth";
 
@@ -34,19 +45,31 @@ const useCommunity = (
   },
   isMine = false
 ) => {
-  const { sortingTypeName = "최신순", keyword = "", categoryName = "전체" } = params;
+  const {
+    sortingTypeName = "최신순",
+    keyword = "",
+    categoryName = "전체",
+  } = params;
 
   const { accessToken, isGuestUser } = authStore();
   const communityList = useInfiniteQuery<
     ICommunityList,
     Object,
     InfiniteData<ICommunityList>,
-    [_1: string, _2: { categoryName: string; sortingTypeName: string; keyword: string }, _3: boolean]
+    [
+      _1: string,
+      _2: { categoryName: string; sortingTypeName: string; keyword: string },
+      _3: boolean,
+    ]
   >({
-    queryKey: ["community", { categoryName: categoryName, sortingTypeName, keyword }, isMine],
-    enabled: isGuestUser || !!accessToken,
+    queryKey: [
+      "community",
+      { categoryName: categoryName, sortingTypeName, keyword },
+      isMine,
+    ],
+    enabled: isMine ? !!accessToken : isGuestUser || !!accessToken,
     queryFn: ({ pageParam }) => {
-      if (isMine) {
+      if (isMine && accessToken) {
         return getMyCommunities(accessToken, {
           ...params,
           page: pageParam as number,
@@ -79,8 +102,10 @@ const useCommunity = (
   });
 
   const postImageMutation = useMutation({
-    mutationFn: (data: { uploadImages: FinalImages; communityNumber: number }) =>
-      postImage(data.uploadImages, data.communityNumber, accessToken),
+    mutationFn: (data: {
+      uploadImages: FinalImages;
+      communityNumber: number;
+    }) => postImage(data.uploadImages, data.communityNumber, accessToken),
     onSuccess: () => {
       if (images.data) {
         queryClient.invalidateQueries({
@@ -91,8 +116,10 @@ const useCommunity = (
   });
 
   const updateImageMutation = useMutation({
-    mutationFn: (data: { editImages: EditFinalImages; communityNumber: number }) =>
-      updateImage(data.editImages, data.communityNumber, accessToken),
+    mutationFn: (data: {
+      editImages: EditFinalImages;
+      communityNumber: number;
+    }) => updateImage(data.editImages, data.communityNumber, accessToken),
     onSuccess: () => {
       if (images.data) {
         queryClient.invalidateQueries({
@@ -138,7 +165,8 @@ const useCommunity = (
   };
 
   const removeMutation = useMutation({
-    mutationFn: (data: { communityNumber: number }) => deleteCommunity(data.communityNumber, accessToken),
+    mutationFn: (data: { communityNumber: number }) =>
+      deleteCommunity(data.communityNumber, accessToken),
   });
 
   const remove = (data: { communityNumber: number }) => {
@@ -155,7 +183,8 @@ const useCommunity = (
   };
 
   const likeMutation = useMutation({
-    mutationFn: (data: { communityNumber: number }) => likeCommunity(data.communityNumber, accessToken),
+    mutationFn: (data: { communityNumber: number }) =>
+      likeCommunity(data.communityNumber, accessToken),
   });
 
   const like = (data: { communityNumber: number }) => {
@@ -171,7 +200,8 @@ const useCommunity = (
   };
 
   const unlikeMutation = useMutation({
-    mutationFn: (data: { communityNumber: number }) => unlikeCommunity(data.communityNumber, accessToken),
+    mutationFn: (data: { communityNumber: number }) =>
+      unlikeCommunity(data.communityNumber, accessToken),
   });
 
   const unlike = (data: { communityNumber: number }) => {
