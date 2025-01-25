@@ -7,18 +7,18 @@ const useViewTransition = () => {
 
   const navigateWithTransition = useCallback(
     (to: string) => {
-      if (!document.startViewTransition) {
+      if (!(document as any).startViewTransition) {
         router.push(to);
         return;
       }
 
-      document
+      (document as any)
         .startViewTransition(() => {
           router.push(to);
         })
         .finished.then(() => {
           // 애니메이션 완료 후 추가 처리 가능
-          document.documentElement.style.viewTransitionName = "";
+          (document as any).documentElement.style.viewTransitionName = "";
         });
     },
     [router]
