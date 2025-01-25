@@ -1,26 +1,28 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useCallback } from "react";
 
 const useViewTransition = () => {
   const router = useRouter();
-  const [isPageReady, setIsPageReady] = useState(false);
 
-  useEffect(() => {
-    if (isPageReady && (document as any).startViewTransition) {
-      (document as any).startViewTransition(() => {});
-      setIsPageReady(false);
-    }
-  }, [isPageReady]);
+  const navigateWithTransition = useCallback(
+    (to: string) => {
+      if (!document.startViewTransition) {
+        router.push(to);
+        return;
+      }
 
-  const navigateWithTransition = (to: string) => {
-    router.push(to);
-
-    // 다음 페이지 로딩 완료 시점에 애니메이션 트리거
-    setTimeout(() => {
-      setIsPageReady(true);
-    }, 0);
-  };
+      document
+        .startViewTransition(() => {
+          router.push(to);
+        })
+        .finished.then(() => {
+          // 애니메이션 완료 후 추가 처리 가능
+          document.documentElement.style.viewTransitionName = "";
+        });
+    },
+    [router]
+  );
 
   return navigateWithTransition;
 };
