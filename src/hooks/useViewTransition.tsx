@@ -5,18 +5,20 @@ const useViewTransition = () => {
   const router = useRouter();
 
   const navigateWithTransition = (to: string) => {
-    const startTransition = (callback: () => void) => {
-      if ((document as any).startViewTransition) {
-        (document as any).startViewTransition(callback);
-      } else {
-        callback();
-      }
-    };
+    if (!(document as any).startViewTransition) {
+      // startViewTransition 미지원 브라우저 대응
+      router.push(to);
+      return;
+    }
 
-    startTransition(() => {
-      setTimeout(() => {
-        router.push(to);
-      }, 0); // 브라우저에서 Transition API와 라우팅의 타이밍을 맞추기 위한 지연 처리
+    // startViewTransition 지원 브라우저
+    (document as any).startViewTransition(() => {
+      // 다음 프레임에서 DOM 업데이트 보장
+      return new Promise((resolve) => {
+        requestAnimationFrame(() => {
+          resolve(router.push(to)); // DOM이 안정된 후에 라우팅
+        });
+      });
     });
   };
 
