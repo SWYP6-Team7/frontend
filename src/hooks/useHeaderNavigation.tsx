@@ -3,6 +3,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { userStore } from "@/store/client/userStore";
 import { ReactNode } from "react";
 import { useBackPathStore } from "@/store/client/backPathStore";
+import { useTransitionRouter } from "next-view-transitions";
 
 const ROUTES = {
   REGISTER: "/register",
@@ -59,7 +60,9 @@ const ROUTES = {
 };
 
 export const useHeaderNavigation = () => {
-  const router = useRouter();
+  const originalRouter = useRouter();
+  const router = useTransitionRouter();
+
   const {
     searchTravel,
     setSearchTravel,
@@ -137,7 +140,7 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.VERIFYCODE),
         action: () => {
-          router.push(ROUTES.REGISTER_PROCESS.EMAIL);
+          originalRouter.push(ROUTES.REGISTER_PROCESS.EMAIL);
           resetForm();
         },
       },
@@ -145,7 +148,7 @@ export const useHeaderNavigation = () => {
         condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.NAME),
         action: () => {
           resetName();
-          router.push(ROUTES.REGISTER_PROCESS.PASSWORD);
+          originalRouter.push(ROUTES.REGISTER_PROCESS.PASSWORD);
         },
       },
       {
@@ -153,31 +156,31 @@ export const useHeaderNavigation = () => {
         action: () => {
           if (isGoogleLogin) {
             resetAge();
-            router.push(ROUTES.LOGIN);
+            originalRouter.push(ROUTES.LOGIN);
             setSocialLogin(null, null);
             return;
           }
           if (isKakaoLogin) {
             resetAge();
-            router.push(ROUTES.REGISTER_PROCESS.EMAIL);
+            originalRouter.push(ROUTES.REGISTER_PROCESS.EMAIL);
             return;
           }
           resetAge();
-          router.push(ROUTES.REGISTER_PROCESS.NAME);
+          originalRouter.push(ROUTES.REGISTER_PROCESS.NAME);
         },
       },
       {
         condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.GENDER),
         action: () => {
           resetGender();
-          router.push(ROUTES.REGISTER_PROCESS.AGE);
+          originalRouter.push(ROUTES.REGISTER_PROCESS.AGE);
         },
       },
       {
         condition: () =>
           pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
         action: () => {
-          router.push(ROUTES.REGISTER_PROCESS.AGE);
+          originalRouter.push(ROUTES.REGISTER_PROCESS.AGE);
         },
       },
 
@@ -338,6 +341,7 @@ export const useHeaderNavigation = () => {
   const handleBack = () => {
     const rules = createNavigationRules(pathname);
     const matchedRule = rules.find((rule) => rule.condition());
+    document.documentElement.style.viewTransitionName = "back";
 
     if (matchedRule) {
       matchedRule.action();
