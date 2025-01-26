@@ -16,7 +16,7 @@ import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { formatTime } from "@/utils/time";
 import CustomLink from "./CustomLink";
 import { isGuestUser } from "@/utils/user";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import CheckingModal from "./designSystem/modal/CheckingModal";
 dayjs.extend(customParseFormat);
 
@@ -44,7 +44,7 @@ const SearchResultList = ({
 
       {searchResult.map((page) =>
         page.content.map((content) => (
-          <BoxContainer>
+          <BoxContainer key={content.travelNumber}>
             <CustomLink to={`/trip/detail/${content.travelNumber}`}>
               <HorizonBoxLayout
                 bookmarkNeed={false}

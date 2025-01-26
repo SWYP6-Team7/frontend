@@ -56,7 +56,6 @@ const HorizonBoxLayout = ({
   location = "",
   userName,
   daysAgo,
-  imgSrc = "",
   isBar = false,
   showTag = true,
   bookmarkPosition = "top",
@@ -124,7 +123,7 @@ const HorizonBoxLayout = ({
               }
             />
             {cutTags.map((text: string, idx) => (
-              <BoxLayoutTag text={text} />
+              <BoxLayoutTag key={idx} text={text} />
             ))}
             {tags.length > cutTags.length ? (
               <BoxLayoutTag
@@ -229,39 +228,12 @@ const Location = styled.div`
   gap: 4px;
 `;
 
-const Description = styled.div`
-  font-size: 14px;
-  font-weight: 400;
-
-  color: rgba(132, 132, 132, 1);
-  white-space: nowrap; //텍스트가 한 줄로 유지되도록 설정
-  overflow: hidden;
-  text-overflow: ellipsis; // 텍스트가 잘릴 때 줄임표(...)를 표시
-  margin-bottom: 4px;
-  line-height: 16.71px;
-`;
-
 const Dot = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: ${palette.비강조3};
 `;
 
-const Thumbnail = styled.div<{ src: string }>`
-  margin-right: 12px;
-  width: 100%;
-  max-width: 120px;
-  aspect-ratio: 1/1;
-  display: flex;
-  align-items: center;
-  position: relative;
-
-  border-radius: 20px;
-  background-image: url(${(props) => props.src});
-  background-color: ${(props) =>
-    props.src === "" ? "rgba(217, 217, 217, 1)" : "inherit"};
-  background-size: cover;
-`;
 const RecruitingBox = styled.div`
   display: flex;
   justify-content: center;
