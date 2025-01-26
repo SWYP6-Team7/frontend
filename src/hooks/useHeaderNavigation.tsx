@@ -185,8 +185,7 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.SEARCH.TRAVEL),
         action: () => {
-          router.push(searchTravel);
-          setSearchTravel("/");
+          router.back();
         },
       },
       {
@@ -229,7 +228,7 @@ export const useHeaderNavigation = () => {
       // 여행 상세 파트
       {
         condition: () => pathname.startsWith(ROUTES.TRIP.DETAIL),
-        action: () => router.push(ROUTES.TRIP.LIST),
+        action: () => router.back(),
       },
 
       // 여행 수정 파트
