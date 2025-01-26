@@ -18,14 +18,23 @@ interface CommentFormProps {
   relatedNumber: number;
 }
 
-const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, relatedNumber }: CommentFormProps) => {
-  const { isEdit, edit, parentNumber, commentNumber, setReset, isReply } = commentStore();
+const CommentForm = ({
+  paddingBottom = 40,
+  paddingTop = 16,
+  relatedType,
+  relatedNumber,
+}: CommentFormProps) => {
+  const { isEdit, edit, parentNumber, commentNumber, setReset, isReply } =
+    commentStore();
   const router = useRouter();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [focused, setFocused] = useState(false);
   const [isToastShow, setIsToastShow] = useState(false);
   const [value, setValue] = useState("");
-  const { post, postMutation, updateMutation, update } = useComment(relatedType, relatedNumber);
+  const { post, postMutation, updateMutation, update } = useComment(
+    relatedType,
+    relatedNumber
+  );
   const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (inputRef.current) {
       inputRef.current.style.height = "32px";
@@ -76,22 +85,43 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
   };
 
   return isGuestUser() ? (
-    <Container paddingBottom={paddingBottom} paddingTop={paddingTop} onClick={() => router.push("/login")}>
-      <CommentInput setReset={setReset} placeholder="로그인 후 댓글을 달아보세요." readOnly />
+    <Container
+      paddingBottom={paddingBottom}
+      paddingTop={paddingTop}
+      onClick={() => router.push("/login")}
+    >
+      <CommentInput
+        setReset={setReset}
+        placeholder="로그인 후 댓글을 달아보세요."
+        readOnly
+      />
     </Container>
   ) : (
-    <Container onSubmit={submitComment} paddingBottom={paddingBottom} paddingTop={paddingTop}>
+    <Container
+      onSubmit={submitComment}
+      paddingBottom={paddingBottom}
+      paddingTop={paddingTop}
+    >
       <CommentInput
         setReset={setReset}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         ref={inputRef}
-        placeholder={isGuestUser() ? "댓글을 입력해주세요." : "로그인 후 댓글을 달아보세요."}
+        placeholder={
+          isGuestUser()
+            ? "로그인 후 댓글을 달아보세요."
+            : "댓글을 입력해주세요."
+        }
         onChange={handleInput}
         value={value}
       />
 
-      <ResultToast bottom="80px" isShow={isToastShow} setIsShow={setIsToastShow} text="댓글이 수정되었어요." />
+      <ResultToast
+        bottom="80px"
+        isShow={isToastShow}
+        setIsShow={setIsToastShow}
+        text="댓글이 수정되었어요."
+      />
     </Container>
   );
 };
