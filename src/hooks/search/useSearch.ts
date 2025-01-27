@@ -8,6 +8,7 @@ import {
   QueryClient,
   useInfiniteQuery,
 } from "@tanstack/react-query";
+import { useMemo } from "react";
 
 interface UseSearchProps {
   keyword: string;
@@ -35,6 +36,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     person: people,
     period,
   };
+
+  const memoizedFilters = useMemo(() => filters, [JSON.stringify(filters)]);
   const {
     data,
     isLoading,
@@ -47,9 +50,9 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     ISearchData,
     Object,
     InfiniteData<ISearchData>,
-    [_1: string, _2: string, filters: Filters]
+    [_1: string, _2: string, filters: string]
   >({
-    queryKey: ["search", keyword, { ...filters }],
+    queryKey: ["search", keyword, JSON.stringify(filters)],
     initialPageParam: 0,
 
     getNextPageParam: (lastPage) => {
@@ -71,7 +74,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const handleRefetchWithPage = async (page: number) => {
     console.log(page, "page");
     const newData = await queryClient.fetchInfiniteQuery({
-      queryKey: ["search", keyword, { ...filters }],
+      queryKey: ["search", keyword, JSON.stringify(filters)],
 
       queryFn: ({ pageParam }: { pageParam?: number }) => {
         const param = page; // pageParam 기본값 설정
@@ -79,8 +82,12 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       },
       initialPageParam: 0,
     });
+    refetch();
     console.log(newData, "newData");
-    queryClient.setQueryData(["search", keyword, { ...filters }], newData);
+    queryClient.setQueryData(
+      ["search", keyword, JSON.stringify(filters)],
+      newData
+    );
   };
   return {
     data: keyword === "" ? undefined : data,
