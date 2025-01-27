@@ -23,7 +23,6 @@ import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 import NewIcon from "@/components/icons/NewIcon";
 import NoticeModal from "@/components/designSystem/modal/NoticeModal";
 import { editStore } from "@/store/client/editStore";
-import Opengraph from "@/components/Opengraph";
 import { isGuestUser } from "@/utils/user";
 import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import ApplyListButton from "@/components/designSystem/Buttons/ApplyListButton";
