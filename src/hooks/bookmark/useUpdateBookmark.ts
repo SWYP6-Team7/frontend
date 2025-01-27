@@ -16,8 +16,9 @@ export function useUpdateBookmark(
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
       }),
-        queryClient.refetchQueries({
+        queryClient.invalidateQueries({
           queryKey: ["search"],
+          exact: false,
         }),
         queryClient.invalidateQueries({
           queryKey: ["myTrips"],
@@ -53,8 +54,9 @@ export function useUpdateBookmark(
           queryKey: ["bookmarks"],
         });
       }, 1500);
-      queryClient.refetchQueries({
+      queryClient.invalidateQueries({
         queryKey: ["search"],
+        exact: false,
       }),
         queryClient.invalidateQueries({
           queryKey: ["myTrips"],
