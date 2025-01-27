@@ -23,7 +23,6 @@ export function useUpdateBookmark(
             if (query.queryKey[0] === "search") {
               queryClient.invalidateQueries({
                 queryKey: query.queryKey,
-                exact: false,
               });
             }
           });
@@ -66,7 +65,6 @@ export function useUpdateBookmark(
           if (query.queryKey[0] === "search") {
             queryClient.invalidateQueries({
               queryKey: query.queryKey,
-              exact: false,
             });
           }
         });
