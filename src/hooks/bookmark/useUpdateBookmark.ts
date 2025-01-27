@@ -15,23 +15,24 @@ export function useUpdateBookmark(
     onSuccess: async () => {
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
-      }),
-        queryClient
-          .getQueryCache()
-          .findAll()
-          .forEach((query) => {
-            if (query.queryKey[0] === "search") {
-              queryClient.invalidateQueries({
-                queryKey: query.queryKey,
-              });
-            }
-          });
+      });
+      console.log(queryClient.getQueryCache().findAll());
+      queryClient
+        .getQueryCache()
+        .findAll()
+        .forEach((query) => {
+          if (query.queryKey[0] === "search") {
+            queryClient.invalidateQueries({
+              queryKey: query.queryKey,
+            });
+          }
+        });
       queryClient.invalidateQueries({
         queryKey: ["myTrips"],
-      }),
-        queryClient.invalidateQueries({
-          queryKey: ["myApplyTrips"],
-        });
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["myApplyTrips"],
+      });
       queryClient.invalidateQueries({
         queryKey: ["tripRecommendation"],
       });
@@ -58,6 +59,7 @@ export function useUpdateBookmark(
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
       });
+      console.log(queryClient.getQueryCache().findAll());
       queryClient
         .getQueryCache()
         .findAll()
@@ -70,10 +72,10 @@ export function useUpdateBookmark(
         });
       queryClient.invalidateQueries({
         queryKey: ["myTrips"],
-      }),
-        queryClient.invalidateQueries({
-          queryKey: ["myApplyTrips"],
-        });
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["myApplyTrips"],
+      });
       queryClient.invalidateQueries({
         queryKey: ["tripRecommendation"],
       });
