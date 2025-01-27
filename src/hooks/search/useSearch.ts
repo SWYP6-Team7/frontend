@@ -82,7 +82,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       },
       initialPageParam: 0,
     });
-    refetch();
+
     console.log(newData, "newData");
     queryClient.setQueryData(
       ["search", keyword, JSON.stringify(filters)],
