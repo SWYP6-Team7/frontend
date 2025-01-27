@@ -400,8 +400,8 @@ export default function TripDetail() {
               daysLeft={
                 dueDate ? daysLeft(`${year}-${month}-${day}`) : undefined
               }
-              isClose={!Boolean(`${year}-${month}-${day}`)}
-              isDueDate={Boolean(`${year}-${month}-${day}`)}
+              isClose={!Boolean(daysLeft(`${year}-${month}-${day}`) > 0)}
+              isDueDate={Boolean(daysLeft(`${year}-${month}-${day}`) > 0)}
             />
           </div>
         </DueDateWrapper>
