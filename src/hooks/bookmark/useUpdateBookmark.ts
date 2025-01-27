@@ -1,82 +1,83 @@
-'use client'
-import { deleteBookmark, postBookmark } from '@/api/bookmark'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+"use client";
+import { deleteBookmark, postBookmark } from "@/api/bookmark";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useUpdateBookmark(
   accessToken: string,
   userId: number,
   travelNumber: number
 ) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const { mutateAsync: postBookmarkMutation } = useMutation({
     mutationFn: () => {
-      return postBookmark(accessToken, userId, travelNumber)
+      return postBookmark(accessToken, userId, travelNumber);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['bookmarks']
+        queryKey: ["bookmarks"],
       }),
-        queryClient.invalidateQueries({
-          queryKey: ['search']
+        queryClient.refetchQueries({
+          queryKey: ["search"],
+          exact: false,
         }),
         queryClient.invalidateQueries({
-          queryKey: ['myTrips']
+          queryKey: ["myTrips"],
         }),
         queryClient.invalidateQueries({
-          queryKey: ['myApplyTrips']
-        })
+          queryKey: ["myApplyTrips"],
+        });
       queryClient.invalidateQueries({
-        queryKey: ['tripRecommendation']
-      })
+        queryKey: ["tripRecommendation"],
+      });
       queryClient.invalidateQueries({
-        queryKey: ['availableTrips']
-      })
+        queryKey: ["availableTrips"],
+      });
       queryClient.invalidateQueries({
-        queryKey: ['tripDetail', travelNumber]
-      })
+        queryKey: ["tripDetail", travelNumber],
+      });
       queryClient.invalidateQueries({
-        queryKey: ['myRequestedTrips']
-      })
-    }
-  })
+        queryKey: ["myRequestedTrips"],
+      });
+    },
+  });
 
   const {
     mutateAsync: deleteBookmarkMutation,
-    isSuccess: isBookmarkDeleteSuccess
+    isSuccess: isBookmarkDeleteSuccess,
   } = useMutation({
     mutationFn: () => {
-      return deleteBookmark(accessToken, travelNumber)
+      return deleteBookmark(accessToken, travelNumber);
     },
     onSuccess: () => {
       setTimeout(() => {
         queryClient.invalidateQueries({
-          queryKey: ['bookmarks']
-        })
-      }, 1500)
+          queryKey: ["bookmarks"],
+        });
+      }, 1500);
       queryClient.invalidateQueries({
-        queryKey: ['myTrips']
+        queryKey: ["myTrips"],
       }),
         queryClient.invalidateQueries({
-          queryKey: ['myApplyTrips']
-        })
+          queryKey: ["myApplyTrips"],
+        });
       queryClient.invalidateQueries({
-        queryKey: ['tripRecommendation']
-      })
+        queryKey: ["tripRecommendation"],
+      });
       queryClient.invalidateQueries({
-        queryKey: ['availableTrips']
-      })
+        queryKey: ["availableTrips"],
+      });
       queryClient.invalidateQueries({
-        queryKey: ['tripDetail', travelNumber]
-      })
+        queryKey: ["tripDetail", travelNumber],
+      });
       queryClient.invalidateQueries({
-        queryKey: ['myRequestedTrips']
-      })
-    }
-  })
+        queryKey: ["myRequestedTrips"],
+      });
+    },
+  });
 
   return {
     postBookmarkMutation,
     deleteBookmarkMutation,
-    isBookmarkDeleteSuccess
-  }
+    isBookmarkDeleteSuccess,
+  };
 }
