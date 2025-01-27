@@ -1,7 +1,7 @@
 "use client";
 import { ISearchData } from "@/model/search";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Spacing from "./Spacing";
 import HorizonBoxLayout from "./HorizonBoxLayout";
 import dayjs from "dayjs";
@@ -16,8 +16,9 @@ import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { formatTime } from "@/utils/time";
 import CustomLink from "./CustomLink";
 import { isGuestUser } from "@/utils/user";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import CheckingModal from "./designSystem/modal/CheckingModal";
+import useSearch from "@/hooks/search/useSearch";
 dayjs.extend(customParseFormat);
 
 const LIST = ["추천순", "최신순", "등록일순"];
@@ -82,11 +83,22 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
-    accessToken!,
-    userId!,
-    travelNumber
-  );
+  const {
+    postBookmarkMutation,
+    deleteBookmarkMutation,
+    isBookmarkDeleteSuccess,
+    isBookmarkPostSuccess,
+  } = useUpdateBookmark(accessToken!, userId!, travelNumber);
+  const searchParams = useSearchParams();
+  const keyword = searchParams?.get("keyword") ?? "";
+  const { handleRefetchWithPage } = useSearch({ keyword });
+  useEffect(() => {
+    if (isBookmarkDeleteSuccess) {
+      handleRefetchWithPage();
+    } else if (isBookmarkPostSuccess) {
+      handleRefetchWithPage();
+    }
+  }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess]);
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (isGuestUser()) {

@@ -8,7 +8,10 @@ export function useUpdateBookmark(
   travelNumber: number
 ) {
   const queryClient = useQueryClient();
-  const { mutateAsync: postBookmarkMutation } = useMutation({
+  const {
+    mutateAsync: postBookmarkMutation,
+    isSuccess: isBookmarkPostSuccess,
+  } = useMutation({
     mutationFn: () => {
       return postBookmark(accessToken, userId, travelNumber);
     },
@@ -16,17 +19,7 @@ export function useUpdateBookmark(
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
       });
-      console.log(queryClient.getQueryCache().findAll());
-      queryClient
-        .getQueryCache()
-        .findAll()
-        .forEach((query) => {
-          if (query.queryKey[0] === "search") {
-            queryClient.invalidateQueries({
-              queryKey: query.queryKey,
-            });
-          }
-        });
+
       queryClient.invalidateQueries({
         queryKey: ["myTrips"],
       });
@@ -95,5 +88,6 @@ export function useUpdateBookmark(
     postBookmarkMutation,
     deleteBookmarkMutation,
     isBookmarkDeleteSuccess,
+    isBookmarkPostSuccess,
   };
 }

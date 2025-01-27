@@ -3,7 +3,11 @@ import { getSearch } from "@/api/search";
 import { ISearchData } from "@/model/search";
 import { authStore } from "@/store/client/authStore";
 import { searchStore } from "@/store/client/searchStore";
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  QueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 
 interface UseSearchProps {
   keyword: string;
@@ -60,15 +64,30 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
         return lastPage?.page?.number + 1;
       }
     },
+
     queryFn: ({ pageParam }) =>
       getSearch(pageParam as number, keyword, { ...filters }, accessToken),
     enabled: Boolean(keyword) && (isGuestUser || !!accessToken),
   });
+  const queryClient = new QueryClient();
+  const handleRefetchWithPage = async () => {
+    const lastPageParam =
+      data?.pages?.[data.pages.length - 1]?.page?.number ?? 0; // 마지막 페이지 번호 가져오기
 
+    await queryClient.fetchInfiniteQuery({
+      queryKey: ["search", keyword, { ...filters }],
+      queryFn: ({ pageParam }: { pageParam?: number }) => {
+        const param = pageParam ?? lastPageParam; // pageParam 기본값 설정
+        return getSearch(param, keyword, { ...filters }, accessToken);
+      },
+      initialPageParam: 0,
+    });
+  };
   return {
     data: keyword === "" ? undefined : data,
     isLoading,
     error,
+    handleRefetchWithPage,
     fetchNextPage,
     refetch,
     isFetching,
