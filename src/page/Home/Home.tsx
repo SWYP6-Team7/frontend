@@ -91,6 +91,7 @@ const Home = () => {
 
           <InputField
             isHome={true}
+            readOnly
             placeholder="어디로 여행을 떠날까요? ☁️ "
             onFocus={onFocusHandler}
             isRemove={false}
