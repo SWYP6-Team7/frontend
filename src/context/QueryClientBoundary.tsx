@@ -12,13 +12,18 @@ import {
   isServer,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-export default function QueryClientBoundary({ children }: React.PropsWithChildren) {
+export default function QueryClientBoundary({
+  children,
+}: React.PropsWithChildren) {
   const { updateError, setIsMutationError } = errorStore();
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
-      onError: (error: Error, query: Query<unknown, unknown, unknown, readonly unknown[]>) => {
+      onError: (
+        error: Error,
+        query: Query<unknown, unknown, unknown, readonly unknown[]>
+      ) => {
         const queryKey = query?.queryKey;
-        if (queryKey?.[0] === "profileImg" || queryKey?.[1] === "relation") {
+        if (queryKey?.[0] === "profileImg" || queryKey?.[0] === "relation") {
           console.log("error handling", query);
         } else {
           updateError(error);
@@ -55,10 +60,14 @@ export default function QueryClientBoundary({ children }: React.PropsWithChildre
       },
       dehydrate: {
         // include pending queries in dehydration
-        shouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === "pending",
+        shouldDehydrateQuery: (query) =>
+          defaultShouldDehydrateQuery(query) ||
+          query.state.status === "pending",
       },
     },
   }); // QueryClient 상태 초기화
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 }

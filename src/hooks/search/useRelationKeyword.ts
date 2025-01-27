@@ -8,7 +8,7 @@ const useRelationKeyword = (keyword: string) => {
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const { accessToken, isGuestUser } = authStore();
   const { data, isLoading, error } = useQuery({
-    queryKey: ["search", "relation", debouncedKeyword],
+    queryKey: ["relation", debouncedKeyword],
 
     queryFn: () =>
       getSearchRelation(debouncedKeyword.replace(" ", ""), accessToken),
