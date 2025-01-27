@@ -12,17 +12,19 @@ export function useUpdateBookmark(
     mutationFn: () => {
       return postBookmark(accessToken, userId, travelNumber);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
       }),
-        queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: ["search"],
           exact: false,
-        }),
-        queryClient.invalidateQueries({
-          queryKey: ["myTrips"],
-        }),
+          refetchType: "all",
+        });
+
+      queryClient.invalidateQueries({
+        queryKey: ["myTrips"],
+      }),
         queryClient.invalidateQueries({
           queryKey: ["myApplyTrips"],
         });
@@ -48,19 +50,20 @@ export function useUpdateBookmark(
     mutationFn: () => {
       return deleteBookmark(accessToken, travelNumber);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       setTimeout(() => {
         queryClient.invalidateQueries({
           queryKey: ["bookmarks"],
         });
       }, 1500);
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ["search"],
         exact: false,
+        refetchType: "all",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["myTrips"],
       }),
-        queryClient.invalidateQueries({
-          queryKey: ["myTrips"],
-        }),
         queryClient.invalidateQueries({
           queryKey: ["myApplyTrips"],
         });
