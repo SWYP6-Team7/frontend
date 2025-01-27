@@ -67,6 +67,7 @@ const SearchResultList = ({
             <BookmarkButton
               travelNumber={content.travelNumber}
               bookmarked={content.bookmarked}
+              page={page.page.number ?? 0}
             />
           </BoxContainer>
         ))
@@ -78,8 +79,13 @@ const SearchResultList = ({
 interface BookmarkButtonProps {
   bookmarked: boolean;
   travelNumber: number;
+  page: number;
 }
-const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
+const BookmarkButton = ({
+  bookmarked,
+  travelNumber,
+  page,
+}: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
@@ -94,9 +100,9 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   const { handleRefetchWithPage } = useSearch({ keyword });
   useEffect(() => {
     if (isBookmarkDeleteSuccess) {
-      handleRefetchWithPage();
+      handleRefetchWithPage(page);
     } else if (isBookmarkPostSuccess) {
-      handleRefetchWithPage();
+      handleRefetchWithPage(page);
     }
   }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess]);
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
