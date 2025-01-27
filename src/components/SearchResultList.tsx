@@ -29,7 +29,7 @@ const SearchResultList = ({
   searchResult: ISearchData[];
 }) => {
   const { sort, setSort } = searchStore();
-
+  console.log("searchList", searchResult);
   const clickSort = (value: string) => {
     setSort(value as "추천순" | "최신순" | "등록일순");
   };
