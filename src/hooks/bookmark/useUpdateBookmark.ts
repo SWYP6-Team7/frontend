@@ -18,7 +18,6 @@ export function useUpdateBookmark(
       }),
         queryClient.refetchQueries({
           queryKey: ["search"],
-          exact: false,
         }),
         queryClient.invalidateQueries({
           queryKey: ["myTrips"],

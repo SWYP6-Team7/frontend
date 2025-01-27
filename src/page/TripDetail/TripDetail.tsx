@@ -100,7 +100,7 @@ export default function TripDetail() {
   if (isNaN(parseInt(travelNumber))) {
     router.replace("/");
   }
-  console.log("123", travelNumber);
+  console.log("123", dueDate);
   const { cancel, cancelMutation } = useEnrollment(parseInt(travelNumber));
   const { tripEnrollmentCount } = useTripDetail(parseInt(travelNumber));
   const nowEnrollmentCount = tripEnrollmentCount.data?.data;
@@ -177,7 +177,6 @@ export default function TripDetail() {
       }
     }
   };
-
   useEffect(() => {
     if (cancelMutation.isSuccess) {
       setIsCancelToast(true);
