@@ -258,7 +258,8 @@ export const useHeaderNavigation = () => {
         action: () => {
           const parts = pathname.split("/");
           const id = parts[parts.length - 1];
-          router.push(`/trip/detail/${id}`);
+          //router.push(`/trip/detail/${id}`);
+          router.back();
         },
       },
       // 참가 신청 목록
