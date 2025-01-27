@@ -9,8 +9,12 @@ const useRelationKeyword = (keyword: string) => {
   const { accessToken, isGuestUser } = authStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["search", "relation", debouncedKeyword],
-    queryFn: () => getSearchRelation(debouncedKeyword.replace(" ", ""), accessToken),
-    enabled: debouncedKeyword.replace(" ", "") !== "" && (isGuestUser || !!accessToken),
+    staleTime: 0,
+    queryFn: () =>
+      getSearchRelation(debouncedKeyword.replace(" ", ""), accessToken),
+    enabled:
+      debouncedKeyword.replace(" ", "") !== "" &&
+      (isGuestUser || !!accessToken),
   });
 
   useEffect(() => {
@@ -20,9 +24,12 @@ const useRelationKeyword = (keyword: string) => {
     const handler = setTimeout(() => {
       if (keyword.length > 0) {
         if (
-          (keyword.charCodeAt(keyword.length - 1) >= 0xac00 && keyword.charCodeAt(keyword.length - 1) <= 0xd7a3) ||
-          (keyword.charCodeAt(keyword.length - 1) >= 65 && keyword.charCodeAt(keyword.length - 1) <= 90) ||
-          (keyword.charCodeAt(keyword.length - 1) >= 97 && keyword.charCodeAt(keyword.length - 1) <= 122)
+          (keyword.charCodeAt(keyword.length - 1) >= 0xac00 &&
+            keyword.charCodeAt(keyword.length - 1) <= 0xd7a3) ||
+          (keyword.charCodeAt(keyword.length - 1) >= 65 &&
+            keyword.charCodeAt(keyword.length - 1) <= 90) ||
+          (keyword.charCodeAt(keyword.length - 1) >= 97 &&
+            keyword.charCodeAt(keyword.length - 1) <= 122)
         ) {
           setDebouncedKeyword(keyword);
         }
