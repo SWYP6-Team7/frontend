@@ -70,18 +70,11 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     enabled: Boolean(keyword) && (isGuestUser || !!accessToken),
   });
   const queryClient = new QueryClient();
-  const handleRefetchWithPage = async () => {
+  const handleRefetchWithPage = async (page) => {
     const lastPageParam =
       data?.pages?.[data.pages.length - 1]?.page?.number ?? 0; // 마지막 페이지 번호 가져오기
-
-    await queryClient.fetchInfiniteQuery({
-      queryKey: ["search", keyword, { ...filters }],
-      queryFn: ({ pageParam }: { pageParam?: number }) => {
-        const param = pageParam ?? lastPageParam; // pageParam 기본값 설정
-        return getSearch(param, keyword, { ...filters }, accessToken);
-      },
-      initialPageParam: 0,
-    });
+    console.log("lastPage", lastPageParam);
+    refetch();
   };
   return {
     data: keyword === "" ? undefined : data,
