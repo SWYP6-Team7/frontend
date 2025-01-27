@@ -100,7 +100,9 @@ export default function TripDetail() {
   if (isNaN(parseInt(travelNumber))) {
     router.replace("/");
   }
-  console.log("123", dueDate);
+  const isClosed =
+    !Boolean(daysLeft(`${dueDate.year}-${dueDate.month}-${dueDate.day}`) > 0) ||
+    maxPerson === nowPerson;
   const { cancel, cancelMutation } = useEnrollment(parseInt(travelNumber));
   const { tripEnrollmentCount } = useTripDetail(parseInt(travelNumber));
   const nowEnrollmentCount = tripEnrollmentCount.data?.data;
@@ -444,11 +446,13 @@ export default function TripDetail() {
             disabled={
               (hostUserCheck && nowEnrollmentCount === 0) ||
               !verifyGenderType(genderType, gender) ||
-              isAccepted
+              isAccepted ||
+              isClosed
             }
             addStyle={{
-              backgroundColor:
-                !verifyGenderType(genderType, gender) || isAccepted
+              backgroundColor: isClosed
+                ? palette.비강조3
+                : !verifyGenderType(genderType, gender) || isAccepted
                   ? palette.비강조3
                   : hostUserCheck
                     ? nowEnrollmentCount > 0
@@ -457,15 +461,17 @@ export default function TripDetail() {
                     : alreadyApplied
                       ? palette.비강조3
                       : palette.keycolor,
-              color: !verifyGenderType(genderType, gender)
-                ? palette.비강조
-                : hostUserCheck
-                  ? nowEnrollmentCount > 0
-                    ? palette.비강조4
-                    : palette.비강조
-                  : alreadyApplied
-                    ? palette.비강조
-                    : palette.비강조4,
+              color: isClosed
+                ? palette.비강조4
+                : !verifyGenderType(genderType, gender)
+                  ? palette.비강조
+                  : hostUserCheck
+                    ? nowEnrollmentCount > 0
+                      ? palette.비강조4
+                      : palette.비강조
+                    : alreadyApplied
+                      ? palette.비강조
+                      : palette.비강조4,
             }}
             text={
               hostUserCheck
