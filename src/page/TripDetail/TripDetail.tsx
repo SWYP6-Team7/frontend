@@ -398,10 +398,10 @@ export default function TripDetail() {
               backgroundColor={palette.keycolorBG}
               color={palette.keycolor}
               daysLeft={
-                dueDate ? daysLeft(dueDate as unknown as string) : undefined
+                dueDate ? daysLeft(`${year}-${month}-${day}`) : undefined
               }
-              isClose={!Boolean(dueDate)}
-              isDueDate={Boolean(dueDate)}
+              isClose={!Boolean(`${year}-${month}-${day}`)}
+              isDueDate={Boolean(`${year}-${month}-${day}`)}
             />
           </div>
         </DueDateWrapper>
