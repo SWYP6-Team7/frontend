@@ -79,7 +79,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       { ...filters },
       accessToken
     );
-
+    console.log(newPageData, "page");
     queryClient.setQueryData(
       ["search", keyword, JSON.stringify(filters)],
       (oldData: InfiniteData<ISearchData> | undefined) => ({
