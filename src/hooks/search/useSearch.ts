@@ -29,6 +29,7 @@ export interface Filters {
 const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const { style, place, gender, people, period, sort } = searchStore();
   const { accessToken, isGuestUser } = authStore();
+  const queryClient = useQueryClient();
   const filters = {
     tags: style,
     sorting: sort,
@@ -72,7 +73,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     enabled: Boolean(keyword) && (isGuestUser || !!accessToken),
   });
   const handleRefetchWithPage = async (page: number) => {
-    const queryClient = useQueryClient(); // 컴포넌트 최상단으로 이동
     const newPageData = await getSearch(
       page,
       keyword,
@@ -100,6 +100,9 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
         };
       }
     );
+    await queryClient.invalidateQueries({
+      queryKey: ["search", keyword, JSON.stringify(filters)],
+    });
   };
   return {
     data: keyword === "" ? undefined : data,
