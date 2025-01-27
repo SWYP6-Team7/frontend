@@ -188,7 +188,7 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.SEARCH.TRAVEL),
         action: () => {
-          router.back();
+          router.push(searchTravel);
         },
       },
       {
