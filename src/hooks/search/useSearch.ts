@@ -66,10 +66,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     queryFn: ({ pageParam }) =>
       getSearch(pageParam as number, keyword, { ...filters }, accessToken),
     enabled: Boolean(keyword) && (isGuestUser || !!accessToken),
-    refetchOnWindowFocus: false,
-    refetchOnMount: true, // 컴포넌트가 마운트될 때 항상 refetch
-    refetchOnReconnect: true,
-    staleTime: 0, // 데이터를 항상 최신 상태로 유지
   });
   const queryClient = new QueryClient();
   const handleRefetchWithPage = async (page: number) => {
@@ -83,6 +79,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       },
       initialPageParam: 0,
     });
+    console.log(newData, "newData");
     queryClient.setQueryData(["search", keyword, { ...filters }], newData);
   };
   return {
