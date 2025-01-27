@@ -27,7 +27,6 @@ export interface Filters {
 const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const { style, place, gender, people, period, sort } = searchStore();
   const { accessToken, isGuestUser } = authStore();
-  console.log("access2", accessToken);
   const filters = {
     tags: style,
     sorting: sort,
