@@ -71,21 +71,34 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       getSearch(pageParam as number, keyword, { ...filters }, accessToken),
     enabled: Boolean(keyword) && (isGuestUser || !!accessToken),
   });
-  const queryClient = useQueryClient();
   const handleRefetchWithPage = async (page: number) => {
+    const queryClient = useQueryClient(); // 컴포넌트 최상단으로 이동
     const newPageData = await getSearch(
       page,
       keyword,
       { ...filters },
       accessToken
     );
-    console.log(newPageData, "page");
-    queryClient.setQueryData(
+
+    queryClient.setQueryData<InfiniteData<ISearchData>>(
       ["search", keyword, JSON.stringify(filters)],
-      (oldData: InfiniteData<ISearchData> | undefined) => ({
-        pages: [newPageData],
-        pageParams: [page],
-      })
+      (oldData) => {
+        if (!oldData) {
+          return {
+            pages: [newPageData],
+            pageParams: [0],
+          };
+        }
+
+        // 기존 데이터를 유지하면서 특정 페이지만 업데이트
+        const newPages = [...oldData.pages];
+        newPages[page] = newPageData;
+
+        return {
+          pages: newPages,
+          pageParams: oldData.pageParams,
+        };
+      }
     );
   };
   return {
