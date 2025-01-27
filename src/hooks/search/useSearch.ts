@@ -74,7 +74,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const queryClient = new QueryClient();
   const handleRefetchWithPage = async (page: number) => {
     console.log(page, "page");
-    await queryClient.fetchInfiniteQuery({
+    const newData = await queryClient.fetchInfiniteQuery({
       queryKey: ["search", keyword, { ...filters }],
 
       queryFn: ({ pageParam }: { pageParam?: number }) => {
@@ -83,6 +83,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       },
       initialPageParam: 0,
     });
+    queryClient.setQueryData(["search", keyword, { ...filters }], newData);
   };
   return {
     data: keyword === "" ? undefined : data,
