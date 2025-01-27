@@ -16,7 +16,7 @@ export function useUpdateBookmark(
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
       }),
-        await queryClient.invalidateQueries({
+        await queryClient.refetchQueries({
           queryKey: ["search"],
           exact: false,
           refetchType: "all",
@@ -56,7 +56,8 @@ export function useUpdateBookmark(
           queryKey: ["bookmarks"],
         });
       }, 1500);
-      await queryClient.invalidateQueries({
+
+      await queryClient.refetchQueries({
         queryKey: ["search"],
         exact: false,
         refetchType: "all",
