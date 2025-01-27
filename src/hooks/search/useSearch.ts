@@ -49,6 +49,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     queryKey: ["search", keyword, { ...filters }],
     initialPageParam: 0,
     staleTime: 0,
+    refetchOnMount: true,
     getNextPageParam: (lastPage) => {
       if (
         lastPage?.page?.number + 1 === lastPage.page?.totalPages ||

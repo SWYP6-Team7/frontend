@@ -19,7 +19,6 @@ export function useUpdateBookmark(
         await queryClient.refetchQueries({
           queryKey: ["search"],
           exact: false,
-          refetchType: "all",
         });
 
       queryClient.invalidateQueries({
@@ -51,16 +50,12 @@ export function useUpdateBookmark(
       return deleteBookmark(accessToken, travelNumber);
     },
     onSuccess: async () => {
-      setTimeout(() => {
-        queryClient.invalidateQueries({
-          queryKey: ["bookmarks"],
-        });
-      }, 1500);
-
+      queryClient.invalidateQueries({
+        queryKey: ["bookmarks"],
+      });
       await queryClient.refetchQueries({
         queryKey: ["search"],
         exact: false,
-        refetchType: "all",
       });
       queryClient.invalidateQueries({
         queryKey: ["myTrips"],
