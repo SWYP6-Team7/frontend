@@ -9,7 +9,7 @@ const useRelationKeyword = (keyword: string) => {
   const { accessToken, isGuestUser } = authStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["search", "relation", debouncedKeyword],
-    staleTime: 0,
+
     queryFn: () =>
       getSearchRelation(debouncedKeyword.replace(" ", ""), accessToken),
     enabled:
