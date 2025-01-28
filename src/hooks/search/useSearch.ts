@@ -70,7 +70,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
 
     queryFn: ({ pageParam }) =>
       getSearch(pageParam as number, keyword, { ...filters }, accessToken),
-    enabled: Boolean(keyword) && (isGuestUser || !!accessToken),
+    enabled: isGuestUser || !!accessToken,
+    retry: Boolean(keyword),
   });
   return {
     data: keyword === "" ? undefined : data,
