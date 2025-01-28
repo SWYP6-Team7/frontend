@@ -57,16 +57,12 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     initialPageParam: 0,
 
     getNextPageParam: (lastPage) => {
-      if (
-        lastPage?.page?.number + 1 === lastPage.page?.totalPages ||
-        lastPage.page?.totalPages === 0
-      ) {
+      if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
         return undefined;
       } else {
         return lastPage?.page?.number + 1;
       }
     },
-
     queryFn: async ({ pageParam }) => {
       const result = await getSearch(
         pageParam as number,
@@ -74,13 +70,10 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
         { ...filters },
         accessToken
       );
-      console.log("result", result);
+
       return result;
     },
-    select: (data) => {
-      console.log("selected data:", data); // data 구조 확인
-      return data;
-    },
+
     enabled: isGuestUser || !!accessToken,
   });
   return {
