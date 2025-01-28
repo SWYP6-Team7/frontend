@@ -98,7 +98,10 @@ const SearchTravel = () => {
           {isLoading && <div>검색 중...</div>}
           {!isLoading && data && (
             <>
-              <SearchResultList searchResult={data.pages} />
+              <SearchResultList
+                key={JSON.stringify(data)}
+                searchResult={data.pages}
+              />
               <div ref={ref} style={{ height: 20 }} />
             </>
           )}
