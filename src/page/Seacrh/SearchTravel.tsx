@@ -41,6 +41,12 @@ const SearchTravel = () => {
   }, [bookmarked]);
 
   useEffect(() => {
+    if (accessToken) {
+      refetch();
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
     console.log("data updated:", data);
   }, [data]);
   useInfiniteScroll(() => {
