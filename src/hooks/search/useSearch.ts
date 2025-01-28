@@ -29,7 +29,7 @@ export interface Filters {
 const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const { style, place, gender, people, period, sort } = searchStore();
   const { accessToken, isGuestUser } = authStore();
-  console.log("keyword", keyword);
+  const queryClient = useQueryClient();
   const filters = {
     tags: style,
     sorting: sort,
@@ -39,6 +39,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     period,
   };
 
+  const memoizedFilters = useMemo(() => filters, [JSON.stringify(filters)]);
   const {
     data,
     isLoading,
@@ -70,13 +71,18 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
 
     queryFn: ({ pageParam }) =>
       getSearch(pageParam as number, keyword, { ...filters }, accessToken),
-    enabled: isGuestUser || !!accessToken,
-    retry: Boolean(keyword),
+    enabled: Boolean(keyword) && (isGuestUser || !!accessToken),
   });
+  const handleRefetchWithPage = async (page: number) => {
+    await queryClient.refetchQueries({
+      queryKey: ["search"],
+    });
+  };
   return {
     data: keyword === "" ? undefined : data,
     isLoading,
     error,
+    handleRefetchWithPage,
     fetchNextPage,
     refetch,
     isFetching,
