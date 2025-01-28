@@ -102,7 +102,7 @@ const BookmarkButton = ({
   } = useUpdateBookmark(accessToken!, userId!, travelNumber);
   const searchParams = useSearchParams();
   const keyword = searchParams?.get("keyword") ?? "";
-  const { refetch } = useSearch({ keyword });
+  const { refetch, data } = useSearch({ keyword });
   useEffect(() => {
     if (isBookmarkDeleteSuccess || isBookmarkPostSuccess) {
       refetch();
@@ -121,7 +121,7 @@ const BookmarkButton = ({
       postBookmarkMutation();
     }
   };
-
+  console.log("data12", data);
   return (
     <>
       <CheckingModal
