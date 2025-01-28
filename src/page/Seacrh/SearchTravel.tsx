@@ -23,13 +23,20 @@ const SearchTravel = () => {
   const keywordParams = searchParams?.get("keyword") ?? "";
   const [keyword, setKeyword] = useState(keywordParams);
   const [finalKeyword, setFinalKeyword] = useState(keywordParams);
-
+  const [bookmarked, setBookmarked] = useState(false);
   const [showRelationKeyword, setShowRelationKeyword] = useState(true);
   const [ref, inView] = useInView();
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
     useSearch({
       keyword: finalKeyword,
     });
+
+  useEffect(() => {
+    if (bookmarked) {
+      refetch();
+      setBookmarked(false);
+    }
+  }, [bookmarked]);
 
   useEffect(() => {
     console.log("data updated:", data);
@@ -102,7 +109,7 @@ const SearchTravel = () => {
           {!isLoading && data && (
             <>
               <SearchResultList
-                setFinalKeyword={setFinalKeyword}
+                setBookmarked={setBookmarked}
                 key={JSON.stringify(data)}
                 searchResult={data.pages}
               />

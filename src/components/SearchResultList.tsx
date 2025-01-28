@@ -25,10 +25,10 @@ const LIST = ["추천순", "최신순", "등록일순"];
 
 const SearchResultList = ({
   searchResult,
-  setFinalKeyword,
+  setBookmarked,
 }: {
   searchResult: ISearchData[];
-  setFinalKeyword: React.Dispatch<React.SetStateAction<string>>;
+  setBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { sort, setSort } = searchStore();
 
@@ -67,7 +67,7 @@ const SearchResultList = ({
               />
             </CustomLink>
             <BookmarkButton
-              setFinalKeyword={setFinalKeyword}
+              setBookmarked={setBookmarked}
               travelNumber={content.travelNumber}
               bookmarked={content.bookmarked}
               page={page.page.number ?? 0}
@@ -83,13 +83,13 @@ interface BookmarkButtonProps {
   bookmarked: boolean;
   travelNumber: number;
   page: number;
-  setFinalKeyword: React.Dispatch<React.SetStateAction<string>>;
+  setBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const BookmarkButton = ({
   bookmarked,
   travelNumber,
   page,
-  setFinalKeyword,
+  setBookmarked,
 }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -106,6 +106,7 @@ const BookmarkButton = ({
   useEffect(() => {
     if (isBookmarkDeleteSuccess || isBookmarkPostSuccess) {
       refetch();
+      setBookmarked(true);
     }
   }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess, refetch]);
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
