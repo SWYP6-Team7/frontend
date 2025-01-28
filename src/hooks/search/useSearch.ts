@@ -29,7 +29,7 @@ export interface Filters {
 const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const { style, place, gender, people, period, sort } = searchStore();
   const { accessToken, isGuestUser } = authStore();
-  const queryClient = useQueryClient();
+  console.log("keyword", keyword);
   const filters = {
     tags: style,
     sorting: sort,
@@ -39,7 +39,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     period,
   };
 
-  const memoizedFilters = useMemo(() => filters, [JSON.stringify(filters)]);
   const {
     data,
     isLoading,
