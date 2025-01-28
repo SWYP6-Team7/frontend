@@ -79,6 +79,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       exact: true,
     });
   };
+
+  console.log("data2", data);
   return {
     data: keyword === "" ? undefined : data,
     isLoading,
