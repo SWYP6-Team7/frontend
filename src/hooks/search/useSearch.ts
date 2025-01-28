@@ -76,11 +76,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     enabled: !!accessToken || isGuestUser,
   });
 
-  useEffect(() => {
-    if (accessToken) {
-      refetch(); // accessToken이 변경될 때마다 쿼리 재실행
-    }
-  }, [accessToken, refetch]);
   return {
     data: keyword === "" ? undefined : data,
     isLoading,
