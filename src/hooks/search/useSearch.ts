@@ -52,11 +52,11 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     ISearchData,
     Object,
     InfiniteData<ISearchData>,
-    [_1: string, _2: string, filters: string]
+    [_1: string]
   >({
-    queryKey: ["search", keyword, JSON.stringify(filters)],
+    queryKey: ["search"],
     initialPageParam: 0,
-
+    staleTime: 0,
     getNextPageParam: (lastPage) => {
       if (
         lastPage?.page?.number + 1 === lastPage.page?.totalPages ||
@@ -74,7 +74,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   });
   const handleRefetchWithPage = async (page: number) => {
     await queryClient.refetchQueries({
-      queryKey: ["search", keyword, JSON.stringify(filters)],
+      queryKey: ["search"],
     });
   };
   return {
