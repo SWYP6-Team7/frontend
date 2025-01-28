@@ -69,8 +69,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       }
     },
 
-    queryFn: ({ pageParam }) => {
-      const result = getSearch(
+    queryFn: async ({ pageParam }) => {
+      const result = await getSearch(
         pageParam as number,
         keyword,
         { ...filters },
