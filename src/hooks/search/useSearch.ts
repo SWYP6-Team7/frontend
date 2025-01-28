@@ -55,8 +55,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   >({
     queryKey: ["search"],
     initialPageParam: 0,
-    staleTime: 0,
-    gcTime: 0,
 
     getNextPageParam: (lastPage) => {
       if (
@@ -79,7 +77,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       console.log("result", result);
       return result;
     },
-
     enabled: isGuestUser || !!accessToken,
   });
   const handleRefetchWithPage = async (page: number) => {
