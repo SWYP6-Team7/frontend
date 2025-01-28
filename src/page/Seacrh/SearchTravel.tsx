@@ -36,7 +36,7 @@ const SearchTravel = () => {
   } = useSearch({
     keyword: finalKeyword,
   });
-  const data = keyword === "" ? undefined : { ...originalData };
+  const data = keyword === "" ? undefined : { ...originalData! };
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
