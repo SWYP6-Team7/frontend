@@ -25,8 +25,10 @@ const LIST = ["추천순", "최신순", "등록일순"];
 
 const SearchResultList = ({
   searchResult,
+  setFinalKeyword,
 }: {
   searchResult: ISearchData[];
+  setFinalKeyword: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { sort, setSort } = searchStore();
 
@@ -65,6 +67,7 @@ const SearchResultList = ({
               />
             </CustomLink>
             <BookmarkButton
+              setFinalKeyword={setFinalKeyword}
               travelNumber={content.travelNumber}
               bookmarked={content.bookmarked}
               page={page.page.number ?? 0}
@@ -80,11 +83,13 @@ interface BookmarkButtonProps {
   bookmarked: boolean;
   travelNumber: number;
   page: number;
+  setFinalKeyword: React.Dispatch<React.SetStateAction<string>>;
 }
 const BookmarkButton = ({
   bookmarked,
   travelNumber,
   page,
+  setFinalKeyword,
 }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -97,12 +102,16 @@ const BookmarkButton = ({
   } = useUpdateBookmark(accessToken!, userId!, travelNumber);
   const searchParams = useSearchParams();
   const keyword = searchParams?.get("keyword") ?? "";
-  const { handleRefetchWithPage } = useSearch({ keyword });
+  const { handleRefetchWithPage, refetch } = useSearch({ keyword });
   useEffect(() => {
     console.log("isSuccess", isBookmarkPostSuccess);
     if (isBookmarkDeleteSuccess) {
+      setFinalKeyword(keyword);
+      refetch();
       handleRefetchWithPage(page);
     } else if (isBookmarkPostSuccess) {
+      setFinalKeyword(keyword);
+      refetch();
       handleRefetchWithPage(page);
     }
   }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess]);

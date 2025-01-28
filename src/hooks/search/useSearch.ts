@@ -87,7 +87,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     await queryClient.invalidateQueries({
       queryKey: ["search", keyword],
     });
-    refetch();
   };
 
   return {

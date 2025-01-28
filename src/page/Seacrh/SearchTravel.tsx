@@ -99,6 +99,7 @@ const SearchTravel = () => {
           {!isLoading && data && (
             <>
               <SearchResultList
+                setFinalKeyword={setFinalKeyword}
                 key={JSON.stringify(data)}
                 searchResult={data.pages}
               />
