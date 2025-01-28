@@ -77,6 +77,10 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       console.log("result", result);
       return result;
     },
+    select: (data) => {
+      console.log("selected data:", data); // data 구조 확인
+      return data;
+    },
     enabled: isGuestUser || !!accessToken,
   });
   const handleRefetchWithPage = async (page: number) => {
