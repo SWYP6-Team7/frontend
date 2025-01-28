@@ -80,8 +80,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     enabled: isGuestUser || !!accessToken,
   });
   const handleRefetchWithPage = async (page: number) => {
-    await queryClient.refetchQueries({
-      queryKey: ["search"],
+    await queryClient.resetQueries({
+      queryKey: ["search", keyword],
     });
   };
 
