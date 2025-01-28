@@ -104,14 +104,10 @@ const BookmarkButton = ({
   const keyword = searchParams?.get("keyword") ?? "";
   const { refetch } = useSearch({ keyword });
   useEffect(() => {
-    if (isBookmarkDeleteSuccess) {
-      setFinalKeyword(keyword);
-      refetch();
-    } else if (isBookmarkPostSuccess) {
-      setFinalKeyword(keyword);
-      refetch();
+    if (isBookmarkDeleteSuccess || isBookmarkPostSuccess) {
+      refetch(); // refetch 호출
     }
-  }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess]);
+  }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess, refetch]);
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (isGuestUser()) {
