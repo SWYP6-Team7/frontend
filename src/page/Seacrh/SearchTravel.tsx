@@ -17,18 +17,14 @@ const RECOMMEND_TAGS1 = ["유럽", "강릉", "제주"];
 const RECOMMEND_TAGS2 = ["호주", "미국"];
 
 const SearchTravel = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  const keywordParams = searchParams?.get("keyword") ?? "";
-  const [keyword, setKeyword] = useState(keywordParams);
-  const [finalKeyword, setFinalKeyword] = useState(keywordParams);
+  const [keyword, setKeyword] = useState("");
+  const [finalKeyword, setFinalKeyword] = useState("");
 
   const [showRelationKeyword, setShowRelationKeyword] = useState(true);
   const [ref, inView] = useInView();
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
     useSearch({
-      keyword: keyword,
+      keyword: finalKeyword,
     });
 
   useEffect(() => {
@@ -39,16 +35,6 @@ const SearchTravel = () => {
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage]);
-  useEffect(() => {
-    if (finalKeyword !== "") {
-      refetch();
-
-      const params = new URLSearchParams(searchParams?.toString());
-      params.set("keyword", finalKeyword);
-
-      router.push(`${pathname}?${params.toString()}`);
-    }
-  }, [finalKeyword, refetch]);
 
   useEffect(() => {
     if (finalKeyword !== "" && data && finalKeyword !== keyword) {
