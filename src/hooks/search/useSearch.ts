@@ -51,7 +51,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     ISearchData,
     Object,
     InfiniteData<ISearchData>,
-    [_1: string]
+    [_1: string, _2: string]
   >({
     queryKey: ["search", keyword],
     initialPageParam: 0,
