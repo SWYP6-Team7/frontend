@@ -29,7 +29,6 @@ export interface Filters {
 const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const { style, place, gender, people, period, sort } = searchStore();
   const { accessToken, isGuestUser } = authStore();
-  const queryClient = useQueryClient();
   const filters = {
     tags: style,
     sorting: sort,
@@ -51,9 +50,9 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     ISearchData,
     Object,
     InfiniteData<ISearchData>,
-    [_1: string, _2: string, _3: Filters]
+    [_1: string, _2: string, _3: string]
   >({
-    queryKey: ["search", keyword, filters],
+    queryKey: ["search", keyword, JSON.stringify(filters)],
     initialPageParam: 0,
 
     getNextPageParam: (lastPage) => {
