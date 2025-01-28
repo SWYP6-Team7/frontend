@@ -99,6 +99,7 @@ const BookmarkButton = ({
   const keyword = searchParams?.get("keyword") ?? "";
   const { handleRefetchWithPage } = useSearch({ keyword });
   useEffect(() => {
+    console.log("isSuccess", isBookmarkPostSuccess);
     if (isBookmarkDeleteSuccess) {
       handleRefetchWithPage(page);
     } else if (isBookmarkPostSuccess) {
