@@ -39,7 +39,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     period,
   };
 
-  const memoizedFilters = useMemo(() => filters, [JSON.stringify(filters)]);
   const {
     data,
     isLoading,
@@ -58,7 +57,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     initialPageParam: 0,
     staleTime: 0,
     gcTime: 0,
-    select: (data) => ({ ...data }),
 
     getNextPageParam: (lastPage) => {
       if (
@@ -71,8 +69,17 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       }
     },
 
-    queryFn: ({ pageParam }) =>
-      getSearch(pageParam as number, keyword, { ...filters }, accessToken),
+    queryFn: ({ pageParam }) => {
+      const result = getSearch(
+        pageParam as number,
+        keyword,
+        { ...filters },
+        accessToken
+      );
+      console.log("result", result);
+      return result;
+    },
+
     enabled: isGuestUser || !!accessToken,
   });
   const handleRefetchWithPage = async (page: number) => {
