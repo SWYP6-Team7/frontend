@@ -26,9 +26,10 @@ const SearchTravel = () => {
 
   const [showRelationKeyword, setShowRelationKeyword] = useState(true);
   const [ref, inView] = useInView();
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } = useSearch({
-    keyword: finalKeyword,
-  });
+  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
+    useSearch({
+      keyword: finalKeyword,
+    });
 
   useInfiniteScroll(() => {
     if (inView) {
@@ -79,6 +80,7 @@ const SearchTravel = () => {
       setFinalKeyword(keyword.trim());
     }
   };
+  console.log("data", data);
 
   return (
     <Container>
@@ -105,7 +107,12 @@ const SearchTravel = () => {
             <>
               <NoDataContainer>
                 <Spacing size={"12.3svh"} />
-                <img alt="검색 결과가 없습니다" width={80} height={80} src={"/images/noData.png"} />
+                <img
+                  alt="검색 결과가 없습니다"
+                  width={80}
+                  height={80}
+                  src={"/images/noData.png"}
+                />
                 <Spacing size={16} />
                 <NoDataTitle>
                   원하시는 검색 결과가 없어요.
@@ -145,7 +152,10 @@ const SearchTravel = () => {
               {showRelationKeyword && (
                 <>
                   <Spacing size={29} />
-                  <RelationKeywordList onClick={onClickRelationKeyword} keyword={keyword} />
+                  <RelationKeywordList
+                    onClick={onClickRelationKeyword}
+                    keyword={keyword}
+                  />
                 </>
               )}
             </>
