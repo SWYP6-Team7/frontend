@@ -26,11 +26,17 @@ const SearchTravel = () => {
 
   const [showRelationKeyword, setShowRelationKeyword] = useState(true);
   const [ref, inView] = useInView();
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
-    useSearch({
-      keyword: finalKeyword,
-    });
-
+  const {
+    data: originalData,
+    isLoading,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useSearch({
+    keyword: finalKeyword,
+  });
+  const data = keyword === "" ? undefined : { ...originalData };
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
