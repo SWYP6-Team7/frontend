@@ -24,7 +24,7 @@ export async function generateMetadata(
       locale: "ko_KR",
       type: "website",
       images: {
-        url: images[0].url ?? "/images/logo_moing_white_bg.png",
+        url: images ? images[0]?.url : "/images/logo_moing_white_bg.png",
         width: 1200,
         height: 630,
       },
