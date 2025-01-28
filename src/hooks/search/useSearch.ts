@@ -73,7 +73,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       return result;
     },
 
-    enabled: isGuestUser || !!accessToken,
+    enabled: !!accessToken,
+    retry: isGuestUser,
   });
   return {
     data: keyword === "" ? undefined : data,

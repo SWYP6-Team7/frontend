@@ -34,12 +34,6 @@ const SearchTravel = () => {
     });
 
   useEffect(() => {
-    if (!!accessToken) {
-      refetch();
-      console.log(accessToken, "acess");
-    }
-  }, [accessToken]);
-  useEffect(() => {
     if (bookmarked) {
       refetch();
       setBookmarked(false);
