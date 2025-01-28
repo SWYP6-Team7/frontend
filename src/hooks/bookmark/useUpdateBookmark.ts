@@ -19,7 +19,9 @@ export function useUpdateBookmark(
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
       });
-
+      queryClient.invalidateQueries({
+        queryKey: ["search"],
+      });
       queryClient.invalidateQueries({
         queryKey: ["myTrips"],
       });
@@ -52,17 +54,9 @@ export function useUpdateBookmark(
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
       });
-      console.log(queryClient.getQueryCache().findAll());
-      queryClient
-        .getQueryCache()
-        .findAll()
-        .forEach((query) => {
-          if (query.queryKey[0] === "search") {
-            queryClient.invalidateQueries({
-              queryKey: query.queryKey,
-            });
-          }
-        });
+      queryClient.invalidateQueries({
+        queryKey: ["search"],
+      });
       queryClient.invalidateQueries({
         queryKey: ["myTrips"],
       });

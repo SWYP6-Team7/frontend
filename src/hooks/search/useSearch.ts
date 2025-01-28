@@ -72,16 +72,10 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       getSearch(pageParam as number, keyword, { ...filters }, accessToken),
     enabled: Boolean(keyword) && (isGuestUser || !!accessToken),
   });
-  const handleRefetchWithPage = async (page: number) => {
-    await queryClient.refetchQueries({
-      queryKey: ["search"],
-    });
-  };
   return {
     data: keyword === "" ? undefined : data,
     isLoading,
     error,
-    handleRefetchWithPage,
     fetchNextPage,
     refetch,
     isFetching,
