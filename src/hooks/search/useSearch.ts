@@ -9,7 +9,7 @@ import {
   useInfiniteQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 interface UseSearchProps {
   keyword: string;
@@ -73,9 +73,14 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       return result;
     },
 
-    enabled: !!accessToken,
-    retry: isGuestUser,
+    enabled: !!accessToken || isGuestUser,
   });
+
+  useEffect(() => {
+    if (accessToken) {
+      refetch(); // accessToken이 변경될 때마다 쿼리 재실행
+    }
+  }, [accessToken, refetch]);
   return {
     data: keyword === "" ? undefined : data,
     isLoading,
