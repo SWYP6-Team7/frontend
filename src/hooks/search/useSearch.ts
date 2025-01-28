@@ -78,7 +78,6 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
   const handleRefetchWithPage = async (page: number) => {
     await queryClient.refetchQueries({
       queryKey: ["search"],
-      exact: true,
     });
   };
 
