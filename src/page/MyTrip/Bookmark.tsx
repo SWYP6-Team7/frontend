@@ -31,7 +31,7 @@ export default function Bookmark() {
 
   const isNoData = trips.length === 0;
 
-  if (isLoaidng) {
+  if (isLoading) {
     return null;
   }
 

@@ -30,7 +30,7 @@ export default function HostTrip() {
   const trips = (data?.pages[0].content as IMyTripList["content"]) ?? [];
 
   const isNoData = trips.length === 0;
-  if (isLoaidng) {
+  if (isLoading) {
     return null;
   }
   return (

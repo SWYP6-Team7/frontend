@@ -29,7 +29,7 @@ export default function RequestedTrip() {
 
   const isNoData = trips.length === 0;
 
-  if (isLoaidng) {
+  if (isLoading) {
     return null;
   }
   return (
