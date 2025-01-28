@@ -28,7 +28,7 @@ const SearchTravel = () => {
   const [ref, inView] = useInView();
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
     useSearch({
-      keyword: finalKeyword,
+      keyword: keyword,
     });
 
   useEffect(() => {
@@ -83,7 +83,6 @@ const SearchTravel = () => {
       setFinalKeyword(keyword.trim());
     }
   };
-  console.log("data", data);
 
   return (
     <Container>

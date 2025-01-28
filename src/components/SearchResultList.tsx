@@ -105,7 +105,7 @@ const BookmarkButton = ({
   const { refetch } = useSearch({ keyword });
   useEffect(() => {
     if (isBookmarkDeleteSuccess || isBookmarkPostSuccess) {
-      refetch(); // refetch 호출
+      refetch();
     }
   }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess, refetch]);
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
