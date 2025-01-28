@@ -51,9 +51,9 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     ISearchData,
     Object,
     InfiniteData<ISearchData>,
-    [_1: string, _2: string]
+    [_1: string, _2: string, _3: Filters]
   >({
-    queryKey: ["search", keyword],
+    queryKey: ["search", keyword, filters],
     initialPageParam: 0,
 
     getNextPageParam: (lastPage) => {
@@ -83,17 +83,10 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     },
     enabled: isGuestUser || !!accessToken,
   });
-  const handleRefetchWithPage = async (page: number) => {
-    await queryClient.invalidateQueries({
-      queryKey: ["search", keyword],
-    });
-  };
-
   return {
     data,
     isLoading,
     error,
-    handleRefetchWithPage,
     fetchNextPage,
     refetch,
     isFetching,

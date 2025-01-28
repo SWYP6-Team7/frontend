@@ -102,17 +102,14 @@ const BookmarkButton = ({
   } = useUpdateBookmark(accessToken!, userId!, travelNumber);
   const searchParams = useSearchParams();
   const keyword = searchParams?.get("keyword") ?? "";
-  const { handleRefetchWithPage, refetch } = useSearch({ keyword });
+  const { refetch } = useSearch({ keyword });
   useEffect(() => {
-    console.log("isSuccess", isBookmarkPostSuccess);
     if (isBookmarkDeleteSuccess) {
       setFinalKeyword(keyword);
       refetch();
-      handleRefetchWithPage(page);
     } else if (isBookmarkPostSuccess) {
       setFinalKeyword(keyword);
       refetch();
-      handleRefetchWithPage(page);
     }
   }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess]);
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
