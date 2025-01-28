@@ -106,6 +106,8 @@ const BookmarkButton = ({
   useEffect(() => {
     if (isBookmarkDeleteSuccess || isBookmarkPostSuccess) {
       refetch();
+      setFinalKeyword("");
+      setFinalKeyword(keyword);
     }
   }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess, refetch]);
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
