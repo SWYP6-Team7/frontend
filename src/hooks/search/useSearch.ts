@@ -53,7 +53,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     InfiniteData<ISearchData>,
     [_1: string]
   >({
-    queryKey: ["search"],
+    queryKey: ["search", keyword],
     initialPageParam: 0,
 
     getNextPageParam: (lastPage) => {
