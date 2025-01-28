@@ -30,6 +30,10 @@ const SearchTravel = () => {
     useSearch({
       keyword: finalKeyword,
     });
+
+  useEffect(() => {
+    console.log("data updated:", data);
+  }, [data]);
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
