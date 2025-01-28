@@ -84,9 +84,10 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     enabled: isGuestUser || !!accessToken,
   });
   const handleRefetchWithPage = async (page: number) => {
-    await queryClient.resetQueries({
+    await queryClient.invalidateQueries({
       queryKey: ["search", keyword],
     });
+    refetch();
   };
 
   return {
