@@ -58,6 +58,8 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     initialPageParam: 0,
     staleTime: 0,
     gcTime: 0,
+    select: (data) => ({ ...data }), // 강제로 새로운 객체 반환
+
     getNextPageParam: (lastPage) => {
       if (
         lastPage?.page?.number + 1 === lastPage.page?.totalPages ||
