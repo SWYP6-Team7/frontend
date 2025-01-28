@@ -12,6 +12,7 @@ import { useInView } from "react-intersection-observer";
 import RelationKeywordList from "@/components/relationKeyword/RelationKeywordList";
 import InputField from "@/components/designSystem/input/InputField";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { authStore } from "@/store/client/authStore";
 
 const RECOMMEND_TAGS1 = ["유럽", "강릉", "제주"];
 const RECOMMEND_TAGS2 = ["호주", "미국"];
@@ -24,6 +25,7 @@ const SearchTravel = () => {
   const [keyword, setKeyword] = useState(keywordParams);
   const [finalKeyword, setFinalKeyword] = useState(keywordParams);
   const [bookmarked, setBookmarked] = useState(false);
+  const { accessToken } = authStore();
   const [showRelationKeyword, setShowRelationKeyword] = useState(true);
   const [ref, inView] = useInView();
   const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
@@ -31,6 +33,11 @@ const SearchTravel = () => {
       keyword: finalKeyword,
     });
 
+  useEffect(() => {
+    if (!!accessToken) {
+      refetch();
+    }
+  }, [accessToken]);
   useEffect(() => {
     if (bookmarked) {
       refetch();
