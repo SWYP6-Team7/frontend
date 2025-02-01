@@ -21,7 +21,7 @@ const INQUIRYTYPE_LIST = ["계정 및 로그인", "서비스 이용 방법", "�
 const CreateContact = () => {
   const { email: initEmail } = myPageStore();
   const [isChange, setIsChange] = useState<boolean>(false);
-  const [inquiryType, setInquiryType] = useState<string>("일반문의");
+  const [inquiryType, setInquiryType] = useState<string>("계정 및 로그인");
   const [email, setEmail] = useState(initEmail ?? "");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -38,7 +38,7 @@ const CreateContact = () => {
         setIsResultModalOpen(true);
         setTitle("");
         setContent("");
-        setInquiryType("일반문의");
+        setInquiryType("계정 및 로그인");
       } else {
         console.error(data.error.reason);
         throw new RequestError(data.error.reason);

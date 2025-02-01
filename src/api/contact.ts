@@ -1,10 +1,13 @@
 import { IContactCreate } from "@/model/contact";
 import { axiosInstance } from ".";
 import RequestError from "@/context/ReqeustError";
+import { getJWTHeader } from "@/utils/user";
 
-export function postContact(data: IContactCreate) {
+export function postContact(data: IContactCreate, accessToken: string | null) {
   try {
-    return axiosInstance.post("/api/inquiry/submit", data);
+    return axiosInstance.post("/api/inquiry/submit", data, {
+      ...(accessToken && { headers: getJWTHeader(accessToken) }),
+    });
   } catch (err: any) {
     throw new RequestError(err);
   }
