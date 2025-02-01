@@ -45,6 +45,7 @@ export default function MyTrip() {
     }
     (document as any).startViewTransition(() => {
       tabView.style.viewTransitionName = "tabView";
+      document.documentElement.style.viewTransitionName = "";
     });
   };
   return (

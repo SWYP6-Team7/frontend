@@ -9,6 +9,10 @@ import PlaceIcon from "./icons/PlaceIcon";
 import FullHeartIcon from "./icons/FullHeartIcon";
 import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { authStore } from "@/store/client/authStore";
+import { useState } from "react";
+import CheckingModal from "./designSystem/modal/CheckingModal";
+import { useRouter } from "next/navigation";
+import { isGuestUser } from "@/utils/user";
 interface HorizonBoxProps {
   daysLeft: number;
   title: string;
@@ -52,7 +56,6 @@ const HorizonBoxLayout = ({
   location = "",
   userName,
   daysAgo,
-  imgSrc = "",
   isBar = false,
   showTag = true,
   bookmarkPosition = "top",
@@ -60,7 +63,8 @@ const HorizonBoxLayout = ({
   bookmarkNeed = true,
   travelNumber,
 }: HorizonBoxProps) => {
-  const cutTags = tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
+  const cutTags =
+    tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
   return (
     <HorizonBoxContainer>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
@@ -76,14 +80,20 @@ const HorizonBoxLayout = ({
             isDueDate={Boolean(daysLeft >= 0)}
           />
           {bookmarkPosition === "top" && bookmarkNeed && (
-            <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
+            <BookmarkButton
+              travelNumber={travelNumber}
+              bookmarked={bookmarked}
+            />
           )}
         </TopContainer>
         <div>
           <TitleBox>
             <Title>{title}</Title>
             {bookmarkPosition === "middle" && bookmarkNeed && (
-              <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
+              <BookmarkButton
+                travelNumber={travelNumber}
+                bookmarked={bookmarked}
+              />
             )}
           </TitleBox>
           {/* <Description>{description}</Description> */}
@@ -113,7 +123,7 @@ const HorizonBoxLayout = ({
               }
             />
             {cutTags.map((text: string, idx) => (
-              <BoxLayoutTag text={text} />
+              <BoxLayoutTag key={idx} text={text} />
             ))}
             {tags.length > cutTags.length ? (
               <BoxLayoutTag
@@ -140,10 +150,20 @@ interface BookmarkButtonProps {
 }
 const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
-  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const router = useRouter();
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    travelNumber
+  );
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
+    if (isGuestUser()) {
+      setShowLoginModal(true);
+      return;
+    }
     if (bookmarked) {
       deleteBookmarkMutation();
     } else {
@@ -151,15 +171,28 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
       postBookmarkMutation();
     }
   };
-  console.log(bookmarked, "??");
   return (
-    <button onClick={bookmarkClickHandler}>
-      {bookmarked ? (
-        <FullHeartIcon width={24} height={21.4} />
-      ) : (
-        <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
-      )}
-    </button>
+    <>
+      <CheckingModal
+        isModalOpen={showLoginModal}
+        onClick={() => router.push("/login")}
+        modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}
+        modalTitle="로그인 안내"
+        modalButtonText="로그인"
+        setModalOpen={setShowLoginModal}
+      />
+      <button onClick={bookmarkClickHandler}>
+        {bookmarked ? (
+          <FullHeartIcon width={24} height={21.4} />
+        ) : (
+          <EmptyHeartIcon
+            width={24}
+            height={21.4}
+            stroke={`${palette.비강조3}`}
+          />
+        )}
+      </button>
+    </>
   );
 };
 
@@ -195,38 +228,12 @@ const Location = styled.div`
   gap: 4px;
 `;
 
-const Description = styled.div`
-  font-size: 14px;
-  font-weight: 400;
-
-  color: rgba(132, 132, 132, 1);
-  white-space: nowrap; //텍스트가 한 줄로 유지되도록 설정
-  overflow: hidden;
-  text-overflow: ellipsis; // 텍스트가 잘릴 때 줄임표(...)를 표시
-  margin-bottom: 4px;
-  line-height: 16.71px;
-`;
-
 const Dot = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: ${palette.비강조3};
 `;
 
-const Thumbnail = styled.div<{ src: string }>`
-  margin-right: 12px;
-  width: 100%;
-  max-width: 120px;
-  aspect-ratio: 1/1;
-  display: flex;
-  align-items: center;
-  position: relative;
-
-  border-radius: 20px;
-  background-image: url(${(props) => props.src});
-  background-color: ${(props) => (props.src === "" ? "rgba(217, 217, 217, 1)" : "inherit")};
-  background-size: cover;
-`;
 const RecruitingBox = styled.div`
   display: flex;
   justify-content: center;

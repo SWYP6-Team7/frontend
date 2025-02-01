@@ -12,6 +12,7 @@ import { useInView } from "react-intersection-observer";
 import RelationKeywordList from "@/components/relationKeyword/RelationKeywordList";
 import InputField from "@/components/designSystem/input/InputField";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { authStore } from "@/store/client/authStore";
 
 const RECOMMEND_TAGS1 = ["유럽", "강릉", "제주"];
 const RECOMMEND_TAGS2 = ["호주", "미국"];
@@ -23,13 +24,31 @@ const SearchTravel = () => {
   const keywordParams = searchParams?.get("keyword") ?? "";
   const [keyword, setKeyword] = useState(keywordParams);
   const [finalKeyword, setFinalKeyword] = useState(keywordParams);
-
+  const [bookmarked, setBookmarked] = useState(false);
+  const { accessToken } = authStore();
   const [showRelationKeyword, setShowRelationKeyword] = useState(true);
   const [ref, inView] = useInView();
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } = useSearch({
-    keyword: finalKeyword,
-  });
+  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetching } =
+    useSearch({
+      keyword: finalKeyword,
+    });
 
+  useEffect(() => {
+    if (bookmarked) {
+      refetch();
+      setBookmarked(false);
+    }
+  }, [bookmarked]);
+
+  useEffect(() => {
+    if (accessToken) {
+      refetch();
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
+    console.log("data updated:", data);
+  }, [data]);
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
@@ -97,7 +116,11 @@ const SearchTravel = () => {
           {isLoading && <div>검색 중...</div>}
           {!isLoading && data && (
             <>
-              <SearchResultList searchResult={data.pages} />
+              <SearchResultList
+                setBookmarked={setBookmarked}
+                key={JSON.stringify(data)}
+                searchResult={data.pages}
+              />
               <div ref={ref} style={{ height: 20 }} />
             </>
           )}
@@ -105,7 +128,12 @@ const SearchTravel = () => {
             <>
               <NoDataContainer>
                 <Spacing size={"12.3svh"} />
-                <img alt="검색 결과가 없습니다" width={80} height={80} src={"/images/noData.png"} />
+                <img
+                  alt="검색 결과가 없습니다"
+                  width={80}
+                  height={80}
+                  src={"/images/noData.png"}
+                />
                 <Spacing size={16} />
                 <NoDataTitle>
                   원하시는 검색 결과가 없어요.
@@ -145,7 +173,10 @@ const SearchTravel = () => {
               {showRelationKeyword && (
                 <>
                   <Spacing size={29} />
-                  <RelationKeywordList onClick={onClickRelationKeyword} keyword={keyword} />
+                  <RelationKeywordList
+                    onClick={onClickRelationKeyword}
+                    keyword={keyword}
+                  />
                 </>
               )}
             </>

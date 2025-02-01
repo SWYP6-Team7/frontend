@@ -41,11 +41,23 @@ const useAuth = () => {
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { setLoginData, clearLoginData, accessToken, resetData, setIsGuestUser } = authStore();
+  const {
+    setLoginData,
+    clearLoginData,
+    accessToken,
+    resetData,
+    setIsGuestUser,
+  } = authStore();
   const { setSocialLogin } = userStore();
   const loginEmailMutation = useMutation({
     mutationKey: ["emailLogin"],
-    mutationFn: async ({ email, password }: { email: string; password: string }) => {
+    mutationFn: async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) => {
       if (!checkNetworkConnection()) return;
 
       const response = await axiosInstance.post("/api/login", {
@@ -67,7 +79,13 @@ const useAuth = () => {
   });
 
   const socialLoginMutation = useMutation({
-    mutationFn: async ({ socialLoginId, email }: { socialLoginId: string; email: string }) => {
+    mutationFn: async ({
+      socialLoginId,
+      email,
+    }: {
+      socialLoginId: string;
+      email: string;
+    }) => {
       if (!checkNetworkConnection()) return;
 
       const response = await axiosInstance.post("/api/social/login", {
@@ -85,7 +103,9 @@ const useAuth = () => {
     },
     onError: (error: any) => {
       const errorMessage =
-        error?.response?.data?.error || error?.response?.data?.message || "소셜 로그인 과정에서 문제가 발생했습니다.";
+        error?.response?.data?.error ||
+        error?.response?.data?.message ||
+        "소셜 로그인 과정에서 문제가 발생했습니다.";
 
       console.error("Error:", errorMessage);
       alert(errorMessage);
@@ -98,7 +118,7 @@ const useAuth = () => {
     mutationFn: async (formData: IRegisterEmail) => {
       if (!checkNetworkConnection()) return;
 
-      const response = await axiosInstance.post("/api/users/new", formData);
+      const response = await axiosInstance.post("/api/users/sign-up", formData);
       return response.data;
     },
     onSuccess: (data) => {
@@ -119,7 +139,9 @@ const useAuth = () => {
       const { social, ...data } = formData;
       const finalData = { ...data, ageGroup: data.agegroup };
       const path =
-        formData.social === "google" ? "/api/social/google/complete-signup" : "/api/social/kakao/complete-signup";
+        formData.social === "google"
+          ? "/api/social/google/complete-signup"
+          : "/api/social/kakao/complete-signup";
 
       const response = await axiosInstance.put(path, finalData);
       return response.data;
@@ -140,7 +162,11 @@ const useAuth = () => {
     mutationFn: async () => {
       if (!checkNetworkConnection()) return;
 
-      return await axiosInstance.post("/api/logout", {}, { headers: getJWTHeader(accessToken as string) });
+      return await axiosInstance.post(
+        "/api/logout",
+        {},
+        { headers: getJWTHeader(accessToken as string) }
+      );
     },
     onSuccess: () => {
       clearLoginData();

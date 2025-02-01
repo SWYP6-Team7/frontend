@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 export type IPlace = "국내" | "해외";
 export type IPeriod = "일주일 이하" | "1~2주" | "3~4주" | "한달 이상";
-export type IPeople = "2인" | "3~4명" | "5인이상";
+export type IPeople = "2명" | "3~4명" | "5명 이상";
 export type IStyle =
   | "힐링"
   | "즉흥적"
@@ -33,7 +33,9 @@ interface ISearchStore {
     value: IPeople[] | IPeriod[] | IStyle[] | IPlace[] | IGender[]
   ) => void;
   setReset: () => void;
-  setOneFilterReset: (type: "장소" | "인원" | "기간" | "스타일" | "성별") => void;
+  setOneFilterReset: (
+    type: "장소" | "인원" | "기간" | "스타일" | "성별"
+  ) => void;
 }
 
 // userId와 accessToken을 전역 상태로 관리하는 역할
@@ -55,19 +57,34 @@ export const searchStore = create<ISearchStore>((set, get) => ({
     const currentFilters = get();
 
     if (type === "장소") {
-      const updatedPlace = toggleFilter(currentFilters.place, value as IPlace[]);
+      const updatedPlace = toggleFilter(
+        currentFilters.place,
+        value as IPlace[]
+      );
       set({ place: updatedPlace });
     } else if (type === "인원") {
-      const updatedPeople = toggleFilter(currentFilters.people, value as IPeople[]);
+      const updatedPeople = toggleFilter(
+        currentFilters.people,
+        value as IPeople[]
+      );
       set({ people: updatedPeople });
     } else if (type === "기간") {
-      const updatedPeriod = toggleFilter(currentFilters.period, value as IPeriod[]);
+      const updatedPeriod = toggleFilter(
+        currentFilters.period,
+        value as IPeriod[]
+      );
       set({ period: updatedPeriod });
     } else if (type === "스타일") {
-      const updatedStyle = toggleFilter(currentFilters.style, value as IStyle[]);
+      const updatedStyle = toggleFilter(
+        currentFilters.style,
+        value as IStyle[]
+      );
       set({ style: updatedStyle });
     } else if (type === "성별") {
-      const updatedGender = toggleFilter(currentFilters.gender, value as IGender[]);
+      const updatedGender = toggleFilter(
+        currentFilters.gender,
+        value as IGender[]
+      );
       set({ gender: updatedGender });
     }
   },

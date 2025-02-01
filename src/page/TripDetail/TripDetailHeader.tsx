@@ -13,6 +13,7 @@ import { authStore } from "@/store/client/authStore";
 import { useBackPathStore } from "@/store/client/backPathStore";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import { palette } from "@/styles/palette";
+import { isGuestUser } from "@/utils/user";
 import styled from "@emotion/styled";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -137,7 +138,9 @@ export default function TripDetailHeader() {
   );
 
   const handleNotification = () => {
-    setNotification(travelNumber ? `/trip/detail/${travelNumber}` : "/trip/list");
+    setNotification(
+      travelNumber ? `/trip/detail/${travelNumber}` : "/trip/list"
+    );
     router.push(`/notification`);
   };
   useEffect(() => {
@@ -167,7 +170,12 @@ export default function TripDetailHeader() {
         }
       });
     }
-  }, [isDeleteBtnClicked, isReportBtnClicked, isEditBtnClicked, checkingModalClicked]);
+  }, [
+    isDeleteBtnClicked,
+    isReportBtnClicked,
+    isEditBtnClicked,
+    checkingModalClicked,
+  ]);
 
   // 북마크
   const bookmarkClickHandler = () => {
@@ -188,8 +196,11 @@ export default function TripDetailHeader() {
   };
 
   return (
-    <Container hostUserCheck={hostUserCheck} isTripDetailEdit={Boolean(isTripDetailEdit)}>
-      {hostUserCheck && (
+    <Container
+      hostUserCheck={hostUserCheck}
+      isTripDetailEdit={Boolean(isTripDetailEdit)}
+    >
+      {!isGuestUser() && (
         <div onClick={handleNotification}>
           <AlarmIcon size={23} stroke={palette.기본} />
         </div>
@@ -222,7 +233,12 @@ export default function TripDetailHeader() {
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
-      <ResultToast bottom="80px" isShow={isToastShow} setIsShow={setIsToastShow} text="여행 게시글이 삭제되었어요." />
+      <ResultToast
+        bottom="80px"
+        isShow={isToastShow}
+        setIsShow={setIsToastShow}
+        text="여행 게시글이 삭제되었어요."
+      />
     </Container>
   );
 }

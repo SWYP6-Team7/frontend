@@ -12,14 +12,17 @@ import useCommunity from "@/hooks/useCommunity";
 import ResultToast from "../designSystem/toastMessage/resultToast";
 import { editStore } from "@/store/client/editStore";
 import { COMMUNITY_TOAST_MESSAGES } from "@/constants/toastMessages";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
+import { useState } from "react";
+import CheckingModal from "../designSystem/modal/CheckingModal";
 
 const CommunityPost = () => {
   const params = useParams();
   const communityNumber = params?.communityNumber as string;
   const { editToastShow, setEditToastShow } = editStore();
-
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const router = useRouter();
   const {
     community: { data, isLoading },
     images,
@@ -33,6 +36,7 @@ const CommunityPost = () => {
 
   const handleLikeToggle = () => {
     if (isGuestUser()) {
+      setShowLoginModal(true);
       return;
     }
     if (data.liked) {
@@ -43,80 +47,94 @@ const CommunityPost = () => {
   };
   console.log("date", daysAgoFormatted(data?.regDate));
   return (
-    <PostWrapper>
-      <ResultToast
-        height={120}
-        isShow={editToastShow}
-        setIsShow={setEditToastShow}
-        text={COMMUNITY_TOAST_MESSAGES.editPost}
+    <>
+      <CheckingModal
+        isModalOpen={showLoginModal}
+        onClick={() => router.push("/login")}
+        modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}
+        modalTitle="로그인 안내"
+        modalButtonText="로그인"
+        setModalOpen={setShowLoginModal}
       />
-      <MainContent>
-        <BadgeContainer>
-          <Badge
-            isDueDate={false}
-            text={data.categoryName}
-            height="22px"
-            backgroundColor={palette.비강조4}
-            color={palette.비강조}
-            fontWeight="600"
-          />
-        </BadgeContainer>
-        <ProfileContainer>
-          {/* 프로필 */}
-          <RoundedImage src={data.profileImageUrl} size={40} />
-          <div style={{ marginLeft: "8px" }}>
-            <UserName>{data.postWriter}</UserName>
-            <div
-              style={{
-                fontWeight: "400",
-                fontSize: "14px",
-                lineHeight: "16.71px",
-                color: palette.비강조,
-              }}
-            >
-              {daysAgoFormatted(data?.regDate)}
-            </div>
-          </div>
-        </ProfileContainer>
-        {/* 제목  */}
-        <Title>{data.title}</Title>
-        {/* 내용 */}
-        <Details>{data.content}</Details>
-        {/*태그   */}
-
-        {!isLoading && images.data && images.data.length > 0 && (
-          <ImageContainer>
-            <DetailImages images={images.data} />
-          </ImageContainer>
-        )}
-
-        {data && (
-          <LikeContainer onClick={handleLikeToggle}>
-            <SearchFilterTag
-              addStyle={{
-                padding: "11px 16px",
-                fontSize: "16px",
-                backgroundColor: data.liked ? palette.keycolorBG : palette.검색창,
-                color: data.liked ? palette.keycolor : palette.비강조,
-                border: data.liked ? `1px solid ${palette.keycolor}` : `1px solid ${palette.비강조3}`,
-                borderRadius: "30px",
-                fontWeight: "400",
-              }}
-              icon={<CommunityHeartIcon />}
-              text={data.likeCount > 0 ? `${data.likeCount}` : "좋아요"}
-              idx={0}
+      <PostWrapper>
+        <ResultToast
+          height={120}
+          isShow={editToastShow}
+          setIsShow={setEditToastShow}
+          text={COMMUNITY_TOAST_MESSAGES.editPost}
+        />
+        <MainContent>
+          <BadgeContainer>
+            <Badge
+              isDueDate={false}
+              text={data.categoryName}
+              height="22px"
+              backgroundColor={palette.비강조4}
+              color={palette.비강조}
+              fontWeight="600"
             />
-          </LikeContainer>
-        )}
-      </MainContent>
-      <ViewsETC>
-        <div>댓글 {data.commentCount}</div>
-        <div style={{ margin: "0px 4px" }}> · </div>
-        <div>좋아요 {data.likeCount}</div>
-        <div style={{ margin: "0px 4px" }}> · </div>
-        <div>조회수 {data.viewCount}</div>
-      </ViewsETC>
-    </PostWrapper>
+          </BadgeContainer>
+          <ProfileContainer>
+            {/* 프로필 */}
+            <RoundedImage src={data.profileImageUrl} size={40} />
+            <div style={{ marginLeft: "8px" }}>
+              <UserName>{data.postWriter}</UserName>
+              <div
+                style={{
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  lineHeight: "16.71px",
+                  color: palette.비강조,
+                }}
+              >
+                {daysAgoFormatted(data?.regDate)}
+              </div>
+            </div>
+          </ProfileContainer>
+          {/* 제목  */}
+          <Title>{data.title}</Title>
+          {/* 내용 */}
+          <Details>{data.content}</Details>
+          {/*태그   */}
+
+          {!isLoading && images.data && images.data.length > 0 && (
+            <ImageContainer>
+              <DetailImages images={images.data} />
+            </ImageContainer>
+          )}
+
+          {data && (
+            <LikeContainer onClick={handleLikeToggle}>
+              <SearchFilterTag
+                addStyle={{
+                  padding: "11px 16px",
+                  fontSize: "16px",
+                  backgroundColor: data.liked
+                    ? palette.keycolorBG
+                    : palette.검색창,
+                  color: data.liked ? palette.keycolor : palette.비강조,
+                  border: data.liked
+                    ? `1px solid ${palette.keycolor}`
+                    : `1px solid ${palette.비강조3}`,
+                  borderRadius: "30px",
+                  fontWeight: "400",
+                }}
+                icon={<CommunityHeartIcon />}
+                text={data.likeCount > 0 ? `${data.likeCount}` : "좋아요"}
+                idx={0}
+              />
+            </LikeContainer>
+          )}
+        </MainContent>
+        <ViewsETC>
+          <div>댓글 {data.commentCount}</div>
+          <div style={{ margin: "0px 4px" }}> · </div>
+          <div>좋아요 {data.likeCount}</div>
+          <div style={{ margin: "0px 4px" }}> · </div>
+          <div>조회수 {data.viewCount}</div>
+        </ViewsETC>
+      </PostWrapper>
+    </>
   );
 };
 

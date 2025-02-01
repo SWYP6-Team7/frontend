@@ -21,7 +21,10 @@ interface Companion {
   profileUrl: string;
 }
 
-export default function CompanionsView({ isOpen, setIsOpen }: CompanionsViewProps) {
+export default function CompanionsView({
+  isOpen,
+  setIsOpen,
+}: CompanionsViewProps) {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -34,7 +37,8 @@ export default function CompanionsView({ isOpen, setIsOpen }: CompanionsViewProp
   if (isNaN(parseInt(travelNumber))) {
     router.replace("/");
   }
-  const { profileUrl, userName, userAgeGroup, nowPerson, maxPerson } = tripDetailStore();
+  const { profileUrl, userName, userAgeGroup, nowPerson, maxPerson } =
+    tripDetailStore();
   const { companions } = useTripDetail(parseInt(travelNumber));
   const allCompanions = companions.data?.data.companions;
   const [windowSize, setWindowSize] = useState({
@@ -115,10 +119,16 @@ export default function CompanionsView({ isOpen, setIsOpen }: CompanionsViewProp
                 </Title>
                 <CompanionsBox>
                   {allCompanions?.map((person: Companion) => (
-                    <OwnerBox key={person.userName} style={{ marginRight: "16px" }}>
+                    <OwnerBox
+                      key={person.userName}
+                      style={{ marginRight: "16px" }}
+                    >
                       <div>
                         <div>
-                          <RoundedImage size={64} src={person?.profileUrl ? person?.profileUrl : ""} />
+                          <RoundedImage
+                            size={64}
+                            src={person?.profileUrl ? person?.profileUrl : ""}
+                          />
                         </div>
                         <OwnerInfo>
                           <OwnerName>{person.userName}</OwnerName>
@@ -143,15 +153,17 @@ export default function CompanionsView({ isOpen, setIsOpen }: CompanionsViewProp
             </ModalContainer>
           </ModalWrapper>
           <ButtonWrapper showModal={isOpen} width={newRightPosition}>
-            <Button
-              text="닫기"
-              onClick={duedateSubmitHandler}
-              addStyle={{
-                backgroundColor: "rgba(62, 141, 0, 1)",
-                color: "rgba(240, 240, 240, 1)",
-                boxShadow: "rgba(170, 170, 170, 0.1)",
-              }}
-            />
+            <div style={{ width: "100%" }}>
+              <Button
+                text="닫기"
+                onClick={duedateSubmitHandler}
+                addStyle={{
+                  backgroundColor: "rgba(62, 141, 0, 1)",
+                  color: "rgba(240, 240, 240, 1)",
+                  boxShadow: "rgba(170, 170, 170, 0.1)",
+                }}
+              />
+            </div>
           </ButtonWrapper>
         </BottomModal>
       )}
@@ -191,7 +203,9 @@ const CompanionsBox = styled.div`
   }
 `;
 
-const ModalWrapper = styled.div``;
+const ModalWrapper = styled.div`
+  padding-bottom: calc(4.7svh + 48px);
+`;
 const ModalContainer = styled.div``;
 
 const ButtonWrapper = styled.div<{ width: string; showModal: boolean }>`

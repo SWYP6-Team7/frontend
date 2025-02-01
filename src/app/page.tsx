@@ -4,8 +4,6 @@ import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { getAvailableTrips, getRecommendationTrips } from "@/api/home";
 
 export default async function HomePage() {
-  const queryClient = new QueryClient();
-
   // // 첫 페이지만 프리패치
   // await queryClient.prefetchInfiniteQuery({
   //   queryKey: ["availableTrips"],
