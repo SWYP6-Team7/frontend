@@ -24,7 +24,7 @@ const CreateContact = () => {
   console.log("email", initEmail);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [inquiryType, setInquiryType] = useState<string>("계정 및 로그인");
-  const [email, setEmail] = useState(initEmail === "" ? initEmail : "");
+  const [email, setEmail] = useState(initEmail === "" ? "" : initEmail);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
@@ -80,7 +80,7 @@ const CreateContact = () => {
             />
           ) : (
             <EmailBox>
-              <EmailText>{email ?? ""}</EmailText>
+              <EmailText>{email}</EmailText>
               <div onClick={() => setIsChange(true)} style={{ cursor: "pointer" }}>
                 <BoxLayoutTag
                   size="small"
