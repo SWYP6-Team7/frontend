@@ -26,7 +26,7 @@ const Contact = () => {
 
   return (
     <Container>
-      <TabWrapper>
+      {/* <TabWrapper>
         <TabContainer>
           <Slider index={activeTab} />
           <Tab active={activeTab === 0} onClick={() => tabClickHandler(0)}>
@@ -37,7 +37,8 @@ const Contact = () => {
           </Tab>
         </TabContainer>
       </TabWrapper>
-      {renderTabContent()}
+      {renderTabContent()} */}
+      <CreateContact />;
     </Container>
   );
 };
