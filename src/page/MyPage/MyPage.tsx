@@ -18,8 +18,7 @@ export default function MyPage() {
   const { name, agegroup, email, preferredTags, profileUrl } = myPageStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-  const cutTags =
-    preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
+  const cutTags = preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
   const onLinkAnnouncement = () => {
     document.documentElement.style.viewTransitionName = "forward";
     navigateWithTransition("/announcement");
@@ -28,10 +27,7 @@ export default function MyPage() {
     <Container>
       <UserInfo>
         <ProfileImg>
-          <RoundedImage
-            src={isGuestUser() ? "/images/defaultProfile.png" : profileUrl}
-            size={80}
-          />
+          <RoundedImage src={isGuestUser() ? "/images/defaultProfile.png" : profileUrl} size={80} />
         </ProfileImg>
         <div style={{ width: "100%" }}>
           {!isGuestUser() ? (
@@ -141,27 +137,19 @@ export default function MyPage() {
           <Spacing size={8} />
         </Box>
         <div style={{ marginTop: "16px" }}>
-          {/* <TextButton
+          <TextButton
             onClick={(e: MouseEvent) => {
               router.push("/contact");
             }}
             text="1:1 문의하기"
             isLeftVector={false}
             isRightVector={false}
-          /> */}
+          />
           <a href="/pdf/service_terms(241115).pdf" target="_blank">
-            <TextButton
-              text="서비스이용약관"
-              isLeftVector={false}
-              isRightVector={false}
-            />
+            <TextButton text="서비스이용약관" isLeftVector={false} isRightVector={false} />
           </a>
           <a href="/pdf/privacy_policy(241006).pdf" target="_blank">
-            <TextButton
-              text="개인정보처리방침"
-              isLeftVector={false}
-              isRightVector={false}
-            />
+            <TextButton text="개인정보처리방침" isLeftVector={false} isRightVector={false} />
           </a>
 
           <Spacing size={150} />
