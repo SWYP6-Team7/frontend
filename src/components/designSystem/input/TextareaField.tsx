@@ -45,7 +45,7 @@ const DetailTextArea = styled.textarea<{
 
   height: ${(props) => (typeof props.height === "number" ? `${props.height}` : props.height)};
   padding: 16px;
-  font-family: "Pretandard", sans-serif;
+  font-family: "Pretandard" !important;
   background-color: ${(props) => props.bgColor};
   &::placeholder {
     color: ${palette.비강조2};
@@ -54,7 +54,7 @@ const DetailTextArea = styled.textarea<{
     font-weight: 400;
     line-height: 22.4px;
     letter-spacing: -0.025em;
-    font-family: "Pretandard", sans-serif;
+    font-family: "Pretandard" !important;
   }
   font-size: 16px;
   &::-webkit-scrollbar {

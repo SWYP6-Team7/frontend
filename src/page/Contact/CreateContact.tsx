@@ -10,6 +10,7 @@ import BoxLayoutTag from "@/components/designSystem/tag/BoxLayoutTag";
 import Spacing from "@/components/Spacing";
 import RequestError from "@/context/ReqeustError";
 import { IContactCreate } from "@/model/contact";
+import { authStore } from "@/store/client/authStore";
 import { myPageStore } from "@/store/client/myPageStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
@@ -26,10 +27,10 @@ const CreateContact = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
-
+  const { accessToken } = authStore();
   const createContact = useMutation({
     mutationFn: async (data: IContactCreate) => {
-      const result = await postContact(data);
+      const result = await postContact(data, accessToken);
       return result.data;
     },
     mutationKey: ["createContact"],
