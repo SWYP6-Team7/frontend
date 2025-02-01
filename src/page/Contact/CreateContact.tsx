@@ -21,6 +21,7 @@ const INQUIRYTYPE_LIST = ["계정 및 로그인", "서비스 이용 방법", "�
 
 const CreateContact = () => {
   const { email: initEmail } = myPageStore();
+  console.log("email", initEmail);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [inquiryType, setInquiryType] = useState<string>("계정 및 로그인");
   const [email, setEmail] = useState(initEmail ?? "");
