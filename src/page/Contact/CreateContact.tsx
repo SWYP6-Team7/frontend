@@ -15,7 +15,7 @@ import { myPageStore } from "@/store/client/myPageStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { useMutation } from "@tanstack/react-query";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 const INQUIRYTYPE_LIST = ["계정 및 로그인", "서비스 이용 방법", "이용 불편 및 신고", "기타 문의"];
 
@@ -24,11 +24,17 @@ const CreateContact = () => {
   console.log("email", initEmail);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [inquiryType, setInquiryType] = useState<string>("계정 및 로그인");
-  const [email, setEmail] = useState(initEmail === "" ? "" : initEmail);
+  const [email, setEmail] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const { accessToken } = authStore();
+
+  useEffect(() => {
+    if (initEmail !== "") {
+      setEmail(initEmail);
+    }
+  }, [initEmail]);
   const createContact = useMutation({
     mutationFn: async (data: IContactCreate) => {
       const result = await postContact(data, accessToken);
