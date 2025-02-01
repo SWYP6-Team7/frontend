@@ -54,6 +54,7 @@ const DetailTextArea = styled.textarea<{
     font-weight: 400;
     line-height: 22.4px;
     letter-spacing: -0.025em;
+    font-family: "Pretandard", sans-serif;
   }
   font-size: 16px;
   &::-webkit-scrollbar {

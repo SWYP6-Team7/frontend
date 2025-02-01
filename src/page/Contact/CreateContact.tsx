@@ -1,4 +1,5 @@
 "use client";
+import { postContact } from "@/api/contact";
 import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
 import InputField from "@/components/designSystem/input/InputField";
@@ -7,12 +8,15 @@ import ResultModal from "@/components/designSystem/modal/ResultModal";
 import Select from "@/components/designSystem/Select";
 import BoxLayoutTag from "@/components/designSystem/tag/BoxLayoutTag";
 import Spacing from "@/components/Spacing";
+import RequestError from "@/context/ReqeustError";
+import { IContactCreate } from "@/model/contact";
 import { myPageStore } from "@/store/client/myPageStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
+import { useMutation } from "@tanstack/react-query";
 import React, { FormEvent, useState } from "react";
 
-const INQUIRYTYPE_LIST = ["일반문의", "무슨 문의", "아이스티", "어깨결려"];
+const INQUIRYTYPE_LIST = ["계정 및 로그인", "서비스 이용 방법", "이용 불편 및 신고", "기타 문의"];
 
 const CreateContact = () => {
   const { email: initEmail } = myPageStore();
@@ -22,12 +26,33 @@ const CreateContact = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+
+  const createContact = useMutation({
+    mutationFn: async (data: IContactCreate) => {
+      const result = await postContact(data);
+      return result.data;
+    },
+    mutationKey: ["createContact"],
+    onSuccess: (data) => {
+      if (data.success) {
+        setIsResultModalOpen(true);
+        setTitle("");
+        setContent("");
+        setInquiryType("일반문의");
+      } else {
+        console.error(data.error.reason);
+        throw new RequestError(data.error.reason);
+      }
+    },
+    onError: (error: any) => {
+      console.error(error);
+      // throw new RequestError(error);
+    },
+  });
+
   const submitContact = (e: FormEvent) => {
     e.preventDefault();
-    setIsResultModalOpen(true);
-    setTitle("");
-    setContent("");
-    setInquiryType("일반문의");
+    createContact.mutateAsync({ inquiryType, email, title, content });
   };
   return (
     <>
@@ -45,7 +70,7 @@ const CreateContact = () => {
         </InquiryTypeContainer>
         <EmailContainer>
           <Label htmlFor="email">답변 받을 이메일</Label>
-          {isChange ? (
+          {isChange || initEmail === "" ? (
             <InputField
               placeholder="이메일 입력"
               value={email}
