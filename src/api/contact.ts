@@ -6,6 +6,7 @@ import { getJWTHeader } from "@/utils/user";
 export function postContact(data: IContactCreate, accessToken: string | null) {
   try {
     return axiosInstance.post("/api/inquiry/submit", data, {
+      timeout: 8000,
       ...(accessToken && { headers: getJWTHeader(accessToken) }),
     });
   } catch (err: any) {
