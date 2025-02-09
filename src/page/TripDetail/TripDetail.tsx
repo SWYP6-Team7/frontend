@@ -57,9 +57,7 @@ export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [modalTextForLogin, setModalTextForLogin] = useState(
-    LOGIN_ASKING_FOR_WATCHING_COMMENT
-  );
+  const [modalTextForLogin, setModalTextForLogin] = useState(LOGIN_ASKING_FOR_WATCHING_COMMENT);
 
   const [isApplyToast, setIsApplyToast] = useState(false);
   const [isCancelToast, setIsCancelToast] = useState(false);
@@ -99,9 +97,7 @@ export default function TripDetail() {
   if (isNaN(parseInt(travelNumber))) {
     router.replace("/");
   }
-  const isClosed =
-    !Boolean(daysLeft(`${dueDate.year}-${dueDate.month}-${dueDate.day}`) > 0) ||
-    maxPerson === nowPerson;
+  const isClosed = !Boolean(daysLeft(`${dueDate.year}-${dueDate.month}-${dueDate.day}`) > 0) || maxPerson === nowPerson;
   const { cancel, cancelMutation } = useEnrollment(parseInt(travelNumber));
   const { tripEnrollmentCount } = useTripDetail(parseInt(travelNumber));
   const nowEnrollmentCount = tripEnrollmentCount.data?.data;
@@ -231,30 +227,15 @@ export default function TripDetail() {
 
   return (
     <>
-      <ResultToast
-        height={120}
-        isShow={editToastShow}
-        setIsShow={setEditToastShow}
-        text="게시글이 수정되었어요."
-      />
+      <ResultToast height={120} isShow={editToastShow} setIsShow={setEditToastShow} text="게시글이 수정되었어요." />
       <NoticeModal
         isModalOpen={noticeModal}
         modalMsg={`여행에 참가가 확정된\n 멤버만 볼 수 있어요.`}
         modalTitle="참가 신청 대기중"
         setModalOpen={setNoticeModal}
       />
-      <ResultToast
-        height={80}
-        isShow={isCancelToast}
-        setIsShow={setIsCancelToast}
-        text="여행 신청이 취소 되었어요."
-      />
-      <ResultToast
-        height={80}
-        isShow={isApplyToast}
-        setIsShow={setIsApplyToast}
-        text="여행 신청이 완료 되었어요."
-      />
+      <ResultToast height={80} isShow={isCancelToast} setIsShow={setIsCancelToast} text="여행 신청이 취소 되었어요." />
+      <ResultToast height={80} isShow={isApplyToast} setIsShow={setIsApplyToast} text="여행 신청이 완료 되었어요." />
 
       <CheckingModal
         isModalOpen={showLoginModal}
@@ -351,11 +332,7 @@ export default function TripDetail() {
         </PostWrapper>
         <CommentWrapper onClick={commentClickHandler}>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src="/images/createTripBtn.png"
-              alt=""
-              style={{ marginRight: "13px" }}
-            />
+            <img src="/images/createTripBtn.png" alt="" style={{ marginRight: "13px" }} />
             <div
               style={{
                 fontSize: "16px",
@@ -398,9 +375,7 @@ export default function TripDetail() {
               text="마감"
               backgroundColor={palette.keycolorBG}
               color={palette.keycolor}
-              daysLeft={
-                dueDate ? daysLeft(`${year}-${month}-${day}`) : undefined
-              }
+              daysLeft={dueDate ? daysLeft(`${year}-${month}-${day}`) : undefined}
               isClose={!Boolean(daysLeft(`${year}-${month}-${day}`) > 0)}
               isDueDate={Boolean(daysLeft(`${year}-${month}-${day}`) > 0)}
             />
@@ -444,7 +419,7 @@ export default function TripDetail() {
             onClick={buttonClickHandler}
             disabled={
               (hostUserCheck && nowEnrollmentCount === 0) ||
-              !verifyGenderType(genderType, gender) ||
+              (hostUserCheck && !verifyGenderType(genderType, gender)) ||
               isAccepted ||
               isClosed
             }
@@ -483,10 +458,7 @@ export default function TripDetail() {
             }
           ></ApplyListButton>
         </ButtonContainer>
-        <CompanionsView
-          isOpen={personViewClicked}
-          setIsOpen={setPersonViewClicked}
-        />
+        <CompanionsView isOpen={personViewClicked} setIsOpen={setPersonViewClicked} />
       </TripDetailWrapper>
     </>
   );
