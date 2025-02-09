@@ -12,7 +12,7 @@ import useCommunity from "@/hooks/useCommunity";
 import ResultToast from "../designSystem/toastMessage/resultToast";
 import { editStore } from "@/store/client/editStore";
 import { COMMUNITY_TOAST_MESSAGES } from "@/constants/toastMessages";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
 import { useState } from "react";
 import CheckingModal from "../designSystem/modal/CheckingModal";
@@ -25,6 +25,7 @@ const CommunityPost = () => {
   const { editToastShow, setEditToastShow } = editStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const {
     community: { data, isLoading },
     images,
@@ -53,7 +54,7 @@ const CommunityPost = () => {
       <CheckingModal
         isModalOpen={showLoginModal}
         onClick={() => {
-          setLogin();
+          setLogin(pathname);
           router.push("/login");
         }}
         modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}

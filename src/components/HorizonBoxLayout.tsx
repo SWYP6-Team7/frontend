@@ -11,7 +11,7 @@ import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { authStore } from "@/store/client/authStore";
 import { useState } from "react";
 import CheckingModal from "./designSystem/modal/CheckingModal";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
 import { useBackPathStore } from "@/store/client/backPathStore";
 interface HorizonBoxProps {
@@ -148,7 +148,7 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber);
-
+  const pathname = usePathname();
   const { setLogin } = useBackPathStore();
 
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -170,7 +170,7 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
       <CheckingModal
         isModalOpen={showLoginModal}
         onClick={() => {
-          setLogin();
+          setLogin(pathname);
           router.push("/login");
         }}
         modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}

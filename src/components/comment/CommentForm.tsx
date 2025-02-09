@@ -8,7 +8,7 @@ import { commentStore } from "@/store/client/commentStore";
 import useComment from "@/hooks/comment/useComment";
 import ResultToast from "../designSystem/toastMessage/resultToast";
 import { isGuestUser } from "@/utils/user";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import CommentInput from "../designSystem/input/CommentInput";
 import { useBackPathStore } from "@/store/client/backPathStore";
 
@@ -28,6 +28,7 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
   const [value, setValue] = useState("");
   const { post, postMutation, updateMutation, update } = useComment(relatedType, relatedNumber);
   const { setLogin } = useBackPathStore();
+  const pathname = usePathname();
   const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (inputRef.current) {
       inputRef.current.style.height = "32px";
@@ -82,7 +83,7 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
       paddingBottom={paddingBottom}
       paddingTop={paddingTop}
       onClick={() => {
-        setLogin();
+        setLogin(pathname);
         router.push("/login");
       }}
     >

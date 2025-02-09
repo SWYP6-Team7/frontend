@@ -2,16 +2,17 @@
 import { useBackPathStore } from "@/store/client/backPathStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 export default function LoginButtonForGuest() {
   const router = useRouter();
   const { setLogin } = useBackPathStore();
+  const pathname = usePathname();
   return (
     <LoginButton
       onClick={() => {
-        setLogin();
+        setLogin(pathname);
         router.push("/login");
       }}
     >

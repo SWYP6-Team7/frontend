@@ -16,7 +16,7 @@ import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { formatTime } from "@/utils/time";
 import CustomLink from "./CustomLink";
 import { isGuestUser } from "@/utils/user";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import CheckingModal from "./designSystem/modal/CheckingModal";
 import useSearch from "@/hooks/search/useSearch";
 import { useBackPathStore } from "@/store/client/backPathStore";
@@ -98,6 +98,7 @@ interface BookmarkButtonProps {
 const BookmarkButton = ({ bookmarked, travelNumber, page, setBookmarked }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const { setLogin } = useBackPathStore();
+  const pathname = usePathname();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
   const { postBookmarkMutation, deleteBookmarkMutation, isBookmarkDeleteSuccess, isBookmarkPostSuccess } =
@@ -130,7 +131,7 @@ const BookmarkButton = ({ bookmarked, travelNumber, page, setBookmarked }: Bookm
       <CheckingModal
         isModalOpen={showLoginModal}
         onClick={() => {
-          setLogin();
+          setLogin(pathname);
           router.push("/login");
         }}
         modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}

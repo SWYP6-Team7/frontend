@@ -27,7 +27,7 @@ import { isGuestUser } from "@/utils/user";
 import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import ApplyListButton from "@/components/designSystem/Buttons/ApplyListButton";
 import useViewTransition from "@/hooks/useViewTransition";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { myPageStore } from "@/store/client/myPageStore";
 import { useBackPathStore } from "@/store/client/backPathStore";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
@@ -148,7 +148,7 @@ export default function TripDetail() {
   const DAY = new Date(`${year}/${month}/${day}`);
   const dayOfWeek = WEEKDAY[DAY.getDay()];
   const [personViewClicked, setPersonViewClicked] = useState(false);
-
+  const pathname = usePathname();
   const buttonClickHandler = () => {
     if (isGuestUser()) {
       setShowLoginModal(true);
@@ -241,7 +241,7 @@ export default function TripDetail() {
       <CheckingModal
         isModalOpen={showLoginModal}
         onClick={() => {
-          setLogin();
+          setLogin(pathname);
           router.replace("/login");
         }}
         modalMsg={modalTextForLogin}
