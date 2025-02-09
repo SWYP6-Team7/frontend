@@ -62,7 +62,6 @@ const useAuth = () => {
         accessToken: data.accessToken,
       });
       router.push(login);
-      setLogin("/");
     },
     onError: (error: any) => {
       console.error(error);
@@ -87,7 +86,6 @@ const useAuth = () => {
       });
       console.log("login", login);
       router.push(login);
-      setLogin("/");
     },
     onError: (error: any) => {
       const errorMessage =
@@ -151,6 +149,7 @@ const useAuth = () => {
     onSuccess: () => {
       clearLoginData();
       resetData();
+      setLogin("/");
       setSocialLogin(null, null);
       if (typeof window === "undefined") {
         router.replace("/");
