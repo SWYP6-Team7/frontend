@@ -29,6 +29,7 @@ import ApplyListButton from "@/components/designSystem/Buttons/ApplyListButton";
 import useViewTransition from "@/hooks/useViewTransition";
 import { useParams, useRouter } from "next/navigation";
 import { myPageStore } from "@/store/client/myPageStore";
+import { useBackPathStore } from "@/store/client/backPathStore";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -104,7 +105,7 @@ export default function TripDetail() {
   const { editToastShow, setEditToastShow } = editStore();
   const { companions } = useTripDetail(parseInt(travelNumber));
   const allCompanions = companions.data?.data.companions;
-
+  const { setLogin } = useBackPathStore();
   const alreadyApplied = !!enrollmentNumber;
   //북마크
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
@@ -239,7 +240,10 @@ export default function TripDetail() {
 
       <CheckingModal
         isModalOpen={showLoginModal}
-        onClick={() => router.replace("/login")}
+        onClick={() => {
+          setLogin();
+          router.replace("/login");
+        }}
         modalMsg={modalTextForLogin}
         modalTitle="로그인 안내"
         modalButtonText="로그인"

@@ -13,6 +13,7 @@ import { useState } from "react";
 import CheckingModal from "./designSystem/modal/CheckingModal";
 import { useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
+import { useBackPathStore } from "@/store/client/backPathStore";
 interface HorizonBoxProps {
   daysLeft: number;
   title: string;
@@ -63,8 +64,8 @@ const HorizonBoxLayout = ({
   bookmarkNeed = true,
   travelNumber,
 }: HorizonBoxProps) => {
-  const cutTags =
-    tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
+  const cutTags = tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
+
   return (
     <HorizonBoxContainer>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
@@ -80,20 +81,14 @@ const HorizonBoxLayout = ({
             isDueDate={Boolean(daysLeft >= 0)}
           />
           {bookmarkPosition === "top" && bookmarkNeed && (
-            <BookmarkButton
-              travelNumber={travelNumber}
-              bookmarked={bookmarked}
-            />
+            <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
           )}
         </TopContainer>
         <div>
           <TitleBox>
             <Title>{title}</Title>
             {bookmarkPosition === "middle" && bookmarkNeed && (
-              <BookmarkButton
-                travelNumber={travelNumber}
-                bookmarked={bookmarked}
-              />
+              <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
             )}
           </TitleBox>
           {/* <Description>{description}</Description> */}
@@ -152,11 +147,10 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
-    accessToken!,
-    userId!,
-    travelNumber
-  );
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber);
+
+  const { setLogin } = useBackPathStore();
+
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
@@ -175,7 +169,10 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
     <>
       <CheckingModal
         isModalOpen={showLoginModal}
-        onClick={() => router.push("/login")}
+        onClick={() => {
+          setLogin();
+          router.push("/login");
+        }}
         modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}
         modalTitle="로그인 안내"
         modalButtonText="로그인"
@@ -185,11 +182,7 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
         {bookmarked ? (
           <FullHeartIcon width={24} height={21.4} />
         ) : (
-          <EmptyHeartIcon
-            width={24}
-            height={21.4}
-            stroke={`${palette.비강조3}`}
-          />
+          <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
         )}
       </button>
     </>

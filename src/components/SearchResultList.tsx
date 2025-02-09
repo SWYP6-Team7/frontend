@@ -97,6 +97,7 @@ interface BookmarkButtonProps {
 }
 const BookmarkButton = ({ bookmarked, travelNumber, page, setBookmarked }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
+  const { setLogin } = useBackPathStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
   const { postBookmarkMutation, deleteBookmarkMutation, isBookmarkDeleteSuccess, isBookmarkPostSuccess } =
@@ -128,7 +129,10 @@ const BookmarkButton = ({ bookmarked, travelNumber, page, setBookmarked }: Bookm
     <>
       <CheckingModal
         isModalOpen={showLoginModal}
-        onClick={() => router.push("/login")}
+        onClick={() => {
+          setLogin();
+          router.push("/login");
+        }}
         modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}
         modalTitle="로그인 안내"
         modalButtonText="로그인"

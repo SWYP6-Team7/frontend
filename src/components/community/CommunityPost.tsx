@@ -16,9 +16,11 @@ import { useParams, useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
 import { useState } from "react";
 import CheckingModal from "../designSystem/modal/CheckingModal";
+import { useBackPathStore } from "@/store/client/backPathStore";
 
 const CommunityPost = () => {
   const params = useParams();
+  const { setLogin } = useBackPathStore();
   const communityNumber = params?.communityNumber as string;
   const { editToastShow, setEditToastShow } = editStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -50,7 +52,10 @@ const CommunityPost = () => {
     <>
       <CheckingModal
         isModalOpen={showLoginModal}
-        onClick={() => router.push("/login")}
+        onClick={() => {
+          setLogin();
+          router.push("/login");
+        }}
         modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}
         modalTitle="로그인 안내"
         modalButtonText="로그인"
@@ -109,13 +114,9 @@ const CommunityPost = () => {
                 addStyle={{
                   padding: "11px 16px",
                   fontSize: "16px",
-                  backgroundColor: data.liked
-                    ? palette.keycolorBG
-                    : palette.검색창,
+                  backgroundColor: data.liked ? palette.keycolorBG : palette.검색창,
                   color: data.liked ? palette.keycolor : palette.비강조,
-                  border: data.liked
-                    ? `1px solid ${palette.keycolor}`
-                    : `1px solid ${palette.비강조3}`,
+                  border: data.liked ? `1px solid ${palette.keycolor}` : `1px solid ${palette.비강조3}`,
                   borderRadius: "30px",
                   fontWeight: "400",
                 }}

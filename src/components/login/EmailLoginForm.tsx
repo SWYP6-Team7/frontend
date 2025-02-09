@@ -31,7 +31,6 @@ const EmailLoginForm = () => {
   useEffect(() => {
     if (isSuccess) {
       setFormData({ email: "", password: "" });
-      router.push("/");
     }
   }, [isSuccess]);
 

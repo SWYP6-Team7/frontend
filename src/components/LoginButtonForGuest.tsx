@@ -1,12 +1,23 @@
-'use client'
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+"use client";
+import { useBackPathStore } from "@/store/client/backPathStore";
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 export default function LoginButtonForGuest() {
-  const router = useRouter()
-  return <LoginButton onClick={() => router.push('/login')}>로그인</LoginButton>
+  const router = useRouter();
+  const { setLogin } = useBackPathStore();
+  return (
+    <LoginButton
+      onClick={() => {
+        setLogin();
+        router.push("/login");
+      }}
+    >
+      로그인
+    </LoginButton>
+  );
 }
 const LoginButton = styled.button`
   margin-top: 16px;
@@ -18,4 +29,4 @@ const LoginButton = styled.button`
   border-radius: 40px;
   opacity: 0px;
   background-color: ${palette.keycolor};
-`
+`;

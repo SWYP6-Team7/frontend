@@ -9,6 +9,7 @@ import { IRegisterEmail, IRegisterGoogle, IRegisterKakao } from "@/model/auth";
 import { userStore } from "@/store/client/userStore";
 import { getJWTHeader } from "@/utils/user";
 import { usePathname, useRouter } from "next/navigation";
+import { useBackPathStore } from "@/store/client/backPathStore";
 
 // 로그인, 로그아웃, 이메일회원가입까지 구현
 // 인증 부분을 처리하는 커스텀 훅
@@ -41,23 +42,12 @@ const useAuth = () => {
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const {
-    setLoginData,
-    clearLoginData,
-    accessToken,
-    resetData,
-    setIsGuestUser,
-  } = authStore();
+  const { setLoginData, clearLoginData, accessToken, resetData, setIsGuestUser } = authStore();
   const { setSocialLogin } = userStore();
+  const { setLogin, login } = useBackPathStore();
   const loginEmailMutation = useMutation({
     mutationKey: ["emailLogin"],
-    mutationFn: async ({
-      email,
-      password,
-    }: {
-      email: string;
-      password: string;
-    }) => {
+    mutationFn: async ({ email, password }: { email: string; password: string }) => {
       if (!checkNetworkConnection()) return;
 
       const response = await axiosInstance.post("/api/login", {
@@ -71,6 +61,8 @@ const useAuth = () => {
         userId: Number(data.userId),
         accessToken: data.accessToken,
       });
+      router.push(login);
+      setLogin("/");
     },
     onError: (error: any) => {
       console.error(error);
@@ -79,13 +71,7 @@ const useAuth = () => {
   });
 
   const socialLoginMutation = useMutation({
-    mutationFn: async ({
-      socialLoginId,
-      email,
-    }: {
-      socialLoginId: string;
-      email: string;
-    }) => {
+    mutationFn: async ({ socialLoginId, email }: { socialLoginId: string; email: string }) => {
       if (!checkNetworkConnection()) return;
 
       const response = await axiosInstance.post("/api/social/login", {
@@ -99,13 +85,11 @@ const useAuth = () => {
         userId: Number(data.userId),
         accessToken: data.accessToken,
       });
-      router.push("/");
+      router.push(login);
     },
     onError: (error: any) => {
       const errorMessage =
-        error?.response?.data?.error ||
-        error?.response?.data?.message ||
-        "소셜 로그인 과정에서 문제가 발생했습니다.";
+        error?.response?.data?.error || error?.response?.data?.message || "소셜 로그인 과정에서 문제가 발생했습니다.";
 
       console.error("Error:", errorMessage);
       alert(errorMessage);
@@ -139,9 +123,7 @@ const useAuth = () => {
       const { social, ...data } = formData;
       const finalData = { ...data, ageGroup: data.agegroup };
       const path =
-        formData.social === "google"
-          ? "/api/social/google/complete-signup"
-          : "/api/social/kakao/complete-signup";
+        formData.social === "google" ? "/api/social/google/complete-signup" : "/api/social/kakao/complete-signup";
 
       const response = await axiosInstance.put(path, finalData);
       return response.data;
@@ -162,11 +144,7 @@ const useAuth = () => {
     mutationFn: async () => {
       if (!checkNetworkConnection()) return;
 
-      return await axiosInstance.post(
-        "/api/logout",
-        {},
-        { headers: getJWTHeader(accessToken as string) }
-      );
+      return await axiosInstance.post("/api/logout", {}, { headers: getJWTHeader(accessToken as string) });
     },
     onSuccess: () => {
       clearLoginData();
