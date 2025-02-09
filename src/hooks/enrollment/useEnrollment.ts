@@ -38,7 +38,7 @@ const useEnrollment = (travelNumber: number) => {
       return putLastViewed(travelNumber, accessToken, viewedAt);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: ["enrollmentLastViewed", travelNumber],
       });
     },
@@ -51,14 +51,14 @@ const useEnrollment = (travelNumber: number) => {
     onSuccess: () => {
       // 완료 토스트 메시지를 보여주기 위해 약간의 delay
       setTimeout(() => {
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({
           queryKey: ["enrollment", travelNumber],
         });
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({
           queryKey: ["tripDetail", travelNumber],
         });
       }, 1300);
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: ["tripEnrollment", travelNumber],
       });
     },
@@ -73,13 +73,13 @@ const useEnrollment = (travelNumber: number) => {
       // 완료 수락 모달 메시지를 보여주기 위해 약간의 delay
 
       setTimeout(() => {
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({
           queryKey: ["enrollment", travelNumber],
         });
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({
           queryKey: ["tripDetail", travelNumber],
         });
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({
           queryKey: ["tripEnrollment", travelNumber],
         });
       }, 1300);
@@ -101,14 +101,13 @@ const useEnrollment = (travelNumber: number) => {
   };
 
   const cancelMutation = useMutation({
-    mutationFn: (enrollmentNumber: number) =>
-      cancelEnrollment(enrollmentNumber, accessToken),
+    mutationFn: (enrollmentNumber: number) => cancelEnrollment(enrollmentNumber, accessToken),
   });
 
   const cancel = (enrollmentNumber: number) => {
     return cancelMutation.mutateAsync(enrollmentNumber, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({
           queryKey: ["tripDetail", travelNumber],
         });
       },
