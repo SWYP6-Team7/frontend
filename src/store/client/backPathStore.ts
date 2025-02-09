@@ -1,5 +1,4 @@
 "use client";
-import { usePathname } from "next/navigation";
 import { create } from "zustand";
 
 interface IBackPathStore {
@@ -34,7 +33,7 @@ export const useBackPathStore = create<IBackPathStore>((set) => ({
   },
   login: "/",
   setLogin: (path) => {
-    const pathname = usePathname();
+    const pathname = window.location.pathname;
     set({ login: path ? path : pathname });
   },
 }));
