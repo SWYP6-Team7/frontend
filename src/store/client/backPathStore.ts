@@ -11,7 +11,7 @@ interface IBackPathStore {
   travelDetail: string;
   setTravelDetail: (path: string) => void;
   login: string;
-  setLogin: (path?: undefined | string) => void;
+  setLogin: (path?: string) => void;
 }
 
 export const useBackPathStore = create<IBackPathStore>((set) => ({
@@ -34,6 +34,7 @@ export const useBackPathStore = create<IBackPathStore>((set) => ({
   login: "/",
   setLogin: (path) => {
     const pathname = window.location.pathname;
+    console.log("pathname", pathname);
     set({ login: path ? path : pathname });
   },
 }));
