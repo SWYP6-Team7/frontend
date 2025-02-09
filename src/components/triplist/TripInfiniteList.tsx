@@ -53,7 +53,7 @@ const TripInfiniteList = () => {
           <React.Fragment key={pageIndex}>
             {page.content.map((content, itemIndex) => (
               <BoxContainer key={content.travelNumber}>
-                <button onClick={() => clickTrip(content.travelNumber)}>
+                <div onClick={() => clickTrip(content.travelNumber)}>
                   <HorizonBoxLayout
                     bookmarkNeed={false}
                     bookmarked={content.bookmarked}
@@ -67,7 +67,7 @@ const TripInfiniteList = () => {
                     daysLeft={dayjs(content.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                     recruits={content.nowPerson}
                   />
-                </button>
+                </div>
                 <BookmarkButton travelNumber={content.travelNumber} bookmarked={content.bookmarked} />
               </BoxContainer>
             ))}

@@ -77,7 +77,7 @@ export default function ApplyTrip() {
                 bookmarked,
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <button onClick={() => clickTrip(travelNumber)}>
+                  <div onClick={() => clickTrip(travelNumber)}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       userName={userName}
@@ -90,7 +90,7 @@ export default function ApplyTrip() {
                       recruits={nowPerson}
                       bookmarked={bookmarked}
                     />
-                  </button>
+                  </div>
                   <ApplyTripIconBtns travelNumber={travelNumber} bookmarked={bookmarked} />
                 </BoxContainer>
               )

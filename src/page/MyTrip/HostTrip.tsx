@@ -79,7 +79,7 @@ export default function HostTrip() {
                 nowPerson,
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <button onClick={() => clickTrip(travelNumber)}>
+                  <div onClick={() => clickTrip(travelNumber)}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       location={location}
@@ -92,7 +92,7 @@ export default function HostTrip() {
                       recruits={nowPerson}
                       bookmarked={bookmarked}
                     />
-                  </button>
+                  </div>
                   <HostTripIconBtns travelNumber={travelNumber} bookmarked={bookmarked} />
                 </BoxContainer>
               )

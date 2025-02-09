@@ -43,7 +43,7 @@ const TripAvailable = () => {
             return (
               <BoxContainer key={post.travelNumber}>
                 <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : {}}>
-                  <button onClick={() => clickTrip(post.travelNumber)}>
+                  <div onClick={() => clickTrip(post.travelNumber)}>
                     <HorizonBoxLayout
                       travelNumber={post.travelNumber}
                       location={post.location}
@@ -58,7 +58,7 @@ const TripAvailable = () => {
                       recruits={post.nowPerson}
                       total={post.maxPerson}
                     />
-                  </button>
+                  </div>
                 </Box>
               </BoxContainer>
             );

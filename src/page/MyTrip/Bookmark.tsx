@@ -80,7 +80,7 @@ export default function Bookmark() {
                 bookmarked,
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <button onClick={() => clickTrip(travelNumber)}>
+                  <div onClick={() => clickTrip(travelNumber)}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       userName={userName}
@@ -93,7 +93,7 @@ export default function Bookmark() {
                       recruits={nowPerson}
                       bookmarked={bookmarked}
                     />
-                  </button>
+                  </div>
                   <BookmarkIconBtns travelNumber={travelNumber} bookmarked={bookmarked} />
                 </BoxContainer>
               )

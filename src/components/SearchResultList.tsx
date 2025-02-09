@@ -61,7 +61,7 @@ const SearchResultList = ({
       {searchResult.map((page) =>
         page.content.map((content) => (
           <BoxContainer key={content.travelNumber}>
-            <button onClick={() => clickTrip(content.travelNumber)}>
+            <div onClick={() => clickTrip(content.travelNumber)}>
               <HorizonBoxLayout
                 bookmarkNeed={false}
                 bookmarked={content.bookmarked}
@@ -75,7 +75,7 @@ const SearchResultList = ({
                 daysLeft={dayjs(content.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                 recruits={content.nowPerson}
               />
-            </button>
+            </div>
             <BookmarkButton
               setBookmarked={setBookmarked}
               travelNumber={content.travelNumber}
