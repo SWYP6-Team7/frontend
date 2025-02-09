@@ -16,6 +16,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 const useEnrollment = (travelNumber: number) => {
   const { userId, accessToken } = authStore();
   const { hostUserCheck } = tripDetailStore();
+
   // 주최자 - 목록 조회
   // const enrollmentList = useQuery({
   //   queryKey: ["enrollment", travelNumber],

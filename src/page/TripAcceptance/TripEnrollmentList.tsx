@@ -28,20 +28,16 @@ export default function TripEnrollmentList() {
   const enrollmentList = useQuery({
     queryKey: ["enrollment", travelNumber],
     queryFn: () => getEnrollments(parseInt(travelNumber), accessToken),
-    enabled: !!travelNumber && !!accessToken && hostUserCheck,
+    enabled: !!travelNumber && (!!accessToken || hostUserCheck),
   });
-  const { enrollmentsLastViewed, updateLastViewed } = useEnrollment(
-    parseInt(travelNumber!)
-  );
+  const { enrollmentsLastViewed, updateLastViewed } = useEnrollment(parseInt(travelNumber!));
 
   // 최근에 본 시점.
   const list = enrollmentList.data?.data;
 
   // 처음에는 null 값이니, 생성했을 때 시간 으로 두기.
   const lastViewed =
-    enrollmentsLastViewed.data?.lastViewedAt === null
-      ? createdAt
-      : enrollmentsLastViewed.data?.lastViewedAt;
+    enrollmentsLastViewed.data?.lastViewedAt === null ? createdAt : enrollmentsLastViewed.data?.lastViewedAt;
 
   useEffect(() => {
     // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.
@@ -55,11 +51,7 @@ export default function TripEnrollmentList() {
       {list && lastViewed && (
         <>
           <Count>
-            총
-            <p style={{ marginLeft: "4px", color: palette.keycolor }}>
-              {!list.totalCount ? 0 : list.totalCount}
-            </p>
-            건
+            총<p style={{ marginLeft: "4px", color: palette.keycolor }}>{!list.totalCount ? 0 : list.totalCount}</p>건
           </Count>
           <div style={{ marginTop: "16px" }}>
             {list.enrollments?.map((enrollment: enrollment) => (
