@@ -15,16 +15,23 @@ import { IMyTripList } from "@/model/myTrip";
 import { daysAgo } from "@/utils/time";
 import { isGuestUser } from "@/utils/user";
 import LoginButtonForGuest from "@/components/LoginButtonForGuest";
+import { useRouter } from "next/navigation";
+import { useBackPathStore } from "@/store/client/backPathStore";
 
 export default function ApplyTrip() {
   const [ref, inView] = useInView();
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
-    useMyApplyTrip();
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } = useMyApplyTrip();
+  const { setTravelDetail } = useBackPathStore();
+  const router = useRouter();
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage]);
+  const clickTrip = (travelNumber: number) => {
+    setTravelDetail(`/myTrip`);
+    router.push(`/trip/detail/${travelNumber}`);
+  };
 
   const trips = (data?.pages[0].content as IMyTripList["content"]) ?? [];
 
@@ -46,8 +53,7 @@ export default function ApplyTrip() {
               </>
             ) : (
               <div>
-                아직 신청한 여행이 없어요 <br /> 지금 설레는 첫 여행을
-                찾아볼까요?
+                아직 신청한 여행이 없어요 <br /> 지금 설레는 첫 여행을 찾아볼까요?
               </div>
             )}
           </NoData>
@@ -71,7 +77,7 @@ export default function ApplyTrip() {
                 bookmarked,
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <Link href={`/trip/detail/${travelNumber}`}>
+                  <button onClick={() => clickTrip(travelNumber)}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       userName={userName}
@@ -80,18 +86,12 @@ export default function ApplyTrip() {
                       total={maxPerson}
                       location={location}
                       daysAgo={daysAgo(createdAt)}
-                      daysLeft={dayjs(registerDue, "YYYY-MM-DD").diff(
-                        dayjs().startOf("day"),
-                        "day"
-                      )}
+                      daysLeft={dayjs(registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                       recruits={nowPerson}
                       bookmarked={bookmarked}
                     />
-                  </Link>
-                  <ApplyTripIconBtns
-                    travelNumber={travelNumber}
-                    bookmarked={bookmarked}
-                  />
+                  </button>
+                  <ApplyTripIconBtns travelNumber={travelNumber} bookmarked={bookmarked} />
                 </BoxContainer>
               )
             )}

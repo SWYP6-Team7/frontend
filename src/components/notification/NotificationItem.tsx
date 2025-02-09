@@ -8,6 +8,7 @@ import Badge from "../designSystem/Badge";
 import CommunityNotification from "../icons/CommunityNotification";
 import TripNotificationIcon from "../icons/TripNotificationIcon";
 import { useRouter } from "next/navigation";
+import { useBackPathStore } from "@/store/client/backPathStore";
 
 interface NotificationItemProps {
   data: INotificationContent;
@@ -15,6 +16,7 @@ interface NotificationItemProps {
 
 const NotificationItem = ({ data }: NotificationItemProps) => {
   const router = useRouter();
+  const { setTravelDetail } = useBackPathStore();
   const onclickLink = () => {
     if (data.title === "멤버 댓글 알림") {
       router.push(`/trip/comment/${data.travelNumber}`);
@@ -22,6 +24,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
       router.push(`/community/detail/${data.travelNumber}`);
     } else {
       router.push(`/trip/detail/${data.travelNumber}`);
+      setTravelDetail("/notification");
     }
   };
   return (

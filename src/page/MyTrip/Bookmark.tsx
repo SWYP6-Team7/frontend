@@ -16,11 +16,14 @@ import { daysAgo } from "@/utils/time";
 import { isGuestUser } from "@/utils/user";
 import LoginButtonForGuest from "@/components/LoginButtonForGuest";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useBackPathStore } from "@/store/client/backPathStore";
 
 export default function Bookmark() {
   const [ref, inView] = useInView();
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
-    useBookmark();
+  const { setTravelDetail } = useBackPathStore();
+  const router = useRouter();
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } = useBookmark();
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
@@ -30,6 +33,11 @@ export default function Bookmark() {
   const trips = (data?.pages[0].content as IMyTripList["content"]) ?? [];
 
   const isNoData = trips.length === 0;
+
+  const clickTrip = (travelNumber: number) => {
+    setTravelDetail(`/myTrip`);
+    router.push(`/trip/detail/${travelNumber}`);
+  };
 
   if (isLoading) {
     return null;
@@ -72,7 +80,7 @@ export default function Bookmark() {
                 bookmarked,
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <Link href={`/trip/detail/${travelNumber}`}>
+                  <button onClick={() => clickTrip(travelNumber)}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       userName={userName}
@@ -81,18 +89,12 @@ export default function Bookmark() {
                       tags={tags}
                       total={maxPerson}
                       daysAgo={daysAgo(createdAt)}
-                      daysLeft={dayjs(registerDue, "YYYY-MM-DD").diff(
-                        dayjs().startOf("day"),
-                        "day"
-                      )}
+                      daysLeft={dayjs(registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                       recruits={nowPerson}
                       bookmarked={bookmarked}
                     />
-                  </Link>
-                  <BookmarkIconBtns
-                    travelNumber={travelNumber}
-                    bookmarked={bookmarked}
-                  />
+                  </button>
+                  <BookmarkIconBtns travelNumber={travelNumber} bookmarked={bookmarked} />
                 </BoxContainer>
               )
             )}

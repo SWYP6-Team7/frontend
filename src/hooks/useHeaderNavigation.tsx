@@ -74,14 +74,7 @@ export const useHeaderNavigation = () => {
     setTravelDetail,
   } = useBackPathStore();
   const pathname = usePathname() || "/";
-  const {
-    resetAge,
-    resetForm,
-    resetGender,
-    resetName,
-    socialLogin,
-    setSocialLogin,
-  } = userStore();
+  const { resetAge, resetForm, resetGender, resetName, socialLogin, setSocialLogin } = userStore();
 
   const checkRoute = {
     startsWith: (route: string) => pathname?.startsWith(route),
@@ -177,8 +170,7 @@ export const useHeaderNavigation = () => {
         },
       },
       {
-        condition: () =>
-          pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
+        condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
         action: () => {
           originalRouter.push(ROUTES.REGISTER_PROCESS.AGE);
         },
@@ -231,7 +223,10 @@ export const useHeaderNavigation = () => {
       // 여행 상세 파트
       {
         condition: () => pathname.startsWith(ROUTES.TRIP.DETAIL),
-        action: () => router.back(),
+        action: () => {
+          router.push(travelDetail);
+          setTravelDetail("/");
+        },
       },
 
       // 여행 수정 파트
@@ -352,9 +347,7 @@ export const useHeaderNavigation = () => {
     router.back();
   };
 
-  const shouldShowAlarmIcon = () =>
-    checkRoute.startsWith(ROUTES.MY.TRIP) ||
-    checkRoute.startsWith(ROUTES.MY.PAGE);
+  const shouldShowAlarmIcon = () => checkRoute.startsWith(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.MY.PAGE);
 
   const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE;
 

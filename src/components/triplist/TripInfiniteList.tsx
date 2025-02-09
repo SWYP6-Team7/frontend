@@ -16,9 +16,13 @@ import CustomLink from "../CustomLink";
 import { useRouter, useSearchParams } from "next/navigation";
 import CheckingModal from "../designSystem/modal/CheckingModal";
 import { isGuestUser } from "@/utils/user";
+import useViewTransition from "@/hooks/useViewTransition";
+import { useBackPathStore } from "@/store/client/backPathStore";
 
 const TripInfiniteList = () => {
   const [ref, inView] = useInView();
+  const { setTravelDetail } = useBackPathStore();
+  const navigateWithTransition = useViewTransition();
   const searchParams = useSearchParams();
   const engSort = (() => {
     const value = searchParams?.get("sort");
@@ -28,13 +32,19 @@ const TripInfiniteList = () => {
     return value;
   })();
 
-  const { data, isFetching, hasNextPage, fetchNextPage, isLoading } =
-    useTripList(engSort);
+  const { data, isFetching, hasNextPage, fetchNextPage, isLoading } = useTripList(engSort);
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage]);
+
+  const clickTrip = (travelNumber: number) => {
+    setTravelDetail(`/trip/list`);
+    document.documentElement.style.viewTransitionName = "forward";
+    navigateWithTransition(`/trip/detail/${travelNumber}`);
+  };
+
   return (
     <Container>
       {!isLoading &&
@@ -43,7 +53,7 @@ const TripInfiniteList = () => {
           <React.Fragment key={pageIndex}>
             {page.content.map((content, itemIndex) => (
               <BoxContainer key={content.travelNumber}>
-                <CustomLink to={`/trip/detail/${content.travelNumber}`}>
+                <button onClick={() => clickTrip(content.travelNumber)}>
                   <HorizonBoxLayout
                     bookmarkNeed={false}
                     bookmarked={content.bookmarked}
@@ -54,17 +64,11 @@ const TripInfiniteList = () => {
                     total={content.maxPerson}
                     location={content.location}
                     daysAgo={daysAgo(content.createdAt)}
-                    daysLeft={dayjs(content.registerDue, "YYYY-MM-DD").diff(
-                      dayjs().startOf("day"),
-                      "day"
-                    )}
+                    daysLeft={dayjs(content.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                     recruits={content.nowPerson}
                   />
-                </CustomLink>
-                <BookmarkButton
-                  travelNumber={content.travelNumber}
-                  bookmarked={content.bookmarked}
-                />
+                </button>
+                <BookmarkButton travelNumber={content.travelNumber} bookmarked={content.bookmarked} />
               </BoxContainer>
             ))}
           </React.Fragment>
@@ -81,11 +85,7 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
-    accessToken!,
-    userId!,
-    travelNumber
-  );
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber);
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (isGuestUser()) {
@@ -114,11 +114,7 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
         {bookmarked ? (
           <FullHeartIcon width={24} height={21.4} />
         ) : (
-          <EmptyHeartIcon
-            width={24}
-            height={21.4}
-            stroke={`${palette.비강조3}`}
-          />
+          <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
         )}
       </BookmarkBtn>
     </>

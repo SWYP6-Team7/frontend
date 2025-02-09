@@ -14,11 +14,14 @@ import { useRequestedTrip } from "@/hooks/myTrip/useMyRequestedTrip";
 import LoginButtonForGuest from "@/components/LoginButtonForGuest";
 import { isGuestUser } from "@/utils/user";
 import CustomLink from "@/components/CustomLink";
+import { useBackPathStore } from "@/store/client/backPathStore";
+import useViewTransition from "@/hooks/useViewTransition";
 
 export default function RequestedTrip() {
   const [ref, inView] = useInView();
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } =
-    useRequestedTrip();
+  const { setTravelDetail } = useBackPathStore();
+  const navigateWithTransition = useViewTransition();
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetching } = useRequestedTrip();
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
@@ -28,6 +31,12 @@ export default function RequestedTrip() {
   const trips = (data?.pages[0].content as IMyTripList["content"]) ?? [];
 
   const isNoData = trips.length === 0;
+
+  const clickTrip = (travelNumber: number) => {
+    setTravelDetail(`/requestedTrip`);
+    document.documentElement.style.viewTransitionName = "forward";
+    navigateWithTransition(`/trip/detail/${travelNumber}`);
+  };
 
   if (isLoading) {
     return null;
@@ -77,7 +86,7 @@ export default function RequestedTrip() {
                 bookmarked,
               }) => (
                 <BoxContainer key={travelNumber}>
-                  <CustomLink to={`/trip/detail/${travelNumber}`}>
+                  <button onClick={() => clickTrip(travelNumber)}>
                     <MyTripHorizonBoxLayout
                       travelNumber={travelNumber}
                       userName={userName}
@@ -86,18 +95,12 @@ export default function RequestedTrip() {
                       tags={tags}
                       total={maxPerson}
                       daysAgo={daysAgo(createdAt)}
-                      daysLeft={dayjs(registerDue, "YYYY-MM-DD").diff(
-                        dayjs().startOf("day"),
-                        "day"
-                      )}
+                      daysLeft={dayjs(registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                       recruits={nowPerson}
                       bookmarked={bookmarked}
                     />
-                  </CustomLink>
-                  <BookmarkIconBtns
-                    travelNumber={travelNumber}
-                    bookmarked={bookmarked}
-                  />
+                  </button>
+                  <BookmarkIconBtns travelNumber={travelNumber} bookmarked={bookmarked} />
                 </BoxContainer>
               )
             )}

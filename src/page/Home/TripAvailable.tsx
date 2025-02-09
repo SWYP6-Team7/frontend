@@ -11,12 +11,20 @@ import { IMyTripList } from "@/model/myTrip";
 import { daysAgo } from "@/utils/time";
 import Link from "next/link";
 import { palette } from "@/styles/palette";
+import { useRouter } from "next/navigation";
+import { useBackPathStore } from "@/store/client/backPathStore";
 
 const TripAvailable = () => {
   const { data } = useTripList("recent");
-
+  const router = useRouter();
+  const { setTravelDetail } = useBackPathStore();
   const trips = (data?.pages[0].content as IMyTripList["content"]) ?? [];
   const cutTrips = trips?.length > 9 ? trips.slice(0, 9) : trips;
+  const clickTrip = (travelNumber: number) => {
+    setTravelDetail(`/`);
+
+    router.push(`/trip/detail/${travelNumber}`);
+  };
 
   return (
     <Container>
@@ -35,7 +43,7 @@ const TripAvailable = () => {
             return (
               <BoxContainer key={post.travelNumber}>
                 <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : {}}>
-                  <Link href={`/trip/detail/${post.travelNumber}`}>
+                  <button onClick={() => clickTrip(post.travelNumber)}>
                     <HorizonBoxLayout
                       travelNumber={post.travelNumber}
                       location={post.location}
@@ -50,7 +58,7 @@ const TripAvailable = () => {
                       recruits={post.nowPerson}
                       total={post.maxPerson}
                     />
-                  </Link>
+                  </button>
                 </Box>
               </BoxContainer>
             );

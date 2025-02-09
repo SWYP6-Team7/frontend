@@ -19,6 +19,8 @@ import { isGuestUser } from "@/utils/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import CheckingModal from "./designSystem/modal/CheckingModal";
 import useSearch from "@/hooks/search/useSearch";
+import { useBackPathStore } from "@/store/client/backPathStore";
+import useViewTransition from "@/hooks/useViewTransition";
 dayjs.extend(customParseFormat);
 
 const LIST = ["추천순", "최신순", "등록일순"];
@@ -31,9 +33,20 @@ const SearchResultList = ({
   setBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { sort, setSort } = searchStore();
+  const { setTravelDetail } = useBackPathStore();
+  const navigateWithTransition = useViewTransition();
+
+  const searchParams = useSearchParams();
+  const keyword = searchParams?.get("keyword") ?? "";
 
   const clickSort = (value: string) => {
     setSort(value as "추천순" | "최신순" | "등록일순");
+  };
+
+  const clickTrip = (travelNumber: number) => {
+    setTravelDetail(`/search/travel`);
+    document.documentElement.style.viewTransitionName = "forward";
+    navigateWithTransition(`/trip/detail/${travelNumber}?keyword=${keyword}`);
   };
 
   return (
@@ -48,7 +61,7 @@ const SearchResultList = ({
       {searchResult.map((page) =>
         page.content.map((content) => (
           <BoxContainer key={content.travelNumber}>
-            <CustomLink to={`/trip/detail/${content.travelNumber}`}>
+            <button onClick={() => clickTrip(content.travelNumber)}>
               <HorizonBoxLayout
                 bookmarkNeed={false}
                 bookmarked={content.bookmarked}
@@ -59,13 +72,10 @@ const SearchResultList = ({
                 location={content.location}
                 total={content.maxPerson}
                 daysAgo={formatTime(content.createdAt)}
-                daysLeft={dayjs(content.registerDue, "YYYY-MM-DD").diff(
-                  dayjs().startOf("day"),
-                  "day"
-                )}
+                daysLeft={dayjs(content.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                 recruits={content.nowPerson}
               />
-            </CustomLink>
+            </button>
             <BookmarkButton
               setBookmarked={setBookmarked}
               travelNumber={content.travelNumber}
@@ -85,21 +95,12 @@ interface BookmarkButtonProps {
   page: number;
   setBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const BookmarkButton = ({
-  bookmarked,
-  travelNumber,
-  page,
-  setBookmarked,
-}: BookmarkButtonProps) => {
+const BookmarkButton = ({ bookmarked, travelNumber, page, setBookmarked }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-  const {
-    postBookmarkMutation,
-    deleteBookmarkMutation,
-    isBookmarkDeleteSuccess,
-    isBookmarkPostSuccess,
-  } = useUpdateBookmark(accessToken!, userId!, travelNumber);
+  const { postBookmarkMutation, deleteBookmarkMutation, isBookmarkDeleteSuccess, isBookmarkPostSuccess } =
+    useUpdateBookmark(accessToken!, userId!, travelNumber);
   const searchParams = useSearchParams();
   const keyword = searchParams?.get("keyword") ?? "";
   const { refetch, data } = useSearch({ keyword });
@@ -137,11 +138,7 @@ const BookmarkButton = ({
         {bookmarked ? (
           <FullHeartIcon width={24} height={21.4} />
         ) : (
-          <EmptyHeartIcon
-            width={24}
-            height={21.4}
-            stroke={`${palette.비강조3}`}
-          />
+          <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
         )}
       </BookmarkBtn>
     </>
