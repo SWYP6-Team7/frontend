@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import { getEnrollments } from "@/api/enrollment";
 import { useQuery } from "@tanstack/react-query";
 import { authStore } from "@/store/client/authStore";
+import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 
 interface enrollment {
   enrollmentNumber: number;
@@ -23,15 +24,102 @@ interface enrollment {
 export default function TripEnrollmentList() {
   const params = useParams();
   const travelNumber = params?.travelNumber as string;
-  const { createdAt, hostUserCheck } = tripDetailStore();
   const { accessToken } = authStore();
-  const enrollmentList = useQuery({
-    queryKey: ["enrollment", travelNumber],
-    queryFn: () => getEnrollments(parseInt(travelNumber), accessToken),
-    enabled: !!travelNumber && !!accessToken && hostUserCheck,
-    retry: !!travelNumber && !!accessToken && hostUserCheck,
-  });
-  const { enrollmentsLastViewed, updateLastViewed } = useEnrollment(parseInt(travelNumber!));
+  const { tripDetail } = useTripDetail(parseInt(travelNumber!));
+  const {
+    addProfileUrl,
+    addLocation,
+    addUserName,
+    addUserNumber,
+    addCreatedAt,
+    addTitle,
+    addDetails,
+    addMaxPerson,
+    addGenderType,
+    addDueDate,
+    addPeriodType,
+    addTags,
+    addPostStatus,
+    addNowPerson,
+    addEnrollCount,
+    addBookmarkCount,
+    addHostUserCheck,
+    addViewCount,
+    addTravelNumber,
+    addEnrollmentNumber,
+    createdAt,
+    addUserAgeGroup,
+    addBookmarked,
+    bookmarked,
+  } = tripDetailStore();
+
+  const tripInfos = tripDetail.data?.data;
+  useEffect(() => {
+    console.log(tripInfos);
+    if (tripDetail.isFetched) {
+      const {
+        travelNumber,
+        userNumber,
+        userName,
+        createdAt,
+        location,
+        title,
+        details,
+        maxPerson,
+        genderType,
+        dueDate,
+        periodType,
+        tags,
+        postStatus,
+        nowPerson,
+        bookmarkCount,
+        viewCount,
+        enrollCount,
+        userAgeGroup,
+        profileUrl,
+        loginMemberRelatedInfo,
+      } = tripInfos;
+
+      const [year, month, day] = dueDate.split("-").map((v: string) => +v);
+      const DUEDATE = {
+        year,
+        month,
+        day,
+      };
+      if (!loginMemberRelatedInfo) {
+        addHostUserCheck(false);
+        addEnrollmentNumber(null);
+        addBookmarked(false);
+      } else {
+        addHostUserCheck(loginMemberRelatedInfo.hostUser);
+        addEnrollmentNumber(loginMemberRelatedInfo.enrollmentNumber);
+        addBookmarked(loginMemberRelatedInfo.bookmarked);
+      }
+      addProfileUrl(profileUrl);
+      addTravelNumber(travelNumber);
+
+      addEnrollCount(enrollCount);
+      addCreatedAt(createdAt);
+      addUserNumber(userNumber);
+      addUserName(userName);
+      addLocation(location);
+      addTitle(title);
+      addDetails(details);
+      addMaxPerson(maxPerson);
+      addGenderType(genderType);
+      addDueDate(DUEDATE);
+      addPeriodType(periodType);
+      addTags(tags);
+      addPostStatus(postStatus);
+      addBookmarkCount(bookmarkCount);
+      addViewCount(viewCount);
+
+      addNowPerson(nowPerson);
+      addUserAgeGroup(userAgeGroup);
+      addPostStatus(postStatus);
+    }
+  }, [tripDetail.isFetched, tripInfos]);
+  const { enrollmentsLastViewed, updateLastViewed, enrollmentList } = useEnrollment(parseInt(travelNumber!));
 
   // 최근에 본 시점.
   const list = enrollmentList.data?.data;

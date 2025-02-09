@@ -18,11 +18,11 @@ const useEnrollment = (travelNumber: number) => {
   const { hostUserCheck } = tripDetailStore();
 
   // 주최자 - 목록 조회
-  // const enrollmentList = useQuery({
-  //   queryKey: ["enrollment", travelNumber],
-  //   queryFn: () => getEnrollments(travelNumber, accessToken),
-  //   enabled: !!travelNumber && !!accessToken && hostUserCheck,
-  // });
+  const enrollmentList = useQuery({
+    queryKey: ["enrollment", travelNumber],
+    queryFn: () => getEnrollments(travelNumber, accessToken),
+    enabled: !!travelNumber && !!accessToken && hostUserCheck,
+  });
   // 주최자 - 가장 최근에 봤던 글.
 
   const enrollmentsLastViewed = useQuery({
@@ -120,7 +120,7 @@ const useEnrollment = (travelNumber: number) => {
     cancel,
     cancelMutation,
     applyMutation,
-
+    enrollmentList,
     enrollmentRejectionMutate,
     enrollmentAcceptanceMutate,
     enrollmentsLastViewed,
