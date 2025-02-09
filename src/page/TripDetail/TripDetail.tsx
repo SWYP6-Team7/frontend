@@ -105,7 +105,6 @@ export default function TripDetail() {
   const { editToastShow, setEditToastShow } = editStore();
   const { companions } = useTripDetail(parseInt(travelNumber));
   const allCompanions = companions.data?.data.companions;
-  const { setLogin } = useBackPathStore();
   const alreadyApplied = !!enrollmentNumber;
   //북마크
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
@@ -241,7 +240,7 @@ export default function TripDetail() {
       <CheckingModal
         isModalOpen={showLoginModal}
         onClick={() => {
-          setLogin(pathname);
+          localStorage.setItem("loginPath", pathname);
           router.replace("/login");
         }}
         modalMsg={modalTextForLogin}

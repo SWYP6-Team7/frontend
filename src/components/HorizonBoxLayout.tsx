@@ -149,7 +149,6 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   const router = useRouter();
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber);
   const pathname = usePathname();
-  const { setLogin } = useBackPathStore();
 
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -170,7 +169,7 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
       <CheckingModal
         isModalOpen={showLoginModal}
         onClick={() => {
-          setLogin(pathname);
+          localStorage.setItem("loginPath", pathname);
           router.push("/login");
         }}
         modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}

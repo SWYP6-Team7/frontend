@@ -7,12 +7,11 @@ import React from "react";
 
 export default function LoginButtonForGuest() {
   const router = useRouter();
-  const { setLogin } = useBackPathStore();
   const pathname = usePathname();
   return (
     <LoginButton
       onClick={() => {
-        setLogin(pathname);
+        localStorage.setItem("loginPath", pathname);
         router.push("/login");
       }}
     >

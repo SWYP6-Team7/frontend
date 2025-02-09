@@ -27,7 +27,6 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
   const [isToastShow, setIsToastShow] = useState(false);
   const [value, setValue] = useState("");
   const { post, postMutation, updateMutation, update } = useComment(relatedType, relatedNumber);
-  const { setLogin } = useBackPathStore();
   const pathname = usePathname();
   const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (inputRef.current) {
@@ -83,7 +82,7 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
       paddingBottom={paddingBottom}
       paddingTop={paddingTop}
       onClick={() => {
-        setLogin(pathname);
+        localStorage.setItem("loginPath", pathname);
         router.push("/login");
       }}
     >

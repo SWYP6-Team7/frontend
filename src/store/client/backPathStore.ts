@@ -10,8 +10,6 @@ interface IBackPathStore {
   setCreateTripPlace: (path: "/" | "/trip/list") => void;
   travelDetail: string;
   setTravelDetail: (path: string) => void;
-  login: string;
-  setLogin: (path?: string) => void;
 }
 
 export const useBackPathStore = create<IBackPathStore>((set) => ({
@@ -30,11 +28,5 @@ export const useBackPathStore = create<IBackPathStore>((set) => ({
   travelDetail: "/trip/list",
   setTravelDetail: (path) => {
     set({ travelDetail: path });
-  },
-  login: "/",
-  setLogin: (path) => {
-    const pathname = window.location.pathname;
-    console.log("pathname", pathname);
-    set({ login: path ? path : pathname });
   },
 }));

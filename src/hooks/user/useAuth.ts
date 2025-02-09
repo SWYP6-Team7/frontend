@@ -44,7 +44,6 @@ const useAuth = () => {
   const router = useRouter();
   const { setLoginData, clearLoginData, accessToken, resetData, setIsGuestUser } = authStore();
   const { setSocialLogin } = userStore();
-  const { setLogin, login } = useBackPathStore();
   const loginEmailMutation = useMutation({
     mutationKey: ["emailLogin"],
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
@@ -61,7 +60,10 @@ const useAuth = () => {
         userId: Number(data.userId),
         accessToken: data.accessToken,
       });
-      router.push(login);
+      const loginPath = localStorage.getItem("loginPath");
+      console.log("login", loginPath);
+      router.push(loginPath ? loginPath : "/");
+      localStorage.removeItem("loginPath");
     },
     onError: (error: any) => {
       console.error(error);
@@ -84,8 +86,10 @@ const useAuth = () => {
         userId: Number(data.userId),
         accessToken: data.accessToken,
       });
-      console.log("login", login);
-      router.push(login);
+      const loginPath = localStorage.getItem("loginPath");
+      console.log("login", loginPath);
+      router.push(loginPath ? loginPath : "/");
+      localStorage.removeItem("loginPath");
     },
     onError: (error: any) => {
       const errorMessage =
@@ -149,7 +153,7 @@ const useAuth = () => {
     onSuccess: () => {
       clearLoginData();
       resetData();
-      setLogin("/");
+
       setSocialLogin(null, null);
       if (typeof window === "undefined") {
         router.replace("/");
