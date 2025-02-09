@@ -57,10 +57,10 @@ const useEnrollment = (travelNumber: number) => {
         queryClient.refetchQueries({
           queryKey: ["tripDetail", travelNumber],
         });
+        queryClient.refetchQueries({
+          queryKey: ["tripEnrollment", travelNumber],
+        });
       }, 1300);
-      queryClient.refetchQueries({
-        queryKey: ["tripEnrollment", travelNumber],
-      });
     },
   });
 
