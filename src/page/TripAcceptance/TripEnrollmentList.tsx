@@ -28,7 +28,7 @@ export default function TripEnrollmentList() {
   const enrollmentList = useQuery({
     queryKey: ["enrollment", travelNumber],
     queryFn: () => getEnrollments(parseInt(travelNumber), accessToken),
-    enabled: !!travelNumber && (!!accessToken || hostUserCheck),
+    enabled: !!travelNumber && !!accessToken && hostUserCheck,
   });
   const { enrollmentsLastViewed, updateLastViewed } = useEnrollment(parseInt(travelNumber!));
 
