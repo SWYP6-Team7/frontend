@@ -85,7 +85,9 @@ const useAuth = () => {
         userId: Number(data.userId),
         accessToken: data.accessToken,
       });
+      console.log("login", login);
       router.push(login);
+      setLogin("/");
     },
     onError: (error: any) => {
       const errorMessage =
