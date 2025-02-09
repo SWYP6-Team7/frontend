@@ -50,6 +50,7 @@ function makeQueryClient(updateError: (error: Error) => void, setIsMutationError
       queries: {
         throwOnError: false,
         refetchOnMount: true,
+
         staleTime: 60 * 1000,
       },
 
