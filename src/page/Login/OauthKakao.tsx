@@ -14,11 +14,11 @@ const OauthKakao = () => {
   const { socialLogin, socialLoginMutation } = useAuth();
   const { isError, isSuccess } = socialLoginMutation;
 
-  useEffect(() => {
-    if (socialLoginMutation.isSuccess) {
-      router.push("/");
-    }
-  }, [isSuccess]);
+  // useEffect(() => {
+  //   if (socialLoginMutation.isSuccess) {
+  //     router.push("/");
+  //   }
+  // }, [isSuccess]);
 
   useEffect(() => {
     console.log(code, state, "code");
