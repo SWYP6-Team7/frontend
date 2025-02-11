@@ -22,17 +22,17 @@ function makeQueryClient(updateError: (error: Error) => void, setIsMutationError
           updateError(error);
         }
       },
-      onSuccess: (data: any, query: Query<unknown, unknown, unknown, readonly unknown[]>) => {
-        if (data?.success) {
-        } else {
-          const queryKey = query?.queryKey;
-          if (queryKey?.[0] === "profileImg" || queryKey?.[0] === "relation") {
-            console.log("error handling", data?.error?.reason ?? "에러가 발생했습니다.");
-          } else {
-            updateError(data?.error?.reason ?? "에러가 발생했습니다.");
-          }
-        }
-      },
+      // onSuccess: (data: any, query: Query<unknown, unknown, unknown, readonly unknown[]>) => {
+      //   if (data?.success) {
+      //   } else {
+      //     const queryKey = query?.queryKey;
+      //     if (queryKey?.[0] === "profileImg" || queryKey?.[0] === "relation") {
+      //       console.log("error handling", data?.error?.reason ?? "에러가 발생했습니다.");
+      //     } else {
+      //       updateError(data?.error?.reason ?? "에러가 발생했습니다.");
+      //     }
+      //   }
+      // },
     }),
     mutationCache: new MutationCache({
       onError: (
@@ -55,28 +55,28 @@ function makeQueryClient(updateError: (error: Error) => void, setIsMutationError
           setIsMutationError(true);
         }
       },
-      onSuccess: (
-        data: any,
-        variables: unknown,
-        context: unknown,
-        mutation?: Mutation<unknown, unknown, unknown, unknown>
-      ) => {
-        const mutationKey = mutation?.options?.mutationKey;
-        if (data?.success) {
-        } else {
-          if (
-            mutationKey?.[0] === "refresh" ||
-            mutationKey?.[0] === "verifyEmailCode" ||
-            mutationKey?.[0] === "firstProfileImage" ||
-            mutationKey?.[0] === "emailLogin"
-          ) {
-            console.log("error handling", data?.error?.reason ?? "에러가 발생했습니다.");
-          } else {
-            updateError(data?.error?.reason ?? "에러가 발생했습니다.");
-            setIsMutationError(true);
-          }
-        }
-      },
+      // onSuccess: (
+      //   data: any,
+      //   variables: unknown,
+      //   context: unknown,
+      //   mutation?: Mutation<unknown, unknown, unknown, unknown>
+      // ) => {
+      //   const mutationKey = mutation?.options?.mutationKey;
+      //   if (data?.success) {
+      //   } else {
+      //     if (
+      //       mutationKey?.[0] === "refresh" ||
+      //       mutationKey?.[0] === "verifyEmailCode" ||
+      //       mutationKey?.[0] === "firstProfileImage" ||
+      //       mutationKey?.[0] === "emailLogin"
+      //     ) {
+      //       console.log("error handling", data?.error?.reason ?? "에러가 발생했습니다.");
+      //     } else {
+      //       updateError(data?.error?.reason ?? "에러가 발생했습니다.");
+      //       setIsMutationError(true);
+      //     }
+      //   }
+      // },
     }),
     defaultOptions: {
       // 에러 전파를 위한 설정.
