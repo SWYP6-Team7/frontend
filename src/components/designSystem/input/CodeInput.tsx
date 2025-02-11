@@ -34,6 +34,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
 
     if (currentFocusIndex === -1) {
       refs.current?.forEach((ref) => {
+        console.log("ref", ref);
         if (ref?.value === "") {
           ref?.focus();
           return;
