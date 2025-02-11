@@ -31,7 +31,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
   const handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
     setFocused(true);
     const currentFocusIndex = refs.current?.findIndex((ref) => ref === document.activeElement);
-    console.log(refs);
+    console.log(refs, document.activeElement);
     if (currentFocusIndex === -1) {
       refs.current?.forEach((ref) => {
         console.log("ref", ref);
