@@ -524,9 +524,8 @@ const ProfileContainer = styled.div`
 `;
 const Title = styled.div`
   margin-top: 32px;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
-  line-height: 26.25px;
   text-align: left;
 `;
 const Details = styled.div`
