@@ -40,7 +40,7 @@ const TripRecommendation = () => {
         {cutTrips &&
           cutTrips?.map((post, idx) => (
             <BoxContainer key={post.travelNumber}>
-              <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : { borderBottom: 1 }}>
+              <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : {}}>
                 <div onClick={() => clickTrip(post.travelNumber)}>
                   <HorizonBoxLayout
                     bookmarked={post.bookmarked}
