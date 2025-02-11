@@ -16,7 +16,7 @@ const useVerifyEmail = () => {
         email,
       });
       if (!response.data?.success) {
-        throw new RequestError(response.data?.error.reason);
+        throw new Error(response.data?.error.reason);
       }
       return response.data;
     },
