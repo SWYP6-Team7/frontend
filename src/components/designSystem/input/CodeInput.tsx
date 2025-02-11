@@ -1,7 +1,7 @@
 "use client";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { FocusEvent, FocusEventHandler, FormEvent, KeyboardEvent, RefObject, useState } from "react";
+import { FocusEvent, FocusEventHandler, FormEvent, KeyboardEvent, RefObject, useCallback, useState } from "react";
 
 interface CodeInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   refs: RefObject<(HTMLInputElement | null)[]>;
@@ -15,8 +15,8 @@ interface ContainerProps {
 
 const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInputProps) => {
   const [focused, setFocused] = useState(-1);
-  const bgColor = focused > 0 ? palette.greenVariant : props.value === "" ? palette.검색창 : palette.비강조4;
-  const borderColor = focused > 0 ? palette.keycolor : bgColor;
+  const bgColor = focused >= 0 ? palette.greenVariant : props.value === "" ? palette.검색창 : palette.비강조4;
+  const borderColor = focused >= 0 ? palette.keycolor : bgColor;
 
   const isValidIndex = (index: number): boolean => {
     return index >= 0 && index < 6;
@@ -28,20 +28,23 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
     onValueChange(newValues);
   };
 
-  const handleFocus = (event: FocusEvent<HTMLInputElement>, index: number) => {
-    if (index !== focused) {
-      refs.current?.forEach((ref) => {
-        console.log("ref", ref);
-        if (ref?.value === "") {
-          ref?.focus();
-          setFocused(index);
-          return;
-        }
-      });
-    }
+  const handleFocus = useCallback(
+    (event: FocusEvent<HTMLInputElement>, index: number) => {
+      if (index !== focused) {
+        refs.current?.forEach((ref) => {
+          console.log("ref", ref);
+          if (ref?.value === "") {
+            ref?.focus();
+            setFocused(index);
+            return;
+          }
+        });
+      }
 
-    onFocus?.(event);
-  };
+      onFocus?.(event);
+    },
+    [focused, refs?.current.length]
+  );
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
     setFocused(-1);
