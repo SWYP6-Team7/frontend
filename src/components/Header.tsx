@@ -92,7 +92,6 @@ const RightFlex = styled.div`
 const Title = styled.h2`
   font-size: 20px;
   font-weight: 700;
-  line-height: 23.87px;
 `;
 
 // 레이아웃을 맞추기 위한 빈 공간 할당
