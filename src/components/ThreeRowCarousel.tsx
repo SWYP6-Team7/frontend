@@ -135,7 +135,7 @@ const ThreeRowCarousel = ({
 };
 
 const ContentBox = styled.div<{ isOnboarding: boolean }>`
-  margin-top: ${(props) => (props.isOnboarding ? "0px" : "22px")};
+  margin-top: ${(props) => (props.isOnboarding ? "0px" : "12px")};
   display: flex;
   align-items: center;
   background-color: white;

@@ -137,8 +137,10 @@ const Empty = styled.div`
     font-weight: 400;
     line-height: 22.4px;
   }
+  img {
+    height: 62px;
+    width: 62px;
+  }
 `;
 
-const ContentList = styled.div`
-  margin-top: 16px;
-`;
+const ContentList = styled.div``;

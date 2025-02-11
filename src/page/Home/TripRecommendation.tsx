@@ -66,7 +66,7 @@ const TripRecommendation = () => {
 export default TripRecommendation;
 
 const Container = styled.div`
-  margin-top: 40px;
+  margin-top: 32px;
 `;
 const BoxContainer = styled.div``;
 const Box = styled.div`
