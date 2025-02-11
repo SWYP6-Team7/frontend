@@ -177,13 +177,13 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
         modalButtonText="로그인"
         setModalOpen={setShowLoginModal}
       />
-      <button onClick={bookmarkClickHandler}>
+      <Button onClick={bookmarkClickHandler}>
         {bookmarked ? (
           <FullHeartIcon width={24} height={21.4} />
         ) : (
           <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
         )}
-      </button>
+      </Button>
     </>
   );
 };
@@ -193,6 +193,14 @@ const Bar = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${palette.비강조4};
+`;
+
+const Button = styled.button`
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const HorizonBoxContainer = styled.div`
@@ -208,7 +216,7 @@ const TitleBox = styled.div`
   margin-bottom: 8px;
 `;
 const Title = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   margin-right: 8px;
   line-height: 21.48px;
