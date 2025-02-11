@@ -21,7 +21,7 @@ const Header = () => {
     setNotification(checkRoute.exact(ROUTES.MY.PAGE) ? ROUTES.MY.PAGE : ROUTES.MY.TRIP);
     router.push("/notification");
   };
-
+  console.log();
   const headerBackgroundColorIsGrey = () => {
     return (
       checkRoute.exact(ROUTES.HOME) ||
