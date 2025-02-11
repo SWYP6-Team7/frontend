@@ -15,6 +15,9 @@ const useVerifyEmail = () => {
       const response = await axiosInstance.post("/api/verify/email/send", {
         email,
       });
+      if (!response.data?.success) {
+        throw new RequestError(response.data?.error.reason);
+      }
       return response.data;
     },
     onSuccess: (data) => {
@@ -40,6 +43,9 @@ const useVerifyEmail = () => {
         verifyCode,
         sessionToken,
       });
+      if (!response.data?.success) {
+        throw new RequestError(response.data?.error.reason);
+      }
       return response.data;
     },
     mutationKey: ["verifyEmailCode"],
