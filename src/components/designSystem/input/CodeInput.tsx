@@ -1,7 +1,16 @@
 "use client";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { FocusEvent, FocusEventHandler, FormEvent, KeyboardEvent, RefObject, useCallback, useState } from "react";
+import {
+  FocusEvent,
+  FocusEventHandler,
+  FormEvent,
+  KeyboardEvent,
+  RefObject,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 interface CodeInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   refs: RefObject<(HTMLInputElement | null)[]>;
@@ -28,18 +37,20 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
     onValueChange(newValues);
   };
 
+  useEffect(() => {
+    refs.current?.forEach((ref) => {
+      console.log("ref", ref);
+      if (ref?.value === "") {
+        ref?.focus();
+
+        return;
+      }
+    });
+  }, [focused]);
+
   const handleFocus = useCallback(
     (event: FocusEvent<HTMLInputElement>, index: number) => {
-      if (index !== focused) {
-        refs.current?.forEach((ref) => {
-          console.log("ref", ref);
-          if (ref?.value === "") {
-            ref?.focus();
-            setFocused(index);
-            return;
-          }
-        });
-      }
+      setFocused(index);
 
       onFocus?.(event);
     },
