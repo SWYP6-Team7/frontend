@@ -73,14 +73,13 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
 
   const clickContainer = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    refs.current?.forEach((ref) => {
-      console.log("ref", ref);
-      if (ref?.value === "") {
-        ref?.focus();
-
-        return;
-      }
-    });
+    const firstEmptyRef = refs.current?.find((ref) => ref?.value === "");
+    if (firstEmptyRef) {
+      firstEmptyRef.focus();
+    } else {
+      // 빈 값이 없으면 원래 클릭한 input에 포커스
+      refs.current[refs.current.length - 1]?.focus();
+    }
   };
 
   const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
