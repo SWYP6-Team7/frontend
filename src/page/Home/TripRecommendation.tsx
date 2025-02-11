@@ -35,33 +35,32 @@ const TripRecommendation = () => {
         }
         minWidth="102px"
       />
-      <div style={{ paddingTop: 6 }}>
-        <ThreeRowCarousel>
-          {cutTrips &&
-            cutTrips?.map((post, idx) => (
-              <BoxContainer key={post.travelNumber}>
-                <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : { borderBottom: 1 }}>
-                  <div onClick={() => clickTrip(post.travelNumber)}>
-                    <HorizonBoxLayout
-                      bookmarked={post.bookmarked}
-                      location={post.location}
-                      travelNumber={post.travelNumber}
-                      showTag={false}
-                      bookmarkPosition="middle"
-                      userName={post.userName}
-                      tags={post.tags}
-                      daysAgo={daysAgo(post?.createdAt)}
-                      daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
-                      title={post.title}
-                      recruits={post.nowPerson}
-                      total={post.maxPerson}
-                    />
-                  </div>
-                </Box>
-              </BoxContainer>
-            ))}
-        </ThreeRowCarousel>
-      </div>
+
+      <ThreeRowCarousel>
+        {cutTrips &&
+          cutTrips?.map((post, idx) => (
+            <BoxContainer key={post.travelNumber}>
+              <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : { borderBottom: 1 }}>
+                <div onClick={() => clickTrip(post.travelNumber)}>
+                  <HorizonBoxLayout
+                    bookmarked={post.bookmarked}
+                    location={post.location}
+                    travelNumber={post.travelNumber}
+                    showTag={false}
+                    bookmarkPosition="middle"
+                    userName={post.userName}
+                    tags={post.tags}
+                    daysAgo={daysAgo(post?.createdAt)}
+                    daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
+                    title={post.title}
+                    recruits={post.nowPerson}
+                    total={post.maxPerson}
+                  />
+                </div>
+              </Box>
+            </BoxContainer>
+          ))}
+      </ThreeRowCarousel>
     </Container>
   );
 };

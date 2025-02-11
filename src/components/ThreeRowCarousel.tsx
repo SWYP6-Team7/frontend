@@ -96,7 +96,13 @@ const ThreeRowCarousel = ({
   };
   return (
     <ContentBox isOnboarding={pathname === "/onBoardingOne"}>
-      <div style={{ width: "100%", marginBottom: pathname === "/onBoardingOne" ? "32px" : "0" }}>
+      <div
+        style={{
+          width: "100%",
+          marginBottom: pathname === "/onBoardingOne" ? "32px" : "0",
+          paddingTop: pathname === "/onBoardingOne" ? "0px" : "6px",
+        }}
+      >
         <Slider
           beforeChange={(currentSlide: number, nextSlide: number) => setCurrentSlideNumber(nextSlide)}
           ref={slickRef}

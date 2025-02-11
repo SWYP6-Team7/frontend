@@ -199,6 +199,8 @@ const Button = styled.button`
   width: 32px;
   height: 32px;
   display: flex;
+  margin-top: 11px;
+  margin-bottom: 4px;
   align-items: center;
   justify-content: center;
 `;
@@ -220,7 +222,7 @@ const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
   margin-right: 8px;
-  line-height: 21.48px;
+  line-height: 19px;
 `;
 
 const Location = styled.div`
@@ -245,7 +247,8 @@ const RecruitingBox = styled.div`
 const TopContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 32px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   justify-content: space-between;
   align-items: center;
 `;
@@ -264,7 +267,7 @@ const UserBox = styled.div`
   color: ${palette.비강조};
   font-size: 12px;
   text-align: center;
-  line-height: 16.71px;
+  line-height: 17x;
   font-weight: 400;
 `;
 const UserName = styled.div`
