@@ -31,6 +31,7 @@ const useVerifyEmail = () => {
     },
     onError: (error: any) => {
       console.error(error);
+      throw new RequestError(error);
     },
   });
 
