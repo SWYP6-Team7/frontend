@@ -55,7 +55,7 @@ const TripInfiniteList = () => {
               <BoxContainer key={content.travelNumber}>
                 <div onClick={() => clickTrip(content.travelNumber)}>
                   <HorizonBoxLayout
-                    bookmarkNeed={false}
+                    bookmarkNeed={true}
                     bookmarked={content.bookmarked}
                     travelNumber={content.travelNumber}
                     userName={content.userName}
@@ -68,7 +68,6 @@ const TripInfiniteList = () => {
                     recruits={content.nowPerson}
                   />
                 </div>
-                <BookmarkButton travelNumber={content.travelNumber} bookmarked={content.bookmarked} />
               </BoxContainer>
             ))}
           </React.Fragment>

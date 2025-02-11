@@ -23,7 +23,7 @@ const TripRecommendation = () => {
 
     router.push(`/trip/detail/${travelNumber}`);
   };
-
+  console.log("cut", cutTrips);
   return (
     <Container>
       <TitleContainer
