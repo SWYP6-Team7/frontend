@@ -43,7 +43,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
 
       onFocus?.(event);
     },
-    [focused, refs?.current.length]
+    [focused]
   );
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
