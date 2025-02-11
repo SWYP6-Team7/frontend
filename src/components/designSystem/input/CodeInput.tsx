@@ -40,6 +40,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
 
   const handleFocus = useCallback(
     (event: FocusEvent<HTMLInputElement>, index: number) => {
+      event.stopPropagation();
       setFocused(index);
 
       onFocus?.(event);
