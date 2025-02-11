@@ -71,10 +71,6 @@ const Container = styled.div`
 `;
 const BoxContainer = styled.div``;
 const Box = styled.div`
-  &:last-of-type {
-    border-bottom: 0px;
-  }
-
   border-bottom: 1px solid ${palette.비강조4};
   height: 90px;
   box-sizing: content-box;

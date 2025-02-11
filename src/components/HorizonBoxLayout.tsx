@@ -72,15 +72,17 @@ const HorizonBoxLayout = ({
 
       <PostInfo>
         <TopContainer>
-          <Badge
-            height={"22px"}
-            text={"마감"}
-            backgroundColor={"rgba(227, 239, 217, 1)"}
-            color={`${palette.keycolor}`}
-            daysLeft={daysLeft >= 0 ? daysLeft : undefined}
-            isClose={!Boolean(daysLeft >= 0)}
-            isDueDate={Boolean(daysLeft >= 0)}
-          />
+          <BadgeContainer>
+            <Badge
+              height={"22px"}
+              text={"마감"}
+              backgroundColor={"rgba(227, 239, 217, 1)"}
+              color={`${palette.keycolor}`}
+              daysLeft={daysLeft >= 0 ? daysLeft : undefined}
+              isClose={!Boolean(daysLeft >= 0)}
+              isDueDate={Boolean(daysLeft >= 0)}
+            />
+          </BadgeContainer>
           {bookmarkPosition === "top" && bookmarkNeed && (
             <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
           )}
@@ -248,8 +250,7 @@ const RecruitingBox = styled.div`
 const TopContainer = styled.div`
   display: flex;
   width: 100%;
-  margin-top: 8px;
-  margin-bottom: 8px;
+
   justify-content: space-between;
   align-items: center;
 `;
@@ -281,5 +282,10 @@ const UserName = styled.div`
 const Tags = styled.div`
   display: flex;
   justify-content: space-betweens;
+`;
+
+const BadgeContainer = styled.div`
+  margin-top: 8px;
+  margin-bottom: 8px;
 `;
 export default HorizonBoxLayout;
