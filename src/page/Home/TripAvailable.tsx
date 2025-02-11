@@ -55,6 +55,7 @@ const TripAvailable = () => {
                       daysAgo={daysAgo(post?.createdAt)}
                       daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                       title={post.title}
+                      isBar={idx !== cutTrips.length - 1}
                       recruits={post.nowPerson}
                       total={post.maxPerson}
                     />
@@ -70,14 +71,14 @@ const TripAvailable = () => {
 export default TripAvailable;
 
 const Container = styled.div`
-  margin-top: 40px;
+  margin-top: 32px;
   width: 100%;
 `;
 const BoxContainer = styled.div``;
 
 const Box = styled.div`
   border-bottom: 1px solid ${palette.비강조4};
-
+  height: 90px;
   margin: 0 16px;
-  padding: 18px 0;
+  padding: 10px 0;
 `;
