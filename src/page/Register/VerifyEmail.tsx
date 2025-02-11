@@ -25,6 +25,7 @@ const VerifyEmail = () => {
   const isSocialLoginGoogle = socialLogin === "google";
   const isSocialLoginKakao = socialLogin === "kakao";
   const isSocialLoginNaver = socialLogin === "naver";
+  const sessionToken = sessionStorage.getItem("sessionToken");
   const handleValueChange = (newValues: string[]) => {
     setValues(newValues.join(""));
   };
@@ -33,8 +34,11 @@ const VerifyEmail = () => {
     if (isSocialLoginGoogle || isSocialLoginNaver) {
       setSocialLogin(null, null);
       router.replace("/login");
+    } else if (email === "") {
+      router.replace("/registerEmail");
     }
-  }, [socialLogin]);
+  }, [socialLogin, email]);
+
   const submitVerifyCode = () => {
     if (values.length !== 6) {
       return;
