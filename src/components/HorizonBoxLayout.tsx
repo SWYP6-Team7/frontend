@@ -210,7 +210,6 @@ const HorizonBoxContainer = styled.div`
   align-items: center;
 `;
 const TitleBox = styled.div`
-  margin-top: 8px;
   display: flex;
   width: 100%;
   justify-content: space-between;
