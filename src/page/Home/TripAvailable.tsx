@@ -42,7 +42,7 @@ const TripAvailable = () => {
           cutTrips?.map((post, idx) => {
             return (
               <BoxContainer key={post.travelNumber}>
-                <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : {}}>
+                <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : { borderBottom: 1 }}>
                   <div onClick={() => clickTrip(post.travelNumber)}>
                     <HorizonBoxLayout
                       travelNumber={post.travelNumber}
@@ -55,7 +55,6 @@ const TripAvailable = () => {
                       daysAgo={daysAgo(post?.createdAt)}
                       daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                       title={post.title}
-                      isBar={idx !== cutTrips.length - 1}
                       recruits={post.nowPerson}
                       total={post.maxPerson}
                     />
