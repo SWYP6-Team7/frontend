@@ -268,7 +268,7 @@ const UserBox = styled.div`
   color: ${palette.비강조};
   font-size: 12px;
   text-align: center;
-  line-height: 17x;
+  line-height: 17px;
   font-weight: 400;
 `;
 const UserName = styled.div`

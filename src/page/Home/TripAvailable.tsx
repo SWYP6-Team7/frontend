@@ -43,7 +43,7 @@ const TripAvailable = () => {
           cutTrips?.map((post, idx) => {
             return (
               <BoxContainer key={post.travelNumber}>
-                <Box style={(idx + 1) % cutTrips.length === 0 ? { borderBottom: 0 } : {}}>
+                <Box style={(idx + 1) % 3 === 0 || cutTrips.length === idx + 1 ? { borderBottom: 0 } : {}}>
                   <div onClick={() => clickTrip(post.travelNumber)}>
                     <HorizonBoxLayout
                       travelNumber={post.travelNumber}
