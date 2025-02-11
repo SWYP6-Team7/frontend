@@ -4,8 +4,10 @@ import React from "react";
 import { checkNetworkConnection } from "./user/useAuth";
 import { axiosInstance } from "@/api";
 import RequestError from "@/context/ReqeustError";
+import { errorStore } from "@/store/client/errorStore";
 
 const useVerifyEmail = () => {
+  const { updateError, setIsMutationError } = errorStore();
   const verifyEmailSend = useMutation({
     mutationFn: async ({ email }: { email: string }) => {
       if (!checkNetworkConnection()) return;
@@ -21,7 +23,8 @@ const useVerifyEmail = () => {
         sessionStorage.setItem("sessionToken", data.success.sessionToken);
       } else {
         console.error(data.error.reason);
-        throw new RequestError(data.error.reason);
+        updateError(data.error.reason);
+        setIsMutationError(true);
       }
     },
     onError: (error: any) => {
@@ -47,7 +50,8 @@ const useVerifyEmail = () => {
       if (data.success) {
       } else {
         console.error(data.error.reason);
-        throw new RequestError(data.error.reason);
+        updateError(data.error.reason);
+        setIsMutationError(true);
       }
     },
     onError: (error: any) => {
