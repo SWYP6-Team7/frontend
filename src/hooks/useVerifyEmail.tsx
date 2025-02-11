@@ -22,14 +22,12 @@ const useVerifyEmail = () => {
       if (data.success) {
         sessionStorage.setItem("sessionToken", data.success.sessionToken);
       } else {
-        console.error(data.error.reason);
         updateError(data.error.reason);
         setIsMutationError(true);
       }
     },
     onError: (error: any) => {
       console.error(error);
-      throw new RequestError(error);
     },
   });
 
