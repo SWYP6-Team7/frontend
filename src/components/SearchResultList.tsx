@@ -63,7 +63,7 @@ const SearchResultList = ({
           <BoxContainer key={content.travelNumber}>
             <div onClick={() => clickTrip(content.travelNumber)}>
               <HorizonBoxLayout
-                bookmarkNeed={false}
+                bookmarkNeed={true}
                 bookmarked={content.bookmarked}
                 travelNumber={content.travelNumber}
                 userName={content.userName}
@@ -76,12 +76,6 @@ const SearchResultList = ({
                 recruits={content.nowPerson}
               />
             </div>
-            <BookmarkButton
-              setBookmarked={setBookmarked}
-              travelNumber={content.travelNumber}
-              bookmarked={content.bookmarked}
-              page={page.page.number ?? 0}
-            />
           </BoxContainer>
         ))
       )}
