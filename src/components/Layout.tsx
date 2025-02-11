@@ -23,7 +23,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
     useMyPage();
-
+  console.log(data, "user data");
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
   const isCommunityDetail = pathname?.startsWith("/community/detail");

@@ -61,12 +61,7 @@ const Home = () => {
     <HomeContainer>
       <HomeHeader scrolled={scrolled}>
         <HeaderTitle>
-          <img
-            src={"/images/homeLogo.png"}
-            width={96}
-            height={24}
-            alt="홈 모잉의 로고입니다"
-          />
+          <img src={"/images/homeLogo.png"} width={96} height={24} alt="홈 모잉의 로고입니다" />
           {isGuestUser() ? (
             <Alarm></Alarm>
           ) : (
@@ -162,7 +157,7 @@ const HeaderTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
+  height: 48px;
 `;
 const Text = styled.div`
   font-size: 24px;

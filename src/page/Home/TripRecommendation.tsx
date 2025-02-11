@@ -77,5 +77,5 @@ const Box = styled.div`
   border-bottom: 1px solid ${palette.비강조4};
 
   margin: 0 16px;
-  padding: 18px 16px;
+  padding: 18px 0;
 `;
