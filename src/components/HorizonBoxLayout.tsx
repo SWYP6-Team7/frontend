@@ -72,7 +72,7 @@ const HorizonBoxLayout = ({
 
       <PostInfo>
         <TopContainer>
-          <BadgeContainer>
+          <BadgeContainer isMargin={bookmarkPosition === "middle"}>
             <Badge
               height={"22px"}
               text={"마감"}
@@ -84,7 +84,7 @@ const HorizonBoxLayout = ({
             />
           </BadgeContainer>
           {bookmarkPosition === "top" && bookmarkNeed && (
-            <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
+            <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} bookmarkPosition={bookmarkPosition} />
           )}
         </TopContainer>
         <div>
@@ -137,7 +137,7 @@ const HorizonBoxLayout = ({
         )}
       </PostInfo>
       {bookmarkPosition === "middle" && bookmarkNeed && (
-        <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
+        <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} bookmarkPosition={bookmarkPosition} />
       )}
     </HorizonBoxContainer>
   );
@@ -145,8 +145,9 @@ const HorizonBoxLayout = ({
 interface BookmarkButtonProps {
   bookmarked: boolean;
   travelNumber: number;
+  bookmarkPosition?: "top" | "middle";
 }
-const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
+const BookmarkButton = ({ bookmarked, travelNumber, bookmarkPosition }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
@@ -180,7 +181,7 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
         modalButtonText="로그인"
         setModalOpen={setShowLoginModal}
       />
-      <Button onClick={bookmarkClickHandler}>
+      <Button isMargin={bookmarkPosition === "middle"} onClick={bookmarkClickHandler}>
         {bookmarked ? (
           <FullHeartIcon width={24} height={21.4} />
         ) : (
@@ -198,12 +199,13 @@ const Bar = styled.div`
   background-color: ${palette.비강조4};
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ isMargin: boolean }>`
   width: 32px;
   height: 32px;
   display: flex;
-  margin-top: 11px;
-  margin-bottom: 4px;
+
+  margin-top: ${(props) => (props.isMargin ? "11px" : 0)};
+  margin-bottom: ${(props) => (props.isMargin ? "4px" : 0)};
   align-items: center;
   justify-content: center;
 `;
@@ -284,8 +286,8 @@ const Tags = styled.div`
   justify-content: space-betweens;
 `;
 
-const BadgeContainer = styled.div`
-  margin-top: 8px;
-  margin-bottom: 8px;
+const BadgeContainer = styled.div<{ isMargin: boolean }>`
+  margin-top: ${(props) => (props.isMargin ? "8px" : 0)};
+  margin-bottom: ${(props) => (props.isMargin ? "8px" : 0)};
 `;
 export default HorizonBoxLayout;
