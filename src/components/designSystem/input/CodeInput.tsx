@@ -6,6 +6,7 @@ import {
   FocusEventHandler,
   FormEvent,
   KeyboardEvent,
+  MouseEvent,
   RefObject,
   useCallback,
   useEffect,
@@ -37,17 +38,6 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
     onValueChange(newValues);
   };
 
-  useEffect(() => {
-    refs.current?.forEach((ref) => {
-      console.log("ref", ref);
-      if (ref?.value === "") {
-        ref?.focus();
-
-        return;
-      }
-    });
-  }, [focused]);
-
   const handleFocus = useCallback(
     (event: FocusEvent<HTMLInputElement>, index: number) => {
       setFocused(index);
@@ -78,6 +68,18 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
       refs.current[index + 1]?.focus();
     }
     updateValues();
+  };
+
+  const clickContainer = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    refs.current?.forEach((ref) => {
+      console.log("ref", ref);
+      if (ref?.value === "") {
+        ref?.focus();
+
+        return;
+      }
+    });
   };
 
   const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
@@ -118,7 +120,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
   };
 
   return (
-    <Container bgColor={bgColor} borderColor={borderColor}>
+    <Container bgColor={bgColor} borderColor={borderColor} onClick={clickContainer}>
       {[...Array(6)].map((_, index) => (
         <InputContainer key={index}>
           <StyledLabel>
