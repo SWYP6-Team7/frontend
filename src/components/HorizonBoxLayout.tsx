@@ -73,6 +73,7 @@ const HorizonBoxLayout = ({
       <PostInfo>
         <TopContainer>
           <Badge
+            height={"22px"}
             text={"마감"}
             backgroundColor={"rgba(227, 239, 217, 1)"}
             color={`${palette.keycolor}`}
@@ -273,7 +274,7 @@ const UserBox = styled.div`
 const UserName = styled.div`
   font-size: 14px;
   font-weight: 400;
-  line-height: 16.71px;
+  line-height: 17px;
 
   color: ${palette.기본};
 `;
