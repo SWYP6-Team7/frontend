@@ -205,7 +205,7 @@ const Button = styled.button<{ isMargin: boolean }>`
   display: flex;
 
   margin-top: ${(props) => (props.isMargin ? "11px" : 0)};
-  margin-bottom: ${(props) => (props.isMargin ? "4px" : 0)};
+  margin-bottom: ${(props) => (props.isMargin ? "4px" : "3px")};
   align-items: center;
   justify-content: center;
 `;
