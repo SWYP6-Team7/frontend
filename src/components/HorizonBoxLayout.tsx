@@ -87,9 +87,6 @@ const HorizonBoxLayout = ({
         <div>
           <TitleBox>
             <Title>{title}</Title>
-            {bookmarkPosition === "middle" && bookmarkNeed && (
-              <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
-            )}
           </TitleBox>
           {/* <Description>{description}</Description> */}
           <UserBox>
@@ -136,6 +133,9 @@ const HorizonBoxLayout = ({
           </Tags>
         )}
       </PostInfo>
+      {bookmarkPosition === "middle" && bookmarkNeed && (
+        <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
+      )}
     </HorizonBoxContainer>
   );
 };
@@ -206,6 +206,8 @@ const Button = styled.button`
 const HorizonBoxContainer = styled.div`
   width: 100%;
   /* height: 120px; */
+  display: flex;
+  align-items: center;
 `;
 const TitleBox = styled.div`
   margin-top: 8px;
@@ -253,6 +255,7 @@ const Recruiting = styled.div`
 `;
 const PostInfo = styled.div`
   width: 100%;
+  flex: 1;
 `;
 const UserBox = styled.div`
   display: flex;
