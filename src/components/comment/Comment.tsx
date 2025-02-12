@@ -128,14 +128,16 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
             isReplied={(isReply && parentNumber === comment.commentNumber) || comment.commented}
             onClick={onClickReply}
           >
-            <CommentIcon
-              stroke={(isReply && parentNumber === comment.commentNumber) || comment.commented ? "none" : undefined}
-              fill={
-                (isReply && parentNumber === comment.commentNumber) || comment.commented
-                  ? palette.keycolor
-                  : "transparent"
-              }
-            />
+            <Icon>
+              <CommentIcon
+                stroke={(isReply && parentNumber === comment.commentNumber) || comment.commented ? "none" : undefined}
+                fill={
+                  (isReply && parentNumber === comment.commentNumber) || comment.commented
+                    ? palette.keycolor
+                    : "transparent"
+                }
+              />
+            </Icon>
             {comment.repliesCount > 0 ? <div>{`답글 ${comment.repliesCount}`}</div> : <div>답글달기</div>}
           </Reply>
         )}
@@ -202,6 +204,14 @@ const UserName = styled.div`
   color: ${palette.기본};
 `;
 
+const Icon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+`;
+
 const Day = styled.div`
   font-size: 14px;
   font-weight: 400;
@@ -242,7 +252,6 @@ const Reply = styled.button<{ isReplied: boolean }>`
   display: flex;
   align-items: center;
   color: ${(props) => (props.isReplied ? palette.keycolor : palette.비강조2)};
-  gap: 6px;
 `;
 
 export default Comment;
