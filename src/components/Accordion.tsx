@@ -115,15 +115,15 @@ const Tab = styled.label<{ isCreateTripPage: boolean }>`
 `;
 
 const Content = styled.div<{ checked: boolean; isCreateTripPage: boolean }>`
-  max-height: ${(props) => (props.checked ? "auto" : "0")};
-  overflow: hidden;
+  max-height: ${(props) => (props.checked ? (props.isCreateTripPage ? "55svh" : "25svh") : "0")};
+
   padding: ${(props) => (props.checked ? "1.7svh" : "0 1.7svh")};
-  opacity: ${(props) => (props.checked ? "1" : "0")};
+  opacity: ${(props) => (props.checked ? "1" : "0 ")};
+
   transform: ${(props) => (props.checked ? "translateY(0)" : "translateY(20px)")};
   transition:
-    opacity 0.5s ease,
-    padding 0.5s ease,
-    max-height 0.5s ease;
+    max-height 0.5s ease,
+    padding 0.5s ease;
 `;
 
 const List = styled.li`
