@@ -122,8 +122,9 @@ const Content = styled.div<{ checked: boolean; isCreateTripPage: boolean }>`
 
   transform: ${(props) => (props.checked ? "translateY(0)" : "translateY(20px)")};
   transition:
-    max-height 0.3s ease,
-    padding 0.3s ease;
+    max-height 0.5s ease,
+    padding 0.5s ease;
+  opacity: 0.5s ease;
 `;
 
 const List = styled.li`
