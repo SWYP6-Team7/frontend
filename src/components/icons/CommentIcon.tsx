@@ -1,25 +1,16 @@
-'use client'
-import { palette } from '@/styles/palette'
-import React from 'react'
+"use client";
+import { palette } from "@/styles/palette";
+import React from "react";
 
 interface CommentIconProps {
-  fill?: string
-  size?: number
-  stroke?: string
+  fill?: string;
+  size?: number;
+  stroke?: string;
 }
 
-const CommentIcon = ({
-  size = 15,
-  fill = 'transparent',
-  stroke = palette.비강조2
-}: CommentIconProps) => {
+const CommentIcon = ({ size = 15, fill = "transparent", stroke = palette.비강조2 }: CommentIconProps) => {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 15 15"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg">
+    <svg width={size} height={size} viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         stroke={stroke}
         stroke-linecap="round"
@@ -28,7 +19,7 @@ const CommentIcon = ({
         fill={fill}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default CommentIcon
+export default CommentIcon;
