@@ -1,6 +1,6 @@
 "use client";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SelectArrow from "./icons/SelectArrow";
 import { palette } from "@/styles/palette";
 import Vector from "./icons/Vector";
@@ -20,9 +20,18 @@ const Accordion = ({
   initialChecked: boolean;
 }) => {
   const [isChecked, setIsChecked] = useState(initialChecked);
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null); // 콘텐츠 참조 추가
   const pathname = usePathname();
   const isCreateTripPage = pathname === "/createTripDetail";
   const isEditTripPage = pathname?.startsWith("/trip/edit");
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const paddingHeight = 1.7 * 2 * (window.innerHeight / 100); // svh 값을 픽셀로 계산
+      setContentHeight(contentRef.current.scrollHeight + paddingHeight);
+    }
+  }, [isChecked]);
 
   return (
     <List>
@@ -47,7 +56,12 @@ const Accordion = ({
           {isCreateTripPage ? <Vector stroke={palette.비강조} /> : <SelectArrow width={12} height={6} />}
         </div>
       </Tab>
-      <Content checked={isChecked} isCreateTripPage={isCreateTripPage || Boolean(isEditTripPage)}>
+      <Content
+        ref={contentRef} // ref 추가
+        isChecked={isChecked}
+        contentHeight={contentHeight} // 동적으로 계산된 높이 전달
+        isCreateTripPage={isCreateTripPage || Boolean(isEditTripPage)}
+      >
         {children}
       </Content>
       {isCreateTripPage && isChecked && (
@@ -114,16 +128,17 @@ const Tab = styled.label<{ isCreateTripPage: boolean }>`
   cursor: pointer;
 `;
 
-const Content = styled.div<{ checked: boolean; isCreateTripPage: boolean }>`
-  max-height: ${(props) => (props.checked ? (props.isCreateTripPage ? "55svh" : "25svh") : "0")};
-
-  padding: ${(props) => (props.checked ? "1.7svh" : "0 1.7svh")};
-  opacity: ${(props) => (props.checked ? "1" : "0 ")};
-
-  transform: ${(props) => (props.checked ? "translateY(0)" : "translateY(20px)")};
+const Content = styled.div<{ isChecked: boolean; contentHeight: number; isCreateTripPage: boolean }>`
+  height: ${(props) => (props.isChecked ? `${props.contentHeight}px` : "0px")};
+  overflow: hidden;
+  padding: ${(props) => (props.isChecked ? "1.7svh" : "0 1.7svh")};
+  opacity: ${(props) => (props.isChecked ? "1" : "0")};
+  transform: ${(props) => (props.isChecked ? "translateY(0)" : "translateY(20px)")};
   transition:
-    max-height 0.5s ease,
-    padding 0.5s ease;
+    height 0.4s ease-in-out,
+    padding 0.4s ease-in-out,
+    opacity 0.4s ease-in-out,
+    transform 0.4s ease-in-out;
 `;
 
 const List = styled.li`
