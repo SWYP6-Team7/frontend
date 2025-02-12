@@ -115,7 +115,7 @@ const Tab = styled.label<{ isCreateTripPage: boolean }>`
 `;
 
 const Content = styled.div<{ checked: boolean; isCreateTripPage: boolean }>`
-  height: ${(props) => (props.checked ? "auto" : "0")};
+  max-height: ${(props) => (props.checked ? "auto" : "0")};
   overflow: hidden;
   padding: ${(props) => (props.checked ? "1.7svh" : "0 1.7svh")};
   opacity: ${(props) => (props.checked ? "1" : "0")};
@@ -123,7 +123,7 @@ const Content = styled.div<{ checked: boolean; isCreateTripPage: boolean }>`
   transition:
     opacity 0.5s ease,
     padding 0.5s ease,
-    height 0.5s ease;
+    max-height 0.5s ease;
 `;
 
 const List = styled.li`
