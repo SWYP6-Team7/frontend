@@ -43,6 +43,13 @@ const useComment = (relatedType: "travel" | "community", relatedNumber: number) 
   const post = (data: ICommentPost) => {
     return postMutation.mutateAsync(data, {
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["community", relatedNumber],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["tripDetail", relatedNumber],
+        });
+
         if (commentList.data) {
           queryClient.invalidateQueries({
             queryKey: ["comments", relatedType, relatedNumber],
@@ -60,6 +67,12 @@ const useComment = (relatedType: "travel" | "community", relatedNumber: number) 
   const update = (data: { content: string; commentNumber: number }) => {
     return updateMutation.mutateAsync(data, {
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["community", relatedNumber],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["tripDetail", relatedNumber],
+        });
         if (commentList.data) {
           queryClient.invalidateQueries({
             queryKey: ["comments", relatedType, relatedNumber],
@@ -76,6 +89,12 @@ const useComment = (relatedType: "travel" | "community", relatedNumber: number) 
   const remove = (data: { commentNumber: number }) => {
     return removeMutation.mutateAsync(data, {
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["community", relatedNumber],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["tripDetail", relatedNumber],
+        });
         if (commentList.data) {
           queryClient.invalidateQueries({
             queryKey: ["comments", relatedType, relatedNumber],
