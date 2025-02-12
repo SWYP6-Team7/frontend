@@ -40,13 +40,13 @@ export default function MyTrip() {
 
   const tabClickHandler = (tab: number) => {
     setActiveTab(tab);
-    if (!(document as any).startViewTransition) {
-      return;
-    }
-    (document as any).startViewTransition(() => {
-      tabView.style.viewTransitionName = "tabView";
-      document.documentElement.style.viewTransitionName = "";
-    });
+    // if (!(document as any).startViewTransition) {
+    //   return;
+    // }
+    // (document as any).startViewTransition(() => {
+    //   tabView.style.viewTransitionName = "tabView";
+    //   document.documentElement.style.viewTransitionName = "";
+    // });
   };
   return (
     <Container>
