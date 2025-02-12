@@ -14,7 +14,7 @@ const AlarmIcon = ({ size = 24, stroke = palette.기본 }: AlarmProps) => {
 
   return (
     <Container size={size}>
-      <Image alt={"alarm icon"} height={23} width={20} src={"/images/alarm.png"} />
+      <Image alt={"alarm icon"} height={23} width={20} src={"/images/alarm.svg"} />
       {data?.pages[0]?.content[0]?.isRead === false && <RedDot />}
     </Container>
   );
