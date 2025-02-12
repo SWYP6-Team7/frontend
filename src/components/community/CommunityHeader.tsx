@@ -81,16 +81,16 @@ export default function CommunityHeader() {
   return (
     <Container>
       {userId && (
-        <div onClick={handleNotification}>
+        <IconContainer onClick={handleNotification}>
           <AlarmIcon size={23} stroke={palette.기본} />
-        </div>
+        </IconContainer>
       )}
       <ShareIcon />
 
       {data?.userNumber === userId && (
-        <div onClick={onClickThreeDots}>
+        <IconContainer onClick={onClickThreeDots}>
           <MoreIcon />
-        </div>
+        </IconContainer>
       )}
 
       <EditAndDeleteModal
@@ -115,6 +115,15 @@ export default function CommunityHeader() {
     </Container>
   );
 }
+
+const IconContainer = styled.div`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Container = styled.div`
   display: flex;
   align-items: center;

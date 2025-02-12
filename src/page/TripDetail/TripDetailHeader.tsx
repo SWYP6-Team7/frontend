@@ -138,9 +138,7 @@ export default function TripDetailHeader() {
   );
 
   const handleNotification = () => {
-    setNotification(
-      travelNumber ? `/trip/detail/${travelNumber}` : "/trip/list"
-    );
+    setNotification(travelNumber ? `/trip/detail/${travelNumber}` : "/trip/list");
     router.push(`/notification`);
   };
   useEffect(() => {
@@ -170,12 +168,7 @@ export default function TripDetailHeader() {
         }
       });
     }
-  }, [
-    isDeleteBtnClicked,
-    isReportBtnClicked,
-    isEditBtnClicked,
-    checkingModalClicked,
-  ]);
+  }, [isDeleteBtnClicked, isReportBtnClicked, isEditBtnClicked, checkingModalClicked]);
 
   // 북마크
   const bookmarkClickHandler = () => {
@@ -196,22 +189,19 @@ export default function TripDetailHeader() {
   };
 
   return (
-    <Container
-      hostUserCheck={hostUserCheck}
-      isTripDetailEdit={Boolean(isTripDetailEdit)}
-    >
+    <Container hostUserCheck={hostUserCheck} isTripDetailEdit={Boolean(isTripDetailEdit)}>
       {!isGuestUser() && (
-        <div onClick={handleNotification}>
+        <IconContainer onClick={handleNotification}>
           <AlarmIcon size={23} stroke={palette.기본} />
-        </div>
+        </IconContainer>
       )}
 
       <ShareIcon />
 
       {hostUserCheck && (
-        <div onClick={onClickThreeDots}>
+        <IconContainer onClick={onClickThreeDots}>
           <MoreIcon />
-        </div>
+        </IconContainer>
       )}
 
       <EditAndDeleteModal
@@ -233,15 +223,19 @@ export default function TripDetailHeader() {
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
-      <ResultToast
-        bottom="80px"
-        isShow={isToastShow}
-        setIsShow={setIsToastShow}
-        text="여행 게시글이 삭제되었어요."
-      />
+      <ResultToast bottom="80px" isShow={isToastShow} setIsShow={setIsToastShow} text="여행 게시글이 삭제되었어요." />
     </Container>
   );
 }
+
+const IconContainer = styled.div`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Container = styled.div<{
   hostUserCheck: boolean;
   isTripDetailEdit: boolean;
@@ -249,6 +243,6 @@ const Container = styled.div<{
   display: ${(props) => (props.isTripDetailEdit ? "none" : "flex")};
   align-items: center;
   justify-content: space-around;
-  gap: 17.5px;
+
   width: ${(props) => (props.hostUserCheck ? "136px" : "auto")};
 `;
