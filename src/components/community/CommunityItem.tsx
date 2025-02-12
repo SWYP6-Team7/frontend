@@ -50,7 +50,7 @@ const CommunityItem = ({ data }: { data: ICommunityItem }) => {
           </IconContainer>
           <IconContainer>
             <Icon>
-              <CommentIcon size={15} stroke={palette.비강조2} />
+              <CommentIcon size={16} stroke={palette.비강조2} />
             </Icon>
             <span>{data.commentCount}</span>
           </IconContainer>
