@@ -195,9 +195,9 @@ export default function TripDetailHeader() {
           <AlarmIcon size={23} stroke={palette.기본} />
         </IconContainer>
       )}
-
-      <ShareIcon />
-
+      <IconContainer>
+        <ShareIcon />
+      </IconContainer>
       {hostUserCheck && (
         <IconContainer onClick={onClickThreeDots}>
           <MoreIcon />
