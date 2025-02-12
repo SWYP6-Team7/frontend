@@ -72,7 +72,7 @@ const HorizonBoxLayout = ({
 
       <PostInfo>
         <TopContainer>
-          <BadgeContainer isMargin={bookmarkPosition === "middle"}>
+          <BadgeContainer isMargin={bookmarkPosition === "middle" || bookmarkNeed === false}>
             <Badge
               height={"22px"}
               text={"마감"}
@@ -87,7 +87,7 @@ const HorizonBoxLayout = ({
             <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} bookmarkPosition={bookmarkPosition} />
           )}
         </TopContainer>
-        <div>
+        <div style={{ paddingLeft: 4 }}>
           <TitleBox>
             <Title>{title}</Title>
           </TitleBox>
