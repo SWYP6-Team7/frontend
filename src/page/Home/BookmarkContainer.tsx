@@ -106,6 +106,7 @@ const BookmarkPreviewBox = styled.div`
   align-items: center;
   border-radius: 20px;
   padding: 16px;
+  padding-top: 11px;
   background-color: white;
   margin-right: 16px;
 `;
