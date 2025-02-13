@@ -6,37 +6,22 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const lastTouchTimeRef = useRef<number>(0);
   const pathname = usePathname();
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      history.scrollRestoration = "manual";
-    }
-  }, []);
 
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
     const handleTouchStart = (event: TouchEvent) => {
       event.preventDefault();
       if (event.touches[0].clientX < 50) {
+        event.preventDefault();
+        console.log("touch");
         lastTouchTimeRef.current = Date.now();
-
         document.documentElement.style.viewTransitionName = "none";
       }
     };
 
-    // const handleTouchEnd = (event: TouchEvent) => {
-    //   if (event.touches[0].clientX < 50) {
-    //     lastTouchTimeRef.current = Date.now();
-    //     event.preventDefault();
-    //     document.documentElement.style.viewTransitionName = "none";
-    //   }
-    // };
-
-    //window.addEventListener("touchend", handleTouchEnd);
-
     window.addEventListener("touchstart", handleTouchStart);
     return () => {
       window.removeEventListener("touchstart", handleTouchStart);
-      //window.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 
