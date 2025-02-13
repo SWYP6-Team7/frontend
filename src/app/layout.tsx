@@ -5,13 +5,16 @@ import { Metadata, ResolvingMetadata } from "next";
 import { headers } from "next/headers";
 export async function generateMetadata(_: Promise<{ locale: string }>, parent: ResolvingMetadata): Promise<Metadata> {
   const headersList = headers();
-  const pathname = new URL((await parent).alternates?.canonical?.url!).pathname;
-  const fullUrl = `${process.env.FRONT_URL || "https://www.moing.io"}${pathname}`; // 실제 도메인으로 변경하세요
+  const { alternates } = await parent;
+
+  //  Format the current URL: ./[locale]/...
+  console.log(alternates?.canonical?.url);
+  const fullUrl = `${process.env.FRONT_URL || "https://www.moing.io"}`; // 실제 도메인으로 변경하세요
 
   return {
     metadataBase: new URL(process.env.FRONT_URL || "https://www.moing.io"),
     alternates: {
-      canonical: "./",
+      canonical: "/.",
     },
     other: {
       refresh: `595; url=${fullUrl}`,
