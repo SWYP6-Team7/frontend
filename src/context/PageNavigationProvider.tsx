@@ -55,7 +55,6 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
 
         setTimeout(() => {
           lastTouchTimeRef.current = 0;
-          document.body.style.opacity = "1";
         }, 500);
       }
     };
