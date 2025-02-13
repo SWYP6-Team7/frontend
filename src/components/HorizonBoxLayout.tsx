@@ -69,7 +69,8 @@ const HorizonBoxLayout = ({
 
   const [tagsCount, setTagsCount] = useState(cutTags);
   useLayoutEffect(() => {
-    if (tagRef.current && tagRef?.current.getBoundingClientRect().width > 24) {
+    if (tagRef.current && tagRef?.current.getBoundingClientRect().height >= 24) {
+      console.log(tagsCount, "tag");
       setTagsCount((prev) => (prev.length > 0 ? prev.slice(0, 1) : []));
     }
   }, [tagRef.current]);
