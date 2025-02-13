@@ -65,7 +65,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
     const fixedAddStyle = {
       ...addStyle,
       border: "none",
-      boxShadow: `0 0 0 ${addStyle.border} inset`,
+      boxShadow: `0 0 0 ${addStyle.border?.replace("solid", "")} inset`,
     };
     return (
       <SearchFilterTagContainer
