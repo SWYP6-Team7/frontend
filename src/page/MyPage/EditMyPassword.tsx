@@ -7,9 +7,10 @@ import useMyPage from "@/hooks/myPage/useMyPage";
 import { userStore } from "@/store/client/userStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ValidationInputField from "@/components/designSystem/input/ValidationInputField";
+import { myPageStore } from "@/store/client/myPageStore";
 interface ErrorProps {
   password: undefined | string;
 }
@@ -17,6 +18,8 @@ interface ErrorProps {
 export default function EditMyPassword() {
   const { verifyPasswordMutation, isVerifiedError, isVerified } = useMyPage();
   const [showTerms, setShowTerms] = useState(true);
+  const { userSocialTF } = myPageStore();
+
   const [formData, setFormData] = useState({
     password: "",
   });
@@ -38,6 +41,12 @@ export default function EditMyPassword() {
     setSuccess((prev) => ({ password: false }));
     setFormData((prev) => ({ password: "" }));
   };
+
+  useEffect(() => {
+    if (userSocialTF) {
+      router.replace("/editMyInfo");
+    }
+  }, [userSocialTF]);
 
   const changeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
