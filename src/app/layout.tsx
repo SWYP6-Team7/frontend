@@ -6,11 +6,15 @@ import { headers } from "next/headers";
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = headers();
   const pathname = headersList.get("x-pathname") || "/";
+  const fullUrl = `${process.env.FRONT_URL || "https://www.moing.io"}${pathname}`; // 실제 도메인으로 변경하세요
 
   return {
     metadataBase: new URL(process.env.FRONT_URL || "https://www.moing.io"),
     alternates: {
       canonical: pathname,
+    },
+    other: {
+      refresh: `595; url=${fullUrl}`,
     },
   };
 }
@@ -18,7 +22,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <meta http-equiv="refresh" content="595"></meta>
       <body>
         <Providers>
           <Layout>{children}</Layout>
