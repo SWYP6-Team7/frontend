@@ -179,7 +179,7 @@ export default function EditMyInfo() {
           <TextButton isRightVector={true} isLeftVector={false} text="나의 태그" titleWeight="semibold" />
           <MyTag>
             <AgeBox style={{ display: "flex" }}>
-              <LastTitle style={{ marginRight: "24px" }}>연령대</LastTitle>
+              <LastTitle>연령대</LastTitle>
               <Tags>
                 <Badge
                   isDueDate={false}
