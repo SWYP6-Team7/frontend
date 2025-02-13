@@ -34,13 +34,13 @@ const useViewTransition = () => {
       document.documentElement.style.viewTransitionName = "back";
     };
 
-    window.addEventListener("touchstart", handleTouchStart);
-    window.addEventListener("touchend", handleTouchEnd);
+    // window.addEventListener("touchstart", handleTouchStart);
+    // window.addEventListener("touchend", handleTouchEnd);
     window.addEventListener("popstate", handlePopState);
 
     return () => {
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchend", handleTouchEnd);
+      // window.removeEventListener("touchstart", handleTouchStart);
+      // window.removeEventListener("touchend", handleTouchEnd);
       window.removeEventListener("popstate", handlePopState);
     };
   }, []);
