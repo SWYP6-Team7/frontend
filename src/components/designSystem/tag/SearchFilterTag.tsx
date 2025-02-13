@@ -67,21 +67,13 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
       border: "none",
       boxShadow: addStyle.border === "none" ? "none" : `0 0 0 ${addStyle.border?.replace("solid", "")} inset`,
     };
-    const textRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-      if (textRef.current) {
-        console.log("text", textRef.current?.getBoundingClientRect());
-        const computedWidth = Math.ceil(textRef.current?.getBoundingClientRect().width);
-        textRef.current.style.width = `${computedWidth}px`;
-      }
-    }, [text, textRef?.current]);
+
     return (
       <SearchFilterTagContainer
         isCreateTrip={isCreateTrip}
         disabled={disabled}
         id={`${idx}`}
         onClick={onClick}
-        ref={textRef}
         style={fixedAddStyle}
       >
         {iconPosition === "start" && icon}
