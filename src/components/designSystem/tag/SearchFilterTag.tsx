@@ -103,6 +103,7 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
 const TextContainer = styled.div`
   transition: all 0.2s ease-in-out;
   overflow: hidden;
+  width: calc(100% + 0.99px);
   text-overflow: ellipsis;
 `;
 export default SearchFilterTag;
