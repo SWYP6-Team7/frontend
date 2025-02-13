@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const lastTouchTimeRef = useRef<number>(0);
@@ -9,23 +9,22 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // iOS 디바이스 체크 함수
   const isIOS = () => {
     if (typeof window === "undefined") return false;
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any)?.MSStream;
   };
 
-  useEffect(() => {
+  // useLayoutEffect를 사용하여 라우트 변경 시 스크롤 업데이트를 페인트 전에 처리합니다.
+  useLayoutEffect(() => {
     const slightScroll = () => {
       if (isIOS()) {
         window.scrollTo({ left: 0, top: alternator.current });
         alternator.current = Number(!alternator.current);
       }
     };
-
-    // 라우트 변경 시 slightScroll 실행
     slightScroll();
-  }, [pathname, searchParams]); // pathname 또는 searchParams가 변경될 때마다 실행
+  }, [pathname, searchParams]);
+
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
     const handleTouchStart = (event: TouchEvent) => {
