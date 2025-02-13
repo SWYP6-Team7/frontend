@@ -11,7 +11,6 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
     const handleTouchStart = (event: TouchEvent) => {
       if (event.touches[0].clientX < 50) {
-        document.body.classList.add("body-fade");
         event.preventDefault();
         console.log("touch");
         lastTouchTimeRef.current = Date.now();
@@ -19,15 +18,17 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
       }
     };
 
-    const handleTouchEnd = (event: TouchEvent) => {
-      document.body.classList.remove("body-fade");
-    };
+    // const handleTouchEnd = (event: TouchEvent) => {
+    //   setTimeout(() => {
+    //     document.body.classList.remove("body-fade");
+    //   }, 500);
+    // };
 
     window.addEventListener("touchstart", handleTouchStart);
-    window.addEventListener("touchend", handleTouchEnd);
+    //window.addEventListener("touchend", handleTouchEnd);
     return () => {
       window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchend", handleTouchEnd);
+      //   window.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 
