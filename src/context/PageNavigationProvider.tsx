@@ -46,8 +46,11 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
       if (diff < 800) {
         // 이 경우 CSS 클래스를 이용해 view transition 애니메이션을 비활성화하도록 합니다.
         document.documentElement.style.viewTransitionName = "none";
+        document.body.style.transition = "opacity 0.2s ease-in-out";
+        document.body.style.opacity = "0";
         setTimeout(() => {
           lastTouchTimeRef.current = 0;
+          document.body.style.opacity = "1";
         }, 500);
       }
     };
