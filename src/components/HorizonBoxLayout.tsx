@@ -65,10 +65,10 @@ const HorizonBoxLayout = ({
   travelNumber,
 }: HorizonBoxProps) => {
   const tagRef = useRef<HTMLDivElement>(null);
-  const cutTags = tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
+  const cutTags = tags.length >= 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
 
   const [tagsCount, setTagsCount] = useState(cutTags);
-  useLayoutEffect(() => {
+  useEffect(() => {
     console.log("test", tagsCount, cutTags, tagRef.current, showTag);
     if (showTag && tagRef.current && tagRef?.current.getBoundingClientRect().height >= 24) {
       console.log(tagsCount, "tag");
@@ -130,7 +130,7 @@ const HorizonBoxLayout = ({
             {tagsCount.map((text: string, idx) => (
               <BoxLayoutTag key={idx} text={text} />
             ))}
-            {tags.length > cutTags.length ? (
+            {tags.length > tagsCount.length ? (
               <BoxLayoutTag
                 addStyle={{
                   backgroundColor: `${palette.비강조4}`,
