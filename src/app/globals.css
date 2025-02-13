@@ -35,10 +35,17 @@
   font-weight: 700; /* Semi-Bold */
 }
 
-@media (max-width: 600px) {
-  @same-document-ua-transition {
-    same-document-ua-transition: disable-swipe;
-  }
+body {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* 전환 중에 적용할 클래스 */
+.body-fade {
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  will-change: opacity;
+  backface-visibility: hidden;
 }
 
 :root {

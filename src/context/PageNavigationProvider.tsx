@@ -6,7 +6,16 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const lastTouchTimeRef = useRef<number>(0);
   const pathname = usePathname();
+  useEffect(() => {
+    // 페이지 전환 시작 시 body에 fade 클래스를 추가
+    document.body.classList.add("body-fade");
+    // 약간의 지연 후 fade 클래스를 제거하여 전환 효과를 마무리
+    const timeout = setTimeout(() => {
+      document.body.classList.remove("body-fade");
+    }, 300);
 
+    return () => clearTimeout(timeout);
+  }, [pathname]);
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
     const handleTouchStart = (event: TouchEvent) => {
@@ -46,11 +55,9 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
       if (diff < 800) {
         // 이 경우 CSS 클래스를 이용해 view transition 애니메이션을 비활성화하도록 합니다.
         document.documentElement.style.viewTransitionName = "none";
-        document.body.style.transition = "opacity 0.2s ease-in-out";
-        document.body.style.opacity = "0";
+
         setTimeout(() => {
           lastTouchTimeRef.current = 0;
-          document.body.style.opacity = "1";
         }, 500);
       }
     };
