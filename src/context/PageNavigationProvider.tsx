@@ -5,25 +5,12 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 
 const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const lastTouchTimeRef = useRef<number>(0);
-  const alternator = useRef<number>(0);
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  // const isIOS = () => {
-  //   if (typeof window === "undefined") return false;
-  //   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any)?.MSStream;
-  // };
-
-  // // useLayoutEffect를 사용하여 라우트 변경 시 스크롤 업데이트를 페인트 전에 처리합니다.
-  // useLayoutEffect(() => {
-  //   const slightScroll = () => {
-  //     if (isIOS()) {
-  //       window.scrollTo({ left: 0, top: alternator.current });
-  //       alternator.current = Number(!alternator.current);
-  //     }
-  //   };
-  //   slightScroll();
-  // }, [pathname, searchParams]);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      history.scrollRestoration = "manual";
+    }
+  }, []);
 
   useEffect(() => {
     const handlePageHide = () => {
