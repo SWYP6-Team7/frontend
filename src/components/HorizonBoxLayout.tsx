@@ -68,7 +68,7 @@ const HorizonBoxLayout = ({
   const cutTags = tags.length >= 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
 
   const [tagsCount, setTagsCount] = useState(cutTags);
-
+  console.log(tagsCount, "tagsCount");
   useLayoutEffect(() => {
     if (showTag && tagRef.current) {
       console.log(tagRef.current.getBoundingClientRect(), tagsCount.slice(0, 1), tagsCount);
