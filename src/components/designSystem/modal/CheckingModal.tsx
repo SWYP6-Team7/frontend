@@ -71,6 +71,8 @@ const Msg = styled.div`
   font-weight: 400;
   line-height: 22.4px;
   text-align: center;
+  margin-left: 32px;
+  margin-right: 32px;
   color: ${palette.비강조};
   white-space: pre-line;
 `;
