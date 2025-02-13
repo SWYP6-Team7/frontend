@@ -9,21 +9,39 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const isIOS = () => {
-    if (typeof window === "undefined") return false;
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any)?.MSStream;
-  };
+  // const isIOS = () => {
+  //   if (typeof window === "undefined") return false;
+  //   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any)?.MSStream;
+  // };
 
-  // useLayoutEffect를 사용하여 라우트 변경 시 스크롤 업데이트를 페인트 전에 처리합니다.
-  useLayoutEffect(() => {
-    const slightScroll = () => {
-      if (isIOS()) {
-        window.scrollTo({ left: 0, top: alternator.current });
-        alternator.current = Number(!alternator.current);
-      }
+  // // useLayoutEffect를 사용하여 라우트 변경 시 스크롤 업데이트를 페인트 전에 처리합니다.
+  // useLayoutEffect(() => {
+  //   const slightScroll = () => {
+  //     if (isIOS()) {
+  //       window.scrollTo({ left: 0, top: alternator.current });
+  //       alternator.current = Number(!alternator.current);
+  //     }
+  //   };
+  //   slightScroll();
+  // }, [pathname, searchParams]);
+
+  useEffect(() => {
+    const handlePageHide = () => {
+      document.body.style.opacity = "0"; // 페이지를 투명하게 설정
     };
-    slightScroll();
-  }, [pathname, searchParams]);
+
+    const handlePageShow = () => {
+      document.body.style.opacity = "1"; // 페이지를 다시 보이게 설정
+    };
+
+    window.addEventListener("pagehide", handlePageHide);
+    window.addEventListener("pageshow", handlePageShow);
+
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+      window.removeEventListener("pageshow", handlePageShow);
+    };
+  }, []);
 
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
