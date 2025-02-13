@@ -19,7 +19,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const { userPostRefreshToken } = useAuth();
   const { userId, accessToken, logoutCheck } = authStore();
   // 유저 프로필 정보 불러오기
-  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl } = myPageStore();
+  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl, addUserSocialTF } =
+    myPageStore();
 
   const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
     useMyPage();
@@ -38,6 +39,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       addEmail(myPageData.email);
       addPreferredTags(myPageData.preferredTags);
       addGender(myPageData.gender);
+      addUserSocialTF(myPageData.userSocialTF);
       const tags: string[] = [];
       for (const tag of myPageData.preferredTags) {
         const text = tag.split(" ");

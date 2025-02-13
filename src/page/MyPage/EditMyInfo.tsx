@@ -33,6 +33,7 @@ export default function EditMyInfo() {
     addIsProfileImgUpdated,
     addIsTagUpdated,
     profileUrl,
+    userSocialTF,
   } = myPageStore();
   const navigateWithTransition = useViewTransition();
   const [isNameChangeToastShow, setIsNameChangeToastShow] = useState(false); // 변경시 보이게 해줄 토스트 메시지
@@ -147,28 +148,30 @@ export default function EditMyInfo() {
           rightText={name}
           titleWeight="semibold"
         />
-        <Spacing size={8} />
+
         <Line></Line>
         <Spacing size={8} />
 
         <TextButton isRightVector={false} isLeftVector={false} text="이메일" rightText={email} titleWeight="semibold" />
 
         <Line></Line>
-        <Spacing size={8} />
+        {!userSocialTF && (
+          <>
+            <Spacing size={8} />
+            <TextButton
+              onClick={() => {
+                document.documentElement.style.viewTransitionName = "forward";
+                navigateWithTransition("/editMyPassword");
+              }}
+              isRightVector={true}
+              isLeftVector={false}
+              text="비밀번호 변경"
+              titleWeight="semibold"
+            />
 
-        <TextButton
-          onClick={() => {
-            document.documentElement.style.viewTransitionName = "forward";
-            navigateWithTransition("/editMyPassword");
-          }}
-          isRightVector={true}
-          isLeftVector={false}
-          text="비밀번호 변경"
-          titleWeight="semibold"
-        />
-
-        <Spacing size={8} />
-        <Line></Line>
+            <Line></Line>
+          </>
+        )}
         <Spacing size={8} />
         <TagBox
           onClick={() => {
