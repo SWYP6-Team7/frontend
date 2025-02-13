@@ -73,6 +73,7 @@ const Msg = styled.div`
   text-align: center;
   margin-left: 32px;
   margin-right: 32px;
+  word-break: keep-all;
   color: ${palette.비강조};
   white-space: pre-line;
 `;
