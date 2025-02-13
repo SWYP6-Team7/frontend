@@ -21,9 +21,13 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("pagehide", () => {
+    const handlePagehide = () => {
       document.body.style.opacity = "0";
-    });
+    };
+    window.addEventListener("pagehide", handlePagehide);
+    return () => {
+      window.removeEventListener("pagehide", handlePagehide);
+    };
   }, []);
 
   useEffect(() => {
