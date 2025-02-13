@@ -223,7 +223,9 @@ button {
   }
 }
 
-@same-document-ua-transition: disable-swipe;
+@same-document-ua-transition {
+  same-document-ua-transition: disable-atomic disable-swipe;
+}
 @media (max-width: 440px) {
   ::view-transition-old(forward),
   ::view-transition-new(forward) {
