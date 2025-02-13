@@ -70,6 +70,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
     const textRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
       if (textRef.current) {
+        console.log("text", textRef.current?.getBoundingClientRect());
         const computedWidth = Math.ceil(textRef.current?.getBoundingClientRect().width);
         textRef.current.style.width = `${computedWidth}px`;
       }
