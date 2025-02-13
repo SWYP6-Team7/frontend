@@ -250,6 +250,11 @@ button {
   }
 }
 
+html[data-swipe-navigation="true"] ::view-transition-old,
+html[data-swipe-navigation="true"] ::view-transition-new {
+  animation: none !important;
+}
+
 ::view-transition-old(tabView),
 ::view-transition-new(tabView) {
   animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
