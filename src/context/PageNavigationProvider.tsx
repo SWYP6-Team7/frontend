@@ -1,10 +1,31 @@
 "use client";
 
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const lastTouchTimeRef = useRef<number>(0);
+  const alternator = useRef<number>(0);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
+  // iOS 디바이스 체크 함수
+  const isIOS = () => {
+    if (typeof window === "undefined") return false;
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any)?.MSStream;
+  };
+
+  useEffect(() => {
+    const slightScroll = () => {
+      if (isIOS()) {
+        window.scrollTo({ left: 0, top: alternator.current });
+        alternator.current = Number(!alternator.current);
+      }
+    };
+
+    // 라우트 변경 시 slightScroll 실행
+    slightScroll();
+  }, [pathname, searchParams]); // pathname 또는 searchParams가 변경될 때마다 실행
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
     const handleTouchStart = (event: TouchEvent) => {
@@ -20,15 +41,15 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
     };
   }, []);
 
-  useEffect(() => {
-    const handlePagehide = () => {
-      document.body.style.opacity = "0";
-    };
-    window.addEventListener("pagehide", handlePagehide);
-    return () => {
-      window.removeEventListener("pagehide", handlePagehide);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handlePagehide = () => {
+  //     document.body.style.opacity = "0";
+  //   };
+  //   window.addEventListener("pagehide", handlePagehide);
+  //   return () => {
+  //     window.removeEventListener("pagehide", handlePagehide);
+  //   };
+  // }, []);
 
   useEffect(() => {
     // popstate 이벤트가 발생했을 때, 최근 터치 이벤트와의 시간 차이에 따라 스와이프 여부를 추정
