@@ -249,10 +249,6 @@ button {
     z-index: 100;
   }
 }
-html.no-view-transition ::view-transition-old,
-html.no-view-transition ::view-transition-new {
-  animation: none !important;
-}
 
 ::view-transition-old(tabView),
 ::view-transition-new(tabView) {

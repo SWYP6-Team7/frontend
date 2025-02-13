@@ -31,7 +31,7 @@ const useViewTransition = () => {
 
       if (diff < 200) {
         // 이 경우 CSS 클래스를 이용해 view transition 애니메이션을 비활성화하도록 합니다.
-        document.documentElement.classList.add("no-view-transition");
+        document.documentElement.style.viewTransitionName = "none";
         setTimeout(() => {
           document.documentElement.classList.remove("no-view-transition");
         }, 800);
