@@ -39,8 +39,8 @@ const RegisterTripStyle = () => {
   const router = useRouter();
   const {
     registerEmail,
-    registerEmailMutation: { isSuccess },
-    registerSocialMutation: { isSuccess: isSocialSuccess, isError: isSocialError },
+    registerEmailMutation: { isSuccess, isPending },
+    registerSocialMutation: { isSuccess: isSocialSuccess, isError: isSocialError, isPaused: isSocialPending },
     registerSocial,
   } = useAuth();
 
@@ -245,7 +245,7 @@ const RegisterTripStyle = () => {
       <Spacing size={120} />
       <ButtonWrapper width={newRightPosition}>
         <Button
-          disabled={tripStyleArray.length === 0}
+          disabled={tripStyleArray.length === 0 || isPending || isSocialPending}
           text="다음"
           onClick={completeHandler}
           addStyle={{
