@@ -71,7 +71,7 @@ const HorizonBoxLayout = ({
 
   useLayoutEffect(() => {
     if (showTag && tagRef.current) {
-      console.log(tagRef.current.getBoundingClientRect());
+      console.log(tagRef.current.getBoundingClientRect(), tagsCount.slice(0, 1), tagsCount);
       if (tagRef.current.getBoundingClientRect().height >= 24) {
         setTagsCount((prev) => (prev.length > 0 ? prev.slice(0, 1) : []));
       }
@@ -142,7 +142,7 @@ const HorizonBoxLayout = ({
                   borderRadius: "20px",
                   fontSize: "12px",
                 }}
-                text={`+${tags.length - cutTags.length}`}
+                text={`+${tags.length - tagsCount.length}`}
               />
             ) : null}
           </Tags>
