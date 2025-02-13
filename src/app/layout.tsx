@@ -1,28 +1,9 @@
 import Layout from "@/components/Layout";
 import Providers from "./providers";
 import "./globals.css";
-import { Metadata, ResolvingMetadata } from "next";
-import { headers } from "next/headers";
-export async function generateMetadata(_: Promise<{ locale: string }>, parent: ResolvingMetadata): Promise<Metadata> {
-  const headersList = headers();
-  const { alternates } = await parent;
 
-  //  Format the current URL: ./[locale]/...
-  console.log(alternates?.canonical?.url, "check");
-  const fullUrl = `${process.env.FRONT_URL || "https://www.moing.io"}`; // 실제 도메인으로 변경하세요
-
-  return {
-    metadataBase: new URL(process.env.FRONT_URL || "https://www.moing.io"),
-    alternates: {
-      canonical: "/.",
-    },
-    other: {
-      refresh: `595; url=${fullUrl}`,
-    },
-  };
-}
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children, params }: { children: React.ReactNode; params: Promise<any> }) {
+  console.log(await params, "check");
   return (
     <html lang="ko">
       <body>
