@@ -62,13 +62,18 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
   ) => {
     const pathname = usePathname();
     const isCreateTrip = pathname === "/createTripDetail";
+    const fixedAddStyle = {
+      ...addStyle,
+      border: "none",
+      boxShadow: `0 0 0 ${addStyle.border} inset`,
+    };
     return (
       <SearchFilterTagContainer
         isCreateTrip={isCreateTrip}
         disabled={disabled}
         id={`${idx}`}
         onClick={onClick}
-        style={addStyle}
+        style={fixedAddStyle}
       >
         {iconPosition === "start" && icon}
         <TextContainer>{text}</TextContainer>
