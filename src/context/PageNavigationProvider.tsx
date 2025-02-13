@@ -10,7 +10,6 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
     const handleTouchStart = (event: TouchEvent) => {
-      event.preventDefault();
       if (event.touches[0].clientX < 50) {
         document.body.classList.add("body-fade");
         event.preventDefault();
@@ -21,8 +20,6 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
     };
 
     const handleTouchEnd = (event: TouchEvent) => {
-      event.preventDefault();
-
       document.body.classList.remove("body-fade");
     };
 
