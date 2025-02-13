@@ -22,9 +22,8 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
 
     const handleTouchEnd = (event: TouchEvent) => {
       event.preventDefault();
-      if (event.touches[0].clientX > 50) {
-        document.body.classList.remove("body-fade");
-      }
+
+      document.body.classList.remove("body-fade");
     };
 
     window.addEventListener("touchstart", handleTouchStart);
