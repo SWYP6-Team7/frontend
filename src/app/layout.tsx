@@ -5,6 +5,7 @@ import "./globals.css";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
+      <meta http-equiv="refresh" content="20"></meta>
       <body>
         <Providers>
           <Layout>{children}</Layout>
