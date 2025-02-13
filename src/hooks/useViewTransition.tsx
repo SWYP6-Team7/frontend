@@ -1,58 +1,55 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import { useTransitionRouter } from "next-view-transitions";
 
 const useViewTransition = () => {
   const router = useTransitionRouter();
-  const swipeDetectedRef = useRef(false);
+  // 최근 터치 이벤트 발생 시각을 저장하는 ref
+  const lastTouchTimeRef = useRef<number>(0);
 
   useEffect(() => {
-    // 터치 시작 시 스와이프 여부 감지
-    // const handleTouchStart = (event: TouchEvent) => {
-    //   if (event.touches[0].clientX < 50) {
-    //     document.documentElement.style.viewTransitionName = "back";
-    //   }
-    // };
-
-    // // 터치 종료 후 플래그 초기화
-    // const handleTouchEnd = () => {
-    //   swipeDetectedRef.current = false;
-    //   setTimeout(() => {
-    //     document.documentElement.removeAttribute("data-swipe-navigation");
-    //   }, 300); // 딜레이 후 초기화
-    // };
-
-    // popstate 이벤트로 뒤로가기/앞으로 가기 감지
-    const handlePopState = () => {
-      // swipeDetectedRef.current = true;
-      // document.documentElement.setAttribute("data-swipe-navigation", "true");
-      // setTimeout(() => {
-      //   document.documentElement.removeAttribute("data-swipe-navigation");
-      //   swipeDetectedRef.current = false;
-      // }, 300);
-      document.documentElement.style.viewTransitionName = "back";
+    // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
+    const handleTouchStart = (event: TouchEvent) => {
+      if (event.touches[0].clientX < 50) {
+        lastTouchTimeRef.current = Date.now();
+      }
     };
 
-    // window.addEventListener("touchstart", handleTouchStart);
-    // window.addEventListener("touchend", handleTouchEnd);
-    window.addEventListener("popstate", handlePopState);
-
+    window.addEventListener("touchstart", handleTouchStart);
     return () => {
-      // window.removeEventListener("touchstart", handleTouchStart);
-      // window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("touchstart", handleTouchStart);
+    };
+  }, []);
+
+  useEffect(() => {
+    // popstate 이벤트가 발생했을 때, 최근 터치 이벤트와의 시간 차이에 따라 스와이프 여부를 추정
+    const handlePopState = () => {
+      const now = Date.now();
+      const diff = now - lastTouchTimeRef.current;
+      // 예를 들어 200ms 이내에 터치가 발생했다면 스와이프 제스처로 판단
+      if (diff < 200) {
+        // 이 경우 CSS 클래스를 이용해 view transition 애니메이션을 비활성화하도록 합니다.
+        document.documentElement.classList.add("no-view-transition");
+        setTimeout(() => {
+          document.documentElement.classList.remove("no-view-transition");
+        }, 300);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
       window.removeEventListener("popstate", handlePopState);
     };
   }, []);
 
   const navigateWithTransition = (to: string) => {
-    // 스와이프가 감지되었거나 View Transition API가 지원되지 않으면 단순 네비게이션 실행
+    // View Transition API를 지원하지 않으면 단순 네비게이션
     if (!(document as any).startViewTransition) {
       router.push(to);
       return;
     }
 
-    // View Transition API를 사용한 애니메이션 적용
+    // 그렇지 않은 경우에만 view transition 애니메이션 적용
     (document as any).startViewTransition(() => router.push(to));
   };
 
