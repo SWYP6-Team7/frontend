@@ -6,6 +6,7 @@ import RootStyleRegistry from "./RootStyleRegistry";
 import { GlobalErrorBoundary } from "@/components/errorHandling/GlobalErrorBoundary";
 import { ViewTransitions } from "next-view-transitions";
 import PageNavigationProvider from "@/context/PageNavigationProvider";
+import AutoRefresh from "@/context/AutoRefresh";
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
@@ -15,7 +16,9 @@ export default function Providers({ children }: { children: ReactNode }) {
           <QueryClientBoundary>
             <ErrorCatcher />
 
-            <RootStyleRegistry> {children}</RootStyleRegistry>
+            <RootStyleRegistry>
+              <AutoRefresh /> {children}
+            </RootStyleRegistry>
           </QueryClientBoundary>
         </PageNavigationProvider>
       </ViewTransitions>
