@@ -35,6 +35,10 @@
   font-weight: 700; /* Semi-Bold */
 }
 
+@same-document-ua-transition {
+  disable-swipe;
+}
+
 :root {
   --dimmed-zindex: 10;
   --alert-zindex: 11;
@@ -223,9 +227,6 @@ button {
   }
 }
 
-@same-document-ua-transition {
-  same-document-ua-transition: disable-atomic disable-swipe;
-}
 @media (max-width: 440px) {
   ::view-transition-old(forward),
   ::view-transition-new(forward) {
