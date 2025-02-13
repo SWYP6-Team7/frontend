@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 
-function AutoRefresh({ interval = 20000 }) {
+function AutoRefresh({ interval = 550000 }) {
   useEffect(() => {
     const timer = setInterval(() => {
       window.location.reload();
