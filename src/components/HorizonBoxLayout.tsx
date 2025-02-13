@@ -65,6 +65,8 @@ const HorizonBoxLayout = ({
   travelNumber,
 }: HorizonBoxProps) => {
   const tagRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const cutTags = tags.length >= 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
 
   const [tagsCount, setTagsCount] = useState(cutTags);
@@ -75,9 +77,9 @@ const HorizonBoxLayout = ({
         setTagsCount((prev) => (prev.length > 1 ? prev.slice(0, -1) : []));
       }
     }
-  }, [tagRef.current, showTag, tagsCount.length]);
+  }, [tagRef.current, showTag, tagsCount.length, containerRef?.current?.getBoundingClientRect().width]);
   return (
-    <HorizonBoxContainer>
+    <HorizonBoxContainer ref={containerRef}>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
 
       <PostInfo>
