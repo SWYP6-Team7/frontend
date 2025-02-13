@@ -2,7 +2,7 @@
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { usePathname } from "next/navigation";
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 interface SearchFilterTagProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   iconPosition?: "start" | "end";
@@ -67,6 +67,13 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
       border: "none",
       boxShadow: addStyle.border === "none" ? "none" : `0 0 0 ${addStyle.border?.replace("solid", "")} inset`,
     };
+    const textRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+      if (textRef.current) {
+        const computedWidth = Math.ceil(textRef.current?.getBoundingClientRect().width);
+        textRef.current.style.width = `${computedWidth}px`;
+      }
+    }, [text, textRef?.current]);
     return (
       <SearchFilterTagContainer
         isCreateTrip={isCreateTrip}
@@ -76,7 +83,7 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
         style={fixedAddStyle}
       >
         {iconPosition === "start" && icon}
-        <TextContainer>{text}</TextContainer>
+        <TextContainer ref={textRef}>{text}</TextContainer>
         {iconPosition === "end" && icon}
       </SearchFilterTagContainer>
     );
@@ -103,7 +110,7 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
 const TextContainer = styled.div`
   transition: all 0.2s ease-in-out;
   overflow: hidden;
-  width: calc(100% + 0.99px);
+
   text-overflow: ellipsis;
 `;
 export default SearchFilterTag;
