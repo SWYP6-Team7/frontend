@@ -249,9 +249,8 @@ button {
     z-index: 100;
   }
 }
-
-html[data-swipe-navigation="true"] ::view-transition-old,
-html[data-swipe-navigation="true"] ::view-transition-new {
+html.no-view-transition ::view-transition-old,
+html.no-view-transition ::view-transition-new {
   animation: none !important;
 }
 
