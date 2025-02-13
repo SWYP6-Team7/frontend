@@ -8,7 +8,7 @@ export async function generateMetadata(_: Promise<{ locale: string }>, parent: R
   const { alternates } = await parent;
 
   //  Format the current URL: ./[locale]/...
-  console.log(alternates?.canonical?.url);
+  console.log(alternates?.canonical?.url, "check");
   const fullUrl = `${process.env.FRONT_URL || "https://www.moing.io"}`; // 실제 도메인으로 변경하세요
 
   return {
