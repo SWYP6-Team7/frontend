@@ -1,41 +1,33 @@
-'use client'
-import { getNotifications } from '@/api/notification'
-import { INotification } from '@/model/notification'
+"use client";
+import { getNotifications } from "@/api/notification";
+import { INotification } from "@/model/notification";
 
-import { ISearchData } from '@/model/search'
-import { authStore } from '@/store/client/authStore'
+import { ISearchData } from "@/model/search";
+import { authStore } from "@/store/client/authStore";
 
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 
 const useNotification = () => {
-  const { accessToken } = authStore()
-  const {
-    data,
-    isLoading,
-    error,
-    fetchNextPage,
-    refetch,
-    isFetching,
-    hasNextPage
-  } = useInfiniteQuery<
+  const { accessToken } = authStore();
+  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery<
     INotification,
     Object,
     InfiniteData<INotification>,
     [_1: string]
   >({
-    queryKey: ['notification'],
+    queryKey: ["notification"],
     initialPageParam: 0,
-    getNextPageParam: lastPage => {
+    staleTime: 0,
+    getNextPageParam: (lastPage) => {
       if (lastPage.page.number + 1 === lastPage.page.totalPages) {
-        return undefined
+        return undefined;
       } else {
-        return lastPage?.page.number + 1
+        return lastPage?.page.number + 1;
       }
     },
-    queryFn: ({ pageParam }) =>
-      getNotifications(pageParam as number, accessToken!),
-    enabled: !!accessToken
-  })
+    queryFn: ({ pageParam }) => getNotifications(pageParam as number, accessToken!),
+    enabled: !!accessToken,
+  });
 
   return {
     data,
@@ -44,8 +36,8 @@ const useNotification = () => {
     fetchNextPage,
     refetch,
     isFetching,
-    hasNextPage
-  }
-}
+    hasNextPage,
+  };
+};
 
-export default useNotification
+export default useNotification;
