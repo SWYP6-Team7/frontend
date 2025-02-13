@@ -27,19 +27,13 @@ const useViewTransition = () => {
   }, []);
 
   const navigateWithTransition = (to: string) => {
-    if (swipeDetectedRef.current) {
+    // 스와이프가 감지되었거나 View Transition API 지원이 없으면 단순 네비게이션 실행
+    if (swipeDetectedRef.current || !(document as any).startViewTransition) {
       router.push(to);
       return;
     }
 
-    if (!(document as any).startViewTransition) {
-      router.push(to);
-      return;
-    }
-
-    document.startViewTransition(() => {
-      router.push(to);
-    });
+    (document as any).startViewTransition(() => router.push(to));
   };
 
   return navigateWithTransition;
