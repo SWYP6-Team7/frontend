@@ -11,8 +11,7 @@ const useViewTransition = () => {
     // 터치 시작 시 스와이프 여부 감지
     const handleTouchStart = (event: TouchEvent) => {
       if (event.touches[0].clientX < 50) {
-        swipeDetectedRef.current = true;
-        document.documentElement.setAttribute("data-swipe-navigation", "true");
+        document.documentElement.style.viewTransitionName = "back";
       }
     };
 
@@ -26,12 +25,13 @@ const useViewTransition = () => {
 
     // popstate 이벤트로 뒤로가기/앞으로 가기 감지
     const handlePopState = () => {
-      swipeDetectedRef.current = true;
-      document.documentElement.setAttribute("data-swipe-navigation", "true");
-      setTimeout(() => {
-        document.documentElement.removeAttribute("data-swipe-navigation");
-        swipeDetectedRef.current = false;
-      }, 300);
+      // swipeDetectedRef.current = true;
+      // document.documentElement.setAttribute("data-swipe-navigation", "true");
+      // setTimeout(() => {
+      //   document.documentElement.removeAttribute("data-swipe-navigation");
+      //   swipeDetectedRef.current = false;
+      // }, 300);
+      document.documentElement.style.viewTransitionName = "back";
     };
 
     window.addEventListener("touchstart", handleTouchStart);
@@ -47,7 +47,7 @@ const useViewTransition = () => {
 
   const navigateWithTransition = (to: string) => {
     // 스와이프가 감지되었거나 View Transition API가 지원되지 않으면 단순 네비게이션 실행
-    if (swipeDetectedRef.current || !(document as any).startViewTransition) {
+    if (!(document as any).startViewTransition) {
       router.push(to);
       return;
     }
