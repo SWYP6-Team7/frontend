@@ -118,6 +118,7 @@ const HorizonBoxLayout = ({
         {showTag && (
           <Tags>
             <BoxLayoutTag
+              ref={tagRef}
               text={
                 <Location>
                   <PlaceIcon height={12} width={10} />

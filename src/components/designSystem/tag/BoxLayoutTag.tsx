@@ -1,10 +1,12 @@
 "use client";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
+import { RefObject } from "react";
 
 interface BoxLayoutTagProps {
   text: React.ReactNode;
   size?: "small" | "medium" | "large";
+  ref?: RefObject<HTMLDivElement | null>;
   addStyle?: {
     backgroundColor?: string;
     color?: string;
@@ -19,6 +21,7 @@ interface BoxLayoutTagProps {
 const BoxLayoutTag = ({
   text,
   size,
+  ref,
   addStyle = {
     backgroundColor: `${palette.비강조4}`,
     padding: "4px 10px 4px 10px",
@@ -53,7 +56,11 @@ const BoxLayoutTag = ({
             borderRadius: "16px",
           }
     : addStyle;
-  return <Tag style={style}>{text}</Tag>;
+  return (
+    <Tag ref={ref} style={style}>
+      {text}
+    </Tag>
+  );
 };
 
 const Tag = styled.div`
