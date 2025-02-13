@@ -9,7 +9,7 @@ import PlaceIcon from "./icons/PlaceIcon";
 import FullHeartIcon from "./icons/FullHeartIcon";
 import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { authStore } from "@/store/client/authStore";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import CheckingModal from "./designSystem/modal/CheckingModal";
 import { usePathname, useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
@@ -64,8 +64,15 @@ const HorizonBoxLayout = ({
   bookmarkNeed = true,
   travelNumber,
 }: HorizonBoxProps) => {
-  const cutTags = tags.length >= 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
-  console.log("cutTags", cutTags, isBookmark);
+  const tagRef = useRef<HTMLDivElement>(null);
+  const cutTags = tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
+
+  const [tagsCount, setTagsCount] = useState(cutTags);
+  useLayoutEffect(() => {
+    if (tagRef.current && tagRef?.current.getBoundingClientRect().width > 24) {
+      setTagsCount((prev) => (prev.length > 0 ? prev.slice(0, 1) : []));
+    }
+  }, [tagRef.current]);
   return (
     <HorizonBoxContainer>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
@@ -117,7 +124,7 @@ const HorizonBoxLayout = ({
                 </Location>
               }
             />
-            {cutTags.map((text: string, idx) => (
+            {tagsCount.map((text: string, idx) => (
               <BoxLayoutTag key={idx} text={text} />
             ))}
             {tags.length > cutTags.length ? (
