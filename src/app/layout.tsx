@@ -1,6 +1,19 @@
 import Layout from "@/components/Layout";
 import Providers from "./providers";
 import "./globals.css";
+import { Metadata } from "next";
+import { headers } from "next/headers";
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = headers();
+  const pathname = headersList.get("x-pathname") || "/";
+
+  return {
+    metadataBase: new URL(process.env.FRONT_URL || "https://www.moing.io"),
+    alternates: {
+      canonical: pathname,
+    },
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
