@@ -75,7 +75,7 @@ const BookmarkContainer = () => {
                   post.bookmarked && (
                     <BookmarkPreviewBox onClick={() => clickTrip(post.travelNumber)} key={idx}>
                       <HorizonBoxLayout
-                        isBookmark={true}
+                        isBookmark={bookmarks.length > 1}
                         bookmarked={post.bookmarked}
                         travelNumber={post.travelNumber}
                         bookmarkNeed={false}
