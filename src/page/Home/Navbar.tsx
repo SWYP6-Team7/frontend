@@ -65,7 +65,6 @@ const Navbar = () => {
           };
           return (
             <Link
-              prefetch={false}
               key={page}
               href={page}
               style={{
