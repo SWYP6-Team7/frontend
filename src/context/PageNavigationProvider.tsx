@@ -32,13 +32,9 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
       const diff = now - lastTouchTimeRef.current;
 
       if (diff < 800) {
-        document.startViewTransition(() => {
-          document.documentElement.style.viewTransitionName = "none";
-        });
+        document.documentElement.style.viewTransitionName = "none";
       } else {
-        document.startViewTransition(() => {
-          document.documentElement.style.viewTransitionName = "back";
-        });
+        document.documentElement.style.viewTransitionName = "back";
       }
 
       setTimeout(() => {
