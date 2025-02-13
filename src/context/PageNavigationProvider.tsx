@@ -5,13 +5,14 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 
 const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const lastTouchTimeRef = useRef<number>(0);
-  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
     const handleTouchStart = (event: TouchEvent) => {
       if (event.touches[0].clientX < 50) {
         event.preventDefault();
+
         console.log("touch");
         lastTouchTimeRef.current = Date.now();
         document.documentElement.style.viewTransitionName = "none";
@@ -49,7 +50,7 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
       const diff = now - lastTouchTimeRef.current;
       // 예를 들어 200ms 이내에 터치가 발생했다면 스와이프 제스처로 판단
       document.documentElement.style.viewTransitionName = "back";
-
+      console.log("popstate");
       if (diff < 800) {
         // 이 경우 CSS 클래스를 이용해 view transition 애니메이션을 비활성화하도록 합니다.
         document.documentElement.style.viewTransitionName = "none";
