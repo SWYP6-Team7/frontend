@@ -1,13 +1,13 @@
 import Layout from "@/components/Layout";
 import Providers from "./providers";
 import "./globals.css";
-import { headers } from "next/headers";
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const headersList = headers();
-  const headerPathname = headersList.get("x-pathname") || "";
+import { getPathname } from "@nimpl/getters/get-pathname";
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = getPathname();
+  console.log(pathname, "pathname");
   return (
     <html lang="ko">
-      <meta http-equiv="refresh" content={`20; url=https://example.com/${headerPathname}`}></meta>
+      <meta http-equiv="refresh" content={`20; url=${process.env.FRONT_URL}${pathname ?? "/"}`}></meta>
       <body>
         <Providers>
           <Layout>{children}</Layout>
