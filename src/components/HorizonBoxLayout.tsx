@@ -71,12 +71,11 @@ const HorizonBoxLayout = ({
   console.log(tagsCount, "tagsCount");
   useEffect(() => {
     if (showTag && tagRef.current) {
-      console.log(tagRef.current.getBoundingClientRect(), tagsCount.slice(0, 1), tagsCount);
       if (tagRef.current.getBoundingClientRect().height >= 24) {
-        setTagsCount((prev) => (prev.length > 0 ? prev.slice(0, 1) : []));
+        setTagsCount((prev) => (prev.length > 1 ? prev.slice(0, -1) : []));
       }
     }
-  }, [tagRef.current, showTag]);
+  }, [tagRef.current, showTag, tagsCount.length]);
   return (
     <HorizonBoxContainer>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
