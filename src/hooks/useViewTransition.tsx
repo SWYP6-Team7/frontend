@@ -34,7 +34,7 @@ const useViewTransition = () => {
         document.documentElement.classList.add("no-view-transition");
         setTimeout(() => {
           document.documentElement.classList.remove("no-view-transition");
-        }, 300);
+        }, 800);
       }
     };
 
