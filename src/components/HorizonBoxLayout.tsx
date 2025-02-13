@@ -65,7 +65,7 @@ const HorizonBoxLayout = ({
   travelNumber,
 }: HorizonBoxProps) => {
   const cutTags = tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
-  console.log("cutTags", cutTags);
+  console.log("cutTags", cutTags, isBookmark);
   return (
     <HorizonBoxContainer>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
