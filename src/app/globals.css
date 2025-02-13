@@ -223,6 +223,7 @@ button {
   }
 }
 
+@same-document-ua-transition: disable-swipe;
 @media (max-width: 440px) {
   ::view-transition-old(forward),
   ::view-transition-new(forward) {
