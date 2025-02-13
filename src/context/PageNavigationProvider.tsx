@@ -44,9 +44,9 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
     //   }
     // };
 
-    window.addEventListener("touchend", handleTouchStart);
+    //window.addEventListener("touchend", handleTouchEnd);
 
-    //window.addEventListener("touchstart", handleTouchEnd);
+    window.addEventListener("touchstart", handleTouchStart);
     return () => {
       window.removeEventListener("touchstart", handleTouchStart);
       //window.removeEventListener("touchend", handleTouchEnd);
