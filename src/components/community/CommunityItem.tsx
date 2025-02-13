@@ -21,8 +21,9 @@ const CommunityItem = ({ data }: { data: ICommunityItem }) => {
                 backgroundColor: palette.비강조4,
                 color: palette.비강조,
                 border: "none",
-                borderRadius: "12px",
+                borderRadius: "20px",
                 fontSize: "12px",
+                lineHeight: "14px",
                 padding: "4px 10px",
                 fontWeight: "400",
               }}

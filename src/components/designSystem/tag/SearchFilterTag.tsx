@@ -1,28 +1,27 @@
-'use client'
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
-import { usePathname } from 'next/navigation'
-import { forwardRef } from 'react'
-interface SearchFilterTagProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string
-  iconPosition?: 'start' | 'end' 
-  idx: number
+"use client";
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
+import { usePathname } from "next/navigation";
+import { forwardRef } from "react";
+interface SearchFilterTagProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  text: string;
+  iconPosition?: "start" | "end";
+  idx: number;
   addStyle?: {
-    backgroundColor?: string
-    color?: string
-    border?: string
-    borderRadius?: string
-    padding?: string
-    fontWeight?: string
-    fontSize?: string
-    
-  }
-  disabled?: boolean
-  icon?: React.ReactNode
+    backgroundColor?: string;
+    color?: string;
+    border?: string;
+    borderRadius?: string;
+    padding?: string;
+    fontWeight?: string;
+    lineHeight?: string;
+    fontSize?: string;
+  };
+  disabled?: boolean;
+  icon?: React.ReactNode;
 
-  active?: boolean
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  active?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 // 사용 방식
 // idx 는
@@ -46,53 +45,57 @@ const SearchFilterTag = forwardRef<HTMLButtonElement, SearchFilterTagProps>(
       onClick,
       disabled = false,
       icon,
-      iconPosition = 'start',
+      iconPosition = "start",
       addStyle = {
         backgroundColor: active ? palette.keycolorBG : palette.검색창,
         color: active ? palette.keycolor : palette.기본,
-        border: active ? `1px solid ${palette.keycolor}` : 'none',
-        borderRadius: '15px',
-        padding: '8px 16px',
-        fontWeight: '600',
-        fontSize: '14px'
+        border: active ? `1px solid ${palette.keycolor}` : "none",
+        borderRadius: "16px",
+        padding: "8px 14px",
+        fontWeight: "600",
+        lineHeight: "17px",
+        fontSize: "14px",
       },
       ...props
     },
     ref
   ) => {
-    const pathname = usePathname()
-    const isCreateTrip = pathname === '/createTripDetail'
+    const pathname = usePathname();
+    const isCreateTrip = pathname === "/createTripDetail";
     return (
       <SearchFilterTagContainer
         isCreateTrip={isCreateTrip}
         disabled={disabled}
         id={`${idx}`}
         onClick={onClick}
-        style={addStyle}>
-        {iconPosition === 'start' && icon}
+        style={addStyle}
+      >
+        {iconPosition === "start" && icon}
         <TextContainer>{text}</TextContainer>
-        {iconPosition === 'end' && icon}
+        {iconPosition === "end" && icon}
       </SearchFilterTagContainer>
-    )
+    );
   }
-)
+);
 
 const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
-  height: ${props => (props.isCreateTrip ? '42px' : 'auto')};
-  line-height: ${props => (props.isCreateTrip ? '22.4px' : 'normal')};
+  height: ${(props) => (props.isCreateTrip ? "42px" : "auto")};
+  line-height: ${(props) => (props.isCreateTrip ? "22px" : "normal")};
   padding: 8px 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: width,background-color 0.3s ease-in-out;
-  min-width: fit-content; 
-  white-space: nowrap; 
+  transition:
+    width,
+    background-color 0.3s ease-in-out;
+  min-width: fit-content;
+  white-space: nowrap;
   border-radius: 16px;
-`
+`;
 
 const TextContainer = styled.div`
   transition: all 0.2s ease-in-out;
   overflow: hidden;
   text-overflow: ellipsis;
-`
-export default SearchFilterTag
+`;
+export default SearchFilterTag;

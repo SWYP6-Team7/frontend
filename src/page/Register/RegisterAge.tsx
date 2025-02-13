@@ -81,7 +81,10 @@ const RegisterAge = ({ children }: { children: React.ReactNode }) => {
                 addStyle={{
                   backgroundColor: agegroup === age ? "rgba(227, 239, 217, 1)" : " rgba(240, 240, 240, 1)",
                   color: agegroup === age ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
-
+                  borderRadius: "30px",
+                  fontSize: "16",
+                  lineHeight: "22px",
+                  padding: "10px 20px",
                   border: agegroup === age ? `1px solid ${palette.keycolor}` : "none",
                 }}
                 idx={idx}

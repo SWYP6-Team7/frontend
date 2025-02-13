@@ -6,14 +6,7 @@ import Accordion from "./Accordion";
 import BottomModal from "./BottomModal";
 import SearchFilterTag from "./designSystem/tag/SearchFilterTag";
 
-import {
-  IGender,
-  IPeople,
-  IPeriod,
-  IPlace,
-  IStyle,
-  searchStore,
-} from "@/store/client/searchStore";
+import { IGender, IPeople, IPeriod, IPlace, IStyle, searchStore } from "@/store/client/searchStore";
 import { palette } from "@/styles/palette";
 import useSearch from "@/hooks/search/useSearch";
 import WhiteXIcon from "./icons/WhiteXIcon";
@@ -30,19 +23,7 @@ const FILTER_LIST = [
   },
   {
     title: "스타일",
-    tags: [
-      "힐링",
-      "즉흥적",
-      "계획적인",
-      "액티비티",
-      "먹방",
-      "예술",
-      "핫플",
-      "쇼핑",
-      "가성비",
-      "역사",
-      "자연",
-    ] as const,
+    tags: ["힐링", "즉흥적", "계획적인", "액티비티", "먹방", "예술", "핫플", "쇼핑", "가성비", "역사", "자연"] as const,
   },
 ] as const;
 
@@ -91,10 +72,7 @@ const FilterList = () => {
     return false;
   };
 
-  const handleShowModal = (
-    e: MouseEvent,
-    title: "장소" | "인원" | "기간" | "스타일" | "성별"
-  ) => {
+  const handleShowModal = (e: MouseEvent, title: "장소" | "인원" | "기간" | "스타일" | "성별") => {
     e.stopPropagation();
     setShowModal(true);
     setInitialChecked((prev) => ({ ...prev, [title]: true }));
@@ -111,10 +89,7 @@ const FilterList = () => {
     setShowModal(false);
   };
 
-  const handleOneFilterReset = (
-    e: MouseEvent,
-    type: "장소" | "인원" | "기간" | "스타일" | "성별"
-  ) => {
+  const handleOneFilterReset = (e: MouseEvent, type: "장소" | "인원" | "기간" | "스타일" | "성별") => {
     e.stopPropagation();
     setOneFilterReset(type);
   };
@@ -137,13 +112,7 @@ const FilterList = () => {
   };
 
   const getAllFilterCount = () => {
-    return (
-      place.length +
-      period.length +
-      style.length +
-      people.length +
-      gender.length
-    );
+    return place.length + period.length + style.length + people.length + gender.length;
   };
 
   const getFirstTag = (type: "장소" | "인원" | "기간" | "스타일" | "성별") => {
@@ -192,9 +161,7 @@ const FilterList = () => {
                           backgroundColor: isActive(item.title, tag)
                             ? "rgba(227, 239, 217, 1)"
                             : " rgba(240, 240, 240, 1)",
-                          color: isActive(item.title, tag)
-                            ? `${palette.keycolor}`
-                            : "rgba(52, 52, 52, 1)",
+                          color: isActive(item.title, tag) ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
 
                           border: isActive(item.title, tag)
                             ? `1px solid ${palette.keycolor}`
@@ -221,11 +188,7 @@ const FilterList = () => {
                       : undefined
                   }
                   disabled={getAllFilterCount() === 0}
-                  text={
-                    getAllFilterCount() === 0
-                      ? "필터 검색"
-                      : `${getAllFilterCount()}개 필터 검색`
-                  }
+                  text={getAllFilterCount() === 0 ? "필터 검색" : `${getAllFilterCount()}개 필터 검색`}
                 />
               </ButtonContainer>
             </ModalContainer>
@@ -247,8 +210,7 @@ const FilterList = () => {
             active={getCount(filter.title) > 0}
             onClick={(e) => handleShowModal(e, filter.title)}
             addStyle={{
-              backgroundColor:
-                getCount(filter.title) > 0 ? palette.keycolor : "white",
+              backgroundColor: getCount(filter.title) > 0 ? palette.keycolor : "white",
               color: getCount(filter.title) > 0 ? "white" : "black",
               border: "1px solid #ababab",
               borderRadius: "15px",
@@ -334,8 +296,7 @@ const FilterContainer = styled.button<{ active: boolean }>`
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  background-color: ${(props) =>
-    props.active ? `${palette.keycolor}` : "white"};
+  background-color: ${(props) => (props.active ? `${palette.keycolor}` : "white")};
   color: ${(props) => (props.active ? "white" : `black`)};
 `;
 
