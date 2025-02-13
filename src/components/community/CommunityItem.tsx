@@ -28,8 +28,10 @@ const CommunityItem = ({ data }: { data: ICommunityItem }) => {
               }}
             />
           </div>
-          <Title>{data.title}</Title>
-          <Content>{data.content}</Content>
+          <div style={{ paddingLeft: 4 }}>
+            <Title>{data.title}</Title>
+            <Content>{data.content}</Content>
+          </div>
         </TopContent>
         {data.thumbnailUrl && <ImgDiv src={data.thumbnailUrl} />}
       </TopContainer>
@@ -112,6 +114,7 @@ const Content = styled.div`
 const BottomContainer = styled.div`
   display: flex;
   align-items: center;
+  padding-left: 4px;
 `;
 
 const UserBox = styled.div`
