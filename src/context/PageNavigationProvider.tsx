@@ -20,6 +20,12 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
+    window.addEventListener("pagehide", () => {
+      document.body.style.opacity = "0";
+    });
+  }, []);
+
+  useEffect(() => {
     // popstate 이벤트가 발생했을 때, 최근 터치 이벤트와의 시간 차이에 따라 스와이프 여부를 추정
     const handlePopState = () => {
       const now = Date.now();
