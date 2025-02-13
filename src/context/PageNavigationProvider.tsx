@@ -39,7 +39,7 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
     };
   }, []);
 
-  return children;
+  return <>{children}</>;
 };
 
 export default PageNavigationProvider;
