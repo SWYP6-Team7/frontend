@@ -27,7 +27,7 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
       // 예를 들어 200ms 이내에 터치가 발생했다면 스와이프 제스처로 판단
       document.documentElement.style.viewTransitionName = "back";
 
-      if (diff < 200) {
+      if (diff < 800) {
         // 이 경우 CSS 클래스를 이용해 view transition 애니메이션을 비활성화하도록 합니다.
         document.documentElement.style.viewTransitionName = "none";
       }
