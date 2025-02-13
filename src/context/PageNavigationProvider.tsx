@@ -14,12 +14,27 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
 
   useEffect(() => {
     // 라우트 변경 시 문서의 opacity를 잠시 0으로 만들고 다시 1로 전환
+    console.log(123);
     document.body.style.transition = "opacity 0.2s ease-in-out";
     document.body.style.opacity = "0";
     requestAnimationFrame(() => {
       document.body.style.opacity = "1";
     });
   }, [pathname]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      console.log(123456);
+      window.scrollTo(0, 1); // 강제로 스크롤 위치 변경
+      window.scrollTo(0, 0);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
