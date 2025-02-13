@@ -28,10 +28,9 @@ const CommunityItem = ({ data }: { data: ICommunityItem }) => {
               }}
             />
           </div>
-          <div style={{ paddingLeft: 4 }}>
-            <Title>{data.title}</Title>
-            <Content>{data.content}</Content>
-          </div>
+
+          <Title>{data.title}</Title>
+          <Content>{data.content}</Content>
         </TopContent>
         {data.thumbnailUrl && <ImgDiv src={data.thumbnailUrl} />}
       </TopContainer>
@@ -99,11 +98,13 @@ const ImgDiv = styled.div<{ src: string }>`
 const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
+  padding-left: 4px;
   line-height: 19.09px;
 `;
 const Content = styled.div`
   font-size: 14px;
   font-weight: 400;
+  padding-left: 4px;
   line-height: 16.71px;
   white-space: nowrap; //텍스트가 한 줄로 유지되도록 설정
   overflow: hidden;
