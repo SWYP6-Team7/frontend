@@ -10,6 +10,7 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
     const handleTouchStart = (event: TouchEvent) => {
       if (event.touches[0].clientX < 50) {
         lastTouchTimeRef.current = Date.now();
+        event.preventDefault();
       }
     };
 
