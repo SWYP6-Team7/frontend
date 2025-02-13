@@ -35,8 +35,10 @@
   font-weight: 700; /* Semi-Bold */
 }
 
-@same-document-ua-transition {
-  disable-swipe;
+@media (max-width: 600px) {
+  @same-document-ua-transition {
+    same-document-ua-transition: disable-swipe;
+  }
 }
 
 :root {
