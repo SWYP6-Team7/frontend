@@ -6,21 +6,13 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const lastTouchTimeRef = useRef<number>(0);
   const pathname = usePathname();
-  useEffect(() => {
-    // 페이지 전환 시작 시 body에 fade 클래스를 추가
-    document.body.classList.add("body-fade");
-    // 약간의 지연 후 fade 클래스를 제거하여 전환 효과를 마무리
-    const timeout = setTimeout(() => {
-      document.body.classList.remove("body-fade");
-    }, 300);
 
-    return () => clearTimeout(timeout);
-  }, [pathname]);
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
     const handleTouchStart = (event: TouchEvent) => {
       event.preventDefault();
       if (event.touches[0].clientX < 50) {
+        document.body.classList.add("body-fade");
         event.preventDefault();
         console.log("touch");
         lastTouchTimeRef.current = Date.now();
@@ -28,9 +20,18 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
       }
     };
 
+    const handleTouchEnd = (event: TouchEvent) => {
+      event.preventDefault();
+      if (event.touches[0].clientX > 50) {
+        document.body.classList.remove("body-fade");
+      }
+    };
+
     window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchend", handleTouchEnd);
     return () => {
       window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 
@@ -58,6 +59,7 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
 
         setTimeout(() => {
           lastTouchTimeRef.current = 0;
+          document.body.style.opacity = "1";
         }, 500);
       }
     };
