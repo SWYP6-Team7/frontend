@@ -1,11 +1,11 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef } from "react";
 
 const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   const lastTouchTimeRef = useRef<number>(0);
-
+  const pathname = usePathname();
   useEffect(() => {
     if (typeof window !== "undefined") {
       history.scrollRestoration = "manual";
@@ -13,22 +13,13 @@ const PageNavigationProvider = ({ children }: React.PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    const handlePageHide = () => {
-      document.body.style.opacity = "0"; // 페이지를 투명하게 설정
-    };
-
-    const handlePageShow = () => {
-      document.body.style.opacity = "1"; // 페이지를 다시 보이게 설정
-    };
-
-    window.addEventListener("pagehide", handlePageHide);
-    window.addEventListener("pageshow", handlePageShow);
-
-    return () => {
-      window.removeEventListener("pagehide", handlePageHide);
-      window.removeEventListener("pageshow", handlePageShow);
-    };
-  }, []);
+    // 라우트 변경 시 문서의 opacity를 잠시 0으로 만들고 다시 1로 전환
+    document.body.style.transition = "opacity 0.2s ease-in-out";
+    document.body.style.opacity = "0";
+    requestAnimationFrame(() => {
+      document.body.style.opacity = "1";
+    });
+  }, [pathname]);
 
   useEffect(() => {
     // 화면 좌측 50px 이내에서 터치가 시작되면 시간 기록
