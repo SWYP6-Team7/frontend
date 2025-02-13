@@ -422,7 +422,7 @@ export default function TripDetail() {
             onClick={buttonClickHandler}
             disabled={
               (hostUserCheck && nowEnrollmentCount === 0) ||
-              (hostUserCheck && !verifyGenderType(genderType, gender)) ||
+              (!hostUserCheck && !verifyGenderType(genderType, gender)) ||
               isAccepted ||
               isClosed
             }
