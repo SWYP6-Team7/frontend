@@ -57,7 +57,9 @@ export default function CheckingModal({
             <SelectBtn onClick={clickHandler}>{modalButtonText}</SelectBtn>
           </ButtonBox>
         ) : (
-          <CloseBtn onClick={() => setModalOpen(false)}>닫기</CloseBtn>
+          <ButtonBox>
+            <CloseBtn onClick={() => setModalOpen(false)}>닫기</CloseBtn>
+          </ButtonBox>
         )}
       </Modal>
     </ModalContainer>,
