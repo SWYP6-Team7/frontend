@@ -221,7 +221,8 @@ export default function TripDetailHeader() {
       />
       <CheckingModal
         isModalOpen={reportSuccess}
-        modalMsg={"소중한 의견 감사합니다?"}
+        showSelect={false}
+        modalMsg={"소중한 의견 감사합니다."}
         modalTitle={"신고 완료"}
         modalButtonText={"닫기"}
         setModalOpen={setReportSuccess}

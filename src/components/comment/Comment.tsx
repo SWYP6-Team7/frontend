@@ -154,6 +154,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
         setIsOpen={setReportThreeDotsClick}
       />
       <CheckingModal
+        showSelect={false}
         isModalOpen={isResultModalOpen}
         modalMsg={COMMENT_MODAL_MESSAGES.deleteMessage}
         modalTitle={COMMENT_MODAL_MESSAGES.title}
@@ -163,7 +164,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
       />
       <CheckingModal
         isModalOpen={reportSuccess}
-        modalMsg={"소중한 의견 감사합니다?"}
+        modalMsg={"소중한 의견 감사합니다."}
         modalTitle={"신고 완료"}
         modalButtonText={"닫기"}
         setModalOpen={setReportSuccess}
