@@ -8,7 +8,7 @@ interface CheckingModalProps {
   modalMsg: string;
   modalTitle: string;
   modalButtonText: string;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>> | ((bool: boolean) => void);
   setIsSelected?: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => void;
 }

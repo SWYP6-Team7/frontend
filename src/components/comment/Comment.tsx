@@ -18,6 +18,7 @@ import { commentStore } from "@/store/client/commentStore";
 import { COMMENT_MODAL_MESSAGES } from "@/constants/modalMessages";
 import ReportModal from "../designSystem/modal/ReportModal";
 import { isGuestUser } from "@/utils/user";
+import { reportStore } from "@/store/client/reportStore";
 
 interface CommentProps {
   comment: IComment;
@@ -36,6 +37,7 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
   const [isToastShow, setIsToastShow] = useState(false); // 삭제 완료 메시지.
   const [threeDotsClick, setThreeDotsClick] = useState(false);
   const [reportThreeDotsClick, setReportThreeDotsClick] = useState(false);
+  const { reportSuccess, setReportSuccess } = reportStore();
   const { setOpenEdit, setParentNumber, setCommentNumber, isEdit, isReply, parentNumber, commentNumber } =
     commentStore();
   const { removeMutation, remove, like, unlike, updateMutation } = useComment(relatedType, relatedNumber);
@@ -158,6 +160,13 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
         modalButtonText={COMMENT_MODAL_MESSAGES.text}
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
+      />
+      <CheckingModal
+        isModalOpen={reportSuccess}
+        modalMsg={"소중한 의견 감사합니다?"}
+        modalTitle={"신고 완료"}
+        modalButtonText={"닫기"}
+        setModalOpen={setReportSuccess}
       />
       <ResultToast bottom="80px" isShow={isToastShow} setIsShow={setIsToastShow} text="댓글이 삭제되었어요." />
     </Container>

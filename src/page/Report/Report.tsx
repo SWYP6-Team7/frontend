@@ -3,8 +3,11 @@ import Accordion from "@/components/Accordion";
 import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
 import TextareaField from "@/components/designSystem/input/TextareaField";
+import { reportStore } from "@/store/client/reportStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const REPORT_LIST = [
@@ -32,7 +35,19 @@ const REPORT_LIST = [
 
 const Report = () => {
   const [checkItem, setCheckItem] = useState(-1);
+  const [text, setText] = useState("");
+  const { setReportSuccess } = reportStore();
+  const router = useRouter();
+  const handleClick = (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
+    if (idx !== 5 || (idx === 5 && checkItem === 5)) e.preventDefault();
+    setCheckItem((prev) => (prev === idx ? -1 : idx));
+  };
 
+  const submitReport = () => {
+    setReportSuccess(true);
+    router.back();
+  };
+  console.log(checkItem, checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false);
   return (
     <Container>
       <Title>신고 유형을 선택해 주세요.</Title>
@@ -47,7 +62,17 @@ const Report = () => {
           paddingTop="0px"
           paddingBottom="20px"
           id={item.title}
-          title={item.title}
+          title={
+            <RadioContainer onClick={handleClick(idx)}>
+              <Image
+                src={checkItem === idx ? "/images/radio_active.svg" : "/images/radio.svg"}
+                alt=""
+                height={18}
+                width={18}
+              />
+              <div>{item.title}</div>
+            </RadioContainer>
+          }
           initialChecked={idx === 0}
           key={item.title}
         >
@@ -64,11 +89,23 @@ const Report = () => {
         paddingTop="0px"
         paddingBottom="20px"
         id={"기타"}
-        title={"기타"}
+        title={
+          <RadioContainer onClick={handleClick(5)}>
+            <Image
+              src={checkItem === 5 ? "/images/radio_active.svg" : "/images/radio.svg"}
+              alt=""
+              height={18}
+              width={18}
+            />
+            <div>기타</div>
+          </RadioContainer>
+        }
         initialChecked={false}
         key={"기타"}
       >
         <TextareaField
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           placeholder="신고 사유 직접 입력 (최대 500자)"
           height="62px"
           placeholderColor={palette.비강조}
@@ -80,10 +117,10 @@ const Report = () => {
       </Accordion>
       <ButtonContainer>
         <Button
-          onClick={() => {}}
-          disabled={true}
+          onClick={submitReport}
+          disabled={checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false}
           addStyle={
-            true
+            (checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false)
               ? {
                   backgroundColor: "rgba(220, 220, 220, 1)",
                   color: "rgba(132, 132, 132, 1)",
@@ -110,6 +147,12 @@ const Title = styled.div`
   font-weight: 600;
   display: flex;
   align-items: center;
+`;
+
+const RadioContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 const Description = styled.div`
