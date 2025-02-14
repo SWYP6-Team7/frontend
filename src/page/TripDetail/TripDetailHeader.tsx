@@ -11,6 +11,7 @@ import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 import useViewTransition from "@/hooks/useViewTransition";
 import { authStore } from "@/store/client/authStore";
 import { useBackPathStore } from "@/store/client/backPathStore";
+import { reportStore } from "@/store/client/reportStore";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import { palette } from "@/styles/palette";
 import { isGuestUser } from "@/utils/user";
@@ -131,6 +132,8 @@ export default function TripDetailHeader() {
   const navigateWithTransition = useViewTransition();
   const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!));
   const [isToastShow, setIsToastShow] = useState(false); // 삭제 완료 메시지.
+  const { reportSuccess, setReportSuccess } = reportStore();
+
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
     accessToken!,
     userId!,
@@ -215,6 +218,13 @@ export default function TripDetailHeader() {
         setIsReportBtnClicked={setIsReportBtnClicked}
         isOpen={reportThreeDotsClick}
         setIsOpen={setReportThreeDotsClick}
+      />
+      <CheckingModal
+        isModalOpen={reportSuccess}
+        modalMsg={"소중한 의견 감사합니다?"}
+        modalTitle={"신고 완료"}
+        modalButtonText={"닫기"}
+        setModalOpen={setReportSuccess}
       />
       <CheckingModal
         isModalOpen={isResultModalOpen}

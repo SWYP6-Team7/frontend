@@ -17,10 +17,13 @@ import ShareIcon from "../icons/ShareIcon";
 import { useParams, useRouter } from "next/navigation";
 import ReportModal from "../designSystem/modal/ReportModal";
 import useViewTransition from "@/hooks/useViewTransition";
+import { reportStore } from "@/store/client/reportStore";
 
 export default function CommunityHeader() {
   const { userId, accessToken } = authStore();
   const params = useParams();
+  const { reportSuccess, setReportSuccess } = reportStore();
+
   const communityNumber = params?.communityNumber as string;
   const navigateWithTransition = useViewTransition();
 
@@ -110,6 +113,13 @@ export default function CommunityHeader() {
         modalButtonText={COMMUNITY_MODAL_MESSAGES.delete}
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
+      />
+      <CheckingModal
+        isModalOpen={reportSuccess}
+        modalMsg={"소중한 의견 감사합니다?"}
+        modalTitle={"신고 완료"}
+        modalButtonText={"닫기"}
+        setModalOpen={setReportSuccess}
       />
       <ReportModal
         setIsReportBtnClicked={setIsReportBtnClicked}
