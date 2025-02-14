@@ -57,6 +57,7 @@ const ROUTES = {
   REQUESTED_TRIP: "/requestedTrip",
   MY_COMMUNITY: "/myCommunity",
   HOME: "/",
+  REPORT: "/report",
 };
 
 export const useHeaderNavigation = () => {
@@ -85,6 +86,7 @@ export const useHeaderNavigation = () => {
     const titleMap: { [key: string]: ReactNode } = {
       [ROUTES.MY.TRIP]: "내 여행",
       [ROUTES.MY_COMMUNITY]: "작성한 글",
+      [ROUTES.REPORT]: "신고하기",
       [ROUTES.MY.PAGE]: "마이 페이지",
       [ROUTES.REGISTER]: "회원가입",
       [ROUTES.VERIFYCODE]: "회원가입",

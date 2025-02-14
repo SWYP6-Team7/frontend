@@ -31,7 +31,10 @@ const Header = () => {
     );
   };
   return (
-    <HeaderContainer isBackGroundColorIsGrey={Boolean(headerBackgroundColorIsGrey())}>
+    <HeaderContainer
+      isBottomBorder={checkRoute.startsWith(ROUTES.REPORT)}
+      isBackGroundColorIsGrey={Boolean(headerBackgroundColorIsGrey())}
+    >
       {!shouldShowAlarmIcon() && (
         <RightFlex>
           <ButtonContainer onClick={handleBack}>
@@ -70,7 +73,7 @@ const ButtonContainer = styled.button`
 
 // header container
 // 상단 헤더 스타일
-const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean }>`
+const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean; isBottomBorder: boolean }>`
   display: flex;
   padding: 52px 24px 16px 24px;
   height: 116px;
@@ -82,6 +85,7 @@ const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean }>`
   z-index: 1000;
   justify-content: space-between;
   width: 100%;
+  border-bottom: ${(props) => (props.isBottomBorder ? "1px" : "0")} solid ${palette.비강조3};
 `;
 
 const RightFlex = styled.div`

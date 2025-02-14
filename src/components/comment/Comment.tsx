@@ -107,11 +107,9 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
           <Day>{daysAgoFormatted(comment.regDate)}</Day>
         </UserBox>
 
-        {(comment.userNumber === userId || comment.travelWriterNumber === userId) && (
-          <button onClick={onClickThreeDots}>
-            <EllipsisIcon />
-          </button>
-        )}
+        <button onClick={onClickThreeDots}>
+          <EllipsisIcon />
+        </button>
       </TopContainer>
       <Content>{comment.content}</Content>
       <BottomContainer>

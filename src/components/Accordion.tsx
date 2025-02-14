@@ -11,11 +11,25 @@ const Accordion = ({
   title,
   children,
   initialChecked,
+  paddingTop = "1.7svh",
+  paddingLeft = "1.7svh",
+  paddingRight = "1.7svh",
+  paddingBottom = "1.7svh",
+  tabPadding = "20px",
+  tabLineHeihgt = "19px",
+  tabBorder = true,
   count,
 }: {
   id: string;
   count: number;
   title: string;
+  paddingTop?: string;
+  paddingLeft?: string;
+  paddingRight?: string;
+  paddingBottom?: string;
+  tabPadding?: string;
+  tabLineHeihgt?: string;
+  tabBorder?: boolean;
   children: React.ReactNode;
   initialChecked: boolean;
 }) => {
@@ -28,7 +42,12 @@ const Accordion = ({
 
   useEffect(() => {
     if (contentRef.current) {
-      const paddingHeight = 1.7 * 2 * (window.innerHeight / 100); // svh 값을 픽셀로 계산
+      const paddingTopNumber = Number(paddingTop.match(/\d+(\.\d+)?/g));
+      const paddingBottomNumber = Number(paddingBottom.match(/\d+(\.\d+)?/g));
+
+      const paddingHeight = paddingTop.includes("vh")
+        ? paddingTopNumber * (window.innerHeight / 100) + paddingBottomNumber * (window.innerHeight / 100)
+        : paddingTopNumber + paddingBottomNumber; // svh 값을 픽셀로 계산
       setContentHeight(contentRef.current.scrollHeight + paddingHeight);
     }
   }, [isChecked]);
@@ -42,7 +61,12 @@ const Accordion = ({
         checked={isChecked}
         onChange={() => setIsChecked(!isChecked)}
       />
-      <Tab htmlFor={id} isCreateTripPage={Boolean((isCreateTripPage || isEditTripPage) && isChecked)}>
+      <Tab
+        tabPadding={tabPadding}
+        tabLineHeight={tabLineHeihgt}
+        htmlFor={id}
+        isCreateTripPage={Boolean((isCreateTripPage || isEditTripPage) && isChecked)}
+      >
         <TitleContainer>
           {isCreateTripPage ? (
             <TitleTextCreateTrip isCreateTripPage={isCreateTripPage || isEditTripPage}>{title}</TitleTextCreateTrip>
@@ -57,6 +81,11 @@ const Accordion = ({
         </div>
       </Tab>
       <Content
+        tabBorder={Boolean((isCreateTripPage || isEditTripPage) && isChecked) || tabBorder}
+        paddingTop={paddingTop}
+        paddingBottom={paddingBottom}
+        paddingLeft={paddingLeft}
+        paddingRight={paddingRight}
         ref={contentRef} // ref 추가
         isChecked={isChecked}
         contentHeight={contentHeight} // 동적으로 계산된 높이 전달
@@ -114,31 +143,43 @@ const Count = styled.div<{ isCreateTripPage: boolean }>`
   opacity: 0px;
 `;
 
-const Tab = styled.label<{ isCreateTripPage: boolean }>`
+const Tab = styled.label<{ tabLineHeight: string; tabPadding: string }>`
   display: flex;
 
   font-size: 16px;
   font-weight: 600;
-  line-height: 19.09px;
+  line-height: ${(props) => props.tabLineHeight};
 
   align-items: center;
   justify-content: space-between;
-  border-bottom: ${(props) => (props.isCreateTripPage ? "none" : "1px solid rgba(240, 240, 240, 1)")};
-  padding: 2.3svh 0;
+
+  padding: ${(props) => props.tabPadding} 0;
   cursor: pointer;
 `;
 
-const Content = styled.div<{ isChecked: boolean; contentHeight: number; isCreateTripPage: boolean }>`
-  height: ${(props) => (props.isChecked ? `${props.contentHeight}px` : "0px")};
+const Content = styled.div<{
+  isChecked: boolean;
+  contentHeight: number;
+  isCreateTripPage: boolean;
+  paddingTop: string;
+  paddingBottom: string;
+  paddingLeft: string;
+  paddingRight: string;
+  tabBorder: boolean;
+}>`
+  height: ${(props) => (props.isChecked ? `${props.contentHeight}px` : "1px")};
   overflow: hidden;
-  padding: ${(props) => (props.isChecked ? "1.7svh" : "0 1.7svh")};
-  opacity: ${(props) => (props.isChecked ? "1" : "0")};
-  transform: ${(props) => (props.isChecked ? "translateY(0)" : "translateY(20px)")};
+  border-bottom: ${(props) => (props.tabBorder ? "1px solid rgba(240, 240, 240, 1)" : "none")};
+  padding: ${(props) =>
+    props.isChecked
+      ? `${props.paddingTop} ${props.paddingRight} ${props.paddingBottom} ${props.paddingLeft}`
+      : `0 ${props.paddingRight} 0 ${props.paddingLeft}`};
+  /* opacity: ${(props) => (props.isChecked ? "1" : "0")}; */
+  transform: ${(props) => (props.isChecked ? "translateY(0)" : `translateY(${props.paddingTop})`)};
   transition:
     height 0.4s ease-in-out,
     padding 0.4s ease-in-out,
-    opacity 0.4s ease-in-out,
-    transform 0.4s ease-in-out;
+    /* opacity 0.4s ease-in-out, */ transform 0.4s ease-in-out;
 `;
 
 const List = styled.li`

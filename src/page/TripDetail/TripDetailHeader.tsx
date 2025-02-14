@@ -154,6 +154,8 @@ export default function TripDetailHeader() {
     }
     if (isReportBtnClicked) {
       setIsReportBtnClicked(false);
+      document.documentElement.style.viewTransitionName = "forward";
+      navigateWithTransition(`/report/travel/${travelNumber}`);
     }
     if (checkingModalClicked) {
       // 삭제 요청.
@@ -198,11 +200,10 @@ export default function TripDetailHeader() {
       <IconContainer>
         <ShareIcon />
       </IconContainer>
-      {hostUserCheck && (
-        <IconContainer onClick={onClickThreeDots}>
-          <MoreIcon />
-        </IconContainer>
-      )}
+
+      <IconContainer onClick={onClickThreeDots}>
+        <MoreIcon />
+      </IconContainer>
 
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}

@@ -16,11 +16,13 @@ import React, { useEffect, useState } from "react";
 import ShareIcon from "../icons/ShareIcon";
 import { useParams, useRouter } from "next/navigation";
 import ReportModal from "../designSystem/modal/ReportModal";
+import useViewTransition from "@/hooks/useViewTransition";
 
 export default function CommunityHeader() {
   const { userId, accessToken } = authStore();
   const params = useParams();
   const communityNumber = params?.communityNumber as string;
+  const navigateWithTransition = useViewTransition();
 
   const router = useRouter();
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
@@ -56,6 +58,8 @@ export default function CommunityHeader() {
     }
     if (isReportBtnClicked) {
       setIsReportBtnClicked(false);
+      document.documentElement.style.viewTransitionName = "forward";
+      navigateWithTransition(`/report/community/${communityNumber}`);
     }
     if (checkingModalClicked) {
       remove({ communityNumber: Number(communityNumber) });
@@ -88,11 +92,10 @@ export default function CommunityHeader() {
       <IconContainer>
         <ShareIcon />
       </IconContainer>
-      {data?.userNumber === userId && (
-        <IconContainer onClick={onClickThreeDots}>
-          <MoreIcon />
-        </IconContainer>
-      )}
+
+      <IconContainer onClick={onClickThreeDots}>
+        <MoreIcon />
+      </IconContainer>
 
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}

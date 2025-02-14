@@ -6,9 +6,24 @@ import { FocusEventHandler, useRef, useState } from "react";
 
 interface TextareaFieldProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
   height?: number | string;
+  padding?: string;
+  fontSize?: string;
+  lineHeight?: string;
+  color?: string;
+  isReport?: boolean;
+  placeholderColor?: string;
 }
 
-const TextareaField = ({ height = "31svh", ...rest }: TextareaFieldProps) => {
+const TextareaField = ({
+  height = "31svh",
+  padding = "16px",
+  fontSize = "16px",
+  lineHeight = "22px",
+  isReport = false,
+  placeholderColor = palette.비강조2,
+  color = palette.기본,
+  ...rest
+}: TextareaFieldProps) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [focused, setFocused] = useState(false);
   useTextAreaScroll(textAreaRef);
@@ -28,6 +43,11 @@ const TextareaField = ({ height = "31svh", ...rest }: TextareaFieldProps) => {
       borderColor={borderColor}
       bgColor={bgColor}
       onFocus={handleFocus}
+      padding={padding}
+      lineHeight={lineHeight}
+      fontSize={fontSize}
+      placeholderColor={placeholderColor}
+      color={isReport && !focused ? placeholderColor : color}
       onBlur={handleBlur}
       height={height}
       ref={textAreaRef}
@@ -40,23 +60,28 @@ const DetailTextArea = styled.textarea<{
   height: string | number;
   borderColor: string;
   bgColor: string;
+  padding: string;
+  fontSize: string;
+  lineHeight: string;
+  color: string;
+  placeholderColor: string;
 }>`
   width: 100%;
-
+  color: ${(props) => props.color};
   height: ${(props) => (typeof props.height === "number" ? `${props.height}` : props.height)};
-  padding: 16px;
+  padding: ${(props) => props.padding};
   font-family: "Pretendard" !important;
   background-color: ${(props) => props.bgColor};
   &::placeholder {
-    color: ${palette.비강조2};
+    color: ${(props) => props.placeholderColor};
     word-break: keep-all;
-    font-size: 16px;
+    font-size: ${(props) => props.fontSize};
     font-weight: 400;
-    line-height: 22.4px;
+    line-height: ${(props) => props.lineHeight};
     letter-spacing: -0.025em;
     font-family: "Pretendard" !important;
   }
-  font-size: 16px;
+  font-size: ${(props) => props.fontSize};
   &::-webkit-scrollbar {
     // scrollbar 자체의 설정
     // 너비를 작게 설정
@@ -71,7 +96,7 @@ const DetailTextArea = styled.textarea<{
     // scrollbar의 bar 부분 설정
     // 동글동글한 회색 바를 만든다.
     border-radius: 1rem;
-    height: 80px;
+
     background: rgba(217, 217, 217, 1);
   }
   &::-webkit-scrollbar-button {
@@ -80,7 +105,17 @@ const DetailTextArea = styled.textarea<{
     width: 0;
     height: 0;
   }
-  line-height: 22.4px;
+  &::-webkit-scrollbar-button:vertical:start:decrement,
+  &::-webkit-scrollbar-button:vertical:start:increment {
+    display: block;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-button:vertical:end:decrement,
+  &::-webkit-scrollbar-button:vertical:end:increment {
+    display: block;
+    height: 10px;
+  }
+  line-height: ${(props) => props.lineHeight};
   letter-spacing: -0.025em;
   text-align: left;
   border-radius: 20px;
