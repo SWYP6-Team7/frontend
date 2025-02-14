@@ -20,6 +20,7 @@ import ReportModal from "../designSystem/modal/ReportModal";
 import { isGuestUser } from "@/utils/user";
 import { reportStore } from "@/store/client/reportStore";
 import NoticeModal from "../designSystem/modal/NoticeModal";
+import useViewTransition from "@/hooks/useViewTransition";
 
 interface CommentProps {
   comment: IComment;
@@ -39,6 +40,8 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
   const [threeDotsClick, setThreeDotsClick] = useState(false);
   const [reportThreeDotsClick, setReportThreeDotsClick] = useState(false);
   const { reportSuccess, setReportSuccess } = reportStore();
+  const navigateWithTransition = useViewTransition();
+
   const { setOpenEdit, setParentNumber, setCommentNumber, isEdit, isReply, parentNumber, commentNumber } =
     commentStore();
   const { removeMutation, remove, like, unlike, updateMutation } = useComment(relatedType, relatedNumber);
@@ -68,6 +71,8 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
     }
     if (isReportBtnClicked) {
       setIsReportBtnClicked(false);
+      document.documentElement.style.viewTransitionName = "forward";
+      navigateWithTransition(`/report/comment/${commentNumber}`);
     }
     if (checkingModalClicked) {
       remove({ commentNumber: comment.commentNumber });

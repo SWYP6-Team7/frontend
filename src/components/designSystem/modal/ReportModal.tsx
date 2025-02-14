@@ -30,11 +30,13 @@ export default function ReportModal({
     setIsReportBtnClicked(true);
     setIsOpen(false);
   };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsListening(true);
+    }
+  }, []);
 
-  if (typeof window === "undefined") {
-    return null;
-  }
-  if (!isOpen) return null;
+  if (!isListening) return null;
 
   return createPortal(
     <Container isOpen={isOpen}>
