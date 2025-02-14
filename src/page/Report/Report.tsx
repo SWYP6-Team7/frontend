@@ -101,6 +101,7 @@ const Report = () => {
 const Container = styled.div`
   padding: 0 24px;
   padding-top: 16px;
+  padding-bottom: 214px;
 `;
 
 const Title = styled.div`
