@@ -36,12 +36,14 @@ export default function EditAndDeleteModal({
     setIsEditBtnClicked(true);
     setIsOpen(false);
   };
-  if (typeof window === "undefined") {
-    return null;
-  }
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsListening(true);
+    }
+  }, []);
 
+  if (!isListening) return null;
   return createPortal(
     <Container isOpen={isOpen}>
       <Modal ref={modalRef} isOpen={isOpen} nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
