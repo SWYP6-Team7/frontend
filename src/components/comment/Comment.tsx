@@ -19,6 +19,7 @@ import { COMMENT_MODAL_MESSAGES } from "@/constants/modalMessages";
 import ReportModal from "../designSystem/modal/ReportModal";
 import { isGuestUser } from "@/utils/user";
 import { reportStore } from "@/store/client/reportStore";
+import NoticeModal from "../designSystem/modal/NoticeModal";
 
 interface CommentProps {
   comment: IComment;
@@ -154,7 +155,6 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
         setIsOpen={setReportThreeDotsClick}
       />
       <CheckingModal
-        showSelect={false}
         isModalOpen={isResultModalOpen}
         modalMsg={COMMENT_MODAL_MESSAGES.deleteMessage}
         modalTitle={COMMENT_MODAL_MESSAGES.title}
@@ -162,11 +162,10 @@ const Comment = ({ comment, relatedType, relatedNumber }: CommentProps) => {
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
-      <CheckingModal
+      <NoticeModal
         isModalOpen={reportSuccess}
         modalMsg={"소중한 의견 감사합니다."}
         modalTitle={"신고 완료"}
-        modalButtonText={"닫기"}
         setModalOpen={setReportSuccess}
       />
       <ResultToast bottom="80px" isShow={isToastShow} setIsShow={setIsToastShow} text="댓글이 삭제되었어요." />

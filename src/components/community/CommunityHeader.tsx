@@ -18,6 +18,7 @@ import { useParams, useRouter } from "next/navigation";
 import ReportModal from "../designSystem/modal/ReportModal";
 import useViewTransition from "@/hooks/useViewTransition";
 import { reportStore } from "@/store/client/reportStore";
+import NoticeModal from "../designSystem/modal/NoticeModal";
 
 export default function CommunityHeader() {
   const { userId, accessToken } = authStore();
@@ -114,12 +115,10 @@ export default function CommunityHeader() {
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
-      <CheckingModal
+      <NoticeModal
         isModalOpen={reportSuccess}
-        showSelect={false}
         modalMsg={"소중한 의견 감사합니다."}
         modalTitle={"신고 완료"}
-        modalButtonText={"닫기"}
         setModalOpen={setReportSuccess}
       />
       <ReportModal

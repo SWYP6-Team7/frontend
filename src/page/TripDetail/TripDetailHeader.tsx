@@ -1,6 +1,7 @@
 "use client";
 import CheckingModal from "@/components/designSystem/modal/CheckingModal";
 import EditAndDeleteModal from "@/components/designSystem/modal/EditAndDeleteModal";
+import NoticeModal from "@/components/designSystem/modal/NoticeModal";
 import ReportModal from "@/components/designSystem/modal/ReportModal";
 import ResultToast from "@/components/designSystem/toastMessage/resultToast";
 import AlarmIcon from "@/components/icons/AlarmIcon";
@@ -219,12 +220,10 @@ export default function TripDetailHeader() {
         isOpen={reportThreeDotsClick}
         setIsOpen={setReportThreeDotsClick}
       />
-      <CheckingModal
+      <NoticeModal
         isModalOpen={reportSuccess}
-        showSelect={false}
         modalMsg={"소중한 의견 감사합니다."}
         modalTitle={"신고 완료"}
-        modalButtonText={"닫기"}
         setModalOpen={setReportSuccess}
       />
       <CheckingModal

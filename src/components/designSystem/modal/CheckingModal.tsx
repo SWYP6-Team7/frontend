@@ -11,14 +11,12 @@ interface CheckingModalProps {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>> | ((bool: boolean) => void);
   setIsSelected?: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => void;
-  showSelect?: boolean;
 }
 // setIsSelectd : 수락, 거절 등 버튼을 눌렀을 때, 상위 컴포넌트에서 api요청 해줌.
 export default function CheckingModal({
   isModalOpen,
   modalMsg,
   modalTitle,
-  showSelect = true,
   modalButtonText,
   setIsSelected,
   setModalOpen,
@@ -51,16 +49,10 @@ export default function CheckingModal({
           <Title>{modalTitle}</Title>
           <Msg>{modalMsg}</Msg>
         </ContentBox>
-        {showSelect ? (
-          <ButtonBox>
-            <CloseBtn onClick={() => setModalOpen(false)}>닫기</CloseBtn>
-            <SelectBtn onClick={clickHandler}>{modalButtonText}</SelectBtn>
-          </ButtonBox>
-        ) : (
-          <ButtonBox>
-            <CloseBtn onClick={() => setModalOpen(false)}>닫기</CloseBtn>
-          </ButtonBox>
-        )}
+        <ButtonBox>
+          <CloseBtn onClick={() => setModalOpen(false)}>닫기</CloseBtn>
+          <SelectBtn onClick={clickHandler}>{modalButtonText}</SelectBtn>
+        </ButtonBox>
       </Modal>
     </ModalContainer>,
     document.getElementById("checking-modal") as HTMLElement
@@ -92,7 +84,7 @@ const ButtonBox = styled.div`
   margin-top: 16px;
   height: 48px;
 `;
-const CloseBtn = styled.button<{ showSelect: boolean }>`
+const CloseBtn = styled.button`
   font-size: 16px;
   font-weight: 400;
   line-height: 16px;
@@ -101,7 +93,7 @@ const CloseBtn = styled.button<{ showSelect: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${(props) => (props.showSelect ? "50%" : "100%")};
+  width: 50%;
   &:active {
     background-color: ${palette.buttonActive};
   }

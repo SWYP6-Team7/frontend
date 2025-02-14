@@ -55,15 +55,15 @@ const Modal = styled.div<{ isOpen: boolean; nowWidth: number }>`
   position: absolute;
   pointer-events: auto;
   padding-top: 24px;
-
   z-index: 1003;
   bottom: 40px;
-
   gap: 16px;
   border-radius: 20px;
-  opacity: 0px;
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(30%)")};
-  transition: transform 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
 `;
 const Container = styled.div<{ isOpen: boolean }>`
   height: 100svh;
