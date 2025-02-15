@@ -22,7 +22,7 @@ const locations: Poi[] = [
   { key: "barangaroo", location: { lat: -33.8605523, lng: 151.1972205 } },
 ];
 
-const typeToKorean = {
+export const typeToKorean = {
   Attractions: "관광 명소",
   Dining: "식사",
   Accommodation: "숙박",
@@ -142,8 +142,8 @@ const categoryKeywords: Record<TravelCategory, string[]> = {
   ],
 };
 
-function categorizePlaces(placeTypes: string[]): TravelCategory {
-  const scores: Record<TravelCategory, number> = {
+function categorizePlaces(placeTypes: string[]): TravelCategory | "" {
+  const scores: Record<Exclude<TravelCategory, "">, number> = {
     Attractions: 0,
     Dining: 0,
     Accommodation: 0,
@@ -155,18 +155,25 @@ function categorizePlaces(placeTypes: string[]): TravelCategory {
   placeTypes.forEach((placeType) => {
     Object.entries(categoryKeywords).forEach(([category, keywords]) => {
       if (keywords.some((keyword) => placeType.toLowerCase().includes(keyword))) {
-        scores[category as TravelCategory]++;
+        scores[category as Exclude<TravelCategory, "">]++;
       }
     });
   });
 
   // 특별 케이스 처리
   if (placeTypes.some((type) => type.includes("restaurant") || type.includes("cafe"))) {
-    scores.Dining += 2; // 레스토랑과 카페에 더 높은 가중치 부여
+    scores.Dining += 2;
   }
 
   if (placeTypes.some((type) => type.includes("hotel") || type.includes("lodging"))) {
-    scores.Accommodation += 2; // 호텔과 숙박시설에 더 높은 가중치 부여
+    scores.Accommodation += 2;
+  }
+
+  const maxScore = Math.max(...Object.values(scores));
+  const threshold = 0.5; // 최소 점수 임계값 설정
+
+  if (maxScore < threshold) {
+    return ""; // 모든 카테고리의 점수가 임계값보다 낮으면 빈 문자열 반환
   }
 
   return Object.entries(scores).reduce((a, b) => (a[1] > b[1] ? a : b))[0] as TravelCategory;
@@ -296,11 +303,15 @@ function PlacePredictions() {
         const mappedSuggestions: any[] = [];
         suggestions.forEach((suggestion) => {
           console.log(suggestion.placePrediction.mainText.text, "text");
+          const type = categorizePlaces(suggestion.placePrediction.types);
           mappedSuggestions.push({
             place: suggestion.placePrediction.mainText.text,
-            type: typeToKorean[categorizePlaces(suggestion.placePrediction.types)],
+            type: type === "" ? type : typeToKorean[type],
           });
         });
+        // const uniqueSuggestions = mappedSuggestions.filter(
+        //   (suggestion, index, self) => index === self.findIndex((t) => t.place === suggestion.place)
+        // );
         setSuggestions(mappedSuggestions);
       } catch (error) {
         console.error("Error fetching place predictions:", error);
