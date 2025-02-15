@@ -73,7 +73,7 @@ const Report = () => {
               <div>{item.title}</div>
             </RadioContainer>
           }
-          initialChecked={idx === 0}
+          initialChecked={false}
           key={item.title}
         >
           <Description>{item.description}</Description>
@@ -144,7 +144,7 @@ const Container = styled.div`
 const Title = styled.div`
   height: 36px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 400;
   display: flex;
   align-items: center;
 `;
