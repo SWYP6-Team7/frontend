@@ -23,7 +23,7 @@ const Accordion = ({
 }: {
   id: string;
   count: number;
-  fontWeight: number;
+  fontWeight?: number;
   title: string | React.ReactNode;
   paddingTop?: string;
   paddingLeft?: string;
