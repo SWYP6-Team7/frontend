@@ -17,11 +17,13 @@ const Accordion = ({
   paddingBottom = "1.7svh",
   tabPadding = "20px",
   tabLineHeihgt = "19px",
+  fontWeight = 600,
   tabBorder = true,
   count,
 }: {
   id: string;
   count: number;
+  fontWeight: number;
   title: string | React.ReactNode;
   paddingTop?: string;
   paddingLeft?: string;
@@ -64,6 +66,7 @@ const Accordion = ({
       <Tab
         tabPadding={tabPadding}
         tabLineHeight={tabLineHeihgt}
+        fontWeight={fontWeight}
         htmlFor={id}
         isCreateTripPage={Boolean((isCreateTripPage || isEditTripPage) && isChecked)}
       >
@@ -143,11 +146,11 @@ const Count = styled.div<{ isCreateTripPage: boolean }>`
   opacity: 0px;
 `;
 
-const Tab = styled.label<{ tabLineHeight: string; tabPadding: string }>`
+const Tab = styled.label<{ tabLineHeight: string; tabPadding: string; fontWeight: number }>`
   display: flex;
 
   font-size: 16px;
-  font-weight: 600;
+  font-weight: ${(props) => props.fontWeight};
   line-height: ${(props) => props.tabLineHeight};
 
   align-items: center;

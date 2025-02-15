@@ -61,6 +61,7 @@ const Report = () => {
           paddingLeft="8px"
           paddingTop="0px"
           paddingBottom="20px"
+          fontWeight={400}
           id={item.title}
           title={
             <RadioContainer onClick={handleClick(idx)}>
@@ -88,6 +89,7 @@ const Report = () => {
         paddingLeft="8px"
         paddingTop="0px"
         paddingBottom="20px"
+        fontWeight={400}
         id={"기타"}
         title={
           <RadioContainer onClick={handleClick(5)}>
@@ -144,7 +146,7 @@ const Container = styled.div`
 const Title = styled.div`
   height: 36px;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 600;
   display: flex;
   align-items: center;
 `;
