@@ -20,6 +20,7 @@
     "@sentry/tracing": "^7.120.3",
     "@tanstack/react-query": "^5.64.0",
     "@tanstack/react-query-devtools": "^5.64.0",
+    "@vis.gl/react-google-maps": "^1.5.1",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
     "next": "14.0.4",
