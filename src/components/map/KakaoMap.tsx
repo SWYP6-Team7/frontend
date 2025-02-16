@@ -173,7 +173,7 @@ const KakaoMap = () => {
 
               mappedSuggestions.push({
                 place: item.place_name,
-                type: type === "" ? type : typeToKorean[type],
+                type: item.category_name,
               });
 
               // const uniqueSuggestions = mappedSuggestions.filter(

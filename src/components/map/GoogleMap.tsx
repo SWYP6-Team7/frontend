@@ -306,7 +306,7 @@ function PlacePredictions() {
           const type = categorizePlaces(suggestion.placePrediction.types);
           mappedSuggestions.push({
             place: suggestion.placePrediction.mainText.text,
-            type: type === "" ? type : typeToKorean[type],
+            type: suggestion.placePrediction.types.join(", "),
           });
         });
         // const uniqueSuggestions = mappedSuggestions.filter(
