@@ -212,7 +212,7 @@ export default function TripDetail() {
       // 로그인을 하지 않은 게스트 유저.
       setShowLoginModal(true);
       setModalTextForLogin(LOGIN_ASKING_FOR_WATCHING_COMMENT);
-    } else if (!hostUserCheck && !isAccepted) {
+    } else if (!hostUserCheck && !isAccepted && enrollmentNumber) {
       // 주최자가 아니며, 신청 번호가 없는 사람은 댓글을 볼 수 없음.
       setShowApplyModal(true);
     } else if (isAccepted || hostUserCheck) {
