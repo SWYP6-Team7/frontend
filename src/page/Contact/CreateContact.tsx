@@ -38,7 +38,7 @@ const CreateContact = () => {
   const createContact = useMutation({
     mutationFn: async (data: IContactCreate) => {
       const result = await postContact(data, accessToken);
-      return result.data;
+      return result as any;
     },
     mutationKey: ["createContact"],
     onSuccess: (data) => {

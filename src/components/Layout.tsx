@@ -29,8 +29,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const isCommunityDetail = pathname?.startsWith("/community/detail");
 
-  const myPageData: ImyPage = data?.data;
-  const profileImg: IProfileImg = profileImage;
+  const myPageData: ImyPage = (data as any)?.data;
+  const profileImg: IProfileImg = profileImage as IProfileImg;
   console.log(profileImg, profileImage, "프로필 이미지 get");
   useEffect(() => {
     if (!isLoading && myPageData) {

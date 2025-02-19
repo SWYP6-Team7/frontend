@@ -1,29 +1,27 @@
-import RequestError from '@/context/ReqeustError'
-import { axiosInstance } from '.'
-import { getJWTHeader } from '@/utils/user'
+import RequestError from "@/context/ReqeustError";
+import { axiosInstance } from ".";
+import { getJWTHeader } from "@/utils/user";
 // 여행 관련 필요한 API요청들.
 interface CreateTripReqData {
-  location: string
-  title: string
-  details: string
-  maxPerson: number
-  genderType: string
-  dueDate: string
-  periodType: string
-  tags: string[]
-  completionStatus: boolean
+  location: string;
+  title: string;
+  details: string;
+  maxPerson: number;
+  genderType: string;
+  dueDate: string;
+  periodType: string;
+  tags: string[];
+  completionStatus: boolean;
 }
 
-export const createTrip = (
-  travelData: CreateTripReqData,
-  accessToken: string
-) => {
-  const newData = { ...travelData, locationName: travelData.location }
+export const createTrip = async (travelData: CreateTripReqData, accessToken: string) => {
+  const newData = { ...travelData, locationName: travelData.location };
   try {
-    return axiosInstance.post('/api/travel', newData, {
-      headers: getJWTHeader(accessToken)
-    })
+    const response = await axiosInstance.post("/api/travel", newData, {
+      headers: getJWTHeader(accessToken),
+    });
+    return handleApiResponse(response);
   } catch (err: any) {
-    throw new RequestError(err)
+    throw new RequestError(err);
   }
-}
+};

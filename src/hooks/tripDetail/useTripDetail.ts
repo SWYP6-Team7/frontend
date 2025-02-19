@@ -15,19 +15,19 @@ const useTripDetail = (travelNumber: number) => {
   const queryClient = useQueryClient();
   const tripDetail = useQuery({
     queryKey: ["tripDetail", travelNumber],
-    queryFn: () => getTripDetail(travelNumber, accessToken),
+    queryFn: () => getTripDetail(travelNumber, accessToken) as any,
     enabled: !!travelNumber && (isGuestUser || !!accessToken),
   });
   // 현재 신청 온 사람 수
   const tripEnrollmentCount = useQuery({
     queryKey: ["tripEnrollment", travelNumber],
-    queryFn: () => getTripEnrollmentCount(travelNumber, accessToken),
+    queryFn: () => getTripEnrollmentCount(travelNumber, accessToken) as any,
     enabled: !!travelNumber && (isGuestUser || !!accessToken),
   });
 
   const companions = useQuery({
     queryKey: ["companions", travelNumber],
-    queryFn: () => getCompanions(travelNumber, accessToken),
+    queryFn: () => getCompanions(travelNumber, accessToken) as any,
     enabled: !!travelNumber && (isGuestUser || !!accessToken),
   });
 

@@ -1,13 +1,14 @@
 import { getJWTHeader } from "@/utils/user";
-import { axiosInstance } from ".";
+import { axiosInstance, handleApiResponse } from ".";
 import { ITripDetail } from "@/model/tripDetail";
 import RequestError from "@/context/ReqeustError";
 
 export async function getTripDetail(travelNumber: number, accessToken: string | null) {
   try {
-    return axiosInstance.get(`/api/travel/detail/${travelNumber}`, {
+    const response = await axiosInstance.get(`/api/travel/detail/${travelNumber}`, {
       ...(accessToken && { headers: getJWTHeader(accessToken) }),
     });
+    return handleApiResponse(response);
   } catch (err: any) {
     throw new RequestError(err);
   }
@@ -16,9 +17,10 @@ export async function getTripDetail(travelNumber: number, accessToken: string | 
 // 현재 신청한 사람 수 조회
 export async function getTripEnrollmentCount(travelNumber: number, accessToken: string | null) {
   try {
-    return axiosInstance.get(`/api/travel/${travelNumber}/enrollmentCount`, {
+    const response = await axiosInstance.get(`/api/travel/${travelNumber}/enrollmentCount`, {
       ...(accessToken && { headers: getJWTHeader(accessToken) }),
     });
+    return handleApiResponse(response);
   } catch (err: any) {
     throw new RequestError(err);
   }
@@ -26,9 +28,10 @@ export async function getTripEnrollmentCount(travelNumber: number, accessToken: 
 // 모집한 인원 목록 조회
 export async function getCompanions(travelNumber: number, accessToken: string | null) {
   try {
-    return axiosInstance.get(`/api/travel/${travelNumber}/companions`, {
+    const response = await axiosInstance.get(`/api/travel/${travelNumber}/companions`, {
       ...(accessToken && { headers: getJWTHeader(accessToken) }),
     });
+    return handleApiResponse(response);
   } catch (err: any) {
     throw new RequestError(err);
   }
@@ -37,10 +40,10 @@ export async function updateTripDetail(travelNumber: number, data: ITripDetail, 
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
     const newData = { ...data, locationName: data.location };
-    return axiosInstance.put(`/api/travel/${travelNumber}`, newData, {
+    const response = await axiosInstance.put(`/api/travel/${travelNumber}`, newData, {
       headers: getJWTHeader(accessToken),
     });
-    return true;
+    return handleApiResponse(response);
   } catch (err: any) {
     throw new RequestError(err);
   }
@@ -49,9 +52,10 @@ export async function updateTripDetail(travelNumber: number, data: ITripDetail, 
 export async function deleteTripDetail(travelNumber: number, accessToken: string | null) {
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
-    return axiosInstance.delete(`/api/travel/${travelNumber}`, {
+    const response = await axiosInstance.delete(`/api/travel/${travelNumber}`, {
       headers: getJWTHeader(accessToken),
     });
+    return handleApiResponse(response);
   } catch (err: any) {
     throw new RequestError(err);
   }

@@ -18,7 +18,7 @@ const useComment = (relatedType: "travel" | "community", relatedNumber: number) 
     queryKey: ["comments", relatedType, relatedNumber],
 
     queryFn: ({ pageParam }) => {
-      return getComments(relatedType, relatedNumber, accessToken, pageParam as number);
+      return getComments(relatedType, relatedNumber, accessToken, pageParam as number) as any;
     },
     initialPageParam: 0,
     enabled: isGuestUser || !!accessToken,

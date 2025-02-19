@@ -1,16 +1,11 @@
 import { ISearchData } from "@/model/search";
-import { axiosInstance } from ".";
+import { axiosInstance, handleApiResponse } from ".";
 import { Filters } from "@/hooks/search/useSearch";
 import { getJWTHeader } from "@/utils/user";
 import dayjs from "dayjs";
 import RequestError from "@/context/ReqeustError";
 
-export async function getSearch(
-  pageParams: number,
-  keyword: string,
-  filters: Filters,
-  accessToken: string | null
-) {
+export async function getSearch(pageParams: number, keyword: string, filters: Filters, accessToken: string | null) {
   const { tags, period, person, gender, location, sorting } = filters;
   try {
     const response = await axiosInstance.get("/api/travels/search", {
@@ -26,18 +21,13 @@ export async function getSearch(
       },
       ...(accessToken && { headers: getJWTHeader(accessToken) }),
     });
-    let data = response.data as ISearchData | undefined;
-
-    return response.data;
+    return handleApiResponse(response);
   } catch (err: any) {
     throw new RequestError(err);
   }
 }
 
-export async function getSearchRelation(
-  keyword: string,
-  accessToken: string | null
-) {
+export async function getSearchRelation(keyword: string, accessToken: string | null) {
   try {
     const response = await axiosInstance.get("/api/autocomplete", {
       params: {
@@ -45,7 +35,7 @@ export async function getSearchRelation(
       },
       ...(accessToken && { headers: getJWTHeader(accessToken) }),
     });
-    return response.data as { suggestions: string[] };
+    return handleApiResponse(response) as { suggestions: string[] };
   } catch (err: any) {
     throw new RequestError(err);
   }

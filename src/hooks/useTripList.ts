@@ -19,9 +19,9 @@ export const useTripList = (sort: "recommend" | "recent") => {
     enabled: isGuestUser || !!accessToken,
     queryFn: ({ pageParam }) => {
       if (sort === "recent") {
-        return getAvailableTrips(pageParam as number, accessToken);
+        return getAvailableTrips(pageParam as number, accessToken) as any;
       } else {
-        return getRecommendationTrips(pageParam as number, accessToken);
+        return getRecommendationTrips(pageParam as number, accessToken) as any;
       }
     },
     initialPageParam: 0,

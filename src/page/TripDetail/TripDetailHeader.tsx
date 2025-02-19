@@ -166,12 +166,11 @@ export default function TripDetailHeader() {
 
       deleteTripDetailMutation().then((res) => {
         console.log("result", res);
-        if (res?.status === 204) {
-          setIsToastShow(true);
-          setTimeout(() => {
-            router.push("/");
-          }, 1800);
-        }
+
+        setIsToastShow(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 1800);
       });
     }
   }, [isDeleteBtnClicked, isReportBtnClicked, isEditBtnClicked, checkingModalClicked]);

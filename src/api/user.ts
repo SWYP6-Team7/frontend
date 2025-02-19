@@ -2,7 +2,7 @@
 
 import { getJWTHeader } from "@/utils/user";
 import axios from "axios";
-import { axiosInstance } from ".";
+import { axiosInstance, handleApiResponse } from ".";
 
 //
 export async function getUser(userId: number, accessToken: string) {
@@ -22,9 +22,9 @@ export const kakaoLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/kakao", {
       maxRedirects: 0,
     });
-    console.log("res", response.data);
-    if (response.data) {
-      window.location.href = response.data.redirectUrl;
+    const data: { redirectUrl: string } = handleApiResponse(response);
+    if (data) {
+      window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
     console.log("kakao login error", error);
@@ -33,12 +33,12 @@ export const kakaoLogin = async () => {
 
 export const googleLogin = async () => {
   try {
-    const response = await axiosInstance.get("/api/login/oauth/google", {
+    const response = await axiosInstance.get("/api/login/oauth/kakao", {
       maxRedirects: 0,
     });
-
-    if (response.data) {
-      window.location.href = response.data.redirectUrl;
+    const data: { redirectUrl: string } = handleApiResponse(response);
+    if (data) {
+      window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
     console.log("google login error", error);
@@ -47,12 +47,12 @@ export const googleLogin = async () => {
 
 export const naverLogin = async () => {
   try {
-    const response = await axiosInstance.get("/api/login/oauth/naver", {
+    const response = await axiosInstance.get("/api/login/oauth/kakao", {
       maxRedirects: 0,
     });
-
-    if (response.data) {
-      window.location.href = response.data.redirectUrl;
+    const data: { redirectUrl: string } = handleApiResponse(response);
+    if (data) {
+      window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
     console.log("naver login error", error);
@@ -64,8 +64,7 @@ export async function checkEmail(email: string) {
     const response = await axiosInstance.get("/api/users-email", {
       params: { email: email },
     });
-    console.log("response", response);
-    return true;
+    return handleApiResponse(response);
   } catch (error: any) {
     console.log(error);
     return false;
@@ -87,9 +86,7 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
       },
     });
 
-    const user = response.data;
-
-    return user;
+    return handleApiResponse(response);
   } catch (error) {
     console.error("토큰 요청 실패:", error);
   }

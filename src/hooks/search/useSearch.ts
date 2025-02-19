@@ -3,12 +3,7 @@ import { getSearch } from "@/api/search";
 import { ISearchData } from "@/model/search";
 import { authStore } from "@/store/client/authStore";
 import { searchStore } from "@/store/client/searchStore";
-import {
-  InfiniteData,
-  QueryClient,
-  useInfiniteQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { InfiniteData, QueryClient, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 
 interface UseSearchProps {
@@ -38,15 +33,7 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
     period,
   };
 
-  const {
-    data,
-    isLoading,
-    error,
-    fetchNextPage,
-    refetch,
-    isFetching,
-    hasNextPage,
-  } = useInfiniteQuery<
+  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery<
     ISearchData,
     Object,
     InfiniteData<ISearchData>,
@@ -63,14 +50,9 @@ const useSearch = ({ keyword, page = 0, size = 5 }: UseSearchProps) => {
       }
     },
     queryFn: async ({ pageParam }) => {
-      const result = await getSearch(
-        pageParam as number,
-        keyword,
-        { ...filters },
-        accessToken
-      );
+      const result = await getSearch(pageParam as number, keyword, { ...filters }, accessToken);
 
-      return result;
+      return result as any;
     },
 
     enabled: !!accessToken || isGuestUser,

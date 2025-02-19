@@ -25,7 +25,7 @@ const useNotification = () => {
         return lastPage?.page.number + 1;
       }
     },
-    queryFn: ({ pageParam }) => getNotifications(pageParam as number, accessToken!),
+    queryFn: ({ pageParam }) => getNotifications(pageParam as number, accessToken!) as any,
     enabled: !!accessToken,
   });
 

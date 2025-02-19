@@ -24,7 +24,7 @@ const OauthGoogle = () => {
     console.log(code, state, "code");
     if (code && state) {
       getToken("google", code, state)
-        .then((user) => {
+        .then((user: any) => {
           console.log("user client", user);
           if (user?.userStatus === "PENDING" && user?.userNumber && user?.userName) {
             setTempName(user.userName);
