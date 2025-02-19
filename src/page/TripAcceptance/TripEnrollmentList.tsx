@@ -122,11 +122,11 @@ export default function TripEnrollmentList() {
   const { enrollmentsLastViewed, updateLastViewed, enrollmentList } = useEnrollment(parseInt(travelNumber!));
 
   // 최근에 본 시점.
-  const list = enrollmentList.data?.data;
+  const list = enrollmentList.data;
 
   // 처음에는 null 값이니, 생성했을 때 시간 으로 두기.
   const lastViewed =
-    enrollmentsLastViewed.data?.lastViewedAt === null ? createdAt : enrollmentsLastViewed.data?.lastViewedAt;
+    enrollmentsLastViewed?.data?.lastViewedAt === null ? createdAt : enrollmentsLastViewed.data?.lastViewedAt;
 
   useEffect(() => {
     // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.
