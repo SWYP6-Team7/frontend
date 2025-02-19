@@ -1,5 +1,5 @@
 import RequestError from "@/context/ReqeustError";
-import { axiosInstance } from ".";
+import { axiosInstance, handleApiResponse } from ".";
 import { getJWTHeader } from "@/utils/user";
 // 여행 관련 필요한 API요청들.
 interface CreateTripReqData {
