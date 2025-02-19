@@ -51,16 +51,12 @@ export default function TripEnrollmentCard({
       // 수락 요청.
 
       enrollmentAcceptanceMutate(enrollmentNumber).then((res) => {
-        if (res?.status === 200) {
-          setIsResultModalOpen(true);
-        }
+        setIsResultModalOpen(true);
       });
     } else if (isRejectBtnClicked) {
       // 거절 요청
       enrollmentRejectionMutate(enrollmentNumber).then((res) => {
-        if (res?.status === 200) {
-          setIsToastShow(true);
-        }
+        setIsToastShow(true);
       });
     }
   }, [isAcceptBtnClicked, isRejectBtnClicked]);
