@@ -64,7 +64,7 @@ export default function TripDetailHeader() {
     bookmarked,
   } = tripDetailStore();
   const { setNotification } = useBackPathStore();
-  const tripInfos = tripDetail.data?.data;
+  const tripInfos = tripDetail as any;
   useEffect(() => {
     console.log(tripInfos);
     if (tripDetail.isFetched) {

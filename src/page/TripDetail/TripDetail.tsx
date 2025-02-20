@@ -100,10 +100,10 @@ export default function TripDetail() {
   const isClosed = !Boolean(daysLeft(`${dueDate.year}-${dueDate.month}-${dueDate.day}`) > 0) || maxPerson === nowPerson;
   const { cancel, cancelMutation } = useEnrollment(parseInt(travelNumber));
   const { tripEnrollmentCount } = useTripDetail(parseInt(travelNumber));
-  const nowEnrollmentCount = tripEnrollmentCount.data?.data;
+  const nowEnrollmentCount = tripEnrollmentCount as any;
   const { editToastShow, setEditToastShow } = editStore();
   const { companions } = useTripDetail(parseInt(travelNumber));
-  const allCompanions = companions.data?.data.companions;
+  const allCompanions = (companions as any)?.companions;
   const alreadyApplied = !!enrollmentNumber;
   //북마크
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(

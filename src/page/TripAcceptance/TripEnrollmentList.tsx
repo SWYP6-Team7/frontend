@@ -53,7 +53,7 @@ export default function TripEnrollmentList() {
     bookmarked,
   } = tripDetailStore();
 
-  const tripInfos = tripDetail.data?.data;
+  const tripInfos = tripDetail as any;
   useEffect(() => {
     console.log(tripInfos);
     if (tripDetail.isFetched) {
