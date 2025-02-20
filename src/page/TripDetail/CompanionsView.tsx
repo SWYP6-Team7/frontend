@@ -36,7 +36,7 @@ export default function CompanionsView({ isOpen, setIsOpen }: CompanionsViewProp
   }
   const { profileUrl, userName, userAgeGroup, nowPerson, maxPerson } = tripDetailStore();
   const { companions } = useTripDetail(parseInt(travelNumber));
-  const allCompanions = (companions as any)?.data.companions;
+  const allCompanions = (companions as any)?.data?.companions;
   const [windowSize, setWindowSize] = useState({
     width: 0,
     height: 0,
