@@ -22,8 +22,8 @@ export const kakaoLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/kakao", {
       maxRedirects: 0,
     });
-    const data: { redirectUrl: string } = handleApiResponse(response);
-    if (data) {
+    const data = response.data;
+    if (data?.redirectUrl) {
       window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
@@ -36,8 +36,8 @@ export const googleLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/kakao", {
       maxRedirects: 0,
     });
-    const data: { redirectUrl: string } = handleApiResponse(response);
-    if (data) {
+    const data = response.data;
+    if (data?.redirectUrl) {
       window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
@@ -50,8 +50,8 @@ export const naverLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/kakao", {
       maxRedirects: 0,
     });
-    const data: { redirectUrl: string } = handleApiResponse(response);
-    if (data) {
+    const data = response.data;
+    if (data?.redirectUrl) {
       window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
