@@ -2,22 +2,18 @@
 import { deleteBookmark, postBookmark } from "@/api/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useUpdateBookmark(
-  accessToken: string,
-  userId: number,
-  travelNumber: number
-) {
+export function useUpdateBookmark(accessToken: string, userId: number, travelNumber: number) {
   const queryClient = useQueryClient();
-  const {
-    mutateAsync: postBookmarkMutation,
-    isSuccess: isBookmarkPostSuccess,
-  } = useMutation({
+  const { mutateAsync: postBookmarkMutation, isSuccess: isBookmarkPostSuccess } = useMutation({
     mutationFn: () => {
       return postBookmark(accessToken, userId, travelNumber);
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["search"],
       });
       queryClient.invalidateQueries({
         queryKey: ["myTrips"],
@@ -40,16 +36,16 @@ export function useUpdateBookmark(
     },
   });
 
-  const {
-    mutateAsync: deleteBookmarkMutation,
-    isSuccess: isBookmarkDeleteSuccess,
-  } = useMutation({
+  const { mutateAsync: deleteBookmarkMutation, isSuccess: isBookmarkDeleteSuccess } = useMutation({
     mutationFn: () => {
       return deleteBookmark(accessToken, travelNumber);
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({
         queryKey: ["bookmarks"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["search"],
       });
       queryClient.invalidateQueries({
         queryKey: ["myTrips"],
