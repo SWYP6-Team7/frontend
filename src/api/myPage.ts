@@ -49,7 +49,7 @@ export const getMyProfileImage = async (accessToken: string) => {
       headers: getJWTHeader(accessToken),
     });
 
-    return handleApiResponse(response);
+    return response.data;
   } catch (err: any) {
     throw new RequestError(err);
   }
