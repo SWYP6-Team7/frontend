@@ -19,7 +19,7 @@ export const intialPostMyProfileImage = async (accessToken: string) => {
     const response = await axiosInstance.post("/api/profile/image", null, {
       headers: getJWTHeader(accessToken),
     });
-    return handleApiResponse(response) as any;
+    return response.data;
   } catch (err: any) {
     console.log(err, "초기 이미지 등록 오류");
     throw new RequestError(err);
@@ -35,7 +35,7 @@ export const postTempMyProfileImage = async (accessToken: string, formData: Form
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    return handleApiResponse(response);
+    return response.data;
   } catch (err: any) {
     console.log(err, "임시 등록 오류");
     throw new RequestError(err);
@@ -79,7 +79,7 @@ export const putRealMyProfileImage = async (accessToken: string, imageUrl: strin
         headers: getJWTHeader(accessToken),
       }
     );
-    return handleApiResponse(response);
+    return response.data;
   } catch (err: any) {
     throw new RequestError(err);
   }
@@ -90,7 +90,7 @@ export const deleteMyProfileImage = async (accessToken: string) => {
     const response = await axiosInstance.delete("/api/profile/image", {
       headers: getJWTHeader(accessToken),
     });
-    return handleApiResponse(response);
+    return response.data;
   } catch (err: any) {
     throw new RequestError(err);
   }
@@ -104,7 +104,7 @@ export const deleteTempProfileImage = async (accessToken: string, deletedTempUrl
       data: { deletedTempUrl: deletedTempUrl }, // data에 삭제할 URL 전달
       headers: getJWTHeader(accessToken), // 헤더 전달
     });
-    return handleApiResponse(response);
+    return response.data;
   } catch (err: any) {
     throw new RequestError(err);
   }
@@ -123,7 +123,7 @@ export const putMyProfileDefaultImage = async (accessToken: string, defaultNumbe
       }
     );
 
-    return handleApiResponse(response);
+    return response.data;
   } catch (err: any) {
     console.log(err, "기본 프로필 이미지로 수정 요청 에러 발생");
     throw new RequestError(err);
