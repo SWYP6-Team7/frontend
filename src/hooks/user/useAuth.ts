@@ -79,7 +79,7 @@ const useAuth = () => {
         email,
         socialLoginId,
       });
-      return handleApiResponse(response) as any;
+      return response.data;
     },
     onSuccess: (data) => {
       setLoginData({

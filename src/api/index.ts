@@ -21,7 +21,7 @@ interface ApiResponse<T> {
   success: T | null;
 }
 
-export const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T>>): T => {
+export const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T | null>>): T | null => {
   if (response.data.resultType !== "SUCCESS") {
     throw new Error("API call failed: Unexpected resultType");
   }
@@ -30,9 +30,9 @@ export const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T>>): T
     throw new Error(response.data.error?.reason || "Unknown error occurred");
   }
 
-  if (response.data.success === null) {
-    throw new Error("API call succeeded but no data was returned");
-  }
+  // if (response.data.success === null) {
+  //   throw new Error("API call succeeded but no data was returned");
+  // }
 
   return response.data.success;
 };
