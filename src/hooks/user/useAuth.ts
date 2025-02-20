@@ -172,7 +172,7 @@ const useAuth = () => {
   const refreshTokenMutation = useMutation({
     mutationFn: async () => {
       const response = await axiosInstance.post("/api/token/refresh", {});
-      return handleApiResponse(response) as any;
+      return response.data;
     },
     onSuccess: (data) => {
       setLoginData({
