@@ -13,7 +13,7 @@ axiosInstance.defaults.withCredentials = true;
 
 interface ApiResponse<T> {
   resultType: string;
-  error: {
+  error?: {
     errorType?: string;
     reason?: string;
     title?: string;
@@ -26,8 +26,8 @@ export const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T>>): T
     throw new Error("API call failed: Unexpected resultType");
   }
 
-  if (response.data.error !== null) {
-    throw new Error(response.data.error.reason || "Unknown error occurred");
+  if (response.data?.error !== null || response.data?.error !== undefined) {
+    throw new Error(response.data.error?.reason || "Unknown error occurred");
   }
 
   if (response.data.success === null) {
