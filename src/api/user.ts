@@ -86,7 +86,7 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
       },
     });
 
-    return handleApiResponse(response);
+    return response.data;
   } catch (error) {
     console.error("토큰 요청 실패:", error);
   }
