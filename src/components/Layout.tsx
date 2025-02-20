@@ -29,7 +29,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const isCommunityDetail = pathname?.startsWith("/community/detail");
 
-  const myPageData: ImyPage = (data as any)?.data;
+  const myPageData: ImyPage = data as any;
   const profileImg: IProfileImg = profileImage as IProfileImg;
   console.log(profileImg, profileImage, "프로필 이미지 get");
   useEffect(() => {
