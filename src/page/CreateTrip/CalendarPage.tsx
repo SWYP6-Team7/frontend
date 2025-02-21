@@ -9,7 +9,6 @@ const CalendarPage: React.FC = () => {
   const [calendarYear, setCalendarYear] = useState(dayjs().year());
   const [calendarMonth, setCalendarMonth] = useState(dayjs().month() + 1);
   const [calendarData, setCalendarData] = useState<CalendarDay[][]>([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
