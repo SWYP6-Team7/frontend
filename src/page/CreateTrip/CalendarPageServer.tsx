@@ -1,6 +1,7 @@
 import { axiosInstance } from "@/api";
 import { Holiday, setCalendarArray } from "@/utils/calendar";
 import CalendarClient from "./CalendarClient";
+import DuedateWrapper2 from "./CreateTripDetail/DuedateWrapper2";
 
 async function getHolidaysAndCalendarData(year: number, month: number) {
   const yearStr = year.toString();
@@ -31,5 +32,5 @@ export default async function CalendarPage({ searchParams }: { searchParams: { y
 
   const { holidays, calendarData } = await getHolidaysAndCalendarData(year, month);
 
-  return <CalendarClient initialYear={year} initialMonth={month} initialCalendarData={calendarData} />;
+  return <DuedateWrapper2 initialYear={year} initialMonth={month} initialCalendarData={calendarData} />;
 }

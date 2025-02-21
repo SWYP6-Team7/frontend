@@ -30,7 +30,6 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ initialYear, initialMon
 
   return (
     <div className="calendar-page">
-      <h1>캘린더 페이지</h1>
       <Calendar
         calendarYear={initialYear}
         calendarMonth={initialMonth}
