@@ -18,7 +18,7 @@ const CalendarPage: React.FC = () => {
         // 공휴일과 포스트 데이터를 동시에 가져오기
         const [holidayResult, postResult] = await Promise.all([
           axiosInstance.get<{ response: { body: { items: { item: Holiday | Holiday[] } } } }>(
-            `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${year}&solMonth=${month}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`
+            `https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?solYear=${year}&solMonth=${month}&ServiceKey=${process.env.NEXT_PUBLIC_HOLIDAY_API_KEY}`
           ),
           axiosInstance.get<Post[]>(`/api/posts?year=${year}&month=${month}`),
         ]);
