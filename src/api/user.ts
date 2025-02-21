@@ -36,7 +36,7 @@ export const googleLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/google", {
       maxRedirects: 0,
     });
-    const data = response.data;
+    const data = handleApiResponse(response) as any;
     if (data?.redirectUrl) {
       window.location.href = data.redirectUrl;
     }
