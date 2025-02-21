@@ -11,8 +11,8 @@ export interface Post {
   endTime: string;
 
   index?: number;
-  multiple: boolean;
-  start: boolean;
+  multiple?: boolean;
+  start?: boolean;
   username?: string;
   content?: string;
 }
@@ -42,7 +42,9 @@ export const setCalendarArray = (
   for (let i = prevLastDay; i >= 0; i--) {
     weekArray.unshift({ date: prevLastDate - i, type: "prev" });
   }
-
+  if (weekArray.length === 7) {
+    weekArray = [];
+  }
   // 포스트 인덱스 관리를 위한 맵
   const postIndexMap = new Map<string, number>();
 
@@ -64,27 +66,25 @@ export const setCalendarArray = (
       return aStartDate.isBefore(bStartDate) ? -1 : 1;
     });
 
-    const mappedPosts = sortedPosts
-      .map((post) => {
-        const isStart = dayFormat === dayjs(post.startTime).format("YYYYMMDD");
-        const isMultiple = dayjs(post.startTime).format("YYYYMMDD") !== dayjs(post.endTime).format("YYYYMMDD");
+    const mappedPosts = sortedPosts.map((post) => {
+      const isStart = dayFormat === dayjs(post.startTime).format("YYYYMMDD");
+      const isMultiple = dayjs(post.startTime).format("YYYYMMDD") !== dayjs(post.endTime).format("YYYYMMDD");
 
-        let index = postIndexMap.get(post.calendarId);
-        if (isStart && index === undefined) {
-          index = Array.from(postIndexMap.values()).indexOf(-1) + 1;
-          if (index > 0 && index <= 3) {
-            postIndexMap.set(post.calendarId, index);
-          }
+      let index = postIndexMap.get(post.calendarId);
+      if (isStart && index === undefined) {
+        index = Array.from(postIndexMap.values()).indexOf(-1) + 1;
+        if (index > 0 && index <= 3) {
+          postIndexMap.set(post.calendarId, index);
         }
+      }
 
-        return {
-          ...post,
-          start: isStart,
-          multiple: isMultiple,
-          index: index,
-        };
-      })
-      .filter((post) => post.index !== undefined);
+      return {
+        ...post,
+        start: isStart,
+        multiple: isMultiple,
+        index: index,
+      };
+    });
 
     const day: CalendarDay = {
       date: i,

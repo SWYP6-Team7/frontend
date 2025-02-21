@@ -1,9 +1,8 @@
 import { axiosInstance } from "@/api";
 import { Holiday, setCalendarArray } from "@/utils/calendar";
 import CalendarClient from "./CalendarClient";
-import DuedateWrapper2 from "./CreateTripDetail/DuedateWrapper2";
 
-async function getHolidaysAndCalendarData(year: number, month: number) {
+async function getHolidays(year: number, month: number) {
   const yearStr = year.toString();
   const monthStr = month.toString().padStart(2, "0");
 
@@ -13,24 +12,33 @@ async function getHolidaysAndCalendarData(year: number, month: number) {
     );
 
     let holidays = response.data.response?.body?.items?.item || [];
-    holidays = Array.isArray(holidays) ? holidays : [holidays];
-
-    const posts = []; // 여기에 포스트 데이터를 가져오는 로직을 추가할 수 있습니다.
-    const calendarData = setCalendarArray(year, month, holidays, posts);
-
-    return { holidays, calendarData };
+    return Array.isArray(holidays) ? holidays : [holidays];
   } catch (error) {
-    console.error("Failed to fetch data:", error);
-    return { holidays: [], calendarData: [] };
+    console.error("Failed to fetch holidays:", error);
+    return [];
   }
 }
 
-export default async function CalendarPage({ searchParams }: { searchParams: { year?: string; month?: string } }) {
+export default async function CalendarPage() {
   const currentDate = new Date();
-  const year = parseInt(searchParams.year || currentDate.getFullYear().toString());
-  const month = parseInt(searchParams.month || (currentDate.getMonth() + 1).toString());
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
 
-  const { holidays, calendarData } = await getHolidaysAndCalendarData(year, month);
+  const holidaysArray: any[] = [];
 
-  return <DuedateWrapper2 initialYear={year} initialMonth={month} initialCalendarData={calendarData} />;
+  for (let i = 0; i < 6; i++) {
+    let year = currentYear;
+    let month = currentMonth + i;
+
+    if (month > 12) {
+      month -= 12;
+      year += 1;
+    }
+
+    //  const holidays = await getHolidays(year, month);
+    holidaysArray.push({ year, month, holidays: [] });
+  }
+  // console.log(holidaysArray, "holidays");
+
+  return <CalendarClient holidaysArray={holidaysArray} />;
 }
