@@ -25,7 +25,7 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ initialYear, initialMon
       newYear--;
     }
 
-    router.push(`/calendar?year=${newYear}&month=${newMonth}`);
+    router.push(`/test/createTripIntroduce?year=${newYear}&month=${newMonth}`);
   };
 
   return (
