@@ -83,6 +83,24 @@ export default function DuedateWrapper2({ initialYear, initialMonth, initialCale
   return (
     <>
       <DuedateContainer>
+        <DetailTitle>모집 마감일</DetailTitle>
+        <DuedateBtn onClick={(e) => setShowModal(true)}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Calendar />
+
+            <DueDateValue>
+              {duedate.year}. {duedate.month < 10 ? `0${duedate.month}` : duedate.month}.{" "}
+              {duedate.day < 10 ? `0${duedate.day}` : duedate.day} ({dayOfWeek})
+            </DueDateValue>
+          </div>
+          <Vector />
+        </DuedateBtn>
         <CalendarClient
           initialYear={initialYear}
           initialMonth={initialMonth}
