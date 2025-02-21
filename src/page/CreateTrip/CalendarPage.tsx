@@ -48,10 +48,6 @@ const CalendarPage: React.FC = () => {
     setCalendarMonth(newDate.month() + 1);
   };
 
-  const handleClickPostsModal = (date: CalendarDay) => {
-    console.log("Selected date:", date);
-  };
-
   return (
     <div className="calendar-page">
       <h1>캘린더 페이지</h1>
@@ -61,7 +57,6 @@ const CalendarPage: React.FC = () => {
         calendarData={calendarData}
         clickNext={() => handleChangeMonth(1)}
         clickPrev={() => handleChangeMonth(-1)}
-        clickPostsModal={handleClickPostsModal}
       />
     </div>
   );
