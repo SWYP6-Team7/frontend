@@ -1,9 +1,13 @@
-import CalendarPage from "@/page/CreateTrip/CalendarPage";
+import CalendarPage from "@/page/CreateTrip/CalendarPageServer";
 import CreateTripIntroduce from "@/page/CreateTrip/CreateTripIntroduce";
 import React from "react";
 
-const CreateTripIntroducePage = () => {
-  return <CalendarPage />;
+interface PageProps {
+  searchParams: { year?: string; month?: string };
+}
+
+const CreateTripIntroducePage = ({ searchParams }: PageProps) => {
+  return <CalendarPage searchParams={searchParams} />;
 };
 
 export default CreateTripIntroducePage;
