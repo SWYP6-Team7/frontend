@@ -33,7 +33,7 @@ export const kakaoLogin = async () => {
 
 export const googleLogin = async () => {
   try {
-    const response = await axiosInstance.get("/api/login/oauth/kakao", {
+    const response = await axiosInstance.get("/api/login/oauth/google", {
       maxRedirects: 0,
     });
     const data = response.data;
@@ -47,7 +47,7 @@ export const googleLogin = async () => {
 
 export const naverLogin = async () => {
   try {
-    const response = await axiosInstance.get("/api/login/oauth/kakao", {
+    const response = await axiosInstance.get("/api/login/oauth/naver", {
       maxRedirects: 0,
     });
     const data = response.data;
