@@ -7,7 +7,12 @@ interface PageProps {
 }
 
 const CreateTripIntroducePage = ({ searchParams }: PageProps) => {
-  return <CalendarPage searchParams={searchParams} />;
+  return (
+    <>
+      {/* @ts-ignore Server Component */}
+      <CalendarPage searchParams={searchParams} />
+    </>
+  );
 };
 
 export default CreateTripIntroducePage;
