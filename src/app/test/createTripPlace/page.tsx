@@ -1,4 +1,4 @@
-import CreateTripPlace from "@/page/CreateTrip/CreateTripPlace";
+import CreateTripPlace from "@/page/CreateTrip/CreateTripRegion";
 import React from "react";
 
 const CreateTripPlacePage = () => {

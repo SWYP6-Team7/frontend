@@ -10,8 +10,8 @@ export async function getUser(userId: number, accessToken: string) {
     const response = await axiosInstance.get(`/api/user/${userId}`, {
       headers: getJWTHeader(accessToken),
     });
-    const data = response.data;
-    return data;
+
+    return handleApiResponse(response);
   } catch (error: any) {
     console.error(error);
   }
@@ -22,7 +22,7 @@ export const kakaoLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/kakao", {
       maxRedirects: 0,
     });
-    const data = response.data;
+    const data = handleApiResponse(response) as any;
     if (data?.redirectUrl) {
       window.location.href = data.redirectUrl;
     }
@@ -50,7 +50,7 @@ export const naverLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/naver", {
       maxRedirects: 0,
     });
-    const data = response.data;
+    const data = handleApiResponse(response) as any;
     if (data?.redirectUrl) {
       window.location.href = data.redirectUrl;
     }
@@ -86,7 +86,7 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
       },
     });
 
-    return response.data;
+    return handleApiResponse(response);
   } catch (error) {
     console.error("토큰 요청 실패:", error);
   }

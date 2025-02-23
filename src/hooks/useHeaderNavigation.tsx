@@ -9,10 +9,13 @@ const ROUTES = {
   REGISTER: "/register",
   VERIFYCODE: "/verifyEmail",
   CREATE_TRIP: {
-    INDEX: "/createTrip",
-    PLACE: "/createTripPlace",
-    INTRODUCE: "/createTripIntroduce",
-    DETAIL: "/createTripDetail",
+    INDEX: "/create/trip",
+    REGION: "/create/trip/region",
+    DATE: "/create/trip/date",
+    INFO: "/create/trip/info",
+    TAG: "/create/trip/tag",
+    INTRODUCE: "/create/trip/introduce",
+    DETAIL: "/create/trip/detail",
   },
   SEARCH: {
     TRAVEL: "/search/travel",
@@ -93,6 +96,7 @@ export const useHeaderNavigation = () => {
       [ROUTES.SEARCH.TRAVEL]: "여행검색",
       [ROUTES.SEARCH.COMMUNITY]: "검색",
       [ROUTES.CREATE_TRIP.INDEX]: "여행 만들기",
+
       [ROUTES.TRIP.APPLY]: "참가 신청",
       [ROUTES.TRIP.ENROLLMENT_LIST]: "참가 신청 목록",
       [ROUTES.TRIP.COMMENT]: "멤버 댓글",
@@ -203,16 +207,34 @@ export const useHeaderNavigation = () => {
 
       // 여행 만들기
       {
-        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.PLACE),
+        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.REGION),
         action: () => {
           setCreateTripPlace("/");
           router.push(createTripPlace);
         },
       },
       {
+        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.DATE),
+        action: () => {
+          router.push(ROUTES.CREATE_TRIP.REGION);
+        },
+      },
+      {
+        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.INFO),
+        action: () => {
+          router.push(ROUTES.CREATE_TRIP.DATE);
+        },
+      },
+      {
+        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.TAG),
+        action: () => {
+          router.push(ROUTES.CREATE_TRIP.INFO);
+        },
+      },
+      {
         condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.INTRODUCE),
         action: () => {
-          router.push(ROUTES.CREATE_TRIP.PLACE);
+          router.push(ROUTES.CREATE_TRIP.TAG);
         },
       },
       {
@@ -339,7 +361,9 @@ export const useHeaderNavigation = () => {
   const handleBack = () => {
     const rules = createNavigationRules(pathname);
     const matchedRule = rules.find((rule) => rule.condition());
-    document.documentElement.style.viewTransitionName = "back";
+    document.documentElement.style.viewTransitionName = checkRoute.startsWith(ROUTES.CREATE_TRIP.INDEX)
+      ? "instant"
+      : "back";
 
     if (matchedRule) {
       matchedRule.action();
@@ -351,7 +375,7 @@ export const useHeaderNavigation = () => {
 
   const shouldShowAlarmIcon = () => checkRoute.startsWith(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.MY.PAGE);
 
-  const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE;
+  const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE || pathname === ROUTES.CREATE_TRIP.TAG;
 
   return {
     ROUTES,

@@ -11,9 +11,11 @@ import { useBackPathStore } from "@/store/client/backPathStore";
 import { isGuestUser } from "@/utils/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { createTripStore } from "@/store/client/createTripStore";
 
 const Header = () => {
   const { getPageTitle, shouldShowAlarmIcon, shouldShowSkip, ROUTES, checkRoute, handleBack } = useHeaderNavigation();
+  const { addTags } = createTripStore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const { setNotification } = useBackPathStore();
@@ -50,11 +52,27 @@ const Header = () => {
       )}
 
       <Title>{getPageTitle()}</Title>
-      {shouldShowSkip() && <Skip onClick={() => router.push("/")}>건너뛰기</Skip>}
-      {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) && <VoidArea />}
+      {shouldShowSkip() && (
+        <Skip
+          onClick={() => {
+            if (checkRoute.exact(ROUTES.CREATE_TRIP.TAG)) {
+              addTags([]);
+              router.push(ROUTES.CREATE_TRIP.INTRODUCE);
+              return;
+            }
+            router.push("/");
+          }}
+        >
+          건너뛰기
+        </Skip>
+      )}
+      {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) && !checkRoute.exact(ROUTES.CREATE_TRIP.TAG) && (
+        <VoidArea />
+      )}
       {checkRoute.startsWith(ROUTES.TRIP.DETAIL) && <TripDetailHeader />}
       {checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL) && <CommunityHeader />}
       {shouldShowAlarmIcon() &&
+        !shouldShowSkip() &&
         (isGuestUser() ? (
           <Alarm></Alarm>
         ) : (

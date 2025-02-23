@@ -2,7 +2,7 @@
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { checkNetworkConnection } from "./user/useAuth";
-import { axiosInstance } from "@/api";
+import { axiosInstance, handleApiResponse } from "@/api";
 import RequestError from "@/context/ReqeustError";
 import { errorStore } from "@/store/client/errorStore";
 
@@ -18,9 +18,9 @@ const useVerifyEmail = () => {
       if (!response.data?.success) {
         throw new Error(response.data?.error.reason);
       }
-      return response.data;
+      return handleApiResponse(response);
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       console.log(data, "data");
       if (data.success) {
         sessionStorage.setItem("sessionToken", data.success.sessionToken);
@@ -47,10 +47,10 @@ const useVerifyEmail = () => {
       if (!response.data?.success) {
         throw new RequestError(response.data?.error.reason);
       }
-      return response.data;
+      return handleApiResponse(response);
     },
     mutationKey: ["verifyEmailCode"],
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       console.log(data, "data");
       if (data.success) {
       } else {

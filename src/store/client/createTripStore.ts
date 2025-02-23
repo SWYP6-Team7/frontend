@@ -13,15 +13,19 @@ interface CreateTripState {
   addDetails: (details: string) => void;
   maxPerson: number;
   addMaxPerson: (maxPerson: number) => void;
-  genderType: string;
+  genderType: string | null;
   addGenderType: (genderType: string) => void;
   dueDate: string;
   addDueDate: (dueDate: string) => void;
+  date: { startDate: string; endDate: string } | null;
+  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
   periodType: string;
   addPeriodType: (periodType: string) => void;
   tags: string[];
   addTags: (tags: string[]) => void;
   completionStatus: boolean;
+  mapType: "google" | "kakao";
+  addMapType: (mapType: "google" | "kakao") => void;
   addCompletionStatus: (completionStatus: boolean) => void;
   resetCreateTripDetail: () => void;
 }
@@ -43,7 +47,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
   addMaxPerson: (maxPerson) => {
     set({ maxPerson });
   },
-  genderType: "모두",
+  genderType: null,
   addGenderType: (genderType) => {
     set({ genderType });
   },
@@ -54,6 +58,10 @@ export const createTripStore = create<CreateTripState>((set) => ({
     const formattedDay = day.padStart(2, "0");
 
     set({ dueDate: `${year}-${formattedMonth}-${formattedDay}` });
+  },
+  date: null,
+  addDate: (date) => {
+    set({ date });
   },
   periodType: "",
   addPeriodType: (periodType) => {
@@ -67,7 +75,10 @@ export const createTripStore = create<CreateTripState>((set) => ({
   addCompletionStatus: (completionStatus) => {
     set({ completionStatus });
   },
-
+  mapType: "google",
+  addMapType: (mapType) => {
+    set({ mapType });
+  },
   resetCreateTripDetail: () => {
     set({
       title: "",

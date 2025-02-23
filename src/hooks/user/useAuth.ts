@@ -53,7 +53,7 @@ const useAuth = () => {
         email,
         password,
       });
-      return response.data;
+      return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
       setLoginData({
@@ -79,7 +79,7 @@ const useAuth = () => {
         email,
         socialLoginId,
       });
-      return response.data;
+      return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
       setLoginData({
@@ -172,7 +172,7 @@ const useAuth = () => {
   const refreshTokenMutation = useMutation({
     mutationFn: async () => {
       const response = await axiosInstance.post("/api/token/refresh", {});
-      return response.data;
+      return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
       setLoginData({

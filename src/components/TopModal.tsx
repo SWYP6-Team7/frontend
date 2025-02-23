@@ -2,24 +2,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
+import { palette } from "@/styles/palette";
 
-const BottomModal = ({
-  children,
-  closeModal,
-  initialHeight,
-}: {
-  children: React.ReactNode;
-  closeModal: () => void;
-  initialHeight: number;
-}) => {
+const TopModal = ({ children, maxHeight = 66 }: { children: React.ReactNode; maxHeight?: number }) => {
   const [touchY, setTouchY] = useState(0);
-  const [modalHeight, setModalHeight] = useState(initialHeight);
+  const [modalHeight, setModalHeight] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
   const [windowHeight, setWindowHeight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isClient, setIsClient] = useState(false);
 
-  // window 객체를 안전하게 사용하기 위한 useEffect
   useEffect(() => {
+    setIsClient(true);
     setWindowHeight(window.innerHeight);
 
     const handleResize = () => {
@@ -51,10 +45,11 @@ const BottomModal = ({
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!windowHeight) return; // windowHeight가 0이면 early return
+    if (!windowHeight) return;
 
     const currentY = e.changedTouches[0].pageY;
-    const newHeight = Math.max(0, Math.min(100, 100 - (currentY / windowHeight) * 100));
+    const newHeight = Math.max(0, Math.min(100, ((currentY - 116) / windowHeight) * 100));
+    console.log(newHeight, currentY);
     setModalHeight(newHeight);
   };
 
@@ -63,123 +58,105 @@ const BottomModal = ({
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!windowHeight) return; // windowHeight가 0이면 early return
+    if (!windowHeight) return;
 
     const distanceY = e.changedTouches[0].pageY - touchY;
     const percentMoved = Math.abs(distanceY) / windowHeight;
-
-    if (distanceY > 0 && percentMoved > 0.2) {
-      setIsClosing(true);
+    console.log(modalHeight);
+    if (modalHeight >= maxHeight) {
       setTimeout(() => {
-        closeModal();
+        setModalHeight(maxHeight);
       }, 300);
     } else {
-      setModalHeight(100);
+      return;
     }
   };
 
-  // 서버 사이드 렌더링 시 초기 상태
+  if (!isClient) return null;
   if (typeof window === "undefined") {
     return null;
   }
 
   return (
-    <>
-      <Container
-        onClick={() => {
-          closeModal();
-          setIsClosing(true);
-        }}
-      ></Container>
-      <ContentContainer ref={contentRef} onClick={handleContentClick} isClosing={isClosing}>
-        <BarContainer onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-          <Bar />
-        </BarContainer>
-        {children}
-      </ContentContainer>
-    </>
+    <ContentContainer ref={contentRef} onClick={handleContentClick} isClosing={isClosing}>
+      {children}
+      <BarContainer onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+        <Bar />
+      </BarContainer>
+    </ContentContainer>
   );
 };
 
-// 나머지 스타일 컴포넌트들은 동일하게 유지...
-const slideUpMobile = keyframes`
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
-
-const slideUpDesktop = keyframes`
-  from {
-    transform: translateY(100%) translateX(-50%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) translateX(-50%);
-    opacity: 1;
-  }
-`;
-
 const slideDownMobile = keyframes`
   from {
-    transform: translateY(0);
-    opacity: 1;
+    transform: translateY(-100%);
+    opacity: 0;
   }
   to {
-    transform: translateY(100%);
-    opacity: 0;
+    transform: translateY(0);
+    opacity: 1;
   }
 `;
 
 const slideDownDesktop = keyframes`
   from {
+    transform: translateY(-100%) translateX(-50%);
+    opacity: 0;
+  }
+  to {
     transform: translateY(0) translateX(-50%);
     opacity: 1;
   }
+`;
+
+const slideUpMobile = keyframes`
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
   to {
-    transform: translateY(100%) translateX(-50%);
+    transform: translateY(-100%);
     opacity: 0;
   }
 `;
 
-const Container = styled.div`
-  height: 100svh;
-  position: fixed;
-  z-index: 1005;
-  width: 100%;
-  top: 0;
-  left: 0;
-  @media (min-width: 440px) {
-    width: 390px;
-    left: 50%;
+const slideUpDesktop = keyframes`
+  from {
     transform: translateY(0) translateX(-50%);
+    opacity: 1;
   }
-  background-color: rgba(0, 0, 0, 0.4);
+  to {
+    transform: translateY(-100%) translateX(-50%);
+    opacity: 0;
+  }
 `;
 
 const ContentContainer = styled.div<{ isClosing: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  bottom: 0;
+  position: relative;
+  background-color: blue;
+  top: 116px;
+  overflow: hidden;
   @media (min-width: 440px) {
     width: 390px;
+    left: 50%;
+    transform: translate(-50%);
   }
   z-index: 2000;
   position: fixed;
   max-height: 100%;
+  min-height: 48px;
   left: 0;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
   background-color: white;
-  animation: ${(props) => (props.isClosing ? slideDownMobile : slideUpMobile)} 0.3s ease-out forwards;
+  padding-bottom: 48px;
+  //  animation: ${(props) => (props.isClosing ? slideUpMobile : slideDownMobile)} 0.3s ease-out forwards;
   @media (min-width: 440px) {
     left: 50%;
-    animation: ${(props) => (props.isClosing ? slideDownDesktop : slideUpDesktop)} 0.3s ease-out forwards;
+    //  animation: ${(props) => (props.isClosing ? slideUpDesktop : slideDownDesktop)} 0.3s ease-out forwards;
   }
   transition: min-height 0.1s ease-out;
 `;
@@ -191,13 +168,18 @@ const Bar = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%);
+
   background-color: rgba(205, 205, 205, 1);
 `;
 
 const BarContainer = styled.div`
   display: flex;
   padding: 2.84svh 0;
-  position: relative;
+  position: absolute;
+  height: 48px;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
 `;
 
-export default BottomModal;
+export default TopModal;

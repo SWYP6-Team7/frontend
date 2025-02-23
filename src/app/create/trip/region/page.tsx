@@ -1,8 +1,8 @@
 import CreateTripPlace from "@/page/CreateTrip/CreateTripRegion";
 import React from "react";
 
-const CreateTripPlacePage = () => {
+const CreateTripRegionPage = () => {
   return <CreateTripPlace />;
 };
 
-export default CreateTripPlacePage;
+export default CreateTripRegionPage;
