@@ -16,6 +16,7 @@ interface BoxLayoutTagProps {
     padding?: string;
     fontSize?: string;
     fontWeight?: string;
+    margin?: string;
   };
 }
 const BoxLayoutTag = forwardRef(
@@ -31,6 +32,7 @@ const BoxLayoutTag = forwardRef(
         borderRadius: "20px",
         fontSize: "12px",
         fontWeight: "600",
+        margin: "0 6px 0 0",
       },
     }: BoxLayoutTagProps,
     ref
@@ -72,7 +74,6 @@ const Tag = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 6px;
   transition: all 0.1s ease;
 `;
 

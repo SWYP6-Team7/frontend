@@ -2,14 +2,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
+import { createPortal } from "react-dom";
 
 const BottomModal = ({
   children,
   closeModal,
   initialHeight,
+  backdropClick,
 }: {
   children: React.ReactNode;
   closeModal: () => void;
+  backdropClick?: () => void;
   initialHeight: number;
 }) => {
   const [touchY, setTouchY] = useState(0);
@@ -71,7 +74,11 @@ const BottomModal = ({
     if (distanceY > 0 && percentMoved > 0.2) {
       setIsClosing(true);
       setTimeout(() => {
-        closeModal();
+        if (backdropClick) {
+          backdropClick();
+        } else {
+          closeModal();
+        }
       }, 300);
     } else {
       setModalHeight(100);
@@ -83,21 +90,31 @@ const BottomModal = ({
     return null;
   }
 
-  return (
+  return createPortal(
     <>
       <Container
-        onClick={() => {
-          closeModal();
+        onClick={(e: MouseEvent) => {
+          e.stopPropagation();
           setIsClosing(true);
+
+          setTimeout(() => {
+            if (backdropClick) {
+              backdropClick();
+            } else {
+              closeModal();
+            }
+          }, 200);
         }}
-      ></Container>
-      <ContentContainer ref={contentRef} onClick={handleContentClick} isClosing={isClosing}>
-        <BarContainer onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-          <Bar />
-        </BarContainer>
-        {children}
-      </ContentContainer>
-    </>
+      >
+        <ContentContainer ref={contentRef} onClick={handleContentClick} isClosing={isClosing}>
+          <BarContainer onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+            <Bar />
+          </BarContainer>
+          {children}
+        </ContentContainer>
+      </Container>
+    </>,
+    document.getElementById("end-modal") as HTMLElement
   );
 };
 
@@ -146,7 +163,7 @@ const slideDownDesktop = keyframes`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ isClosing: boolean }>`
   height: 100svh;
   position: fixed;
   z-index: 1005;
@@ -156,7 +173,7 @@ const Container = styled.div`
   @media (min-width: 440px) {
     width: 390px;
     left: 50%;
-    transform: translateY(0) translateX(-50%);
+    transform: translateX(-50%);
   }
   background-color: rgba(0, 0, 0, 0.4);
 `;
@@ -166,22 +183,22 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
   display: flex;
   flex-direction: column;
   bottom: 0;
+  left: 0;
   @media (min-width: 440px) {
     width: 390px;
+    /* left: 50%;
+    transform: translateX(-50%); */
   }
-  z-index: 2000;
+  z-index: 2001;
   position: fixed;
   max-height: 100%;
-  left: 0;
+
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
   animation: ${(props) => (props.isClosing ? slideDownMobile : slideUpMobile)} 0.3s ease-out forwards;
-  @media (min-width: 440px) {
-    left: 50%;
-    animation: ${(props) => (props.isClosing ? slideDownDesktop : slideUpDesktop)} 0.3s ease-out forwards;
-  }
-  transition: min-height 0.1s ease-out;
+
+  transition: all 0.1s ease-out;
 `;
 
 const Bar = styled.div`

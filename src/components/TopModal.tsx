@@ -4,13 +4,15 @@ import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import { palette } from "@/styles/palette";
 
-const TopModal = ({ children, maxHeight = 66 }: { children: React.ReactNode; maxHeight?: number }) => {
-  const [touchY, setTouchY] = useState(0);
+const TopModal = ({ children }: { children: React.ReactNode }) => {
+  const [startY, setStartY] = useState(0);
   const [modalHeight, setModalHeight] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
   const [windowHeight, setWindowHeight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -23,6 +25,13 @@ const TopModal = ({ children, maxHeight = 66 }: { children: React.ReactNode; max
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      console.log(contentRef.current?.getBoundingClientRect().height, "height");
+      setContentHeight(contentRef.current?.getBoundingClientRect().height || 0);
+    }
+  }, [contentRef.current]);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -44,31 +53,49 @@ const TopModal = ({ children, maxHeight = 66 }: { children: React.ReactNode; max
     e.stopPropagation();
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!windowHeight) return;
+  const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
+    setIsDragging(true);
+    if ("touches" in e) {
+      setStartY(e.touches[0].pageY);
+    } else {
+      setStartY(e.pageY);
+    }
+  };
 
-    const currentY = e.changedTouches[0].pageY;
+  const handleDragMove = (e: React.TouchEvent | React.MouseEvent) => {
+    if (!isDragging || !windowHeight) return;
+
+    let currentY;
+    if ("touches" in e) {
+      currentY = e.touches[0].pageY;
+    } else {
+      currentY = e.pageY;
+    }
+
     const newHeight = Math.max(0, Math.min(100, ((currentY - 116) / windowHeight) * 100));
-    console.log(newHeight, currentY);
     setModalHeight(newHeight);
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchY(e.changedTouches[0].pageY);
-  };
+  const handleDragEnd = (e: React.TouchEvent | React.MouseEvent) => {
+    if (!isDragging || !windowHeight) return;
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!windowHeight) return;
-
-    const distanceY = e.changedTouches[0].pageY - touchY;
-    const percentMoved = Math.abs(distanceY) / windowHeight;
-    console.log(modalHeight);
-    if (modalHeight >= maxHeight) {
-      setTimeout(() => {
-        setModalHeight(maxHeight);
-      }, 300);
+    setIsDragging(false);
+    let endY;
+    if ("changedTouches" in e) {
+      endY = e.changedTouches[0].pageY;
     } else {
-      return;
+      endY = e.pageY;
+    }
+
+    const distanceY = endY - startY;
+    const percentMoved = Math.abs(distanceY) / windowHeight;
+
+    if (distanceY < 0) {
+      // 아래로 드래그한 경우
+      setModalHeight(0);
+    } else if (distanceY > 0) {
+      // 위로 드래그한 경우
+      setModalHeight((contentHeight / windowHeight) * 100);
     }
   };
 
@@ -80,7 +107,15 @@ const TopModal = ({ children, maxHeight = 66 }: { children: React.ReactNode; max
   return (
     <ContentContainer ref={contentRef} onClick={handleContentClick} isClosing={isClosing}>
       {children}
-      <BarContainer onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+      <BarContainer
+        onTouchStart={handleDragStart}
+        onTouchMove={handleDragMove}
+        onTouchEnd={handleDragEnd}
+        onMouseDown={handleDragStart}
+        onMouseMove={handleDragMove}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+      >
         <Bar />
       </BarContainer>
     </ContentContainer>
@@ -144,7 +179,7 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
     left: 50%;
     transform: translate(-50%);
   }
-  z-index: 2000;
+  z-index: 1000;
   position: fixed;
   max-height: 100%;
   min-height: 48px;
@@ -158,7 +193,8 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
     left: 50%;
     //  animation: ${(props) => (props.isClosing ? slideUpDesktop : slideDownDesktop)} 0.3s ease-out forwards;
   }
-  transition: min-height 0.1s ease-out;
+  transition: all 0.1s ease-out;
+  box-shadow: 0px 3px 0 0 rgba(170, 170, 170, 0.15);
 `;
 
 const Bar = styled.div`

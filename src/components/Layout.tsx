@@ -14,6 +14,7 @@ import { ImyPage, IProfileImg } from "@/model/myPages";
 import Splash from "@/page/Splash";
 import { splashOnStore } from "@/store/client/splashOnOffStore";
 import { usePathname } from "next/navigation";
+import { APIProvider } from "@vis.gl/react-google-maps";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { userPostRefreshToken } = useAuth();
@@ -89,28 +90,30 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }, [pathname]);
 
   return (
-    <Container pathname={pathname}>
-      <Splash />
-      <Body pathname={pathname}>
-        {/* {isSignup && <Header />} */}
-        {/* 홈 화면 헤더는 다른 형태. */}
-        {pathname !== "/" &&
-          !isOnboarding &&
-          pathname !== "/registerDone" &&
-          pathname !== "/login" &&
-          pathname !== "/trip/list" &&
-          pathname !== "/community" && <Header />}
-        {children}
-        {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""} onLoad={() => console.log("google map load")}>
+      <Container pathname={pathname}>
+        <Splash />
+        <Body pathname={pathname}>
+          {/* {isSignup && <Header />} */}
+          {/* 홈 화면 헤더는 다른 형태. */}
+          {pathname !== "/" &&
+            !isOnboarding &&
+            pathname !== "/registerDone" &&
+            pathname !== "/login" &&
+            pathname !== "/trip/list" &&
+            pathname !== "/community" && <Header />}
+          {children}
+          {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
           <Outlet />
         ) : (
           <Navigate to="/login" />
         )} */}
 
-        {/* 로그인을 해야만 보이는거 처리. */}
-        <Navbar />
-      </Body>
-    </Container>
+          {/* 로그인을 해야만 보이는거 처리. */}
+          <Navbar />
+        </Body>
+      </Container>
+    </APIProvider>
   );
 };
 

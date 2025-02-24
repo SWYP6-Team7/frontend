@@ -12,7 +12,7 @@ import { createTripStore } from "@/store/client/createTripStore";
 import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
 import useViewTransition from "@/hooks/useViewTransition";
-const selections = [
+export const selections = [
   { gender: "모두", icon: (isSelect: boolean) => <EveryBodyIcon selected={isSelect} /> },
   { gender: "남자만", icon: (isSelect: boolean) => <OnlyMaleIcon selected={isSelect} /> },
   { gender: "여자만", icon: (isSelect: boolean) => <OnlyFemaleIcon selected={isSelect} /> },

@@ -1,30 +1,32 @@
 "use client";
 import BottomModal from "@/components/BottomModal";
-import PersonIcon from "@/components/icons/PersonIcon";
-import Vector from "@/components/icons/Vector";
-import Spacing from "@/components/Spacing";
+import ButtonContainer from "@/components/ButtonContainer";
+import Button from "@/components/designSystem/Buttons/Button";
+import ArrowIcon from "@/components/icons/ArrowIcon";
+import EveryBodyIcon from "@/components/icons/EveryBodyIcon";
+import OnlyFemaleIcon from "@/components/icons/OnlyFemaleIcon";
+import OnlyMaleIcon from "@/components/icons/OnlyMaleIcon";
+import { createTripStore } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { ChangeEvent, FocusEventHandler, FormEvent, useEffect, useState } from "react";
-import RecruitingPickerView from "./RecruitingPickerView";
-import Button from "@/components/designSystem/Buttons/Button";
-import { tripDetailStore } from "@/store/client/tripDetailStore";
-import { usePathname } from "next/navigation";
-import { createTripStore } from "@/store/client/createTripStore";
-import ButtonContainer from "@/components/ButtonContainer";
+import React, { ChangeEvent, FocusEventHandler, useState } from "react";
+import { selections } from "../CreateTripInfo";
+import Spacing from "@/components/Spacing";
 
-export default function RecruitingWrapper() {
-  const pathname = usePathname();
-  const isCreateTripDetailPage = pathname === "/create/trip/info";
-  const { maxPerson } = tripDetailStore();
-  const { maxPerson: maxPersonForCreateTrip, addMaxPerson } = createTripStore();
+const InfoWrapper = () => {
   const [showModal, setShowModal] = useState(false);
+  const { genderType, maxPerson, addMaxPerson, addGenderType } = createTripStore();
   const [focused, setFocused] = useState(false);
 
   const bgColor = focused ? palette.keycolorBG : palette.검색창;
 
   const borderColor = focused ? palette.keycolor : bgColor;
   const color = focused ? palette.keycolor : "#000";
+
+  const clickGender = (genderType: string) => {
+    addGenderType(genderType);
+  };
+
   const handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
     setFocused(true);
   };
@@ -44,49 +46,56 @@ export default function RecruitingWrapper() {
 
   const onClickButton = (type: "plus" | "minus") => {
     if (type === "plus") {
-      addMaxPerson(maxPersonForCreateTrip + 1);
+      addMaxPerson(maxPerson + 1);
     } else {
-      addMaxPerson(maxPersonForCreateTrip === 0 ? 0 : maxPersonForCreateTrip - 1);
+      addMaxPerson(maxPerson === 0 ? 0 : maxPerson - 1);
     }
   };
 
   const handleCloseModal = () => {
-    if (maxPersonForCreateTrip <= 0) return;
+    if (maxPerson <= 0) return;
     setShowModal(false);
   };
 
   return (
     <>
-      <RecruitingContainer>
-        <DetailTitle>모집 인원</DetailTitle>
-        <RecruitingBtn onClick={(e) => setShowModal(true)}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <PersonIcon stroke={palette.keycolor} width={24} height={20} />
-            </div>
-            <Count>{maxPersonForCreateTrip}</Count>
-
-            <Vector />
-          </div>
-        </RecruitingBtn>
-      </RecruitingContainer>
+      <Container onClick={() => setShowModal(true)}>
+        <TextContainer>
+          {genderType === "모두" ? (
+            <EveryBodyIcon selected size={24} />
+          ) : genderType === "남자만" ? (
+            <OnlyMaleIcon selected size={24} />
+          ) : (
+            <OnlyFemaleIcon selected size={24} />
+          )}
+          <Title>{genderType}</Title>
+          <Content>0 / {maxPerson}</Content>
+        </TextContainer>
+        <ArrowIconContainer>
+          <ArrowIcon />
+        </ArrowIconContainer>
+      </Container>
       {showModal && (
         <BottomModal
-          initialHeight={27} // height 비율이 짧아 진다면 58%로 맞추기.
+          initialHeight={44} // height 비율이 짧아 진다면 58%로 맞추기.
           closeModal={handleCloseModal}
         >
           <ModalWrapper>
             <ModalContainer>
+              <Spacing size={24} />
+              <GenderList>
+                {selections.map((item) => (
+                  <GenderItem isSelected={genderType === item.gender} onClick={() => clickGender(item.gender)}>
+                    {item.icon(genderType === item.gender)}
+                    <GenderText>{item.gender}</GenderText>
+                  </GenderItem>
+                ))}
+              </GenderList>
+              <Spacing size={34} />
               <CountContainer>
                 <MinusButton onClick={() => onClickButton("minus")} />
                 <CountInput
-                  value={maxPersonForCreateTrip}
+                  value={maxPerson}
                   onChange={onChangeCount}
                   color={color}
                   onFocus={handleFocus}
@@ -102,9 +111,9 @@ export default function RecruitingWrapper() {
           <ButtonContainer>
             <Button
               onClick={handleCloseModal}
-              disabled={maxPersonForCreateTrip <= 0}
+              disabled={maxPerson <= 0}
               addStyle={
-                maxPersonForCreateTrip <= 0
+                maxPerson <= 0
                   ? {
                       backgroundColor: "rgba(220, 220, 220, 1)",
                       color: "rgba(132, 132, 132, 1)",
@@ -119,7 +128,8 @@ export default function RecruitingWrapper() {
       )}
     </>
   );
-}
+};
+
 const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -128,6 +138,33 @@ const ModalWrapper = styled.div`
   overflow: hidden;
 `;
 
+const GenderText = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+`;
+
+const GenderList = styled.div`
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+`;
+
+const GenderItem = styled.div<{ isSelected: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  background-color: ${(props) => (props.isSelected ? palette.keycolorBG : palette.검색창)};
+  border: ${(props) => (props.isSelected ? `1px solid ${palette.keycolor}` : "0px")};
+  border-radius: 20px;
+  width: 90px;
+  height: 84px;
+  color: ${(props) => (props.isSelected ? palette.keycolor : palette.기본)};
+  font-weight: ${(props) => (props.isSelected ? 600 : 400)};
+`;
 const CountContainer = styled.div`
   display: flex;
   gap: 16px;
@@ -219,16 +256,6 @@ const ModalContainer = styled.div`
   padding-bottom: 104px;
 `;
 
-const DetailTitle = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 22px;
-  text-align: left;
-  color: ${palette.비강조};
-
-  padding: 0px 6px;
-  gap: 8px;
-`;
 const Count = styled.div`
   font-size: 16px;
   font-weight: 500;
@@ -239,31 +266,41 @@ const Count = styled.div`
   margin-right: 8px;
 `;
 
-const RecruitingContainer = styled.div``;
-const RecruitingBtn = styled.button`
+const Container = styled.div`
+  padding: 11px 0;
+  padding-left: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
+`;
 
+const ArrowIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
   height: 48px;
-  padding: 12px 16px;
-  gap: 0px;
-  border-radius: 30px;
-  border: 1px solid ${palette.비강조3};
-  opacity: 0px;
 `;
-const ButtonWrapper = styled.div<{ width: string; showModal: boolean }>`
-  width: 390px;
-  @media (max-width: 389px) {
-    width: ${(props) => props.width};
-  }
-  @media (max-width: 450px) {
-    width: ${(props) => props.width};
-  }
 
-  position: fixed;
-  bottom: 4.7svh;
-  padding: 0px 24px;
-  z-index: 10;
+const Title = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  color: ${palette.비강조};
+  font-weight: 600;
+  margin-left: 8px;
+  margin-right: 29px;
 `;
+
+const TextContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Content = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  color: ${palette.기본};
+  font-weight: 500;
+`;
+
+export default InfoWrapper;

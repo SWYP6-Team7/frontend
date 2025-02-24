@@ -11,21 +11,18 @@ import { createTripStore } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import TagList from "./component/TagList";
 
 const CreateTripTag = () => {
   const { tags, addTags } = createTripStore();
   const [taggedArray, setTaggedArray] = useState<string[]>(tags);
   const navigateWithTransition = useViewTransition();
-  const isActive = (tag: string) => {
-    return taggedArray.includes(tag);
-  };
 
   const clickTag = (tag: string) => {
     const newArray = taggedArray.includes(tag) ? taggedArray.filter((v) => v !== tag) : [...taggedArray, tag];
     addTags(newArray);
     setTaggedArray(newArray);
   };
-
   const handleNext = () => {
     document.documentElement.style.viewTransitionName = "instant";
     navigateWithTransition("/create/trip/introduce");
@@ -39,26 +36,7 @@ const CreateTripTag = () => {
         여행 스타일을 알려주세요 <Small>(최대 5개)</Small>
       </Title>
       <Spacing size={20} />
-      <TagContainer>
-        {TAG_LIST[0].tags?.map((tag, idx) => (
-          <SearchFilterTag
-            key={tag}
-            idx={idx}
-            addStyle={{
-              backgroundColor: isActive(tag) ? "rgba(227, 239, 217, 1)" : " rgba(240, 240, 240, 1)",
-              color: isActive(tag) ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
-
-              border: isActive(tag) ? `1px solid ${palette.keycolor}` : `1px solid ${palette.검색창}`,
-              borderRadius: "30px",
-              padding: "10px 20px",
-              fontWeight: isActive(tag) ? "600" : "400",
-              lineHeight: "22px",
-            }}
-            text={tag}
-            onClick={() => clickTag(tag)}
-          />
-        ))}
-      </TagContainer>
+      <TagList taggedArray={taggedArray} clickTag={clickTag} />
       <ButtonContainer>
         <Button
           onClick={handleNext}

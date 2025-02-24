@@ -16,10 +16,14 @@ import RegionWrapper from "./RegionWrapper";
 import InputField from "@/components/designSystem/input/InputField";
 import Spacing from "@/components/Spacing";
 import TextareaField from "@/components/designSystem/input/TextareaField";
+import TagListWrapper from "./TagListWrapper";
+import CalendarWrapper from "./CalendarWrapper";
+import InfoWrapper from "./InfoWrapper";
 
 const CreateTripDetail = () => {
-  const { location, title, details, addTitle, addDetails } = createTripStore();
+  const { location, title, details, addTitle, addDetails, tags } = createTripStore();
   const handleRemoveValue = () => addTitle("");
+
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     addTitle(e.target.value);
   };
@@ -28,7 +32,7 @@ const CreateTripDetail = () => {
       <CreateTripDetailContainer>
         <TopModal>
           <ModalContainer>
-            <RegionWrapper region={"도쿄"} />
+            <RegionWrapper region={"대전"} />
             <Spacing size={16} />
             <InputField
               value={title}
@@ -48,6 +52,12 @@ const CreateTripDetail = () => {
 자유롭게 소개해보세요. (최대 2,000자)"
             />
             <Spacing size={16} />
+            <TagListWrapper type="create" taggedArray={tags} />
+            <Spacing size={16} />
+            <Bar />
+            <CalendarWrapper />
+            <Bar />
+            <InfoWrapper />
           </ModalContainer>
         </TopModal>
       </CreateTripDetailContainer>
@@ -78,4 +88,10 @@ const CreateTripDetailContainer = styled.div`
 
 const ModalContainer = styled.div`
   padding: 0 24px;
+`;
+
+const Bar = styled.div`
+  background-color: #e7e7e7;
+  width: 100%;
+  height: 1px;
 `;

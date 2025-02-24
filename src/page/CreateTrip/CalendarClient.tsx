@@ -13,6 +13,7 @@ import { createTripStore } from "@/store/client/createTripStore";
 import CalendarIcon from "@/components/icons/Calendar";
 import SecondStepIcon from "@/components/icons/SecondStepIcon";
 import useViewTransition from "@/hooks/useViewTransition";
+import CalendarModal from "./CalendarModal";
 interface CalendarClientProps {
   holidaysArray: {
     year: number;
@@ -21,7 +22,7 @@ interface CalendarClientProps {
   }[];
 }
 
-function formatDateRange(startDate, endDate) {
+export function formatDateRange(startDate, endDate) {
   console.log(startDate, endDate);
   const start = dayjs(startDate);
   const end = dayjs(endDate);
@@ -35,96 +36,12 @@ function formatDateRange(startDate, endDate) {
   }
 }
 
-function isMoreThan30DaysApart(date1, date2) {
-  const d1 = dayjs(date1);
-  const d2 = dayjs(date2);
-
-  // 두 날짜 사이의 차이를 일 단위로 계산
-  const diffInDays = Math.abs(d1.diff(d2, "day"));
-
-  return diffInDays > 30;
-}
-
 const CalendarClient: React.FC<CalendarClientProps> = ({ holidaysArray }) => {
-  const [calendarDataArray, setCalendarDataArray] = useState<
-    { year: number; month: number; calendarData: CalendarDay[][] }[]
-  >([]);
   const [showModal, setShowModal] = useState(false);
-  const [startTime, setStartTime] = useState<string | undefined>();
+
   const navigateWithTransition = useViewTransition();
 
-  const [posts, setPosts] = useState<Post[]>([]);
-  const { mapType, addDate, date } = createTripStore();
-  console.log(mapType, "mapType");
-  useEffect(() => {
-    const initialCalendarDataArray = holidaysArray.map(({ year, month, holidays }) => ({
-      year,
-      month,
-      calendarData: setCalendarArray(year, month, holidays, posts),
-    }));
-    console.log("initcalendardata", calendarDataArray);
-
-    setCalendarDataArray(initialCalendarDataArray);
-  }, [holidaysArray]);
-
-  const handleDateClick = (clickedDate: CalendarDay, year: number, month: number) => {
-    if (clickedDate.type !== "now") return;
-    const clickedDayjs = dayjs(`${year}-${month.toString().padStart(2, "0")}-${clickedDate.date}`);
-
-    if (clickedDayjs.isBefore(dayjs(), "day")) {
-      return;
-    }
-    let newPost: any = {};
-    if (!startTime) {
-      newPost = {
-        calendarId: Math.random().toString(36).substr(2, 9),
-        startTime: clickedDayjs.format("YYYY-MM-DD HH:mm:ss"),
-        endTime: clickedDayjs.format("YYYY-MM-DD HH:mm:ss"),
-
-        content: `${clickedDayjs.format("YYYY-MM-DD")}`,
-      };
-
-      setStartTime(clickedDayjs.format("YYYY-MM-DD HH:mm:ss"));
-    } else {
-      if (isMoreThan30DaysApart(startTime, clickedDayjs)) return;
-      newPost = {
-        calendarId: Math.random().toString(36).substr(2, 9),
-        startTime: startTime,
-        endTime: clickedDayjs.format("YYYY-MM-DD HH:mm:ss"),
-
-        content: ` ${clickedDayjs.format("YYYY-MM-DD")}`,
-      };
-      setStartTime(undefined);
-    }
-    console.log("post", newPost);
-    const updatedPosts = [newPost];
-    setPosts(updatedPosts);
-    const updatedCalendarDataArray = calendarDataArray.map(({ year, month, calendarData }) => ({
-      year,
-      month,
-      calendarData: setCalendarArray(
-        year,
-        month,
-        holidaysArray.find((h) => h.year === year && h.month === month)?.holidays || [],
-        updatedPosts
-      ),
-    }));
-
-    setCalendarDataArray(updatedCalendarDataArray);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleDate = () => {
-    if (posts.length === 0) return;
-    addDate({
-      startDate: `${dayjs(posts[0].startTime).format("YYYY-MM-DD")}`,
-      endDate: `${dayjs(posts[0].endTime).format("YYYY-MM-DD")}`,
-    });
-    setShowModal(false);
-  };
+  const { date } = createTripStore();
 
   const handleNextStep = () => {
     if (!date) return;
@@ -132,55 +49,9 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ holidaysArray }) => {
     navigateWithTransition("/create/trip/info");
   };
 
-  if (!calendarDataArray.length) {
-    return <></>; // 서버와 클라이언트 모두 동일한 HTML 출력
-  }
-
   return (
     <>
-      {showModal && (
-        <BottomModal initialHeight={75} closeModal={handleCloseModal}>
-          <ModalWrapper>
-            <ModalContainer>
-              <WeekDays>
-                {["일", "월", "화", "수", "목", "금", "토"].map((day) => (
-                  <WeekDay key={day}>{day}</WeekDay>
-                ))}
-              </WeekDays>
-              <Spacing size={20} />
-              {calendarDataArray.map((data, index) => (
-                <>
-                  <Calendar
-                    calendarYear={data.year}
-                    calendarMonth={data.month}
-                    calendarData={data.calendarData}
-                    clickNext={() => {}}
-                    clickPrev={() => {}}
-                    onDateClick={(date) => handleDateClick(date, data.year, data.month)}
-                  />
-                  <Spacing size={28} />
-                </>
-              ))}
-            </ModalContainer>
-          </ModalWrapper>
-          <ButtonContainer>
-            <Button
-              onClick={handleDate}
-              disabled={posts.length === 0}
-              addStyle={
-                posts.length === 0
-                  ? {
-                      backgroundColor: "rgba(220, 220, 220, 1)",
-                      color: "rgba(132, 132, 132, 1)",
-                      boxShadow: "-2px 4px 5px 0px rgba(170, 170, 170, 0.1)",
-                    }
-                  : undefined
-              }
-              text={"완료"}
-            />
-          </ButtonContainer>
-        </BottomModal>
-      )}
+      <CalendarModal showModal={showModal} setShowModal={setShowModal} />
       <Container>
         <StepIconContainer>
           <SecondStepIcon />
