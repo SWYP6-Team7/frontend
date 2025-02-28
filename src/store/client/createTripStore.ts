@@ -23,6 +23,8 @@ interface CreateTripState {
   addPeriodType: (periodType: string) => void;
   tags: string[];
   addTags: (tags: string[]) => void;
+  initGeometry: { lng: number; lat: number } | null;
+  addInitGeometry: ({ lng, lat }: { lng: number; lat: number }) => void;
   completionStatus: boolean;
   mapType: "google" | "kakao";
   addMapType: (mapType: "google" | "kakao") => void;
@@ -46,6 +48,10 @@ export const createTripStore = create<CreateTripState>((set) => ({
   maxPerson: 1,
   addMaxPerson: (maxPerson) => {
     set({ maxPerson });
+  },
+  initGeometry: null,
+  addInitGeometry: (geo: { lng: number; lat: number }) => {
+    set({ initGeometry: geo });
   },
   genderType: null,
   addGenderType: (genderType) => {

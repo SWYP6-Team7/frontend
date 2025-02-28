@@ -1,18 +1,52 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo, RefObject } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import { palette } from "@/styles/palette";
 
-const TopModal = ({ children }: { children: React.ReactNode }) => {
+const TopModal = ({
+  children,
+  onHeightChange,
+  setIsMapFull,
+  containerRef,
+}: {
+  children: React.ReactNode;
+  onHeightChange: (height: number) => void;
+  setIsMapFull: (bool: boolean) => void;
+  containerRef: RefObject<HTMLDivElement | null>;
+}) => {
   const [startY, setStartY] = useState(0);
   const [modalHeight, setModalHeight] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
   const [windowHeight, setWindowHeight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
+  const childrenRef = useRef<HTMLDivElement>(null);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+
+  const handleScroll = useCallback(() => {
+    const currentScrollTop = containerRef.current?.scrollTop || 0;
+    console.log(currentScrollTop, lastScrollTop, "123");
+
+    if (currentScrollTop > lastScrollTop) {
+      setModalHeight(0);
+      setIsMapFull(true);
+      onHeightChange(48);
+    }
+    setLastScrollTop(currentScrollTop);
+  }, [lastScrollTop]);
+
+  useEffect(() => {
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener("scroll", handleScroll);
+
+      return () => {
+        currentContainer.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [handleScroll]);
 
   useEffect(() => {
     setIsClient(true);
@@ -25,17 +59,27 @@ const TopModal = ({ children }: { children: React.ReactNode }) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+  useEffect(() => {
+    setModalHeight(
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+    );
+    setContentHeight(
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+    );
+    onHeightChange(
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+    );
+  }, [childrenRef.current?.getBoundingClientRect().height]);
+  // 드래그 중이 아닐 때만 contentHeight 업데이트
   useEffect(() => {
     if (contentRef.current) {
-      console.log(contentRef.current?.getBoundingClientRect().height, "height");
-      setContentHeight(contentRef.current?.getBoundingClientRect().height || 0);
+      setContentHeight(contentRef.current?.getBoundingClientRect().height);
     }
   }, [contentRef.current]);
 
   useEffect(() => {
     if (contentRef.current) {
-      contentRef.current.style.height = `${modalHeight}%`;
+      contentRef.current.style.height = `${modalHeight}px`;
     }
   }, [modalHeight]);
 
@@ -72,32 +116,38 @@ const TopModal = ({ children }: { children: React.ReactNode }) => {
       currentY = e.pageY;
     }
 
-    const newHeight = Math.max(0, Math.min(100, ((currentY - 116) / windowHeight) * 100));
+    const newHeight = Math.max(0, Math.min(contentHeight, currentY - 116));
     setModalHeight(newHeight);
   };
 
-  const handleDragEnd = (e: React.TouchEvent | React.MouseEvent) => {
-    if (!isDragging || !windowHeight) return;
+  const handleDragEnd = useCallback(
+    (e: React.TouchEvent | React.MouseEvent) => {
+      if (!isDragging || !windowHeight) return;
 
-    setIsDragging(false);
-    let endY;
-    if ("changedTouches" in e) {
-      endY = e.changedTouches[0].pageY;
-    } else {
-      endY = e.pageY;
-    }
+      setIsDragging(false);
+      let endY;
+      if ("changedTouches" in e) {
+        endY = e.changedTouches[0].pageY;
+      } else {
+        endY = e.pageY;
+      }
 
-    const distanceY = endY - startY;
-    const percentMoved = Math.abs(distanceY) / windowHeight;
+      const distanceY = endY - startY;
 
-    if (distanceY < 0) {
-      // 아래로 드래그한 경우
-      setModalHeight(0);
-    } else if (distanceY > 0) {
-      // 위로 드래그한 경우
-      setModalHeight((contentHeight / windowHeight) * 100);
-    }
-  };
+      if (distanceY < 0) {
+        // 아래로 충분히 드래그한 경우
+        setModalHeight(0);
+        setIsMapFull(true);
+        onHeightChange(48);
+      } else {
+        // 위로 충분히 드래그한 경우
+        setModalHeight(contentHeight);
+        setIsMapFull(false);
+        onHeightChange(contentHeight);
+      }
+    },
+    [isDragging, windowHeight, startY, contentHeight, onHeightChange]
+  );
 
   if (!isClient) return null;
   if (typeof window === "undefined") {
@@ -106,7 +156,8 @@ const TopModal = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ContentContainer ref={contentRef} onClick={handleContentClick} isClosing={isClosing}>
-      {children}
+      <ChildrenContainer ref={childrenRef}>{children}</ChildrenContainer>
+
       <BarContainer
         onTouchStart={handleDragStart}
         onTouchMove={handleDragMove}
@@ -122,57 +173,13 @@ const TopModal = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const slideDownMobile = keyframes`
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
-
-const slideDownDesktop = keyframes`
-  from {
-    transform: translateY(-100%) translateX(-50%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) translateX(-50%);
-    opacity: 1;
-  }
-`;
-
-const slideUpMobile = keyframes`
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-`;
-
-const slideUpDesktop = keyframes`
-  from {
-    transform: translateY(0) translateX(-50%);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-100%) translateX(-50%);
-    opacity: 0;
-  }
-`;
+const ChildrenContainer = styled.div``;
 
 const ContentContainer = styled.div<{ isClosing: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: blue;
-  top: 116px;
   overflow: hidden;
   @media (min-width: 440px) {
     width: 390px;
@@ -188,12 +195,12 @@ const ContentContainer = styled.div<{ isClosing: boolean }>`
   border-bottom-right-radius: 20px;
   background-color: white;
   padding-bottom: 48px;
-  //  animation: ${(props) => (props.isClosing ? slideUpMobile : slideDownMobile)} 0.3s ease-out forwards;
   @media (min-width: 440px) {
     left: 50%;
-    //  animation: ${(props) => (props.isClosing ? slideUpDesktop : slideDownDesktop)} 0.3s ease-out forwards;
   }
-  transition: all 0.1s ease-out;
+  transition:
+    height 0.3s ease-out,
+    transform 0.3s ease-out;
   box-shadow: 0px 3px 0 0 rgba(170, 170, 170, 0.15);
 `;
 
@@ -204,7 +211,6 @@ const Bar = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%);
-
   background-color: rgba(205, 205, 205, 1);
 `;
 

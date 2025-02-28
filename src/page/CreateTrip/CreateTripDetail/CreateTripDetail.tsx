@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import ThirdStepIcon from "@/components/icons/ThirdStepIcon";
 import { palette } from "@/styles/palette";
@@ -19,20 +19,47 @@ import TextareaField from "@/components/designSystem/input/TextareaField";
 import TagListWrapper from "./TagListWrapper";
 import CalendarWrapper from "./CalendarWrapper";
 import InfoWrapper from "./InfoWrapper";
+import MapContainer from "./MapContainer";
+import { useInView } from "react-intersection-observer";
+import "dayjs/locale/ko"; // 한국어 로케일 추가
+import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import CreateScheduleItem from "./CreateScheduleItem";
+
+dayjs.locale("ko"); // 한국어 설정
+dayjs.extend(isSameOrBefore);
+function getDatesArray(startDate, endDate) {
+  const dates: string[] = [];
+  let currentDate = dayjs(startDate);
+  const lastDate = dayjs(endDate);
+
+  while (currentDate.isSameOrBefore(lastDate)) {
+    dates.push(currentDate.format("M월D일(ddd)"));
+    currentDate = currentDate.add(1, "day");
+  }
+
+  return dates;
+}
 
 const CreateTripDetail = () => {
-  const { location, title, details, addTitle, addDetails, tags } = createTripStore();
+  const { location, title, details, addTitle, addDetails, tags, initGeometry, date } = createTripStore();
+  const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
-
+  const [isMapFull, setIsMapFull] = useState(false);
+  const [ref, inView] = useInView();
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     addTitle(e.target.value);
   };
+  console.log(date);
+
   return (
     <CreateTripDetailWrapper>
-      <CreateTripDetailContainer>
-        <TopModal>
+      <CreateTripDetailContainer ref={containerRef} id="test">
+        <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
           <ModalContainer>
-            <RegionWrapper region={"대전"} />
+            <RegionWrapper region={"오사카"} />
             <Spacing size={16} />
             <InputField
               value={title}
@@ -60,6 +87,21 @@ const CreateTripDetail = () => {
             <InfoWrapper />
           </ModalContainer>
         </TopModal>
+        <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
+          <MapContainer
+            isMapFull={isMapFull}
+            lat={initGeometry?.lat || 37.57037778}
+            lng={initGeometry?.lng || 126.9816417}
+            zoom={11}
+          />
+          <ScheduleContainer>
+            <Title>여행 일정</Title>
+            <ScheduleList>
+              {date && getDatesArray(date.startDate, date.endDate).map((item) => <CreateScheduleItem title={item} />)}
+            </ScheduleList>
+          </ScheduleContainer>
+        </BottomContainer>
+        <div ref={ref} style={{ height: 10 }}></div>
       </CreateTripDetailContainer>
 
       <ButtonContainer>
@@ -82,8 +124,37 @@ export default CreateTripDetail;
 const CreateTripDetailWrapper = styled.div`
   position: relative;
 `;
-const CreateTripDetailContainer = styled.div`
+
+const ScheduleContainer = styled.div`
+  margin-top: 24px;
+`;
+const Title = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+  line-height: 21px;
+`;
+
+const ScheduleList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const CreateTripDetailContainer = styled.div<{ topModalHeight: number }>`
   padding: 0px 24px;
+  overflow-y: auto;
+  position: relative;
+  height: calc(100svh - 116px);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  padding-bottom: 104px;
+
+  /* margin-top: ${(props) => `${props.topModalHeight + 32}px`};
+  transition:
+    margin-top 0.3s ease-out,
+    transform 0.3s ease-out; */
 `;
 
 const ModalContainer = styled.div`
@@ -94,4 +165,10 @@ const Bar = styled.div`
   background-color: #e7e7e7;
   width: 100%;
   height: 1px;
+`;
+
+const BottomContainer = styled.div<{ topModalHeight: number; isMapFull: boolean }>`
+  padding-top: ${(props) => `${props.isMapFull ? 0 : props.topModalHeight + 32}px`};
+
+  transition: padding-top 0.3s ease-out;
 `;

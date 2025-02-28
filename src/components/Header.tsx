@@ -33,10 +33,7 @@ const Header = () => {
     );
   };
   return (
-    <HeaderContainer
-      isBottomBorder={checkRoute.startsWith(ROUTES.REPORT)}
-      isBackGroundColorIsGrey={Boolean(headerBackgroundColorIsGrey())}
-    >
+    <HeaderContainer isBackGroundColorIsGrey={Boolean(headerBackgroundColorIsGrey())}>
       {!shouldShowAlarmIcon() && (
         <RightFlex>
           <ButtonContainer onClick={handleBack}>

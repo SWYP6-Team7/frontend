@@ -62,7 +62,6 @@ const CalendarModal = ({ showModal, setShowModal }: CalendarModalProps) => {
       month,
       calendarData: setCalendarArray(year, month, holidays, posts),
     }));
-    console.log(initialCalendarDataArray);
     setCalendarDataArray(initialCalendarDataArray);
   }, [holidaysArray.length]);
 
@@ -99,7 +98,6 @@ const CalendarModal = ({ showModal, setShowModal }: CalendarModalProps) => {
       setStartTime(clickedDayjs.format("YYYY-MM-DD HH:mm:ss"));
     } else {
       if (isMoreThan90DaysApart(startTime, clickedDayjs)) {
-        console.log(123);
         setIsToastShow(true);
         return;
       }
@@ -112,7 +110,6 @@ const CalendarModal = ({ showModal, setShowModal }: CalendarModalProps) => {
       };
       setStartTime(undefined);
     }
-    console.log("post", newPost);
     const updatedPosts = [newPost];
     setPosts(updatedPosts);
     const updatedCalendarDataArray = calendarDataArray.map(({ year, month, calendarData }) => ({
@@ -128,7 +125,6 @@ const CalendarModal = ({ showModal, setShowModal }: CalendarModalProps) => {
 
     setCalendarDataArray(updatedCalendarDataArray);
   };
-  console.log(calendarDataArray, "cal");
   if (!calendarDataArray.length) {
     return <></>; // 서버와 클라이언트 모두 동일한 HTML 출력
   }

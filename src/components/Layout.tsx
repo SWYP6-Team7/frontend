@@ -140,9 +140,6 @@ const Body = styled.div<{ pathname: string | null }>`
     width: 390px;
     overflow-x: hidden;
   }
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 // pc환경에서 화면을 가운데 정렬하기 위한 레이아웃 스타일
 const Container = styled.div<{ pathname: string | null }>`

@@ -17,24 +17,29 @@ interface RegionInfo {
 }
 const RegionWrapper = ({ region }: RegionWrapperProps) => {
   const [regionInfo, setRegionInfo] = useState<RegionInfo | null>(null);
-  const { mapType } = createTripStore();
+  const { mapType, addInitGeometry } = createTripStore();
   const map = useMap();
   const placesLib = useMapsLibrary("places");
 
   const fetchPlaceInfo = useCallback(async () => {
     if (!map || !placesLib) return;
-    console.log(123);
+
     const { PlacesService } = placesLib as google.maps.PlacesLibrary;
     const service = new PlacesService(map);
 
     const request: google.maps.places.FindPlaceFromQueryRequest = {
       query: region,
-      fields: ["name", "formatted_address"],
+      fields: ["name", "formatted_address", "geometry"],
     };
 
     service.findPlaceFromQuery(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-        console.log(results, "res");
+        if (results[0].geometry?.location?.lat() && results[0].geometry?.location?.lng()) {
+          addInitGeometry({
+            lat: results[0].geometry?.location?.lat(),
+            lng: results[0].geometry?.location?.lng(),
+          });
+        }
         // 결과 처리
         if (results[0]) {
           const parts = results[0].formatted_address?.split(",").map((part) => part.trim());
@@ -60,14 +65,18 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
       document.head.appendChild(script);
       script.addEventListener("load", () => {
-        console.log("test");
         window.kakao.maps.load(() => {
-          console.log("tru");
           var geocoder = new window.kakao.maps.services.Geocoder();
           // 주소로 좌표를 검색합니다
           geocoder.addressSearch(region, function (result, status) {
             // 정상적으로 검색이 완료됐으면
-
+            console.log(result, "result");
+            if (result[0].x && result[0].y) {
+              addInitGeometry({
+                lat: Number(result[0].y),
+                lng: Number(result[0].x),
+              });
+            }
             setRegionInfo({
               country: "한국",
               adminArea: result[0]?.address_name ?? region,
@@ -76,9 +85,8 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
         });
       });
     }
-  }, [fetchPlaceInfo]);
+  }, [fetchPlaceInfo, region]);
 
-  useEffect(() => {}, [region]);
   return (
     <>
       <Map
