@@ -29,6 +29,7 @@ const ReportDetail = () => {
 
   const submitReport = async (e: FormEvent) => {
     e.preventDefault();
+    console.log(id, accessToken, type, checkIndex);
     if (!id || !accessToken) {
       return;
     }
