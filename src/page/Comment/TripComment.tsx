@@ -38,6 +38,7 @@ const TripComment = () => {
             <React.Fragment key={pageIndex}>
               {page.content.map((comment, itemIndex) => (
                 <Comment
+                  userNumber={comment.userNumber}
                   key={comment.commentNumber}
                   comment={comment}
                   relatedType="travel"

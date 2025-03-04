@@ -19,11 +19,12 @@ import ReportModal from "../designSystem/modal/ReportModal";
 import useViewTransition from "@/hooks/useViewTransition";
 import { reportStore } from "@/store/client/reportStore";
 import NoticeModal from "../designSystem/modal/NoticeModal";
+import { isGuestUser } from "@/utils/user";
 
 export default function CommunityHeader() {
   const { userId, accessToken } = authStore();
   const params = useParams();
-  const { reportSuccess, setReportSuccess } = reportStore();
+  const { reportSuccess, setReportSuccess, setUserNumber } = reportStore();
 
   const communityNumber = params?.communityNumber as string;
   const navigateWithTransition = useViewTransition();
@@ -62,6 +63,7 @@ export default function CommunityHeader() {
     }
     if (isReportBtnClicked) {
       setIsReportBtnClicked(false);
+      setUserNumber(data?.userNumber || null);
       document.documentElement.style.viewTransitionName = "forward";
       navigateWithTransition(`/report/community/${communityNumber}`);
     }
@@ -97,9 +99,11 @@ export default function CommunityHeader() {
         <ShareIcon />
       </IconContainer>
 
-      <IconContainer onClick={onClickThreeDots}>
-        <MoreIcon />
-      </IconContainer>
+      {!isGuestUser() && (
+        <IconContainer onClick={onClickThreeDots}>
+          <MoreIcon />
+        </IconContainer>
+      )}
 
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}

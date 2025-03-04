@@ -59,6 +59,7 @@ export default function TripDetailHeader() {
     addTravelNumber,
     addEnrollmentNumber,
     hostUserCheck,
+    userNumber,
     addUserAgeGroup,
     addBookmarked,
     bookmarked,
@@ -133,7 +134,7 @@ export default function TripDetailHeader() {
   const navigateWithTransition = useViewTransition();
   const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!));
   const [isToastShow, setIsToastShow] = useState(false); // 삭제 완료 메시지.
-  const { reportSuccess, setReportSuccess } = reportStore();
+  const { reportSuccess, setReportSuccess, setUserNumber } = reportStore();
 
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
     accessToken!,
@@ -158,6 +159,7 @@ export default function TripDetailHeader() {
     }
     if (isReportBtnClicked) {
       setIsReportBtnClicked(false);
+      setUserNumber(userNumber);
       document.documentElement.style.viewTransitionName = "forward";
       navigateWithTransition(`/report/travel/${travelNumber}`);
     }
@@ -204,9 +206,11 @@ export default function TripDetailHeader() {
         <ShareIcon />
       </IconContainer>
 
-      <IconContainer onClick={onClickThreeDots}>
-        <MoreIcon />
-      </IconContainer>
+      {!isGuestUser() && (
+        <IconContainer onClick={onClickThreeDots}>
+          <MoreIcon />
+        </IconContainer>
+      )}
 
       <EditAndDeleteModal
         setIsEditBtnClicked={setIsEditBtnClicked}

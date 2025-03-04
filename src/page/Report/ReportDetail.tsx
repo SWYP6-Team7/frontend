@@ -18,19 +18,18 @@ const ReportDetail = () => {
   const { accessToken } = authStore();
   const router = useRouter();
   const [text, setText] = useState("");
-  const { detailId, setDetailId, setReportSuccess } = reportStore();
+  const { detailId, setDetailId, setReportSuccess, userNumber, setUserNumber } = reportStore();
   const [checkIndex, setCheckIndex] = useState(-1);
   const type = REPORT_LIST.find((item) => item.query === reportType);
   console.log(type);
-  const handleClick =
-    (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
-      setCheckIndex((prev) => (prev === idx ? -1 : idx));
-    };
+  const handleClick = (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
+    setCheckIndex((prev) => (prev === idx ? -1 : idx));
+  };
 
   const submitReport = async (e: FormEvent) => {
     e.preventDefault();
     console.log(id, accessToken, type, checkIndex);
-    if (!id || !accessToken) {
+    if (!id || !accessToken || !userNumber) {
       return;
     }
     if (type?.query === "etc") {
@@ -39,7 +38,7 @@ const ReportDetail = () => {
       }
       const result = await postReport(
         {
-          reportedUserNumber: Number(id),
+          reportedUserNumber: userNumber,
           reportReasonId: type?.[checkIndex].id,
         },
         accessToken
@@ -51,7 +50,7 @@ const ReportDetail = () => {
       console.log(type?.item?.[checkIndex].id);
       const result = await postReport(
         {
-          reportedUserNumber: Number(id),
+          reportedUserNumber: userNumber,
           reportReasonId: type?.item?.[checkIndex].id,
         },
         accessToken
@@ -60,6 +59,8 @@ const ReportDetail = () => {
     switch (backType) {
       case "travel":
         router.replace(`/trip/detail/${id}`);
+        setUserNumber(null);
+
         setTimeout(() => {
           setReportSuccess(true);
         }, 300);
@@ -67,6 +68,8 @@ const ReportDetail = () => {
       case "travelComment":
         if (!detailId) return;
         router.replace(`/trip/detail/${detailId}`);
+        setUserNumber(null);
+
         setTimeout(() => {
           setReportSuccess(true);
         }, 300);
@@ -75,6 +78,8 @@ const ReportDetail = () => {
         if (!detailId) return;
         router.replace(`/community/detail/${detailId}`);
         setDetailId(null);
+        setUserNumber(null);
+
         setTimeout(() => {
           setReportSuccess(true);
         }, 300);
@@ -82,7 +87,7 @@ const ReportDetail = () => {
       case "community":
         router.replace(`/community/detail/${id}`);
         setDetailId(null);
-
+        setUserNumber(null);
         setTimeout(() => {
           setReportSuccess(true);
         }, 300);
@@ -114,9 +119,9 @@ const ReportDetail = () => {
         <ButtonContainer>
           <Button
             onClick={submitReport}
-            disabled={text === "" ? true : false}
+            disabled={!id || !accessToken || !userNumber || text === "" ? true : false}
             addStyle={
-              (text === "" ? true : false)
+              (!id || !accessToken || !userNumber || text === "" ? true : false)
                 ? {
                     backgroundColor: "rgba(220, 220, 220, 1)",
                     color: "rgba(132, 132, 132, 1)",
@@ -137,11 +142,7 @@ const ReportDetail = () => {
       {type?.item?.map((item, idx) => (
         <Description onClick={handleClick(idx)} isFirst={idx === 0}>
           <Image
-            src={
-              checkIndex === idx
-                ? "/images/radio_active.svg"
-                : "/images/radio.svg"
-            }
+            src={checkIndex === idx ? "/images/radio_active.svg" : "/images/radio.svg"}
             alt=""
             height={18}
             width={18}
@@ -153,9 +154,9 @@ const ReportDetail = () => {
       <ButtonContainer>
         <Button
           onClick={submitReport}
-          disabled={checkIndex === -1 || checkIndex === 5 ? true : false}
+          disabled={!id || !accessToken || !userNumber || checkIndex === -1 || checkIndex === 5 ? true : false}
           addStyle={
-            (checkIndex === -1 || checkIndex === 5 ? true : false)
+            (!id || !accessToken || !userNumber || checkIndex === -1 || checkIndex === 5 ? true : false)
               ? {
                   backgroundColor: "rgba(220, 220, 220, 1)",
                   color: "rgba(132, 132, 132, 1)",

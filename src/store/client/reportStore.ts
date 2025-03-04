@@ -6,6 +6,8 @@ interface IReportStore {
   setReportSuccess: (bool: boolean) => void;
   detailId: null | number;
   setDetailId: (detailId: number | null) => void;
+  userNumber: null | number;
+  setUserNumber: (userNumber: number | null) => void;
 }
 
 export const reportStore = create<IReportStore>((set) => ({
@@ -16,5 +18,9 @@ export const reportStore = create<IReportStore>((set) => ({
   detailId: null,
   setDetailId: (detailId) => {
     set({ detailId });
+  },
+  userNumber: null,
+  setUserNumber: (userNumber: number | null) => {
+    set({ userNumber });
   },
 }));

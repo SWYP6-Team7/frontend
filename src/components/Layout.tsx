@@ -140,6 +140,29 @@ const Body = styled.div<{ pathname: string | null }>`
     width: 390px;
     overflow-x: hidden;
   }
+  &::-webkit-scrollbar {
+    // scrollbar 자체의 설정
+    // 너비를 작게 설정
+    width: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    // scrollbar의 배경부분 설정
+    // 부모와 동일하게 함(나중에 절전모드, 밤모드 추가되면 수정하기 번거로우니까... 미리 보이는 노동은 최소화)
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    // scrollbar의 bar 부분 설정
+    // 동글동글한 회색 바를 만든다.
+    border-radius: 1rem;
+    height: 80px;
+    background: rgba(217, 217, 217, 1);
+  }
+  &::-webkit-scrollbar-button {
+    // scrollbar의 상하단 위/아래 이동 버튼
+    // 크기를 안줘서 안보이게 함.
+    width: 0;
+    height: 0;
+  }
 `;
 // pc환경에서 화면을 가운데 정렬하기 위한 레이아웃 스타일
 const Container = styled.div<{ pathname: string | null }>`
