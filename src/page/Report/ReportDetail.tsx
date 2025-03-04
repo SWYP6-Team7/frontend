@@ -1,7 +1,7 @@
 "use client";
 import styled from "@emotion/styled";
 import { useParams, useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { REPORT_LIST } from "./Report";
 import Spacing from "@/components/Spacing";
 import Image from "next/image";
@@ -12,6 +12,8 @@ import { palette } from "@/styles/palette";
 import { postReport } from "@/api/report";
 import { authStore } from "@/store/client/authStore";
 import { reportStore } from "@/store/client/reportStore";
+import { useMutation } from "@tanstack/react-query";
+import { errorStore } from "@/store/client/errorStore";
 
 const ReportDetail = () => {
   const { reportType, id, type: backType } = useParams();
@@ -20,7 +22,64 @@ const ReportDetail = () => {
   const [text, setText] = useState("");
   const { detailId, setDetailId, setReportSuccess, userNumber, setUserNumber } = reportStore();
   const [checkIndex, setCheckIndex] = useState(-1);
+  const { updateError, setIsMutationError } = errorStore();
+
   const type = REPORT_LIST.find((item) => item.query === reportType);
+  const { mutate, isSuccess, isError } = useMutation({
+    mutationFn: (data: any) => {
+      return postReport(data, accessToken as string);
+    },
+    onSuccess: (data: any) => {
+      if (data.success === "이미 신고한 이력이 있습니다.") {
+        updateError(data.success);
+        setIsMutationError(true);
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      switch (backType) {
+        case "travel":
+          router.replace(`/trip/detail/${id}`);
+          setUserNumber(null);
+
+          setTimeout(() => {
+            setReportSuccess(true);
+          }, 300);
+          return;
+        case "travelComment":
+          if (!detailId) return;
+          router.replace(`/trip/detail/${detailId}`);
+          setUserNumber(null);
+
+          setTimeout(() => {
+            setReportSuccess(true);
+          }, 300);
+          return;
+        case "communityComment":
+          if (!detailId) return;
+          router.replace(`/community/detail/${detailId}`);
+          setDetailId(null);
+          setUserNumber(null);
+
+          setTimeout(() => {
+            setReportSuccess(true);
+          }, 300);
+          return;
+        case "community":
+          router.replace(`/community/detail/${id}`);
+          setDetailId(null);
+          setUserNumber(null);
+          setTimeout(() => {
+            setReportSuccess(true);
+          }, 300);
+          return;
+        default:
+          router.replace("/");
+      }
+    }
+  }, [isSuccess, isError]);
   console.log(type);
   const handleClick = (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
     setCheckIndex((prev) => (prev === idx ? -1 : idx));
@@ -36,64 +95,19 @@ const ReportDetail = () => {
       if (!type?.[checkIndex].id) {
         return;
       }
-      const result = await postReport(
-        {
-          reportedUserNumber: userNumber,
-          reportReasonId: type?.[checkIndex].id,
-        },
-        accessToken
-      );
+      mutate({
+        reportedUserNumber: userNumber,
+        reportReasonId: type?.[checkIndex].id,
+        reportReasonExtra: text,
+      });
     } else {
       if (!type?.item?.[checkIndex].id) {
         return;
       }
-      console.log(type?.item?.[checkIndex].id);
-      const result = await postReport(
-        {
-          reportedUserNumber: userNumber,
-          reportReasonId: type?.item?.[checkIndex].id,
-        },
-        accessToken
-      );
-    }
-    switch (backType) {
-      case "travel":
-        router.replace(`/trip/detail/${id}`);
-        setUserNumber(null);
-
-        setTimeout(() => {
-          setReportSuccess(true);
-        }, 300);
-        return;
-      case "travelComment":
-        if (!detailId) return;
-        router.replace(`/trip/detail/${detailId}`);
-        setUserNumber(null);
-
-        setTimeout(() => {
-          setReportSuccess(true);
-        }, 300);
-        return;
-      case "communityComment":
-        if (!detailId) return;
-        router.replace(`/community/detail/${detailId}`);
-        setDetailId(null);
-        setUserNumber(null);
-
-        setTimeout(() => {
-          setReportSuccess(true);
-        }, 300);
-        return;
-      case "community":
-        router.replace(`/community/detail/${id}`);
-        setDetailId(null);
-        setUserNumber(null);
-        setTimeout(() => {
-          setReportSuccess(true);
-        }, 300);
-        return;
-      default:
-        router.replace("/");
+      mutate({
+        reportedUserNumber: userNumber,
+        reportReasonId: type?.item?.[checkIndex].id,
+      });
     }
   };
   if (!type) {
