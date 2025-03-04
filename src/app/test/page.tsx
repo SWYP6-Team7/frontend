@@ -5,9 +5,9 @@ import React from "react";
 const TestPage = () => {
   return (
     <div>
-      <GoogleMap />
+      {/* <GoogleMap /> */}
       <div style={{ height: 300 }}></div>
-      <KakaoMap />
+      {/* <KakaoMap /> */}
     </div>
   );
 };
