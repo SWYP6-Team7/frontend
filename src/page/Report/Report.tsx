@@ -25,39 +25,47 @@ export const REPORT_LIST = [
     title: "도배, 홍보, 영리목적",
     query: "spam",
     item: [
-      { id: 1, title: "똑같은 글이나 댓글을 반복해서 올렸어요." },
-      { id: 2, title: "상업적인 광고나 홍보, 수익 창출 목적의 글이에요." },
+      { id: 4, title: "똑같은 글이나 댓글을 반복해서 올렸어요." },
+      { id: 5, title: "상업적인 광고나 홍보, 수익 창출 목적의 글이에요." },
     ],
   },
   {
     title: "허위 정보 및 사기, 거짓 후기 등",
     query: "misinformation",
     item: [
-      { id: 1, title: "사실과 다른 정보를 제공하고 있어요." },
-      { id: 2, title: "신뢰할 수 없는 거짓 후기예요." },
-      { id: 3, title: "여행 사기와 관련된 내용이 의심돼요." },
+      { id: 6, title: "사실과 다른 정보를 제공하고 있어요." },
+      { id: 7, title: "신뢰할 수 없는 거짓 후기예요." },
+      { id: 8, title: "여행 사기와 관련된 내용이 의심돼요." },
     ],
   },
   {
     title: "저작권 침해, 불법적 거래 유도",
     query: "illegal",
     item: [
-      { id: 1, title: "다른 사람이 만든 콘텐츠(사진, 글, 영상 등)를 허락 없이 사용했어요." },
-      { id: 2, title: "법적으로 금지된 상품이나 서비스를 거래하려고 해요." },
-      { id: 3, title: "선불금 요구, 환전, 위험한 거래를 유도해요." },
+      {
+        id: 9,
+        title:
+          "다른 사람이 만든 콘텐츠(사진, 글, 영상 등)를 허락 없이 사용했어요.",
+      },
+      { id: 10, title: "법적으로 금지된 상품이나 서비스를 거래하려고 해요." },
+      { id: 11, title: "선불금 요구, 환전, 위험한 거래를 유도해요." },
     ],
   },
   {
     title: "개인정보 관련 및 안전 위협",
     query: "privacy",
     item: [
-      { id: 1, title: "계좌번호, 신분증, 여권 등 개인정보가 노출되었어요." },
-      { id: 2, title: "개인정보를 과도하게 요구해요." },
-      { id: 3, title: "성희롱, 협박, 스토킹 등 불쾌하거나 위협적인 경험을 했어요." },
+      { id: 12, title: "계좌번호, 신분증, 여권 등 개인정보가 노출되었어요." },
+      { id: 13, title: "개인정보를 과도하게 요구해요." },
+      {
+        id: 14,
+        title: "성희롱, 협박, 스토킹 등 불쾌하거나 위협적인 경험을 했어요.",
+      },
     ],
   },
   {
     title: "기타",
+    id: 15,
     query: "etc",
   },
 ];
@@ -68,16 +76,20 @@ const Report = () => {
   const { setReportSuccess } = reportStore();
   const router = useRouter();
   const pathname = usePathname();
-  const handleClick = (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(idx);
-    router.push(`${pathname}/${REPORT_LIST[idx].query}`);
-  };
+  const handleClick =
+    (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
+      console.log(idx);
+      router.push(`${pathname}/${REPORT_LIST[idx].query}`);
+    };
 
   const submitReport = () => {
     setReportSuccess(true);
     router.back();
   };
-  console.log(checkItem, checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false);
+  console.log(
+    checkItem,
+    checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false
+  );
   return (
     <Container>
       <Title>신고 유형을 선택해 주세요.</Title>
@@ -90,8 +102,20 @@ const Report = () => {
         <Description onClick={handleClick(idx)} isFirst={idx === 0}>
           <Text>{item.title}</Text>
           <ArrowIconContainer>
-            <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 17L9 9L1 1" stroke="#ABABAB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              width="10"
+              height="18"
+              viewBox="0 0 10 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1 17L9 9L1 1"
+                stroke="#ABABAB"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </ArrowIconContainer>
         </Description>

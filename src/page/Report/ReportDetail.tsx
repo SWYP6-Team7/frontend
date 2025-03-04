@@ -9,21 +9,86 @@ import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
 import TextareaField from "@/components/designSystem/input/TextareaField";
 import { palette } from "@/styles/palette";
+import { postReport } from "@/api/report";
+import { authStore } from "@/store/client/authStore";
+import { reportStore } from "@/store/client/reportStore";
 
 const ReportDetail = () => {
-  const { reportType } = useParams();
+  const { reportType, id, type: backType } = useParams();
+  const { accessToken } = authStore();
   const router = useRouter();
   const [text, setText] = useState("");
-  console.log(reportType);
+  const { detailId, setDetailId, setReportSuccess } = reportStore();
   const [checkIndex, setCheckIndex] = useState(-1);
   const type = REPORT_LIST.find((item) => item.query === reportType);
   console.log(type);
-  const handleClick = (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
-    setCheckIndex((prev) => (prev === idx ? -1 : idx));
-  };
+  const handleClick =
+    (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
+      setCheckIndex((prev) => (prev === idx ? -1 : idx));
+    };
 
-  const submitReport = (e: FormEvent) => {
+  const submitReport = async (e: FormEvent) => {
     e.preventDefault();
+    if (!id || !accessToken) {
+      return;
+    }
+    if (type?.query === "etc") {
+      if (!type?.[checkIndex].id) {
+        return;
+      }
+      const result = await postReport(
+        {
+          reportedUserNumber: Number(id),
+          reportReasonId: type?.[checkIndex].id,
+        },
+        accessToken
+      );
+    } else {
+      if (!type?.item?.[checkIndex].id) {
+        return;
+      }
+      console.log(type?.item?.[checkIndex].id);
+      const result = await postReport(
+        {
+          reportedUserNumber: Number(id),
+          reportReasonId: type?.item?.[checkIndex].id,
+        },
+        accessToken
+      );
+    }
+    switch (backType) {
+      case "travel":
+        router.replace(`/trip/detail/${id}`);
+        setTimeout(() => {
+          setReportSuccess(true);
+        }, 300);
+        return;
+      case "travelComment":
+        if (!detailId) return;
+        router.replace(`/trip/detail/${detailId}`);
+        setTimeout(() => {
+          setReportSuccess(true);
+        }, 300);
+        return;
+      case "communityComment":
+        if (!detailId) return;
+        router.replace(`/community/detail/${detailId}`);
+        setDetailId(null);
+        setTimeout(() => {
+          setReportSuccess(true);
+        }, 300);
+        return;
+      case "community":
+        router.replace(`/community/detail/${id}`);
+        setDetailId(null);
+
+        setTimeout(() => {
+          setReportSuccess(true);
+        }, 300);
+        return;
+      default:
+        router.replace("/");
+    }
   };
   if (!type) {
     router.back();
@@ -71,7 +136,11 @@ const ReportDetail = () => {
       {type?.item?.map((item, idx) => (
         <Description onClick={handleClick(idx)} isFirst={idx === 0}>
           <Image
-            src={checkIndex === idx ? "/images/radio_active.svg" : "/images/radio.svg"}
+            src={
+              checkIndex === idx
+                ? "/images/radio_active.svg"
+                : "/images/radio.svg"
+            }
             alt=""
             height={18}
             width={18}
