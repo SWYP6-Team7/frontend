@@ -77,7 +77,7 @@ const Comment = ({ comment, relatedType, relatedNumber, userNumber }: CommentPro
       document.documentElement.style.viewTransitionName = "forward";
 
       navigateWithTransition(
-        `/report/${relatedType === "community" ? "communityComment" : "travelComment"}/${commentNumber}`
+        `/report/${relatedType === "community" ? "communityComment" : "travelComment"}/${comment.commentNumber}`
       );
     }
     if (checkingModalClicked) {

@@ -92,9 +92,6 @@ const ReportDetail = () => {
       return;
     }
     if (type?.query === "etc") {
-      if (!type?.[checkIndex].id) {
-        return;
-      }
       mutate({
         reportedUserNumber: userNumber,
         reportReasonId: type?.[checkIndex].id,
