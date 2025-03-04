@@ -12,69 +12,82 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
 
-// const PoiMarkers = (props: { pois: Poi[] }) => {
-//   const map = useMap();
-//   const [markers, setMarkers] = useState<{ [key: string]: Marker }>({});
-//   const clusterer = useRef<MarkerClusterer | null>(null);
+type Poi = { key: string; location: google.maps.LatLngLiteral };
 
-//   useEffect(() => {
-//     clusterer.current?.clearMarkers();
-//     clusterer.current?.addMarkers(Object.values(markers));
-//   }, [markers]);
-//   const handleClick = (ev: google.maps.MapMouseEvent) => {
-//     if (!map) return;
-//     if (!ev.latLng) return;
-//     console.log("marker clicked:", ev.latLng.toString());
-//     map.panTo(ev.latLng);
-//   };
-//   const setMarkerRef = (marker: Marker | null, key: string) => {
-//     if (marker && markers[key]) return;
-//     if (!marker && !markers[key]) return;
+export const PoiMarkers = (props: { pois: Poi[] }) => {
+  const map = useMap();
+  const [markers, setMarkers] = useState<{ [key: string]: Marker }>({});
+  const clusterer = useRef<MarkerClusterer | null>(null);
+  console.log(markers, "markers");
+  useEffect(() => {
+    clusterer.current?.clearMarkers();
+    clusterer.current?.addMarkers(Object.values(markers));
+  }, [markers]);
+  const handleClick = (ev: google.maps.MapMouseEvent) => {
+    if (!map) return;
+    if (!ev.latLng) return;
+    console.log("marker clicked:", ev.latLng.toString());
+    map.panTo(ev.latLng);
+  };
+  const setMarkerRef = (marker: Marker | null, key: string) => {
+    if (marker && markers[key]) return;
+    if (!marker && !markers[key]) return;
 
-//     setMarkers((prev) => {
-//       if (marker) {
-//         return { ...prev, [key]: marker };
-//       } else {
-//         const newMarkers = { ...prev };
-//         delete newMarkers[key];
-//         return newMarkers;
-//       }
-//     });
-//   };
+    setMarkers((prev) => {
+      if (marker) {
+        return { ...prev, [key]: marker };
+      } else {
+        const newMarkers = { ...prev };
+        delete newMarkers[key];
+        return newMarkers;
+      }
+    });
+  };
 
-//   const flightPath = new google.maps.Polyline({
-//     path: locations.map((item) => item.location),
-//     geodesic: true,
-//     strokeColor: "#FF0000",
-//     strokeOpacity: 1.0,
-//     strokeWeight: 2,
-//   });
+  // const flightPath = new google.maps.Polyline({
+  //   path: locations.map((item) => item.location),
+  //   geodesic: true,
+  //   strokeColor: "#FF0000",
+  //   strokeOpacity: 1.0,
+  //   strokeWeight: 2,
+  // });
 
-//   flightPath.setMap(map);
-//   return (
-//     <>
-//       {props.pois.map((poi: Poi) => (
-//         <AdvancedMarker
-//           clickable={true}
-//           onClick={handleClick}
-//           key={poi.key}
-//           position={poi.location}
-//           ref={(marker) => setMarkerRef(marker, poi.key)}
-//         >
-//           <Pin background={"#FBBC04"} glyphColor={"#000"} borderColor={"#000"} />
-//         </AdvancedMarker>
-//       ))}
-//     </>
-//   );
-// };
+  // flightPath.setMap(map);
+  console.log(props.pois, "pois");
+
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return (
+    <>
+      {props.pois.map((poi: Poi) => (
+        <AdvancedMarker
+          clickable={true}
+          onClick={handleClick}
+          key={poi.key}
+          position={poi.location}
+          ref={(marker) => setMarkerRef(marker, poi.key)}
+        >
+          <Pin background={"#FBBC04"} glyphColor={"#000"} borderColor={"#000"} />
+        </AdvancedMarker>
+      ))}
+    </>
+  );
+};
 
 interface GoogleMapProps {
   lat: number;
   lng: number;
   zoom: number;
+  children?: React.ReactNode;
 }
 
-const GoogleMap = ({ lat, lng, zoom }: GoogleMapProps) => {
+const GoogleMap = ({ lat, lng, zoom, children }: GoogleMapProps) => {
+  console.log(children, "children");
+
+  if (typeof window === "undefined") {
+    return <></>;
+  }
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <APIProvider
@@ -90,7 +103,7 @@ const GoogleMap = ({ lat, lng, zoom }: GoogleMapProps) => {
             console.log("camera changed:", ev.detail.center, "zoom:", ev.detail.zoom)
           }
         >
-          {/* <PoiMarkers pois={locations} /> */}
+          {children}
         </Map>
         {/* <PlacePredictions /> */}
       </APIProvider>
@@ -98,77 +111,8 @@ const GoogleMap = ({ lat, lng, zoom }: GoogleMapProps) => {
   );
 };
 
-function PlacePredictions() {
-  const [suggestions, setSuggestions] = useState<any[]>([]);
-  const [placeInfo, setPlaceInfo] = useState<string | null>(null);
-  const map = useMap();
-  const [text, setText] = useState("");
-  const placesLib = useMapsLibrary("places");
-  console.log(placesLib, "test");
-  useEffect(() => {
-    if (!placesLib || !map || text === "") return;
-    async function fetchPlacePredictions() {
-      try {
-        console.log(placesLib, "info");
-        // @ts-ignore
-        const { AutocompleteSessionToken, AutocompleteSuggestion } = placesLib;
-
-        let request = {
-          input: text,
-
-          language: "ko-KR",
-          region: "kr",
-        };
-
-        // Create a session token.
-        const token = new AutocompleteSessionToken();
-        // Add the token to the request.
-        // @ts-ignore
-        request.sessionToken = token;
-
-        // Fetch autocomplete suggestions.
-        const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
-        console.log(suggestions, "sug");
-
-        const mappedSuggestions: any[] = [];
-        suggestions.forEach((suggestion) => {
-          console.log(suggestion.placePrediction.mainText.text, "text");
-          mappedSuggestions.push({
-            place: suggestion.placePrediction.mainText.text,
-            type: suggestion.placePrediction.types.join(", "),
-          });
-        });
-        // const uniqueSuggestions = mappedSuggestions.filter(
-        //   (suggestion, index, self) => index === self.findIndex((t) => t.place === suggestion.place)
-        // );
-        setSuggestions(mappedSuggestions);
-      } catch (error) {
-        console.error("Error fetching place predictions:", error);
-      }
-    }
-
-    fetchPlacePredictions();
-  }, [placesLib, map, text]);
-
-  return (
-    <div>
-      <h2>장소 검색:</h2>
-      <input value={text} onChange={(e) => setText(e.target.value)} />
-      <ul id="results">
-        {suggestions.map((suggestion, index) => (
-          <li key={index}>
-            {suggestion.place} - {suggestion.type}
-          </li>
-        ))}
-      </ul>
-      {placeInfo && <p id="prediction">{placeInfo}</p>}
-    </div>
-  );
-}
-
 export default GoogleMap;
 
-type Poi = { key: string; location: google.maps.LatLngLiteral };
 // const locations: Poi[] = [
 //   { key: "operaHouse", location: { lat: -33.8567844, lng: 151.213108 } },
 //   { key: "tarongaZoo", location: { lat: -33.8472767, lng: 151.2188164 } },

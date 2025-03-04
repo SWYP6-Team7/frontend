@@ -11,7 +11,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const REPORT_LIST = [
+export const REPORT_LIST = [
   {
     title: "욕설, 비방, 혐오",
     query: "abuse",
@@ -40,7 +40,7 @@ const REPORT_LIST = [
   },
   {
     title: "저작권 침해, 불법적 거래 유도",
-    type: "illegal",
+    query: "illegal",
     item: [
       { id: 1, title: "다른 사람이 만든 콘텐츠(사진, 글, 영상 등)를 허락 없이 사용했어요." },
       { id: 2, title: "법적으로 금지된 상품이나 서비스를 거래하려고 해요." },
@@ -49,12 +49,16 @@ const REPORT_LIST = [
   },
   {
     title: "개인정보 관련 및 안전 위협",
-    type: "privacy",
+    query: "privacy",
     item: [
       { id: 1, title: "계좌번호, 신분증, 여권 등 개인정보가 노출되었어요." },
       { id: 2, title: "개인정보를 과도하게 요구해요." },
       { id: 3, title: "성희롱, 협박, 스토킹 등 불쾌하거나 위협적인 경험을 했어요." },
     ],
+  },
+  {
+    title: "기타",
+    query: "etc",
   },
 ];
 
@@ -65,9 +69,8 @@ const Report = () => {
   const router = useRouter();
   const pathname = usePathname();
   const handleClick = (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
-    // if (idx !== 5 || (idx === 5 && checkItem === 5)) e.preventDefault();
-    // setCheckItem((prev) => (prev === idx ? -1 : idx));
-    router.push(`${pathname}/${REPORT_LIST[0].query}`);
+    console.log(idx);
+    router.push(`${pathname}/${REPORT_LIST[idx].query}`);
   };
 
   const submitReport = () => {
@@ -93,23 +96,6 @@ const Report = () => {
           </ArrowIconContainer>
         </Description>
       ))}
-
-      {/* <ButtonContainer>
-        <Button
-          onClick={submitReport}
-          disabled={checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false}
-          addStyle={
-            (checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false)
-              ? {
-                  backgroundColor: "rgba(220, 220, 220, 1)",
-                  color: "rgba(132, 132, 132, 1)",
-                  boxShadow: "-2px 4px 5px 0px rgba(170, 170, 170, 0.1)",
-                }
-              : undefined
-          }
-          text={"신고하기"}
-        />
-      </ButtonContainer> */}
     </Container>
   );
 };
@@ -126,6 +112,7 @@ const Title = styled.div`
   font-weight: 600;
   display: flex;
   align-items: center;
+  padding-left: 4px;
 `;
 
 const Subtitle = styled.div`
