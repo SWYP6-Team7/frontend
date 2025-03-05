@@ -1,11 +1,17 @@
 "use client";
-import BottomModal from "@/components/BottomModal";
-import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
+import PlaceIcon from "@/components/icons/PlaceIcon";
 import GoogleMap, { PoiMarkers } from "@/components/map/GoogleMap";
 import MapBottomModal from "@/components/MapBottomModal";
+import Spacing from "@/components/Spacing";
+import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  useMap,
+  useMapsLibrary,
+} from "@vis.gl/react-google-maps";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -16,6 +22,8 @@ const SearchPlaceDetail = () => {
     location: { lat: number; lng: number };
     name: string;
     address: string;
+    region: string;
+    type: string;
     openingHours: string;
   }>();
   const placesLib = useMapsLibrary("places");
@@ -40,12 +48,21 @@ const SearchPlaceDetail = () => {
 
         // 원하는 필드 요청
         await place.fetchFields({
-          fields: ["displayName", "formattedAddress", "regularOpeningHours", "location"],
+          fields: [
+            "displayName",
+            "formattedAddress",
+            "regularOpeningHours",
+            "location",
+            "primaryTypeDisplayName",
+            "primaryType",
+          ],
         });
         console.log(place, "placew");
         setPlaceDetails({
           name: place.displayName,
           address: place.formattedAddress,
+          region: place.formattedAddress.split(" ")[1],
+          type: place.primaryTypeDisplayName,
           openingHours: place.regularOpeningHours?.weekdayText || [],
           location: { lat: place.location.lat(), lng: place.location.lng() },
         });
@@ -75,14 +92,35 @@ const SearchPlaceDetail = () => {
             lng={placeDetails?.location.lng as number}
           >
             {placeDetails?.location && (
-              <PoiMarkers pois={[{ key: (placeId as string) || "", location: placeDetails?.location }]} />
+              <PoiMarkers
+                pois={[
+                  {
+                    key: (placeId as string) || "",
+                    location: placeDetails?.location,
+                  },
+                ]}
+              />
             )}
           </GoogleMap>
         )}
       </MapContainer>
-      <MapBottomModal initialHeight={40}>
+      <MapBottomModal initialHeight={400}>
         <ModalWrapper>
-          <ModalContainer></ModalContainer>
+          <ModalContainer>
+            <TitleContainer>
+              <Title>{placeDetails?.name}</Title>
+              <SubTitle>
+                {placeDetails?.type}ㆍ{placeDetails?.region}
+              </SubTitle>
+            </TitleContainer>
+            <Spacing size={4} />
+            <Description>
+              <IconContainer>
+                <PlaceIcon width={12} height={16} />
+              </IconContainer>
+              <div>{placeDetails?.address}</div>
+            </Description>
+          </ModalContainer>
         </ModalWrapper>
         <ButtonContainer>
           <Button
@@ -97,7 +135,7 @@ const SearchPlaceDetail = () => {
                   }
                 : undefined
             }
-            text={"완료"}
+            text={"추가"}
           />
         </ButtonContainer>
       </MapBottomModal>
@@ -109,6 +147,47 @@ const MapContainer = styled.div<{ isMapFull: boolean }>`
   width: 100%;
 
   height: calc(100svh - 116px);
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  padding: 0 24px;
+  background-color: ${palette.BG};
+
+  height: 104px;
+  padding: 16px 24px 40px 24px;
+  width: calc(100%);
+`;
+
+const Description = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  font-size: 12px;
+  font-weight: 400;
+`;
+
+const IconContainer = styled.div`
+  width: 24px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ModalWrapper = styled.div`
@@ -149,6 +228,28 @@ const ModalContainer = styled.div`
     width: 0;
     height: 0;
   }
+`;
+
+const TitleContainer = styled.div`
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+  gap: 8px;
+`;
+
+const Title = styled.div`
+  line-height: 24px;
+  fong-weight: 600;
+  font-size: 20px;
+  color: ${palette.기본};
+`;
+
+const SubTitle = styled.div`
+  line-height: 17px;
+  font-size: 14px;
+  font-weight: 400;
+  color: ${palette.비강조};
 `;
 
 export default SearchPlaceDetail;
