@@ -1,5 +1,12 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback, useMemo, RefObject } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+  RefObject,
+} from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
@@ -14,6 +21,8 @@ const TopModal = ({
   setIsMapFull: (bool: boolean) => void;
   containerRef: RefObject<HTMLDivElement | null>;
 }) => {
+  const touchStartY = useRef(null);
+
   const [startY, setStartY] = useState(0);
   const [modalHeight, setModalHeight] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
@@ -24,18 +33,128 @@ const TopModal = ({
   const [isClient, setIsClient] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const SCROLL_THRESHOLD = 100; // 픽셀 단위
+  const scrollAttempts = useRef(0);
+  console.log(scrollAttempts, "atte");
+  const handleInteraction = useCallback(
+    (deltaY) => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const isAtTop = container.scrollTop === 0;
+      const isScrollingUp = deltaY < 0;
+
+      if (modalHeight === 0 && isAtTop && isScrollingUp) {
+        scrollAttempts.current += Math.abs(deltaY);
+
+        if (scrollAttempts.current > SCROLL_THRESHOLD) {
+          setModalHeight(contentHeight);
+          setIsMapFull(false);
+          onHeightChange(contentHeight);
+          scrollAttempts.current = 0; // 리셋
+        }
+      } else {
+        scrollAttempts.current = 0; // 조건이 맞지 않으면 리셋
+      }
+    },
+    [modalHeight, contentHeight, onHeightChange]
+  );
+
+  const handleWheel = useCallback(
+    (event) => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const isAtTop = container.scrollTop === 0;
+      const isScrollingUp = event.deltaY < 0;
+
+      if (modalHeight === 0 && isAtTop && isScrollingUp) {
+        event.preventDefault(); // 기본 스크롤 동작 방지
+        scrollAttempts.current += Math.abs(event.deltaY);
+
+        if (scrollAttempts.current > SCROLL_THRESHOLD) {
+          setModalHeight(contentHeight);
+          setIsMapFull(false);
+          onHeightChange(contentHeight);
+          scrollAttempts.current = 0; // 리셋
+        }
+      } else {
+        scrollAttempts.current = 0; // 조건이 맞지 않으면 리셋
+      }
+    },
+    [modalHeight]
+  );
+
+  const handleTouchStart = useCallback((event) => {
+    touchStartY.current = event.touches[0].clientY;
+  }, []);
+
+  const handleTouchMove = useCallback(
+    (event) => {
+      if (touchStartY.current === null) return;
+
+      const deltaY = touchStartY.current - event.touches[0].clientY;
+      handleInteraction(deltaY);
+
+      touchStartY.current = event.touches[0].clientY;
+    },
+    [handleInteraction]
+  );
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("touchstart", handleTouchStart);
+      container.addEventListener("touchmove", handleTouchMove);
+
+      container.addEventListener("wheel", handleWheel);
+
+      return () => {
+        container.removeEventListener("touchstart", handleTouchStart);
+        container.removeEventListener("touchmove", handleTouchMove);
+
+        container.removeEventListener("wheel", handleWheel);
+      };
+    }
+  }, [handleWheel, handleTouchStart, handleTouchMove]);
 
   const handleScroll = useCallback(() => {
-    const currentScrollTop = containerRef.current?.scrollTop || 0;
-    console.log(currentScrollTop, lastScrollTop, "123");
+    const container = containerRef.current;
+    if (!container) return;
 
-    if (currentScrollTop > lastScrollTop) {
+    const currentScrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight;
+    const clientHeight = container.clientHeight;
+    const modalHeightPercentage = (modalHeight / clientHeight) * 100;
+    // 스크롤 진행률 계산
+    const scrollPercentage =
+      (currentScrollTop / (scrollHeight - clientHeight)) * 100;
+
+    if (scrollPercentage >= modalHeightPercentage) {
+      contentRef.current?.style.setProperty(
+        "transition",
+        "height 0.3s ease-in-out, transform 0.3s ease-in-out"
+      );
       setModalHeight(0);
       setIsMapFull(true);
       onHeightChange(48);
+    } else if (scrollPercentage < modalHeightPercentage) {
+      // 스크롤 진행률이 modalHeightPercentage% 미만일 때 modalHeight를 점진적으로 줄임
+      contentRef.current?.style.setProperty(
+        "transition",
+        "transform 0.3s ease-in-out"
+      );
+      const newHeight = Math.max(
+        0,
+        modalHeight * (1 - scrollPercentage / modalHeightPercentage)
+      );
+      setModalHeight(newHeight);
+      // setIsMapFull(false);
+      onHeightChange(Math.max(48, newHeight));
     }
+
     setLastScrollTop(currentScrollTop);
-  }, [lastScrollTop]);
+  }, [modalHeight]);
 
   useEffect(() => {
     const currentContainer = containerRef.current;
@@ -61,13 +180,19 @@ const TopModal = ({
   }, []);
   useEffect(() => {
     setModalHeight(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height
+        ? childrenRef.current?.getBoundingClientRect().height + 48
+        : 0
     );
     setContentHeight(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height
+        ? childrenRef.current?.getBoundingClientRect().height + 48
+        : 0
     );
     onHeightChange(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height
+        ? childrenRef.current?.getBoundingClientRect().height + 48
+        : 0
     );
   }, [childrenRef.current?.getBoundingClientRect().height]);
   // 드래그 중이 아닐 때만 contentHeight 업데이트
@@ -141,6 +266,11 @@ const TopModal = ({
         onHeightChange(48);
       } else {
         // 위로 충분히 드래그한 경우
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+
         setModalHeight(contentHeight);
         setIsMapFull(false);
         onHeightChange(contentHeight);
@@ -155,7 +285,11 @@ const TopModal = ({
   }
 
   return (
-    <ContentContainer ref={contentRef} onClick={handleContentClick} isClosing={isClosing}>
+    <ContentContainer
+      ref={contentRef}
+      onClick={handleContentClick}
+      isClosing={isClosing}
+    >
       <ChildrenContainer ref={childrenRef}>{children}</ChildrenContainer>
 
       <BarContainer
