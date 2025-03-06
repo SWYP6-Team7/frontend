@@ -256,11 +256,14 @@ const TopModal = ({
 
       if (distanceY < 0) {
         // 아래로 충분히 드래그한 경우
+        firstTop.current = true;
         setModalHeight(0);
         setIsMapFull(true);
         onHeightChange(48);
       } else {
         // 위로 충분히 드래그한 경우
+        if (firstTop.current) firstTop.current = false;
+
         window.scrollTo({
           top: 0,
           behavior: "smooth",
