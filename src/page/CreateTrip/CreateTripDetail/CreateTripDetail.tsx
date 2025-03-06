@@ -177,4 +177,5 @@ const BottomContainer = styled.div<{
   margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
+  overscroll-behavior: none;
 `;
