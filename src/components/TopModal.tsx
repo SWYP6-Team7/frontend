@@ -301,10 +301,13 @@ const TopModal = ({
   );
 };
 
-const ChildrenContainer = styled.div``;
+const ChildrenContainer = styled.div`
+  overscroll-behavior: none;
+`;
 
 const ContentContainer = styled.div<{ isClosing: boolean }>`
   width: 100%;
+
   display: flex;
   flex-direction: column;
   position: relative;
