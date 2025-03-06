@@ -152,6 +152,7 @@ const CreateTripDetailContainer = styled.div<{ topModalHeight: number }>`
   &::-webkit-scrollbar {
     display: none;
   }
+  overscroll-behavior: none;
   padding-bottom: 104px;
 
   /* margin-top: ${(props) => `${props.topModalHeight + 32}px`};
