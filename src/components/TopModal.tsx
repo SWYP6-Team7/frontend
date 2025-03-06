@@ -99,7 +99,7 @@ const TopModal = ({
     const container = containerRef.current;
     if (container) {
       container.addEventListener("touchstart", handleTouchStart);
-      container.addEventListener("touchmove", handleTouchMove);
+      // container.addEventListener("touchmove", handleTouchMove);
 
       container.addEventListener("wheel", handleWheel);
 
@@ -107,7 +107,7 @@ const TopModal = ({
         container.removeEventListener("touchstart", handleTouchStart);
         container.removeEventListener("touchmove", handleTouchMove);
 
-        container.removeEventListener("wheel", handleWheel);
+        // container.removeEventListener("wheel", handleWheel);
       };
     }
   }, [handleWheel, handleTouchStart, handleTouchMove]);
