@@ -146,7 +146,7 @@ const TopModal = ({
         const newHeight = Math.max(0, modalHeight * (1 - scrollPercentage / modalHeightPercentage));
         console.log(newHeight);
         setModalHeight(newHeight);
-        setIsMapFull(false);
+        // setIsMapFull(false);
         onHeightChange(Math.max(48, newHeight + currentScrollTop));
       }
 
@@ -262,7 +262,7 @@ const TopModal = ({
         onHeightChange(48);
       } else {
         // 위로 충분히 드래그한 경우
-        if (firstTop.current) firstTop.current = false;
+        firstTop.current = false;
 
         window.scrollTo({
           top: 0,
