@@ -145,6 +145,7 @@ const Body = styled.div<{ pathname: string | null }>`
     // 너비를 작게 설정
     width: 3px;
   }
+  overscroll-behavior: none;
   &::-webkit-scrollbar-track {
     // scrollbar의 배경부분 설정
     // 부모와 동일하게 함(나중에 절전모드, 밤모드 추가되면 수정하기 번거로우니까... 미리 보이는 노동은 최소화)
