@@ -28,9 +28,9 @@ export default function ResultToast({ bottom = "20px", isShow, setIsShow, height
           <path
             d="M5.40002 9.23286L8.3329 12.1657L13.221 6.29999"
             stroke={palette.keycolor}
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
 

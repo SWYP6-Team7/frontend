@@ -6,12 +6,7 @@ import MapBottomModal from "@/components/MapBottomModal";
 import Spacing from "@/components/Spacing";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import {
-  APIProvider,
-  Map,
-  useMap,
-  useMapsLibrary,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -116,9 +111,37 @@ const SearchPlaceDetail = () => {
             <Spacing size={4} />
             <Description>
               <IconContainer>
-                <PlaceIcon width={12} height={16} />
+                <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12 6.54545C12 11.6364 6 16 6 16C6 16 0 11.6364 0 6.54545C2.37122e-08 4.80949 0.632141 3.14463 1.75736 1.91712C2.88258 0.689608 4.4087 0 6 0C7.5913 0 9.11742 0.689608 10.2426 1.91712C11.3679 3.14463 12 4.80949 12 6.54545Z"
+                    fill="#CDCDCD"
+                  />
+                  <path
+                    d="M5.99609 8.72741C7.10066 8.72741 7.99609 7.75057 7.99609 6.54559C7.99609 5.3406 7.10066 4.36377 5.99609 4.36377C4.89152 4.36377 3.99609 5.3406 3.99609 6.54559C3.99609 7.75057 4.89152 8.72741 5.99609 8.72741Z"
+                    fill="#FEFEFE"
+                  />
+                </svg>
               </IconContainer>
               <div>{placeDetails?.address}</div>
+            </Description>
+            <Description>
+              <IconContainer>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15Z"
+                    stroke="black"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M8 3.80029V8.00029L10.8 9.40029"
+                    stroke="black"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </IconContainer>
+              <div>{placeDetails?.openingHours}</div>
             </Description>
           </ModalContainer>
         </ModalWrapper>

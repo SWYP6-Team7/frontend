@@ -42,16 +42,7 @@ function getDatesArray(startDate, endDate) {
 }
 
 const CreateTripDetail = () => {
-  const {
-    location,
-    title,
-    details,
-    addTitle,
-    addDetails,
-    tags,
-    initGeometry,
-    date,
-  } = createTripStore();
+  const { location, title, details, addTitle, addDetails, tags, initGeometry, date } = createTripStore();
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -66,11 +57,7 @@ const CreateTripDetail = () => {
   return (
     <CreateTripDetailWrapper>
       <CreateTripDetailContainer ref={containerRef} id="test">
-        <TopModal
-          containerRef={containerRef}
-          setIsMapFull={setIsMapFull}
-          onHeightChange={setTopModalHeight}
-        >
+        <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
           <ModalContainer>
             <RegionWrapper region={"오사카"} />
             <Spacing size={16} />
@@ -111,8 +98,8 @@ const CreateTripDetail = () => {
             <Title>여행 일정</Title>
             <ScheduleList>
               {date &&
-                getDatesArray(date.startDate, date.endDate).map((item) => (
-                  <CreateScheduleItem title={item} />
+                getDatesArray(date.startDate, date.endDate).map((item, idx) => (
+                  <CreateScheduleItem idx={idx} title={item} />
                 ))}
             </ScheduleList>
           </ScheduleContainer>
@@ -187,8 +174,7 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) =>
-    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
 `;
