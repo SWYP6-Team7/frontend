@@ -130,15 +130,15 @@ const TopModal = ({
 
         setIsMapFull(true);
         onHeightChange(48 + currentScrollTop);
-        setTimeout(() => {
-          if (firstTop.current === false) {
-            container.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-            firstTop.current = true;
-          }
-        }, 100);
+        // setTimeout(() => {
+        //   if (firstTop.current === false) {
+        //     container.scrollTo({
+        //       top: 0,
+        //       behavior: "smooth",
+        //     });
+        //     firstTop.current = true;
+        //   }
+        // }, 100);
       } else if (scrollPercentage < modalHeightPercentage) {
         // 스크롤 진행률이 modalHeightPercentage% 미만일 때 modalHeight를 점진적으로 줄임
         if (firstTop.current) firstTop.current = false;
