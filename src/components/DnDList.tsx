@@ -17,10 +17,12 @@ const DndItem = (
     description,
     isDragging,
     handleMouseDown,
+    handleTouchStart,
     handleDragStart,
   }: DndItemType & {
     isDragging: boolean;
     handleMouseDown: () => void;
+    handleTouchStart: (e: React.TouchEvent) => void;
     handleDragStart: (e: DragEvent) => void;
   },
   ref: ForwardedRef<HTMLLIElement>
@@ -31,6 +33,7 @@ const DndItem = (
       draggable={isDragging}
       isDragging={isDragging}
       onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
       onDragStart={handleDragStart}
       ref={ref}
     >
@@ -75,31 +78,43 @@ const DnDList = ({ data }: { data: any[] }) => {
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
   const cacheList = useRef<DndItemType[]>(data);
   const containerRef = useRef<HTMLUListElement | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   const handleMouseDown = (id: number) => () => {
     setDraggingId(Number(id));
   };
 
+  const handleTouchStart = (id: number) => (e: React.TouchEvent) => {
+    setDraggingId(Number(id));
+    touchStartY.current = e.touches[0].clientY;
+  };
+
   const handleDragStart = (e: DragEvent) => {
     cacheList.current = list;
-    console.log("dldldl");
     if (e.dataTransfer) {
       e.dataTransfer.effectAllowed = "move";
     }
   };
-  console.log("list", list);
+
   const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
 
-    const el = e.target as HTMLElement;
-    if (!el.dataset.dragHandle) return;
+    const findDragHandle = (element: HTMLElement | null): HTMLElement | null => {
+      while (element && !element.dataset.dragHandle) {
+        element = element.parentElement;
+      }
+      return element;
+    };
+
+    const el = findDragHandle(e.target as HTMLElement);
+    if (!el) return;
 
     const { clientY } = e;
 
-    // 현재 드래그 위치(clientY)와 비교하여 대상 요소 찾기
     let targetIndex = -1;
     for (let i = 0; i < itemsRef.current!.length; i++) {
       const sib = itemsRef.current![i];
+      console.log("sib", sib);
       if (!sib) continue;
 
       const rect = sib.getBoundingClientRect();
@@ -111,36 +126,64 @@ const DnDList = ({ data }: { data: any[] }) => {
       }
     }
 
-    // 마지막 요소로 이동 처리
     if (targetIndex === -1) {
-      targetIndex = itemsRef.current!.length; // 리스트 끝으로 이동
+      targetIndex = itemsRef.current!.length;
     }
 
-    // 드래그 중인 항목과 대상 항목 찾기
     const draggingItemIndex = list.findIndex((item) => item.id === Number(draggingId));
     const draggingItem = list[draggingItemIndex];
-
-    // 리스트 업데이트
+    console.log(draggingItem);
     setList((prev) => {
-      const next = prev.filter((p) => p !== draggingItem); // 드래그 중인 항목 제거
-      next.splice(targetIndex, 0, draggingItem); // 새로운 위치에 삽입
+      const next = prev.filter((p) => p !== draggingItem);
+      next.splice(targetIndex, 0, draggingItem);
       return next;
     });
   };
 
   const handleDragEnd = (e: DragEvent) => {
-    console.log(e.dataTransfer);
     if (e.dataTransfer?.dropEffect === "none") setList(cacheList.current);
     setDraggingId(null);
   };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (draggingId === null || touchStartY.current === null) return;
+    console.log(123);
+    const touchY = e.touches[0].clientY;
+    const deltaY = touchY - touchStartY.current;
+
+    handleDragOver({
+      preventDefault: () => {},
+      target: e.target,
+      clientY: touchY,
+    } as unknown as DragEvent);
+
+    if (containerRef.current) {
+      containerRef.current.scrollTop += deltaY;
+    }
+
+    touchStartY.current = touchY;
+  };
+
+  const handleTouchEnd = () => {
+    setDraggingId(null);
+    touchStartY.current = null;
+  };
+
   return (
-    <ul ref={containerRef} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
+    <ul
+      ref={containerRef}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {list.map((item, i) => (
         <ForwardedDndItem
           {...item}
           key={item.id}
           isDragging={draggingId === item.id}
           handleMouseDown={handleMouseDown(item.id)}
+          handleTouchStart={handleTouchStart(item.id)}
           handleDragStart={handleDragStart}
           ref={(r) => {
             itemsRef.current[i] = r;
@@ -157,14 +200,16 @@ const Item = styled.li<{ isDragging: boolean }>`
     props.isDragging
       ? `
       padding: 0 12px;
-    border-radius: 20px;
+      border-radius: 20px;
       box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  `
+    `
       : "padding: 0 10px;"}
   align-items: center;
   justify-content: space-between;
   transition: all 0.2s ease-out;
   height: 58px;
+  user-select: none;
+  touch-action: none;
 `;
 
 const Index = styled.div`
@@ -198,6 +243,8 @@ const IconContainer = styled.div`
   width: 42px;
   height: 42px;
   justify-content: center;
+  cursor: move;
+  touch-action: none;
 `;
 
 const TextContainer = styled.div`
