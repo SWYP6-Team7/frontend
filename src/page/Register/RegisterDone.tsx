@@ -1,21 +1,21 @@
-'use client'
-import useAuth from '@/hooks/user/useAuth'
-import { userStore } from '@/store/client/userStore'
-import styled from '@emotion/styled'
-import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+"use client";
+import useAuth from "@/hooks/user/useAuth";
+import { userStore } from "@/store/client/userStore";
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 export default function RegisterDone() {
-  const router = useRouter()
-  const { reset } = userStore()
-  const { setSocialLogin } = userStore()
+  const router = useRouter();
+  const { reset } = userStore();
+  const { setSocialLogin } = userStore();
   useEffect(() => {
     setTimeout(() => {
-      reset()
-      setSocialLogin(null, null)
-      router.replace('/login') // refresh 토큰 받을려면 로그인으로 접속해야함.
-    }, 2000)
-  }, [])
+      reset();
+      setSocialLogin(null, null);
+      router.replace("/login"); // refresh 토큰 받을려면 로그인으로 접속해야함.
+    }, 2000);
+  }, []);
   return (
     <Container>
       <div></div>
@@ -25,8 +25,9 @@ export default function RegisterDone() {
           height="200"
           viewBox="0 0 200 200"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_2307_12382)">
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clipPath="url(#clip0_2307_12382)">
             <path
               d="M94.9549 167.207C131.687 167.207 161.465 137.336 161.465 100.488C161.465 63.64 131.687 33.7687 94.9549 33.7687C58.2224 33.7687 28.4448 63.64 28.4448 100.488C28.4448 137.336 58.2224 167.207 94.9549 167.207Z"
               fill="#F8F0CA"
@@ -104,7 +105,7 @@ export default function RegisterDone() {
         </DoneText>
       </TextBox>
     </Container>
-  )
+  );
 }
 const TextBox = styled.div`
   display: flex;
@@ -112,7 +113,7 @@ const TextBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+`;
 const DoneText = styled.div`
   font-family: Pretendard;
   font-size: 24px;
@@ -120,7 +121,7 @@ const DoneText = styled.div`
   line-height: 33.6px;
   text-align: center;
   color: rgba(52, 52, 52, 1);
-`
+`;
 const Congrats = styled.div`
   font-family: Pretendard;
   font-size: 18px;
@@ -129,12 +130,12 @@ const Congrats = styled.div`
   letter-spacing: -0.025em;
   text-align: left;
   color: rgba(171, 171, 171, 1);
-`
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100svh;
-`
-const Img = styled.div``
+`;
+const Img = styled.div``;

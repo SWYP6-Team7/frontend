@@ -3,8 +3,14 @@ import React from "react";
 
 export default function OnBoardingOne() {
   return (
-    <svg width="250" height="250" viewBox="0 0 250 250" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_2391_13963)">
+    <svg
+      width="250"
+      height="250"
+      viewBox="0 0 250 250"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0_2391_13963)">
         <path
           d="M178.512 3.12122H85.4881C74.8425 3.12122 66.2126 11.5056 66.2126 21.8483V228.152C66.2126 238.494 74.8425 246.879 85.4881 246.879H178.512C189.158 246.879 197.787 238.494 197.787 228.152V21.8483C197.787 11.5056 189.158 3.12122 178.512 3.12122Z"
           fill="#F5F5F5"
@@ -41,7 +47,12 @@ export default function OnBoardingOne() {
       />
       <defs>
         <clipPath id="clip0_2391_13963">
-          <rect width="138" height="250" fill="white" transform="translate(63)" />
+          <rect
+            width="138"
+            height="250"
+            fill="white"
+            transform="translate(63)"
+          />
         </clipPath>
       </defs>
     </svg>

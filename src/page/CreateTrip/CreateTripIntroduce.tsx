@@ -3,7 +3,6 @@ import Button from "@/components/designSystem/Buttons/Button";
 import InputField from "@/components/designSystem/input/InputField";
 import TextareaField from "@/components/designSystem/input/TextareaField";
 import FifthStepIcon from "@/components/icons/FifthStopIcon";
-import SecondStepIcon from "@/components/icons/SecondStepIcon";
 import Spacing from "@/components/Spacing";
 import useViewTransition from "@/hooks/useViewTransition";
 import { createTripStore } from "@/store/client/createTripStore";
@@ -11,7 +10,12 @@ import styled from "@emotion/styled";
 import React, { useState } from "react";
 
 const CreateTripIntroduce = () => {
-  const { title: initTitle, details: initDetails, addDetails, addTitle } = createTripStore();
+  const {
+    title: initTitle,
+    details: initDetails,
+    addDetails,
+    addTitle,
+  } = createTripStore();
   const [title, setTitle] = useState(initTitle);
   const [details, setDetails] = useState(initDetails);
   const navigateWithTransition = useViewTransition();

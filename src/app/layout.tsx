@@ -2,7 +2,11 @@ import Layout from "@/components/Layout";
 import Providers from "./providers";
 import "./globals.css";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ko">
       <body>
@@ -11,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div id="checking-modal" />
           <div id="result-toast" />
           <div id="end-modal" />
+          <div id="region-modal" />
         </Providers>
       </body>
     </html>

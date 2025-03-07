@@ -19,7 +19,12 @@ interface ContainerProps {
 // hasError: error 상태인지
 // success: 검증을 통과한 상태인지
 // children: text 부분
-const InfoText = ({ hasError = false, success = false, children, shake = false }: InfoTextProps) => {
+const InfoText = ({
+  hasError = false,
+  success = false,
+  children,
+  shake = false,
+}: InfoTextProps) => {
   const color = hasError ? "#ED1E1E" : success ? "#5DB21B" : "#ABABAB";
 
   return (
@@ -27,10 +32,22 @@ const InfoText = ({ hasError = false, success = false, children, shake = false }
       {hasError ? (
         <InfoIcon color={color} />
       ) : success ? (
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_3968_110)">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g clipPath="url(#clip0_3968_110)">
             <circle cx="7" cy="7" r="7" fill="#3E8D00" />
-            <path d="M4 7L6.25 9L10 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M4 7L6.25 9L10 5"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </g>
           <defs>
             <clipPath id="clip0_3968_110">

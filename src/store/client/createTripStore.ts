@@ -5,8 +5,8 @@ import { create } from "zustand";
 type Gender = "F" | "M" | "";
 
 interface CreateTripState {
-  location: string;
-  addLocation: (location: string) => void;
+  locationName: string;
+  addLocationName: (location: string) => void;
   title: string;
   addTitle: (title: string) => void;
   details: string;
@@ -18,7 +18,13 @@ interface CreateTripState {
   dueDate: string;
   addDueDate: (dueDate: string) => void;
   date: { startDate: string; endDate: string } | null;
-  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
+  addDate: ({
+    startDate,
+    endDate,
+  }: {
+    startDate: string;
+    endDate: string;
+  }) => void;
   periodType: string;
   addPeriodType: (periodType: string) => void;
   tags: string[];
@@ -37,9 +43,9 @@ export const createTripStore = create<CreateTripState>((set) => ({
   addTitle: (title) => {
     set({ title });
   },
-  location: "",
-  addLocation: (location) => {
-    set({ location });
+  locationName: "",
+  addLocationName: (locationName) => {
+    set({ locationName });
   },
   details: "",
   addDetails: (details) => {
@@ -88,7 +94,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
   resetCreateTripDetail: () => {
     set({
       title: "",
-      location: "",
+      locationName: "",
       details: "",
       maxPerson: 1,
       genderType: "",

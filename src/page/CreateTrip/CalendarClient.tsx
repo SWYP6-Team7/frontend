@@ -1,9 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Calendar from "@/components/calendar/CalendarView";
 import { CalendarDay, Holiday, Post, setCalendarArray } from "@/utils/calendar";
 import dayjs from "dayjs";
-import BottomModal from "@/components/BottomModal";
 import styled from "@emotion/styled";
 import { palette } from "@/styles/palette";
 import Spacing from "@/components/Spacing";
@@ -69,7 +67,9 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ holidaysArray }) => {
             <CalendarIcon />
 
             <DueDateValue isDate={Boolean(date)}>
-              {date ? formatDateRange(date.startDate, date.endDate) : "날짜를 선택하세요."}
+              {date
+                ? formatDateRange(date.startDate, date.endDate)
+                : "날짜를 선택하세요."}
             </DueDateValue>
           </div>
         </DuedateBtn>

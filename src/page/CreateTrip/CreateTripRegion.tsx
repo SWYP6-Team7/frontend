@@ -12,63 +12,10 @@ import styled from "@emotion/styled";
 import React, { useEffect, useMemo, useState } from "react";
 
 import useViewTransition from "@/hooks/useViewTransition";
+import TripRegion from "@/components/TripRegion";
 
 export default function CreateTripRegion() {
-  const [keyword, setKeyword] = useState("");
-  const { addLocation, addMapType } = createTripStore();
-  const [showRelationList, setShowRelationList] = useState(true);
   const navigateWithTransition = useViewTransition();
-  const [isLoad, setIsLoad] = useState(false);
-  const [submit, setSubmit] = useState(false);
-  const { data, isLoading, error } = useRelationKeyword(keyword);
-
-  useEffect(() => {
-    const script: HTMLScriptElement = document.createElement("script");
-    script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
-    document.head.appendChild(script);
-    script.addEventListener("load", () => {
-      console.log("test");
-      window.kakao.maps.load(() => {
-        setIsLoad(true);
-        if (submit) {
-          console.log("tru");
-          var geocoder = new window.kakao.maps.services.Geocoder();
-          // 주소로 좌표를 검색합니다
-          geocoder.addressSearch(keyword, function (result, status) {
-            // 정상적으로 검색이 완료됐으면
-            if (status === window.kakao.maps.services.Status.OK) {
-              addMapType("kakao");
-            }
-          });
-          addLocation(keyword);
-          document.documentElement.style.viewTransitionName = "instant";
-          navigateWithTransition("/create/trip/date");
-          setSubmit(false);
-        }
-      });
-    });
-  }, [submit]);
-
-  const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
-    if (!showRelationList) {
-      setShowRelationList(true);
-    }
-  };
-
-  const clickRelationKeyword = (keyword: string) => {
-    setKeyword(keyword);
-    setShowRelationList(false);
-  };
-
-  const handleRemoveValue = () => setKeyword("");
-
-  const handleNext = () => {
-    if (!isLoad) return;
-    setSubmit(true);
-  };
-
   // const isMatchedKeyword = useMemo(() => {
   //   if (data?.suggestions && Array.isArray(data.suggestions)) {
   //     return data.suggestions.includes(keyword)
@@ -76,40 +23,17 @@ export default function CreateTripRegion() {
   //     return false
   //   }
   // }, [keyword, data?.suggestions])
+
+  const handleNext = () => {
+    document.documentElement.style.viewTransitionName = "instant";
+    navigateWithTransition("/create/trip/date");
+  };
   return (
     <Container>
       <StepIconContainer>
         <FirstStepIcon />
       </StepIconContainer>
-      <Title>어디로 떠나볼까요?</Title>
-      <Spacing size={8} />
-      <InputField value={keyword} handleRemoveValue={handleRemoveValue} onChange={changeKeyword} icon={<PlaceIcon />} />
-      {keyword.length > 0 && (
-        <>
-          {showRelationList && (
-            <>
-              <Spacing size={16} />
-              <RelationKeywordList onClick={clickRelationKeyword} keyword={keyword} />
-            </>
-          )}
-        </>
-      )}
-      <ButtonContainer>
-        <Button
-          onClick={handleNext}
-          disabled={keyword === ""}
-          addStyle={
-            keyword === ""
-              ? {
-                  backgroundColor: "rgba(220, 220, 220, 1)",
-                  color: "rgba(132, 132, 132, 1)",
-                  boxShadow: "-2px 4px 5px 0px rgba(170, 170, 170, 0.1)",
-                }
-              : undefined
-          }
-          text={"다음"}
-        />
-      </ButtonContainer>
+      <TripRegion nextFunc={handleNext} />
     </Container>
   );
 }

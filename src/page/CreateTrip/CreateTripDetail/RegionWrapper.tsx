@@ -5,8 +5,14 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  useMap,
+  useMapsLibrary,
+} from "@vis.gl/react-google-maps";
 import { createTripStore } from "@/store/client/createTripStore";
+import RegionModal from "@/components/RegionModal";
 
 interface RegionWrapperProps {
   region: string;
@@ -19,6 +25,7 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
   const [regionInfo, setRegionInfo] = useState<RegionInfo | null>(null);
   const { mapType, addInitGeometry } = createTripStore();
   const map = useMap();
+  const [isModalOPen, setIsModalOpen] = useState(false);
   const placesLib = useMapsLibrary("places");
 
   const fetchPlaceInfo = useCallback(async () => {
@@ -34,7 +41,10 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
 
     service.findPlaceFromQuery(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-        if (results[0].geometry?.location?.lat() && results[0].geometry?.location?.lng()) {
+        if (
+          results[0].geometry?.location?.lat() &&
+          results[0].geometry?.location?.lng()
+        ) {
           addInitGeometry({
             lat: results[0].geometry?.location?.lat(),
             lng: results[0].geometry?.location?.lng(),
@@ -42,7 +52,9 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
         }
         // 결과 처리
         if (results[0]) {
-          const parts = results[0].formatted_address?.split(",").map((part) => part.trim());
+          const parts = results[0].formatted_address
+            ?.split(",")
+            .map((part) => part.trim());
           setRegionInfo({
             country: parts ? parts[parts.length - 1] : null,
             adminArea: parts ? parts[parts.length - 2] : null,
@@ -57,6 +69,7 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
     });
   }, [map, placesLib, region]);
   useEffect(() => {
+    console.log(mapType);
     if (mapType === "google") {
       fetchPlaceInfo();
     } else {
@@ -71,6 +84,9 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
           geocoder.addressSearch(region, function (result, status) {
             // 정상적으로 검색이 완료됐으면
             console.log(result, "result");
+            if (result.length === 0) {
+              return;
+            }
             if (result[0].x && result[0].y) {
               addInitGeometry({
                 lat: Number(result[0].y),
@@ -85,10 +101,11 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
         });
       });
     }
-  }, [fetchPlaceInfo, region]);
+  }, [fetchPlaceInfo, region, mapType]);
 
   return (
     <>
+      <RegionModal isModalOpen={isModalOPen} setIsModalOpen={setIsModalOpen} />
       <Map
         style={{ height: 0, width: 0 }}
         defaultZoom={13}
@@ -106,7 +123,7 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
             {regionInfo?.country} {regionInfo?.adminArea}
           </Small>
         </TextContainer>
-        <ArrowIconContainer>
+        <ArrowIconContainer onClick={() => setIsModalOpen(true)}>
           <ArrowIcon />
         </ArrowIconContainer>
       </Container>
@@ -138,6 +155,7 @@ const ArrowIconContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 48px;
+  cursor: pointer;
   height: 48px;
 `;
 

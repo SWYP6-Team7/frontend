@@ -5,7 +5,13 @@ import Vector from "@/components/icons/Vector";
 import Spacing from "@/components/Spacing";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { ChangeEvent, FocusEventHandler, FormEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FocusEventHandler,
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
 import RecruitingPickerView from "./RecruitingPickerView";
 import Button from "@/components/designSystem/Buttons/Button";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
@@ -15,8 +21,7 @@ import ButtonContainer from "@/components/ButtonContainer";
 
 export default function RecruitingWrapper() {
   const pathname = usePathname();
-  const isCreateTripDetailPage = pathname === "/create/trip/info";
-  const { maxPerson } = tripDetailStore();
+
   const { maxPerson: maxPersonForCreateTrip, addMaxPerson } = createTripStore();
   const [showModal, setShowModal] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -46,7 +51,9 @@ export default function RecruitingWrapper() {
     if (type === "plus") {
       addMaxPerson(maxPersonForCreateTrip + 1);
     } else {
-      addMaxPerson(maxPersonForCreateTrip === 0 ? 0 : maxPersonForCreateTrip - 1);
+      addMaxPerson(
+        maxPersonForCreateTrip === 0 ? 0 : maxPersonForCreateTrip - 1
+      );
     }
   };
 
@@ -187,7 +194,11 @@ const MinusButton = styled.button`
   }
 `;
 
-const CountInput = styled.input<{ bgColor: string; borderColor: string; color: string }>`
+const CountInput = styled.input<{
+  bgColor: string;
+  borderColor: string;
+  color: string;
+}>`
   border-radius: 40px;
   height: 48px;
   text-align: center;

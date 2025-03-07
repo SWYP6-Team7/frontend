@@ -42,24 +42,34 @@ function getDatesArray(startDate, endDate) {
 }
 
 const CreateTripDetail = () => {
-  const { location, title, details, addTitle, addDetails, tags, initGeometry, date } = createTripStore();
+  const {
+    locationName,
+    title,
+    details,
+    addTitle,
+    addDetails,
+    tags,
+    initGeometry,
+    date,
+  } = createTripStore();
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
-  const [ref, inView] = useInView();
-  const [lastScrollTop, setLastScrollTop] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     addTitle(e.target.value);
   };
-  console.log(date);
 
   return (
     <CreateTripDetailWrapper>
       <CreateTripDetailContainer ref={containerRef} id="test">
-        <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
+        <TopModal
+          containerRef={containerRef}
+          setIsMapFull={setIsMapFull}
+          onHeightChange={setTopModalHeight}
+        >
           <ModalContainer>
-            <RegionWrapper region={"오사카"} />
+            <RegionWrapper region={locationName} />
             <Spacing size={16} />
             <InputField
               value={title}
@@ -104,7 +114,6 @@ const CreateTripDetail = () => {
             </ScheduleList>
           </ScheduleContainer>
         </BottomContainer>
-        <div ref={ref} style={{ height: 10 }}></div>
       </CreateTripDetailContainer>
 
       <ButtonContainer>
@@ -175,7 +184,8 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) =>
+    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
