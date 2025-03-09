@@ -209,7 +209,7 @@ export default function TripDetail() {
 
   return (
     <>
-      {/* <ResultToast height={120} isShow={editToastShow} setIsShow={setEditToastShow} text="게시글이 수정되었어요." />
+      <ResultToast height={120} isShow={editToastShow} setIsShow={setEditToastShow} text="게시글이 수정되었어요." />
       <NoticeModal
         isModalOpen={noticeModal}
         modalMsg={`여행에 참가가 확정된\n 멤버만 볼 수 있어요.`}
@@ -252,7 +252,7 @@ export default function TripDetail() {
         modalTitle="참가 취소"
         modalButtonText="취소하기"
         setModalOpen={setShowCancelModal}
-      /> */}
+      />
 
       <TripDetailWrapper ref={containerRef}>
         <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
@@ -323,13 +323,7 @@ export default function TripDetail() {
           </ModalContainer>
         </TopModal>
         <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
-          {/* <MapContainer
-            index={openItemIndex}
-            isMapFull={isMapFull}
-            lat={initGeometry?.lat || 37.57037778}
-            lng={initGeometry?.lng || 126.9816417}
-            zoom={locationName.mapType === "google" ? 11 : 9}
-          /> */}
+          <MapContainer index={openItemIndex} isMapFull={isMapFull} lat={37.57037778} lng={126.9816417} zoom={9} />
           <ScheduleContainer>
             <ScheduleTitle>여행 일정</ScheduleTitle>
             <ScheduleList>
