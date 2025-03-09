@@ -6,11 +6,6 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import InputField from "@/components/designSystem/input/InputField";
 
-import { palette } from "@/styles/palette";
-import CommunityItem from "@/components/community/CommunityItem";
-import useCommunity from "@/hooks/useCommunity";
-import CustomLink from "@/components/CustomLink";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { createTripStore } from "@/store/client/createTripStore";
 import { postTranslate } from "@/api/translation";
@@ -18,15 +13,30 @@ import SearchItem from "./SearchItem";
 
 const SearchPlace = () => {
   const [keyword, setKeyword] = useState("");
-
+  const [debouncedKeyword, setDebouncedKeyword] = useState("");
+  const { locationName } = createTripStore();
   const [ref, inView] = useInView();
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const map = useMap();
+  useEffect(() => {
+    if (keyword.trim() === "") {
+      setDebouncedKeyword("");
+      return;
+    }
+
+    const handler: NodeJS.Timeout = setTimeout(() => {
+      setDebouncedKeyword(keyword);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [keyword]);
 
   const placesLib = useMapsLibrary("places");
   useEffect(() => {
-    console.log(placesLib, map, keyword);
-    if (!placesLib || keyword === "") return;
+    console.log(placesLib, map, debouncedKeyword);
+    if (!placesLib || debouncedKeyword === "") return;
     async function fetchPlacePredictions() {
       try {
         console.log(placesLib, "info");
@@ -34,7 +44,7 @@ const SearchPlace = () => {
         const { AutocompleteSessionToken, AutocompleteSuggestion } = placesLib;
 
         let request = {
-          input: keyword,
+          input: debouncedKeyword,
 
           language: "ko-KR",
         };
@@ -49,27 +59,96 @@ const SearchPlace = () => {
         const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
         console.log(suggestions, "sug");
 
-        const mappedSuggestions: any[] = [];
-        suggestions.forEach(async (suggestion) => {
-          console.log(suggestion.placePrediction.text.text.split(" ")[1], "text");
-          mappedSuggestions.push({
-            placeId: suggestion.placePrediction.placeId,
-            place: suggestion.placePrediction.mainText.text,
-            type: suggestion.placePrediction.types[suggestion.placePrediction.types.length - 2],
-            region: suggestion.placePrediction.text.text.split(" ")[1],
-          });
-        });
-        // const uniqueSuggestions = mappedSuggestions.filter(
-        //   (suggestion, index, self) => index === self.findIndex((t) => t.place === suggestion.place)
-        // );
-        setSuggestions(mappedSuggestions);
+        const mappedSuggestions = await Promise.all(
+          suggestions.map(async (suggestion) => {
+            try {
+              const place = await suggestion.placePrediction.toPlace();
+              await place.fetchFields({
+                fields: ["displayName", "primaryTypeDisplayName", "location"],
+              });
+
+              // 주소 분할 안전장치 추가
+              const regionParts = suggestion.placePrediction.text.text.split(" ");
+              const region = regionParts.length > 1 ? regionParts[1] : "N/A";
+
+              return {
+                placeId: suggestion.placePrediction.placeId,
+                place: suggestion.placePrediction.mainText.text,
+                type: place.primaryTypeDisplayName || "N/A",
+                region: region,
+                lat: place.location?.lat() || 0,
+                lng: place.location?.lng() || 0,
+              };
+            } catch (error) {
+              console.error("Error processing suggestion:", error);
+              return null; // 실패한 항목은 필터링
+            }
+          })
+        );
+
+        // null 값 필터링 및 중복 제거
+        const validSuggestions = mappedSuggestions.filter(Boolean);
+        const uniqueSuggestions = validSuggestions.filter(
+          (suggestion, index, self) => index === self.findIndex((t) => t.placeId === suggestion.placeId)
+        );
+
+        console.log("Mapped suggestions:", uniqueSuggestions);
+        setSuggestions(uniqueSuggestions);
       } catch (error) {
         console.error("Error fetching place predictions:", error);
       }
     }
 
-    fetchPlacePredictions();
-  }, [placesLib, map, keyword]);
+    if (locationName.mapType === "google") {
+      fetchPlacePredictions();
+    } else {
+      const script: HTMLScriptElement = document.createElement("script");
+      script.async = true;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
+      document.head.appendChild(script);
+
+      script.addEventListener("load", () => {
+        window.kakao.maps.load(() => {
+          function placesSearchCB(data, status, pagination) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              const mappedSuggestions: any[] = [];
+              data.forEach((item) => {
+                console.log(item);
+
+                mappedSuggestions.push({
+                  placeId: item.id,
+                  place: item.place_name,
+                  type: item.category_group_name,
+                  region: item.address_name.split(" ")[0],
+                  lat: item.y,
+                  lng: item.x,
+                });
+
+                // const uniqueSuggestions = mappedSuggestions.filter(
+                //   (suggestion, index, self) => index === self.findIndex((t) => t.place === suggestion.place)
+                // );
+                setSuggestions(mappedSuggestions);
+              });
+            } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+              console.log("zero result");
+              return;
+            } else if (status === window.kakao.maps.services.Status.ERROR()) {
+              alert("검색 결과 중 오류가 발생했습니다.");
+              return;
+            }
+          }
+
+          var ps = new window.kakao.maps.services.Places();
+
+          // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+          var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+
+          // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+          ps.keywordSearch(debouncedKeyword, placesSearchCB);
+        });
+      });
+    }
+  }, [placesLib, map, debouncedKeyword, locationName.mapType]);
 
   const handleRemoveValue = () => {
     setKeyword("");
@@ -80,7 +159,7 @@ const SearchPlace = () => {
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && keyword !== "") {
+    if (e.key === "Enter" && debouncedKeyword !== "") {
       e.preventDefault();
     }
   };
@@ -120,6 +199,8 @@ const SearchPlace = () => {
               id={suggestion.placeId}
               title={suggestion.place}
               type={suggestion.type}
+              lat={suggestion.lat}
+              lng={suggestion.lng}
               location={suggestion.region}
             />
           ))}

@@ -13,9 +13,9 @@ import RelationKeywordList from "./relationKeyword/RelationKeywordList";
 import PlaceIcon from "./icons/PlaceIcon";
 
 const TripRegion = ({ nextFunc }: { nextFunc: () => void }) => {
-  const { addLocationName, addMapType, locationName } = createTripStore();
+  const { addLocationName,  locationName: initLocationName } = createTripStore();
 
-  const [keyword, setKeyword] = useState(locationName);
+  const [keyword, setKeyword] = useState(initLocationName.locationName);
   const [showRelationList, setShowRelationList] = useState(true);
   const [isLoad, setIsLoad] = useState(false);
   const [submit, setSubmit] = useState(false);
@@ -36,16 +36,21 @@ const TripRegion = ({ nextFunc }: { nextFunc: () => void }) => {
           geocoder.addressSearch(keyword, function (result, status) {
             // 정상적으로 검색이 완료됐으면
             if (status === window.kakao.maps.services.Status.OK) {
-              addMapType("kakao");
+         
+              
+              addLocationName({locationName: keyword ??"", mapType: "kakao"});
+              
             } else {
-              addMapType("google");
+            
+              addLocationName({
+                locationName: keyword ??"", mapType: "google"});
             }
+            setSubmit(false);
+            nextFunc();
           });
-          console.log("success");
-          addLocationName(keyword);
+        
 
-          setSubmit(false);
-          nextFunc();
+         
         }
       });
     });

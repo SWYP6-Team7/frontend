@@ -14,33 +14,33 @@ import {
 import { createTripStore } from "@/store/client/createTripStore";
 import RegionModal from "@/components/RegionModal";
 
-interface RegionWrapperProps {
-  region: string;
-}
+
 interface RegionInfo {
   country: string | null;
   adminArea: string | null;
 }
-const RegionWrapper = ({ region }: RegionWrapperProps) => {
+const RegionWrapper = () => {
   const [regionInfo, setRegionInfo] = useState<RegionInfo | null>(null);
-  const { mapType, addInitGeometry } = createTripStore();
+  const { locationName, addInitGeometry } = createTripStore();
   const map = useMap();
   const [isModalOPen, setIsModalOpen] = useState(false);
   const placesLib = useMapsLibrary("places");
 
-  const fetchPlaceInfo = useCallback(async () => {
+  const fetchPlaceInfo = async () => {
     if (!map || !placesLib) return;
 
     const { PlacesService } = placesLib as google.maps.PlacesLibrary;
     const service = new PlacesService(map);
 
     const request: google.maps.places.FindPlaceFromQueryRequest = {
-      query: region,
+      query: locationName.locationName,
       fields: ["name", "formatted_address", "geometry"],
+
     };
 
     service.findPlaceFromQuery(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+        console.log(results, 'result')
         if (
           results[0].geometry?.location?.lat() &&
           results[0].geometry?.location?.lng()
@@ -51,6 +51,7 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
           });
         }
         // 결과 처리
+
         if (results[0]) {
           const parts = results[0].formatted_address
             ?.split(",")
@@ -62,15 +63,15 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
         }
       } else {
         setRegionInfo({
-          country: region,
-          adminArea: region,
+          country: locationName.locationName,
+          adminArea: locationName.locationName,
         });
       }
     });
-  }, [map, placesLib, region]);
+  }
   useEffect(() => {
-    console.log(mapType);
-    if (mapType === "google") {
+  
+    if (locationName.mapType === "google") {
       fetchPlaceInfo();
     } else {
       const script: HTMLScriptElement = document.createElement("script");
@@ -81,11 +82,12 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
         window.kakao.maps.load(() => {
           var geocoder = new window.kakao.maps.services.Geocoder();
           // 주소로 좌표를 검색합니다
-          geocoder.addressSearch(region, function (result, status) {
+          geocoder.addressSearch(locationName.locationName, function (result, status) {
             // 정상적으로 검색이 완료됐으면
             console.log(result, "result");
             if (result.length === 0) {
-              return;
+              addInitGeometry(null)
+              return ;
             }
             if (result[0].x && result[0].y) {
               addInitGeometry({
@@ -95,13 +97,13 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
             }
             setRegionInfo({
               country: "한국",
-              adminArea: result[0]?.address_name ?? region,
+              adminArea: result[0]?.address_name ?? locationName.locationName,
             });
           });
         });
       });
     }
-  }, [fetchPlaceInfo, region, mapType]);
+  }, [ JSON.stringify(locationName)]);
 
   return (
     <>
@@ -118,7 +120,7 @@ const RegionWrapper = ({ region }: RegionWrapperProps) => {
           <PlaceIcon width={21} height={24} />
         </PlaceIconContainer>
         <TextContainer>
-          <Region>{region}</Region>
+          <Region>{locationName.locationName}</Region>
           <Small>
             {regionInfo?.country} {regionInfo?.adminArea}
           </Small>

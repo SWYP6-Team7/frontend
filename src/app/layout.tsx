@@ -13,6 +13,7 @@ export default function RootLayout({
         <Providers>
           <Layout>{children}</Layout>
           <div id="checking-modal" />
+          <div id="trip-toast" />
           <div id="result-toast" />
           <div id="end-modal" />
           <div id="region-modal" />

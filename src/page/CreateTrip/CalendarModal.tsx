@@ -28,7 +28,7 @@ function isMoreThan90DaysApart(date1, date2) {
 }
 
 const CalendarModal = ({ showModal, setShowModal }: CalendarModalProps) => {
-  const { mapType, addDate, date } = createTripStore();
+  const {  addDate } = createTripStore();
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const [startTime, setStartTime] = useState<string | undefined>();

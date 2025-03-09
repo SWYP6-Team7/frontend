@@ -25,6 +25,7 @@ import "dayjs/locale/ko"; // 한국어 로케일 추가
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CreateScheduleItem from "./CreateScheduleItem";
+import TripToast from "@/components/designSystem/toastMessage/tripToast";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
@@ -51,83 +52,152 @@ const CreateTripDetail = () => {
     tags,
     initGeometry,
     date,
+    plans,
+    genderType,
+    maxPerson,
+    periodType,
+    addCompletionStatus,
+    resetCreateTripDetail,
   } = createTripStore();
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
+  const [isToastShow, setIsToastShow] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     addTitle(e.target.value);
   };
+  const { accessToken } = authStore();
+  const [openItemIndex, setOpenItemIndex] = useState(0);
+  const router = useRouter();
+  const handleItemToggle = (index) => {
+    setOpenItemIndex(openItemIndex === index ? null : index);
+  };
+  const travelData = {
+    title,
+    details,
+    maxPerson,
+    genderType: genderType!,
+    startDate: date!.startDate,
+    endDate: date!.endDate,
+    periodType,
+    tags,
+    plans,
+    locationName: locationName.locationName,
+  };
+  const { createTripMutate } = useCreateTrip(travelData, accessToken as string); // 여행 생성 api 요청.
 
+  const completeClickHandler = () => {
+    if (
+      title === "" ||
+      details === "" ||
+      details === "" ||
+      maxPerson === 0 ||
+      genderType === "" ||
+      !date?.startDate ||
+      !date?.endDate ||
+      periodType === "" ||
+      tags.length === 0 ||
+      locationName.locationName === ""
+    ) {
+      addCompletionStatus(false);
+    }
+    createTripMutate(undefined, {
+      onSuccess: (data: any) => {
+        resetCreateTripDetail();
+        if (data) {
+          router.push(`/trip/detail/${data.travelNumber}`);
+        } else {
+          router.push(`/`);
+        }
+      },
+      onError: (e) => {
+        console.log(e, "여행 생성에 오류 발생.");
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (isMapFull) {
+      setIsToastShow(false);
+    } else {
+      setIsToastShow(true);
+    }
+  }, [isMapFull]);
+  console.log(plans, "plans");
   return (
-    <CreateTripDetailWrapper>
-      <CreateTripDetailContainer ref={containerRef} id="test">
-        <TopModal
-          containerRef={containerRef}
-          setIsMapFull={setIsMapFull}
-          onHeightChange={setTopModalHeight}
-        >
-          <ModalContainer>
-            <RegionWrapper region={locationName} />
-            <Spacing size={16} />
-            <InputField
-              value={title}
-              placeholder="제목을 입력해주세요. (최대 20자)"
-              handleRemoveValue={handleRemoveValue}
-              onChange={changeKeyword}
-            />
+    <>
+      <CreateTripDetailWrapper>
+        <CreateTripDetailContainer ref={containerRef} id="test">
+          <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
+            <ModalContainer>
+              <RegionWrapper />
+              <Spacing size={16} />
+              <InputField
+                value={title}
+                placeholder="제목을 입력해주세요. (최대 20자)"
+                handleRemoveValue={handleRemoveValue}
+                onChange={changeKeyword}
+              />
 
-            <Spacing size={16} />
-            <TextareaField
-              minRows={3}
-              maxRows={6}
-              isFlexible
-              value={details}
-              onChange={(e) => addDetails(e.target.value)}
-              placeholder="어떤 여행을 떠나실 예정인가요?
+              <Spacing size={16} />
+              <TextareaField
+                minRows={3}
+                maxRows={6}
+                isFlexible
+                value={details}
+                onChange={(e) => addDetails(e.target.value)}
+                placeholder="어떤 여행을 떠나실 예정인가요?
 자유롭게 소개해보세요. (최대 2,000자)"
+              />
+              <Spacing size={16} />
+              <TagListWrapper type="create" taggedArray={tags} />
+              <Spacing size={16} />
+              <Bar />
+              <CalendarWrapper />
+              <Bar />
+              <InfoWrapper />
+            </ModalContainer>
+          </TopModal>
+          <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
+            <MapContainer
+              index={openItemIndex}
+              isMapFull={isMapFull}
+              lat={initGeometry?.lat || 37.57037778}
+              lng={initGeometry?.lng || 126.9816417}
+              zoom={locationName.mapType === "google" ? 11 : 9}
             />
-            <Spacing size={16} />
-            <TagListWrapper type="create" taggedArray={tags} />
-            <Spacing size={16} />
-            <Bar />
-            <CalendarWrapper />
-            <Bar />
-            <InfoWrapper />
-          </ModalContainer>
-        </TopModal>
-        <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
-          <MapContainer
-            isMapFull={isMapFull}
-            lat={initGeometry?.lat || 37.57037778}
-            lng={initGeometry?.lng || 126.9816417}
-            zoom={11}
-          />
-          <ScheduleContainer>
-            <Title>여행 일정</Title>
-            <ScheduleList>
-              {date &&
-                getDatesArray(date.startDate, date.endDate).map((item, idx) => (
-                  <CreateScheduleItem idx={idx} title={item} />
-                ))}
-            </ScheduleList>
-          </ScheduleContainer>
-        </BottomContainer>
-      </CreateTripDetailContainer>
+            <ScheduleContainer>
+              <Title>여행 일정</Title>
+              <ScheduleList>
+                {date &&
+                  getDatesArray(date.startDate, date.endDate).map((item, idx) => (
+                    <CreateScheduleItem
+                      idx={idx}
+                      title={item}
+                      isOpen={openItemIndex === idx}
+                      onToggle={() => handleItemToggle(idx)}
+                    />
+                  ))}
+              </ScheduleList>
+            </ScheduleContainer>
+          </BottomContainer>
+        </CreateTripDetailContainer>
 
-      <ButtonContainer>
-        <Button
-          text="완료"
-          onClick={() => {}}
-          addStyle={{
-            backgroundColor: "rgba(62, 141, 0, 1)",
-            color: "rgba(240, 240, 240, 1)",
-            boxShadow: "rgba(170, 170, 170, 0.1)",
-          }}
-        />
-      </ButtonContainer>
-    </CreateTripDetailWrapper>
+        <ButtonContainer>
+          <Button
+            text="완료"
+            onClick={completeClickHandler}
+            addStyle={{
+              backgroundColor: "rgba(62, 141, 0, 1)",
+              color: "rgba(240, 240, 240, 1)",
+              boxShadow: "rgba(170, 170, 170, 0.1)",
+            }}
+          />
+        </ButtonContainer>
+      </CreateTripDetailWrapper>
+      <TripToast isShow={isToastShow} setIsShow={setIsToastShow} />
+    </>
   );
 };
 
@@ -184,8 +254,7 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) =>
-    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;

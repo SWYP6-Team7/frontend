@@ -1,32 +1,35 @@
 "use client";
 
+import { createTripStore, SpotType } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { DragEvent, ForwardedRef, forwardRef, useRef, useState } from "react";
+import { DragEvent, ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
 
-type DndItemType = {
-  id: number;
-  title: string;
-  description: string;
-};
+
 
 const DndItem = (
   {
+ idx,
+    name,
+    region,
     id,
-    title,
-    description,
+    category,
     isDragging,
     handleMouseDown,
     handleTouchStart,
     handleDragStart,
-  }: DndItemType & {
+    handleDelete
+  }: SpotType & {
+    idx: number;
     isDragging: boolean;
     handleMouseDown: () => void;
     handleTouchStart: (e: React.TouchEvent) => void;
     handleDragStart: (e: DragEvent) => void;
+    handleDelete: () => void;
   },
   ref: ForwardedRef<HTMLLIElement>
 ) => {
+  console.log(idx, name, region)
   return (
     <Item
       data-id={id}
@@ -38,10 +41,10 @@ const DndItem = (
       ref={ref}
     >
       <LeftContainer>
-        <Index>{id + 1}</Index>
+        <Index>{idx + 1}</Index>
         <TextContainer>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
+          <Title>{name}</Title>
+          <Description>{category} {region}</Description>
         </TextContainer>
       </LeftContainer>
       <RightContainer>
@@ -52,7 +55,7 @@ const DndItem = (
             <path d="M1 11H15" stroke="#ABABAB" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </IconContainer>
-        <IconContainer>
+        <IconContainer onClick={handleDelete}>
           <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1 4H2.55556H15" stroke="#ABABAB" strokeLinecap="round" strokeLinejoin="round" />
             <path
@@ -72,49 +75,32 @@ const DndItem = (
 
 const ForwardedDndItem = forwardRef(DndItem);
 
-const DnDList = ({ data }: { data: any[] }) => {
-  const [list, setList] = useState<DndItemType[]>(data);
-  const [draggingId, setDraggingId] = useState<number | null>(null);
+const DnDList = ({planOrder}: {planOrder: number}) => {
+  const { plans, addPlans } = createTripStore(); // Zustand에서 상태와 액션 가져오기
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
-  const cacheList = useRef<DndItemType[]>(data);
   const containerRef = useRef<HTMLUListElement | null>(null);
   const touchStartY = useRef<number | null>(null);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  console.log(plans)
+  // 현재 planOrder에 해당하는 spots 가져오기
+  const currentPlan = plans.find((plan) => plan.planOrder === planOrder);
+  if (!currentPlan) return null; // 현재 planOrder에 해당하는 계획이 없으면 렌더링하지 않음
 
-  const handleMouseDown = (id: number) => () => {
-    setDraggingId(Number(id));
+  const spots = currentPlan.spots;
+
+  // 드래그 종료 후 Zustand 상태 업데이트
+  const updatePlans = (newSpots: SpotType[]) => {
+    const updatedPlans = plans.map((plan) =>
+      plan.planOrder === planOrder ? { ...plan, spots: newSpots } : plan
+    );
+    addPlans(updatedPlans); // Zustand 상태 업데이트
   };
 
-  const handleTouchStart = (id: number) => (e: React.TouchEvent) => {
-    setDraggingId(Number(id));
-    touchStartY.current = e.touches[0].clientY;
-  };
-
-  const handleDragStart = (e: DragEvent) => {
-    cacheList.current = list;
-    if (e.dataTransfer) {
-      e.dataTransfer.effectAllowed = "move";
-    }
-  };
-
-  const handleDragOver = (e: DragEvent) => {
-    e.preventDefault();
-
-    const findDragHandle = (element: HTMLElement | null): HTMLElement | null => {
-      while (element && !element.dataset.dragHandle) {
-        element = element.parentElement;
-      }
-      return element;
-    };
-
-    const el = findDragHandle(e.target as HTMLElement);
-    if (!el) return;
-
-    const { clientY } = e;
-
+  // 공통 로직: 항목 이동 처리
+  const moveItem = (clientY: number) => {
     let targetIndex = -1;
     for (let i = 0; i < itemsRef.current!.length; i++) {
       const sib = itemsRef.current![i];
-      console.log("sib", sib);
       if (!sib) continue;
 
       const rect = sib.getBoundingClientRect();
@@ -130,44 +116,68 @@ const DnDList = ({ data }: { data: any[] }) => {
       targetIndex = itemsRef.current!.length;
     }
 
-    const draggingItemIndex = list.findIndex((item) => item.id === Number(draggingId));
-    const draggingItem = list[draggingItemIndex];
-    console.log(draggingItem);
-    setList((prev) => {
-      const next = prev.filter((p) => p !== draggingItem);
-      next.splice(targetIndex, 0, draggingItem);
-      return next;
-    });
+    const draggingItemIndex = spots.findIndex((item) => item.id === draggingId);
+    const draggingItem = spots[draggingItemIndex];
+
+    const updatedSpots = [...spots];
+    updatedSpots.splice(draggingItemIndex, 1); // 기존 위치에서 제거
+    updatedSpots.splice(targetIndex, 0, draggingItem); // 새로운 위치에 삽입
+
+    updatePlans(updatedSpots); // 상태 업데이트
   };
 
-  const handleDragEnd = (e: DragEvent) => {
-    if (e.dataTransfer?.dropEffect === "none") setList(cacheList.current);
+  /** 마우스 이벤트 핸들러 */
+  const handleMouseDown = (id: string) => () => {
+    setDraggingId(id);
+  };
+
+  const handleDelete = (id: string) => {
+    const updatedSpots = spots.filter((spot) => spot.id !== id);
+    const updatedPlans = plans.map((plan) =>
+      plan.planOrder === planOrder ? { ...plan, spots: updatedSpots } : plan
+    );
+    addPlans(updatedPlans);
+  };
+
+  const handleDragStart = (e: DragEvent) => {
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = "move";
+    }
+  };
+
+  const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
+    if (!draggingId) return;
+    moveItem(e.clientY);
+  };
+
+  const handleDragEnd = () => {
     setDraggingId(null);
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (draggingId === null || touchStartY.current === null) return;
-    console.log(123);
-    const touchY = e.touches[0].clientY;
-    const deltaY = touchY - touchStartY.current;
+  /** 터치 이벤트 핸들러 */
+  const handleTouchStart = (id: string) => (e: React.TouchEvent) => {
+    setDraggingId(id);
+    touchStartY.current = e.touches[0].clientY; // 터치 시작 위치 저장
+  };
 
-    handleDragOver({
-      preventDefault: () => {},
-      target: e.target,
-      clientY: touchY,
-    } as unknown as DragEvent);
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!draggingId || touchStartY.current === null) return;
+
+    moveItem(e.touches[0].clientY); // 터치 위치를 기반으로 항목 이동 처리
 
     if (containerRef.current) {
-      containerRef.current.scrollTop += deltaY;
+      containerRef.current.scrollTop += e.touches[0].clientY - touchStartY.current; // 스크롤 처리
     }
 
-    touchStartY.current = touchY;
+    touchStartY.current = e.touches[0].clientY; // 현재 터치 위치 갱신
   };
 
   const handleTouchEnd = () => {
     setDraggingId(null);
     touchStartY.current = null;
   };
+
 
   return (
     <ul
@@ -177,10 +187,12 @@ const DnDList = ({ data }: { data: any[] }) => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {list.map((item, i) => (
+      {spots.map((item, i) => (
         <ForwardedDndItem
           {...item}
+          idx={i}
           key={item.id}
+          handleDelete={() => handleDelete(item.id)}
           isDragging={draggingId === item.id}
           handleMouseDown={handleMouseDown(item.id)}
           handleTouchStart={handleTouchStart(item.id)}

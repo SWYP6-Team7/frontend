@@ -1,10 +1,10 @@
 "use client";
-import Accordion from "@/components/Accordion";
 import DnDList from "@/components/DnDList";
-import SelectArrow from "@/components/icons/SelectArrow";
 import Spacing from "@/components/Spacing";
+import { createTripStore } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
 import React, { DragEvent, ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
 
 const LIST = [
@@ -13,29 +13,33 @@ const LIST = [
   { id: 2, title: "도쿄 프린스 호텔", description: "호텔 도쿄도" },
 ];
 
-const CreateScheduleItem = ({ title, idx }: { title: string; idx: number }) => {
-  const [isChecked, setIsChecked] = useState(true);
+const CreateScheduleItem = ({
+  title,
+  idx,
+  isOpen,
+  onToggle,
+}: {
+  title: string;
+  idx: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}) => {
   const [contentHeight, setContentHeight] = useState(0);
+  const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null); // 콘텐츠 참조 추가
-  const count = 4;
+  const { plans } = createTripStore();
+  const plan = plans.find((plan) => plan.planOrder === idx);
+  const count = plan?.spots?.length ?? 0;
   useEffect(() => {
     if (contentRef.current) {
       console.log(contentRef.current.scrollHeight, "scroll");
       setContentHeight(contentRef.current.scrollHeight + 32);
     }
-  }, [isChecked]);
-  console.log(isChecked);
-
+  }, [isOpen]);
   return (
     <Container>
       <List>
-        <input
-          id={title}
-          type="checkbox"
-          style={{ display: "none" }}
-          checked={isChecked}
-          onChange={() => setIsChecked(!isChecked)}
-        />
+        <input id={title} type="checkbox" style={{ display: "none" }} checked={isOpen} onChange={onToggle} />
         <Tab htmlFor={title}>
           <TitleContainer>
             <Title>Day {idx + 1}</Title>
@@ -43,7 +47,7 @@ const CreateScheduleItem = ({ title, idx }: { title: string; idx: number }) => {
           </TitleContainer>
           <RightContainer>
             {count > 0 && <Count>{count}</Count>}
-            <IconContainer isChecked={isChecked}>
+            <IconContainer isChecked={isOpen}>
               <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 1L7 7L13 1" stroke="#848484" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -52,12 +56,12 @@ const CreateScheduleItem = ({ title, idx }: { title: string; idx: number }) => {
         </Tab>
         <Content
           ref={contentRef} // ref 추가
-          isChecked={isChecked}
+          isChecked={isOpen}
           contentHeight={contentHeight} // 동적으로 계산된 높이 전달
         >
-          <DnDList data={LIST} />
+          {plan?.planOrder !== undefined && <DnDList planOrder={plan!.planOrder} />}
           <Spacing size={16} />
-          <Button>+장소추가</Button>
+          <Button onClick={() => router.push(`/search/place/${idx}`)}>+장소추가</Button>
         </Content>
       </List>
     </Container>
