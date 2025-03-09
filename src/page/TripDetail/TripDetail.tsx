@@ -16,7 +16,7 @@ import { tripDetailStore } from "@/store/client/tripDetailStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CompanionsView from "./CompanionsView";
 import { daysAgo, daysLeft } from "@/utils/time";
 import useTripDetail from "@/hooks/tripDetail/useTripDetail";
@@ -30,6 +30,12 @@ import useViewTransition from "@/hooks/useViewTransition";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { myPageStore } from "@/store/client/myPageStore";
 import { useBackPathStore } from "@/store/client/backPathStore";
+import TopModal from "@/components/TopModal";
+import MapContainer from "../CreateTrip/CreateTripDetail/MapContainer";
+import CalendarWrapper from "../CreateTrip/CreateTripDetail/CalendarWrapper";
+import InfoWrapper from "../CreateTrip/CreateTripDetail/InfoWrapper";
+import { getDatesArray } from "../CreateTrip/CreateTripDetail/CreateTripDetail";
+import TagListWrapper from "../CreateTrip/CreateTripDetail/TagListWrapper";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -143,6 +149,10 @@ export default function TripDetail() {
 
   const navigateWithTransition = useViewTransition();
   const { year, month, day } = dueDate;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isMapFull, setIsMapFull] = useState(false);
+  const [openItemIndex, setOpenItemIndex] = useState(0);
+  const [topModalHeight, setTopModalHeight] = useState(0);
   const DAY = new Date(`${year}/${month}/${day}`);
   const dayOfWeek = WEEKDAY[DAY.getDay()];
   const [personViewClicked, setPersonViewClicked] = useState(false);
@@ -273,251 +283,190 @@ export default function TripDetail() {
         setModalOpen={setShowCancelModal}
       />
 
-      <TripDetailWrapper>
-        <PostWrapper>
-          <MainContent>
-            <BadgeContainer>
-              <PlaceBadge>
-                <PlaceIcon width={14} />
-                <div>{location}</div>
-              </PlaceBadge>
-              <Badge
-                isDueDate={false}
-                text={postStatus}
-                height="22px"
-                backgroundColor={palette.비강조4}
-                color={palette.비강조}
-                fontWeight="600"
-              />
-            </BadgeContainer>
-            <ProfileContainer>
-              {/* 프로필 */}
-              <RoundedImage src={profileUrl} size={40} />
-              <div style={{ marginLeft: "8px" }}>
-                <UserName>{userName}</UserName>
-                <div
-                  style={{
-                    fontWeight: "400",
-                    fontSize: "14px",
-                    lineHeight: "16.71px",
-                    color: palette.비강조,
-                  }}
-                >
-                  {daysAgo(createdAt)}
-                </div>
-              </div>
-            </ProfileContainer>
-            {/* 제목  */}
-            <Title>{title}</Title>
-            {/* 내용 */}
-            <Details>{details}</Details>
-            {/*태그   */}
-            <TagContainer>
-              {tags.map((tag, idx) => (
-                <Badge
-                  key={tag}
-                  isDueDate={false}
-                  text={tag}
-                  height="22px"
-                  backgroundColor={palette.비강조4}
-                  color={palette.비강조}
-                  fontWeight="500"
-                />
-              ))}
-            </TagContainer>
-          </MainContent>
-          <ViewsETC>
-            <div>신청 {enrollCount}</div>
-            <div style={{ margin: "0px 4px" }}> · </div>
-            <div>관심 {bookmarkCount}</div>
-            <div style={{ margin: "0px 4px" }}> · </div>
-            <div>조회수 {viewCount}</div>
-          </ViewsETC>
-        </PostWrapper>
-        <CommentWrapper onClick={commentClickHandler}>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img src="/images/createTripBtn.png" alt="" style={{ marginRight: "13px" }} />
-            <div
-              style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "14px",
-                marginRight: " 8px",
-              }}
-            >
-              멤버 댓글
-            </div>
-            {hostUserCheck && isCommentUpdated && <NewIcon />}
-          </div>
-          <div>
-            <ArrowIcon stroke={palette.비강조3} />
-          </div>
-        </CommentWrapper>
-        <DueDateWrapper>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginRight: "16px",
-            }}
-          >
-            <Calendar />
-            <ContentTitle>모집 마감일</ContentTitle>
-          </div>
-
-          {/* 뱃지 추가 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <DueDate>
-              {year}.{month}.{day}({dayOfWeek})
-            </DueDate>
-            <Badge
-              text="마감"
-              backgroundColor={palette.keycolorBG}
-              color={palette.keycolor}
-              daysLeft={dueDate ? daysLeft(`${year}-${month}-${day}`) : undefined}
-              isClose={!Boolean(daysLeft(`${year}-${month}-${day}`) > 0)}
-              isDueDate={Boolean(daysLeft(`${year}-${month}-${day}`) > 0)}
-            />
-          </div>
-        </DueDateWrapper>
-        <PersonWrapper onClick={companionsViewHandler}>
-          <div style={{ display: "flex" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginRight: "32px",
-              }}
-            >
-              <PersonIcon width={20} height={20} stroke={palette.keycolor} />
-              <ContentTitle>모집 인원</ContentTitle>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <PersonStatus>
-                {nowPerson}/{maxPerson}
-              </PersonStatus>
-              <Badge
-                isDueDate={false}
-                text={genderType}
-                backgroundColor={palette.검색창}
-                color={palette.keycolor}
-                fontWeight="600"
-              />
-            </div>
-          </div>
-          <ArrowIcon />
-        </PersonWrapper>
-        <Spacing size={120} />
-        <ButtonContainer backgroundColor={palette.검색창}>
-          <ApplyListButton
-            hostUserCheck={hostUserCheck}
-            nowEnrollmentCount={nowEnrollmentCount}
-            bookmarkOnClick={bookmarkClickHandler}
-            bookmarked={bookmarked}
-            onClick={buttonClickHandler}
-            disabled={
-              (hostUserCheck && nowEnrollmentCount === 0) ||
-              (!hostUserCheck && !verifyGenderType(genderType, gender)) ||
-              isAccepted ||
-              isClosed
-            }
-            addStyle={{
-              backgroundColor: isClosed
-                ? palette.비강조3
-                : !verifyGenderType(genderType, gender) || isAccepted
-                  ? palette.비강조3
-                  : hostUserCheck
-                    ? nowEnrollmentCount > 0
-                      ? palette.keycolor
-                      : palette.비강조3
-                    : alreadyApplied
-                      ? palette.비강조3
-                      : palette.keycolor,
-              color: isClosed
-                ? palette.비강조4
-                : !verifyGenderType(genderType, gender)
-                  ? palette.비강조
-                  : hostUserCheck
-                    ? nowEnrollmentCount > 0
-                      ? palette.비강조4
-                      : palette.비강조
-                    : alreadyApplied
-                      ? palette.비강조
-                      : palette.비강조4,
-            }}
-            text={
-              hostUserCheck
-                ? "참가 신청 목록"
-                : isAccepted
-                  ? "참가 중인 여행"
-                  : alreadyApplied
-                    ? "참가 신청 취소"
-                    : "참가 신청 하기"
-            }
-          ></ApplyListButton>
-        </ButtonContainer>
-        <CompanionsView isOpen={personViewClicked} setIsOpen={setPersonViewClicked} />
+      <TripDetailWrapper ref={containerRef}>
+        <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
+          <ModalContainer>
+            <PostWrapper>
+              <MainContent>
+                <BadgeContainer>
+                  <PlaceBadge>
+                    <PlaceIcon width={14} />
+                    <div>{location}</div>
+                  </PlaceBadge>
+                  <Badge
+                    isDueDate={false}
+                    text={postStatus}
+                    height="22px"
+                    backgroundColor={palette.비강조4}
+                    color={palette.비강조}
+                    fontWeight="600"
+                  />
+                </BadgeContainer>
+                <ProfileContainer>
+                  {/* 프로필 */}
+                  <RoundedImage src={profileUrl} size={40} />
+                  <div style={{ marginLeft: "8px" }}>
+                    <UserName>{userName}</UserName>
+                    <div
+                      style={{
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        lineHeight: "16.71px",
+                        color: palette.비강조,
+                      }}
+                    >
+                      {daysAgo(createdAt)}
+                    </div>
+                  </div>
+                </ProfileContainer>
+                {/* 제목  */}
+                <Title>{title}</Title>
+                {/* 내용 */}
+                <Details>{details}</Details>
+                {/*태그   */}
+                <TagContainer>
+                  {tags.map((tag, idx) => (
+                    <Badge
+                      key={tag}
+                      isDueDate={false}
+                      text={tag}
+                      height="22px"
+                      backgroundColor={palette.비강조4}
+                      color={palette.비강조}
+                      fontWeight="500"
+                    />
+                  ))}
+                </TagContainer>
+              </MainContent>
+              <ViewsETC>
+                <div>신청 {enrollCount}</div>
+                <div style={{ margin: "0px 4px" }}> · </div>
+                <div>관심 {bookmarkCount}</div>
+                <div style={{ margin: "0px 4px" }}> · </div>
+                <div>조회수 {viewCount}</div>
+              </ViewsETC>
+            </PostWrapper>
+            <Bar />
+            <CalendarWrapper />
+            <Bar />
+            <InfoWrapper />
+          </ModalContainer>
+        </TopModal>
+        <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
+          {/* <MapContainer
+            index={openItemIndex}
+            isMapFull={isMapFull}
+            lat={initGeometry?.lat || 37.57037778}
+            lng={initGeometry?.lng || 126.9816417}
+            zoom={locationName.mapType === "google" ? 11 : 9}
+          /> */}
+          <ScheduleContainer>
+            <ScheduleTitle>여행 일정</ScheduleTitle>
+            <ScheduleList>
+              {/* {date &&
+                getDatesArray(date.startDate, date.endDate).map((item, idx) => (
+                  // <CreateScheduleItem
+                  //   idx={idx}
+                  //   title={item}
+                  //   isOpen={openItemIndex === idx}
+                  //   onToggle={() => handleItemToggle(idx)}
+                  // />
+                  <></>
+                ))} */}
+            </ScheduleList>
+          </ScheduleContainer>
+        </BottomContainer>
       </TripDetailWrapper>
+
+      <Spacing size={120} />
+      <ButtonContainer backgroundColor={palette.검색창}>
+        <ApplyListButton
+          hostUserCheck={hostUserCheck}
+          nowEnrollmentCount={nowEnrollmentCount}
+          bookmarkOnClick={bookmarkClickHandler}
+          bookmarked={bookmarked}
+          onClick={buttonClickHandler}
+          disabled={
+            (hostUserCheck && nowEnrollmentCount === 0) ||
+            (!hostUserCheck && !verifyGenderType(genderType, gender)) ||
+            isAccepted ||
+            isClosed
+          }
+          addStyle={{
+            backgroundColor: isClosed
+              ? palette.비강조3
+              : !verifyGenderType(genderType, gender) || isAccepted
+                ? palette.비강조3
+                : hostUserCheck
+                  ? nowEnrollmentCount > 0
+                    ? palette.keycolor
+                    : palette.비강조3
+                  : alreadyApplied
+                    ? palette.비강조3
+                    : palette.keycolor,
+            color: isClosed
+              ? palette.비강조4
+              : !verifyGenderType(genderType, gender)
+                ? palette.비강조
+                : hostUserCheck
+                  ? nowEnrollmentCount > 0
+                    ? palette.비강조4
+                    : palette.비강조
+                  : alreadyApplied
+                    ? palette.비강조
+                    : palette.비강조4,
+          }}
+          text={
+            hostUserCheck
+              ? "참가 신청 목록"
+              : isAccepted
+                ? "참가 중인 여행"
+                : alreadyApplied
+                  ? "참가 신청 취소"
+                  : "참가 신청 하기"
+          }
+        ></ApplyListButton>
+      </ButtonContainer>
+      <CompanionsView isOpen={personViewClicked} setIsOpen={setPersonViewClicked} />
+
+      <CommentWrapper>
+        <IconContainer onClick={commentClickHandler}>
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M22 14.6667C22 15.315 21.7425 15.9367 21.284 16.3952C20.8256 16.8536 20.2039 17.1111 19.5556 17.1111H4.88889L0 22V2.44444C0 1.79614 0.257539 1.17438 0.715961 0.715961C1.17438 0.257539 1.79614 0 2.44444 0H19.5556C20.2039 0 20.8256 0.257539 21.284 0.715961C21.7425 1.17438 22 1.79614 22 2.44444V14.6667Z"
+              fill="#FEFEFE"
+            />
+          </svg>
+        </IconContainer>
+      </CommentWrapper>
     </>
   );
 }
-const AppliedPersonCircle = styled.div`
-  background-color: ${palette.BG};
-  color: ${palette.keycolor};
-  width: 16px;
-  height: 16px;
-  padding: 1px 5px 1px 4px;
-  gap: 10px;
-  border-radius: 20px;
-  opacity: 0px;
-  font-size: 12px;
-  font-weight: 600;
-  margin-left: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const PersonStatus = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 20px;
-  text-align: center;
-  color: ${palette.기본};
-  margin-right: 4px;
-`;
-const BtnContainer = styled.div<{ width: string }>`
-  width: 390px;
-  @media (max-width: 389px) {
-    width: ${(props) => props.width};
-  }
-  @media (max-width: 450px) {
-    width: ${(props) => props.width};
-  }
-  /* pointer-events: none; */
-  position: fixed;
-  /* top: 0; */
-  bottom: 4.7svh;
-  margin-left: -24px;
+
+const ModalContainer = styled.div`
   padding: 0 24px;
-  z-index: 10;
 `;
+
+const Bar = styled.div`
+  background-color: #e7e7e7;
+  width: 100%;
+  height: 1px;
+`;
+
+const BottomContainer = styled.div<{
+  topModalHeight: number;
+  isMapFull: boolean;
+}>`
+  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  min-height: 100svh;
+  transition: padding-top 0.3s ease-out;
+  overscroll-behavior: none;
+`;
+
 const BadgeContainer = styled.div`
   display: flex;
 `;
-const DueDate = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 20px;
-  text-align: center;
-  color: ${palette.기본};
-  margin-right: 8px;
-`;
+
 const ProfileContainer = styled.div`
   margin-top: 16px;
   display: flex;
@@ -539,15 +488,7 @@ const Details = styled.div`
   text-align: left;
   color: ${palette.기본};
 `;
-const ContentTitle = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 19.6px;
-  text-align: left;
-  color: ${palette.비강조};
-  max-width: 63px;
-  margin-left: 8px;
-`;
+
 const TagContainer = styled.div`
   margin-top: 32px;
   display: flex;
@@ -555,7 +496,7 @@ const TagContainer = styled.div`
   gap: 8px;
 `;
 const TripDetailWrapper = styled.div`
-  padding: 0px 24px;
+  position: relative;
   background-color: ${palette.검색창};
 `;
 const UserName = styled.div`
@@ -606,38 +547,53 @@ const PlaceBadge = styled.div`
   border-radius: 20px;
   opacity: 0px;
 `;
+
+const ScheduleContainer = styled.div`
+  margin-top: 24px;
+`;
+const ScheduleTitle = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+  line-height: 21px;
+`;
+
+const ScheduleList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 const CommentWrapper = styled.div`
-  cursor: pointer;
-  margin-top: 16px;
+  height: 100svh;
+  width: 100%;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  @media (min-width: 440px) {
+    width: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  z-index: 1001;
+`;
+
+const IconContainer = styled.button<{ rotated: boolean; right: string }>`
+  position: absolute;
+  pointer-events: auto;
+  right: 24px;
+  bottom: 124px;
+  width: 70px;
   height: 70px;
+  border-radius: 50%;
   display: flex;
-  padding: 24px 0px 24px 16px;
-  gap: 0px;
-  border-radius: 20px;
-  border-bottom: 1px solid ${palette.비강조5};
-  justify-content: space-between;
-  opacity: 0px;
+  justify-content: center;
   align-items: center;
-  background-color: ${palette.BG};
-`;
-const DueDateWrapper = styled.div`
-  margin: 16px 0px;
-  display: flex;
-  background-color: ${palette.비강조5};
-  height: 67px;
-  top: 86px;
-  padding: 24px 16px 21px 16px;
-  border-radius: 20px;
-  opacity: 0px;
-  align-items: center;
-`;
-const PersonWrapper = styled.div`
-  display: flex;
-  background-color: ${palette.비강조5};
-  height: 67px;
-  padding: 24px 0px 21px 16px;
-  justify-content: space-between;
-  border-radius: 20px;
-  opacity: 0px;
-  align-items: center;
+  color: white;
+  background-color: ${palette.기본};
+  z-index: 1003;
+  font-size: 32px;
+  @media (max-width: 390px) {
+    right: ${(props) => props.right};
+  }
 `;
