@@ -257,66 +257,65 @@ export default function TripDetail() {
       <TripDetailWrapper ref={containerRef}>
         <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
           <ModalContainer>
-            <PostWrapper>
-              <MainContent>
-                <BadgeContainer>
-                  <PlaceBadge>
-                    <PlaceIcon width={14} />
-                    <div>{location}</div>
-                  </PlaceBadge>
+            <MainContent>
+              <BadgeContainer>
+                <PlaceBadge>
+                  <PlaceIcon width={14} />
+                  <div>{location}</div>
+                </PlaceBadge>
+                <Badge
+                  isDueDate={false}
+                  text={postStatus}
+                  height="22px"
+                  backgroundColor={palette.비강조4}
+                  color={palette.비강조}
+                  fontWeight="600"
+                />
+              </BadgeContainer>
+              <ProfileContainer>
+                {/* 프로필 */}
+                <RoundedImage src={profileUrl} size={40} />
+                <div style={{ marginLeft: "8px" }}>
+                  <UserName>{userName}</UserName>
+                  <div
+                    style={{
+                      fontWeight: "400",
+                      fontSize: "14px",
+                      lineHeight: "16.71px",
+                      color: palette.비강조,
+                    }}
+                  >
+                    {daysAgo(createdAt)}
+                  </div>
+                </div>
+              </ProfileContainer>
+              {/* 제목  */}
+              <Title>{title}</Title>
+              {/* 내용 */}
+              <Details>{details}</Details>
+              {/*태그   */}
+              <TagContainer>
+                {tags.map((tag, idx) => (
                   <Badge
+                    key={tag}
                     isDueDate={false}
-                    text={postStatus}
+                    text={tag}
                     height="22px"
                     backgroundColor={palette.비강조4}
                     color={palette.비강조}
-                    fontWeight="600"
+                    fontWeight="500"
                   />
-                </BadgeContainer>
-                <ProfileContainer>
-                  {/* 프로필 */}
-                  <RoundedImage src={profileUrl} size={40} />
-                  <div style={{ marginLeft: "8px" }}>
-                    <UserName>{userName}</UserName>
-                    <div
-                      style={{
-                        fontWeight: "400",
-                        fontSize: "14px",
-                        lineHeight: "16.71px",
-                        color: palette.비강조,
-                      }}
-                    >
-                      {daysAgo(createdAt)}
-                    </div>
-                  </div>
-                </ProfileContainer>
-                {/* 제목  */}
-                <Title>{title}</Title>
-                {/* 내용 */}
-                <Details>{details}</Details>
-                {/*태그   */}
-                <TagContainer>
-                  {tags.map((tag, idx) => (
-                    <Badge
-                      key={tag}
-                      isDueDate={false}
-                      text={tag}
-                      height="22px"
-                      backgroundColor={palette.비강조4}
-                      color={palette.비강조}
-                      fontWeight="500"
-                    />
-                  ))}
-                </TagContainer>
-              </MainContent>
-              <ViewsETC>
-                <div>신청 {enrollCount}</div>
-                <div style={{ margin: "0px 4px" }}> · </div>
-                <div>관심 {bookmarkCount}</div>
-                <div style={{ margin: "0px 4px" }}> · </div>
-                <div>조회수 {viewCount}</div>
-              </ViewsETC>
-            </PostWrapper>
+                ))}
+              </TagContainer>
+            </MainContent>
+            <ViewsETC>
+              <div>신청 {enrollCount}</div>
+              <div style={{ margin: "0px 4px" }}> · </div>
+              <div>관심 {bookmarkCount}</div>
+              <div style={{ margin: "0px 4px" }}> · </div>
+              <div>조회수 {viewCount}</div>
+            </ViewsETC>
+
             <Bar />
             <CalendarWrapper />
             <Bar />
@@ -478,16 +477,7 @@ const UserName = styled.div`
   color: ${palette.기본};
   margin-bottom: 4px;
 `;
-const PostWrapper = styled.div`
-  background-color: ${palette.BG};
-  padding: 24px;
 
-  top: 100px;
-  left: 24px;
-  gap: 32px;
-  border-radius: 20px;
-  box-shadow: 0px 2px 6px 3px rgba(170, 170, 170, 0.18);
-`;
 const MainContent = styled.div``;
 
 const ViewsETC = styled.div`
