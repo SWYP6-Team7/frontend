@@ -82,7 +82,7 @@ const CreateTripDetail = () => {
     endDate: date!.endDate,
     periodType,
     tags,
-    plans,
+    plans: plans.map((plan) => ({ ...plan, planOrder: plan.planOrder + 1 })),
     locationName: locationName.locationName,
   };
   const { createTripMutate } = useCreateTrip(travelData, accessToken as string); // 여행 생성 api 요청.
@@ -102,6 +102,7 @@ const CreateTripDetail = () => {
     ) {
       addCompletionStatus(false);
     }
+
     createTripMutate(undefined, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
