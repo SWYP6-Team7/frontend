@@ -92,12 +92,12 @@ export default function TripDetailHeader() {
         loginMemberRelatedInfo,
       } = tripInfos;
 
-      const [year, month, day] = dueDate.split("-").map((v: string) => +v);
-      const DUEDATE = {
-        year,
-        month,
-        day,
-      };
+      // const [year, month, day] = dueDate.split("-").map((v: string) => +v);
+      // const DUEDATE = {
+      //   year,
+      //   month,
+      //   day,
+      // };
       if (!loginMemberRelatedInfo) {
         addHostUserCheck(false);
         addEnrollmentNumber(null);
@@ -119,7 +119,7 @@ export default function TripDetailHeader() {
       addDetails(details);
       addMaxPerson(maxPerson);
       addGenderType(genderType);
-      addDueDate(DUEDATE);
+      // addDueDate(DUEDATE);
       addPeriodType(periodType);
       addTags(tags);
       addPostStatus(postStatus);
