@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
-import ThirdStepIcon from "@/components/icons/ThirdStepIcon";
-import { palette } from "@/styles/palette";
 import Button from "@/components/designSystem/Buttons/Button";
 import { useRouter } from "next/navigation";
 
@@ -10,7 +8,6 @@ import { createTripStore } from "@/store/client/createTripStore";
 import { useCreateTrip } from "@/hooks/createTrip/useCreateTrip";
 import { authStore } from "@/store/client/authStore";
 import ButtonContainer from "@/components/ButtonContainer";
-import BottomModal from "@/components/BottomModal";
 import TopModal from "@/components/TopModal";
 import RegionWrapper from "./RegionWrapper";
 import InputField from "@/components/designSystem/input/InputField";
@@ -29,7 +26,7 @@ import TripToast from "@/components/designSystem/toastMessage/tripToast";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
-function getDatesArray(startDate, endDate) {
+export function getDatesArray(startDate, endDate) {
   const dates: string[] = [];
   let currentDate = dayjs(startDate);
   const lastDate = dayjs(endDate);
@@ -129,7 +126,7 @@ const CreateTripDetail = () => {
   return (
     <>
       <CreateTripDetailWrapper>
-        <CreateTripDetailContainer ref={containerRef} id="test">
+        <CreateTripDetailContainer ref={containerRef}>
           <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
             <ModalContainer>
               <RegionWrapper />

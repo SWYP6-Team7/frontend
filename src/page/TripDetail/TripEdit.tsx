@@ -43,7 +43,21 @@ export function getDatesArray(startDate, endDate) {
   return dates;
 }
 
-const CreateTripDetail = () => {
+const TripEdit = () => {
+  // const {
+  //   locationName: initLocationName,
+  //   title: initTitle,
+  //   details,
+
+  //   tags,
+  //   initGeometry,
+  //   date,
+  //   plans,
+  //   genderType,
+  //   maxPerson,
+  //   periodType,
+  // } = tripDetailStore();
+
   const {
     locationName,
     title,
@@ -218,7 +232,7 @@ const CreateTripDetail = () => {
   );
 };
 
-export default CreateTripDetail;
+export default TripEdit;
 
 const CreateTripDetailWrapper = styled.div`
   position: relative;
