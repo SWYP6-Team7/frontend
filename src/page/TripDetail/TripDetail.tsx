@@ -103,7 +103,8 @@ export default function TripDetail() {
   if (isNaN(parseInt(travelNumber))) {
     router.replace("/");
   }
-  const isClosed = !Boolean(daysLeft(`${dueDate.year}-${dueDate.month}-${dueDate.day}`) > 0) || maxPerson === nowPerson;
+  // const isClosed = !Boolean(daysLeft(`${dueDate.year}-${dueDate.month}-${dueDate.day}`) > 0) || maxPerson === nowPerson;
+  const isClosed = false;
   const { cancel, cancelMutation } = useEnrollment(parseInt(travelNumber));
   const { tripEnrollmentCount } = useTripDetail(parseInt(travelNumber));
   const nowEnrollmentCount = tripEnrollmentCount.data as any;
@@ -145,16 +146,14 @@ export default function TripDetail() {
     });
   }, [allCompanions]);
 
-  const isEditing = false;
-
   const navigateWithTransition = useViewTransition();
-  const { year, month, day } = dueDate;
+  // const { year, month, day } = dueDate;
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMapFull, setIsMapFull] = useState(false);
   const [openItemIndex, setOpenItemIndex] = useState(0);
   const [topModalHeight, setTopModalHeight] = useState(0);
-  const DAY = new Date(`${year}/${month}/${day}`);
-  const dayOfWeek = WEEKDAY[DAY.getDay()];
+  // const DAY = new Date(`${year}/${month}/${day}`);
+  //const dayOfWeek = WEEKDAY[DAY.getDay()];
   const [personViewClicked, setPersonViewClicked] = useState(false);
   const pathname = usePathname();
   const buttonClickHandler = () => {
