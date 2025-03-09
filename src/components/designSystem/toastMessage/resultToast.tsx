@@ -20,6 +20,7 @@ export default function ResultToast({ bottom = "20px", isShow, setIsShow, height
       }, 1500);
     }
   }, [isShow]);
+  if (!document || !document.getElementById("result-toast")) return null;
   return createPortal(
     <Container isShow={isShow} bottom={bottom}>
       <ToastMsg height={height}>

@@ -188,34 +188,6 @@ export default function TripDetail() {
     }
   }, [cancelMutation.isSuccess]);
 
-  const companionsViewHandler = () => {
-    setPersonViewClicked(true);
-  };
-  function timeUntilDate(year: number, month: number, day: number): number {
-    const today = new Date(); // 오늘 날짜
-    const targetDate = new Date(year, month - 1, day); // 목표 날짜 (month는 0부터 시작하므로 -1)
-
-    // 날짜 차이 계산
-    const timeDiff = targetDate.getTime() - today.getTime(); // 밀리초 단위로 차이 계산
-    // 남은 일 수 계산
-    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-    return daysLeft;
-  }
-  // 댓글 새로 업데이트 여부 표시
-
-  // const {
-  //   commentList: { isLoading, data, error }
-  // } = useComment('travel', Number(travelNumber))
-  // // console.log(data)
-  // // useEffect(() => {
-  // //   if (data && data.length > 0) {
-  // //     if (data.length > commentLength) {
-  // //       setIsCommentUpdated(true)
-  // //     }
-  // //   }
-  // // }, [data])
-
   const commentClickHandler = () => {
     if (isGuestUser()) {
       // 로그인을 하지 않은 게스트 유저.
