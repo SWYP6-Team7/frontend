@@ -421,7 +421,7 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  padding-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
@@ -460,8 +460,15 @@ const TagContainer = styled.div`
   gap: 8px;
 `;
 const TripDetailWrapper = styled.div`
+  padding: 0px 24px;
+  overflow-y: auto;
   position: relative;
-  background-color: ${palette.검색창};
+  height: calc(100svh - 116px);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  overscroll-behavior: none;
+  padding-bottom: 104px;
 `;
 const UserName = styled.div`
   font-size: 16px;
