@@ -90,7 +90,7 @@ const RegionWrapper = ({ location, isDetail = false }: { location?: string; isDe
         });
       });
     }
-  }, [locationNameStr]);
+  }, [locationNameStr, locationName.mapType]);
 
   if (isDetail) {
     return (
