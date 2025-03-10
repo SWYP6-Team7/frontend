@@ -4,12 +4,16 @@ import { create } from "zustand";
 
 type Gender = "F" | "M" | "";
 export type SpotType = {
-  id: string;
-    name: string; latitude: number; longitude: number; region: string; category: string
-  };
+  id?: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  region: string;
+  category: string;
+};
 interface CreateTripState {
-  locationName: {locationName: string, mapType: "google" | "kakao"};
-  addLocationName: ({locationName, mapType}:{locationName: string , mapType: "google" | "kakao"}) => void;
+  locationName: { locationName: string; mapType: "google" | "kakao" };
+  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
   title: string;
   addTitle: (title: string) => void;
   details: string;
@@ -21,25 +25,19 @@ interface CreateTripState {
   dueDate: string;
   addDueDate: (dueDate: string) => void;
   date: { startDate: string; endDate: string } | null;
-  addDate: ({
-    startDate,
-    endDate,
-  }: {
-    startDate: string;
-    endDate: string;
-  }) => void;
+  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
   periodType: string;
   addPeriodType: (periodType: string) => void;
   tags: string[];
   addTags: (tags: string[]) => void;
   initGeometry: { lng: number; lat: number } | null;
-  addInitGeometry: (obj: {lat: number; lng: number} | null )  => void;
+  addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   completionStatus: boolean;
   plans: {
-  planOrder: number,
-  spots: SpotType[]}[],
-  addPlans: (plans:  {planOrder: number,
-    spots: SpotType[]}[]) => void;
+    planOrder: number;
+    spots: SpotType[];
+  }[];
+  addPlans: (plans: { planOrder: number; spots: SpotType[] }[]) => void;
   addCompletionStatus: (completionStatus: boolean) => void;
   resetCreateTripDetail: () => void;
 }
@@ -49,7 +47,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
   addTitle: (title) => {
     set({ title });
   },
-  locationName: {locationName: "", mapType: "google"},
+  locationName: { locationName: "", mapType: "google" },
   addLocationName: (locationName) => {
     set({ locationName });
   },
@@ -87,7 +85,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
   },
   plans: [],
   addPlans: (plans) => {
-    set({plans})
+    set({ plans });
   },
   tags: [],
   addTags: (tags) => {
@@ -103,7 +101,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
       title: "",
       locationName: {
         locationName: "",
-        mapType: 'google'
+        mapType: "google",
       },
       details: "",
       maxPerson: 1,

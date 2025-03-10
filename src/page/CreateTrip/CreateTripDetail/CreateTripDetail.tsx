@@ -71,6 +71,17 @@ const CreateTripDetail = () => {
   const handleItemToggle = (index) => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
+  const newPlan = plans.map((plan) => {
+    return {
+      ...plan,
+      planOrder: plan.planOrder + 1,
+      spots: plan.spots.map((spot) => {
+        const { id, ...newSpots } = spot;
+        return newSpots;
+      }),
+    };
+  });
+
   const travelData = {
     title,
     details,
@@ -79,9 +90,9 @@ const CreateTripDetail = () => {
     startDate: date!.startDate,
     endDate: date!.endDate,
     periodType: getDateRangeCategory(date!.startDate, date!.endDate),
-    tags,
-    plans: plans.map((plan) => ({ ...plan, planOrder: plan.planOrder + 1 })),
     locationName: locationName.locationName,
+    tags,
+    plans: newPlan,
   };
   const { createTripMutate } = useCreateTrip(travelData, accessToken as string); // 여행 생성 api 요청.
 

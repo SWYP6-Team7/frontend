@@ -5,11 +5,9 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { DragEvent, ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
 
-
-
 const DndItem = (
   {
- idx,
+    idx,
     name,
     region,
     id,
@@ -18,7 +16,7 @@ const DndItem = (
     handleMouseDown,
     handleTouchStart,
     handleDragStart,
-    handleDelete
+    handleDelete,
   }: SpotType & {
     idx: number;
     isDragging: boolean;
@@ -29,7 +27,7 @@ const DndItem = (
   },
   ref: ForwardedRef<HTMLLIElement>
 ) => {
-  console.log(idx, name, region)
+  console.log(idx, name, region);
   return (
     <Item
       data-id={id}
@@ -44,7 +42,9 @@ const DndItem = (
         <Index>{idx + 1}</Index>
         <TextContainer>
           <Title>{name}</Title>
-          <Description>{category} {region}</Description>
+          <Description>
+            {category} {region}
+          </Description>
         </TextContainer>
       </LeftContainer>
       <RightContainer>
@@ -75,13 +75,13 @@ const DndItem = (
 
 const ForwardedDndItem = forwardRef(DndItem);
 
-const DnDList = ({planOrder}: {planOrder: number}) => {
+const DnDList = ({ planOrder }: { planOrder: number }) => {
   const { plans, addPlans } = createTripStore(); // Zustand에서 상태와 액션 가져오기
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
   const containerRef = useRef<HTMLUListElement | null>(null);
   const touchStartY = useRef<number | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
-  console.log(plans)
+  console.log(plans);
   // 현재 planOrder에 해당하는 spots 가져오기
   const currentPlan = plans.find((plan) => plan.planOrder === planOrder);
   if (!currentPlan) return null; // 현재 planOrder에 해당하는 계획이 없으면 렌더링하지 않음
@@ -90,9 +90,7 @@ const DnDList = ({planOrder}: {planOrder: number}) => {
 
   // 드래그 종료 후 Zustand 상태 업데이트
   const updatePlans = (newSpots: SpotType[]) => {
-    const updatedPlans = plans.map((plan) =>
-      plan.planOrder === planOrder ? { ...plan, spots: newSpots } : plan
-    );
+    const updatedPlans = plans.map((plan) => (plan.planOrder === planOrder ? { ...plan, spots: newSpots } : plan));
     addPlans(updatedPlans); // Zustand 상태 업데이트
   };
 
@@ -133,9 +131,7 @@ const DnDList = ({planOrder}: {planOrder: number}) => {
 
   const handleDelete = (id: string) => {
     const updatedSpots = spots.filter((spot) => spot.id !== id);
-    const updatedPlans = plans.map((plan) =>
-      plan.planOrder === planOrder ? { ...plan, spots: updatedSpots } : plan
-    );
+    const updatedPlans = plans.map((plan) => (plan.planOrder === planOrder ? { ...plan, spots: updatedSpots } : plan));
     addPlans(updatedPlans);
   };
 
@@ -178,7 +174,6 @@ const DnDList = ({planOrder}: {planOrder: number}) => {
     touchStartY.current = null;
   };
 
-
   return (
     <ul
       ref={containerRef}
@@ -192,10 +187,10 @@ const DnDList = ({planOrder}: {planOrder: number}) => {
           {...item}
           idx={i}
           key={item.id}
-          handleDelete={() => handleDelete(item.id)}
-          isDragging={draggingId === item.id}
-          handleMouseDown={handleMouseDown(item.id)}
-          handleTouchStart={handleTouchStart(item.id)}
+          handleDelete={() => handleDelete(item!.id as string)}
+          isDragging={draggingId === (item!.id as string)}
+          handleMouseDown={handleMouseDown(item!.id as string)}
+          handleTouchStart={handleTouchStart(item!.id as string)}
           handleDragStart={handleDragStart}
           ref={(r) => {
             itemsRef.current[i] = r;
