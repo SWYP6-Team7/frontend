@@ -270,7 +270,6 @@ export default function TripDetail() {
         <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
           <ModalContainer>
             <MainContent>
-              <Spacing size={8} />
               <ProfileContainer>
                 {/* 프로필 */}
                 <RoundedImage src={profileUrl} size={40} />
@@ -489,7 +488,7 @@ const BadgeContainer = styled.div`
 `;
 
 const ProfileContainer = styled.div`
-  margin-top: 16px;
+  margin-top: 8px;
   display: flex;
   align-items: center;
 `;

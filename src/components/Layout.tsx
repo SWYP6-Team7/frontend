@@ -140,11 +140,16 @@ const Body = styled.div<{ pathname: string | null }>`
     width: 390px;
     overflow-x: hidden;
   }
-  &::-webkit-scrollbar {
+
+  &:-webkit-scrollbar {
+    display: none;
+  }
+
+  /* &::-webkit-scrollbar {
     // scrollbar 자체의 설정
     // 너비를 작게 설정
     width: 3px;
-  }
+  } */
   overscroll-behavior: none;
   &::-webkit-scrollbar-track {
     // scrollbar의 배경부분 설정
