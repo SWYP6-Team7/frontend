@@ -10,12 +10,15 @@ import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-m
 import { createTripStore } from "@/store/client/createTripStore";
 import { postTranslate } from "@/api/translation";
 import SearchItem from "./SearchItem";
+import { palette } from "@/styles/palette";
+import { useRouter } from "next/navigation";
 
 const SearchPlace = () => {
   const [keyword, setKeyword] = useState("");
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const { locationName } = createTripStore();
   const [ref, inView] = useInView();
+  const router = useRouter();
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const map = useMap();
   useEffect(() => {
@@ -165,50 +168,67 @@ const SearchPlace = () => {
   };
   console.log("sug", suggestions);
   return (
-    <APIProvider
-      apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}
-      onLoad={() => console.log("Maps API has loaded.")}
-    >
-      <Map
-        style={{ height: 0, width: 0 }}
-        defaultZoom={13}
-        mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
-        disableDefaultUI
-        defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
-      />
-      <Container>
-        <InputField
-          value={keyword}
-          onChange={changeKeyword}
-          onKeyDown={handleKeyDown}
-          placeholder="검색어를 입력해주세요"
-          handleRemoveValue={handleRemoveValue}
-        />
-        <Spacing size={16} />
-        <CountContainer>
-          총&nbsp;
-          {/* <Count>{data?.pages[0].page.totalElements ?? 0}건</Count> */}
-          <Count>{suggestions.length}건</Count>
-        </CountContainer>
-        <Spacing size={15}></Spacing>
-        <Bar />
-        <>
-          {suggestions.map((suggestion, index) => (
-            <SearchItem
-              key={suggestion.placeId}
-              id={suggestion.placeId}
-              title={suggestion.place}
-              type={suggestion.type}
-              lat={suggestion.lat}
-              lng={suggestion.lng}
-              location={suggestion.region}
+    <div>
+      <HeaderContainer>
+        <IconContainer onClick={() => router.back()}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M17.7782 2.22202L2.22183 17.7784M17.7782 17.7784L2.22183 2.22202"
+              stroke="#343434"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
-          ))}
+          </svg>
+        </IconContainer>
+        <HeaderTitle>장소추가</HeaderTitle>
+        <IconContainer></IconContainer>
+      </HeaderContainer>
+      <APIProvider
+        apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}
+        onLoad={() => console.log("Maps API has loaded.")}
+      >
+        <Map
+          style={{ height: 0, width: 0 }}
+          defaultZoom={13}
+          mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
+          disableDefaultUI
+          defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+        />
+        <Container>
+          <InputField
+            value={keyword}
+            onChange={changeKeyword}
+            onKeyDown={handleKeyDown}
+            placeholder="검색어를 입력해주세요"
+            handleRemoveValue={handleRemoveValue}
+          />
+          <Spacing size={16} />
+          <CountContainer>
+            총&nbsp;
+            {/* <Count>{data?.pages[0].page.totalElements ?? 0}건</Count> */}
+            <Count>{suggestions.length}건</Count>
+          </CountContainer>
+          <Spacing size={15}></Spacing>
+          <Bar />
+          <>
+            {suggestions.map((suggestion, index) => (
+              <SearchItem
+                key={suggestion.placeId}
+                id={suggestion.placeId}
+                title={suggestion.place}
+                type={suggestion.type}
+                lat={suggestion.lat}
+                lng={suggestion.lng}
+                location={suggestion.region}
+              />
+            ))}
 
-          <div ref={ref} style={{ height: 80 }} />
-        </>
-      </Container>
-    </APIProvider>
+            <div ref={ref} style={{ height: 80 }} />
+          </>
+        </Container>
+      </APIProvider>
+    </div>
   );
 };
 
@@ -250,6 +270,35 @@ const Bar = styled.div`
   background-color: #e7e7e7;
   width: 100%;
   height: 1px;
+`;
+
+const HeaderContainer = styled.header`
+  display: flex;
+  padding: 52px 24px 16px 24px;
+  height: 116px;
+  align-items: center;
+
+  position: sticky;
+  top: 0px;
+  background-color: ${palette.BG};
+  z-index: 1000;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const HeaderTitle = styled.div`
+  font-size: 22px;
+  color: ${palette.기본};
+  line-height: 26px;
+  font-weight: 600;
+`;
+
+const IconContainer = styled.div`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default SearchPlace;

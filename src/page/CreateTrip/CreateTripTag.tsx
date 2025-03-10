@@ -18,9 +18,11 @@ const CreateTripTag = () => {
   const [taggedArray, setTaggedArray] = useState<string[]>(tags);
   const navigateWithTransition = useViewTransition();
 
-  const clickTag = (tag: string) => {
-    const newArray = taggedArray.includes(tag) ? taggedArray.filter((v) => v !== tag) : [...taggedArray, tag];
-    addTags(newArray.map((tag) => tag.slice(2)));
+  const clickTag = (index: number) => {
+    const newArray = taggedArray.includes(TAG_LIST.value[index])
+      ? taggedArray.filter((v) => v !== TAG_LIST.value[index])
+      : [...taggedArray, TAG_LIST.value[index]];
+    addTags(newArray);
     setTaggedArray(newArray);
   };
   const handleNext = () => {

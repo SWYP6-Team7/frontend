@@ -15,6 +15,7 @@ import Splash from "@/page/Splash";
 import { splashOnStore } from "@/store/client/splashOnOffStore";
 import { usePathname } from "next/navigation";
 import { APIProvider } from "@vis.gl/react-google-maps";
+import { useHeaderNavigation } from "@/hooks/useHeaderNavigation";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { userPostRefreshToken } = useAuth();
@@ -29,6 +30,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
   const isCommunityDetail = pathname?.startsWith("/community/detail");
+  const { ROUTES, checkRoute } = useHeaderNavigation();
 
   const myPageData: ImyPage = data as any;
   const profileImg: IProfileImg = profileImage as IProfileImg;
@@ -101,7 +103,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             pathname !== "/registerDone" &&
             pathname !== "/login" &&
             pathname !== "/trip/list" &&
-            pathname !== "/community" && <Header />}
+            pathname !== "/community" &&
+            !checkRoute.startsWith(ROUTES.SEARCH.PLACE) && <Header />}
           {children}
           {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
           <Outlet />

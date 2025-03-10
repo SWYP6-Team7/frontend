@@ -20,6 +20,7 @@ const ROUTES = {
   SEARCH: {
     TRAVEL: "/search/travel",
     COMMUNITY: "/search/community",
+    PLACE: "/search/place",
   },
   TRIP: {
     DETAIL: "/trip/detail",

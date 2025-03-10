@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import TagList from "../component/TagList";
 import { createTripStore } from "@/store/client/createTripStore";
 import Spacing from "@/components/Spacing";
+import { TAG_LIST } from "@/constants/tags";
 
 interface TagListWrapperProps {
   taggedArray: string[];
@@ -19,10 +20,11 @@ const TagListWrapper = ({ taggedArray, type }: TagListWrapperProps) => {
   const [showModal, setShowModal] = useState(false);
   const { tags, addTags } = createTripStore();
   const [tempTaggedArray, setTampTaggedArray] = useState(taggedArray);
-  const clickTag = (tag: string) => {
-    const newArray = tempTaggedArray.includes(tag)
-      ? tempTaggedArray.filter((v) => v !== tag)
-      : [...tempTaggedArray, tag];
+  const clickTag = (index: number) => {
+    const newArray = taggedArray.includes(TAG_LIST.value[index])
+      ? taggedArray.filter((v) => v !== TAG_LIST.value[index])
+      : [...taggedArray, TAG_LIST.value[index]];
+    addTags(newArray);
     setTampTaggedArray(newArray);
   };
   const handleCloseModal = () => {

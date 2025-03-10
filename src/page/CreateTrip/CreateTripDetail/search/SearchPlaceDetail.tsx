@@ -11,7 +11,7 @@ import styled from "@emotion/styled";
 import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 const SearchPlaceDetail = () => {
   const { placeId, planOrder } = useParams();
   const map = useMap();
@@ -23,10 +23,10 @@ const SearchPlaceDetail = () => {
     type: string;
     openingHours: string;
   }>();
-  const router = useRouter()
+  const router = useRouter();
   const placesLib = useMapsLibrary("places");
   const [isClient, setIsClient] = useState(false);
-  const {locationName, plans, addPlans} = createTripStore()
+  const { locationName, plans, addPlans } = createTripStore();
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -69,81 +69,93 @@ const SearchPlaceDetail = () => {
       }
     }
 
-    if(locationName.mapType === 'google') {
+    if (locationName.mapType === "google") {
       fetchPlacePredictions();
-    }else {
-const script: HTMLScriptElement = document.createElement("script");
-    script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
-    document.head.appendChild(script);
+    } else {
+      const script: HTMLScriptElement = document.createElement("script");
+      script.async = true;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
+      document.head.appendChild(script);
 
-    script.addEventListener("load", () => {
-      window.kakao.maps.load(() => {
-        function placesSearchCB(data, status, pagination) {
-          if (status === window.kakao.maps.services.Status.OK) {
-        
-            console.log(data[0])
-            setPlaceDetails({
-              name: data[0].place_name,
-              address: data[0].road_address_name,
-              region: data[0].address_name.split(" ")[0],
-              type: data[0].category_group_name,
-              openingHours:"",
-              location: { lat:Number(data[0].y) , lng:  Number(data[0].x)},
-            });
-           
-          } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-            console.log("zero result");
-            return;
-          } else if (status === window.kakao.maps.services.Status.ERROR()) {
-            alert("검색 결과 중 오류가 발생했습니다.");
-            return;
+      script.addEventListener("load", () => {
+        window.kakao.maps.load(() => {
+          function placesSearchCB(data, status, pagination) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              console.log(data[0]);
+              setPlaceDetails({
+                name: data[0].place_name,
+                address: data[0].road_address_name,
+                region: data[0].address_name.split(" ")[0],
+                type: data[0].category_group_name,
+                openingHours: "",
+                location: { lat: Number(data[0].y), lng: Number(data[0].x) },
+              });
+            } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+              console.log("zero result");
+              return;
+            } else if (status === window.kakao.maps.services.Status.ERROR()) {
+              alert("검색 결과 중 오류가 발생했습니다.");
+              return;
+            }
           }
-        }
 
-        var ps = new window.kakao.maps.services.Places();
+          var ps = new window.kakao.maps.services.Places();
 
-        // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-        var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
-        console.log('placeId', decodeURIComponent(placeId as string))
-        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-        ps.keywordSearch(decodeURIComponent(placeId as string), placesSearchCB);
+          // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+          var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+          console.log("placeId", decodeURIComponent(placeId as string));
+          // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+          ps.keywordSearch(decodeURIComponent(placeId as string), placesSearchCB);
+        });
       });
-    });
     }
-  }, [placeId,  locationName.mapType]);
+  }, [placeId, locationName.mapType]);
   console.log(placeDetails, "placeDetail");
 
   const handlePlans = () => {
-
-    if(!planOrder) return;
-    const targetPlanIndex = plans.findIndex((plan) => plan.planOrder === Number(planOrder))
-    let newPlans: any[] = []
-    if(targetPlanIndex > -1){
-      newPlans = plans.map((plan) => plan.planOrder === targetPlanIndex ? {...plan, spots: [...plan.spots, {
-        id: uuidv4(),
-        name: placeDetails?.name,
-        category: placeDetails?.type,
-        region: placeDetails?.region,
-        latitude: placeDetails?.location.lat,
-        longitude: placeDetails?.location.lng
-
-      }]} : {...plan})
-    }else {
-      newPlans = [...plans, {planOrder: Number(planOrder), spots: [
+    if (!planOrder) return;
+    const targetPlanIndex = plans.findIndex((plan) => plan.planOrder === Number(planOrder));
+    let newPlans: any[] = [];
+    if (targetPlanIndex > -1) {
+      newPlans = plans.map((plan) =>
+        plan.planOrder === targetPlanIndex
+          ? {
+              ...plan,
+              spots: [
+                ...plan.spots,
+                {
+                  id: uuidv4(),
+                  name: placeDetails?.name,
+                  category: placeDetails?.type,
+                  region: placeDetails?.region,
+                  latitude: placeDetails?.location.lat,
+                  longitude: placeDetails?.location.lng,
+                },
+              ],
+            }
+          : { ...plan }
+      );
+    } else {
+      newPlans = [
+        ...plans,
         {
-          id: uuidv4(),
-          name: placeDetails?.name,
-          category: placeDetails?.type,
-          region: placeDetails?.region,
-          latitude: placeDetails?.location.lat,
-          longitude: placeDetails?.location.lng
-        }
-      ]}]
+          planOrder: Number(planOrder),
+          spots: [
+            {
+              id: uuidv4(),
+              name: placeDetails?.name,
+              category: placeDetails?.type,
+              region: placeDetails?.region,
+              latitude: placeDetails?.location.lat,
+              longitude: placeDetails?.location.lng,
+            },
+          ],
+        },
+      ];
     }
-    addPlans(newPlans)
-  router.push('/create/trip/detail')
-  }
+    addPlans(newPlans);
+    router.push("/create/trip/detail");
+  };
 
   if (typeof window === "undefined") {
     return <></>;
@@ -154,26 +166,44 @@ const script: HTMLScriptElement = document.createElement("script");
 
   return (
     <>
+      <BackButton onClick={() => router.back()}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M17.7782 2.22202L2.22183 17.7784M17.7782 17.7784L2.22183 2.22202"
+            stroke="#1A1A1A"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </BackButton>
       <MapContainer>
-        {placeDetails?.location.lat && (
-          locationName.mapType === 'google' ? 
-          <GoogleMap
-            zoom={17}
-            lat={(placeDetails?.location.lat - 0.0015) as number}
-            lng={placeDetails?.location.lng as number}
-          >
-            {placeDetails?.location && (
-              <PoiMarkers
-                pois={[
-                  {
-                    key: (placeId as string) || "",
-                    location: placeDetails?.location,
-                  },
-                ]}
-              />
-            )}
-          </GoogleMap> : <KakaoMap positions={[{lat: placeDetails?.location.lat , lng:placeDetails?.location.lng}]}  lat={placeDetails?.location.lat - 0.013} lng={placeDetails?.location.lng} zoom={6}></KakaoMap>
-        )}
+        {placeDetails?.location.lat &&
+          (locationName.mapType === "google" ? (
+            <GoogleMap
+              zoom={17}
+              lat={(placeDetails?.location.lat - 0.0015) as number}
+              lng={placeDetails?.location.lng as number}
+            >
+              {placeDetails?.location && (
+                <PoiMarkers
+                  pois={[
+                    {
+                      key: (placeId as string) || "",
+                      location: placeDetails?.location,
+                    },
+                  ]}
+                />
+              )}
+            </GoogleMap>
+          ) : (
+            <KakaoMap
+              positions={[{ lat: placeDetails?.location.lat, lng: placeDetails?.location.lng }]}
+              lat={placeDetails?.location.lat - 0.013}
+              lng={placeDetails?.location.lng}
+              zoom={6}
+            ></KakaoMap>
+          ))}
       </MapContainer>
       <MapBottomModal initialHeight={400}>
         <ModalWrapper>
@@ -200,25 +230,27 @@ const script: HTMLScriptElement = document.createElement("script");
               </IconContainer>
               <div>{placeDetails?.address}</div>
             </Description>
-            {placeDetails?.openingHours !== "" && <Description>
-              <IconContainer>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15Z"
-                    stroke="black"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8 3.80029V8.00029L10.8 9.40029"
-                    stroke="black"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </IconContainer>
-              <div>{placeDetails?.openingHours}</div>
-            </Description>}
+            {placeDetails?.openingHours !== "" && (
+              <Description>
+                <IconContainer>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15Z"
+                      stroke="black"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M8 3.80029V8.00029L10.8 9.40029"
+                      stroke="black"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </IconContainer>
+                <div>{placeDetails?.openingHours}</div>
+              </Description>
+            )}
           </ModalContainer>
         </ModalWrapper>
         <ButtonContainer>
@@ -339,9 +371,24 @@ const TitleContainer = styled.div`
 
 const Title = styled.div`
   line-height: 24px;
-  fong-weight: 600;
+  font-weight: 600;
   font-size: 20px;
   color: ${palette.기본};
+`;
+
+const BackButton = styled.div`
+  cursor: pointer;
+  position: fixed;
+  z-index: 1004;
+  top: 52px;
+  left: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  box-shadow: -2px 3px 5px rgba(106, 97, 73, 0.1);
+  align-items: center;
+  justify-content: center;
 `;
 
 const SubTitle = styled.div`
