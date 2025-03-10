@@ -76,7 +76,11 @@ const CreateTripDetail = () => {
       ...plan,
       planOrder: plan.planOrder + 1,
       spots: plan.spots.map((spot) => {
-        const { id, ...newSpots } = spot;
+        const { id, ...newSpots } = {
+          ...spot,
+          latitude: Number(spot.latitude.toFixed(9)),
+          longitude: Number(spot.longitude.toFixed(9)),
+        };
         return newSpots;
       }),
     };
