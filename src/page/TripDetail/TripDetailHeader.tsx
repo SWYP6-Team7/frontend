@@ -56,6 +56,8 @@ export default function TripDetailHeader() {
     addBookmarkCount,
     addHostUserCheck,
     addViewCount,
+    addStartDate,
+    addEndDate,
     addTravelNumber,
     addEnrollmentNumber,
     hostUserCheck,
@@ -79,7 +81,7 @@ export default function TripDetailHeader() {
         details,
         maxPerson,
         genderType,
-        dueDate,
+
         periodType,
         tags,
         postStatus,
@@ -88,6 +90,8 @@ export default function TripDetailHeader() {
         viewCount,
         enrollCount,
         userAgeGroup,
+        startDate,
+        endDate,
         profileUrl,
         loginMemberRelatedInfo,
       } = tripInfos;
@@ -109,7 +113,8 @@ export default function TripDetailHeader() {
       }
       addProfileUrl(profileUrl);
       addTravelNumber(travelNumber);
-
+      addStartDate(startDate);
+      addEndDate(endDate);
       addEnrollCount(enrollCount);
       addCreatedAt(createdAt);
       addUserNumber(userNumber);

@@ -5,46 +5,36 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
 
-import {
-  APIProvider,
-  Map,
-  useMap,
-  useMapsLibrary,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { createTripStore } from "@/store/client/createTripStore";
 import RegionModal from "@/components/RegionModal";
-
 
 interface RegionInfo {
   country: string | null;
   adminArea: string | null;
 }
-const RegionWrapper = () => {
+const RegionWrapper = ({ location, isDetail = false }: { location?: string; isDetail?: boolean }) => {
   const [regionInfo, setRegionInfo] = useState<RegionInfo | null>(null);
   const { locationName, addInitGeometry } = createTripStore();
   const map = useMap();
   const [isModalOPen, setIsModalOpen] = useState(false);
   const placesLib = useMapsLibrary("places");
+  const locationNameStr = location ?? locationName.locationName;
 
   const fetchPlaceInfo = async () => {
     if (!map || !placesLib) return;
-
     const { PlacesService } = placesLib as google.maps.PlacesLibrary;
     const service = new PlacesService(map);
 
     const request: google.maps.places.FindPlaceFromQueryRequest = {
-      query: locationName.locationName,
+      query: locationNameStr,
       fields: ["name", "formatted_address", "geometry"],
-
     };
 
     service.findPlaceFromQuery(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-        console.log(results, 'result')
-        if (
-          results[0].geometry?.location?.lat() &&
-          results[0].geometry?.location?.lng()
-        ) {
+        console.log(results, "result");
+        if (results[0].geometry?.location?.lat() && results[0].geometry?.location?.lng()) {
           addInitGeometry({
             lat: results[0].geometry?.location?.lat(),
             lng: results[0].geometry?.location?.lng(),
@@ -53,9 +43,7 @@ const RegionWrapper = () => {
         // 결과 처리
 
         if (results[0]) {
-          const parts = results[0].formatted_address
-            ?.split(",")
-            .map((part) => part.trim());
+          const parts = results[0].formatted_address?.split(",").map((part) => part.trim());
           setRegionInfo({
             country: parts ? parts[parts.length - 1] : null,
             adminArea: parts ? parts[parts.length - 2] : null,
@@ -63,14 +51,13 @@ const RegionWrapper = () => {
         }
       } else {
         setRegionInfo({
-          country: locationName.locationName,
-          adminArea: locationName.locationName,
+          country: locationNameStr,
+          adminArea: locationNameStr,
         });
       }
     });
-  }
+  };
   useEffect(() => {
-  
     if (locationName.mapType === "google") {
       fetchPlaceInfo();
     } else {
@@ -82,12 +69,12 @@ const RegionWrapper = () => {
         window.kakao.maps.load(() => {
           var geocoder = new window.kakao.maps.services.Geocoder();
           // 주소로 좌표를 검색합니다
-          geocoder.addressSearch(locationName.locationName, function (result, status) {
+          geocoder.addressSearch(locationNameStr, function (result, status) {
             // 정상적으로 검색이 완료됐으면
             console.log(result, "result");
             if (result.length === 0) {
-              addInitGeometry(null)
-              return ;
+              addInitGeometry(null);
+              return;
             }
             if (result[0].x && result[0].y) {
               addInitGeometry({
@@ -97,40 +84,51 @@ const RegionWrapper = () => {
             }
             setRegionInfo({
               country: "한국",
-              adminArea: result[0]?.address_name ?? locationName.locationName,
+              adminArea: result[0]?.address_name ?? locationNameStr,
             });
           });
         });
       });
     }
-  }, [ JSON.stringify(locationName)]);
+  }, [locationNameStr]);
 
-  return (
-    <>
-      <RegionModal isModalOpen={isModalOPen} setIsModalOpen={setIsModalOpen} />
-      <Map
-        style={{ height: 0, width: 0 }}
-        defaultZoom={13}
-        mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
-        disableDefaultUI
-        defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
-      />
-      <Container>
-        <PlaceIconContainer>
-          <PlaceIcon width={21} height={24} />
-        </PlaceIconContainer>
-        <TextContainer>
-          <Region>{locationName.locationName}</Region>
-          <Small>
-            {regionInfo?.country} {regionInfo?.adminArea}
-          </Small>
-        </TextContainer>
-        <ArrowIconContainer onClick={() => setIsModalOpen(true)}>
-          <ArrowIcon />
-        </ArrowIconContainer>
-      </Container>
-    </>
-  );
+  if (isDetail) {
+    return (
+      <TextContainer>
+        <Region>{locationNameStr}</Region>
+        <Small>
+          {regionInfo?.country} {regionInfo?.adminArea}
+        </Small>
+      </TextContainer>
+    );
+  } else {
+    return (
+      <>
+        <RegionModal isModalOpen={isModalOPen} setIsModalOpen={setIsModalOpen} />
+        <Map
+          style={{ height: 0, width: 0 }}
+          defaultZoom={13}
+          mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
+          disableDefaultUI
+          defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+        />
+        <Container>
+          <PlaceIconContainer>
+            <PlaceIcon width={21} height={24} />
+          </PlaceIconContainer>
+          <TextContainer>
+            <Region>{locationNameStr}</Region>
+            <Small>
+              {regionInfo?.country} {regionInfo?.adminArea}
+            </Small>
+          </TextContainer>
+          <ArrowIconContainer onClick={() => setIsModalOpen(true)}>
+            <ArrowIcon />
+          </ArrowIconContainer>
+        </Container>
+      </>
+    );
+  }
 };
 
 const Container = styled.div`

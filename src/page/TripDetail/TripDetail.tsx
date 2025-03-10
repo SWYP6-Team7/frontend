@@ -40,6 +40,8 @@ import { formatDateRange } from "../CreateTrip/CalendarClient";
 import EveryBodyIcon from "@/components/icons/EveryBodyIcon";
 import OnlyMaleIcon from "@/components/icons/OnlyMaleIcon";
 import OnlyFemaleIcon from "@/components/icons/OnlyFemaleIcon";
+import TripRegion from "@/components/TripRegion";
+import RegionWrapper from "../CreateTrip/CreateTripDetail/RegionWrapper";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -313,6 +315,16 @@ export default function TripDetail() {
               <div>조회수 {viewCount}</div>
             </ViewsETC>
 
+            <Bar />
+            <CalendarContainer>
+              <CalendarTextContainer>
+                <Calendar />
+                <CalendarTitle>장소</CalendarTitle>
+                <CalendarContent>
+                  <RegionWrapper isDetail location={location} />
+                </CalendarContent>
+              </CalendarTextContainer>
+            </CalendarContainer>
             <Bar />
 
             <CalendarContainer>

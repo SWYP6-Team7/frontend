@@ -12,8 +12,8 @@ import useRelationKeyword from "@/hooks/search/useRelationKeyword";
 import RelationKeywordList from "./relationKeyword/RelationKeywordList";
 import PlaceIcon from "./icons/PlaceIcon";
 
-const TripRegion = ({ nextFunc }: { nextFunc: () => void }) => {
-  const { addLocationName,  locationName: initLocationName } = createTripStore();
+const TripRegion = ({ nextFunc, isDetail = false }: { nextFunc: () => void; isDetail?: boolean }) => {
+  const { addLocationName, locationName: initLocationName } = createTripStore();
 
   const [keyword, setKeyword] = useState(initLocationName.locationName);
   const [showRelationList, setShowRelationList] = useState(true);
@@ -36,21 +36,16 @@ const TripRegion = ({ nextFunc }: { nextFunc: () => void }) => {
           geocoder.addressSearch(keyword, function (result, status) {
             // 정상적으로 검색이 완료됐으면
             if (status === window.kakao.maps.services.Status.OK) {
-         
-              
-              addLocationName({locationName: keyword ??"", mapType: "kakao"});
-              
+              addLocationName({ locationName: keyword ?? "", mapType: "kakao" });
             } else {
-            
               addLocationName({
-                locationName: keyword ??"", mapType: "google"});
+                locationName: keyword ?? "",
+                mapType: "google",
+              });
             }
             setSubmit(false);
             nextFunc();
           });
-        
-
-         
         }
       });
     });
@@ -79,21 +74,13 @@ const TripRegion = ({ nextFunc }: { nextFunc: () => void }) => {
     <>
       <Title>어디로 떠나볼까요?</Title>
       <Spacing size={8} />
-      <InputField
-        value={keyword}
-        handleRemoveValue={handleRemoveValue}
-        onChange={changeKeyword}
-        icon={<PlaceIcon />}
-      />
+      <InputField value={keyword} handleRemoveValue={handleRemoveValue} onChange={changeKeyword} icon={<PlaceIcon />} />
       {keyword.length > 0 && (
         <>
           {showRelationList && (
             <>
               <Spacing size={16} />
-              <RelationKeywordList
-                onClick={clickRelationKeyword}
-                keyword={keyword}
-              />
+              <RelationKeywordList onClick={clickRelationKeyword} keyword={keyword} />
             </>
           )}
         </>
