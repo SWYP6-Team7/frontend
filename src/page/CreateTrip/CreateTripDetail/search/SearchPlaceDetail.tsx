@@ -379,6 +379,7 @@ const Title = styled.div`
 const BackButton = styled.div`
   cursor: pointer;
   position: fixed;
+  background-color: white;
   z-index: 1004;
   top: 52px;
   left: 24px;

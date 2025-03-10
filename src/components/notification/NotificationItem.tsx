@@ -50,14 +50,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
       </TopContainer>
       {data?.title !== "멤버 댓글 알림" && data?.title !== "커뮤니티" && (
         <TravelContainer>
-          <Badge
-            text="마감"
-            backgroundColor={palette.keycolorBG}
-            color={palette.keycolor}
-            daysLeft={data?.travelDueDate ? daysLeft(data?.travelDueDate) : undefined}
-            isClose={!Boolean(data?.travelDueDate)}
-            isDueDate={Boolean(data?.travelDueDate)}
-          />
+          <Badge text="마감" backgroundColor={palette.keycolorBG} color={palette.keycolor} isDueDate={false} />
           <TravelTitle>{data.title}</TravelTitle>
         </TravelContainer>
       )}

@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 
 interface BadgeProps {
   daysLeft?: number;
-  text: string;
+  text: React.ReactNode;
   isDueDate?: boolean;
   width?: string;
   backgroundColor?: string;
