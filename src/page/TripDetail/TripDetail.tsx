@@ -7,7 +7,6 @@ import ResultToast from "@/components/designSystem/toastMessage/resultToast";
 
 import ArrowIcon from "@/components/icons/ArrowIcon";
 import Calendar from "@/components/icons/Calendar";
-import PersonIcon from "@/components/icons/PersonIcon";
 import PlaceIcon from "@/components/icons/PlaceIcon";
 import Spacing from "@/components/Spacing";
 import { authStore } from "@/store/client/authStore";
@@ -18,9 +17,8 @@ import styled from "@emotion/styled";
 
 import React, { useEffect, useRef, useState } from "react";
 import CompanionsView from "./CompanionsView";
-import { daysAgo, daysLeft } from "@/utils/time";
+import { daysAgo } from "@/utils/time";
 import useTripDetail from "@/hooks/tripDetail/useTripDetail";
-import NewIcon from "@/components/icons/NewIcon";
 import NoticeModal from "@/components/designSystem/modal/NoticeModal";
 import { editStore } from "@/store/client/editStore";
 import { isGuestUser } from "@/utils/user";
@@ -29,19 +27,14 @@ import ApplyListButton from "@/components/designSystem/Buttons/ApplyListButton";
 import useViewTransition from "@/hooks/useViewTransition";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { myPageStore } from "@/store/client/myPageStore";
-import { useBackPathStore } from "@/store/client/backPathStore";
 import TopModal from "@/components/TopModal";
 import MapContainer from "../CreateTrip/CreateTripDetail/MapContainer";
-import CalendarWrapper from "../CreateTrip/CreateTripDetail/CalendarWrapper";
-import InfoWrapper from "../CreateTrip/CreateTripDetail/InfoWrapper";
-import { getDatesArray } from "../CreateTrip/CreateTripDetail/CreateTripDetail";
-import TagListWrapper from "../CreateTrip/CreateTripDetail/TagListWrapper";
 import { formatDateRange } from "../CreateTrip/CalendarClient";
 import EveryBodyIcon from "@/components/icons/EveryBodyIcon";
 import OnlyMaleIcon from "@/components/icons/OnlyMaleIcon";
 import OnlyFemaleIcon from "@/components/icons/OnlyFemaleIcon";
-import TripRegion from "@/components/TripRegion";
 import RegionWrapper from "../CreateTrip/CreateTripDetail/RegionWrapper";
+import { createTripStore } from "@/store/client/createTripStore";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -126,7 +119,7 @@ export default function TripDetail() {
     userId!,
     parseInt(travelNumber)
   );
-
+  const { addLocationName } = createTripStore();
   const bookmarkClickHandler = () => {
     if (isGuestUser()) {
       return;
@@ -142,6 +135,31 @@ export default function TripDetail() {
   const companionsViewHandler = () => {
     setPersonViewClicked(true);
   };
+
+  useEffect(() => {
+    const script: HTMLScriptElement = document.createElement("script");
+    script.async = true;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
+    document.head.appendChild(script);
+    script.addEventListener("load", () => {
+      console.log("test");
+      window.kakao.maps.load(() => {
+        var geocoder = new window.kakao.maps.services.Geocoder();
+        // 주소로 좌표를 검색합니다
+        geocoder.addressSearch(location, function (result, status) {
+          // 정상적으로 검색이 완료됐으면
+          if (status === window.kakao.maps.services.Status.OK) {
+            addLocationName({ locationName: location ?? "", mapType: "kakao" });
+          } else {
+            addLocationName({
+              locationName: location ?? "",
+              mapType: "google",
+            });
+          }
+        });
+      });
+    });
+  }, [location]);
 
   useEffect(() => {
     if (applySuccess) {
@@ -317,9 +335,8 @@ export default function TripDetail() {
             <Bar />
             <CalendarContainer>
               <CalendarTextContainer>
-                <PlaceIconContainer>
-                  <PlaceIcon width={21} height={24} />
-                </PlaceIconContainer>
+                <PlaceIcon width={21} height={24} />
+
                 <CalendarTitle>장소</CalendarTitle>
                 <CalendarContent>
                   <RegionWrapper isDetail location={location} />
@@ -481,10 +498,6 @@ const BottomContainer = styled.div<{
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
-`;
-
-const BadgeContainer = styled.div`
-  display: flex;
 `;
 
 const ProfileContainer = styled.div`
