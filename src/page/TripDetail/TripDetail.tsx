@@ -36,6 +36,10 @@ import CalendarWrapper from "../CreateTrip/CreateTripDetail/CalendarWrapper";
 import InfoWrapper from "../CreateTrip/CreateTripDetail/InfoWrapper";
 import { getDatesArray } from "../CreateTrip/CreateTripDetail/CreateTripDetail";
 import TagListWrapper from "../CreateTrip/CreateTripDetail/TagListWrapper";
+import { formatDateRange } from "../CreateTrip/CalendarClient";
+import EveryBodyIcon from "@/components/icons/EveryBodyIcon";
+import OnlyMaleIcon from "@/components/icons/OnlyMaleIcon";
+import OnlyFemaleIcon from "@/components/icons/OnlyFemaleIcon";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -83,6 +87,8 @@ export default function TripDetail() {
     userName,
     createdAt,
     title,
+    startDate,
+    endDate,
     details,
     tags,
     bookmarkCount,
@@ -129,6 +135,10 @@ export default function TripDetail() {
       // 북마크 추가.
       postBookmarkMutation();
     }
+  };
+
+  const companionsViewHandler = () => {
+    setPersonViewClicked(true);
   };
 
   useEffect(() => {
@@ -258,20 +268,7 @@ export default function TripDetail() {
         <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
           <ModalContainer>
             <MainContent>
-              <BadgeContainer>
-                <PlaceBadge>
-                  <PlaceIcon width={14} />
-                  <div>{location}</div>
-                </PlaceBadge>
-                <Badge
-                  isDueDate={false}
-                  text={postStatus}
-                  height="22px"
-                  backgroundColor={palette.비강조4}
-                  color={palette.비강조}
-                  fontWeight="600"
-                />
-              </BadgeContainer>
+              <Spacing size={8} />
               <ProfileContainer>
                 {/* 프로필 */}
                 <RoundedImage src={profileUrl} size={40} />
@@ -317,9 +314,34 @@ export default function TripDetail() {
             </ViewsETC>
 
             <Bar />
-            <CalendarWrapper />
+
+            <CalendarContainer>
+              <CalendarTextContainer>
+                <Calendar />
+                <CalendarTitle>여행 날짜</CalendarTitle>
+                <CalendarContent>
+                  {startDate && endDate ? formatDateRange(startDate, endDate) : "날짜를 선택하세요."}
+                </CalendarContent>
+              </CalendarTextContainer>
+            </CalendarContainer>
             <Bar />
             <InfoWrapper />
+            <InfoContainer onClick={companionsViewHandler}>
+              <InfoTextContainer>
+                {genderType === "모두" ? (
+                  <EveryBodyIcon selected size={24} />
+                ) : genderType === "남자만" ? (
+                  <OnlyMaleIcon selected size={24} />
+                ) : (
+                  <OnlyFemaleIcon selected size={24} />
+                )}
+                <InfoTitle>{genderType}</InfoTitle>
+                <InfoContent>0 / {maxPerson}</InfoContent>
+              </InfoTextContainer>
+              <ArrowIconContainer>
+                <ArrowIcon />
+              </ArrowIconContainer>
+            </InfoContainer>
           </ModalContainer>
         </TopModal>
         <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
@@ -395,10 +417,31 @@ export default function TripDetail() {
 
       <CommentWrapper>
         <IconContainer onClick={commentClickHandler}>
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
-              d="M22 14.6667C22 15.315 21.7425 15.9367 21.284 16.3952C20.8256 16.8536 20.2039 17.1111 19.5556 17.1111H4.88889L0 22V2.44444C0 1.79614 0.257539 1.17438 0.715961 0.715961C1.17438 0.257539 1.79614 0 2.44444 0H19.5556C20.2039 0 20.8256 0.257539 21.284 0.715961C21.7425 1.17438 22 1.79614 22 2.44444V14.6667Z"
+              d="M25 18.6667C25 19.315 24.7425 19.9367 24.284 20.3952C23.8256 20.8536 23.2039 21.1111 22.5556 21.1111H7.88889L3 26V6.44444C3 5.79614 3.25754 5.17438 3.71596 4.71596C4.17438 4.25754 4.79614 4 5.44444 4H22.5556C23.2039 4 23.8256 4.25754 24.284 4.71596C24.7425 5.17438 25 5.79614 25 6.44444V18.6667Z"
               fill="#FEFEFE"
+            />
+            <path
+              d="M9.625 12.8267H18.375"
+              stroke="#1A1A1A"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M9.625 8.75H18.375"
+              stroke="#1A1A1A"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M9.625 16.625H18.375"
+              stroke="#1A1A1A"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </IconContainer>
@@ -484,7 +527,7 @@ const MainContent = styled.div``;
 const ViewsETC = styled.div`
   margin-top: 32px;
   border-top: 1px solid ${palette.비강조4};
-  padding-top: 16px;
+  padding: 16px 0;
   display: flex;
   font-size: 12px;
   font-weight: 400;
@@ -558,4 +601,70 @@ const IconContainer = styled.button<{ rotated: boolean; right: string }>`
   @media (max-width: 390px) {
     right: ${(props) => props.right};
   }
+`;
+
+const CalendarContainer = styled.div`
+  padding: 11px 0;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const CalendarTitle = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  color: ${palette.비강조};
+  font-weight: 600;
+  margin-left: 8px;
+  margin-right: 29px;
+`;
+
+const CalendarTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CalendarContent = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  color: ${palette.기본};
+  font-weight: 500;
+`;
+
+const InfoContainer = styled.div`
+  padding: 11px 0;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ArrowIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+`;
+
+const InfoTitle = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  color: ${palette.비강조};
+  font-weight: 600;
+  margin-left: 8px;
+  margin-right: 29px;
+`;
+
+const InfoTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const InfoContent = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  color: ${palette.기본};
+  font-weight: 500;
 `;

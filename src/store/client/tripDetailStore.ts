@@ -51,6 +51,10 @@ interface tripDetailState {
   bookmarkCount: number;
   addBookmarkCount: (bookmarkCount: number) => void;
   viewCount: number;
+  startDate: string | null;
+  endDate: string | null;
+  addStartDate: (date: string | null) => void;
+  addEndDate: (date: string | null) => void;
   addViewCount: (viewCount: number) => void;
   hostUserCheck: boolean;
   addHostUserCheck: (hostUserCheck: boolean) => void;
@@ -99,7 +103,14 @@ export const tripDetailStore = create<tripDetailState>((set) => ({
 
   details: "",
   addDetails: (details: string) => set({ details }),
-
+  startDate: null,
+  addStartDate: (date) => {
+    set({ startDate: date });
+  },
+  endDate: null,
+  addEndDate: (date) => {
+    set({ endDate: date });
+  },
   maxPerson: 1,
   addMaxPerson: (maxPerson: number) => set({ maxPerson }),
   nowPerson: 0,
