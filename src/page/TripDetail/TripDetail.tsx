@@ -318,7 +318,9 @@ export default function TripDetail() {
             <Bar />
             <CalendarContainer>
               <CalendarTextContainer>
-                <Calendar />
+                <PlaceIconContainer>
+                  <PlaceIcon width={21} height={24} />
+                </PlaceIconContainer>
                 <CalendarTitle>장소</CalendarTitle>
                 <CalendarContent>
                   <RegionWrapper isDetail location={location} />
@@ -337,7 +339,7 @@ export default function TripDetail() {
               </CalendarTextContainer>
             </CalendarContainer>
             <Bar />
-            <InfoWrapper />
+
             <InfoContainer onClick={companionsViewHandler}>
               <InfoTextContainer>
                 {genderType === "모두" ? (
@@ -537,8 +539,8 @@ const UserName = styled.div`
 const MainContent = styled.div``;
 
 const ViewsETC = styled.div`
-  margin-top: 32px;
-  border-top: 1px solid ${palette.비강조4};
+  margin: 8px 0;
+  height: 38px;
   padding: 16px 0;
   display: flex;
   font-size: 12px;
@@ -546,23 +548,6 @@ const ViewsETC = styled.div`
   line-height: 14.32px;
   text-align: left;
   color: ${palette.비강조2};
-`;
-const PlaceBadge = styled.div`
-  margin-right: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${palette.keycolorBG};
-  color: ${palette.keycolor};
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 14.32px;
-  text-align: left;
-  height: 22px;
-  padding: 4px 10px;
-  gap: 4px;
-  border-radius: 20px;
-  opacity: 0px;
 `;
 
 const ScheduleContainer = styled.div`
@@ -620,6 +605,7 @@ const CalendarContainer = styled.div`
   padding-left: 8px;
   display: flex;
   align-items: center;
+  height: 70px;
   justify-content: space-between;
 `;
 
@@ -642,6 +628,13 @@ const CalendarContent = styled.div`
   line-height: 20px;
   color: ${palette.기본};
   font-weight: 500;
+`;
+const PlaceIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 42px;
 `;
 
 const InfoContainer = styled.div`

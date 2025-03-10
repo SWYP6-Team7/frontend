@@ -95,6 +95,13 @@ const RegionWrapper = ({ location, isDetail = false }: { location?: string; isDe
   if (isDetail) {
     return (
       <TextContainer>
+        <Map
+          style={{ height: 0, width: 0 }}
+          defaultZoom={13}
+          mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
+          disableDefaultUI
+          defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+        />
         <Region>{locationNameStr}</Region>
         <Small>
           {regionInfo?.country} {regionInfo?.adminArea}
