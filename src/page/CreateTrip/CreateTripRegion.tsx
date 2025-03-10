@@ -13,6 +13,8 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import useViewTransition from "@/hooks/useViewTransition";
 import TripRegion from "@/components/TripRegion";
+import { isGuestUser } from "@/utils/user";
+import { useRouter } from "next/navigation";
 
 export default function CreateTripRegion() {
   const navigateWithTransition = useViewTransition();
@@ -23,6 +25,12 @@ export default function CreateTripRegion() {
   //     return false
   //   }
   // }, [keyword, data?.suggestions])
+  const router = useRouter();
+  useEffect(() => {
+    if (isGuestUser()) {
+      router.replace("/");
+    }
+  }, [isGuestUser()]);
 
   const handleNext = () => {
     document.documentElement.style.viewTransitionName = "instant";

@@ -10,14 +10,21 @@ import useViewTransition from "@/hooks/useViewTransition";
 import { createTripStore } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TagList from "./component/TagList";
+import { useRouter } from "next/navigation";
+import { isGuestUser } from "@/utils/user";
 
 const CreateTripTag = () => {
   const { tags, addTags } = createTripStore();
   const [taggedArray, setTaggedArray] = useState<string[]>(tags);
   const navigateWithTransition = useViewTransition();
-
+  const router = useRouter();
+  useEffect(() => {
+    if (isGuestUser()) {
+      router.replace("/");
+    }
+  }, [isGuestUser()]);
   const clickTag = (index: number) => {
     const newArray = taggedArray.includes(TAG_LIST.value[index])
       ? taggedArray.filter((v) => v !== TAG_LIST.value[index])

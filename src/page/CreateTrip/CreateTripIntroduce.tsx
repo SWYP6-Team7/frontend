@@ -6,20 +6,22 @@ import FifthStepIcon from "@/components/icons/FifthStopIcon";
 import Spacing from "@/components/Spacing";
 import useViewTransition from "@/hooks/useViewTransition";
 import { createTripStore } from "@/store/client/createTripStore";
+import { isGuestUser } from "@/utils/user";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const CreateTripIntroduce = () => {
-  const {
-    title: initTitle,
-    details: initDetails,
-    addDetails,
-    addTitle,
-  } = createTripStore();
+  const { title: initTitle, details: initDetails, addDetails, addTitle } = createTripStore();
   const [title, setTitle] = useState(initTitle);
   const [details, setDetails] = useState(initDetails);
   const navigateWithTransition = useViewTransition();
-
+  const router = useRouter();
+  useEffect(() => {
+    if (isGuestUser()) {
+      router.replace("/");
+    }
+  }, [isGuestUser()]);
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
