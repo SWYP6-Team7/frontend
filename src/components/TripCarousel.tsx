@@ -105,4 +105,10 @@ const TitleContainer = styled.div`
   gap: 8px;
 `;
 
+const Date = styled.div`
+  font-weight: 400;
+  font-size: 12px;
+  color: ${palette.비강조};
+`;
+
 export default EmblaCarousel;
