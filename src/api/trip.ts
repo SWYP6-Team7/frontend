@@ -14,3 +14,18 @@ export const createTrip = async (travelData: CreateTripReqData, accessToken: str
     throw new RequestError(err);
   }
 };
+
+export const getPlans = async (travelNumber: number, pageParams: number, accessToken: string | null) => {
+  try {
+    const result = await axiosInstance.get(`/api/travel/${travelNumber}`, {
+      params: {
+        cursor: pageParams,
+        size: 5,
+      },
+      ...(accessToken && { headers: getJWTHeader(accessToken) }),
+    });
+    return handleApiResponse(result);
+  } catch (err: any) {
+    throw new RequestError(err);
+  }
+};

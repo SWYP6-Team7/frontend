@@ -24,6 +24,8 @@
     "@vis.gl/react-google-maps": "^1.5.1",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
+    "embla-carousel": "^8.5.2",
+    "embla-carousel-react": "^8.5.2",
     "next": "14.0.4",
     "next-view-transitions": "^0.3.4",
     "react": "18.2.0",

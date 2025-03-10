@@ -35,6 +35,13 @@ import OnlyMaleIcon from "@/components/icons/OnlyMaleIcon";
 import OnlyFemaleIcon from "@/components/icons/OnlyFemaleIcon";
 import RegionWrapper from "../CreateTrip/CreateTripDetail/RegionWrapper";
 import { createTripStore } from "@/store/client/createTripStore";
+import { getDatesArray } from "./TripEdit";
+import CreateScheduleItem from "../CreateTrip/CreateTripDetail/CreateScheduleItem";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getPlans } from "@/api/trip";
+import { useInView } from "react-intersection-observer";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import EmblaCarousel from "@/components/TripCarousel";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -113,6 +120,30 @@ export default function TripDetail() {
   const { companions } = useTripDetail(parseInt(travelNumber));
   const allCompanions = (companions as any)?.data?.companions;
   const alreadyApplied = !!enrollmentNumber;
+  const [ref, inView] = useInView();
+  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
+    queryKey: ["plans"],
+    queryFn: ({ pageParam }) => {
+      return getPlans(Number(travelNumber), pageParam as number, accessToken) as any;
+    },
+    enabled: !!accessToken,
+
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.page?.nextCursor) {
+        return undefined;
+      } else {
+        return lastPage.page?.nextCursor;
+      }
+    },
+  });
+
+  useInfiniteScroll(() => {
+    if (inView) {
+      !isFetching && hasNextPage && fetchNextPage();
+    }
+  }, [inView, !isFetching, fetchNextPage, hasNextPage]);
+
   //북마크
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
     accessToken!,
@@ -379,16 +410,14 @@ export default function TripDetail() {
           <ScheduleContainer>
             <ScheduleTitle>여행 일정</ScheduleTitle>
             <ScheduleList>
-              {/* {date &&
-                getDatesArray(date.startDate, date.endDate).map((item, idx) => (
-                  // <CreateScheduleItem
-                  //   idx={idx}
-                  //   title={item}
-                  //   isOpen={openItemIndex === idx}
-                  //   onToggle={() => handleItemToggle(idx)}
-                  // />
-                  <></>
-                ))} */}
+              {!isLoading &&
+                startDate &&
+                data &&
+                data.pages.map((page, pageIndex) => (
+                  <React.Fragment key={pageIndex}>
+                    <EmblaCarousel startDate={startDate} key={pageIndex} index={pageIndex} slides={page.content} />
+                  </React.Fragment>
+                ))}
             </ScheduleList>
           </ScheduleContainer>
         </BottomContainer>

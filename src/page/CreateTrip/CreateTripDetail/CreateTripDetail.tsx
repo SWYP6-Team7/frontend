@@ -23,6 +23,7 @@ import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CreateScheduleItem from "./CreateScheduleItem";
 import TripToast from "@/components/designSystem/toastMessage/tripToast";
+import { getDateRangeCategory } from "@/utils/time";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
@@ -77,7 +78,7 @@ const CreateTripDetail = () => {
     genderType: genderType!,
     startDate: date!.startDate,
     endDate: date!.endDate,
-    periodType,
+    periodType: getDateRangeCategory(date!.startDate, date!.endDate),
     tags,
     plans: plans.map((plan) => ({ ...plan, planOrder: plan.planOrder + 1 })),
     locationName: locationName.locationName,
