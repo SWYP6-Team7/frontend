@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import styled from "@emotion/styled";
@@ -15,18 +15,14 @@ type PropType = {
 const TripCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
+
+  const logSlidesInView = useCallback((emblaApi) => {
+    console.log(emblaApi.slidesInView());
+  }, []);
+
   useEffect(() => {
-    if (emblaApi) {
-      const logCurrentSlide = () => {
-        const currentIndex = emblaApi.selectedScrollSnap();
-        console.log("현재 슬라이드 인덱스:", currentIndex);
-      };
-
-      emblaApi.on("select", logCurrentSlide);
-
-      logCurrentSlide();
-    }
-  }, [emblaApi]);
+    if (emblaApi) emblaApi.on("slidesInView", logSlidesInView);
+  }, [emblaApi, logSlidesInView]);
 
   return (
     <Embla>
