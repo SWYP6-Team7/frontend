@@ -141,10 +141,9 @@ const Tab = styled.label<{
   tabPadding: string;
   fontWeight: number;
 }>`
-  display: flex;
   font-size: 16px;
   line-height: 16px;
-  align-items: center;
+
   height: 42px;
   padding: 0 20px;
 `;
