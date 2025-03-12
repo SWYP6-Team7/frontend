@@ -227,6 +227,7 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 0 20px;
 `;
 
 const ContentContainer = styled.div<{
@@ -239,6 +240,7 @@ const ContentContainer = styled.div<{
   &::-webkit-scrollbar {
     display: none;
   }
+  padding: 0 20px;
   box-shadow: inset 0px
     ${(props) => (props.isOverThree ? (props.isTop ? "12px" : "-12px") : "0")}
     ${(props) => (props.isOverThree ? "10px" : "0")} 0px ${palette.BG};
