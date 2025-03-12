@@ -162,9 +162,9 @@ export async function GET(
 ) {
   const searchParams = request.nextUrl.searchParams;
   const cursor = searchParams.get("cursor");
-  if (cursor === "1") {
+  if (cursor === 1) {
     return NextResponse.json(EXAM_LIST1);
-  } else if (cursor === "2") {
+  } else if (cursor === 2) {
     return NextResponse.json(EXAM_LIST2);
   } else {
     return NextResponse.json({
