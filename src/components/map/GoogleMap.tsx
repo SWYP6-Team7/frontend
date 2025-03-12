@@ -8,7 +8,13 @@ import {
   useMap,
   useMapsLibrary,
 } from "@vis.gl/react-google-maps";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
 
@@ -16,7 +22,9 @@ type Poi = { key: string; location: google.maps.LatLngLiteral };
 
 export const PoiMarkers = (props: { pois: Poi[] }) => {
   const map = useMap();
-  const [markers, setMarkers] = useState<{ [key: string]: google.maps.Marker }>({});
+  const [markers, setMarkers] = useState<{ [key: string]: google.maps.Marker }>(
+    {}
+  );
 
   useEffect(() => {
     // 기존 마커 제거
@@ -28,7 +36,10 @@ export const PoiMarkers = (props: { pois: Poi[] }) => {
     const linePath: google.maps.LatLng[] = [];
 
     props.pois.forEach((poi, index) => {
-      const position = new google.maps.LatLng(poi.location.lat, poi.location.lng);
+      const position = new google.maps.LatLng(
+        poi.location.lat,
+        poi.location.lng
+      );
       linePath.push(position);
 
       // Custom 마커 생성
@@ -95,29 +106,35 @@ interface GoogleMapProps {
   positions?: Poi[];
 }
 
-const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps) => {
-  const getInitialSettings = () => {
-    let initialCenter = { lat: lat || 0, lng: lng || 0 };
-    let initialZoom = zoom || 10;
+const GoogleMap = ({
+  lat,
+  lng,
+  zoom,
+  positions = [],
+  children,
+}: GoogleMapProps) => {
+  // const getInitialSettings = () => {
+  //   let initialCenter = { lat: lat || 0, lng: lng || 0 };
+  //   let initialZoom = zoom || 10;
 
-    if (positions && positions.length > 0) {
-      try {
-        const lats = positions.map((pos) => pos.location.lat);
-        const lngs = positions.map((pos) => pos.location.lng);
+  //   if (positions && positions.length > 0) {
+  //     try {
+  //       const lats = positions.map((pos) => pos.location.lat);
+  //       const lngs = positions.map((pos) => pos.location.lng);
 
-        initialCenter = {
-          lat: (Math.min(...lats) + Math.max(...lats)) / 2,
-          lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
-        };
-      } catch (error) {
-        console.error("좌표 계산 오류:", error);
-      }
-    }
+  //       initialCenter = {
+  //         lat: (Math.min(...lats) + Math.max(...lats)) / 2,
+  //         lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
+  //       };
+  //     } catch (error) {
+  //       console.error("좌표 계산 오류:", error);
+  //     }
+  //   }
 
-    return { initialCenter, initialZoom };
-  };
+  //   return { initialCenter, initialZoom };
+  // };
 
-  const { initialCenter, initialZoom } = getInitialSettings();
+  // const { initialCenter, initialZoom } = getInitialSettings();
 
   if (typeof window === "undefined") {
     return <></>;
@@ -127,11 +144,13 @@ const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps)
     <div style={{ width: "100%", height: "100%" }}>
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
         <Map
-          defaultCenter={initialCenter}
-          defaultZoom={initialZoom}
+          defaultCenter={{ lat: lat, lng: lng }}
+          defaultZoom={10}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
           disableDefaultUI
-          onCameraChanged={(ev: MapCameraChangedEvent) => console.log("camera changed:", ev.detail.center)}
+          onCameraChanged={(ev: MapCameraChangedEvent) =>
+            console.log("camera changed:", ev.detail.center)
+          }
         >
           {children}
         </Map>
