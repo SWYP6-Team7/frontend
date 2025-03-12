@@ -458,7 +458,7 @@ export default function TripDetail() {
                       key={pageIndex}
                       inView={<div ref={ref} style={{ width: 5 }} />}
                       index={pageIndex}
-                      slides={page.content}
+                      slides={page.plans}
                     />
                   </React.Fragment>
                 ))}

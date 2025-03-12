@@ -21,7 +21,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
     <Embla>
       <Viewport ref={emblaRef}>
         <Container>
-          {slides.map((item, index) => (
+          {slides?.map((item, index) => (
             <Slide key={index}>
               <Item>
                 <Tab>
