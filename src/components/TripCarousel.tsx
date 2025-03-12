@@ -42,7 +42,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
 
 const Embla = styled.div`
   max-width: 48rem;
-  margin: auto;
+
   --slide-height: 19rem;
   --slide-spacing: 1rem;
   --slide-size: 70%;
@@ -58,7 +58,7 @@ const Container = styled.div`
 `;
 const Slide = styled.div`
   transform: translate3d(0, 0, 0);
-  flex: 0 0 70%;
+  flex: 0 0 86%;
   min-width: 0;
   padding-left: 1rem;
 `;

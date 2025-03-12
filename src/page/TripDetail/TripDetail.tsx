@@ -456,7 +456,9 @@ export default function TripDetail() {
                     <EmblaCarousel
                       startDate={startDate}
                       key={pageIndex}
-                      inView={<div ref={ref} style={{ width: 5 }} />}
+                      inView={
+                        <div ref={ref} style={{ width: 5, height: "100%" }} />
+                      }
                       index={pageIndex}
                       slides={page.plans}
                     />
