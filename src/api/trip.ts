@@ -21,8 +21,7 @@ export const createTrip = async (
 
 export const getPlans = async (
   travelNumber: number,
-  pageParams: number | null,
-  accessToken: string
+  pageParams: number | null
 ) => {
   try {
     const result = await axiosInstance.get(
@@ -32,7 +31,6 @@ export const getPlans = async (
           cursor: pageParams,
           size: 5,
         },
-        headers: getJWTHeader(accessToken),
       }
     );
     return handleApiResponse(result);
