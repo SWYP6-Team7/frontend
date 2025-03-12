@@ -139,10 +139,10 @@ export default function TripDetail() {
 
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
-      if (!lastPage.page?.nextCursor) {
+      if (!lastPage?.nextCursor) {
         return undefined;
       } else {
-        return lastPage.page?.nextCursor;
+        return lastPage?.nextCursor;
       }
     },
   });
