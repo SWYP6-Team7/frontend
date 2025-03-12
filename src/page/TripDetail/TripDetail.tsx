@@ -96,6 +96,10 @@ export default function TripDetail() {
     details,
     tags,
     bookmarkCount,
+    locationName,
+    addInitGeometry,
+    initGeometry,
+    addLocationName,
     enrollCount,
     viewCount,
     dueDate,
@@ -164,7 +168,6 @@ export default function TripDetail() {
     userId!,
     parseInt(travelNumber)
   );
-  const { addLocationName } = createTripStore();
   const bookmarkClickHandler = () => {
     if (isGuestUser()) {
       return;
@@ -403,7 +406,13 @@ export default function TripDetail() {
 
                 <CalendarTitle>장소</CalendarTitle>
                 <CalendarContent>
-                  <RegionWrapper isDetail location={location} />
+                  <RegionWrapper
+                    locationName={locationName}
+                    addInitGeometry={addInitGeometry}
+                    addLocationName={addLocationName}
+                    isDetail
+                    location={location}
+                  />
                 </CalendarContent>
               </CalendarTextContainer>
             </CalendarContainer>
@@ -444,10 +453,12 @@ export default function TripDetail() {
         </TopModal>
         <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
           <MapContainer
+            plans={combinedPlans}
+            locationName={locationName}
             index={openItemIndex}
             isMapFull={isMapFull}
-            lat={37.57037778}
-            lng={126.9816417}
+            lat={initGeometry?.lat || 37.57037778}
+            lng={initGeometry?.lng || 126.9816417}
             zoom={9}
           />
           <ScheduleContainer>
@@ -457,6 +468,7 @@ export default function TripDetail() {
               {!isLoading && startDate && data && (
                 <EmblaCarousel
                   startDate={startDate}
+                  setOpenItemIndex={setOpenItemIndex}
                   inView={
                     <div ref={ref} style={{ width: 5, height: "100%" }} />
                   }

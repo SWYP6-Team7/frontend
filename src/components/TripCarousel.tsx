@@ -4,20 +4,34 @@ import useEmblaCarousel from "embla-carousel-react";
 import styled from "@emotion/styled";
 import { palette } from "@/styles/palette";
 import { getDateByIndex } from "@/utils/time";
+import { tripDetailStore } from "@/store/client/tripDetailStore";
+import { SpotType } from "@/store/client/createTripStore";
 
 type PropType = {
-  slides: any[];
+  slides: SpotType[];
   options?: EmblaOptionsType;
   startDate: string;
   inView?: React.ReactNode;
+  setOpenItemIndex: React.Dispatch<React.SetStateAction<number>>;
 };
+
+function getSpecificElement(arr: number[]) {
+  if (arr.length === 1) {
+    return arr[0];
+  } else if (arr.length === 2) {
+    return arr[0] === 0 ? arr[0] : arr[arr.length - 1];
+  } else {
+    return arr[1];
+  }
+}
 
 const TripCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
-
   const logSlidesInView = useCallback((emblaApi) => {
     console.log(emblaApi.slidesInView());
+    const index = getSpecificElement(emblaApi.slidesInView());
+    props.setOpenItemIndex(index);
   }, []);
 
   useEffect(() => {

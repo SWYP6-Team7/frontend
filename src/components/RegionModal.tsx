@@ -11,9 +11,25 @@ import { palette } from "@/styles/palette";
 interface RegionModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  addLocationName: ({
+    locationName,
+    mapType,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+  }) => void;
+  locationName: {
+    locationName: string;
+    mapType: "google" | "kakao";
+  };
 }
 
-const RegionModal = ({ isModalOpen, setIsModalOpen }: RegionModalProps) => {
+const RegionModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  addLocationName,
+  locationName,
+}: RegionModalProps) => {
   const handleClose = () => {
     console.log("testing");
     setIsModalOpen(false);
@@ -43,7 +59,11 @@ const RegionModal = ({ isModalOpen, setIsModalOpen }: RegionModalProps) => {
       </Header>
       <Spacing size={8} />
 
-      <TripRegion nextFunc={handleClose} />
+      <TripRegion
+        addLocationName={addLocationName}
+        initLocationName={locationName}
+        nextFunc={handleClose}
+      />
     </Container>,
     document.getElementById("region-modal") as HTMLElement
   );

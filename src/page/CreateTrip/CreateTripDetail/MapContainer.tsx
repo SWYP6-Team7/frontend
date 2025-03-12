@@ -11,15 +11,19 @@ interface MapContainerProps {
   zoom: number;
   isMapFull: boolean;
   index?: null | number;
+  locationName: {
+    mapType: string;
+    locationName: string;
+  };
+  plans: any[];
 }
 
 const MapContainer = (props: MapContainerProps) => {
-  const { locationName, initGeometry, plans } = createTripStore();
-
-  if (initGeometry === null) return null;
-
   // 현재 선택된 계획(plan) 가져오기
-  const currentPlan = props.index !== null ? plans.find((plan) => plan.planOrder === props.index) : null;
+  const currentPlan =
+    props.index !== null
+      ? props.plans.find((plan) => plan.planOrder === props.index)
+      : null;
   console.log(currentPlan, "plancurrent", props);
   // spots 데이터를 기반으로 GoogleMap과 KakaoMap에 필요한 데이터를 생성
   const positions = currentPlan
@@ -31,9 +35,9 @@ const MapContainer = (props: MapContainerProps) => {
     : [];
 
   // GoogleMap과 KakaoMap을 조건부로 렌더링
-  if (locationName.mapType === "google") {
+  if (props.locationName.mapType === "google") {
     return (
-      <Container key={locationName.mapType} isMapFull={props.isMapFull}>
+      <Container key={props.locationName.mapType} isMapFull={props.isMapFull}>
         <GoogleMap lat={props.lat} lng={props.lng} zoom={props.zoom}>
           {/* Google Map의 PoiMarkers 컴포넌트 사용 */}
           <PoiMarkers
@@ -48,7 +52,7 @@ const MapContainer = (props: MapContainerProps) => {
     );
   } else {
     return (
-      <Container key={locationName.mapType} isMapFull={props.isMapFull}>
+      <Container key={props.locationName.mapType} isMapFull={props.isMapFull}>
         <KakaoMap
           lat={props.lat}
           lng={props.lng}

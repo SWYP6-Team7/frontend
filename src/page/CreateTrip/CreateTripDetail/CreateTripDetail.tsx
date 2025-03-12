@@ -53,6 +53,8 @@ const CreateTripDetail = () => {
     plans,
     genderType,
     maxPerson,
+    addLocationName,
+    addInitGeometry,
     periodType,
     addCompletionStatus,
     resetCreateTripDetail,
@@ -150,7 +152,11 @@ const CreateTripDetail = () => {
             onHeightChange={setTopModalHeight}
           >
             <ModalContainer>
-              <RegionWrapper />
+              <RegionWrapper
+                locationName={locationName}
+                addInitGeometry={addInitGeometry}
+                addLocationName={addLocationName}
+              />
               <Spacing size={16} />
               <InputField
                 value={title}
@@ -184,6 +190,8 @@ const CreateTripDetail = () => {
           >
             <MapContainer
               index={openItemIndex}
+              plans={plans}
+              locationName={locationName}
               isMapFull={isMapFull}
               lat={initGeometry?.lat || 37.57037778}
               lng={initGeometry?.lng || 126.9816417}

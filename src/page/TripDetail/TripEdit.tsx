@@ -167,7 +167,7 @@ const TripEdit = () => {
             onHeightChange={setTopModalHeight}
           >
             <ModalContainer>
-              <RegionWrapper />
+              {/* <RegionWrapper /> */}
               <Spacing size={16} />
               <InputField
                 value={title}
@@ -199,13 +199,13 @@ const TripEdit = () => {
             isMapFull={isMapFull}
             topModalHeight={topModalHeight}
           >
-            <MapContainer
+            {/* <MapContainer
               index={openItemIndex}
               isMapFull={isMapFull}
               lat={initGeometry?.lat || 37.57037778}
               lng={initGeometry?.lng || 126.9816417}
               zoom={locationName.mapType === "google" ? 11 : 9}
-            />
+            /> */}
             <ScheduleContainer>
               <Title>여행 일정</Title>
               <ScheduleList>

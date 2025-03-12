@@ -65,13 +65,31 @@ interface tripDetailState {
   bookmarked: boolean;
   addBookmarked: (status: boolean) => void;
   commentLength: number;
+  initGeometry: { lng: number; lat: number } | null;
+  addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   addCommentLength: (status: number) => void;
+  locationName: { locationName: string; mapType: "google" | "kakao" };
+  addLocationName: ({
+    locationName,
+    mapType,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+  }) => void;
 }
 
 export const tripDetailStore = create<tripDetailState>((set) => ({
   bookmarked: false,
   addBookmarked: (status) => {
     set({ bookmarked: status });
+  },
+  locationName: { locationName: "", mapType: "google" },
+  addLocationName: (locationName) => {
+    set({ locationName });
+  },
+  initGeometry: null,
+  addInitGeometry: (geo) => {
+    set({ initGeometry: geo });
   },
   applySuccess: false,
   setApplySuccess: (status) => {
@@ -144,7 +162,8 @@ export const tripDetailStore = create<tripDetailState>((set) => ({
   addHostUserCheck: (hostUserCheck: boolean) => set({ hostUserCheck }),
 
   enrollmentNumber: null,
-  addEnrollmentNumber: (enrollmentNumber: number | null) => set({ enrollmentNumber }),
+  addEnrollmentNumber: (enrollmentNumber: number | null) =>
+    set({ enrollmentNumber }),
 
   commentLength: 0,
   addCommentLength: (commentLength: number) => set({ commentLength }),

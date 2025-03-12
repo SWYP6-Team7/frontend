@@ -5,7 +5,12 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  useMap,
+  useMapsLibrary,
+} from "@vis.gl/react-google-maps";
 import { createTripStore } from "@/store/client/createTripStore";
 import RegionModal from "@/components/RegionModal";
 
@@ -13,9 +18,26 @@ interface RegionInfo {
   country: string | null;
   adminArea: string | null;
 }
-const RegionWrapper = ({ location, isDetail = false }: { location?: string; isDetail?: boolean }) => {
+const RegionWrapper = ({
+  locationName,
+  addInitGeometry,
+  addLocationName,
+  location,
+  isDetail = false,
+}: {
+  locationName: { locationName: string; mapType: "google" | "kakao" };
+  addLocationName: ({
+    locationName,
+    mapType,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+  }) => void;
+  addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
+  location?: string;
+  isDetail?: boolean;
+}) => {
   const [regionInfo, setRegionInfo] = useState<RegionInfo | null>(null);
-  const { locationName, addInitGeometry } = createTripStore();
   const map = useMap();
   const [isModalOPen, setIsModalOpen] = useState(false);
   const placesLib = useMapsLibrary("places");
@@ -34,7 +56,10 @@ const RegionWrapper = ({ location, isDetail = false }: { location?: string; isDe
     service.findPlaceFromQuery(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
         console.log(results, "result");
-        if (results[0].geometry?.location?.lat() && results[0].geometry?.location?.lng()) {
+        if (
+          results[0].geometry?.location?.lat() &&
+          results[0].geometry?.location?.lng()
+        ) {
           addInitGeometry({
             lat: results[0].geometry?.location?.lat(),
             lng: results[0].geometry?.location?.lng(),
@@ -43,7 +68,9 @@ const RegionWrapper = ({ location, isDetail = false }: { location?: string; isDe
         // 결과 처리
 
         if (results[0]) {
-          const parts = results[0].formatted_address?.split(",").map((part) => part.trim());
+          const parts = results[0].formatted_address
+            ?.split(",")
+            .map((part) => part.trim());
           setRegionInfo({
             country: parts ? parts[parts.length - 1] : null,
             adminArea: parts ? parts[parts.length - 2] : null,
@@ -111,7 +138,12 @@ const RegionWrapper = ({ location, isDetail = false }: { location?: string; isDe
   } else {
     return (
       <>
-        <RegionModal isModalOpen={isModalOPen} setIsModalOpen={setIsModalOpen} />
+        <RegionModal
+          locationName={locationName}
+          addLocationName={addLocationName}
+          isModalOpen={isModalOPen}
+          setIsModalOpen={setIsModalOpen}
+        />
         <Map
           style={{ height: 0, width: 0 }}
           defaultZoom={13}

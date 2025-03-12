@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 
 export default function CreateTripRegion() {
   const navigateWithTransition = useViewTransition();
+  const { addLocationName, locationName } = createTripStore();
   // const isMatchedKeyword = useMemo(() => {
   //   if (data?.suggestions && Array.isArray(data.suggestions)) {
   //     return data.suggestions.includes(keyword)
@@ -41,7 +42,11 @@ export default function CreateTripRegion() {
       <StepIconContainer>
         <FirstStepIcon />
       </StepIconContainer>
-      <TripRegion nextFunc={handleNext} />
+      <TripRegion
+        addLocationName={addLocationName}
+        initLocationName={locationName}
+        nextFunc={handleNext}
+      />
     </Container>
   );
 }
