@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = "force-static";
-
 const EXAM_LIST1 = {
   resultType: "SUCCESS",
   success: {
