@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
 declare global {
@@ -18,6 +16,29 @@ interface KakaoMapProps {
 const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_MAP_KEY;
 
+  const getInitialSettings = () => {
+    let initialCenter = { lat: lat || 0, lng: lng || 0 };
+    let initialZoom = zoom || 10;
+
+    if (positions && positions.length > 0) {
+      try {
+        const lats = positions.map((pos) => pos.lat);
+        const lngs = positions.map((pos) => pos.lng);
+
+        initialCenter = {
+          lat: (Math.min(...lats) + Math.max(...lats)) / 2,
+          lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
+        };
+      } catch (error) {
+        console.error("좌표 계산 오류:", error);
+      }
+    }
+
+    return { initialCenter, initialZoom };
+  };
+
+  const { initialCenter, initialZoom } = getInitialSettings();
+
   useEffect(() => {
     const script: HTMLScriptElement = document.createElement("script");
     script.async = true;
@@ -26,7 +47,10 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
 
     script.addEventListener("load", () => {
       window.kakao.maps.load(() => {
-        let coords = new window.kakao.maps.LatLng(lat, lng);
+        let coords = new window.kakao.maps.LatLng(
+          initialCenter.lat,
+          initialCenter.lng
+        );
 
         // 지도를 담을 영역의 DOM 레퍼런스
         let container = document.getElementById("map");
@@ -35,10 +59,10 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
         let options = {
           // 지도를 생성할 때 필요한 기본 옵션
           center: coords, // 지도의 중심좌표
-          level: zoom, // 지도의 확대 레벨
+          level: initialZoom, // 지도의 확대 레벨
         };
         let map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
-        console.log(positions, "positions");
+
         // Use a purple marker with a number inside
         if (positions) {
           for (let i = 0; i < positions.length; i++) {

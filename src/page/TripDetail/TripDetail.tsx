@@ -141,7 +141,7 @@ export default function TripDetail() {
       return getPlans(Number(travelNumber), pageParam) as any;
     },
 
-    initialPageParam: 0,
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (!lastPage?.nextCursor) {
         return undefined;
