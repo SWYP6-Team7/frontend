@@ -453,7 +453,7 @@ export default function TripDetail() {
               {!isLoading &&
                 startDate &&
                 data &&
-                data.pages.map((page, pageIndex) => (
+                data.pages.flat().map((page, pageIndex) => (
                   <React.Fragment key={pageIndex}>
                     <EmblaCarousel
                       startDate={startDate}
