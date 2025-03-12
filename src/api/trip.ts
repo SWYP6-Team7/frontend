@@ -21,12 +21,15 @@ export const createTrip = async (
 
 export const getPlans = async (travelNumber: number, pageParams: number) => {
   try {
-    const result = await axios.get(`/gettest`, {
-      params: {
-        cursor: pageParams,
-        size: 5,
-      },
-    });
+    const result = await axiosInstance.get(
+      `/api/travel/${travelNumber}/planS`,
+      {
+        params: {
+          cursor: pageParams,
+          size: 5,
+        },
+      }
+    );
     return handleApiResponse(result);
   } catch (err: any) {
     throw new RequestError(err);
