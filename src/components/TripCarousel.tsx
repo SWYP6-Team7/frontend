@@ -176,7 +176,7 @@ const Title = styled.div`
 
 const SpotItem = styled.li`
   display: flex;
-
+  margin-bottom: 15px;
   padding: 0 10px;
   align-items: center;
   justify-content: space-between;
