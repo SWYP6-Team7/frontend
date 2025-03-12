@@ -2,6 +2,7 @@ import RequestError from "@/context/ReqeustError";
 import { axiosInstance, handleApiResponse } from ".";
 import { getJWTHeader } from "@/utils/user";
 import { CreateTripReqData } from "@/hooks/createTrip/useCreateTrip";
+import axios from "axios";
 // 여행 관련 필요한 API요청들.
 
 export const createTrip = async (
@@ -24,7 +25,7 @@ export const getPlans = async (
   accessToken: string | null
 ) => {
   try {
-    const result = await axiosInstance.get(`alpha.moing.io/gettest`, {
+    const result = await axios.get(`https://alpha.moing.io/gettest`, {
       params: {
         cursor: pageParams,
         size: 5,
