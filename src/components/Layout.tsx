@@ -21,11 +21,25 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const { userPostRefreshToken } = useAuth();
   const { userId, accessToken, logoutCheck } = authStore();
   // 유저 프로필 정보 불러오기
-  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl, addUserSocialTF } =
-    myPageStore();
+  const {
+    addEmail,
+    addProfileUrl,
+    addName,
+    addGender,
+    addAgegroup,
+    addPreferredTags,
+    profileUrl,
+    addUserSocialTF,
+  } = myPageStore();
 
-  const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
-    useMyPage();
+  const {
+    data,
+    isLoading,
+    profileImage,
+    isLoadingImage,
+    firstProfileImageMutation,
+    isFirstProfileImagePostSuccess,
+  } = useMyPage();
   console.log(data, "user data");
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
@@ -87,12 +101,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     if (splashOn === true) return;
     let themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
     if (themeColorMetaTag) {
-      themeColorMetaTag.setAttribute("content", backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`);
+      themeColorMetaTag.setAttribute(
+        "content",
+        backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`
+      );
     }
   }, [pathname]);
 
   return (
-    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""} onLoad={() => console.log("google map load")}>
+    <APIProvider
+      apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}
+      onLoad={() => console.log("google map load")}
+    >
       <Container pathname={pathname}>
         <Splash />
         <Body pathname={pathname}>

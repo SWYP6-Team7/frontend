@@ -170,7 +170,7 @@ export async function GET(
     return NextResponse.json({
       resultType: "SUCCESS",
       erro: {
-        reason: "데이터 잘못 요청함",
+        reason: cursor,
       },
       success: null,
     });
