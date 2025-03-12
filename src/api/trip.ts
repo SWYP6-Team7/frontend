@@ -19,11 +19,7 @@ export const createTrip = async (
   }
 };
 
-export const getPlans = async (
-  travelNumber: number,
-  pageParams: number,
-  accessToken: string | null
-) => {
+export const getPlans = async (travelNumber: number, pageParams: number) => {
   try {
     const result = await axios.get(`https://alpha.moing.io/gettest`, {
       params: {
