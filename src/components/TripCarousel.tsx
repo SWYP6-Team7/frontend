@@ -8,7 +8,6 @@ import { getDateByIndex } from "@/utils/time";
 type PropType = {
   slides: any[];
   options?: EmblaOptionsType;
-  index: number;
   startDate: string;
   inView?: React.ReactNode;
 };
@@ -16,7 +15,7 @@ type PropType = {
 const TripCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  console.log("slide", props.index, props.slides);
+  console.log("slide", props.slides);
   return (
     <Embla>
       <Viewport ref={emblaRef}>
@@ -29,9 +28,9 @@ const TripCarousel: React.FC<PropType> = (props) => {
                     <Title>Day {index + 1}</Title>
                     <Date>{getDateByIndex(props.startDate, index + 1)}</Date>
                   </TitleContainer>
-                  {index === slides.length - 1 && props.inView}
                 </Tab>
               </Item>
+              {index === slides.length - 1 && props.inView}
             </Slide>
           ))}
         </Container>

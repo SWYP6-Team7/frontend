@@ -146,7 +146,11 @@ export default function TripDetail() {
       }
     },
   });
-  console.log("data", data);
+  const combinedPlans = data?.pages.reduce(
+    (acc, page) => acc.concat(page.plans),
+    []
+  );
+  console.log("data", data, combinedPlans);
   useInfiniteScroll(() => {
     if (inView) {
       console.log("inview");
@@ -450,22 +454,15 @@ export default function TripDetail() {
             <ScheduleTitle>여행 일정</ScheduleTitle>
             <Spacing size={16} />
             <ScheduleList>
-              {!isLoading &&
-                startDate &&
-                data &&
-                data.pages.flat().map((page, pageIndex) => (
-                  <React.Fragment key={pageIndex}>
-                    <EmblaCarousel
-                      startDate={startDate}
-                      key={pageIndex}
-                      inView={
-                        <div ref={ref} style={{ width: 5, height: "100%" }} />
-                      }
-                      index={pageIndex}
-                      slides={page.plans}
-                    />
-                  </React.Fragment>
-                ))}
+              {!isLoading && startDate && data && (
+                <EmblaCarousel
+                  startDate={startDate}
+                  inView={
+                    <div ref={ref} style={{ width: 5, height: "100%" }} />
+                  }
+                  slides={combinedPlans} // 모든 데이터를 하나의 슬라이드 컴포넌트에 전달
+                />
+              )}
             </ScheduleList>
           </ScheduleContainer>
         </BottomContainer>
