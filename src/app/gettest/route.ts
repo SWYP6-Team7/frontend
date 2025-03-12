@@ -160,11 +160,10 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const searchParams = request.nextUrl.searchParams;
-  const cursor = searchParams.get("cursor");
-  if (cursor === 1) {
+  const cursor = new URL(request.url).searchParams.get("cursor");
+  if (cursor === "1") {
     return NextResponse.json(EXAM_LIST1);
-  } else if (cursor === 2) {
+  } else if (cursor === "2") {
     return NextResponse.json(EXAM_LIST2);
   } else {
     return NextResponse.json({
