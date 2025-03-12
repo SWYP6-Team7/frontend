@@ -157,11 +157,8 @@ const EXAM_LIST2 = {
 };
 
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const params = url.searchParams;
-
-  // 특정 파라미터 추출
-  const cursor = params.get("cursor");
+  const searchParams = request.nextUrl.searchParams;
+  const cursor = searchParams.get("cursor");
   if (cursor === "1") {
     return NextResponse.json(EXAM_LIST1);
   } else if (cursor === "2") {
@@ -170,7 +167,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       resultType: "SUCCESS",
       erro: {
-        reason: cursor,
+        reason: searchParams,
       },
       success: null,
     });
