@@ -160,8 +160,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const cursor = new URL(request.url).searchParams.get("cursor");
-  console.log("cursor", cursor, request);
+  const searchParams = request.nextUrl.searchParams;
+  const cursor = searchParams.get("cursor");
   if (cursor === "1") {
     return NextResponse.json(EXAM_LIST1);
   } else if (cursor === "2") {
@@ -170,7 +170,7 @@ export async function GET(
     return NextResponse.json({
       resultType: "SUCCESS",
       erro: {
-        reason: cursor,
+        reason: request,
       },
       success: null,
     });
