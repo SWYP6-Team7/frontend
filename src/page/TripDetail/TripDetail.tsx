@@ -149,6 +149,7 @@ export default function TripDetail() {
   console.log("data", data);
   useInfiniteScroll(() => {
     if (inView) {
+      console.log("inview");
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage]);
@@ -447,6 +448,7 @@ export default function TripDetail() {
           />
           <ScheduleContainer>
             <ScheduleTitle>여행 일정</ScheduleTitle>
+            <Spacing size={16} />
             <ScheduleList>
               {!isLoading &&
                 startDate &&
