@@ -55,7 +55,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
       setInview((prev) => ({ ...prev, bottom: false }));
     }
   }, [topInview, bottomInview]);
-
+  console.log("invew", inView);
   useEffect(() => {
     if (emblaApi) emblaApi.on("slidesInView", logSlidesInView);
   }, [emblaApi, logSlidesInView]);
