@@ -161,6 +161,7 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const cursor = new URL(request.url).searchParams.get("cursor");
+  console.log("cursor", cursor, request);
   if (cursor === "1") {
     return NextResponse.json(EXAM_LIST1);
   } else if (cursor === "2") {
