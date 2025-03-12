@@ -453,7 +453,7 @@ export default function TripDetail() {
         </TopModal>
         <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
           <MapContainer
-            plans={combinedPlans}
+            plans={combinedPlans ?? []}
             locationName={locationName}
             index={openItemIndex}
             isMapFull={isMapFull}
