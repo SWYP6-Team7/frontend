@@ -138,7 +138,11 @@ export default function TripDetail() {
   } = useInfiniteQuery({
     queryKey: ["plans"],
     queryFn: ({ pageParam }) => {
-      return getPlans(Number(travelNumber), pageParam) as any;
+      return getPlans(
+        Number(travelNumber),
+        pageParam,
+        accessToken as string
+      ) as any;
     },
 
     initialPageParam: null,
