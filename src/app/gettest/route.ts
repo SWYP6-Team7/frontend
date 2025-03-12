@@ -156,17 +156,23 @@ const EXAM_LIST2 = {
   error: null,
 };
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
-) {
-  const searchParams = request.nextUrl.searchParams;
-  const cursor = searchParams.get("cursor");
+export async function GET(request: NextRequest) {
+  const url = new URL(request.url);
+  const params = url.searchParams;
+
+  // 특정 파라미터 추출
+  const cursor = params.get("cursor");
   if (cursor === "1") {
     return NextResponse.json(EXAM_LIST1);
   } else if (cursor === "2") {
     return NextResponse.json(EXAM_LIST2);
   } else {
-    return NextResponse.json(request);
+    return NextResponse.json({
+      resultType: "SUCCESS",
+      erro: {
+        reason: cursor,
+      },
+      success: null,
+    });
   }
 }
