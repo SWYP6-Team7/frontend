@@ -10,9 +10,10 @@ type PropType = {
   options?: EmblaOptionsType;
   index: number;
   startDate: string;
+  inView?: React.ReactNode;
 };
 
-const EmblaCarousel: React.FC<PropType> = (props) => {
+const TripCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   console.log(props.index, props.slides);
@@ -25,9 +26,10 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
               <Item>
                 <Tab>
                   <TitleContainer>
-                    <Title>Day {props.index}</Title>
-                    <Date>{getDateByIndex(props.startDate, props.index)}</Date>
+                    <Title>Day {index + 1}</Title>
+                    <Date>{getDateByIndex(props.startDate, index)}</Date>
                   </TitleContainer>
+                  {index === slides.length - 1 && props.inView}
                 </Tab>
               </Item>
             </Slide>
@@ -68,7 +70,11 @@ const Item = styled.div`
   user-select: none;
 `;
 
-const Tab = styled.label<{ tabLineHeight: string; tabPadding: string; fontWeight: number }>`
+const Tab = styled.label<{
+  tabLineHeight: string;
+  tabPadding: string;
+  fontWeight: number;
+}>`
   display: flex;
   font-size: 16px;
   line-height: 16px;
@@ -111,4 +117,4 @@ const Date = styled.div`
   color: ${palette.비강조};
 `;
 
-export default EmblaCarousel;
+export default TripCarousel;

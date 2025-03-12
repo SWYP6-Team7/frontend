@@ -4,7 +4,10 @@ import { getJWTHeader } from "@/utils/user";
 import { CreateTripReqData } from "@/hooks/createTrip/useCreateTrip";
 // 여행 관련 필요한 API요청들.
 
-export const createTrip = async (travelData: CreateTripReqData, accessToken: string) => {
+export const createTrip = async (
+  travelData: CreateTripReqData,
+  accessToken: string
+) => {
   try {
     const response = await axiosInstance.post("/api/travel", travelData, {
       headers: getJWTHeader(accessToken),
@@ -15,9 +18,13 @@ export const createTrip = async (travelData: CreateTripReqData, accessToken: str
   }
 };
 
-export const getPlans = async (travelNumber: number, pageParams: number, accessToken: string | null) => {
+export const getPlans = async (
+  travelNumber: number,
+  pageParams: number,
+  accessToken: string | null
+) => {
   try {
-    const result = await axiosInstance.get(`/api/travel/${travelNumber}`, {
+    const result = await axiosInstance.get(`alpha.moing.io/gettest`, {
       params: {
         cursor: pageParams,
         size: 5,
