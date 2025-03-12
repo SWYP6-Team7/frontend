@@ -113,28 +113,28 @@ const GoogleMap = ({
   positions = [],
   children,
 }: GoogleMapProps) => {
-  // const getInitialSettings = () => {
-  //   let initialCenter = { lat: lat || 0, lng: lng || 0 };
-  //   let initialZoom = zoom || 10;
+  const getInitialSettings = () => {
+    let initialCenter = { lat: lat || 0, lng: lng || 0 };
+    let initialZoom = zoom || 10;
 
-  //   if (positions && positions.length > 0) {
-  //     try {
-  //       const lats = positions.map((pos) => pos.location.lat);
-  //       const lngs = positions.map((pos) => pos.location.lng);
+    if (positions && positions.length > 0) {
+      try {
+        const lats = positions.map((pos) => pos.location.lat);
+        const lngs = positions.map((pos) => pos.location.lng);
 
-  //       initialCenter = {
-  //         lat: (Math.min(...lats) + Math.max(...lats)) / 2,
-  //         lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
-  //       };
-  //     } catch (error) {
-  //       console.error("좌표 계산 오류:", error);
-  //     }
-  //   }
+        initialCenter = {
+          lat: (Math.min(...lats) + Math.max(...lats)) / 2,
+          lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
+        };
+      } catch (error) {
+        console.error("좌표 계산 오류:", error);
+      }
+    }
 
-  //   return { initialCenter, initialZoom };
-  // };
+    return { initialCenter, initialZoom };
+  };
 
-  // const { initialCenter, initialZoom } = getInitialSettings();
+  const { initialCenter, initialZoom } = getInitialSettings();
 
   if (typeof window === "undefined") {
     return <></>;
@@ -144,8 +144,9 @@ const GoogleMap = ({
     <div style={{ width: "100%", height: "100%" }}>
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
         <Map
-          defaultCenter={{ lat: lat, lng: lng }}
-          defaultZoom={10}
+          key={`${initialCenter.lat},${initialCenter.lng},${initialZoom}`}
+          defaultCenter={initialCenter}
+          defaultZoom={initialZoom}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
           disableDefaultUI
           onCameraChanged={(ev: MapCameraChangedEvent) =>
