@@ -81,7 +81,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
                   >
                     <div ref={topRef} style={{ width: "100%", height: 1 }} />
                     {item.spots.map((spot, idx) => (
-                      <SpotItem>
+                      <SpotItem isLast={idx === item.spots.length - 1}>
                         <LeftContainer>
                           <Index>{idx + 1}</Index>
                           <TextContainer>
@@ -174,9 +174,9 @@ const Title = styled.div`
   color: #000;
 `;
 
-const SpotItem = styled.li`
+const SpotItem = styled.li<{ isLast: boolean }>`
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: ${(props) => (props.isLast ? "0" : "15px")};
   padding: 0 10px;
   align-items: center;
   justify-content: space-between;
@@ -240,7 +240,7 @@ const ContentContainer = styled.div<{
     display: none;
   }
   box-shadow: inset 0px
-    ${(props) => (props.isOverTrhee ? (props.isTop ? "12px" : "-12px") : "0")}
+    ${(props) => (props.isOverThree ? (props.isTop ? "12px" : "-12px") : "0")}
     ${(props) => (props.isOverThree ? "10px" : "0")} 0px ${palette.BG};
 `;
 
