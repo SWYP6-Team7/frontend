@@ -21,7 +21,7 @@ export const createTrip = async (
 
 export const getPlans = async (travelNumber: number, pageParams: number) => {
   try {
-    const result = await axios.get(`https://alpha.moing.io/gettest`, {
+    const result = await axios.get(`/gettest`, {
       params: {
         cursor: pageParams,
         size: 5,
