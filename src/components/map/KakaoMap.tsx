@@ -61,7 +61,10 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
             // Create a custom overlay to display the marker
             let customOverlay = new window.kakao.maps.CustomOverlay({
               map: map,
-              position: new window.kakao.maps.LatLng(positions[i].lat, positions[i].lng),
+              position: new window.kakao.maps.LatLng(
+                positions[i].lat,
+                positions[i].lng
+              ),
               content: markerContent,
               yAnchor: 1, // Adjust the anchor to properly position the marker
             });
@@ -70,7 +73,9 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
           // Dashed Polyline
           var linePath: any[] = [];
           for (var i = 0; i < positions.length; i++) {
-            linePath.push(new window.kakao.maps.LatLng(positions[i].lat, positions[i].lng));
+            linePath.push(
+              new window.kakao.maps.LatLng(positions[i].lat, positions[i].lng)
+            );
           }
 
           var polyline = new window.kakao.maps.Polyline({
@@ -87,7 +92,7 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
         map.setCenter(coords);
       });
     });
-  }, [lat, lng, zoom, positions]);
+  }, [lat, lng, zoom, JSON.stringify(positions)]);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>

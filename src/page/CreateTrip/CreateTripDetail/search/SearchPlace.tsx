@@ -6,7 +6,12 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import InputField from "@/components/designSystem/input/InputField";
 
-import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  useMap,
+  useMapsLibrary,
+} from "@vis.gl/react-google-maps";
 import { createTripStore } from "@/store/client/createTripStore";
 import { postTranslate } from "@/api/translation";
 import SearchItem from "./SearchItem";
@@ -38,7 +43,6 @@ const SearchPlace = () => {
 
   const placesLib = useMapsLibrary("places");
   useEffect(() => {
-    console.log(placesLib, map, debouncedKeyword);
     if (!placesLib || debouncedKeyword === "") return;
     async function fetchPlacePredictions() {
       try {
@@ -59,7 +63,8 @@ const SearchPlace = () => {
         request.sessionToken = token;
 
         // Fetch autocomplete suggestions.
-        const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
+        const { suggestions } =
+          await AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
         console.log(suggestions, "sug");
 
         const mappedSuggestions = await Promise.all(
@@ -71,7 +76,8 @@ const SearchPlace = () => {
               });
 
               // 주소 분할 안전장치 추가
-              const regionParts = suggestion.placePrediction.text.text.split(" ");
+              const regionParts =
+                suggestion.placePrediction.text.text.split(" ");
               const region = regionParts.length > 1 ? regionParts[1] : "N/A";
 
               return {
@@ -92,7 +98,8 @@ const SearchPlace = () => {
         // null 값 필터링 및 중복 제거
         const validSuggestions = mappedSuggestions.filter(Boolean);
         const uniqueSuggestions = validSuggestions.filter(
-          (suggestion, index, self) => index === self.findIndex((t) => t.placeId === suggestion.placeId)
+          (suggestion, index, self) =>
+            index === self.findIndex((t) => t.placeId === suggestion.placeId)
         );
 
         console.log("Mapped suggestions:", uniqueSuggestions);
@@ -132,7 +139,9 @@ const SearchPlace = () => {
                 // );
                 setSuggestions(mappedSuggestions);
               });
-            } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+            } else if (
+              status === window.kakao.maps.services.Status.ZERO_RESULT
+            ) {
               console.log("zero result");
               return;
             } else if (status === window.kakao.maps.services.Status.ERROR()) {
@@ -171,7 +180,13 @@ const SearchPlace = () => {
     <div>
       <HeaderContainer>
         <IconContainer onClick={() => router.back()}>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M17.7782 2.22202L2.22183 17.7784M17.7782 17.7784L2.22183 2.22202"
               stroke="#343434"

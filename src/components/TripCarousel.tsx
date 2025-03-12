@@ -16,7 +16,7 @@ type PropType = {
 const TripCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  console.log(props.index, props.slides);
+  console.log("slide", props.index, props.slides);
   return (
     <Embla>
       <Viewport ref={emblaRef}>
