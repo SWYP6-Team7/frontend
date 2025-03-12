@@ -27,7 +27,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
                 <Tab>
                   <TitleContainer>
                     <Title>Day {index + 1}</Title>
-                    <Date>{getDateByIndex(props.startDate, index)}</Date>
+                    <Date>{getDateByIndex(props.startDate, index + 1)}</Date>
                   </TitleContainer>
                   {index === slides.length - 1 && props.inView}
                 </Tab>
