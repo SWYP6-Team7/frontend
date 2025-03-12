@@ -24,7 +24,7 @@ const MapContainer = (props: MapContainerProps) => {
     props.index !== null
       ? props.plans.find((plan) => plan.planOrder === props.index)
       : null;
-  console.log(currentPlan, "plancurrent", props);
+
   // spots 데이터를 기반으로 GoogleMap과 KakaoMap에 필요한 데이터를 생성
   const positions = currentPlan
     ? currentPlan.spots.map((spot) => ({
@@ -33,7 +33,7 @@ const MapContainer = (props: MapContainerProps) => {
         title: spot.name,
       }))
     : [];
-
+  console.log(currentPlan, "plancurrent", props);
   // GoogleMap과 KakaoMap을 조건부로 렌더링
   if (props.locationName.mapType === "google") {
     return (
