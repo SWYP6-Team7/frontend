@@ -21,6 +21,20 @@ const EXAM_LIST1 = {
             latitude: "36.374392",
             longitude: "127.392820",
           },
+          {
+            name: "Hanbat Arboretum2",
+            category: "Park",
+            region: "Daejeon",
+            latitude: "36.666850",
+            longitude: "127.427000",
+          },
+          {
+            name: "Expo Science Park2",
+            category: "Science Park",
+            region: "Daejeon",
+            latitude: "36.674392",
+            longitude: "127.292820",
+          },
         ],
       },
       {
