@@ -167,7 +167,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       resultType: "SUCCESS",
       erro: {
-        reason: searchParams,
+        reason: request.nextUrl,
       },
       success: null,
     });
