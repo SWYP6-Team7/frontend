@@ -19,7 +19,10 @@ export const createTrip = async (
   }
 };
 
-export const getPlans = async (travelNumber: number, pageParams: number) => {
+export const getPlans = async (
+  travelNumber: number,
+  pageParams: number | null
+) => {
   try {
     const result = await axiosInstance.get(
       `/api/travel/${travelNumber}/planS`,
