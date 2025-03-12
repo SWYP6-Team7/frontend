@@ -30,7 +30,6 @@ export const getPlans = async (
         cursor: pageParams,
         size: 5,
       },
-      ...(accessToken && { headers: getJWTHeader(accessToken) }),
     });
     return handleApiResponse(result);
   } catch (err: any) {

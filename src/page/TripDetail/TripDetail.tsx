@@ -151,7 +151,7 @@ export default function TripDetail() {
       }
     },
   });
-
+  console.log("data", data);
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
