@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-static";
 
@@ -163,11 +163,11 @@ export async function GET(
   const searchParams = request.nextUrl.searchParams;
   const cursor = searchParams.get("cursor");
   if (cursor === "1") {
-    return Response.json(EXAM_LIST1);
+    return NextResponse.json(EXAM_LIST1);
   } else if (cursor === "2") {
-    return Response.json(EXAM_LIST2);
+    return NextResponse.json(EXAM_LIST2);
   } else {
-    return Response.json({
+    return NextResponse.json({
       resultType: "SUCCESS",
       erro: {
         reason: "데이터 잘못 요청함",
