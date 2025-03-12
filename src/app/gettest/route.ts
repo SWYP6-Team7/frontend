@@ -170,7 +170,7 @@ export async function GET(
     return NextResponse.json({
       resultType: "SUCCESS",
       erro: {
-        reason: request,
+        reason: JSON.stringify(request),
       },
       success: null,
     });
