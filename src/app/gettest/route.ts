@@ -167,12 +167,6 @@ export async function GET(
   } else if (cursor === "2") {
     return NextResponse.json(EXAM_LIST2);
   } else {
-    return NextResponse.json({
-      resultType: "SUCCESS",
-      erro: {
-        reason: JSON.stringify(request),
-      },
-      success: null,
-    });
+    return NextResponse.json(request);
   }
 }
