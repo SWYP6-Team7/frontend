@@ -168,14 +168,7 @@ export default function TripDetail() {
     setPersonViewClicked(true);
   };
 
-  const locationRef = useRef(location);
-
   useEffect(() => {
-    locationRef.current = location; // 위치 변경 시 항상 최신 값 업데이트
-  }, [location]);
-
-  useEffect(() => {
-    const isMounted = true;
     const script = document.createElement("script");
     script.async = true;
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
@@ -183,13 +176,11 @@ export default function TripDetail() {
     const handleLoad = () => {
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.addressSearch(locationRef.current, (result, status) => {
-          if (!isMounted) return;
-
+        geocoder.addressSearch(location, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
-            addLocationName({ locationName: locationRef.current, mapType: "kakao" });
+            addLocationName({ locationName: location, mapType: "kakao" });
           } else {
-            addLocationName({ locationName: locationRef.current, mapType: "google" });
+            addLocationName({ locationName: location, mapType: "google" });
           }
         });
       });
