@@ -38,108 +38,81 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
   };
 
   const { initialCenter, initialZoom } = getInitialSettings();
-  const mapRef = useRef<any>(null);
-  const overlaysRef = useRef<any>(null);
-  const polylineRef = useRef<any>(null);
-  // 스크립트 로드 분리 (최초 1회만 실행)
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-
   useEffect(() => {
-    if (isScriptLoaded) return;
-
-    const script = document.createElement("script");
+    const script: HTMLScriptElement = document.createElement("script");
     script.async = true;
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false`;
-
+    document.head.appendChild(script);
     const handleLoad = () => {
       window.kakao.maps.load(() => {
-        setIsScriptLoaded(true);
-        initializeMap();
+        let coords = new window.kakao.maps.LatLng(initialCenter.lat, initialCenter.lng);
+
+        // 지도를 담을 영역의 DOM 레퍼런스
+        let container = document.getElementById("map");
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        let options = {
+          // 지도를 생성할 때 필요한 기본 옵션
+          center: coords, // 지도의 중심좌표
+          level: initialZoom, // 지도의 확대 레벨
+        };
+        let map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
+
+        // Use a purple marker with a number inside
+        if (positions) {
+          for (let i = 0; i < positions.length; i++) {
+            // Create a custom marker content with purple background and number
+            let markerContent = document.createElement("div");
+            markerContent.style.cssText = `
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: purple;
+                color: white;
+                text-align: center;
+                line-height: 30px;
+                font-weight: bold;
+                font-size: 14px;
+                user-select: none;
+              `;
+            markerContent.innerText = (i + 1).toString();
+
+            // Create a custom overlay to display the marker
+            let customOverlay = new window.kakao.maps.CustomOverlay({
+              map: map,
+              position: new window.kakao.maps.LatLng(positions[i].lat, positions[i].lng),
+              content: markerContent,
+              yAnchor: 1, // Adjust the anchor to properly position the marker
+            });
+          }
+
+          // Dashed Polyline
+          var linePath: any[] = [];
+          for (var i = 0; i < positions.length; i++) {
+            linePath.push(new window.kakao.maps.LatLng(positions[i].lat, positions[i].lng));
+          }
+
+          var polyline = new window.kakao.maps.Polyline({
+            path: linePath,
+            strokeWeight: 3,
+            strokeColor: "black", // Line color
+            strokeOpacity: 0.7,
+            strokeStyle: "dashed", // Dashed line
+          });
+
+          polyline.setMap(map);
+        }
+
+        map.setCenter(coords);
       });
     };
-
     script.addEventListener("load", handleLoad);
-    document.head.appendChild(script);
 
     return () => {
       script.removeEventListener("load", handleLoad);
       document.head.removeChild(script);
     };
-  }, []);
-
-  // 지도 초기화 함수
-  const initializeMap = useCallback(() => {
-    const container = document.getElementById("map");
-    if (!container) return;
-
-    const coords = new window.kakao.maps.LatLng(initialCenter.lat, initialCenter.lng);
-
-    mapRef.current = new window.kakao.maps.Map(container, {
-      center: coords,
-      level: initialZoom,
-    });
-  }, [initialCenter, initialZoom]);
-
-  // 위치 변경 시 업데이트
-  useEffect(() => {
-    if (!mapRef.current || !isScriptLoaded) return;
-
-    // 기존 오버레이 제거
-    overlaysRef.current.forEach((overlay) => overlay.setMap(null));
-    overlaysRef.current = [];
-
-    // 기존 폴리라인 제거
-    if (polylineRef.current) {
-      polylineRef.current.setMap(null);
-    }
-
-    // 새 마커 생성
-    if (positions?.length) {
-      const newOverlays = positions.map((position, index) => {
-        const markerContent = document.createElement("div");
-        markerContent.style.cssText = `
-          width: 30px; height: 30px; border-radius: 50%;
-          background-color: purple; color: white;
-          text-align: center; line-height: 30px;
-          font-weight: bold; font-size: 14px; user-select: none;
-        `;
-        markerContent.textContent = (index + 1).toString();
-
-        return new window.kakao.maps.CustomOverlay({
-          map: mapRef.current,
-          position: new window.kakao.maps.LatLng(position.lat, position.lng),
-          content: markerContent,
-          yAnchor: 1,
-        });
-      });
-
-      overlaysRef.current = newOverlays;
-
-      // 폴리라인 생성
-      const linePath = positions.map((position) => new window.kakao.maps.LatLng(position.lat, position.lng));
-
-      polylineRef.current = new window.kakao.maps.Polyline({
-        path: linePath,
-        strokeWeight: 3,
-        strokeColor: "black",
-        strokeOpacity: 0.7,
-        strokeStyle: "dashed",
-      });
-
-      polylineRef.current.setMap(mapRef.current);
-    }
-
-    // 지도 중심 재설정
-    mapRef.current.setCenter(new window.kakao.maps.LatLng(initialCenter.lat, initialCenter.lng));
-  }, [positions, initialCenter, isScriptLoaded]);
-
-  // 확대/축소 및 중심 좌표 변경
-  useEffect(() => {
-    if (!mapRef.current) return;
-
-    mapRef.current.setLevel(zoom);
-    mapRef.current.setCenter(new window.kakao.maps.LatLng(lat, lng));
-  }, [lat, lng, zoom]);
+  }, [lat, lng, zoom, JSON.stringify(positions)]);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>

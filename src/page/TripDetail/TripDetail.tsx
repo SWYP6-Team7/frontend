@@ -168,32 +168,24 @@ export default function TripDetail() {
     setPersonViewClicked(true);
   };
 
-  const locationRef = useRef(location);
-
   useEffect(() => {
-    locationRef.current = location;
-  }, [location]);
-
-  const executeGeocoding = (currentLocation: string) => {
-    const geocoder = new window.kakao.maps.services.Geocoder();
-    geocoder.addressSearch(currentLocation, (result, status) => {
-      if (status === window.kakao.maps.services.Status.OK && result?.document?.length > 0) {
-        addLocationName({ locationName: currentLocation, mapType: "kakao" });
-      } else {
-        addLocationName({ locationName: currentLocation, mapType: "google" });
-      }
-    });
-  };
-
-  useEffect(() => {
+    const isMounted = true;
     const script = document.createElement("script");
     script.async = true;
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
 
     const handleLoad = () => {
       window.kakao.maps.load(() => {
-        // 최신 location 값 사용
-        executeGeocoding(locationRef.current);
+        const geocoder = new window.kakao.maps.services.Geocoder();
+        geocoder.addressSearch(location, (result, status) => {
+          if (!isMounted) return;
+
+          if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
+            addLocationName({ locationName: location, mapType: "kakao" });
+          } else {
+            addLocationName({ locationName: location, mapType: "google" });
+          }
+        });
       });
     };
 
@@ -204,12 +196,6 @@ export default function TripDetail() {
       script.removeEventListener("load", handleLoad);
       document.head.removeChild(script);
     };
-  }, []); // 스크립트는 1회만 로드
-
-  // location 변경 시 지오코딩 재실행
-  useEffect(() => {
-    if (!window.kakao) return; // 스크립트 로드 확인
-    executeGeocoding(location);
   }, [location]);
 
   useEffect(() => {
