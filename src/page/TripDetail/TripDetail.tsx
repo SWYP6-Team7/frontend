@@ -85,7 +85,6 @@ export default function TripDetail() {
   const { travelNumber } = useParams<{ travelNumber: string }>();
   const {
     location,
-    postStatus,
     userName,
     createdAt,
     title,
@@ -100,7 +99,6 @@ export default function TripDetail() {
     addLocationName,
     enrollCount,
     viewCount,
-    dueDate,
     maxPerson,
     genderType,
     hostUserCheck,

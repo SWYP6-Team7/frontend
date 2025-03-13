@@ -95,7 +95,7 @@ export default function TripDetailHeader() {
         profileUrl,
         loginMemberRelatedInfo,
       } = tripInfos;
-
+      console.log("location2", location);
       // const [year, month, day] = dueDate.split("-").map((v: string) => +v);
       // const DUEDATE = {
       //   year,
