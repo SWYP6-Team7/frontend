@@ -126,7 +126,7 @@ export default function TripDetail() {
   const alreadyApplied = !!enrollmentNumber;
   const [ref, inView] = useInView();
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
-    queryKey: ["plans"],
+    queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
       return getPlans(Number(travelNumber), pageParam) as any;
     },
