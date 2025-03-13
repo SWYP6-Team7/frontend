@@ -45,7 +45,6 @@ import EmblaCarousel from "@/components/TripCarousel";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
-  console.log("genderType", genderType, gender);
   if (!genderType || genderType === "모두") {
     return true;
   } else {
@@ -170,12 +169,12 @@ export default function TripDetail() {
   };
 
   useEffect(() => {
+    console.log("test", location, "location");
     const script: HTMLScriptElement = document.createElement("script");
     script.async = true;
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
     document.head.appendChild(script);
     script.addEventListener("load", () => {
-      console.log("test", location, "location");
       window.kakao.maps.load(() => {
         var geocoder = new window.kakao.maps.services.Geocoder();
         // 주소로 좌표를 검색합니다
