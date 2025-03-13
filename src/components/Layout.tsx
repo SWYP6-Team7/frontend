@@ -21,25 +21,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const { userPostRefreshToken } = useAuth();
   const { userId, accessToken, logoutCheck } = authStore();
   // 유저 프로필 정보 불러오기
-  const {
-    addEmail,
-    addProfileUrl,
-    addName,
-    addGender,
-    addAgegroup,
-    addPreferredTags,
-    profileUrl,
-    addUserSocialTF,
-  } = myPageStore();
+  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl, addUserSocialTF } =
+    myPageStore();
 
-  const {
-    data,
-    isLoading,
-    profileImage,
-    isLoadingImage,
-    firstProfileImageMutation,
-    isFirstProfileImagePostSuccess,
-  } = useMyPage();
+  const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
+    useMyPage();
   console.log(data, "user data");
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
@@ -101,18 +87,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     if (splashOn === true) return;
     let themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
     if (themeColorMetaTag) {
-      themeColorMetaTag.setAttribute(
-        "content",
-        backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`
-      );
+      themeColorMetaTag.setAttribute("content", backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`);
     }
   }, [pathname]);
 
   return (
-    <APIProvider
-      apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}
-      onLoad={() => console.log("google map load")}
-    >
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""} onLoad={() => console.log("google map load")}>
       <Container pathname={pathname}>
         <Splash />
         <Body pathname={pathname}>
@@ -164,10 +144,6 @@ const Body = styled.div<{ pathname: string | null }>`
     overflow-x: hidden;
   }
 
-  &:-webkit-scrollbar {
-    display: none;
-  }
-
   /* &::-webkit-scrollbar {
     // scrollbar 자체의 설정
     // 너비를 작게 설정
@@ -191,6 +167,9 @@ const Body = styled.div<{ pathname: string | null }>`
     // 크기를 안줘서 안보이게 함.
     width: 0;
     height: 0;
+  }
+  &:-webkit-scrollbar {
+    display: none;
   }
 `;
 // pc환경에서 화면을 가운데 정렬하기 위한 레이아웃 스타일
