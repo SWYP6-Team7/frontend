@@ -18,7 +18,7 @@ export const createTrip = async (travelData: CreateTripReqData, accessToken: str
 
 export const getPlans = async (travelNumber: number, pageParams: number | null) => {
   try {
-    const result = await axios.get(`/api/travel/${travelNumber}/plans`, {
+    const result = await axiosInstance.get(`/api/travel/${travelNumber}/plans`, {
       params: {
         cursor: pageParams,
         size: 5,
