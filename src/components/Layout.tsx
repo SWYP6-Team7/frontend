@@ -168,7 +168,7 @@ const Body = styled.div<{ pathname: string | null }>`
     width: 0;
     height: 0;
   }
-  &:-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
 `;
