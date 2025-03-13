@@ -183,7 +183,7 @@ export default function TripDetail() {
         // 주소로 좌표를 검색합니다
         geocoder.addressSearch(location, function (result, status) {
           // 정상적으로 검색이 완료됐으면
-          if (status === window.kakao.maps.services.Status.OK) {
+          if (status === window.kakao.maps.services.Status.OK && result?.document.length > 0) {
             addLocationName({ locationName: location ?? "", mapType: "kakao" });
           } else {
             addLocationName({
