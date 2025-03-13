@@ -177,7 +177,7 @@ export default function TripDetail() {
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
     document.head.appendChild(script);
     script.addEventListener("load", () => {
-      console.log("test", location);
+      console.log("test", location, "location");
       window.kakao.maps.load(() => {
         var geocoder = new window.kakao.maps.services.Geocoder();
         // 주소로 좌표를 검색합니다
