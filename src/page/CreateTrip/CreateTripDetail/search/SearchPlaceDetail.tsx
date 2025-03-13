@@ -34,6 +34,9 @@ const SearchPlaceDetail = () => {
   useEffect(() => {
     console.log(map, placesLib, placeId);
 
+    let isMounted = true;
+    let script: HTMLScriptElement | null = null;
+
     async function fetchPlacePredictions() {
       try {
         console.log(placesLib, "info");
@@ -56,14 +59,16 @@ const SearchPlaceDetail = () => {
           ],
         });
         console.log(place, "placew");
-        setPlaceDetails({
-          name: place.displayName,
-          address: place.formattedAddress,
-          region: place.formattedAddress.split(" ")[1],
-          type: place.primaryTypeDisplayName,
-          openingHours: place.regularOpeningHours?.weekdayText || [],
-          location: { lat: place.location.lat(), lng: place.location.lng() },
-        });
+        if (isMounted) {
+          setPlaceDetails({
+            name: place.displayName,
+            address: place.formattedAddress,
+            region: place.formattedAddress.split(" ")[1],
+            type: place.primaryTypeDisplayName,
+            openingHours: place.regularOpeningHours?.weekdayText || [],
+            location: { lat: place.location.lat(), lng: place.location.lng() },
+          });
+        }
       } catch (error) {
         console.error("Error fetching place predictions:", error);
       }
@@ -72,14 +77,16 @@ const SearchPlaceDetail = () => {
     if (locationName.mapType === "google") {
       fetchPlacePredictions();
     } else {
-      const script: HTMLScriptElement = document.createElement("script");
+      script = document.createElement("script");
       script.async = true;
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
       document.head.appendChild(script);
 
       script.addEventListener("load", () => {
         window.kakao.maps.load(() => {
-          function placesSearchCB(data, status, pagination) {
+          function placesSearchCB(data, status) {
+            if (!isMounted) return;
+
             if (status === window.kakao.maps.services.Status.OK) {
               console.log(data[0]);
               setPlaceDetails({
@@ -92,24 +99,30 @@ const SearchPlaceDetail = () => {
               });
             } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
               console.log("zero result");
-              return;
-            } else if (status === window.kakao.maps.services.Status.ERROR()) {
-              alert("검색 결과 중 오류가 발생했습니다.");
-              return;
+            } else if (status === window.kakao.maps.services.Status.ERROR) {
+              console.error("검색 결과 중 오류가 발생했습니다.");
             }
           }
 
-          var ps = new window.kakao.maps.services.Places();
+          const ps = new window.kakao.maps.services.Places();
 
           // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-          var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+          const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
           console.log("placeId", decodeURIComponent(placeId as string));
           // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
           ps.keywordSearch(decodeURIComponent(placeId as string), placesSearchCB);
         });
       });
     }
-  }, [placeId, locationName.mapType]);
+
+    return () => {
+      isMounted = false;
+      if (script) {
+        document.head.removeChild(script);
+      }
+    };
+  }, [placeId, locationName.mapType, placesLib, map]);
+
   console.log(placeDetails, "placeDetail");
 
   const handlePlans = () => {

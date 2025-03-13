@@ -168,29 +168,48 @@ export default function TripDetail() {
     setPersonViewClicked(true);
   };
 
+  const locationRef = useRef(location);
+
   useEffect(() => {
-    console.log("test", location, "location");
-    const script: HTMLScriptElement = document.createElement("script");
+    locationRef.current = location;
+  }, [location]);
+
+  const executeGeocoding = (currentLocation: string) => {
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    geocoder.addressSearch(currentLocation, (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK && result?.document?.length > 0) {
+        addLocationName({ locationName: currentLocation, mapType: "kakao" });
+      } else {
+        addLocationName({ locationName: currentLocation, mapType: "google" });
+      }
+    });
+  };
+
+  useEffect(() => {
+    const script = document.createElement("script");
     script.async = true;
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
-    document.head.appendChild(script);
-    script.addEventListener("load", () => {
+
+    const handleLoad = () => {
       window.kakao.maps.load(() => {
-        var geocoder = new window.kakao.maps.services.Geocoder();
-        // 주소로 좌표를 검색합니다
-        geocoder.addressSearch(location, function (result, status) {
-          // 정상적으로 검색이 완료됐으면
-          if (status === window.kakao.maps.services.Status.OK && result?.document.length > 0) {
-            addLocationName({ locationName: location ?? "", mapType: "kakao" });
-          } else {
-            addLocationName({
-              locationName: location ?? "",
-              mapType: "google",
-            });
-          }
-        });
+        // 최신 location 값 사용
+        executeGeocoding(locationRef.current);
       });
-    });
+    };
+
+    script.addEventListener("load", handleLoad);
+    document.head.appendChild(script);
+
+    return () => {
+      script.removeEventListener("load", handleLoad);
+      document.head.removeChild(script);
+    };
+  }, []); // 스크립트는 1회만 로드
+
+  // location 변경 시 지오코딩 재실행
+  useEffect(() => {
+    if (!window.kakao) return; // 스크립트 로드 확인
+    executeGeocoding(location);
   }, [location]);
 
   useEffect(() => {

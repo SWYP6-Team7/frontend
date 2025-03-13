@@ -69,7 +69,6 @@ const RegionWrapper = ({
     });
   };
   useEffect(() => {
-    console.log("locationName", locationName, locationNameStr);
     if (locationName.mapType === "google") {
       fetchPlaceInfo();
     } else {
@@ -77,30 +76,38 @@ const RegionWrapper = ({
       script.async = true;
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
       document.head.appendChild(script);
+
       script.addEventListener("load", () => {
         window.kakao.maps.load(() => {
-          var geocoder = new window.kakao.maps.services.Geocoder();
+          const geocoder = new window.kakao.maps.services.Geocoder();
+
           // 주소로 좌표를 검색합니다
-          geocoder.addressSearch(locationNameStr, function (result, status) {
-            // 정상적으로 검색이 완료됐으면
+          geocoder.addressSearch(locationNameStr, (result, status) => {
             console.log(result, "result");
-            if (result.length === 0) {
-              addInitGeometry(null);
-              return;
-            }
-            if (result[0].x && result[0].y) {
-              addInitGeometry({
-                lat: Number(result[0].y),
-                lng: Number(result[0].x),
+
+            // 정상적으로 검색이 완료됐으면
+            if (status === window.kakao.maps.services.Status.OK && result.length > 0) {
+              if (result[0].x && result[0].y) {
+                addInitGeometry({
+                  lat: Number(result[0].y),
+                  lng: Number(result[0].x),
+                });
+              }
+              setRegionInfo({
+                country: "한국",
+                adminArea: result[0]?.address_name ?? locationNameStr,
               });
+            } else {
+              addInitGeometry(null);
             }
-            setRegionInfo({
-              country: "한국",
-              adminArea: result[0]?.address_name ?? locationNameStr,
-            });
           });
         });
       });
+
+      // 클린업: 스크립트 제거
+      return () => {
+        document.head.removeChild(script);
+      };
     }
   }, [locationNameStr, locationName.mapType]);
 
