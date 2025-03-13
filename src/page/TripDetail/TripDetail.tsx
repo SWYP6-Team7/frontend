@@ -168,6 +168,12 @@ export default function TripDetail() {
     setPersonViewClicked(true);
   };
 
+  const locationRef = useRef(location);
+
+  useEffect(() => {
+    locationRef.current = location; // 위치 변경 시 항상 최신 값 업데이트
+  }, [location]);
+
   useEffect(() => {
     const isMounted = true;
     const script = document.createElement("script");
@@ -177,13 +183,13 @@ export default function TripDetail() {
     const handleLoad = () => {
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.addressSearch(location, (result, status) => {
+        geocoder.addressSearch(locationRef.current, (result, status) => {
           if (!isMounted) return;
 
           if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
-            addLocationName({ locationName: location, mapType: "kakao" });
+            addLocationName({ locationName: locationRef.current, mapType: "kakao" });
           } else {
-            addLocationName({ locationName: location, mapType: "google" });
+            addLocationName({ locationName: locationRef.current, mapType: "google" });
           }
         });
       });
