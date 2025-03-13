@@ -19,13 +19,7 @@ const TripRegion = ({
   isDetail = false,
 }: {
   initLocationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({
-    locationName,
-    mapType,
-  }: {
-    locationName: string;
-    mapType: "google" | "kakao";
-  }) => void;
+  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
   nextFunc: () => void;
   isDetail?: boolean;
 }) => {
@@ -49,7 +43,7 @@ const TripRegion = ({
           // 주소로 좌표를 검색합니다
           geocoder.addressSearch(keyword, function (result, status) {
             // 정상적으로 검색이 완료됐으면
-            if (status === window.kakao.maps.services.Status.OK) {
+            if (status === window.kakao.maps.services.Status.OK && result?.document.length > 0) {
               addLocationName({
                 locationName: keyword ?? "",
                 mapType: "kakao",
@@ -91,21 +85,13 @@ const TripRegion = ({
     <>
       <Title>어디로 떠나볼까요?</Title>
       <Spacing size={8} />
-      <InputField
-        value={keyword}
-        handleRemoveValue={handleRemoveValue}
-        onChange={changeKeyword}
-        icon={<PlaceIcon />}
-      />
+      <InputField value={keyword} handleRemoveValue={handleRemoveValue} onChange={changeKeyword} icon={<PlaceIcon />} />
       {keyword.length > 0 && (
         <>
           {showRelationList && (
             <>
               <Spacing size={16} />
-              <RelationKeywordList
-                onClick={clickRelationKeyword}
-                keyword={keyword}
-              />
+              <RelationKeywordList onClick={clickRelationKeyword} keyword={keyword} />
             </>
           )}
         </>
