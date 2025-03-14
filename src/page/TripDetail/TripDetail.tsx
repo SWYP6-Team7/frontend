@@ -464,7 +464,7 @@ export default function TripDetail() {
           <MapContainer
             plans={combinedPlans ?? []}
             locationName={locationName}
-            index={openItemIndex}
+            index={openItemIndex + 1}
             isMapFull={isMapFull}
             lat={initGeometry?.lat || 37.57037778}
             lng={initGeometry?.lng || 126.9816417}
