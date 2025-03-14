@@ -19,7 +19,13 @@ const TripRegion = ({
   isDetail = false,
 }: {
   initLocationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
+  addLocationName: ({
+    locationName,
+    mapType,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+  }) => void;
   nextFunc: () => void;
   isDetail?: boolean;
 }) => {
@@ -32,23 +38,12 @@ const TripRegion = ({
   const submitRef = useRef(submit);
 
   useEffect(() => {
-    keywordRef.current = keyword;
-    submitRef.current = submit;
-  }, [keyword, submit]);
-
-  // 카카오맵 스크립트 로드 (1회만 실행)
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-
-  useEffect(() => {
-    if (isScriptLoaded) return;
-
     const script = document.createElement("script");
     script.async = true;
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
 
     const handleLoad = () => {
       window.kakao.maps.load(() => {
-        setIsScriptLoaded(true);
         setIsLoad(true);
       });
     };
@@ -60,11 +55,11 @@ const TripRegion = ({
       script.removeEventListener("load", handleLoad);
       document.head.removeChild(script);
     };
-  }, [isScriptLoaded]);
+  }, []);
 
   // Submit 처리 효과
   useEffect(() => {
-    if (!submit || !isScriptLoaded) return;
+    if (!submit) return;
 
     const executeSearch = async () => {
       const geocoder = new window.kakao.maps.services.Geocoder();
@@ -72,17 +67,18 @@ const TripRegion = ({
       try {
         const result: any = await new Promise((resolve, reject) => {
           geocoder.addressSearch(keywordRef.current, (result: any, status) => {
-            status === window.kakao.maps.services.Status.OK ? resolve(result) : reject(status);
+            status === window.kakao.maps.services.Status.OK
+              ? resolve(result)
+              : reject(status);
           });
         });
 
-        if (result?.document?.length > 0) {
-          addLocationName({ locationName: keywordRef.current, mapType: "kakao" });
-        } else {
-          addLocationName({ locationName: keywordRef.current, mapType: "google" });
-        }
+        addLocationName({ locationName: keywordRef.current, mapType: "kakao" });
       } catch (error) {
-        addLocationName({ locationName: keywordRef.current, mapType: "google" });
+        addLocationName({
+          locationName: keywordRef.current,
+          mapType: "google",
+        });
       } finally {
         setSubmit(false);
         nextFunc();
@@ -90,7 +86,7 @@ const TripRegion = ({
     };
 
     executeSearch();
-  }, [submit, isScriptLoaded, setSubmit, nextFunc]);
+  }, [submit, isLoad, setSubmit, nextFunc]);
 
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
@@ -115,13 +111,21 @@ const TripRegion = ({
     <>
       <Title>어디로 떠나볼까요?</Title>
       <Spacing size={8} />
-      <InputField value={keyword} handleRemoveValue={handleRemoveValue} onChange={changeKeyword} icon={<PlaceIcon />} />
+      <InputField
+        value={keyword}
+        handleRemoveValue={handleRemoveValue}
+        onChange={changeKeyword}
+        icon={<PlaceIcon />}
+      />
       {keyword.length > 0 && (
         <>
           {showRelationList && (
             <>
               <Spacing size={16} />
-              <RelationKeywordList onClick={clickRelationKeyword} keyword={keyword} />
+              <RelationKeywordList
+                onClick={clickRelationKeyword}
+                keyword={keyword}
+              />
             </>
           )}
         </>
