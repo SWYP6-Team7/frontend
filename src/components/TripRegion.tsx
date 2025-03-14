@@ -58,32 +58,22 @@ const TripRegion = ({
   useEffect(() => {
     console.log("submit", submit, isLoad, keyword);
     if (!submit || !isLoad) return;
-
-    const executeSearch = async () => {
-      const geocoder = new window.kakao.maps.services.Geocoder();
-
-      try {
-        const result: any = await new Promise((resolve, reject) => {
-          geocoder.addressSearch(keyword, (result: any, status) => {
-            status === window.kakao.maps.services.Status.OK
-              ? resolve(result)
-              : reject(status);
-          });
+    const handleLoad = () => {
+      window.kakao.maps.load(() => {
+        const geocoder = new window.kakao.maps.services.Geocoder();
+        geocoder.addressSearch(location, (result, status) => {
+          if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
+            addLocationName({ locationName: keyword, mapType: "kakao" });
+          } else {
+            addLocationName({ locationName: keyword, mapType: "google" });
+          }
         });
-
-        addLocationName({ locationName: keyword, mapType: "kakao" });
-      } catch (error) {
-        addLocationName({
-          locationName: keyword,
-          mapType: "google",
-        });
-      } finally {
         setSubmit(false);
         nextFunc();
-      }
+      });
     };
 
-    executeSearch();
+    handleLoad();
   }, [submit, isLoad, keyword, setSubmit, nextFunc]);
 
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
