@@ -34,9 +34,6 @@ const TripRegion = ({
   const [isLoad, setIsLoad] = useState(false);
   const [submit, setSubmit] = useState(false);
 
-  const keywordRef = useRef(keyword);
-  const submitRef = useRef(submit);
-
   useEffect(() => {
     const script = document.createElement("script");
     script.async = true;
@@ -59,24 +56,24 @@ const TripRegion = ({
 
   // Submit 처리 효과
   useEffect(() => {
-    if (!submit) return;
+    if (!submit || !isLoad) return;
 
     const executeSearch = async () => {
       const geocoder = new window.kakao.maps.services.Geocoder();
 
       try {
         const result: any = await new Promise((resolve, reject) => {
-          geocoder.addressSearch(keywordRef.current, (result: any, status) => {
+          geocoder.addressSearch(keyword, (result: any, status) => {
             status === window.kakao.maps.services.Status.OK
               ? resolve(result)
               : reject(status);
           });
         });
 
-        addLocationName({ locationName: keywordRef.current, mapType: "kakao" });
+        addLocationName({ locationName: keyword, mapType: "kakao" });
       } catch (error) {
         addLocationName({
-          locationName: keywordRef.current,
+          locationName: keyword,
           mapType: "google",
         });
       } finally {
@@ -86,7 +83,7 @@ const TripRegion = ({
     };
 
     executeSearch();
-  }, [submit, isLoad, setSubmit, nextFunc]);
+  }, [submit, isLoad, keyword, setSubmit, nextFunc]);
 
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
