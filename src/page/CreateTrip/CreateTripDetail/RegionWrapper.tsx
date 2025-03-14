@@ -35,7 +35,7 @@ const RegionWrapper = ({
 
   const fetchPlaceInfo = async () => {
     console.log(map, placesLib, "result");
-
+    if (!map) return;
     const { PlacesService } = placesLib as google.maps.PlacesLibrary;
     const service = new PlacesService(map);
 
@@ -99,12 +99,13 @@ const RegionWrapper = ({
   };
   useEffect(() => {
     if (locationName.mapType === "google") {
+      if (!map) return;
       fetchPlaceInfo();
     } else {
       if (!isLoad) return;
       handleKakaoInfo();
     }
-  }, [locationNameStr, locationName.mapType]);
+  }, [locationNameStr, locationName.mapType, map]);
 
   useEffect(() => {
     const script: HTMLScriptElement = document.createElement("script");
