@@ -29,6 +29,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
   });
 
   const logSlidesInView = (slidesInView, itemIndex) => {
+    console.log(slidesInView, "slideInview");
     if (slidesInView.length === 1) {
       // 슬라이드가 1개만 있는 경우
       props.setOpenItemIndex(slidesInView[0]);
