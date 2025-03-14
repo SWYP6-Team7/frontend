@@ -27,33 +27,20 @@ const TripCarousel: React.FC<PropType> = (props) => {
     bottom: false,
   });
   const logSlidesInView = (slidesInView) => {
-    if (slidesInView.length === 2) {
-      // 슬라이드가 2개만 있는 경우, 두 슬라이드를 모두 표시
-      console.log(`Slides: ${slidesInView}`);
+    if (slidesInView.length === 1) {
+      // 슬라이드가 1개만 있는 경우
+      props.setOpenItemIndex(slidesInView[0]);
+    } else if (slidesInView.length === 2) {
+      // 슬라이드가 2개만 있는 경우, 두 슬라이드 중 하나를 가운데로 설정
+      // 여기서는 첫 번째 슬라이드를 가운데로 설정
+      props.setOpenItemIndex(slidesInView[0]);
     } else {
-      // 슬라이드가 3개 이상인 경우, 가운데 슬라이드와 양옆 슬라이드를 표시
+      // 슬라이드가 3개 이상인 경우, 가운데 슬라이드의 인덱스를 반환
       const middleIndex = Math.floor(slidesInView.length / 2);
       const centerSlideIndex = slidesInView[middleIndex];
-      const leftSlideIndex = slidesInView[middleIndex - 1];
-      const rightSlideIndex = slidesInView[middleIndex + 1];
-
-      if (leftSlideIndex !== undefined && rightSlideIndex !== undefined) {
-        console.log(
-          `Left: ${leftSlideIndex}, Center: ${centerSlideIndex}, Right: ${rightSlideIndex}`
-        );
-      } else if (leftSlideIndex !== undefined) {
-        // 맨 처음 슬라이드인 경우
-        console.log(`Left: ${leftSlideIndex}, Center: ${centerSlideIndex}`);
-      } else if (rightSlideIndex !== undefined) {
-        // 맨 마지막 슬라이드인 경우
-        console.log(`Center: ${centerSlideIndex}, Right: ${rightSlideIndex}`);
-      } else {
-        // 가운데 슬라이드만 있는 경우 (예: 슬라이드가 1개만 있는 경우)
-        console.log(`Center: ${centerSlideIndex}`);
-      }
+      props.setOpenItemIndex(centerSlideIndex);
     }
   };
-
   useEffect(() => {
     if (topInview) {
       setInview((prev) => ({ ...prev, top: true }));
