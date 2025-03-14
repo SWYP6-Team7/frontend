@@ -69,7 +69,9 @@ export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [modalTextForLogin, setModalTextForLogin] = useState(LOGIN_ASKING_FOR_WATCHING_COMMENT);
+  const [modalTextForLogin, setModalTextForLogin] = useState(
+    LOGIN_ASKING_FOR_WATCHING_COMMENT
+  );
 
   const [isApplyToast, setIsApplyToast] = useState(false);
   const [isCancelToast, setIsCancelToast] = useState(false);
@@ -81,6 +83,7 @@ export default function TripDetail() {
   const { userId, accessToken } = authStore();
   const { gender } = myPageStore();
   const [isCommentUpdated, setIsCommentUpdated] = useState(false);
+  const [isKakaoMapLoad, setIsKakaooMapLoad] = useState(false);
   const { travelNumber } = useParams<{ travelNumber: string }>();
   const {
     location,
@@ -122,7 +125,15 @@ export default function TripDetail() {
   const allCompanions = (companions as any)?.data?.companions;
   const alreadyApplied = !!enrollmentNumber;
   const [ref, inView] = useInView();
-  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    refetch,
+    isFetching,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
       return getPlans(Number(travelNumber), pageParam) as any;
@@ -137,7 +148,10 @@ export default function TripDetail() {
       }
     },
   });
-  const combinedPlans = data?.pages.reduce((acc, page) => acc.concat(page.plans), []);
+  const combinedPlans = data?.pages.reduce(
+    (acc, page) => acc.concat(page.plans),
+    []
+  );
   console.log("data", data, combinedPlans);
   useInfiniteScroll(() => {
     if (inView) {
@@ -169,10 +183,6 @@ export default function TripDetail() {
   };
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
-
     const handleLoad = () => {
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
@@ -185,15 +195,28 @@ export default function TripDetail() {
         });
       });
     };
+    if (isKakaoMapLoad) {
+      handleLoad();
+    }
+  }, [isKakaoMapLoad, location]);
 
-    script.addEventListener("load", handleLoad);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
+
+    script.addEventListener("load", () => {
+      setIsKakaooMapLoad(true);
+    });
     document.head.appendChild(script);
 
     return () => {
-      script.removeEventListener("load", handleLoad);
+      script.removeEventListener("load", () => {
+        setIsKakaooMapLoad(false);
+      });
       document.head.removeChild(script);
     };
-  }, [location]);
+  }, []);
 
   useEffect(() => {
     if (applySuccess) {
@@ -273,15 +296,30 @@ export default function TripDetail() {
 
   return (
     <>
-      <ResultToast height={120} isShow={editToastShow} setIsShow={setEditToastShow} text="게시글이 수정되었어요." />
+      <ResultToast
+        height={120}
+        isShow={editToastShow}
+        setIsShow={setEditToastShow}
+        text="게시글이 수정되었어요."
+      />
       <NoticeModal
         isModalOpen={noticeModal}
         modalMsg={`여행에 참가가 확정된\n 멤버만 볼 수 있어요.`}
         modalTitle="참가 신청 대기중"
         setModalOpen={setNoticeModal}
       />
-      <ResultToast height={80} isShow={isCancelToast} setIsShow={setIsCancelToast} text="여행 신청이 취소 되었어요." />
-      <ResultToast height={80} isShow={isApplyToast} setIsShow={setIsApplyToast} text="여행 신청이 완료 되었어요." />
+      <ResultToast
+        height={80}
+        isShow={isCancelToast}
+        setIsShow={setIsCancelToast}
+        text="여행 신청이 취소 되었어요."
+      />
+      <ResultToast
+        height={80}
+        isShow={isApplyToast}
+        setIsShow={setIsApplyToast}
+        text="여행 신청이 완료 되었어요."
+      />
 
       <CheckingModal
         isModalOpen={showLoginModal}
@@ -319,7 +357,11 @@ export default function TripDetail() {
       />
 
       <TripDetailWrapper ref={containerRef}>
-        <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
+        <TopModal
+          containerRef={containerRef}
+          setIsMapFull={setIsMapFull}
+          onHeightChange={setTopModalHeight}
+        >
           <ModalContainer>
             <MainContent>
               <ProfileContainer>
@@ -390,7 +432,9 @@ export default function TripDetail() {
                 <Calendar />
                 <CalendarTitle>여행 날짜</CalendarTitle>
                 <CalendarContent>
-                  {startDate && endDate ? formatDateRange(startDate, endDate) : "날짜를 선택하세요."}
+                  {startDate && endDate
+                    ? formatDateRange(startDate, endDate)
+                    : "날짜를 선택하세요."}
                 </CalendarContent>
               </CalendarTextContainer>
             </CalendarContainer>
@@ -434,7 +478,9 @@ export default function TripDetail() {
                 <EmblaCarousel
                   startDate={startDate}
                   setOpenItemIndex={setOpenItemIndex}
-                  inView={<div ref={ref} style={{ width: 5, height: "100%" }} />}
+                  inView={
+                    <div ref={ref} style={{ width: 5, height: "100%" }} />
+                  }
                   slides={combinedPlans} // 모든 데이터를 하나의 슬라이드 컴포넌트에 전달
                 />
               )}
@@ -492,11 +538,20 @@ export default function TripDetail() {
           }
         ></ApplyListButton>
       </ButtonContainer>
-      <CompanionsView isOpen={personViewClicked} setIsOpen={setPersonViewClicked} />
+      <CompanionsView
+        isOpen={personViewClicked}
+        setIsOpen={setPersonViewClicked}
+      />
 
       <CommentWrapper>
         <IconContainer onClick={commentClickHandler}>
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M25 18.6667C25 19.315 24.7425 19.9367 24.284 20.3952C23.8256 20.8536 23.2039 21.1111 22.5556 21.1111H7.88889L3 26V6.44444C3 5.79614 3.25754 5.17438 3.71596 4.71596C4.17438 4.25754 4.79614 4 5.44444 4H22.5556C23.2039 4 23.8256 4.25754 24.284 4.71596C24.7425 5.17438 25 5.79614 25 6.44444V18.6667Z"
               fill="#FEFEFE"
@@ -543,7 +598,8 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  padding-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  padding-top: ${(props) =>
+    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
