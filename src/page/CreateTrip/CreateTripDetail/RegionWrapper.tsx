@@ -5,7 +5,12 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  useMap,
+  useMapsLibrary,
+} from "@vis.gl/react-google-maps";
 import { createTripStore } from "@/store/client/createTripStore";
 import RegionModal from "@/components/RegionModal";
 
@@ -21,12 +26,19 @@ const RegionWrapper = ({
   isDetail = false,
 }: {
   locationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
+  addLocationName: ({
+    locationName,
+    mapType,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+  }) => void;
   addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   location?: string;
   isDetail?: boolean;
 }) => {
   const [regionInfo, setRegionInfo] = useState<RegionInfo | null>(null);
+  const [isLoad, setIsLoad] = useState(false);
   const map = useMap();
   const [isModalOPen, setIsModalOpen] = useState(false);
   const placesLib = useMapsLibrary("places");
@@ -45,7 +57,10 @@ const RegionWrapper = ({
     service.findPlaceFromQuery(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
         console.log(results, "result");
-        if (results[0].geometry?.location?.lat() && results[0].geometry?.location?.lng()) {
+        if (
+          results[0].geometry?.location?.lat() &&
+          results[0].geometry?.location?.lng()
+        ) {
           addInitGeometry({
             lat: results[0].geometry?.location?.lat(),
             lng: results[0].geometry?.location?.lng(),
@@ -54,7 +69,9 @@ const RegionWrapper = ({
         // 결과 처리
 
         if (results[0]) {
-          const parts = results[0].formatted_address?.split(",").map((part) => part.trim());
+          const parts = results[0].formatted_address
+            ?.split(",")
+            .map((part) => part.trim());
           setRegionInfo({
             country: parts ? parts[parts.length - 1] : null,
             adminArea: parts ? parts[parts.length - 2] : null,
@@ -68,48 +85,63 @@ const RegionWrapper = ({
       }
     });
   };
+
+  const handleKakaoInfo = () => {
+    window.kakao.maps.load(() => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch(locationNameStr, (result, status) => {
+        console.log(result, "result");
+
+        // 정상적으로 검색이 완료됐으면
+        if (
+          status === window.kakao.maps.services.Status.OK &&
+          result.length > 0
+        ) {
+          if (result[0].x && result[0].y) {
+            addInitGeometry({
+              lat: Number(result[0].y),
+              lng: Number(result[0].x),
+            });
+          }
+          setRegionInfo({
+            country: "한국",
+            adminArea: result[0]?.address_name ?? locationNameStr,
+          });
+        } else {
+          addInitGeometry(null);
+        }
+      });
+    });
+  };
   useEffect(() => {
     if (locationName.mapType === "google") {
       fetchPlaceInfo();
     } else {
-      const script: HTMLScriptElement = document.createElement("script");
-      script.async = true;
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
-      document.head.appendChild(script);
-
-      script.addEventListener("load", () => {
-        window.kakao.maps.load(() => {
-          const geocoder = new window.kakao.maps.services.Geocoder();
-
-          // 주소로 좌표를 검색합니다
-          geocoder.addressSearch(locationNameStr, (result, status) => {
-            console.log(result, "result");
-
-            // 정상적으로 검색이 완료됐으면
-            if (status === window.kakao.maps.services.Status.OK && result.length > 0) {
-              if (result[0].x && result[0].y) {
-                addInitGeometry({
-                  lat: Number(result[0].y),
-                  lng: Number(result[0].x),
-                });
-              }
-              setRegionInfo({
-                country: "한국",
-                adminArea: result[0]?.address_name ?? locationNameStr,
-              });
-            } else {
-              addInitGeometry(null);
-            }
-          });
-        });
-      });
-
-      // 클린업: 스크립트 제거
-      return () => {
-        document.head.removeChild(script);
-      };
+      if (!isLoad) return;
+      handleKakaoInfo();
     }
   }, [locationNameStr, locationName.mapType]);
+
+  useEffect(() => {
+    const script: HTMLScriptElement = document.createElement("script");
+    script.async = true;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
+    document.head.appendChild(script);
+
+    script.addEventListener("load", () => {
+      setIsLoad(true);
+    });
+
+    // 클린업: 스크립트 제거
+    return () => {
+      script.removeEventListener("load", () => {
+        setIsLoad(false);
+      });
+      document.head.removeChild(script);
+    };
+  }, []);
 
   if (isDetail) {
     return (
