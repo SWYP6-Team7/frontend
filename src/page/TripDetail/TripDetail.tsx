@@ -478,6 +478,7 @@ export default function TripDetail() {
                 <EmblaCarousel
                   startDate={startDate}
                   setOpenItemIndex={setOpenItemIndex}
+                  openItemIndex={openItemIndex}
                   inView={
                     <div ref={ref} style={{ width: 5, height: "100%" }} />
                   }

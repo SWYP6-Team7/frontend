@@ -14,6 +14,7 @@ type PropType = {
   options?: EmblaOptionsType;
   startDate: string;
   inView?: React.ReactNode;
+  openItemIndex: number;
   setOpenItemIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -26,14 +27,19 @@ const TripCarousel: React.FC<PropType> = (props) => {
     top: false,
     bottom: false,
   });
-  const logSlidesInView = (slidesInView) => {
+
+  const logSlidesInView = (slidesInView, itemIndex) => {
     if (slidesInView.length === 1) {
       // 슬라이드가 1개만 있는 경우
       props.setOpenItemIndex(slidesInView[0]);
     } else if (slidesInView.length === 2) {
       // 슬라이드가 2개만 있는 경우, 두 슬라이드 중 하나를 가운데로 설정
-      // 여기서는 첫 번째 슬라이드를 가운데로 설정
-      props.setOpenItemIndex(slidesInView[0]);
+      // 여기서는 두 슬라이드 중 더 큰 인덱스를 가운데로 설정
+      if (itemIndex === slidesInView[0]) {
+        props.setOpenItemIndex(slidesInView[1]);
+      } else {
+        props.setOpenItemIndex(slidesInView[0]);
+      }
     } else {
       // 슬라이드가 3개 이상인 경우, 가운데 슬라이드의 인덱스를 반환
       const middleIndex = Math.floor(slidesInView.length / 2);
@@ -41,6 +47,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
       props.setOpenItemIndex(centerSlideIndex);
     }
   };
+
   useEffect(() => {
     if (topInview) {
       setInview((prev) => ({ ...prev, top: true }));
@@ -54,10 +61,12 @@ const TripCarousel: React.FC<PropType> = (props) => {
       setInview((prev) => ({ ...prev, bottom: false }));
     }
   }, [topInview, bottomInview]);
-  console.log("invew", inView);
   useEffect(() => {
-    if (emblaApi) emblaApi.on("slidesInView", logSlidesInView);
-  }, [emblaApi, logSlidesInView]);
+    if (emblaApi)
+      emblaApi.on("slidesInView", (slidesInview) =>
+        logSlidesInView(slidesInview, props.openItemIndex)
+      );
+  }, [emblaApi, logSlidesInView, props.openItemIndex]);
 
   return (
     <Embla>
