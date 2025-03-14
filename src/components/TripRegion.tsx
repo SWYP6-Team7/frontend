@@ -56,6 +56,7 @@ const TripRegion = ({
 
   // Submit 처리 효과
   useEffect(() => {
+    console.log("submit", submit, isLoad, keyword);
     if (!submit || !isLoad) return;
 
     const executeSearch = async () => {
