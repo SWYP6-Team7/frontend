@@ -18,6 +18,7 @@ type PropType = {
 };
 
 function getSpecificElement(arr: number[]) {
+  console.log("arr", arr);
   if (arr.length === 1) {
     return arr[0];
   } else if (arr.length === 2) {

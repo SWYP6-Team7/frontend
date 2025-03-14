@@ -22,7 +22,7 @@ const MapContainer = (props: MapContainerProps) => {
   // 현재 선택된 계획(plan) 가져오기
   const currentPlan =
     props.index !== null && props.index !== undefined
-      ? props.plans.find((plan) => plan.planOrder === props.index!)
+      ? props.plans.find((plan) => plan.planOrder === props.index! + 1)
       : null;
 
   // spots 데이터를 기반으로 GoogleMap과 KakaoMap에 필요한 데이터를 생성
