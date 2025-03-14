@@ -28,25 +28,9 @@ const TripCarousel: React.FC<PropType> = (props) => {
     bottom: false,
   });
 
-  const logSlidesInView = (emblaApi, itemIndex) => {
-    const slidesInView = emblaApi.slidesInView();
-
-    if (slidesInView.length === 1) {
-      // 슬라이드가 1개만 있는 경우
-      props.setOpenItemIndex(slidesInView[0]);
-    } else if (slidesInView.length === 2) {
-      // 슬라이드가 2개만 있는 경우, 두 슬라이드 중 하나를 가운데로 설정
-      // 여기서는 두 슬라이드 중 더 큰 인덱스를 가운데로 설정
-      if (itemIndex === slidesInView[0]) {
-        props.setOpenItemIndex(slidesInView[1]);
-      } else {
-        props.setOpenItemIndex(slidesInView[0]);
-      }
-    } else {
-      // 슬라이드가 3개 이상인 경우, 가운데 슬라이드의 인덱스를 반환
-      const middleIndex = Math.floor(slidesInView.length / 2);
-      const centerSlideIndex = slidesInView[middleIndex];
-      props.setOpenItemIndex(centerSlideIndex);
+  const updateSelectedIndex = () => {
+    if (emblaApi) {
+      props.openItemIndex(emblaApi.selectedScrollSnap());
     }
   };
 
@@ -64,11 +48,11 @@ const TripCarousel: React.FC<PropType> = (props) => {
     }
   }, [topInview, bottomInview]);
   useEffect(() => {
-    if (emblaApi)
-      emblaApi.on("slidesInView", (slidesInview) =>
-        logSlidesInView(slidesInview, props.openItemIndex)
-      );
-  }, [emblaApi, logSlidesInView, props.openItemIndex]);
+    if (emblaApi) {
+      emblaApi.on("select", updateSelectedIndex); // 슬라이드 변경 시 호출
+      updateSelectedIndex(); // 초기값 설정
+    }
+  }, [emblaApi]);
 
   return (
     <Embla>
