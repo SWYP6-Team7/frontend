@@ -35,7 +35,7 @@ const RegionWrapper = ({
 
   const fetchPlaceInfo = async () => {
     console.log(map, placesLib, "result");
-    if (!map || !placesLib) return;
+
     const { PlacesService } = placesLib as google.maps.PlacesLibrary;
     const service = new PlacesService(map);
 
