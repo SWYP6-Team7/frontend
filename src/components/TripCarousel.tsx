@@ -17,17 +17,6 @@ type PropType = {
   setOpenItemIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function getSpecificElement(arr: number[]) {
-  console.log("arr", arr);
-  if (arr.length === 1) {
-    return arr[0];
-  } else if (arr.length === 2) {
-    return arr[0] === 0 ? arr[0] : arr[arr.length - 1];
-  } else {
-    return arr[1];
-  }
-}
-
 const TripCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
@@ -37,11 +26,33 @@ const TripCarousel: React.FC<PropType> = (props) => {
     top: false,
     bottom: false,
   });
-  const logSlidesInView = useCallback((emblaApi) => {
-    console.log(emblaApi.slidesInView());
-    const index = getSpecificElement(emblaApi.slidesInView());
-    props.setOpenItemIndex(index);
-  }, []);
+  const logSlidesInView = (slidesInView) => {
+    if (slidesInView.length === 2) {
+      // 슬라이드가 2개만 있는 경우, 두 슬라이드를 모두 표시
+      console.log(`Slides: ${slidesInView}`);
+    } else {
+      // 슬라이드가 3개 이상인 경우, 가운데 슬라이드와 양옆 슬라이드를 표시
+      const middleIndex = Math.floor(slidesInView.length / 2);
+      const centerSlideIndex = slidesInView[middleIndex];
+      const leftSlideIndex = slidesInView[middleIndex - 1];
+      const rightSlideIndex = slidesInView[middleIndex + 1];
+
+      if (leftSlideIndex !== undefined && rightSlideIndex !== undefined) {
+        console.log(
+          `Left: ${leftSlideIndex}, Center: ${centerSlideIndex}, Right: ${rightSlideIndex}`
+        );
+      } else if (leftSlideIndex !== undefined) {
+        // 맨 처음 슬라이드인 경우
+        console.log(`Left: ${leftSlideIndex}, Center: ${centerSlideIndex}`);
+      } else if (rightSlideIndex !== undefined) {
+        // 맨 마지막 슬라이드인 경우
+        console.log(`Center: ${centerSlideIndex}, Right: ${rightSlideIndex}`);
+      } else {
+        // 가운데 슬라이드만 있는 경우 (예: 슬라이드가 1개만 있는 경우)
+        console.log(`Center: ${centerSlideIndex}`);
+      }
+    }
+  };
 
   useEffect(() => {
     if (topInview) {
