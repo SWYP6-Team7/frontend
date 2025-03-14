@@ -30,7 +30,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
 
   const updateSelectedIndex = () => {
     if (emblaApi) {
-      props.openItemIndex(emblaApi.selectedScrollSnap());
+      props.setOpenItemIndex(emblaApi.selectedScrollSnap());
     }
   };
 
