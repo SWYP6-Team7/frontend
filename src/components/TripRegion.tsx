@@ -62,7 +62,7 @@ const TripRegion = ({
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.addressSearch(location, (result, status) => {
-          if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
+          if (status === window.kakao.maps.services.Status.OK) {
             addLocationName({ locationName: keyword, mapType: "kakao" });
           } else {
             addLocationName({ locationName: keyword, mapType: "google" });
