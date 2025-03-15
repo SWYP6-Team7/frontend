@@ -209,6 +209,7 @@ const CreateTripDetail = () => {
                       plans={plans}
                       idx={idx}
                       addPlans={addPlans}
+                      type="create"
                       title={item}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}

@@ -9,7 +9,7 @@ import { createTripStore } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 const SearchPlaceDetail = () => {
@@ -27,6 +27,9 @@ const SearchPlaceDetail = () => {
   const placesLib = useMapsLibrary("places");
   const [isClient, setIsClient] = useState(false);
   const { locationName, plans, addPlans } = createTripStore();
+  const searchParams = useSearchParams();
+  const paramsType = searchParams?.get("type") ?? "create";
+  const travelNumber = searchParams?.get("travelNumber") ?? "";
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -167,7 +170,11 @@ const SearchPlaceDetail = () => {
       ];
     }
     addPlans(newPlans);
-    router.push("/create/trip/detail");
+    if (paramsType === "create") {
+      router.push("/create/trip/detail");
+    } else {
+      router.push(`trip/edit/${travelNumber}`);
+    }
   };
 
   if (typeof window === "undefined") {

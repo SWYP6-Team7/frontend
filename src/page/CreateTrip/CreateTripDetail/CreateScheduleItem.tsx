@@ -7,28 +7,26 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import React, { DragEvent, ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
 
-const LIST = [
-  { id: 0, title: "도쿄 타워", description: "전망대 도쿄도" },
-  { id: 1, title: "도요스 시장", description: "수산시장 도쿄도" },
-  { id: 2, title: "도쿄 프린스 호텔", description: "호텔 도쿄도" },
-];
-
 const CreateScheduleItem = ({
   title,
   idx,
   isOpen,
   onToggle,
+  type,
   plans,
   addPlans,
+  travelNumber,
 }: {
   title: string;
   idx: number;
+  type: "create" | "edit";
   isOpen: boolean;
   onToggle: () => void;
   plans: {
     planOrder: number;
     spots: SpotType[];
   }[];
+  travelNumber?: number;
   addPlans: (
     plans: {
       planOrder: number;
@@ -72,7 +70,13 @@ const CreateScheduleItem = ({
         >
           {plan?.planOrder !== undefined && <DnDList plans={plans} addPlans={addPlans} planOrder={plan!.planOrder} />}
           <Spacing size={16} />
-          <Button onClick={() => router.push(`/search/place/${idx}`)}>+장소추가</Button>
+          <Button
+            onClick={() =>
+              router.push(`/search/place/${idx}?type=${type}${type === "edit" ? `&travelNumber=${travelNumber}` : ""}`)
+            }
+          >
+            +장소추가
+          </Button>
         </Content>
       </List>
     </Container>

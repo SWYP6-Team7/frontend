@@ -313,6 +313,7 @@ const EditTrip = () => {
                   plans?.map((item, idx) => (
                     <CreateScheduleItem
                       addPlans={addPlans}
+                      type="edit"
                       idx={idx}
                       plans={plans}
                       title={getDateByIndex(date?.startDate ?? "", idx + 1)}

@@ -11,7 +11,7 @@ import { createTripStore } from "@/store/client/createTripStore";
 import { postTranslate } from "@/api/translation";
 import SearchItem from "./SearchItem";
 import { palette } from "@/styles/palette";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SearchPlace = () => {
   const [keyword, setKeyword] = useState("");
