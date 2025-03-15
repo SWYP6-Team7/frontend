@@ -87,7 +87,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
                       ))}
                       <div ref={bottomRef} style={{ width: "100%", height: 1 }} />
                     </ContentContainer>
-                    <BottomShadow isOverThree={item.spots.length > 3} isTop={inView.top} />
+                    <BottomShadow isOverThree={item.spots.length > 3} isBottom={inView.bottom} />
                   </div>
                 </Tab>
               </Item>
@@ -251,7 +251,7 @@ const TopShadow = styled.div<{
 
 const BottomShadow = styled.div<{
   isOverThree: boolean;
-  isTop: boolean;
+  isBottom: boolean;
 }>`
   position: absolute;
   left: 0;
@@ -260,7 +260,7 @@ const BottomShadow = styled.div<{
   height: 12px;
   z-index: 1;
   background: linear-gradient(to top, ${palette.BG}, transparent);
-  opacity: ${(props) => (props.isOverThree && !props.isTop ? 1 : 0)};
+  opacity: ${(props) => (props.isOverThree && !props.isBottom ? 1 : 0)};
   pointer-events: none;
 `;
 const Date = styled.div`
