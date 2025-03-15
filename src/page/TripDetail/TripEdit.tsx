@@ -262,7 +262,6 @@ const EditTrip = () => {
               <Title>여행 일정</Title>
               <ScheduleList>
                 {!isLoading &&
-                  date?.startDate &&
                   combinedPlans &&
                   combinedPlans?.map((item, idx) => (
                     <CreateScheduleItem
