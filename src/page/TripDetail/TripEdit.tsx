@@ -152,7 +152,10 @@ const EditTrip = () => {
     initMaxPerson,
   ]);
 
-  const combinedPlans = data?.pages.reduce((acc, page) => acc.concat(page.plans), []);
+  const combinedPlans = data?.pages.reduce(
+    (acc, page) => acc.concat([...plans.map((item) => ({ ...item, planOrder: item.planOrder - 1 }))]),
+    []
+  );
   console.log("plandata", combinedPlans, plans);
   useEffect(() => {
     if (combinedPlans && combinedPlans.length > 0) {
@@ -179,7 +182,7 @@ const EditTrip = () => {
       ? plans.map((plan) => {
           return {
             ...plan,
-            planOrder: plan.planOrder,
+            planOrder: plan.planOrder + 1,
             spots: plan.spots.map((spot) => {
               const { id, ...newSpots } = {
                 ...spot,
