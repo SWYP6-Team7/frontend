@@ -157,9 +157,9 @@ const EditTrip = () => {
     details,
     maxPerson,
     genderType: genderType!,
-    startDate: date!.startDate || "",
-    endDate: date!.endDate || "",
-    periodType: getDateRangeCategory(date!.startDate ?? "", date!.endDate ?? ""),
+    startDate: date?.startDate || "",
+    endDate: date?.endDate || "",
+    periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
     locationName: locationName.locationName,
     tags,
     plans: newPlan,
@@ -173,8 +173,8 @@ const EditTrip = () => {
       details === "" ||
       maxPerson === 0 ||
       genderType === "" ||
-      !date?.startDate ||
-      !date?.endDate ||
+      date?.startDate ||
+      date?.endDate ||
       periodType === "" ||
       tags.length === 0 ||
       locationName.locationName === ""
