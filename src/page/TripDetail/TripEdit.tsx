@@ -153,12 +153,12 @@ const EditTrip = () => {
   ]);
 
   const combinedPlans = data?.pages.reduce((acc, page) => acc.concat(page.plans), []);
-  console.log("data", combinedPlans);
+  console.log("plandata", combinedPlans, plans);
   useEffect(() => {
     if (combinedPlans && combinedPlans.length > 0) {
       addPlans(combinedPlans);
     }
-  }, [combinedPlans?.length]);
+  }, [combinedPlans]);
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
