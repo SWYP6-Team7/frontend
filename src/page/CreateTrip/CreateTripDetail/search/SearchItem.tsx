@@ -78,7 +78,7 @@ const SearchItem = ({
     if (paramsType === "create") {
       router.push("/create/trip/detail");
     } else {
-      router.push(`trip/edit/${travelNumber}`);
+      router.push(`/trip/edit/${travelNumber}`);
     }
   };
   return (
