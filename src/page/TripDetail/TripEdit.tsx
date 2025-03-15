@@ -152,16 +152,43 @@ const EditTrip = () => {
     initMaxPerson,
   ]);
 
-  const combinedPlans = data?.pages.reduce(
-    (acc, page) => acc.concat([...page.plans.map((item) => ({ ...item, planOrder: item.planOrder - 1 }))]),
-    []
-  );
+  const [originalPlans, setOriginalPlans] = useState<any[]>([]);
 
   useEffect(() => {
-    if (combinedPlans && combinedPlans.length > 0) {
-      addPlans([...plans, ...combinedPlans]);
+    if (data?.pages) {
+      // 새로 가져온 모든 계획을 하나의 배열로 변환
+      const fetchedPlans = data.pages.reduce(
+        (acc, page) =>
+          acc.concat(
+            page.plans.map((item) => ({
+              ...item,
+              planOrder: item.planOrder - 1,
+            }))
+          ),
+        []
+      );
+
+      // 원본 데이터 업데이트 (비교용)
+      setOriginalPlans((prev) => {
+        // 이미 있는 plan은 추가하지 않음
+        const newPlans = fetchedPlans.filter(
+          (newPlan) => !prev.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
+        );
+        return [...prev, ...newPlans];
+      });
+
+      // 아직 zustand store에 없는 새로운 계획만 추가
+      // 여기서는 planOrder가 기준이 됨
+      const newPlansToAdd = fetchedPlans.filter(
+        (newPlan) => !plans.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
+      );
+
+      // 새 계획이 있으면 추가
+      if (newPlansToAdd.length > 0) {
+        addPlans(newPlansToAdd);
+      }
     }
-  }, [combinedPlans?.length]);
+  }, [data?.pages, plans, addPlans]);
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
@@ -229,7 +256,7 @@ const EditTrip = () => {
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
-      plans: generatePlanChanges(combinedPlans, newPlan),
+      plans: generatePlanChanges(originalPlans, newPlan),
     };
     console.log("travelData", travelData);
     // createTripMutate(undefined, {
