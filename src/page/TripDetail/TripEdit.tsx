@@ -139,20 +139,23 @@ const EditTrip = () => {
   const handleItemToggle = (index) => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
-  const newPlan = plans.map((plan) => {
-    return {
-      ...plan,
-      planOrder: plan.planOrder + 1,
-      spots: plan.spots.map((spot) => {
-        const { id, ...newSpots } = {
-          ...spot,
-          latitude: Number(spot.latitude.toFixed(9)),
-          longitude: Number(spot.longitude.toFixed(9)),
-        };
-        return newSpots;
-      }),
-    };
-  });
+  const newPlan =
+    plans.length > 0
+      ? plans.map((plan) => {
+          return {
+            ...plan,
+            planOrder: plan.planOrder,
+            spots: plan.spots.map((spot) => {
+              const { id, ...newSpots } = {
+                ...spot,
+                latitude: Number(spot.latitude.toFixed(9)),
+                longitude: Number(spot.longitude.toFixed(9)),
+              };
+              return newSpots;
+            }),
+          };
+        })
+      : [];
 
   const travelData = {
     title,
