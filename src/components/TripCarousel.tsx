@@ -79,7 +79,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
                             <TextContainer>
                               <SpotTitle>{spot.name}</SpotTitle>
                               <Description>
-                                {spot.category} {spot.region}
+                                {spot.category} · {spot.region}
                               </Description>
                             </TextContainer>
                           </LeftContainer>
@@ -242,7 +242,7 @@ const TopShadow = styled.div<{
   left: 0;
   right: 0;
   top: 0;
-  height: 12px;
+  height: 14px;
   z-index: 1;
   background: linear-gradient(to bottom, ${palette.BG}, transparent);
   opacity: ${(props) => (props.isOverThree && props.isTop ? 1 : 0)};
@@ -257,7 +257,7 @@ const BottomShadow = styled.div<{
   left: 0;
   right: 0;
   bottom: 0;
-  height: 12px;
+  height: 14px;
   z-index: 1;
   background: linear-gradient(to top, ${palette.BG}, transparent);
   opacity: ${(props) => (props.isOverThree && props.isBottom ? 1 : 0)};
