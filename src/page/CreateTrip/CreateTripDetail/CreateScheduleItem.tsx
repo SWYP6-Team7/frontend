@@ -1,7 +1,7 @@
 "use client";
 import DnDList from "@/components/DnDList";
 import Spacing from "@/components/Spacing";
-import { createTripStore } from "@/store/client/createTripStore";
+import { createTripStore, SpotType } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
@@ -18,16 +18,20 @@ const CreateScheduleItem = ({
   idx,
   isOpen,
   onToggle,
+  plans,
 }: {
   title: string;
   idx: number;
   isOpen: boolean;
   onToggle: () => void;
+  plans: {
+    planOrder: number;
+    spots: SpotType[];
+  }[];
 }) => {
   const [contentHeight, setContentHeight] = useState(0);
   const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null); // 콘텐츠 참조 추가
-  const { plans } = createTripStore();
   const plan = plans.find((plan) => plan.planOrder === idx);
   const count = plan?.spots?.length ?? 0;
   useEffect(() => {

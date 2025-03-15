@@ -15,6 +15,7 @@ import ResultToast from "@/components/designSystem/toastMessage/resultToast";
 interface CalendarModalProps {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
 }
 
 function isMoreThan90DaysApart(date1, date2) {
@@ -27,8 +28,7 @@ function isMoreThan90DaysApart(date1, date2) {
   return diffInDays > 90;
 }
 
-const CalendarModal = ({ showModal, setShowModal }: CalendarModalProps) => {
-  const {  addDate } = createTripStore();
+const CalendarModal = ({ showModal, setShowModal, addDate }: CalendarModalProps) => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const [startTime, setStartTime] = useState<string | undefined>();

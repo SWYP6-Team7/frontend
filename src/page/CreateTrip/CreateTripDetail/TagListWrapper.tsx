@@ -7,18 +7,16 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import TagList from "../component/TagList";
-import { createTripStore } from "@/store/client/createTripStore";
 import Spacing from "@/components/Spacing";
 import { TAG_LIST } from "@/constants/tags";
 
 interface TagListWrapperProps {
   taggedArray: string[];
-  type: "create" | "edit" | "detail";
+  addTags: (tags: string[]) => void;
 }
 
-const TagListWrapper = ({ taggedArray, type }: TagListWrapperProps) => {
+const TagListWrapper = ({ taggedArray, addTags }: TagListWrapperProps) => {
   const [showModal, setShowModal] = useState(false);
-  const { tags, addTags } = createTripStore();
   const [tempTaggedArray, setTampTaggedArray] = useState(taggedArray);
   const clickTag = (index: number) => {
     const newArray = taggedArray.includes(TAG_LIST.value[index])

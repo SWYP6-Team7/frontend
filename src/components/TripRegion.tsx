@@ -5,8 +5,6 @@ import ButtonContainer from "./ButtonContainer";
 import Button from "./designSystem/Buttons/Button";
 import InputField from "./designSystem/input/InputField";
 import Spacing from "./Spacing";
-import useViewTransition from "@/hooks/useViewTransition";
-import { createTripStore } from "@/store/client/createTripStore";
 import { useEffect, useRef, useState } from "react";
 import useRelationKeyword from "@/hooks/search/useRelationKeyword";
 import RelationKeywordList from "./relationKeyword/RelationKeywordList";
@@ -19,13 +17,7 @@ const TripRegion = ({
   isDetail = false,
 }: {
   initLocationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({
-    locationName,
-    mapType,
-  }: {
-    locationName: string;
-    mapType: "google" | "kakao";
-  }) => void;
+  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
   nextFunc: () => void;
   isDetail?: boolean;
 }) => {
@@ -99,21 +91,13 @@ const TripRegion = ({
     <>
       <Title>어디로 떠나볼까요?</Title>
       <Spacing size={8} />
-      <InputField
-        value={keyword}
-        handleRemoveValue={handleRemoveValue}
-        onChange={changeKeyword}
-        icon={<PlaceIcon />}
-      />
+      <InputField value={keyword} handleRemoveValue={handleRemoveValue} onChange={changeKeyword} icon={<PlaceIcon />} />
       {keyword.length > 0 && (
         <>
           {showRelationList && (
             <>
               <Spacing size={16} />
-              <RelationKeywordList
-                onClick={clickRelationKeyword}
-                keyword={keyword}
-              />
+              <RelationKeywordList onClick={clickRelationKeyword} keyword={keyword} />
             </>
           )}
         </>

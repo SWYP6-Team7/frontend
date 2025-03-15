@@ -23,10 +23,11 @@ import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CreateScheduleItem from "../CreateTrip/CreateTripDetail/CreateScheduleItem";
 import TripToast from "@/components/designSystem/toastMessage/tripToast";
+import { getDateRangeCategory } from "@/utils/time";
 import { editTripStore } from "@/store/client/editTripStore";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getPlans } from "@/api/trip";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
-import { editStore } from "@/store/client/editStore";
-import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
@@ -43,21 +44,7 @@ export function getDatesArray(startDate, endDate) {
   return dates;
 }
 
-const TripEdit = () => {
-  // const {
-  //   locationName: initLocationName,
-  //   title: initTitle,
-  //   details,
-
-  //   tags,
-  //   initGeometry,
-  //   date,
-  //   plans,
-  //   genderType,
-  //   maxPerson,
-  //   periodType,
-  // } = tripDetailStore();
-  // useeffect 하기 싫은뎅
+const CreateTripDetail = () => {
   const {
     locationName,
     title,
@@ -69,12 +56,73 @@ const TripEdit = () => {
     date,
     plans,
     genderType,
+    addDate,
+    addGenderType,
+    addMaxPerson,
     maxPerson,
+    addTags,
+    addLocationName,
+    addInitGeometry,
     periodType,
     addCompletionStatus,
     resetCreateTripDetail,
   } = editTripStore();
-  const { travelNumber } = tripDetailStore();
+  const {
+    travelNumber,
+
+    title: initTitle,
+    startDate: initStartDate,
+    endDate: initEndDate,
+    details: initDetails,
+    tags: initTags,
+    bookmarkCount: initBookmarkCount,
+    locationName: initLocationName,
+    addInitGeometry: initAddInitGeometry,
+    initGeometry: initInitGeometry,
+    addLocationName: initAddLocationName,
+
+    maxPerson: initMaxPerson,
+    genderType: initGenderType,
+
+    setApplySuccess: initSetApplySuccess,
+  } = tripDetailStore();
+  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
+    queryKey: ["plans", travelNumber],
+    queryFn: ({ pageParam }) => {
+      return getPlans(Number(travelNumber), pageParam) as any;
+    },
+
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.nextCursor) {
+        return undefined;
+      } else {
+        return lastPage?.nextCursor;
+      }
+    },
+  });
+
+  useEffect(() => {
+    addTitle(initTitle); // 제목 설정
+    addDetails(initDetails); // 상세 내용 설정
+    addTags(initTags); // 태그 설정
+    addLocationName(initLocationName); // 위치 이름 설정
+    addInitGeometry(initInitGeometry); // 초기 지오메트리 설정
+    addDate({ startDate: initStartDate || "", endDate: initEndDate || "" }); // 날짜 설정
+    addGenderType(initGenderType); // 성별 타입 설정
+    addMaxPerson(initMaxPerson); // 최대 인원 설정
+  }, [
+    initTitle,
+    initDetails,
+    initTags,
+    initLocationName,
+    initInitGeometry,
+    initStartDate,
+    initEndDate,
+    initGenderType,
+    initMaxPerson,
+  ]);
+  const combinedPlans = data?.pages.reduce((acc, page) => acc.concat(page.plans), []);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -83,16 +131,27 @@ const TripEdit = () => {
   const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
     addTitle(e.target.value);
   };
-  const { updateTripDetailMutation, isEditSuccess, updateTripDetailMutate } =
-    useTripDetail(travelNumber);
-
-  const { editToastShow, setEditToastShow } = editStore();
   const { accessToken } = authStore();
   const [openItemIndex, setOpenItemIndex] = useState(0);
   const router = useRouter();
   const handleItemToggle = (index) => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
+  const newPlan = plans.map((plan) => {
+    return {
+      ...plan,
+      planOrder: plan.planOrder + 1,
+      spots: plan.spots.map((spot) => {
+        const { id, ...newSpots } = {
+          ...spot,
+          latitude: Number(spot.latitude.toFixed(9)),
+          longitude: Number(spot.longitude.toFixed(9)),
+        };
+        return newSpots;
+      }),
+    };
+  });
+
   const travelData = {
     title,
     details,
@@ -100,11 +159,12 @@ const TripEdit = () => {
     genderType: genderType!,
     startDate: date!.startDate,
     endDate: date!.endDate,
-    periodType,
-    tags,
-    plans: plans.map((plan) => ({ ...plan, planOrder: plan.planOrder + 1 })),
+    periodType: getDateRangeCategory(date!.startDate, date!.endDate),
     locationName: locationName.locationName,
+    tags,
+    plans: newPlan,
   };
+  // const { createTripMutate } = useCreateTrip(travelData, accessToken as string); // 여행 생성 api 요청.
 
   const completeClickHandler = () => {
     if (
@@ -122,31 +182,19 @@ const TripEdit = () => {
       addCompletionStatus(false);
     }
 
-    updateTripDetailMutate(
-      {
-        locationName: locationName.locationName,
-        title,
-        details,
-        maxPerson,
-        genderType: genderType!,
-
-        periodType,
-        tags,
-        startDate: date!.startDate,
-        endDate: date!.endDate,
-        plans,
-      },
-      {
-        onSuccess: () => {
-          setEditToastShow(true);
-
-          router.push(`/trip/detail/${travelNumber}`);
-        },
-        onError: (e) => {
-          console.log(e, "여행 수정에 오류 발생");
-        },
-      }
-    );
+    // createTripMutate(undefined, {
+    //   onSuccess: (data: any) => {
+    //     resetCreateTripDetail();
+    //     if (data) {
+    //       router.push(`/trip/detail/${data.travelNumber}`);
+    //     } else {
+    //       router.push(`/`);
+    //     }
+    //   },
+    //   onError: (e) => {
+    //     console.log(e, "여행 생성에 오류 발생.");
+    //   },
+    // });
   };
 
   useEffect(() => {
@@ -161,13 +209,13 @@ const TripEdit = () => {
     <>
       <CreateTripDetailWrapper>
         <CreateTripDetailContainer ref={containerRef}>
-          <TopModal
-            containerRef={containerRef}
-            setIsMapFull={setIsMapFull}
-            onHeightChange={setTopModalHeight}
-          >
+          <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
             <ModalContainer>
-              {/* <RegionWrapper /> */}
+              <RegionWrapper
+                locationName={locationName}
+                addInitGeometry={addInitGeometry}
+                addLocationName={addLocationName}
+              />
               <Spacing size={16} />
               <InputField
                 value={title}
@@ -187,39 +235,44 @@ const TripEdit = () => {
 자유롭게 소개해보세요. (최대 2,000자)"
               />
               <Spacing size={16} />
-              <TagListWrapper type="create" taggedArray={tags} />
+              <TagListWrapper addTags={addTags} taggedArray={tags} />
               <Spacing size={16} />
               <Bar />
-              <CalendarWrapper />
+              <CalendarWrapper addDate={addDate} date={date} />
               <Bar />
-              <InfoWrapper />
+              <InfoWrapper
+                addGenderType={addGenderType}
+                genderType={genderType}
+                maxPerson={maxPerson}
+                addMaxPerson={addMaxPerson}
+              />
             </ModalContainer>
           </TopModal>
-          <BottomContainer
-            isMapFull={isMapFull}
-            topModalHeight={topModalHeight}
-          >
-            {/* <MapContainer
+          <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
+            <MapContainer
               index={openItemIndex}
+              plans={plans}
+              locationName={locationName}
               isMapFull={isMapFull}
               lat={initGeometry?.lat || 37.57037778}
               lng={initGeometry?.lng || 126.9816417}
               zoom={locationName.mapType === "google" ? 11 : 9}
-            /> */}
+            />
             <ScheduleContainer>
               <Title>여행 일정</Title>
               <ScheduleList>
-                {date &&
-                  getDatesArray(date.startDate, date.endDate).map(
-                    (item, idx) => (
-                      <CreateScheduleItem
-                        idx={idx}
-                        title={item}
-                        isOpen={openItemIndex === idx}
-                        onToggle={() => handleItemToggle(idx)}
-                      />
-                    )
-                  )}
+                {!isLoading &&
+                  date?.startDate &&
+                  combinedPlans &&
+                  combinedPlans?.map((item, idx) => (
+                    <CreateScheduleItem
+                      idx={idx}
+                      plans={plans}
+                      title={item}
+                      isOpen={openItemIndex === idx}
+                      onToggle={() => handleItemToggle(idx)}
+                    />
+                  ))}
               </ScheduleList>
             </ScheduleContainer>
           </BottomContainer>
@@ -242,7 +295,7 @@ const TripEdit = () => {
   );
 };
 
-export default TripEdit;
+export default CreateTripDetail;
 
 const CreateTripDetailWrapper = styled.div`
   position: relative;
@@ -295,8 +348,7 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) =>
-    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;

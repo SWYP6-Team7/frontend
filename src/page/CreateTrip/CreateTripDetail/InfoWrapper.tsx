@@ -6,16 +6,22 @@ import ArrowIcon from "@/components/icons/ArrowIcon";
 import EveryBodyIcon from "@/components/icons/EveryBodyIcon";
 import OnlyFemaleIcon from "@/components/icons/OnlyFemaleIcon";
 import OnlyMaleIcon from "@/components/icons/OnlyMaleIcon";
-import { createTripStore } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { ChangeEvent, FocusEventHandler, useState } from "react";
 import { selections } from "../CreateTripInfo";
 import Spacing from "@/components/Spacing";
 
-const InfoWrapper = () => {
+interface InfoWrapperProps {
+  genderType?: string | null;
+  maxPerson: number;
+  addMaxPerson: (person: number) => void;
+  addGenderType: (type: string) => void;
+}
+
+const InfoWrapper = ({ genderType, maxPerson, addMaxPerson, addGenderType }: InfoWrapperProps) => {
   const [showModal, setShowModal] = useState(false);
-  const { genderType, maxPerson, addMaxPerson, addGenderType } = createTripStore();
+
   const [focused, setFocused] = useState(false);
 
   const bgColor = focused ? palette.keycolorBG : palette.검색창;

@@ -1,6 +1,5 @@
 "use client";
 import Calendar from "@/components/icons/Calendar";
-import { createTripStore } from "@/store/client/createTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
@@ -8,12 +7,21 @@ import { formatDateRange } from "../CalendarClient";
 import ArrowIcon from "@/components/icons/ArrowIcon";
 import CalendarModal from "../CalendarModal";
 
-const CalendarWrapper = () => {
+const CalendarWrapper = ({
+  date,
+  addDate,
+}: {
+  date?: {
+    startDate: string;
+    endDate: string;
+  } | null;
+  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
+}) => {
   const [showModal, setShowModal] = useState(false);
-  const { date } = createTripStore();
+
   return (
     <>
-      <CalendarModal showModal={showModal} setShowModal={setShowModal} />
+      <CalendarModal addDate={addDate} showModal={showModal} setShowModal={setShowModal} />
       <Container onClick={() => setShowModal(true)}>
         <TextContainer>
           <Calendar />

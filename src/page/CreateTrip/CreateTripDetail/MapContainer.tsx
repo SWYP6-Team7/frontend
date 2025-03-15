@@ -1,7 +1,6 @@
 "use client";
 import GoogleMap, { PoiMarkers } from "@/components/map/GoogleMap";
 import KakaoMap from "@/components/map/KakaoMap";
-import { createTripStore } from "@/store/client/createTripStore";
 import styled from "@emotion/styled";
 import React from "react";
 

@@ -6,7 +6,6 @@ import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
-import { createTripStore } from "@/store/client/createTripStore";
 import RegionModal from "@/components/RegionModal";
 
 interface RegionInfo {
