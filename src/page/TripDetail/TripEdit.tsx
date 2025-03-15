@@ -44,7 +44,7 @@ export function getDatesArray(startDate, endDate) {
   return dates;
 }
 
-const CreateTripDetail = () => {
+const EditTrip = () => {
   const {
     locationName,
     title,
@@ -157,9 +157,9 @@ const CreateTripDetail = () => {
     details,
     maxPerson,
     genderType: genderType!,
-    startDate: date!.startDate,
-    endDate: date!.endDate,
-    periodType: getDateRangeCategory(date!.startDate, date!.endDate),
+    startDate: date!.startDate || "",
+    endDate: date!.endDate || "",
+    periodType: getDateRangeCategory(date!.startDate ?? "", date!.endDate ?? ""),
     locationName: locationName.locationName,
     tags,
     plans: newPlan,
@@ -295,7 +295,7 @@ const CreateTripDetail = () => {
   );
 };
 
-export default CreateTripDetail;
+export default EditTrip;
 
 const CreateTripDetailWrapper = styled.div`
   position: relative;
