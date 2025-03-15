@@ -260,7 +260,7 @@ const BottomShadow = styled.div<{
   height: 12px;
   z-index: 1;
   background: linear-gradient(to top, ${palette.BG}, transparent);
-  opacity: ${(props) => (props.isOverThree && !props.isBottom ? 1 : 0)};
+  opacity: ${(props) => (props.isOverThree && props.isBottom ? 1 : 0)};
   pointer-events: none;
 `;
 const Date = styled.div`
