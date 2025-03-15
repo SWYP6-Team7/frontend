@@ -314,6 +314,7 @@ const EditTrip = () => {
                     <CreateScheduleItem
                       addPlans={addPlans}
                       type="edit"
+                      travelNumber={travelNumber}
                       idx={idx}
                       plans={plans}
                       title={getDateByIndex(date?.startDate ?? "", idx + 1)}
