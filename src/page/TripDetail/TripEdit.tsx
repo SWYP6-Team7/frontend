@@ -255,7 +255,7 @@ const EditTrip = () => {
             <ScheduleContainer>
               <Title>여행 일정</Title>
               <ScheduleList>
-                {!isLoading &&
+                {/* {!isLoading &&
                   combinedPlans &&
                   combinedPlans?.map((item, idx) => (
                     <CreateScheduleItem
@@ -265,7 +265,7 @@ const EditTrip = () => {
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}
                     />
-                  ))}
+                  ))} */}
               </ScheduleList>
             </ScheduleContainer>
           </BottomContainer>
