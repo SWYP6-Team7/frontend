@@ -155,40 +155,34 @@ const EditTrip = () => {
   const [originalPlans, setOriginalPlans] = useState<any[]>([]);
 
   useEffect(() => {
-    if (data?.pages) {
-      // 새로 가져온 모든 계획을 하나의 배열로 변환
-      const fetchedPlans = data.pages.reduce(
-        (acc, page) =>
-          acc.concat(
-            page.plans.map((item) => ({
-              ...item,
-              planOrder: item.planOrder - 1,
-            }))
-          ),
-        []
+    if (!data?.pages) return;
+
+    const fetchedPlans = data.pages.reduce(
+      (acc, page) =>
+        acc.concat(
+          page.plans.map((item) => ({
+            ...item,
+            planOrder: item.planOrder - 1,
+          }))
+        ),
+      []
+    );
+
+    setOriginalPlans((prev) => {
+      const uniqueNewPlans = fetchedPlans.filter(
+        (newPlan) => !prev.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
       );
+      return uniqueNewPlans.length > 0 ? [...prev, ...uniqueNewPlans] : prev;
+    });
 
-      // 원본 데이터 업데이트 (비교용)
-      setOriginalPlans((prev) => {
-        // 이미 있는 plan은 추가하지 않음
-        const newPlans = fetchedPlans.filter(
-          (newPlan) => !prev.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
-        );
-        return [...prev, ...newPlans];
-      });
+    const newPlansToAdd = fetchedPlans.filter(
+      (newPlan) => !plans.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
+    );
 
-      // 아직 zustand store에 없는 새로운 계획만 추가
-      // 여기서는 planOrder가 기준이 됨
-      const newPlansToAdd = fetchedPlans.filter(
-        (newPlan) => !plans.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
-      );
-
-      // 새 계획이 있으면 추가
-      if (newPlansToAdd.length > 0) {
-        addPlans(newPlansToAdd);
-      }
+    if (newPlansToAdd.length > 0) {
+      addPlans(newPlansToAdd);
     }
-  }, [data?.pages, plans, addPlans]);
+  }, [data?.pages, addPlans]);
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
