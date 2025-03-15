@@ -131,7 +131,7 @@ const RegionWrapper = ({
       <TextContainer>
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
           <Map
-            style={{ height: 0, width: 0 }}
+            style={{ height: 1, width: 1, position: "fixed", top: -99, left: -99, opacity: 1, visibility: "hidden" }}
             defaultZoom={13}
             mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
             disableDefaultUI
@@ -155,7 +155,7 @@ const RegionWrapper = ({
         />
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
           <Map
-            style={{ height: 0, width: 0 }}
+            style={{ height: 1, width: 1, position: "fixed", top: -99, left: -99, opacity: 1, visibility: "hidden" }}
             defaultZoom={13}
             mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
             disableDefaultUI
