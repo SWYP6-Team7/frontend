@@ -121,7 +121,9 @@ const EditTrip = () => {
   const combinedPlans = data?.pages.reduce((acc, page) => acc.concat(page.plans), []);
   console.log("data", combinedPlans);
   useEffect(() => {
-    addPlans(combinedPlans);
+    if (combinedPlans && combinedPlans.length > 0) {
+      addPlans(combinedPlans);
+    }
   }, [combinedPlans?.length]);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
@@ -262,8 +264,8 @@ const EditTrip = () => {
               <Title>여행 일정</Title>
               <ScheduleList>
                 {!isLoading &&
-                  combinedPlans.length > 0 &&
-                  combinedPlans?.map((item, idx) => (
+                  plans.length > 0 &&
+                  plans?.map((item, idx) => (
                     <CreateScheduleItem
                       idx={idx}
                       plans={plans}
