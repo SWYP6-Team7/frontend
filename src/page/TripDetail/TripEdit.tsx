@@ -158,7 +158,7 @@ const EditTrip = () => {
     if (combinedPlans && combinedPlans.length > 0) {
       addPlans(combinedPlans);
     }
-  }, [combinedPlans]);
+  }, [JSON.stringify(combinedPlans)]);
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
