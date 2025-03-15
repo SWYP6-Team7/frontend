@@ -13,29 +13,15 @@ interface RegionInfo {
   country: string | null;
   adminArea: string | null;
 }
-const RegionWrapper = ({
-  locationName,
-  addInitGeometry,
-  addLocationName,
-  location,
-  isDetail = false,
-}: {
-  locationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
-  addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
-  location?: string;
-  isDetail?: boolean;
-}) => {
-  const [regionInfo, setRegionInfo] = useState<RegionInfo | null>(null);
-  const [isLoad, setIsLoad] = useState(false);
-  const map = useMap();
-  const [isModalOPen, setIsModalOpen] = useState(false);
-  const placesLib = useMapsLibrary("places");
-  const locationNameStr = location ?? locationName.locationName;
 
-  const fetchPlaceInfo = async () => {
+const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometry, isLoad }) => {
+  const map = useMap();
+  const placesLib = useMapsLibrary("places");
+
+  const fetchPlaceInfo = useCallback(async () => {
+    if (!map || !placesLib) return;
+
     console.log(map, placesLib, "result");
-    if (!map) return;
     const { PlacesService } = placesLib as google.maps.PlacesLibrary;
     const service = new PlacesService(map);
 
@@ -53,7 +39,6 @@ const RegionWrapper = ({
             lng: results[0].geometry?.location?.lng(),
           });
         }
-        // 결과 처리
 
         if (results[0]) {
           const parts = results[0].formatted_address?.split(",").map((part) => part.trim());
@@ -69,17 +54,15 @@ const RegionWrapper = ({
         });
       }
     });
-  };
+  }, [map, placesLib, locationNameStr, addInitGeometry, setRegionInfo]);
 
-  const handleKakaoInfo = () => {
+  const handleKakaoInfo = useCallback(() => {
     window.kakao.maps.load(() => {
       const geocoder = new window.kakao.maps.services.Geocoder();
 
-      // 주소로 좌표를 검색합니다
       geocoder.addressSearch(locationNameStr, (result, status) => {
         console.log(result, "result");
 
-        // 정상적으로 검색이 완료됐으면
         if (status === window.kakao.maps.services.Status.OK && result.length > 0) {
           if (result[0].x && result[0].y) {
             addInitGeometry({
@@ -96,18 +79,48 @@ const RegionWrapper = ({
         }
       });
     });
-  };
+  }, [locationNameStr, addInitGeometry, setRegionInfo]);
+
   useEffect(() => {
-    console.log("map", map);
     if (locationName.mapType === "google") {
-      if (!map) return;
+      if (!map || !placesLib) return;
       fetchPlaceInfo();
     } else {
       if (!isLoad) return;
       handleKakaoInfo();
     }
-  }, [locationNameStr, locationName.mapType, map]);
+  }, [locationName.mapType, map, placesLib, isLoad, fetchPlaceInfo, handleKakaoInfo]);
 
+  return (
+    <Map
+      style={{ height: 1, width: 1, position: "fixed", top: -99, left: -99, opacity: 1, visibility: "hidden" }}
+      defaultZoom={13}
+      mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
+      disableDefaultUI
+      defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+    />
+  );
+};
+
+const RegionWrapper = ({
+  locationName,
+  addInitGeometry,
+  addLocationName,
+  location,
+  isDetail = false,
+}: {
+  locationName: { locationName: string; mapType: "google" | "kakao" };
+  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
+  addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
+  location?: string;
+  isDetail?: boolean;
+}) => {
+  const [regionInfo, setRegionInfo] = useState<RegionInfo | null>(null);
+  const [isLoad, setIsLoad] = useState(false);
+  const [isModalOPen, setIsModalOpen] = useState(false);
+  const locationNameStr = location ?? locationName.locationName;
+
+  // 카카오맵 스크립트 로딩
   useEffect(() => {
     const script: HTMLScriptElement = document.createElement("script");
     script.async = true;
@@ -118,7 +131,6 @@ const RegionWrapper = ({
       setIsLoad(true);
     });
 
-    // 클린업: 스크립트 제거
     return () => {
       script.removeEventListener("load", () => {
         setIsLoad(false);
@@ -131,12 +143,12 @@ const RegionWrapper = ({
     return (
       <TextContainer>
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
-          <Map
-            style={{ height: 1, width: 1, position: "fixed", top: -99, left: -99, opacity: 1, visibility: "hidden" }}
-            defaultZoom={13}
-            mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
-            disableDefaultUI
-            defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+          <InnerMap
+            locationNameStr={locationNameStr}
+            locationName={locationName}
+            setRegionInfo={setRegionInfo}
+            addInitGeometry={addInitGeometry}
+            isLoad={isLoad}
           />
         </APIProvider>
         <Region>{locationNameStr}</Region>
@@ -155,12 +167,12 @@ const RegionWrapper = ({
           setIsModalOpen={setIsModalOpen}
         />
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
-          <Map
-            style={{ height: 1, width: 1, position: "fixed", top: -99, left: -99, opacity: 1, visibility: "hidden" }}
-            defaultZoom={13}
-            mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
-            disableDefaultUI
-            defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+          <InnerMap
+            locationNameStr={locationNameStr}
+            locationName={locationName}
+            setRegionInfo={setRegionInfo}
+            addInitGeometry={addInitGeometry}
+            isLoad={isLoad}
           />
         </APIProvider>
         <Container>
