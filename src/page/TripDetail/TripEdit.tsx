@@ -159,10 +159,7 @@ const EditTrip = () => {
 
   useEffect(() => {
     if (combinedPlans && combinedPlans.length > 0) {
-      const newPlans = combinedPlans.filter(
-        (newPlan) => !plans.some((prevPlan) => prevPlan.planOrder === newPlan.planOrder)
-      );
-      addPlans(newPlans);
+      addPlans([...plans, ...combinedPlans]);
     }
   }, [combinedPlans?.length]);
 
