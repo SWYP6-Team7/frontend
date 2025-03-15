@@ -201,18 +201,6 @@ const EditTrip = () => {
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage]);
 
-  const travelData = {
-    title,
-    details,
-    maxPerson,
-    genderType: genderType!,
-    startDate: date?.startDate || "",
-    endDate: date?.endDate || "",
-    periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
-    locationName: locationName.locationName,
-    tags,
-    plans: generatePlanChanges(combinedPlans, newPlan),
-  };
   // const { createTripMutate } = useCreateTrip(travelData, accessToken as string); // 여행 생성 api 요청.
 
   const completeClickHandler = () => {
@@ -230,6 +218,18 @@ const EditTrip = () => {
     ) {
       addCompletionStatus(false);
     }
+    const travelData = {
+      title,
+      details,
+      maxPerson,
+      genderType: genderType!,
+      startDate: date?.startDate || "",
+      endDate: date?.endDate || "",
+      periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
+      locationName: locationName.locationName,
+      tags,
+      plans: generatePlanChanges(combinedPlans, newPlan),
+    };
     console.log("travelData", travelData);
     // createTripMutate(undefined, {
     //   onSuccess: (data: any) => {
