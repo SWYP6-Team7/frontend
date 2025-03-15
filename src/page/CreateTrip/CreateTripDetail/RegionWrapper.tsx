@@ -98,6 +98,7 @@ const RegionWrapper = ({
     });
   };
   useEffect(() => {
+    console.log("map", map);
     if (locationName.mapType === "google") {
       if (!map) return;
       fetchPlaceInfo();
