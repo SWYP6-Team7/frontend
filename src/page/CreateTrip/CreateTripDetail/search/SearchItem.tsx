@@ -1,5 +1,6 @@
 "use client";
 import { createTripStore } from "@/store/client/createTripStore";
+import { editTripStore } from "@/store/client/editTripStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -23,15 +24,15 @@ const SearchItem = ({
 }) => {
   const router = useRouter();
   const { planOrder } = useParams();
+
+  const searchParams = useSearchParams();
+  const paramsType = searchParams?.get("type") ?? "create";
+  const travelNumber = searchParams?.get("travelNumber") ?? "";
   const {
     locationName: { mapType, locationName },
     addPlans,
     plans,
-  } = createTripStore();
-  const searchParams = useSearchParams();
-  const paramsType = searchParams?.get("type") ?? "create";
-  const travelNumber = searchParams?.get("travelNumber") ?? "";
-
+  } = paramsType === "create" ? createTripStore() : editTripStore();
   const handlePlans = (e: MouseEvent) => {
     e.stopPropagation();
     if (!planOrder) return;
