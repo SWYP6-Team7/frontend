@@ -23,7 +23,7 @@ import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CreateScheduleItem from "../CreateTrip/CreateTripDetail/CreateScheduleItem";
 import TripToast from "@/components/designSystem/toastMessage/tripToast";
-import { getDateRangeCategory } from "@/utils/time";
+import { getDateByIndex, getDateRangeCategory } from "@/utils/time";
 import { editTripStore } from "@/store/client/editTripStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPlans } from "@/api/trip";
@@ -60,6 +60,7 @@ const EditTrip = () => {
     addGenderType,
     addMaxPerson,
     maxPerson,
+    addPlans,
     addTags,
     addLocationName,
     addInitGeometry,
@@ -116,7 +117,12 @@ const EditTrip = () => {
     initGenderType,
     initMaxPerson,
   ]);
+
   const combinedPlans = data?.pages.reduce((acc, page) => acc.concat(page.plans), []);
+
+  useEffect(() => {
+    addPlans(combinedPlans);
+  }, [combinedPlans?.length]);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -261,7 +267,7 @@ const EditTrip = () => {
                     <CreateScheduleItem
                       idx={idx}
                       plans={plans}
-                      title={item}
+                      title={getDateByIndex(date?.startDate ?? "", idx + 1)}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}
                     />
