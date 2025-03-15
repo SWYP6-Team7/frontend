@@ -1,15 +1,8 @@
 "use client";
 import { getCurrentFormattedDate } from "@/utils/time";
 import { create } from "zustand";
+import { SpotType } from "./createTripStore";
 
-export type SpotType = {
-  id: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-  region: string;
-  category: string;
-};
 interface EditTripStore {
   locationName: { locationName: string; mapType: "google" | "kakao" };
   addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;

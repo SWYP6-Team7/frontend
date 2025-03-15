@@ -57,6 +57,7 @@ const CreateTripDetail = () => {
     addGenderType,
     addMaxPerson,
     maxPerson,
+    addPlans,
     addLocationName,
     addInitGeometry,
     periodType,
@@ -207,6 +208,7 @@ const CreateTripDetail = () => {
                     <CreateScheduleItem
                       plans={plans}
                       idx={idx}
+                      addPlans={addPlans}
                       title={item}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}

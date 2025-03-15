@@ -4,8 +4,6 @@ import styled from "@emotion/styled";
 import Button from "@/components/designSystem/Buttons/Button";
 import { useRouter } from "next/navigation";
 
-import { createTripStore } from "@/store/client/createTripStore";
-import { useCreateTrip } from "@/hooks/createTrip/useCreateTrip";
 import { authStore } from "@/store/client/authStore";
 import ButtonContainer from "@/components/ButtonContainer";
 import TopModal from "@/components/TopModal";
@@ -314,6 +312,7 @@ const EditTrip = () => {
                   plans.length > 0 &&
                   plans?.map((item, idx) => (
                     <CreateScheduleItem
+                      addPlans={addPlans}
                       idx={idx}
                       plans={plans}
                       title={getDateByIndex(date?.startDate ?? "", idx + 1)}

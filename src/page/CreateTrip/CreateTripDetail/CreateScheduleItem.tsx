@@ -19,6 +19,7 @@ const CreateScheduleItem = ({
   isOpen,
   onToggle,
   plans,
+  addPlans,
 }: {
   title: string;
   idx: number;
@@ -28,6 +29,12 @@ const CreateScheduleItem = ({
     planOrder: number;
     spots: SpotType[];
   }[];
+  addPlans: (
+    plans: {
+      planOrder: number;
+      spots: SpotType[];
+    }[]
+  ) => void;
 }) => {
   const [contentHeight, setContentHeight] = useState(0);
   const router = useRouter();
@@ -63,7 +70,7 @@ const CreateScheduleItem = ({
           isChecked={isOpen}
           contentHeight={contentHeight} // 동적으로 계산된 높이 전달
         >
-          {plan?.planOrder !== undefined && <DnDList planOrder={plan!.planOrder} />}
+          {plan?.planOrder !== undefined && <DnDList plans={plans} addPlans={addPlans} planOrder={plan!.planOrder} />}
           <Spacing size={16} />
           <Button onClick={() => router.push(`/search/place/${idx}`)}>+장소추가</Button>
         </Content>

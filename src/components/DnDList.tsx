@@ -75,8 +75,23 @@ const DndItem = (
 
 const ForwardedDndItem = forwardRef(DndItem);
 
-const DnDList = ({ planOrder }: { planOrder: number }) => {
-  const { plans, addPlans } = createTripStore(); // Zustand에서 상태와 액션 가져오기
+const DnDList = ({
+  planOrder,
+  plans,
+  addPlans,
+}: {
+  planOrder: number;
+  plans: {
+    planOrder: number;
+    spots: SpotType[];
+  }[];
+  addPlans: (
+    plans: {
+      planOrder: number;
+      spots: SpotType[];
+    }[]
+  ) => void;
+}) => {
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
   const containerRef = useRef<HTMLUListElement | null>(null);
   const touchStartY = useRef<number | null>(null);
