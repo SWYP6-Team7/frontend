@@ -31,11 +31,7 @@ const SearchPlaceDetail = () => {
   const searchParams = useSearchParams();
   const paramsType = searchParams?.get("type") ?? "create";
   const travelNumber = searchParams?.get("travelNumber") ?? "";
-  const {
-    locationName: { mapType, locationName },
-    addPlans,
-    plans,
-  } = paramsType === "create" ? createTripStore() : editTripStore();
+  const { locationName, addPlans, plans } = paramsType === "create" ? createTripStore() : editTripStore();
   useEffect(() => {
     setIsClient(true);
   }, []);
