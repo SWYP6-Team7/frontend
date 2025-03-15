@@ -74,7 +74,7 @@ const SearchItem = ({
         },
       ];
     }
-    console.log("new plan", newPlans);
+    console.log("new plan", newPlans, targetPlanIndex, plans);
     addPlans(newPlans);
     if (paramsType === "create") {
       router.push("/create/trip/detail");
