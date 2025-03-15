@@ -164,7 +164,7 @@ const EditTrip = () => {
       );
       addPlans(newPlans);
     }
-  }, [JSON.stringify(combinedPlans)]);
+  }, [combinedPlans.length]);
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
