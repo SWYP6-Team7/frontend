@@ -219,7 +219,6 @@ const EditTrip = () => {
 
   useInfiniteScroll(() => {
     if (inView) {
-      console.log("inview");
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage]);
@@ -253,7 +252,7 @@ const EditTrip = () => {
       tags,
       plans: generatePlanChanges(originalPlans, newPlan),
     };
-    console.log("travelData", travelData);
+    console.log("travelData", travelData, originalPlans, plans);
     // createTripMutate(undefined, {
     //   onSuccess: (data: any) => {
     //     resetCreateTripDetail();
