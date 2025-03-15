@@ -26,7 +26,7 @@ const CalendarWrapper = ({
         <TextContainer>
           <Calendar />
           <Title>여행 날짜</Title>
-          <Content>{date ? formatDateRange(date.startDate, date.endDate) : "날짜를 선택하세요."}</Content>
+          <Content>{date ? formatDateRange(date?.startDate ?? "", date?.endDate ?? "") : "날짜를 선택하세요."}</Content>
         </TextContainer>
         <ArrowIconContainer>
           <ArrowIcon />
