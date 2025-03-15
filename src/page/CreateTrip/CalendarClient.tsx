@@ -38,7 +38,7 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ holidaysArray }) => {
   const [showModal, setShowModal] = useState(false);
 
   const navigateWithTransition = useViewTransition();
-
+  const { addDate } = createTripStore();
   const { date } = createTripStore();
 
   const handleNextStep = () => {
@@ -49,7 +49,7 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ holidaysArray }) => {
 
   return (
     <>
-      <CalendarModal showModal={showModal} setShowModal={setShowModal} />
+      <CalendarModal addDate={addDate} showModal={showModal} setShowModal={setShowModal} />
       <Container>
         <StepIconContainer>
           <SecondStepIcon />
@@ -67,9 +67,7 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ holidaysArray }) => {
             <CalendarIcon />
 
             <DueDateValue isDate={Boolean(date)}>
-              {date
-                ? formatDateRange(date.startDate, date.endDate)
-                : "날짜를 선택하세요."}
+              {date ? formatDateRange(date.startDate, date.endDate) : "날짜를 선택하세요."}
             </DueDateValue>
           </div>
         </DuedateBtn>

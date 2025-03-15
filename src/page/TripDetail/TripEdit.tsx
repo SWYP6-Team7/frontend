@@ -232,7 +232,7 @@ const EditTrip = () => {
               <TagListWrapper addTags={addTags} taggedArray={tags} />
               <Spacing size={16} />
               <Bar />
-              {/* <CalendarWrapper addDate={addDate} date={date} /> */}
+              <CalendarWrapper addDate={addDate} date={date} />
               <Bar />
               <InfoWrapper
                 addGenderType={addGenderType}
