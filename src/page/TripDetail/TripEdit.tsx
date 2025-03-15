@@ -153,13 +153,16 @@ const EditTrip = () => {
   ]);
 
   const combinedPlans = data?.pages.reduce(
-    (acc, page) => acc.concat([...plans.map((item) => ({ ...item, planOrder: item.planOrder - 1 }))]),
+    (acc, page) => acc.concat([...page.plans.map((item) => ({ ...item, planOrder: item.planOrder - 1 }))]),
     []
   );
-  console.log("plandata", combinedPlans, plans);
+
   useEffect(() => {
     if (combinedPlans && combinedPlans.length > 0) {
-      addPlans(combinedPlans);
+      const newPlans = combinedPlans.filter(
+        (newPlan) => !plans.some((prevPlan) => prevPlan.planOrder === newPlan.planOrder)
+      );
+      addPlans(newPlans);
     }
   }, [JSON.stringify(combinedPlans)]);
 
