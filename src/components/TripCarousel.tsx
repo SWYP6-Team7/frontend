@@ -68,23 +68,27 @@ const TripCarousel: React.FC<PropType> = (props) => {
                     <Count>{item.spots.length}</Count>
                   </TitleContainer>
                   <Spacing size={16} />
-                  <ContentContainer isTop={inView.top} isBottom={inView.bottom} isOverThree={item.spots.length > 3}>
-                    <div ref={topRef} style={{ width: "100%", height: 1 }} />
-                    {item.spots.map((spot, idx) => (
-                      <SpotItem isLast={idx === item.spots.length - 1}>
-                        <LeftContainer>
-                          <Index>{idx + 1}</Index>
-                          <TextContainer>
-                            <SpotTitle>{spot.name}</SpotTitle>
-                            <Description>
-                              {spot.category} {spot.region}
-                            </Description>
-                          </TextContainer>
-                        </LeftContainer>
-                      </SpotItem>
-                    ))}
-                    <div ref={bottomRef} style={{ width: "100%", height: 1 }} />
-                  </ContentContainer>
+                  <div style={{ position: "relative" }}>
+                    <TopShadow isOverThree={item.spots.length > 3} isTop={inView.top} />
+                    <ContentContainer isTop={inView.top} isBottom={inView.bottom} isOverThree={item.spots.length > 3}>
+                      <div ref={topRef} style={{ width: "100%", height: 1 }} />
+                      {item.spots.map((spot, idx) => (
+                        <SpotItem isLast={idx === item.spots.length - 1}>
+                          <LeftContainer>
+                            <Index>{idx + 1}</Index>
+                            <TextContainer>
+                              <SpotTitle>{spot.name}</SpotTitle>
+                              <Description>
+                                {spot.category} {spot.region}
+                              </Description>
+                            </TextContainer>
+                          </LeftContainer>
+                        </SpotItem>
+                      ))}
+                      <div ref={bottomRef} style={{ width: "100%", height: 1 }} />
+                    </ContentContainer>
+                    <BottomShadow isOverThree={item.spots.length > 3} isTop={inView.top} />
+                  </div>
                 </Tab>
               </Item>
               {index === slides.length - 1 && props.inView}
@@ -220,11 +224,7 @@ const TitleContainer = styled.div`
   padding: 0 20px;
 `;
 
-const ContentContainer = styled.div<{
-  isOverThree: boolean;
-  isTop: boolean;
-  isBottom: boolean;
-}>`
+const ContentContainer = styled.div`
   max-height: 260px;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -232,30 +232,36 @@ const ContentContainer = styled.div<{
   }
   padding: 0 20px;
   position: relative;
+`;
 
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 12px;
-    background: linear-gradient(to bottom, ${palette.BG}, transparent);
-    opacity: ${(props) => (props.isOverThree && props.isTop ? 1 : 0)};
-    pointer-events: none;
-  }
+const TopShadow = styled.div<{
+  isOverThree: boolean;
+  isTop: boolean;
+}>`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 12px;
+  z-index: 1;
+  background: linear-gradient(to bottom, ${palette.BG}, transparent);
+  opacity: ${(props) => (props.isOverThree && props.isTop ? 1 : 0)};
+  pointer-events: none;
+`;
 
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 12px;
-    background: linear-gradient(to top, ${palette.BG}, transparent);
-    opacity: ${(props) => (props.isOverThree && !props.isTop ? 1 : 0)};
-    pointer-events: none;
-  }
+const BottomShadow = styled.div<{
+  isOverThree: boolean;
+  isTop: boolean;
+}>`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  z-index: 1;
+  background: linear-gradient(to top, ${palette.BG}, transparent);
+  opacity: ${(props) => (props.isOverThree && !props.isTop ? 1 : 0)};
+  pointer-events: none;
 `;
 const Date = styled.div`
   font-weight: 400;
