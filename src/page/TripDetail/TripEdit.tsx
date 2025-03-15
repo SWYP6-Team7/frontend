@@ -119,7 +119,7 @@ const EditTrip = () => {
   ]);
 
   const combinedPlans = data?.pages.reduce((acc, page) => acc.concat(page.plans), []);
-
+  console.log("data", combinedPlans);
   useEffect(() => {
     addPlans(combinedPlans);
   }, [combinedPlans?.length]);
