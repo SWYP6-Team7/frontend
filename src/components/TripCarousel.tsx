@@ -68,11 +68,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
                     <Count>{item.spots.length}</Count>
                   </TitleContainer>
                   <Spacing size={16} />
-                  <ContentContainer
-                    isTop={inView.top}
-                    isBottom={inView.bottom}
-                    isOverThree={item.spots.length > 3}
-                  >
+                  <ContentContainer isTop={inView.top} isBottom={inView.bottom} isOverThree={item.spots.length > 3}>
                     <div ref={topRef} style={{ width: "100%", height: 1 }} />
                     {item.spots.map((spot, idx) => (
                       <SpotItem isLast={idx === item.spots.length - 1}>
@@ -235,11 +231,32 @@ const ContentContainer = styled.div<{
     display: none;
   }
   padding: 0 20px;
-  box-shadow: inset 0px
-    ${(props) => (props.isOverThree ? (props.isTop ? "12px" : "-12px") : "0")}
-    ${(props) => (props.isOverThree ? "10px" : "0")} 0px ${palette.BG};
-`;
+  position: relative;
 
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 12px;
+    background: linear-gradient(to bottom, ${palette.BG}, transparent);
+    opacity: ${(props) => (props.isOverThree && props.isTop ? 1 : 0)};
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 12px;
+    background: linear-gradient(to top, ${palette.BG}, transparent);
+    opacity: ${(props) => (props.isOverThree && !props.isTop ? 1 : 0)};
+    pointer-events: none;
+  }
+`;
 const Date = styled.div`
   font-weight: 400;
   font-size: 12px;
