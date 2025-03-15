@@ -168,7 +168,6 @@ const EditTrip = () => {
       []
     );
 
-    // originalPlans 업데이트
     setOriginalPlans((prev) => {
       const uniqueNewPlans = fetchedPlans.filter(
         (newPlan) => !prev.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
@@ -176,12 +175,12 @@ const EditTrip = () => {
       return uniqueNewPlans.length > 0 ? [...prev, ...uniqueNewPlans] : prev;
     });
 
-    // Zustand의 plans 업데이트
     const uniqueNewPlans = fetchedPlans.filter(
       (newPlan) => !plans.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
     );
 
     if (uniqueNewPlans.length > 0) {
+      console.log("123");
       addPlans([...plans, ...uniqueNewPlans]); // 기존 plans에 새로운 계획 추가
     }
   }, [data?.pages, plans, addPlans]);
