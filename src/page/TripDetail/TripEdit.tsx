@@ -28,20 +28,56 @@ import { editTripStore } from "@/store/client/editTripStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPlans } from "@/api/trip";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
-export function getDatesArray(startDate, endDate) {
-  const dates: string[] = [];
-  let currentDate = dayjs(startDate);
-  const lastDate = dayjs(endDate);
 
-  while (currentDate.isSameOrBefore(lastDate)) {
-    dates.push(currentDate.format("M월D일(ddd)"));
-    currentDate = currentDate.add(1, "day");
-  }
+function generatePlanChanges(combinedPlans, plans) {
+  const planChanges: any = {
+    added: [],
+    updated: [],
+    deleted: [],
+  };
 
-  return dates;
+  // 새로 추가되거나 업데이트된 계획 찾기
+  plans.forEach((plan) => {
+    const existingPlan = combinedPlans.find((cp) => cp.planOrder === plan.planOrder);
+    if (!existingPlan) {
+      // 새로 추가된 계획
+      planChanges.added.push({
+        planOrder: plan.planOrder,
+        spots: plan.spots.map((spot) => ({
+          name: spot.name,
+          category: spot.category,
+          region: spot.region,
+          latitude: spot.latitude.toString(),
+          longitude: spot.longitude.toString(),
+        })),
+      });
+    } else if (JSON.stringify(existingPlan.spots) !== JSON.stringify(plan.spots)) {
+      // 업데이트된 계획
+      planChanges.updated.push({
+        planOrder: plan.planOrder,
+        spots: plan.spots.map((spot) => ({
+          name: spot.name,
+          category: spot.category,
+          region: spot.region,
+          latitude: spot.latitude.toString(),
+          longitude: spot.longitude.toString(),
+        })),
+      });
+    }
+  });
+
+  // 삭제된 계획 찾기
+  combinedPlans.forEach((cp) => {
+    if (!plans.some((plan) => plan.planOrder === cp.planOrder)) {
+      planChanges.deleted.push(cp.planOrder);
+    }
+  });
+
+  return planChanges;
 }
 
 const EditTrip = () => {
@@ -96,7 +132,7 @@ const EditTrip = () => {
       }
     },
   });
-
+  const [ref, inView] = useInView();
   useEffect(() => {
     addTitle(initTitle); // 제목 설정
     addDetails(initDetails); // 상세 내용 설정
@@ -125,6 +161,7 @@ const EditTrip = () => {
       addPlans(combinedPlans);
     }
   }, [combinedPlans?.length]);
+
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -157,6 +194,13 @@ const EditTrip = () => {
         })
       : [];
 
+  useInfiniteScroll(() => {
+    if (inView) {
+      console.log("inview");
+      !isFetching && hasNextPage && fetchNextPage();
+    }
+  }, [inView, !isFetching, fetchNextPage, hasNextPage]);
+
   const travelData = {
     title,
     details,
@@ -167,7 +211,7 @@ const EditTrip = () => {
     periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
     locationName: locationName.locationName,
     tags,
-    plans: newPlan,
+    plans: generatePlanChanges(combinedPlans, newPlan),
   };
   // const { createTripMutate } = useCreateTrip(travelData, accessToken as string); // 여행 생성 api 요청.
 
@@ -186,7 +230,7 @@ const EditTrip = () => {
     ) {
       addCompletionStatus(false);
     }
-
+    console.log("travelData", travelData);
     // createTripMutate(undefined, {
     //   onSuccess: (data: any) => {
     //     resetCreateTripDetail();
@@ -277,6 +321,7 @@ const EditTrip = () => {
                       onToggle={() => handleItemToggle(idx)}
                     />
                   ))}
+                <div ref={ref} style={{ width: "100%", height: 5 }} />
               </ScheduleList>
             </ScheduleContainer>
           </BottomContainer>
