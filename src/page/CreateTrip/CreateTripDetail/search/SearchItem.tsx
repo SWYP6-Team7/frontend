@@ -43,7 +43,7 @@ const SearchItem = ({
     let newPlans: any[] = [];
     if (targetPlanIndex > -1) {
       newPlans = plans.map((plan) =>
-        plan.planOrder === targetPlanIndex
+        plan.planOrder === (paramsType === "create" ? targetPlanIndex : targetPlanIndex + 1)
           ? {
               ...plan,
               spots: [
@@ -64,7 +64,7 @@ const SearchItem = ({
       newPlans = [
         ...plans,
         {
-          planOrder: Number(planOrder),
+          planOrder: paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1,
           spots: [
             {
               id: uuidv4(),
