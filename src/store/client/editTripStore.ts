@@ -31,7 +31,7 @@ interface EditTripStore {
     planOrder: number;
     spots: SpotType[];
   }[];
-  seteOriginalPlans: (plans: { date?: string; id?: string | number; planOrder: number; spots: SpotType[] }[]) => void;
+  setOriginalPlans: (plans: { date?: string; id?: string | number; planOrder: number; spots: SpotType[] }[]) => void;
 
   plans: {
     date?: string;
@@ -96,7 +96,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
     set({ plans });
   },
   originalPlans: [],
-  seteOriginalPlans: (originalPlans) => {
+  setOriginalPlans: (originalPlans) => {
     set({ originalPlans });
   },
   tags: [],

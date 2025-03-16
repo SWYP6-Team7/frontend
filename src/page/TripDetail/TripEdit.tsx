@@ -57,6 +57,8 @@ const EditTrip = () => {
     addCompletionStatus,
     dataInitialized,
     setDataInitialized,
+    originalPlans,
+    setOriginalPlans,
     resetCreateTripDetail,
   } = editTripStore();
   const {
@@ -71,8 +73,6 @@ const EditTrip = () => {
     maxPerson: initMaxPerson,
     genderType: initGenderType,
   } = tripDetailStore();
-
-  const [originalPlans, setOriginalPlans] = useState<any[]>([]);
 
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
