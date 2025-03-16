@@ -126,11 +126,8 @@ const EditTrip = () => {
     const fetchedPlans = data.pages.reduce((acc, page) => {
       return acc.concat(
         page.plans.map((item) => {
-          // planOrder가 0인 경우 1로 조정
-          const planOrderAdjusted = Math.max(1, item.planOrder);
-
           const calculatedDate = new Date(baseDate);
-          calculatedDate.setUTCDate(baseDate.getUTCDate() + planOrderAdjusted - 1);
+          calculatedDate.setUTCDate(baseDate.getUTCDate() + item.planOrder - 1);
 
           const formattedDate = `${calculatedDate.getUTCFullYear()}-${String(calculatedDate.getUTCMonth() + 1).padStart(
             2,
@@ -139,7 +136,7 @@ const EditTrip = () => {
 
           return {
             ...item,
-            planOrder: planOrderAdjusted,
+            planOrder: item.planOrder,
             spots: item?.spots?.map((spot) => ({ ...spot, id: uuidv4() })),
             date: formattedDate,
           };
@@ -358,7 +355,7 @@ const EditTrip = () => {
                       travelNumber={travelNumber}
                       idx={idx}
                       plans={plans}
-                      title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder + 1)}
+                      title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder)}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}
                     />
