@@ -151,7 +151,7 @@ const EditTrip = () => {
 
     setOriginalPlans(uniqueSortedPlans);
     addPlans(uniqueSortedPlans);
-  }, [data?.pages, addPlans, initStartDate]);
+  }, [initStartDate]);
   useEffect(() => {
     const generateDatePlans = () => {
       if (!date?.startDate || !date?.endDate) return;
