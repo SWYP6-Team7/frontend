@@ -120,28 +120,33 @@ const EditTrip = () => {
   useEffect(() => {
     if (!data?.pages || !initStartDate) return;
 
+    const [year, month, day] = initStartDate.split("-").map(Number);
+    const baseDate = new Date(Date.UTC(year, month - 1, day)); // UTC 기준 날짜 생성
+
     const fetchedPlans = data.pages.reduce(
       (acc, page) =>
         acc.concat(
           page.plans.map((item) => {
             const planOrderAdjusted = item.planOrder - 1;
 
-            // Calculate date based on initStartDate and planOrder
-            const [year, month, day] = initStartDate?.split("-").map(Number);
-            const date = new Date(year, month - 1, day + planOrderAdjusted);
-            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+            // UTC 날짜 계산
+            const calculatedDate = new Date(baseDate);
+            calculatedDate.setUTCDate(baseDate.getUTCDate() + planOrderAdjusted);
+
+            const formattedDate = `${calculatedDate.getUTCFullYear()}-${String(
+              calculatedDate.getUTCMonth() + 1
+            ).padStart(2, "0")}-${String(calculatedDate.getUTCDate()).padStart(2, "0")}`;
 
             return {
               ...item,
               planOrder: planOrderAdjusted,
               spots: item?.spots?.map((spot) => ({ ...spot, id: uuidv4() })),
-              date: formattedDate, // Add calculated date
+              date: formattedDate,
             };
           })
         ),
       []
     );
-
     setOriginalPlans((prev) => {
       const uniqueNewPlans = fetchedPlans.filter(
         (newPlan) => !prev.some((existingPlan) => existingPlan.planOrder === newPlan.planOrder)
