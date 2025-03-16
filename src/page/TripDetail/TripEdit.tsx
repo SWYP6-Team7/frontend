@@ -191,7 +191,7 @@ const EditTrip = () => {
           } else {
             // Create a new empty plan for this date
             newPlans.push({
-              planOrder: i + 1,
+              planOrder: i,
               date: currentDate,
               spots: [],
               id: uuidv4(),
