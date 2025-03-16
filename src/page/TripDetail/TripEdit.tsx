@@ -92,6 +92,7 @@ const EditTrip = () => {
   // Initial data setup - only run once
   useEffect(() => {
     if (!isLoading && data && !dataInitialized) {
+      console.log(123);
       // Extract all plans from all pages
       const allPlans = data.pages.flatMap((page) => page.plans || []);
 
@@ -112,7 +113,7 @@ const EditTrip = () => {
       addPlans(formattedPlans);
       setDataInitialized(true);
     }
-  }, [data, isLoading, dataInitialized, addPlans]);
+  }, [JSON.stringify(data), isLoading, dataInitialized]);
 
   // Fetch next page if available
   useEffect(() => {
