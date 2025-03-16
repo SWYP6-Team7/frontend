@@ -210,7 +210,7 @@ const EditTrip = () => {
             ...plan,
             planOrder: plan.planOrder + 1,
             spots: plan.spots.map((spot) => {
-              const { id, ...newSpots } = {
+              const { ...newSpots } = {
                 ...spot,
                 latitude: Number(spot.latitude).toFixed(9),
                 longitude: Number(spot.longitude).toFixed(9),
