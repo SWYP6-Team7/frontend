@@ -55,6 +55,8 @@ const EditTrip = () => {
     addInitGeometry,
     periodType,
     addCompletionStatus,
+    dataInitialized,
+    setDataInitialized,
     resetCreateTripDetail,
   } = editTripStore();
   const {
@@ -71,7 +73,6 @@ const EditTrip = () => {
   } = tripDetailStore();
 
   const [originalPlans, setOriginalPlans] = useState<any[]>([]);
-  const [dataInitialized, setDataInitialized] = useState(false);
 
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
@@ -100,7 +101,7 @@ const EditTrip = () => {
       // Store in plans state for editing
       const formattedPlans = allPlans.map((plan) => ({
         ...plan,
-        planOrder: plan.planOrder + 1,
+        planOrder: plan.planOrder,
         spots: plan.spots.map((spot) => ({
           ...spot,
           latitude: Number(spot.latitude).toFixed(9),
@@ -158,16 +159,13 @@ const EditTrip = () => {
     addMaxPerson,
   ]);
 
-  // Generate days between start and end date when dates change
   useEffect(() => {
     if (date?.startDate && date?.endDate && dataInitialized) {
       const start = dayjs(date.startDate);
       const end = dayjs(date.endDate);
       const dayDiff = end.diff(start, "day") + 1;
 
-      // Only regenerate plans if we don't have the correct number of days
       if (plans.length !== dayDiff) {
-        // Use existing plans where available, create new ones if needed
         const newPlans: any = [];
 
         for (let i = 0; i < dayDiff; i++) {

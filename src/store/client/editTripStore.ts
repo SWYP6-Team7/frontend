@@ -30,6 +30,8 @@ interface EditTripStore {
     planOrder: number;
     spots: SpotType[];
   }[];
+  dataInitialized: boolean;
+  setDataInitialized: (bool: boolean) => void;
   addPlans: (plans: { planOrder: number; spots: SpotType[] }[]) => void;
   addCompletionStatus: (completionStatus: boolean) => void;
   resetCreateTripDetail: () => void;
@@ -39,6 +41,10 @@ export const editTripStore = create<EditTripStore>((set) => ({
   title: "",
   addTitle: (title) => {
     set({ title });
+  },
+  dataInitialized: false,
+  setDataInitialized: (dataInitialized) => {
+    set({ dataInitialized });
   },
   locationName: { locationName: "", mapType: "google" },
   addLocationName: (locationName) => {
