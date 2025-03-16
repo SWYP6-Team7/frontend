@@ -43,13 +43,13 @@ const EditTrip = () => {
     tags,
     initGeometry,
     date,
-    plans,
+
     genderType,
     addDate,
     addGenderType,
     addMaxPerson,
     maxPerson,
-    addPlans,
+
     addTags,
     addLocationName,
     addInitGeometry,
@@ -115,74 +115,79 @@ const EditTrip = () => {
     initMaxPerson,
   ]);
 
-  const [originalPlans, setOriginalPlans] = useState<any[]>([]);
+  const [mergedPlans, setMergedPlans] = useState<any[]>([]);
 
+  // 통합된 useEffect
   useEffect(() => {
-    if (!data?.pages || !initStartDate) return;
-
-    const [year, month, day] = initStartDate.split("-").map(Number);
-    const baseDate = new Date(Date.UTC(year, month - 1, day));
-
-    const fetchedPlans = data.pages.reduce((acc, page) => {
-      return acc.concat(
-        page.plans.map((item) => {
-          const calculatedDate = new Date(baseDate);
-          calculatedDate.setUTCDate(baseDate.getUTCDate() + item.planOrder - 1);
-
-          const formattedDate = `${calculatedDate.getUTCFullYear()}-${String(calculatedDate.getUTCMonth() + 1).padStart(
-            2,
-            "0"
-          )}-${String(calculatedDate.getUTCDate()).padStart(2, "0")}`;
-
-          return {
-            ...item,
-            planOrder: item.planOrder,
-            spots: item?.spots?.map((spot) => ({ ...spot, id: uuidv4() })),
-            date: formattedDate,
-          };
-        })
-      );
-    }, []);
-
-    // 중복 제거 및 정렬
-    const uniqueSortedPlans = fetchedPlans
-      .filter((plan, index, self) => index === self.findIndex((t) => t.planOrder === plan.planOrder))
-      .sort((a, b) => a.planOrder - b.planOrder);
-
-    setOriginalPlans(uniqueSortedPlans);
-    addPlans(uniqueSortedPlans);
-  }, [initStartDate]);
-  useEffect(() => {
-    const generateDatePlans = () => {
+    const handlePlans = () => {
       if (!date?.startDate || !date?.endDate) return;
 
+      // 1. 초기 데이터 처리
+      if (data?.pages && initStartDate) {
+        const [year, month, day] = initStartDate.split("-").map(Number);
+        const baseDate = new Date(Date.UTC(year, month - 1, day));
+
+        const fetchedPlans = data.pages.reduce((acc, page) => {
+          return acc.concat(
+            page.plans.map((item) => {
+              const calculatedDate = new Date(baseDate);
+              calculatedDate.setUTCDate(baseDate.getUTCDate() + item.planOrder - 1);
+
+              const formattedDate = `${calculatedDate.getUTCFullYear()}-${String(
+                calculatedDate.getUTCMonth() + 1
+              ).padStart(2, "0")}-${String(calculatedDate.getUTCDate()).padStart(2, "0")}`;
+
+              return {
+                ...item,
+                spots: item?.spots?.map((spot) => ({ ...spot, id: uuidv4() })),
+                date: formattedDate,
+              };
+            })
+          );
+        }, []);
+
+        setMergedPlans((prev) => {
+          const newPlans = fetchedPlans.filter((fp) => !prev.some((p) => p.planId === fp.planId));
+          return [...prev, ...newPlans];
+        });
+      }
+
+      // 2. 날짜 범위 기반 계획 생성
       const start = new Date(date.startDate);
       const end = new Date(date.endDate);
-      const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+      const diffDays = Math.ceil((end.getTime() - start.getTime()) / 86400000) + 1;
 
-      return Array.from({ length: diffDays }, (_, index) => {
+      const dateBasedPlans = Array.from({ length: diffDays }, (_, index) => {
         const currentDate = new Date(start);
         currentDate.setDate(start.getDate() + index);
-
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(
           2,
           "0"
         )}-${String(currentDate.getDate()).padStart(2, "0")}`;
 
-        // 기존 계획에서 해당 날짜에 맞는 spots 찾기
-        const existingPlan = originalPlans.find((plan) => plan.date === formattedDate);
-
         return {
           planOrder: index + 1,
           date: formattedDate,
-          spots: existingPlan?.spots || [], // 기존 spots 유지 또는 빈 배열
+          spots: mergedPlans.find((p) => p.date === formattedDate)?.spots || [],
         };
+      });
+
+      // 3. 최종 병합
+      setMergedPlans((prev) => {
+        const combined = dateBasedPlans.map((dbp) => prev.find((p) => p.date === dbp.date) || dbp);
+        return combined.sort((a, b) => a.planOrder - b.planOrder);
       });
     };
 
-    const newPlans = generateDatePlans() || [];
-    addPlans(newPlans);
-  }, [date?.startDate, date?.endDate, originalPlans, addPlans]);
+    handlePlans();
+  }, [data?.pages, initStartDate, date?.startDate, date?.endDate]);
+
+  // 변경 사항 저장 함수
+  const updatePlan = (updatedPlan) => {
+    setMergedPlans((prev) =>
+      prev.map((plan) => (plan.date === updatedPlan.date ? { ...plan, spots: updatedPlan.spots } : plan))
+    );
+  };
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
@@ -199,8 +204,8 @@ const EditTrip = () => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
   const newPlan =
-    plans.length > 0
-      ? plans.map((plan) => {
+    mergedPlans.length > 0
+      ? mergedPlans.map((plan) => {
           return {
             ...plan,
             planOrder: plan.planOrder + 1,
@@ -243,9 +248,10 @@ const EditTrip = () => {
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
+
       planChanges: getPlanChanges(
         [
-          ...originalPlans.map((plan) => ({
+          ...mergedPlans.map((plan) => ({
             ...plan,
             planOrder: plan.planOrder + 1,
             spots: plan.spots.map((spot) => {
@@ -261,12 +267,12 @@ const EditTrip = () => {
         newPlan
       ),
     };
-    console.log(
-      "travelData",
-      travelData,
-      [...originalPlans.map((plan) => ({ ...plan, planOrder: plan.planOrder + 1 }))],
-      plans
-    );
+    // console.log(
+    //   "travelData",
+    //   travelData,
+    //   [...originalPlans.map((plan) => ({ ...plan, planOrder: plan.planOrder + 1 }))],
+    //   plans
+    // );
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
@@ -289,7 +295,7 @@ const EditTrip = () => {
       setIsToastShow(true);
     }
   }, [isMapFull]);
-  console.log(plans, "plans");
+  console.log(mergedPlans, "plans");
   return (
     <>
       <CreateTripDetailWrapper>
@@ -336,7 +342,7 @@ const EditTrip = () => {
           <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
             <MapContainer
               index={openItemIndex}
-              plans={plans}
+              plans={mergedPlans}
               locationName={locationName}
               isMapFull={isMapFull}
               lat={initGeometry?.lat || 37.57037778}
@@ -347,14 +353,14 @@ const EditTrip = () => {
               <Title>여행 일정</Title>
               <ScheduleList>
                 {!isLoading &&
-                  plans.length > 0 &&
-                  plans?.map((item, idx) => (
+                  mergedPlans.length > 0 &&
+                  mergedPlans?.map((item, idx) => (
                     <CreateScheduleItem
-                      addPlans={addPlans}
+                      addPlans={updatePlan}
                       type="edit"
                       travelNumber={travelNumber}
                       idx={idx}
-                      plans={plans}
+                      plans={mergedPlans}
                       title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder)}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}
