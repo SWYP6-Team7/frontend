@@ -14,21 +14,25 @@ export function trackPlanChanges(originalPlans, plans) {
       const matchingSpots = matchingPlan.spots.map((spot) => ({ ...spot, id: undefined }));
       if (JSON.stringify(originalSpots) !== JSON.stringify(matchingSpots)) {
         // spots이 변경된 경우
-        console.log(matchingPlan, "match");
         const { date, ...planWithoutDate } = matchingPlan;
         // spots 안의 id 제거
         planWithoutDate.spots = planWithoutDate.spots.map(({ id, ...spot }) => spot);
-        updated.push(planWithoutDate);
+
+        // spots가 없거나 비어있으면 deleted로 처리
+        if (!planWithoutDate.spots || planWithoutDate.spots.length === 0) {
+          deleted.push(planWithoutDate.planOrder);
+        } else {
+          updated.push(planWithoutDate);
+        }
       }
     }
   });
 
-  // 새로 추가된 항목 확인
+  // 새로 추가된 항목 확인 (변경 없음)
   plans.forEach((plan) => {
     const isNewPlan = !originalPlans.some((op) => op.planOrder === plan.planOrder);
     if (isNewPlan && plan.spots.length > 0) {
       const { date, ...planWithoutDate } = plan;
-      // spots 안의 id 제거
       planWithoutDate.spots = planWithoutDate.spots.map(({ id, ...spot }) => spot);
       added.push(planWithoutDate);
     }
