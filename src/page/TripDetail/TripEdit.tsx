@@ -105,6 +105,7 @@ const EditTrip = () => {
           ...plan,
           planOrder: plan.planOrder,
           date: planDate,
+          id: uuidv4(),
           spots: plan.spots.map((spot) => ({
             ...spot,
             latitude: Number(spot.latitude).toFixed(9),
