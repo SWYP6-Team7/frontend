@@ -37,7 +37,9 @@ const SearchItem = ({
     e.stopPropagation();
     console.log("plan2", plans);
     if (!planOrder) return;
-    const targetPlanIndex = plans.findIndex((plan) => plan.planOrder === Number(planOrder));
+    const targetPlanIndex = plans.findIndex(
+      (plan) => plan.planOrder === (paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1)
+    );
     let newPlans: any[] = [];
     if (targetPlanIndex > -1) {
       newPlans = plans.map((plan) =>
