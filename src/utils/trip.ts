@@ -59,7 +59,7 @@ export function getPlanChanges(originalPlans, updatedPlans) {
 function areSpotsSame(spots1, spots2) {
   if (!spots1 || !spots2) return spots1 === spots2;
   if (spots1.length !== spots2.length) return false;
-
+  debugDifferences(spots1, spots2);
   // 각 요소를 문자열로 변환하여 간단하게 비교
   try {
     // 배열이 비어있는 경우를 처리
