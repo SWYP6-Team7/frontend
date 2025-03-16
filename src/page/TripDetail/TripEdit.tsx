@@ -204,7 +204,23 @@ const EditTrip = () => {
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
-      ...getPlanChanges([...originalPlans.map((plan) => ({ ...plan, planOrder: plan.planOrder + 1 }))], newPlan),
+      ...getPlanChanges(
+        [
+          ...originalPlans.map((plan) => ({
+            ...plan,
+            planOrder: plan.planOrder + 1,
+            spots: plan.spots.map((spot) => {
+              const { id, ...newSpots } = {
+                ...spot,
+                latitude: Number(spot.latitude).toFixed(9),
+                longitude: Number(spot.longitude).toFixed(9),
+              };
+              return newSpots;
+            }),
+          })),
+        ],
+        newPlan
+      ),
     };
     console.log(
       "travelData",
