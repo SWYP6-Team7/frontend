@@ -205,7 +205,7 @@ const EditTrip = () => {
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
-      ...getPlanChanges(
+      planChanges: getPlanChanges(
         [
           ...originalPlans.map((plan) => ({
             ...plan,
