@@ -25,6 +25,14 @@ interface EditTripStore {
   initGeometry: { lng: number; lat: number } | null;
   addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   completionStatus: boolean;
+  originalPlans: {
+    date?: string;
+    id?: string | number;
+    planOrder: number;
+    spots: SpotType[];
+  }[];
+  seteOriginalPlans: (plans: { date?: string; id?: string | number; planOrder: number; spots: SpotType[] }[]) => void;
+
   plans: {
     date?: string;
     id?: string | number;
@@ -87,6 +95,10 @@ export const editTripStore = create<EditTripStore>((set) => ({
   addPlans: (plans) => {
     set({ plans });
   },
+  originalPlans: [],
+  seteOriginalPlans: (originalPlans) => {
+    set({ originalPlans });
+  },
   tags: [],
   addTags: (tags) => {
     set({ tags });
@@ -109,6 +121,9 @@ export const editTripStore = create<EditTripStore>((set) => ({
       dueDate: getCurrentFormattedDate().split(" ")[0],
       periodType: "",
       tags: [],
+      plans: [],
+      originalPlans: [],
+      dataInitialized: false,
       completionStatus: false,
     });
   },
