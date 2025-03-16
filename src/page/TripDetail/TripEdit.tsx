@@ -118,7 +118,7 @@ const EditTrip = () => {
   const [originalPlans, setOriginalPlans] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!data?.pages || !initStartDate) return;
+    if (!data?.pages || !initStartDate || plans.length > 0) return;
     console.log("123456");
     const [year, month, day] = initStartDate.split("-").map(Number);
     const baseDate = new Date(Date.UTC(year, month - 1, day));
@@ -150,7 +150,7 @@ const EditTrip = () => {
       .sort((a, b) => a.planOrder - b.planOrder);
 
     setOriginalPlans(uniqueSortedPlans);
-  }, [JSON.stringify(data?.pages), initStartDate]);
+  }, [JSON.stringify(data?.pages), initStartDate, plans]);
   useEffect(() => {
     const generateDatePlans = () => {
       if (!date?.startDate || !date?.endDate) return;
