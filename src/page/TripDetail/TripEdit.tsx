@@ -226,6 +226,18 @@ const EditTrip = () => {
       tags.length === 0 ||
       locationName.locationName === ""
     ) {
+      console.log(
+        "test",
+        title,
+        details,
+        maxPerson,
+        genderType,
+        !date?.startDate,
+        !date?.endDate,
+        periodType,
+        tags.length,
+        locationName.locationName
+      );
       addCompletionStatus(false);
       setIsToastShow(true);
       return;
@@ -259,7 +271,7 @@ const EditTrip = () => {
         plans
       ),
     };
-
+    console.log("123", travelData);
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
