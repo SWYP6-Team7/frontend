@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import Button from "@/components/designSystem/Buttons/Button";
 import { useRouter } from "next/navigation";
-
+import { v4 as uuidv4 } from "uuid";
 import { authStore } from "@/store/client/authStore";
 import ButtonContainer from "@/components/ButtonContainer";
 import TopModal from "@/components/TopModal";
@@ -118,6 +118,7 @@ const EditTrip = () => {
           page.plans.map((item) => ({
             ...item,
             planOrder: item.planOrder - 1,
+            spots: item?.spots?.map((spot) => ({ ...spot, id: uuidv4() })),
           }))
         ),
       []
