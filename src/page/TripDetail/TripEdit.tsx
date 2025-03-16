@@ -241,7 +241,7 @@ const EditTrip = () => {
       setIsToastShow(true);
       return;
     }
-
+    console.log("123", originalPlans, plans);
     const travelData = {
       title,
       details,
@@ -254,7 +254,7 @@ const EditTrip = () => {
       tags,
       planChanges: trackPlanChanges(originalPlans, plans),
     };
-    console.log("123", travelData, originalPlans, plans);
+
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
