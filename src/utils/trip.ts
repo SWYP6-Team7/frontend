@@ -1,4 +1,4 @@
-function getPlanChanges(originalPlans, updatedPlans) {
+export function getPlanChanges(originalPlans, updatedPlans) {
   const planChanges: any = {
     added: [],
     updated: [],
