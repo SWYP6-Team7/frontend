@@ -1,7 +1,7 @@
 "use client";
+import { SpotType } from "@/model/trip";
 import { getCurrentFormattedDate } from "@/utils/time";
 import { create } from "zustand";
-import { SpotType } from "./createTripStore";
 
 interface EditTripStore {
   locationName: { locationName: string; mapType: "google" | "kakao" };
@@ -26,6 +26,7 @@ interface EditTripStore {
   addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   completionStatus: boolean;
   plans: {
+    id?: string | number;
     planOrder: number;
     spots: SpotType[];
   }[];
