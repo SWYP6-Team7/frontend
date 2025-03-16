@@ -176,11 +176,16 @@ const EditTrip = () => {
 
       if (plans.length !== dayDiff || !dateRange.every((date) => plans.some((p) => p.date === date))) {
         const newPlans = dateRange.map((currentDate, index) => {
-          const existingPlan = plans.find((p) => p?.date === currentDate);
+          // 1. 현재 plans에서 먼저 조회
+          // 2. 없으면 originalPlans에서 조회
+          const existingPlan =
+            plans.find((p) => p.date === currentDate) || originalPlans?.find((p) => p.date === currentDate);
 
-          // planOrder를 1부터 시작하도록 변경 (index + 1)
           return existingPlan
-            ? { ...existingPlan, planOrder: index + 1 }
+            ? {
+                ...existingPlan, // 기존 데이터 유지
+                planOrder: index + 1, // 순서만 업데이트
+              }
             : {
                 planOrder: index + 1,
                 date: currentDate,
@@ -192,8 +197,7 @@ const EditTrip = () => {
         addPlans(newPlans);
       }
     }
-  }, [date?.startDate, date?.endDate, dataInitialized, plans.length]);
-
+  }, [date?.startDate, date?.endDate, dataInitialized, plans.length, originalPlans]);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
