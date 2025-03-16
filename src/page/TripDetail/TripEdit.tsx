@@ -31,51 +31,81 @@ import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
 
-function generatePlanChanges(combinedPlans, plans) {
+function areSpotsSame(spots1, spots2) {
+  if (spots1.length !== spots2.length) {
+    return false;
+  }
+
+  // 두 배열의 각 요소를 비교
+  for (let i = 0; i < spots1.length; i++) {
+    const spot1 = spots1[i];
+    const spot2 = spots2[i];
+
+    // 간단한 필드 비교
+    if (
+      spot1.name !== spot2.name ||
+      spot1.category !== spot2.category ||
+      spot1.region !== spot2.region ||
+      spot1.latitude !== spot2.latitude ||
+      spot1.longitude !== spot2.longitude
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function getPlanChanges(originalPlans, updatedPlans) {
   const planChanges: any = {
     added: [],
     updated: [],
     deleted: [],
   };
 
-  // 새로 추가되거나 업데이트된 계획 찾기
-  plans.forEach((plan) => {
-    const existingPlan = combinedPlans.find((cp) => cp.planOrder === plan.planOrder);
-    if (!existingPlan) {
-      // 새로 추가된 계획
+  // 원래 계획의 인덱스를 맵으로 만들어 빠른 접근을 가능하게 함
+  const originalPlansMap: any = {};
+  originalPlans.forEach((plan) => {
+    originalPlansMap[plan.planOrder] = plan;
+  });
+
+  // 변경된 계획의 인덱스를 맵으로 만듦
+  const updatedPlansMap: any = {};
+  updatedPlans.forEach((plan) => {
+    updatedPlansMap[plan.planOrder] = plan;
+  });
+
+  // 추가되거나 수정된 항목 찾기
+  updatedPlans.forEach((plan) => {
+    const originalPlan = originalPlansMap[plan.planOrder];
+
+    if (!originalPlan) {
+      // 원래 계획에 없는 경우 추가된 항목
       planChanges.added.push({
         planOrder: plan.planOrder,
-        spots: plan.spots.map((spot) => ({
-          name: spot.name,
-          category: spot.category,
-          region: spot.region,
-          latitude: spot.latitude.toString(),
-          longitude: spot.longitude.toString(),
-        })),
+        spots: plan.spots,
       });
-    } else if (JSON.stringify(existingPlan.spots) !== JSON.stringify(plan.spots)) {
-      // 업데이트된 계획
-      planChanges.updated.push({
-        planOrder: plan.planOrder,
-        spots: plan.spots.map((spot) => ({
-          name: spot.name,
-          category: spot.category,
-          region: spot.region,
-          latitude: spot.latitude.toString(),
-          longitude: spot.longitude.toString(),
-        })),
-      });
+    } else {
+      // 원래 계획에 있는 경우 변경사항 확인
+      const spotsChanged = !areSpotsSame(originalPlan.spots, plan.spots);
+
+      if (spotsChanged) {
+        planChanges.updated.push({
+          planOrder: plan.planOrder,
+          spots: plan.spots,
+        });
+      }
     }
   });
 
-  // 삭제된 계획 찾기
-  combinedPlans.forEach((cp) => {
-    if (!plans.some((plan) => plan.planOrder === cp.planOrder)) {
-      planChanges.deleted.push(cp.planOrder);
+  // 삭제된 항목 찾기
+  originalPlans.forEach((plan) => {
+    if (!updatedPlansMap[plan.planOrder]) {
+      planChanges.deleted.push(plan.planOrder);
     }
   });
 
-  return planChanges;
+  return { planChanges };
 }
 
 const EditTrip = () => {
@@ -249,7 +279,7 @@ const EditTrip = () => {
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
-      plans: generatePlanChanges(originalPlans, newPlan),
+      ...getPlanChanges(originalPlans, newPlan),
     };
     console.log("travelData", travelData, originalPlans, plans);
     // createTripMutate(undefined, {
