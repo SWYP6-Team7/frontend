@@ -14,6 +14,7 @@ export function trackPlanChanges(originalPlans, plans) {
       const matchingSpots = matchingPlan.spots.map((spot) => ({ ...spot, id: undefined }));
       if (JSON.stringify(originalSpots) !== JSON.stringify(matchingSpots)) {
         // spots이 변경된 경우
+        console.log(matchingPlan, "match");
         const { date, ...planWithoutDate } = matchingPlan;
         updated.push(planWithoutDate);
       }
