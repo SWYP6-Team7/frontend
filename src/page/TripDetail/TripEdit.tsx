@@ -169,35 +169,25 @@ const EditTrip = () => {
       const end = dayjs(date.endDate);
       const dayDiff = end.diff(start, "day") + 1;
 
-      // Create an array of dates for the selected range
-      const dateRange: any = [];
+      const dateRange: string[] = [];
       for (let i = 0; i < dayDiff; i++) {
-        const currentDate = start.add(i, "day").format("YYYY-MM-DD");
-        dateRange.push(currentDate);
+        dateRange.push(start.add(i, "day").format("YYYY-MM-DD"));
       }
 
-      // Check if we need to adjust plans
-      if (plans.length !== dayDiff || !dateRange.every((date) => plans.some((plan) => plan.date === date))) {
-        const newPlans: any = [];
-
-        // For each date in the range
-        for (let i = 0; i < dayDiff; i++) {
-          const currentDate = dateRange[i];
-          // Try to find an existing plan for this date
+      if (plans.length !== dayDiff || !dateRange.every((date) => plans.some((p) => p.date === date))) {
+        const newPlans = dateRange.map((currentDate, index) => {
           const existingPlan = plans.find((p) => p?.date === currentDate);
 
-          if (existingPlan) {
-            newPlans.push(existingPlan);
-          } else {
-            // Create a new empty plan for this date
-            newPlans.push({
-              planOrder: i,
-              date: currentDate,
-              spots: [],
-              id: uuidv4(),
-            });
-          }
-        }
+          // planOrder를 1부터 시작하도록 변경 (index + 1)
+          return existingPlan
+            ? { ...existingPlan, planOrder: index + 1 }
+            : {
+                planOrder: index + 1,
+                date: currentDate,
+                spots: [],
+                id: uuidv4(),
+              };
+        });
 
         addPlans(newPlans);
       }
