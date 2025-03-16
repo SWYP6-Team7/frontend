@@ -367,7 +367,7 @@ const EditTrip = () => {
                       travelNumber={travelNumber}
                       idx={idx}
                       plans={plans}
-                      title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder)}
+                      title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder + 1)}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}
                     />

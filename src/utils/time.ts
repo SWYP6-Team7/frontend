@@ -73,8 +73,8 @@ export function getDateRangeCategory(startDate, endDate) {
 }
 
 export function getDateByPlanOrder(startDate, planOrder) {
-  if (typeof planOrder !== "number" || planOrder < 1) {
-    throw new Error("planOrder는 1 이상의 숫자여야 합니다.");
+  if (typeof planOrder !== "number") {
+    throw new Error("planOrder는 숫자여야 합니다.");
   }
 
   // startDate를 dayjs 객체로 변환
