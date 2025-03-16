@@ -222,7 +222,6 @@ const EditTrip = () => {
       genderType === "" ||
       !date?.startDate ||
       !date?.endDate ||
-      periodType === "" ||
       tags.length === 0 ||
       locationName.locationName === ""
     ) {
