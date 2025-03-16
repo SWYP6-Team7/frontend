@@ -4,7 +4,7 @@ export function getPlanChanges(originalPlans, updatedPlans) {
     updated: [],
     deleted: [],
   };
-
+  console.log("객체 비교", originalPlans, updatedPlans);
   // 원래 계획의 인덱스를 맵으로 만들어 빠른 접근을 가능하게 함
   const originalPlansMap = {};
   originalPlans.forEach((plan) => {
