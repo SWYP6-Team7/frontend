@@ -63,7 +63,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
               <Item>
                 <Tab>
                   <TitleContainer>
-                    <Title>Day {index + 1}</Title>
+                    <Title>Day {item.planOrder}</Title>
                     <Date>{getDateByPlanOrder(props.startDate, item.planOrder)}</Date>
                     <Count>{item.spots.length}</Count>
                   </TitleContainer>
