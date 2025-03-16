@@ -152,37 +152,37 @@ const EditTrip = () => {
     setOriginalPlans(uniqueSortedPlans);
     addPlans(uniqueSortedPlans);
   }, [JSON.stringify(data?.pages), initStartDate, hasNextPage]);
-  useEffect(() => {
-    const generateDatePlans = () => {
-      if (!date?.startDate || !date?.endDate) return;
+  // useEffect(() => {
+  //   const generateDatePlans = () => {
+  //     if (!date?.startDate || !date?.endDate) return;
 
-      const start = new Date(date.startDate);
-      const end = new Date(date.endDate);
-      const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  //     const start = new Date(date.startDate);
+  //     const end = new Date(date.endDate);
+  //     const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
-      return Array.from({ length: diffDays }, (_, index) => {
-        const currentDate = new Date(start);
-        currentDate.setDate(start.getDate() + index);
+  //     return Array.from({ length: diffDays }, (_, index) => {
+  //       const currentDate = new Date(start);
+  //       currentDate.setDate(start.getDate() + index);
 
-        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(
-          2,
-          "0"
-        )}-${String(currentDate.getDate()).padStart(2, "0")}`;
+  //       const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(
+  //         2,
+  //         "0"
+  //       )}-${String(currentDate.getDate()).padStart(2, "0")}`;
 
-        // 기존 계획에서 해당 날짜에 맞는 spots 찾기
-        const existingPlan = originalPlans.find((plan) => plan.date === formattedDate);
+  //       // 기존 계획에서 해당 날짜에 맞는 spots 찾기
+  //       const existingPlan = originalPlans.find((plan) => plan.date === formattedDate);
 
-        return {
-          planOrder: index + 1,
-          date: formattedDate,
-          spots: existingPlan?.spots || [], // 기존 spots 유지 또는 빈 배열
-        };
-      });
-    };
+  //       return {
+  //         planOrder: index + 1,
+  //         date: formattedDate,
+  //         spots: existingPlan?.spots || [], // 기존 spots 유지 또는 빈 배열
+  //       };
+  //     });
+  //   };
 
-    const newPlans = generateDatePlans() || [];
-    addPlans(newPlans);
-  }, [date?.startDate, date?.endDate, JSON.stringify(originalPlans)]);
+  //   const newPlans = generateDatePlans() || [];
+  //   addPlans(newPlans);
+  // }, [date?.startDate, date?.endDate, JSON.stringify(originalPlans)]);
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
