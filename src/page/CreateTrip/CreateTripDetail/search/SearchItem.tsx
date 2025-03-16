@@ -35,6 +35,7 @@ const SearchItem = ({
   } = paramsType === "create" ? createTripStore() : editTripStore();
   const handlePlans = (e: MouseEvent) => {
     e.stopPropagation();
+    console.log("plan2", plans);
     if (!planOrder) return;
     const targetPlanIndex = plans.findIndex((plan) => plan.planOrder === Number(planOrder));
     let newPlans: any[] = [];
