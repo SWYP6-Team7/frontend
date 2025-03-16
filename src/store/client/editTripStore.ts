@@ -26,6 +26,7 @@ interface EditTripStore {
   addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   completionStatus: boolean;
   plans: {
+    date?: string;
     id?: string | number;
     planOrder: number;
     spots: SpotType[];

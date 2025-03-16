@@ -89,33 +89,36 @@ const EditTrip = () => {
     },
   });
 
-  // Initial data setup - only run once
+  // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {
     if (!isLoading && data && !dataInitialized) {
       console.log(123);
-      // Extract all plans from all pages
+
       const allPlans = data.pages.flatMap((page) => page.plans || []);
 
-      // Store in originalPlans for comparison later
       setOriginalPlans(allPlans);
 
-      // Store in plans state for editing
-      const formattedPlans = allPlans.map((plan) => ({
-        ...plan,
-        planOrder: plan.planOrder,
-        spots: plan.spots.map((spot) => ({
-          ...spot,
-          latitude: Number(spot.latitude).toFixed(9),
-          longitude: Number(spot.longitude).toFixed(9),
-        })),
-      }));
+      const formattedPlans = allPlans.map((plan) => {
+        const planDate = dayjs(initStartDate)
+          .add(plan.planOrder - 1, "day")
+          .format("YYYY-MM-DD");
+
+        return {
+          ...plan,
+          planOrder: plan.planOrder,
+          date: planDate,
+          spots: plan.spots.map((spot) => ({
+            ...spot,
+            latitude: Number(spot.latitude).toFixed(9),
+            longitude: Number(spot.longitude).toFixed(9),
+          })),
+        };
+      });
 
       addPlans(formattedPlans);
       setDataInitialized(true);
     }
-  }, [JSON.stringify(data), isLoading, dataInitialized]);
-
-  // Fetch next page if available
+  }, [JSON.stringify(data), isLoading, dataInitialized, initStartDate]);
   useEffect(() => {
     if (hasNextPage && !isFetching) {
       const timer = setTimeout(() => {
@@ -166,18 +169,30 @@ const EditTrip = () => {
       const end = dayjs(date.endDate);
       const dayDiff = end.diff(start, "day") + 1;
 
-      if (plans.length !== dayDiff) {
+      // Create an array of dates for the selected range
+      const dateRange: any = [];
+      for (let i = 0; i < dayDiff; i++) {
+        const currentDate = start.add(i, "day").format("YYYY-MM-DD");
+        dateRange.push(currentDate);
+      }
+
+      // Check if we need to adjust plans
+      if (plans.length !== dayDiff || !dateRange.every((date) => plans.some((plan) => plan.date === date))) {
         const newPlans: any = [];
 
+        // For each date in the range
         for (let i = 0; i < dayDiff; i++) {
-          const existingPlan = plans.find((p) => p.planOrder === i + 1);
+          const currentDate = dateRange[i];
+          // Try to find an existing plan for this date
+          const existingPlan = plans.find((p) => p?.date === currentDate);
 
           if (existingPlan) {
             newPlans.push(existingPlan);
           } else {
-            // Create a new empty plan for this day
+            // Create a new empty plan for this date
             newPlans.push({
               planOrder: i + 1,
+              date: currentDate,
               spots: [],
               id: uuidv4(),
             });
