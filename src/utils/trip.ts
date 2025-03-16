@@ -57,44 +57,94 @@ export function getPlanChanges(originalPlans, updatedPlans) {
  * @returns {boolean} 두 배열이 같으면 true, 다르면 false
  */
 function areSpotsSame(spots1, spots2) {
-  if (spots1.length !== spots2.length) {
-    return false;
-  }
+  if (!spots1 || !spots2) return spots1 === spots2;
+  if (spots1.length !== spots2.length) return false;
 
-  // 각 spot 객체를 문자열로 변환하여 비교
-  const spotsStringArray1 = spots1.map((spot) => JSON.stringify(sortObjectKeys(spot)));
-  const spotsStringArray2 = spots2.map((spot) => JSON.stringify(sortObjectKeys(spot)));
+  // 각 요소를 문자열로 변환하여 간단하게 비교
+  try {
+    // 배열이 비어있는 경우를 처리
+    if (spots1.length === 0 && spots2.length === 0) return true;
 
-  // 배열 순서가 중요한 경우 (인덱스별 일치)
-  for (let i = 0; i < spotsStringArray1.length; i++) {
-    if (spotsStringArray1[i] !== spotsStringArray2[i]) {
-      return false;
+    // 각 요소별로 비교
+    for (let i = 0; i < spots1.length; i++) {
+      const spot1 = spots1[i];
+      const spot2 = spots2[i];
+
+      // 기본 필드 비교
+      if (
+        spot1.name !== spot2.name ||
+        spot1.category !== spot2.category ||
+        spot1.region !== spot2.region ||
+        spot1.latitude !== spot2.latitude ||
+        spot1.longitude !== spot2.longitude
+      ) {
+        return false;
+      }
+
+      // spotOrder가 있다면 비교
+      if (spot1.spotOrder !== spot2.spotOrder) {
+        return false;
+      }
     }
-  }
 
-  return true;
+    return true;
+  } catch (error) {
+    console.error("비교 중 오류 발생:", error);
+
+    // 오류 발생 시 안전하게 문자열 비교로 폴백
+    const str1 = JSON.stringify(simplifySpots(spots1));
+    const str2 = JSON.stringify(simplifySpots(spots2));
+    return str1 === str2;
+  }
 }
 
 /**
- * 객체의 키를 정렬하여 동일한 객체지만 키 순서가 다른 경우 일관된 문자열이 생성되도록 합니다.
- * @param {Object} obj - 정렬할 객체
- * @returns {Object} 키가 정렬된 새 객체
+ * 스팟 객체를 간소화하여 핵심 필드만 남깁니다.
+ * @param {Array} spots - 스팟 배열
+ * @returns {Array} 간소화된 스팟 배열
  */
-function sortObjectKeys(obj) {
-  if (typeof obj !== "object" || obj === null) {
-    return obj;
-  }
+function simplifySpots(spots) {
+  if (!spots || !Array.isArray(spots)) return spots;
 
-  // 객체인 경우 키를 정렬
-  if (!Array.isArray(obj)) {
-    return Object.keys(obj)
-      .sort()
-      .reduce((result, key) => {
-        result[key] = sortObjectKeys(obj[key]);
-        return result;
-      }, {});
-  }
+  return spots.map((spot) => {
+    if (!spot) return null;
 
-  // 배열인 경우 각 요소에 대해 재귀적으로 처리
-  return obj.map(sortObjectKeys);
+    return {
+      name: spot.name,
+      category: spot.category,
+      region: spot.region,
+      latitude: spot.latitude,
+      longitude: spot.longitude,
+      spotOrder: spot.spotOrder,
+    };
+  });
+}
+
+/**
+ * 디버깅용: 두 객체의 차이점을 출력합니다.
+ * @param {Object} obj1 - 첫 번째 객체
+ * @param {Object} obj2 - 두 번째 객체
+ */
+function debugDifferences(obj1, obj2) {
+  console.log("=== 객체 차이 분석 ===");
+  console.log("첫 번째 객체:", JSON.stringify(obj1, null, 2));
+  console.log("두 번째 객체:", JSON.stringify(obj2, null, 2));
+
+  const str1 = JSON.stringify(obj1);
+  const str2 = JSON.stringify(obj2);
+
+  console.log("문자열 비교 결과:", str1 === str2);
+
+  if (str1 !== str2) {
+    console.log("첫 번째 객체 길이:", str1.length);
+    console.log("두 번째 객체 길이:", str2.length);
+
+    // 차이가 있는 부분 찾기
+    for (let i = 0; i < Math.min(str1.length, str2.length); i++) {
+      if (str1[i] !== str2[i]) {
+        console.log(`첫 번째 차이점: 위치 ${i}, '${str1.substring(i, i + 10)}' vs '${str2.substring(i, i + 10)}'`);
+        break;
+      }
+    }
+  }
 }
