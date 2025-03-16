@@ -59,7 +59,6 @@ const EditTrip = () => {
   } = editTripStore();
   const {
     travelNumber,
-
     title: initTitle,
     startDate: initStartDate,
     endDate: initEndDate,
@@ -70,12 +69,15 @@ const EditTrip = () => {
     maxPerson: initMaxPerson,
     genderType: initGenderType,
   } = tripDetailStore();
+
+  const [originalPlans, setOriginalPlans] = useState<any[]>([]);
+  const [dataInitialized, setDataInitialized] = useState(false);
+
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
       return getPlans(Number(travelNumber), pageParam) as any;
     },
-
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (!lastPage?.nextCursor) {
@@ -85,6 +87,33 @@ const EditTrip = () => {
       }
     },
   });
+
+  // Initial data setup - only run once
+  useEffect(() => {
+    if (!isLoading && data && !dataInitialized) {
+      // Extract all plans from all pages
+      const allPlans = data.pages.flatMap((page) => page.plans || []);
+
+      // Store in originalPlans for comparison later
+      setOriginalPlans(allPlans);
+
+      // Store in plans state for editing
+      const formattedPlans = allPlans.map((plan) => ({
+        ...plan,
+        planOrder: plan.planOrder + 1,
+        spots: plan.spots.map((spot) => ({
+          ...spot,
+          latitude: Number(spot.latitude).toFixed(9),
+          longitude: Number(spot.longitude).toFixed(9),
+        })),
+      }));
+
+      addPlans(formattedPlans);
+      setDataInitialized(true);
+    }
+  }, [data, isLoading, dataInitialized, addPlans]);
+
+  // Fetch next page if available
   useEffect(() => {
     if (hasNextPage && !isFetching) {
       const timer = setTimeout(() => {
@@ -94,15 +123,20 @@ const EditTrip = () => {
       return () => clearTimeout(timer);
     }
   }, [hasNextPage, isFetching, fetchNextPage]);
+
+  // Initial trip details setup - only run once for static data
   useEffect(() => {
-    addTitle(initTitle); // 제목 설정
-    addDetails(initDetails); // 상세 내용 설정
-    addTags(initTags); // 태그 설정
-    addLocationName(initLocationName); // 위치 이름 설정
-    addInitGeometry(initInitGeometry); // 초기 지오메트리 설정
-    addDate({ startDate: initStartDate || "", endDate: initEndDate || "" }); // 날짜 설정
-    addGenderType(initGenderType); // 성별 타입 설정
-    addMaxPerson(initMaxPerson); // 최대 인원 설정
+    // Only initialize if not already done
+    if (title === "" && initTitle) {
+      addTitle(initTitle);
+      addDetails(initDetails || "");
+      addTags(initTags || []);
+      addLocationName(initLocationName || { locationName: "" });
+      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
+      addDate({ startDate: initStartDate || "", endDate: initEndDate || "" });
+      addGenderType(initGenderType || "");
+      addMaxPerson(initMaxPerson || 0);
+    }
   }, [
     initTitle,
     initDetails,
@@ -113,76 +147,48 @@ const EditTrip = () => {
     initEndDate,
     initGenderType,
     initMaxPerson,
+    title,
+    addTitle,
+    addDetails,
+    addTags,
+    addLocationName,
+    addInitGeometry,
+    addDate,
+    addGenderType,
+    addMaxPerson,
   ]);
 
-  const [originalPlans, setOriginalPlans] = useState<any[]>([]);
-
+  // Generate days between start and end date when dates change
   useEffect(() => {
-    if (!data?.pages || !initStartDate || !hasNextPage) return;
-    console.log("123456");
-    const [year, month, day] = initStartDate.split("-").map(Number);
-    const baseDate = new Date(Date.UTC(year, month - 1, day));
+    if (date?.startDate && date?.endDate && dataInitialized) {
+      const start = dayjs(date.startDate);
+      const end = dayjs(date.endDate);
+      const dayDiff = end.diff(start, "day") + 1;
 
-    const fetchedPlans = data.pages.reduce((acc, page) => {
-      return acc.concat(
-        page.plans.map((item) => {
-          const calculatedDate = new Date(baseDate);
-          calculatedDate.setUTCDate(baseDate.getUTCDate() + item.planOrder - 1);
+      // Only regenerate plans if we don't have the correct number of days
+      if (plans.length !== dayDiff) {
+        // Use existing plans where available, create new ones if needed
+        const newPlans: any = [];
 
-          const formattedDate = `${calculatedDate.getUTCFullYear()}-${String(calculatedDate.getUTCMonth() + 1).padStart(
-            2,
-            "0"
-          )}-${String(calculatedDate.getUTCDate()).padStart(2, "0")}`;
+        for (let i = 0; i < dayDiff; i++) {
+          const existingPlan = plans.find((p) => p.planOrder === i + 1);
 
-          return {
-            ...item,
-            planOrder: item.planOrder,
-            spots: item?.spots?.map((spot) => ({ ...spot, id: uuidv4() })),
-            date: formattedDate,
-          };
-        })
-      );
-    }, []);
+          if (existingPlan) {
+            newPlans.push(existingPlan);
+          } else {
+            // Create a new empty plan for this day
+            newPlans.push({
+              planOrder: i + 1,
+              spots: [],
+              id: uuidv4(),
+            });
+          }
+        }
 
-    // 중복 제거 및 정렬
-    const uniqueSortedPlans = fetchedPlans
-      .filter((plan, index, self) => index === self.findIndex((t) => t.planOrder === plan.planOrder))
-      .sort((a, b) => a.planOrder - b.planOrder);
-
-    setOriginalPlans(uniqueSortedPlans);
-    addPlans(uniqueSortedPlans);
-  }, [JSON.stringify(data?.pages), initStartDate, hasNextPage]);
-  // useEffect(() => {
-  //   const generateDatePlans = () => {
-  //     if (!date?.startDate || !date?.endDate) return;
-
-  //     const start = new Date(date.startDate);
-  //     const end = new Date(date.endDate);
-  //     const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-
-  //     return Array.from({ length: diffDays }, (_, index) => {
-  //       const currentDate = new Date(start);
-  //       currentDate.setDate(start.getDate() + index);
-
-  //       const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(
-  //         2,
-  //         "0"
-  //       )}-${String(currentDate.getDate()).padStart(2, "0")}`;
-
-  //       // 기존 계획에서 해당 날짜에 맞는 spots 찾기
-  //       const existingPlan = originalPlans.find((plan) => plan.date === formattedDate);
-
-  //       return {
-  //         planOrder: index + 1,
-  //         date: formattedDate,
-  //         spots: existingPlan?.spots || [], // 기존 spots 유지 또는 빈 배열
-  //       };
-  //     });
-  //   };
-
-  //   const newPlans = generateDatePlans() || [];
-  //   addPlans(newPlans);
-  // }, [date?.startDate, date?.endDate, JSON.stringify(originalPlans)]);
+        addPlans(newPlans);
+      }
+    }
+  }, [date?.startDate, date?.endDate, dataInitialized, plans.length, addPlans]);
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
@@ -198,23 +204,6 @@ const EditTrip = () => {
   const handleItemToggle = (index) => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
-  const newPlan =
-    plans.length > 0
-      ? plans.map((plan) => {
-          return {
-            ...plan,
-            planOrder: plan.planOrder + 1,
-            spots: plan.spots.map((spot) => {
-              const { id, ...newSpots } = {
-                ...spot,
-                latitude: Number(spot.latitude).toFixed(9),
-                longitude: Number(spot.longitude).toFixed(9),
-              };
-              return newSpots;
-            }),
-          };
-        })
-      : [];
 
   const { updateTripDetailMutate } = useTripDetail(travelNumber);
 
@@ -222,17 +211,19 @@ const EditTrip = () => {
     if (
       title === "" ||
       details === "" ||
-      details === "" ||
       maxPerson === 0 ||
       genderType === "" ||
-      date?.startDate ||
-      date?.endDate ||
+      !date?.startDate ||
+      !date?.endDate ||
       periodType === "" ||
       tags.length === 0 ||
       locationName.locationName === ""
     ) {
       addCompletionStatus(false);
+      setIsToastShow(true);
+      return;
     }
+
     const travelData = {
       title,
       details,
@@ -258,15 +249,10 @@ const EditTrip = () => {
             }),
           })),
         ],
-        newPlan
+        plans
       ),
     };
-    console.log(
-      "travelData",
-      travelData,
-      [...originalPlans.map((plan) => ({ ...plan, planOrder: plan.planOrder + 1 }))],
-      plans
-    );
+
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
@@ -289,7 +275,7 @@ const EditTrip = () => {
       setIsToastShow(true);
     }
   }, [isMapFull]);
-  console.log(plans, "plans");
+
   return (
     <>
       <CreateTripDetailWrapper>
@@ -350,6 +336,7 @@ const EditTrip = () => {
                   plans.length > 0 &&
                   plans?.map((item, idx) => (
                     <CreateScheduleItem
+                      key={item.id || idx}
                       addPlans={addPlans}
                       type="edit"
                       travelNumber={travelNumber}
@@ -404,7 +391,7 @@ const ScheduleList = styled.div`
   gap: 16px;
 `;
 
-const CreateTripDetailContainer = styled.div<{ topModalHeight: number }>`
+const CreateTripDetailContainer = styled.div<{ topModalHeight?: number }>`
   padding: 0px 24px;
   overflow-y: auto;
   position: relative;
@@ -414,11 +401,6 @@ const CreateTripDetailContainer = styled.div<{ topModalHeight: number }>`
   }
   overscroll-behavior: none;
   padding-bottom: 104px;
-
-  /* margin-top: ${(props) => `${props.topModalHeight + 32}px`};
-  transition:
-    margin-top 0.3s ease-out,
-    transform 0.3s ease-out; */
 `;
 
 const ModalContainer = styled.div`
