@@ -191,7 +191,7 @@ const EditTrip = () => {
           } else {
             // Create a new empty plan for this date
             newPlans.push({
-              planOrder: i,
+              planOrder: i + 1,
               date: currentDate,
               spots: [],
               id: uuidv4(),
@@ -356,7 +356,7 @@ const EditTrip = () => {
                       travelNumber={travelNumber}
                       idx={idx}
                       plans={plans}
-                      title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder)}
+                      title={item?.date ?? ""}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}
                     />
