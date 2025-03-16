@@ -72,21 +72,20 @@ export function getDateRangeCategory(startDate, endDate) {
   }
 }
 
-export function getDateByIndex(startDate, index) {
-  if (index < 1) {
-    throw new Error("index는 1 이상이어야 합니다.");
+export function getDateByPlanOrder(startDate, planOrder) {
+  if (typeof planOrder !== "number" || planOrder < 1) {
+    throw new Error("planOrder는 1 이상의 숫자여야 합니다.");
   }
 
   // startDate를 dayjs 객체로 변환
   const start = dayjs(startDate, "YYYY-MM-DD");
 
-  // index에 따라 날짜 계산 (index가 1이면 startDate 그대로 반환)
-  const calculatedDate = start.add(index - 1, "day");
+  // planOrder에 따라 날짜 계산 (planOrder가 1이면 startDate 그대로 반환)
+  const calculatedDate = start.add(planOrder - 1, "day");
 
   // 계산된 날짜를 "YYYY-MM-DD" 형식으로 반환
   return calculatedDate.format("YYYY-MM-DD");
 }
-
 export function formatTimeOnContact(date: string) {
   const now = dayjs().utcOffset(9);
   const inputDate = dayjs.utc(date).utcOffset(9);

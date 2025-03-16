@@ -3,7 +3,7 @@ import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import styled from "@emotion/styled";
 import { palette } from "@/styles/palette";
-import { getDateByIndex } from "@/utils/time";
+import { getDateByPlanOrder } from "@/utils/time";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import Spacing from "./Spacing";
 import { useInView } from "react-intersection-observer";
@@ -64,7 +64,7 @@ const TripCarousel: React.FC<PropType> = (props) => {
                 <Tab>
                   <TitleContainer>
                     <Title>Day {index + 1}</Title>
-                    <Date>{getDateByIndex(props.startDate, index + 1)}</Date>
+                    <Date>{getDateByPlanOrder(props.startDate, item.planOrder)}</Date>
                     <Count>{item.spots.length}</Count>
                   </TitleContainer>
                   <Spacing size={16} />
