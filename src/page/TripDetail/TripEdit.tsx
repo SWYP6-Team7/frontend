@@ -115,6 +115,58 @@ const EditTrip = () => {
     initMaxPerson,
   ]);
 
+  /**
+   * 시작일과 종료일에 맞춰 여행 계획 틀을 생성하는 함수
+   * @param startDate 여행 시작일 (YYYY-MM-DD 형식)
+   * @param endDate 여행 종료일 (YYYY-MM-DD 형식)
+   * @returns 날짜별 빈 계획 배열
+   */
+  const createPlansByDateRange = (startDate: string, endDate: string) => {
+    if (!startDate || !endDate) return [];
+
+    const start = dayjs(startDate);
+    const end = dayjs(endDate);
+    const diffDays = end.diff(start, "day") + 1; // 시작일과 종료일을 포함한 총 일수
+
+    // 각 날짜에 대한 빈 계획 생성
+    return Array.from({ length: diffDays }, (_, index) => ({
+      planId: uuidv4(), // 고유 ID 생성
+      planOrder: index, // 0부터 시작하는 순서
+      spots: [], // 빈 장소 배열
+      isTemplate: true, // 템플릿 여부 표시 (실제 데이터와 구분용)
+      date: start.add(index, "day").format("YYYY-MM-DD"), // 해당 날짜 저장 (옵션)
+    }));
+  };
+
+  /**
+   * 기존 계획과 새로운 날짜 범위를 병합하는 함수
+   * @param existingPlans 기존에 있던 계획 배열
+   * @param startDate 새 여행 시작일
+   * @param endDate 새 여행 종료일
+   * @returns 병합된 계획 배열
+   */
+  const mergePlansWithDateRange = (existingPlans, startDate: string, endDate: string) => {
+    // 새 날짜 범위로 빈 계획 틀 생성
+    const templatePlans = createPlansByDateRange(startDate, endDate);
+
+    // 템플릿과 기존 계획 병합
+    return templatePlans.map((template) => {
+      // 같은 planOrder를 가진 기존 계획 찾기
+      const existingPlan = existingPlans.find((p) => p.planOrder === template.planOrder);
+      // 기존 계획이 있으면 사용, 없으면 템플릿 사용
+      return existingPlan ? { ...existingPlan, isTemplate: false } : template;
+    });
+  };
+
+  // EditTrip 컴포넌트에서 사용 예시
+  useEffect(() => {
+    if (date?.startDate && date?.endDate) {
+      // 날짜가 변경될 때마다 plans 배열 업데이트
+      const newPlans = mergePlansWithDateRange(plans, date.startDate, date.endDate);
+      addPlans(newPlans);
+    }
+  }, [date?.startDate, date?.endDate]);
+
   const [originalPlans, setOriginalPlans] = useState<any[]>([]);
 
   useEffect(() => {
@@ -319,7 +371,7 @@ const EditTrip = () => {
                       travelNumber={travelNumber}
                       idx={idx}
                       plans={plans}
-                      title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder)}
+                      title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder + 1)}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}
                     />
