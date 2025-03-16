@@ -37,7 +37,7 @@ const CreateScheduleItem = ({
   const [contentHeight, setContentHeight] = useState(0);
   const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null); // 콘텐츠 참조 추가
-  const plan = plans.find((plan) => plan.planOrder === idx);
+  const plan = plans.find((plan) => plan.planOrder === (type === "create" ? idx : idx + 1));
   const count = plan?.spots?.length ?? 0;
   useEffect(() => {
     if (contentRef.current) {
