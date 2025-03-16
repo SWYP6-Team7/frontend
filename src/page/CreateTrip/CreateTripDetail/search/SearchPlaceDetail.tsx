@@ -132,11 +132,14 @@ const SearchPlaceDetail = () => {
 
   const handlePlans = () => {
     if (!planOrder) return;
-    const targetPlanIndex = plans.findIndex((plan) => plan.planOrder === Number(planOrder));
+
+    const targetPlanIndex = plans.findIndex(
+      (plan) => plan.planOrder === (paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1)
+    );
     let newPlans: any[] = [];
     if (targetPlanIndex > -1) {
       newPlans = plans.map((plan) =>
-        plan.planOrder === targetPlanIndex
+        plan.planOrder === (paramsType === "create" ? targetPlanIndex : targetPlanIndex + 1)
           ? {
               ...plan,
               spots: [
@@ -157,7 +160,7 @@ const SearchPlaceDetail = () => {
       newPlans = [
         ...plans,
         {
-          planOrder: Number(planOrder),
+          planOrder: paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1,
           spots: [
             {
               id: uuidv4(),

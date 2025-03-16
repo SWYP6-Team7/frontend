@@ -160,34 +160,34 @@ const EditTrip = () => {
     addMaxPerson,
   ]);
 
-  // useEffect(() => {
-  //   if (date?.startDate && date?.endDate && dataInitialized) {
-  //     const start = dayjs(date.startDate);
-  //     const end = dayjs(date.endDate);
-  //     const dayDiff = end.diff(start, "day") + 1;
+  useEffect(() => {
+    if (date?.startDate && date?.endDate && dataInitialized) {
+      const start = dayjs(date.startDate);
+      const end = dayjs(date.endDate);
+      const dayDiff = end.diff(start, "day") + 1;
 
-  //     if (plans.length !== dayDiff) {
-  //       const newPlans: any = [];
+      if (plans.length !== dayDiff) {
+        const newPlans: any = [];
 
-  //       for (let i = 0; i < dayDiff; i++) {
-  //         const existingPlan = plans.find((p) => p.planOrder === i + 1);
+        for (let i = 0; i < dayDiff; i++) {
+          const existingPlan = plans.find((p) => p.planOrder === i + 1);
 
-  //         if (existingPlan) {
-  //           newPlans.push(existingPlan);
-  //         } else {
-  //           // Create a new empty plan for this day
-  //           newPlans.push({
-  //             planOrder: i + 1,
-  //             spots: [],
-  //             id: uuidv4(),
-  //           });
-  //         }
-  //       }
+          if (existingPlan) {
+            newPlans.push(existingPlan);
+          } else {
+            // Create a new empty plan for this day
+            newPlans.push({
+              planOrder: i + 1,
+              spots: [],
+              id: uuidv4(),
+            });
+          }
+        }
 
-  //       addPlans(newPlans);
-  //     }
-  //   }
-  // }, [date?.startDate, date?.endDate, dataInitialized, plans.length, addPlans]);
+        addPlans(newPlans);
+      }
+    }
+  }, [date?.startDate, date?.endDate, dataInitialized, plans.length]);
 
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
