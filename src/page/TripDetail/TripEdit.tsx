@@ -21,7 +21,7 @@ import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CreateScheduleItem from "../CreateTrip/CreateTripDetail/CreateScheduleItem";
 import TripToast from "@/components/designSystem/toastMessage/tripToast";
-import { getDateByIndex, getDateRangeCategory } from "@/utils/time";
+import { getDateByPlanOrder, getDateRangeCategory } from "@/utils/time";
 import { editTripStore } from "@/store/client/editTripStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPlans } from "@/api/trip";
@@ -319,7 +319,7 @@ const EditTrip = () => {
                       travelNumber={travelNumber}
                       idx={idx}
                       plans={plans}
-                      title={getDateByIndex(date?.startDate ?? "", idx + 1)}
+                      title={getDateByPlanOrder(date?.startDate ?? "", item.planOrder)}
                       isOpen={openItemIndex === idx}
                       onToggle={() => handleItemToggle(idx)}
                     />
