@@ -96,8 +96,6 @@ const EditTrip = () => {
 
       const allPlans = data.pages.flatMap((page) => page.plans || []);
 
-      setOriginalPlans(allPlans);
-
       const formattedPlans = allPlans.map((plan) => {
         const planDate = dayjs(initStartDate)
           .add(plan.planOrder - 1, "day")
@@ -114,6 +112,7 @@ const EditTrip = () => {
           })),
         };
       });
+      setOriginalPlans(formattedPlans);
 
       addPlans(formattedPlans);
       setDataInitialized(true);
