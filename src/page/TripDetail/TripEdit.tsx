@@ -252,25 +252,9 @@ const EditTrip = () => {
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
-      planChanges: trackPlanChanges(
-        [
-          ...originalPlans.map((plan) => ({
-            ...plan,
-            planOrder: plan.planOrder,
-            spots: plan.spots.map((spot) => {
-              const { ...newSpots } = {
-                ...spot,
-                latitude: Number(spot.latitude).toFixed(9),
-                longitude: Number(spot.longitude).toFixed(9),
-              };
-              return newSpots;
-            }),
-          })),
-        ],
-        plans
-      ),
+      planChanges: trackPlanChanges(originalPlans, plans),
     };
-    console.log("123", travelData);
+    console.log("123", travelData, originalPlans, plans);
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
