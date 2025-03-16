@@ -85,7 +85,15 @@ const EditTrip = () => {
       }
     },
   });
-  const [ref, inView] = useInView();
+  useEffect(() => {
+    if (hasNextPage && !isFetching) {
+      const timer = setTimeout(() => {
+        fetchNextPage();
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [hasNextPage, isFetching, fetchNextPage]);
   useEffect(() => {
     addTitle(initTitle); // 제목 설정
     addDetails(initDetails); // 상세 내용 설정
@@ -171,12 +179,6 @@ const EditTrip = () => {
           };
         })
       : [];
-
-  useInfiniteScroll(() => {
-    if (inView) {
-      !isFetching && hasNextPage && fetchNextPage();
-    }
-  }, [inView, !isFetching, fetchNextPage, hasNextPage]);
 
   const { updateTripDetailMutate } = useTripDetail(travelNumber);
 
@@ -322,7 +324,6 @@ const EditTrip = () => {
                       onToggle={() => handleItemToggle(idx)}
                     />
                   ))}
-                <div ref={ref} style={{ width: "100%", height: 5 }} />
               </ScheduleList>
             </ScheduleContainer>
           </BottomContainer>
