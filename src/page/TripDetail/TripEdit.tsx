@@ -150,6 +150,7 @@ const EditTrip = () => {
       .sort((a, b) => a.planOrder - b.planOrder);
 
     setOriginalPlans(uniqueSortedPlans);
+    addPlans(uniqueSortedPlans);
   }, [JSON.stringify(data?.pages), initStartDate, plans]);
   // useEffect(() => {
   //   const generateDatePlans = () => {
