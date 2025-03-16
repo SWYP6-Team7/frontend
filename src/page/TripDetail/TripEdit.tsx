@@ -27,6 +27,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPlans } from "@/api/trip";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
@@ -252,7 +253,7 @@ const EditTrip = () => {
     }
   }, [inView, !isFetching, fetchNextPage, hasNextPage]);
 
-  // const { createTripMutate } = useCreateTrip(travelData, accessToken as string); // 여행 생성 api 요청.
+  const { updateTripDetailMutate } = useTripDetail(travelNumber);
 
   const completeClickHandler = () => {
     if (
@@ -282,19 +283,19 @@ const EditTrip = () => {
       ...getPlanChanges(originalPlans, newPlan),
     };
     console.log("travelData", travelData, originalPlans, plans);
-    // createTripMutate(undefined, {
-    //   onSuccess: (data: any) => {
-    //     resetCreateTripDetail();
-    //     if (data) {
-    //       router.push(`/trip/detail/${data.travelNumber}`);
-    //     } else {
-    //       router.push(`/`);
-    //     }
-    //   },
-    //   onError: (e) => {
-    //     console.log(e, "여행 생성에 오류 발생.");
-    //   },
-    // });
+    updateTripDetailMutate(travelData, {
+      onSuccess: (data: any) => {
+        resetCreateTripDetail();
+        if (data) {
+          router.push(`/trip/detail/${data.travelNumber}`);
+        } else {
+          router.push(`/`);
+        }
+      },
+      onError: (e) => {
+        console.log(e, "여행 수정 오류 발생.");
+      },
+    });
   };
 
   useEffect(() => {

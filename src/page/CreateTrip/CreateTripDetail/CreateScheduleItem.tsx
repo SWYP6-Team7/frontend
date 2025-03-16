@@ -1,7 +1,7 @@
 "use client";
 import DnDList from "@/components/DnDList";
 import Spacing from "@/components/Spacing";
-import { createTripStore, SpotType } from "@/store/client/createTripStore";
+import { SpotType } from "@/model/trip";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";

@@ -6,10 +6,10 @@ import {
   getTripEnrollmentCount,
   updateTripDetail,
 } from "@/api/tripDetail";
+import { UpdateTripReqData } from "@/model/trip";
 import { ITripDetail } from "@/model/tripDetail";
 import { authStore } from "@/store/client/authStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CreateTripReqData } from "../createTrip/useCreateTrip";
 
 const useTripDetail = (travelNumber: number) => {
   const { userId, accessToken, isGuestUser } = authStore();
@@ -37,7 +37,7 @@ const useTripDetail = (travelNumber: number) => {
     mutateAsync: updateTripDetailMutation,
     isSuccess: isEditSuccess,
   } = useMutation({
-    mutationFn: (data: CreateTripReqData) => {
+    mutationFn: (data: UpdateTripReqData) => {
       return updateTripDetail(travelNumber, data, accessToken);
     },
     onSuccess: () => {

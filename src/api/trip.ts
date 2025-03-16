@@ -1,8 +1,8 @@
 import RequestError from "@/context/ReqeustError";
 import { axiosInstance, handleApiResponse } from ".";
 import { getJWTHeader } from "@/utils/user";
-import { CreateTripReqData } from "@/hooks/createTrip/useCreateTrip";
 import axios from "axios";
+import { CreateTripReqData } from "@/model/trip";
 // 여행 관련 필요한 API요청들.
 
 export const createTrip = async (travelData: CreateTripReqData, accessToken: string) => {

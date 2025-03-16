@@ -5,9 +5,9 @@ import styled from "@emotion/styled";
 import { palette } from "@/styles/palette";
 import { getDateByIndex } from "@/utils/time";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
-import { SpotType } from "@/store/client/createTripStore";
 import Spacing from "./Spacing";
 import { useInView } from "react-intersection-observer";
+import { SpotType } from "@/model/trip";
 
 type PropType = {
   slides: { planOrder: number; spots: SpotType[] }[];

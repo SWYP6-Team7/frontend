@@ -1,6 +1,6 @@
 "use client";
 
-import { createTripStore, SpotType } from "@/store/client/createTripStore";
+import { SpotType } from "@/model/trip";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { DragEvent, ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";

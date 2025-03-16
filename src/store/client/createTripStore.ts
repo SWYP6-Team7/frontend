@@ -1,16 +1,10 @@
 "use client";
+import { SpotType } from "@/model/trip";
 import { getCurrentFormattedDate } from "@/utils/time";
 import { create } from "zustand";
 
 type Gender = "F" | "M" | "";
-export type SpotType = {
-  id?: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-  region: string;
-  category: string;
-};
+
 interface CreateTripState {
   locationName: { locationName: string; mapType: "google" | "kakao" };
   addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;

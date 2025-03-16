@@ -2,7 +2,7 @@ import { getJWTHeader } from "@/utils/user";
 import { axiosInstance, handleApiResponse } from ".";
 import { ITripDetail } from "@/model/tripDetail";
 import RequestError from "@/context/ReqeustError";
-import { CreateTripReqData } from "@/hooks/createTrip/useCreateTrip";
+import { UpdateTripReqData } from "@/model/trip";
 
 export async function getTripDetail(travelNumber: number, accessToken: string | null) {
   try {
@@ -37,7 +37,7 @@ export async function getCompanions(travelNumber: number, accessToken: string | 
     throw new RequestError(err);
   }
 }
-export async function updateTripDetail(travelNumber: number, data: CreateTripReqData, accessToken: string | null) {
+export async function updateTripDetail(travelNumber: number, data: UpdateTripReqData, accessToken: string | null) {
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
     const response = await axiosInstance.put(`/api/travel/${travelNumber}`, data, {
