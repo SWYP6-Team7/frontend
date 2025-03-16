@@ -28,7 +28,7 @@ import { getPlans } from "@/api/trip";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import useTripDetail from "@/hooks/tripDetail/useTripDetail";
-import { getPlanChanges } from "@/utils/trip";
+import { trackPlanChanges } from "@/utils/trip";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
@@ -241,11 +241,11 @@ const EditTrip = () => {
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
-      planChanges: getPlanChanges(
+      planChanges: trackPlanChanges(
         [
           ...originalPlans.map((plan) => ({
             ...plan,
-            planOrder: plan.planOrder + 1,
+            planOrder: plan.planOrder,
             spots: plan.spots.map((spot) => {
               const { ...newSpots } = {
                 ...spot,
