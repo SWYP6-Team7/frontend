@@ -51,7 +51,7 @@ const TopModal = ({
         scrollAttempts.current = 0; // 조건이 맞지 않으면 리셋
       }
     },
-    [modalHeight, contentHeight]
+    [modalHeight, contentHeight, onHeightChange]
   );
 
   const handleWheel = useCallback(
@@ -110,7 +110,7 @@ const TopModal = ({
         // container.removeEventListener("wheel", handleWheel);
       };
     }
-  }, []);
+  }, [handleWheel, handleTouchStart, handleTouchMove]);
 
   const handleScroll = useCallback(
     (e: any) => {
@@ -164,7 +164,7 @@ const TopModal = ({
         currentContainer.removeEventListener("scroll", handleScroll);
       };
     }
-  }, []);
+  }, [handleScroll]);
 
   useEffect(() => {
     setIsClient(true);

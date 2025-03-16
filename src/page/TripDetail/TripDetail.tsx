@@ -425,7 +425,7 @@ export default function TripDetail() {
           </ModalContainer>
         </TopModal>
         <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
-          <MapContainer
+          {/* <MapContainer
             plans={combinedPlans ?? []}
             locationName={locationName}
             index={openItemIndex + 1}
@@ -433,7 +433,7 @@ export default function TripDetail() {
             lat={initGeometry?.lat || 37.57037778}
             lng={initGeometry?.lng || 126.9816417}
             zoom={9}
-          />
+          /> */}
           <ScheduleContainer>
             <ScheduleTitle>여행 일정</ScheduleTitle>
             <Spacing size={16} />
