@@ -41,7 +41,6 @@ const CreateScheduleItem = ({
   const count = plan?.spots?.length ?? 0;
   useEffect(() => {
     if (contentRef.current) {
-      console.log(contentRef.current.scrollHeight, "scroll");
       setContentHeight(contentRef.current.scrollHeight + 32);
     }
   }, [isOpen]);

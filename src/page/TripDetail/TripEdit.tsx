@@ -273,7 +273,7 @@ const EditTrip = () => {
       setIsToastShow(true);
     }
   }, [isMapFull]);
-
+  console.log("plans", plans, originalPlans);
   return (
     <>
       <CreateTripDetailWrapper>
