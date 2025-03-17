@@ -25,7 +25,11 @@ export function trackPlanChanges(originalPlans, plans) {
         const { date, ...planWithoutDate } = matchingPlan;
         // spots 안의 id 제거
         planWithoutDate.spots = planWithoutDate.spots.map(
-          ({ id, ...spot }) => spot
+          ({ id, ...spot }) => ({
+            ...spot,
+            latitude: Number(spot.latitude.toFixed(9)),
+            longitude: Number(spot.longitude.toFixed(9)),
+          })
         );
 
         // spots가 없거나 비어있으면 deleted로 처리
@@ -45,9 +49,11 @@ export function trackPlanChanges(originalPlans, plans) {
     );
     if (isNewPlan && plan.spots.length > 0) {
       const { id, date, ...planWithoutDate } = plan;
-      planWithoutDate.spots = planWithoutDate.spots.map(
-        ({ id, ...spot }) => spot
-      );
+      planWithoutDate.spots = planWithoutDate.spots.map(({ id, ...spot }) => ({
+        ...spot,
+        latitude: Number(spot.latitude.toFixed(9)),
+        longitude: Number(spot.longitude.toFixed(9)),
+      }));
       added.push(planWithoutDate);
     }
   });
