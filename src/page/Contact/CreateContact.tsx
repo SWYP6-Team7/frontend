@@ -15,15 +15,20 @@ import { myPageStore } from "@/store/client/myPageStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { useMutation } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 
 const INQUIRYTYPE_LIST = ["계정 및 로그인", "서비스 이용 방법", "이용 불편 및 신고", "기타 문의"];
 
 const CreateContact = () => {
   const { email: initEmail } = myPageStore();
+  const searchParams = useSearchParams();
+  const type = searchParams?.get("type") ?? "";
   console.log("email", initEmail);
   const [isChange, setIsChange] = useState<boolean>(false);
-  const [inquiryType, setInquiryType] = useState<string>("계정 및 로그인");
+  const [inquiryType, setInquiryType] = useState<string>(
+    type === "block" ? "계정 신고 및 차단 문의" : "계정 및 로그인"
+  );
   const [email, setEmail] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -67,13 +72,17 @@ const CreateContact = () => {
         <InquiryTypeContainer>
           <Label htmlFor="inqueryType">문의 유형을 선택해주세요</Label>
 
-          <Select
-            id="inQueryType"
-            width="100%"
-            value={inquiryType}
-            setValue={setInquiryType}
-            list={INQUIRYTYPE_LIST}
-          ></Select>
+          {type === "block" ? (
+            <Block>계정 신고 및 차단 문의</Block>
+          ) : (
+            <Select
+              id="inQueryType"
+              width="100%"
+              value={inquiryType}
+              setValue={setInquiryType}
+              list={INQUIRYTYPE_LIST}
+            ></Select>
+          )}
         </InquiryTypeContainer>
         <EmailContainer>
           <Label htmlFor="email">답변 받을 이메일</Label>
@@ -166,6 +175,19 @@ const EmailContainer = styled.div<{ isChange: boolean }>`
 
 const ContentContainer = styled.div`
   margin-bottom: 208px;
+`;
+
+const Block = styled.div`
+  height: 48px;
+  width: 100%;
+  border-radius: 30px;
+  background-color: ${palette.BG};
+  border: 1px solid ${palette.비강조3};
+  padding: 14px 20px;
+  font-size: 16px;
+  line-height: 20px;
+  color: ${palette.비강조};
+  font-weight: 400;
 `;
 
 const EmailBox = styled.div`

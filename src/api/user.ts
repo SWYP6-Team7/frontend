@@ -86,6 +86,10 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
       },
     });
 
+    if (response.data.resultType !== "ACCESS_DENIED") {
+      window.location.href = `${process.env.FRONT_URL}/block`;
+    }
+
     return handleApiResponse(response);
   } catch (error) {
     console.error("토큰 요청 실패:", error);

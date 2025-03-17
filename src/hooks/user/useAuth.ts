@@ -53,6 +53,9 @@ const useAuth = () => {
         email,
         password,
       });
+      if (response.data.resultType !== "ACCESS_DENIED") {
+        window.location.href = `${process.env.FRONT_URL}/block`;
+      }
       return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
