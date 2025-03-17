@@ -62,6 +62,7 @@ const ROUTES = {
   MY_COMMUNITY: "/myCommunity",
   HOME: "/",
   REPORT: "/report",
+  BLOCK: "/block",
 };
 
 export const useHeaderNavigation = () => {

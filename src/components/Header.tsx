@@ -26,7 +26,10 @@ const Header = () => {
 
   const headerBackgroundColorIsGrey = () => {
     return (
-      checkRoute.exact(ROUTES.HOME) || checkRoute.exact(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.REQUESTED_TRIP)
+      checkRoute.exact(ROUTES.HOME) ||
+      checkRoute.exact(ROUTES.MY.TRIP) ||
+      checkRoute.startsWith(ROUTES.REQUESTED_TRIP) ||
+      checkRoute.exact(ROUTES.BLOCK)
     );
   };
   return (

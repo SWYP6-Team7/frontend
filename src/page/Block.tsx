@@ -58,7 +58,7 @@ const Block = () => {
         <Description>
           신고가 5회 이상 접수되었습니다. 이에 따라 회원님의 계정 접속을 차단하였습니다. 계정 차단은 yyyy. mm. dd.
           hh.mm까지 적용됩니다.
-          <br /> 문의가 있으실 경우,
+          <br /> <br /> 문의가 있으실 경우,
           <br /> 문의하기를 통해 접수해주시기 바랍니다.
         </Description>
       </Container>
