@@ -99,8 +99,6 @@ const TripEdit = () => {
   // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {
     if (!isLoading && data && !dataInitialized) {
-      console.log(123);
-
       const allPlans = data.pages.flatMap((page) => page.plans || []);
 
       const formattedPlans = allPlans.map((plan) => {
@@ -262,7 +260,7 @@ const TripEdit = () => {
       setIsToastShow(true);
       return;
     }
-    console.log("123", originalPlans, plans);
+
     const travelData = {
       title,
       details,
@@ -303,7 +301,6 @@ const TripEdit = () => {
       setIsToastShow(true);
     }
   }, [isMapFull]);
-  console.log("plans", plans, originalPlans);
   return (
     <>
       <CreateTripDetailWrapper>
