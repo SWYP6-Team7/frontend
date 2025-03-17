@@ -150,13 +150,11 @@ export default function TripDetail() {
     (acc, page) => acc.concat(page.plans),
     []
   );
-  console.log("data", data, combinedPlans);
   useInfiniteScroll(() => {
     if (inView) {
-      console.log("inview");
       !isFetching && hasNextPage && fetchNextPage();
     }
-  }, [inView, !isFetching, fetchNextPage, hasNextPage]);
+  }, [inView, !isFetching, hasNextPage]);
 
   //북마크
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(

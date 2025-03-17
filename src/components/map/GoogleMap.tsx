@@ -1,22 +1,11 @@
 "use client";
 import {
-  AdvancedMarker,
   APIProvider,
   Map,
   MapCameraChangedEvent,
-  Pin,
   useMap,
-  useMapsLibrary,
 } from "@vis.gl/react-google-maps";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { MarkerClusterer } from "@googlemaps/markerclusterer";
-import type { Marker } from "@googlemaps/markerclusterer";
+import React, { useEffect, useState } from "react";
 
 type Poi = { key: string; location: google.maps.LatLngLiteral };
 
@@ -94,7 +83,7 @@ export const PoiMarkers = (props: { pois: Poi[] }) => {
       flightPath.setMap(null);
       Object.values(newMarkers).forEach((marker) => marker.setMap(null));
     };
-  }, [props.pois, map]);
+  }, [JSON.stringify(props.pois), map]);
 
   return null; // 더 이상 JSX 요소를 렌더링하지 않음
 };

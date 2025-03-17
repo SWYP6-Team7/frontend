@@ -32,7 +32,6 @@ const MapContainer = (props: MapContainerProps) => {
         title: spot.name,
       }))
     : [];
-  console.log(currentPlan, "plancurrent", props);
   // GoogleMap과 KakaoMap을 조건부로 렌더링
   if (props.locationName.mapType === "google") {
     return (
