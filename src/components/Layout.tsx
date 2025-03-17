@@ -104,6 +104,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             pathname !== "/login" &&
             pathname !== "/trip/list" &&
             pathname !== "/community" &&
+            !checkRoute.exact(ROUTES.BLOCK) &&
             !checkRoute.startsWith(ROUTES.SEARCH.PLACE) && <Header />}
           {children}
           {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
