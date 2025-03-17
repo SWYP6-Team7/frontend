@@ -231,7 +231,7 @@ const TripEdit = () => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
 
-  const { updateTripDetailMutate, tripDetail } = useTripDetail(travelNumber);
+  const { updateTripDetailMutate } = useTripDetail(travelNumber);
 
   const completeClickHandler = () => {
     if (
@@ -280,7 +280,6 @@ const TripEdit = () => {
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetEditTripDetail();
-        tripDetail.refetch();
 
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
