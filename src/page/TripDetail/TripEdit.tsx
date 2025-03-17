@@ -26,14 +26,13 @@ import { editTripStore } from "@/store/client/editTripStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPlans } from "@/api/trip";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
-import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 import { trackPlanChanges } from "@/utils/trip";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
 
-const EditTrip = () => {
+const TripEdit = () => {
   const {
     locationName,
     title,
@@ -59,7 +58,7 @@ const EditTrip = () => {
     setDataInitialized,
     originalPlans,
     setOriginalPlans,
-    resetCreateTripDetail,
+    resetEditTripDetail,
   } = editTripStore();
   const {
     travelNumber,
@@ -74,7 +73,15 @@ const EditTrip = () => {
     genderType: initGenderType,
   } = tripDetailStore();
 
-  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    refetch,
+    isFetching,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
       return getPlans(Number(travelNumber), pageParam) as any;
@@ -138,7 +145,9 @@ const EditTrip = () => {
       addDetails(initDetails || "");
       addTags(initTags || []);
       addLocationName(initLocationName || { locationName: "" });
-      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
+      addInitGeometry(
+        initInitGeometry || { lat: 37.57037778, lng: 126.9816417 }
+      );
       addDate({ startDate: initStartDate || "", endDate: initEndDate || "" });
       addGenderType(initGenderType || "");
       addMaxPerson(initMaxPerson || 0);
@@ -175,12 +184,16 @@ const EditTrip = () => {
         dateRange.push(start.add(i, "day").format("YYYY-MM-DD"));
       }
 
-      if (plans.length !== dayDiff || !dateRange.every((date) => plans.some((p) => p.date === date))) {
+      if (
+        plans.length !== dayDiff ||
+        !dateRange.every((date) => plans.some((p) => p.date === date))
+      ) {
         const newPlans = dateRange.map((currentDate, index) => {
           // 1. 현재 plans에서 먼저 조회
           // 2. 없으면 originalPlans에서 조회
           const existingPlan =
-            plans.find((p) => p.date === currentDate) || originalPlans?.find((p) => p.date === currentDate);
+            plans.find((p) => p.date === currentDate) ||
+            originalPlans?.find((p) => p.date === currentDate);
 
           return existingPlan
             ? {
@@ -198,7 +211,13 @@ const EditTrip = () => {
         addPlans(newPlans);
       }
     }
-  }, [date?.startDate, date?.endDate, dataInitialized, plans.length, originalPlans]);
+  }, [
+    date?.startDate,
+    date?.endDate,
+    dataInitialized,
+    plans.length,
+    originalPlans,
+  ]);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -214,7 +233,7 @@ const EditTrip = () => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
 
-  const { updateTripDetailMutate } = useTripDetail(travelNumber);
+  const { updateTripDetailMutate, tripDetail } = useTripDetail(travelNumber);
 
   const completeClickHandler = () => {
     if (
@@ -251,7 +270,10 @@ const EditTrip = () => {
       genderType: genderType!,
       startDate: date?.startDate || "",
       endDate: date?.endDate || "",
-      periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
+      periodType: getDateRangeCategory(
+        date?.startDate ?? "",
+        date?.endDate ?? ""
+      ),
       locationName: locationName.locationName,
       tags,
       planChanges: trackPlanChanges(originalPlans, plans),
@@ -259,7 +281,9 @@ const EditTrip = () => {
 
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
-        resetCreateTripDetail();
+        resetEditTripDetail();
+        tripDetail.refetch();
+
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
         } else {
@@ -284,7 +308,11 @@ const EditTrip = () => {
     <>
       <CreateTripDetailWrapper>
         <CreateTripDetailContainer ref={containerRef}>
-          <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
+          <TopModal
+            containerRef={containerRef}
+            setIsMapFull={setIsMapFull}
+            onHeightChange={setTopModalHeight}
+          >
             <ModalContainer>
               <RegionWrapper
                 locationName={locationName}
@@ -323,7 +351,10 @@ const EditTrip = () => {
               />
             </ModalContainer>
           </TopModal>
-          <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
+          <BottomContainer
+            isMapFull={isMapFull}
+            topModalHeight={topModalHeight}
+          >
             <MapContainer
               index={openItemIndex}
               plans={plans}
@@ -373,7 +404,7 @@ const EditTrip = () => {
   );
 };
 
-export default EditTrip;
+export default TripEdit;
 
 const CreateTripDetailWrapper = styled.div`
   position: relative;
@@ -421,7 +452,8 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) =>
+    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
