@@ -27,8 +27,8 @@ export function trackPlanChanges(originalPlans, plans) {
         planWithoutDate.spots = planWithoutDate.spots.map(
           ({ id, ...spot }) => ({
             ...spot,
-            latitude: Number(spot.latitude.toFixed(9)),
-            longitude: Number(spot.longitude.toFixed(9)),
+            latitude: Number(Number(spot.latitude).toFixed(9)),
+            longitude: Number(Number(spot.longitude).toFixed(9)),
           })
         );
 
@@ -51,8 +51,8 @@ export function trackPlanChanges(originalPlans, plans) {
       const { id, date, ...planWithoutDate } = plan;
       planWithoutDate.spots = planWithoutDate.spots.map(({ id, ...spot }) => ({
         ...spot,
-        latitude: Number(spot.latitude.toFixed(9)),
-        longitude: Number(spot.longitude.toFixed(9)),
+        latitude: Number(Number(spot.latitude).toFixed(9)),
+        longitude: Number(Number(spot.longitude).toFixed(9)),
       }));
       added.push(planWithoutDate);
     }
