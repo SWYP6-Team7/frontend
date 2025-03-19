@@ -600,6 +600,7 @@ export default function TripDetail() {
 
 const NoDataContainer = styled.div`
   display: flex;
+  padding-top: 52px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
