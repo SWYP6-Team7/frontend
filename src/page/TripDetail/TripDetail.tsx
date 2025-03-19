@@ -40,6 +40,7 @@ import { getPlans } from "@/api/trip";
 import { useInView } from "react-intersection-observer";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import EmblaCarousel from "@/components/TripCarousel";
+import useComment from "@/hooks/comment/useComment";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -113,6 +114,19 @@ export default function TripDetail() {
   if (isNaN(parseInt(travelNumber))) {
     router.replace("/");
   }
+
+  const {
+    commentList: { data: commentData },
+  } = useComment("travel", Number(travelNumber));
+  console.log("commentData", commentData);
+  // useEffect(() => {
+  //   if (data && data.page) {
+  //     if (data.length > commentLength) {
+  //       setIsCommentUpdated(true)
+  //     }
+  //   }
+  // }, [data])
+
   // const isClosed = !Boolean(daysLeft(`${dueDate.year}-${dueDate.month}-${dueDate.day}`) > 0) || maxPerson === nowPerson;
   const isClosed = false;
   const { cancel, cancelMutation } = useEnrollment(parseInt(travelNumber));
