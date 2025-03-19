@@ -167,7 +167,7 @@ const InputContainer = styled.div`
   height: 42px;
 `;
 
-const StyledLabel = styled.label`
+const StyledLabel = styled.div`
   position: relative;
   display: block;
   width: 100%;
@@ -195,6 +195,7 @@ const Input = styled.input`
   font-weight: 600;
   outline: none;
   display: block;
+  padding: 0;
   font-size: 30px;
   line-height: 16px;
   color: #000;
