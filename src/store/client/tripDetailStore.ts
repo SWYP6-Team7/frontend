@@ -76,6 +76,8 @@ interface tripDetailState {
     locationName: string;
     mapType: "google" | "kakao";
   }) => void;
+
+  resetTripDetail: () => void;
 }
 
 export const tripDetailStore = create<tripDetailState>((set) => ({
@@ -167,4 +169,36 @@ export const tripDetailStore = create<tripDetailState>((set) => ({
 
   commentLength: 0,
   addCommentLength: (commentLength: number) => set({ commentLength }),
+  resetTripDetail: () => {
+    set({
+      bookmarked: false,
+      locationName: { locationName: "", mapType: "google" },
+      initGeometry: null,
+      applySuccess: false,
+      travelNumber: 0,
+      userAgeGroup: "",
+      profileUrl: "",
+      userNumber: 0,
+      userName: "",
+      createdAt: "",
+      location: "",
+      title: "",
+      details: "",
+      startDate: null,
+      endDate: null,
+      maxPerson: 1,
+      nowPerson: 0,
+      genderType: "여자만",
+      dueDate: { year, month, day },
+      periodType: "",
+      tags: [],
+      postStatus: "",
+      enrollCount: 0,
+      bookmarkCount: 0,
+      viewCount: 0,
+      hostUserCheck: false,
+      enrollmentNumber: null,
+      commentLength: 0,
+    });
+  },
 }));

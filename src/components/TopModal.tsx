@@ -1,5 +1,12 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback, useMemo, RefObject } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+  RefObject,
+} from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
@@ -29,7 +36,6 @@ const TopModal = ({
   const firstTop = useRef(false);
   const SCROLL_THRESHOLD = 30; // 픽셀 단위
   const scrollAttempts = useRef(0);
-  console.log(scrollAttempts, "atte");
   const handleInteraction = useCallback(
     (deltaY) => {
       const container = containerRef.current;
@@ -122,10 +128,14 @@ const TopModal = ({
       const clientHeight = container.clientHeight;
       const modalHeightPercentage = (modalHeight / clientHeight) * 100;
       // 스크롤 진행률 계산
-      const scrollPercentage = (currentScrollTop / (scrollHeight - clientHeight)) * 100;
+      const scrollPercentage =
+        (currentScrollTop / (scrollHeight - clientHeight)) * 100;
 
       if (scrollPercentage >= modalHeightPercentage) {
-        contentRef.current?.style.setProperty("transition", "height 0.3s ease-in-out, transform 0.3s ease-in-out");
+        contentRef.current?.style.setProperty(
+          "transition",
+          "height 0.3s ease-in-out, transform 0.3s ease-in-out"
+        );
         setModalHeight(0);
 
         setIsMapFull(true);
@@ -142,8 +152,14 @@ const TopModal = ({
       } else if (scrollPercentage < modalHeightPercentage) {
         // 스크롤 진행률이 modalHeightPercentage% 미만일 때 modalHeight를 점진적으로 줄임
         if (firstTop.current) firstTop.current = false;
-        contentRef.current?.style.setProperty("transition", "transform 0.3s ease-in-out");
-        const newHeight = Math.max(0, modalHeight * (1 - scrollPercentage / modalHeightPercentage));
+        contentRef.current?.style.setProperty(
+          "transition",
+          "transform 0.3s ease-in-out"
+        );
+        const newHeight = Math.max(
+          0,
+          modalHeight * (1 - scrollPercentage / modalHeightPercentage)
+        );
         console.log(newHeight);
         setModalHeight(newHeight);
         // setIsMapFull(false);
@@ -179,13 +195,19 @@ const TopModal = ({
   }, []);
   useEffect(() => {
     setModalHeight(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height
+        ? childrenRef.current?.getBoundingClientRect().height + 48
+        : 0
     );
     setContentHeight(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height
+        ? childrenRef.current?.getBoundingClientRect().height + 48
+        : 0
     );
     onHeightChange(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height
+        ? childrenRef.current?.getBoundingClientRect().height + 48
+        : 0
     );
   }, [childrenRef.current?.getBoundingClientRect().height]);
   // 드래그 중이 아닐 때만 contentHeight 업데이트
@@ -217,7 +239,10 @@ const TopModal = ({
 
   const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
     setIsDragging(true);
-    contentRef.current?.style.setProperty("transition", "height 0.3s ease-in-out, transform 0.3s ease-in-out");
+    contentRef.current?.style.setProperty(
+      "transition",
+      "height 0.3s ease-in-out, transform 0.3s ease-in-out"
+    );
 
     if ("touches" in e) {
       setStartY(e.touches[0].pageY);
@@ -283,7 +308,11 @@ const TopModal = ({
   }
 
   return (
-    <ContentContainer ref={contentRef} onClick={handleContentClick} isClosing={isClosing}>
+    <ContentContainer
+      ref={contentRef}
+      onClick={handleContentClick}
+      isClosing={isClosing}
+    >
       <ChildrenContainer ref={childrenRef}>{children}</ChildrenContainer>
 
       <BarContainer
