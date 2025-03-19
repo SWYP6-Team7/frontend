@@ -18,7 +18,7 @@ const useVerifyEmail = () => {
       if (!response.data?.success) {
         throw new Error(response.data?.error.reason);
       }
-      return response;
+      return response?.data;
     },
     onSuccess: (data: any) => {
       console.log(data, "data");
@@ -47,7 +47,7 @@ const useVerifyEmail = () => {
       if (!response.data?.success) {
         throw new RequestError(response.data?.error.reason);
       }
-      return response;
+      return response?.data;
     },
     mutationKey: ["verifyEmailCode"],
     onSuccess: (data: any) => {
