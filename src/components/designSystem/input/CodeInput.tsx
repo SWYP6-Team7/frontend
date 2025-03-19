@@ -129,6 +129,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
               onBlur={handleBlur}
               onFocus={(e) => handleFocus(e, index)}
               {...props}
+              type="number"
               id={String(index)}
               ref={(el) => {
                 if (refs.current) {
