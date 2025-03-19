@@ -52,7 +52,12 @@ const TripComment = () => {
       ) : (
         <>
           <NoDataContainer>
-            <img alt="댓글이 없습니다" width={80} height={80} src={"/images/noData.png"} />
+            <img
+              alt="댓글이 없습니다"
+              width={80}
+              height={80}
+              src={"/images/noData.png"}
+            />
             <Spacing size={16} />
             <NoDataTitle>
               아직 달린 댓글이 없어요
@@ -69,7 +74,13 @@ const TripComment = () => {
 
 const Container = styled.div`
   padding: 28px 24px;
-  height: calc(100svh - (calc((16 * 100) / 844) * 1svh + 48px + calc((40 * 100) / 844) * 1svh + 68px + 24px));
+  height: calc(
+    100svh -
+      (
+        calc((16 * 100) / 844) * 1svh + 48px + calc((40 * 100) / 844) * 1svh +
+          68px + 24px
+      )
+  );
   overflow-y: auto;
 `;
 
@@ -82,9 +93,9 @@ const NoDataContainer = styled.div`
 `;
 
 const NoDataTitle = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 22.4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
   letter-spacing: -0.025em;
   text-align: center;
 `;

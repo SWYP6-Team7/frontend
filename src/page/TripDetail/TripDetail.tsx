@@ -40,6 +40,7 @@ import { getPlans } from "@/api/trip";
 import { useInView } from "react-intersection-observer";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import EmblaCarousel from "@/components/TripCarousel";
+import useComment from "@/hooks/comment/useComment";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -67,7 +68,9 @@ export default function TripDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [modalTextForLogin, setModalTextForLogin] = useState(LOGIN_ASKING_FOR_WATCHING_COMMENT);
+  const [modalTextForLogin, setModalTextForLogin] = useState(
+    LOGIN_ASKING_FOR_WATCHING_COMMENT
+  );
 
   const [isApplyToast, setIsApplyToast] = useState(false);
   const [isCancelToast, setIsCancelToast] = useState(false);
@@ -111,6 +114,17 @@ export default function TripDetail() {
   if (isNaN(parseInt(travelNumber))) {
     router.replace("/");
   }
+
+  const {
+    commentList: { data: commentData },
+  } = useComment("travel", Number(travelNumber));
+  console.log("commentData", commentData);
+  useEffect(() => {
+    if (commentData && commentData?.pages[0]?.page?.totalElements > 0) {
+      setIsCommentUpdated(true);
+    }
+  }, [JSON.stringify(commentData)]);
+
   // const isClosed = !Boolean(daysLeft(`${dueDate.year}-${dueDate.month}-${dueDate.day}`) > 0) || maxPerson === nowPerson;
   const isClosed = false;
   const { cancel, cancelMutation } = useEnrollment(parseInt(travelNumber));
@@ -121,7 +135,15 @@ export default function TripDetail() {
   const allCompanions = (companions as any)?.data?.companions;
   const alreadyApplied = !!enrollmentNumber;
   const [ref, inView] = useInView();
-  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    refetch,
+    isFetching,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
       return getPlans(Number(travelNumber), pageParam) as any;
@@ -136,7 +158,10 @@ export default function TripDetail() {
       }
     },
   });
-  const combinedPlans = data?.pages.reduce((acc, page) => acc.concat(page.plans), []);
+  const combinedPlans = data?.pages.reduce(
+    (acc, page) => acc.concat(page.plans),
+    []
+  );
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
@@ -279,15 +304,30 @@ export default function TripDetail() {
 
   return (
     <>
-      <ResultToast height={120} isShow={editToastShow} setIsShow={setEditToastShow} text="게시글이 수정되었어요." />
+      <ResultToast
+        height={120}
+        isShow={editToastShow}
+        setIsShow={setEditToastShow}
+        text="게시글이 수정되었어요."
+      />
       <NoticeModal
         isModalOpen={noticeModal}
         modalMsg={`여행에 참가가 확정된\n 멤버만 볼 수 있어요.`}
         modalTitle="참가 신청 대기중"
         setModalOpen={setNoticeModal}
       />
-      <ResultToast height={80} isShow={isCancelToast} setIsShow={setIsCancelToast} text="여행 신청이 취소 되었어요." />
-      <ResultToast height={80} isShow={isApplyToast} setIsShow={setIsApplyToast} text="여행 신청이 완료 되었어요." />
+      <ResultToast
+        height={80}
+        isShow={isCancelToast}
+        setIsShow={setIsCancelToast}
+        text="여행 신청이 취소 되었어요."
+      />
+      <ResultToast
+        height={80}
+        isShow={isApplyToast}
+        setIsShow={setIsApplyToast}
+        text="여행 신청이 완료 되었어요."
+      />
 
       <CheckingModal
         isModalOpen={showLoginModal}
@@ -325,7 +365,11 @@ export default function TripDetail() {
       />
 
       <TripDetailWrapper ref={containerRef}>
-        <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
+        <TopModal
+          containerRef={containerRef}
+          setIsMapFull={setIsMapFull}
+          onHeightChange={setTopModalHeight}
+        >
           <ModalContainer>
             <MainContent>
               <ProfileContainer>
@@ -396,7 +440,9 @@ export default function TripDetail() {
                 <Calendar />
                 <CalendarTitle>여행 날짜</CalendarTitle>
                 <CalendarContent>
-                  {startDate && endDate ? formatDateRange(startDate, endDate) : "날짜를 선택하세요."}
+                  {startDate && endDate
+                    ? formatDateRange(startDate, endDate)
+                    : "날짜를 선택하세요."}
                 </CalendarContent>
               </CalendarTextContainer>
             </CalendarContainer>
@@ -434,18 +480,37 @@ export default function TripDetail() {
           />
           <ScheduleContainer>
             <ScheduleTitle>여행 일정</ScheduleTitle>
-            <Spacing size={16} />
-            <ScheduleList>
-              {!isLoading && startDate && data && (
-                <EmblaCarousel
-                  startDate={startDate}
-                  setOpenItemIndex={setOpenItemIndex}
-                  openItemIndex={openItemIndex}
-                  inView={<div ref={ref} style={{ width: 5, height: "100%" }} />}
-                  slides={combinedPlans} // 모든 데이터를 하나의 슬라이드 컴포넌트에 전달
-                />
-              )}
-            </ScheduleList>
+            {combinedPlans?.length > 0 ? (
+              <>
+                <Spacing size={16} />
+                <ScheduleList>
+                  {!isLoading && startDate && data && (
+                    <EmblaCarousel
+                      startDate={startDate}
+                      setOpenItemIndex={setOpenItemIndex}
+                      openItemIndex={openItemIndex}
+                      inView={
+                        <div ref={ref} style={{ width: 5, height: "100%" }} />
+                      }
+                      slides={combinedPlans} // 모든 데이터를 하나의 슬라이드 컴포넌트에 전달
+                    />
+                  )}
+                </ScheduleList>
+              </>
+            ) : (
+              <>
+                <NoDataContainer>
+                  <img
+                    alt="댓글이 없습니다"
+                    width={80}
+                    height={80}
+                    src={"/images/noData.png"}
+                  />
+                  <Spacing size={16} />
+                  <NoDataTitle>등록된 일정이 없어요</NoDataTitle>
+                </NoDataContainer>
+              </>
+            )}
           </ScheduleContainer>
         </BottomContainer>
       </TripDetailWrapper>
@@ -499,42 +564,119 @@ export default function TripDetail() {
           }
         ></ApplyListButton>
       </ButtonContainer>
-      <CompanionsView isOpen={personViewClicked} setIsOpen={setPersonViewClicked} />
+      <CompanionsView
+        isOpen={personViewClicked}
+        setIsOpen={setPersonViewClicked}
+      />
 
       <CommentWrapper>
         <IconContainer onClick={commentClickHandler}>
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M25 18.6667C25 19.315 24.7425 19.9367 24.284 20.3952C23.8256 20.8536 23.2039 21.1111 22.5556 21.1111H7.88889L3 26V6.44444C3 5.79614 3.25754 5.17438 3.71596 4.71596C4.17438 4.25754 4.79614 4 5.44444 4H22.5556C23.2039 4 23.8256 4.25754 24.284 4.71596C24.7425 5.17438 25 5.79614 25 6.44444V18.6667Z"
-              fill="#FEFEFE"
-            />
-            <path
-              d="M9.625 12.8267H18.375"
-              stroke="#1A1A1A"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M9.625 8.75H18.375"
-              stroke="#1A1A1A"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M9.625 16.625H18.375"
-              stroke="#1A1A1A"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          {isCommentUpdated ? (
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clipPath="url(#clip0_5570_2993)">
+                <path
+                  d="M25 18.6667C25 19.315 24.7425 19.9367 24.284 20.3952C23.8256 20.8536 23.2039 21.1111 22.5556 21.1111H7.88889L3 26V6.44444C3 5.79614 3.25754 5.17438 3.71596 4.71596C4.17438 4.25754 4.79614 4 5.44444 4H22.5556C23.2039 4 23.8256 4.25754 24.284 4.71596C24.7425 5.17438 25 5.79614 25 6.44444V18.6667Z"
+                  fill="#FEFEFE"
+                />
+                <path
+                  d="M9.625 12.8267H18.375"
+                  stroke="#1A1A1A"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9.625 8.75H18.375"
+                  stroke="#1A1A1A"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9.625 16.625H18.375"
+                  stroke="#1A1A1A"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle
+                  cx="25"
+                  cy="4"
+                  r="4"
+                  fill="#FF2E2E"
+                  stroke="#1A1A1A"
+                  strokeWidth="2"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5570_2993">
+                  <rect width="28" height="28" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+          ) : (
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M25 18.6667C25 19.315 24.7425 19.9367 24.284 20.3952C23.8256 20.8536 23.2039 21.1111 22.5556 21.1111H7.88889L3 26V6.44444C3 5.79614 3.25754 5.17438 3.71596 4.71596C4.17438 4.25754 4.79614 4 5.44444 4H22.5556C23.2039 4 23.8256 4.25754 24.284 4.71596C24.7425 5.17438 25 5.79614 25 6.44444V18.6667Z"
+                fill="#FEFEFE"
+              />
+              <path
+                d="M9.625 12.8267H18.375"
+                stroke="#1A1A1A"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M9.625 8.75H18.375"
+                stroke="#1A1A1A"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M9.625 16.625H18.375"
+                stroke="#1A1A1A"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
         </IconContainer>
       </CommentWrapper>
     </>
   );
 }
+
+const NoDataContainer = styled.div`
+  display: flex;
+  padding-top: 52px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+const NoDataTitle = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.025em;
+  text-align: center;
+`;
 
 const ModalContainer = styled.div`
   padding: 0 24px;
@@ -550,7 +692,8 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  padding-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  padding-top: ${(props) =>
+    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
