@@ -12,7 +12,7 @@ const TripCarouselItem = ({ spots }: { spots: SpotType[] }) => {
     top: false,
     bottom: false,
   });
-
+  console.log("inview", inView, spots);
   useEffect(() => {
     if (topInview) {
       setInview((prev) => ({ ...prev, top: true }));
