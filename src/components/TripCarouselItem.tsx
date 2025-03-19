@@ -28,7 +28,7 @@ const TripCarouselItem = ({ spots }: { spots: SpotType[] }) => {
   }, [topInview, bottomInview]);
   return (
     <div style={{ position: "relative" }}>
-      <TopShadow isOverThree={spots.length > 3} isTop={inView.top} />
+      <TopShadow isOverThree={spots.length > 3} isBottom={inView.bottom} />
       <ContentContainer isTop={inView.top} isBottom={inView.bottom} isOverThree={spots.length > 3}>
         <div ref={topRef} style={{ width: "100%", height: 1 }} />
         {spots.map((spot, idx) => (
@@ -46,7 +46,7 @@ const TripCarouselItem = ({ spots }: { spots: SpotType[] }) => {
         ))}
         <div ref={bottomRef} style={{ width: "100%", height: 1 }} />
       </ContentContainer>
-      <BottomShadow isOverThree={spots.length > 3} isBottom={inView.bottom} />
+      <BottomShadow isOverThree={spots.length > 3} isTop={inView.top} />
     </div>
   );
 };
@@ -106,7 +106,7 @@ const LeftContainer = styled.div`
 
 const TopShadow = styled.div<{
   isOverThree: boolean;
-  isTop: boolean;
+  isBottom: boolean;
 }>`
   position: absolute;
   left: 0;
@@ -115,13 +115,14 @@ const TopShadow = styled.div<{
   height: 14px;
   z-index: 1;
   background: linear-gradient(to bottom, ${palette.BG}, transparent);
-  opacity: ${(props) => (props.isOverThree && props.isTop ? 1 : 0)};
+  opacity: ${(props) => (props.isOverThree && props.isBottom ? 1 : 0)};
   pointer-events: none;
 `;
 
 const BottomShadow = styled.div<{
   isOverThree: boolean;
-  isBottom: boolean;
+
+  isTop: boolean;
 }>`
   position: absolute;
   left: 0;
@@ -130,7 +131,8 @@ const BottomShadow = styled.div<{
   height: 14px;
   z-index: 1;
   background: linear-gradient(to top, ${palette.BG}, transparent);
-  opacity: ${(props) => (props.isOverThree && props.isBottom ? 1 : 0)};
+  opacity: ${(props) => (props.isOverThree && props.isTop ? 1 : 0)};
+
   pointer-events: none;
 `;
 
