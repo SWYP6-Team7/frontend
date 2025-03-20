@@ -24,6 +24,7 @@ const CreateContact = () => {
   const { email: initEmail } = myPageStore();
   const searchParams = useSearchParams();
   const type = searchParams?.get("type") ?? "";
+  const paramsEmail = searchParams?.get("email") ?? "";
   console.log("email", initEmail);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [inquiryType, setInquiryType] = useState<string>(
@@ -36,10 +37,14 @@ const CreateContact = () => {
   const { accessToken } = authStore();
 
   useEffect(() => {
+    if (paramsEmail !== "") {
+      setEmail(paramsEmail);
+      return;
+    }
     if (initEmail !== "") {
       setEmail(initEmail);
     }
-  }, [initEmail]);
+  }, [initEmail, paramsEmail]);
   const createContact = useMutation({
     mutationFn: async (data: IContactCreate) => {
       const result = await postContact(data, accessToken);

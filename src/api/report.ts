@@ -15,7 +15,18 @@ export const postReport = async (data: PostReport, accessToken: string) => {
     });
     return handleApiResponse(response);
   } catch (err: any) {
-    console.log(err, "초기 이미지 등록 오류");
+    console.log(err, "신고 오류");
+
+    throw new RequestError(err);
+  }
+};
+
+export const getBlock = async (token: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/member/block/my/detail?token=${token}`);
+    return handleApiResponse(response);
+  } catch (err: any) {
+    console.log(err, "차단 데이터 오류");
 
     throw new RequestError(err);
   }

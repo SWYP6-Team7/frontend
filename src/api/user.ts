@@ -86,8 +86,8 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
       },
     });
 
-    if (response.data.resultType === "ACCESS_DENIED") {
-      window.location.href = `${process.env.NEXT_PUBLIC_FRONT_URL}/block`;
+    if (response.data.resultType === "BLOCK") {
+      window.location.href = response.data.success.redirectUrl;
     }
 
     return handleApiResponse(response);
