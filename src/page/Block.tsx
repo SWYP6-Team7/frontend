@@ -15,7 +15,7 @@ const Block = () => {
   const token = searchParams?.get("token");
   if (!token) {
     router.replace("/");
-    return;
+    return null;
   }
   const { data, isLoading } = useQuery({
     queryKey: ["block", token],
