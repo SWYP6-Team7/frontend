@@ -5,8 +5,9 @@ import React from "react";
 const BlockPage = ({ searchParams }: { searchParams: { token: string | undefined } }) => {
   if (!searchParams?.token) {
     redirect("/");
+  } else {
+    return <Block />;
   }
-  return <Block />;
 };
 
 export default BlockPage;
