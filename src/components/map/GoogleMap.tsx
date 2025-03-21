@@ -87,36 +87,42 @@ interface GoogleMapProps {
 
 const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps) => {
   const getInitialSettings = () => {
-    let initialCenter = { lat: 0, lng: 0 };
-    let initialZoom = 10; // 기본 줌 레벨
+    const MAP_WIDTH = 400;
+    const MAP_HEIGHT = 300;
+    let initialCenter = { lat, lng };
+    let initialZoom = zoom ?? 7; // 기본 줌 레벨
 
-    if (positions && positions.length > 0) {
+    if (positions?.length > 0) {
       try {
-        const lats = positions.map((pos) => pos.lat);
-        const lngs = positions.map((pos) => pos.lng);
+        const lats = positions.map((p) => p.lat);
+        const lngs = positions.map((p) => p.lng);
 
         initialCenter = {
           lat: (Math.min(...lats) + Math.max(...lats)) / 2,
           lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
         };
 
-        // 위도와 경도의 범위 계산
-        const latDiff = Math.max(...lats) - Math.min(...lats);
-        const lngDiff = Math.max(...lngs) - Math.min(...lngs);
-        const maxDiff = Math.max(latDiff, lngDiff);
+        const latRange = Math.max(...lats) - Math.min(...lats);
+        const lngRange = Math.max(...lngs) - Math.min(...lngs);
 
-        // zoom 레벨 계산 (대략적인 값)
-        initialZoom = Math.floor(14 - Math.log2(maxDiff));
+        // 위도, 경도 범위 중 큰 값 사용
+        const maxRange = Math.max(latRange, lngRange);
 
-        // zoom 레벨의 범위를 3에서 20 사이로 제한
-        initialZoom = Math.min(Math.max(initialZoom, 3), 20);
+        // 줌 레벨 계산 (로그 스케일 사용)
+        const zoomLevel = Math.log2(360 / maxRange);
+
+        // 구글 지도 줌 레벨 범위: 0-21
+        initialZoom = Math.min(21, Math.max(0, Math.round(zoomLevel)));
+
+        // 추가 여유 공간을 위해 줌 레벨 조정
+        initialZoom = Math.max(0, initialZoom - 1);
       } catch (error) {
         console.error("좌표 계산 오류:", error);
       }
     }
+
     return { initialCenter, initialZoom };
   };
-
   const { initialCenter, initialZoom } = getInitialSettings();
   console.log(initialCenter, initialZoom, "init");
   if (typeof window === "undefined") {

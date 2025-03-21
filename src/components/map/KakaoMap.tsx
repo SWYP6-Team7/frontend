@@ -16,14 +16,17 @@ interface KakaoMapProps {
 const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_MAP_KEY;
 
-  const getInitialSettings = (positions, mapWidth = 400, mapHeight = 300) => {
-    let initialCenter = { lat: 37.5665, lng: 126.978 };
-    let initialZoom = 3; // 카카오 지도 기본 줌 레벨(1~14)
+  const getInitialSettings = (positions) => {
+    const MAP_WIDTH = 400;
+    const MAP_HEIGHT = 300;
+    let initialCenter = { lat, lng };
+    let initialZoom = zoom ?? 8; // 기본 줌 레벨
 
     if (positions?.length > 0) {
       try {
         const lats = positions.map((p) => p.lat);
         const lngs = positions.map((p) => p.lng);
+
         initialCenter = {
           lat: (Math.min(...lats) + Math.max(...lats)) / 2,
           lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
@@ -32,17 +35,17 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
         const latRange = Math.max(...lats) - Math.min(...lats);
         const lngRange = Math.max(...lngs) - Math.min(...lngs);
 
-        if (latRange === 0 || lngRange === 0) {
-          initialZoom = 14; // 최대 확대
-        } else {
-          const WORLD_DIM = 256; // 타일 기본 크기
-          const latZoom = Math.log2((WORLD_DIM * 360) / (latRange * mapHeight));
-          const lngZoom = Math.log2((WORLD_DIM * 360) / (lngRange * mapWidth));
-          initialZoom = Math.min(latZoom, lngZoom);
+        // 위도, 경도 범위 중 큰 값 사용
+        const maxRange = Math.max(latRange, lngRange);
 
-          // 카카오 지도 레벨 보정 (계산값 반전 + 범위 제한)
-          initialZoom = Math.min(14, Math.max(1, 14 - Math.floor(initialZoom)));
-        }
+        // 줌 레벨 계산 (로그 스케일 사용, 맵 크기 고려)
+        const zoomLevel = Math.log2((360 * Math.min(MAP_WIDTH, MAP_HEIGHT)) / (maxRange * 256)) + 1;
+
+        // 카카오 지도 레벨로 변환 (1~14)
+        initialZoom = Math.min(14, Math.max(1, Math.round(14 - zoomLevel)));
+
+        // 추가 여유 공간을 위해 줌 레벨 조정
+        initialZoom = Math.min(14, initialZoom + 2);
       } catch (error) {
         console.error("좌표 계산 오류:", error);
       }
