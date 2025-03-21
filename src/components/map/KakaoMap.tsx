@@ -1,3 +1,4 @@
+import { calculateZoomLevel } from "@/utils/trip";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 declare global {
@@ -18,7 +19,7 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
 
   const getInitialSettings = () => {
     let initialCenter = { lat: lat || 0, lng: lng || 0 };
-    let initialZoom = zoom || 10;
+    let initialZoom = calculateZoomLevel(positions ?? [], { width: 400, height: 300 }) ?? zoom ?? 10;
 
     if (positions && positions.length > 0) {
       try {

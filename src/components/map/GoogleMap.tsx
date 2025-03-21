@@ -1,4 +1,5 @@
 "use client";
+import { calculateZoomLevel } from "@/utils/trip";
 import { APIProvider, Map, MapCameraChangedEvent, useMap } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 
@@ -88,7 +89,7 @@ interface GoogleMapProps {
 const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps) => {
   const getInitialSettings = () => {
     let initialCenter = { lat: lat || 0, lng: lng || 0 };
-    let initialZoom = zoom || 10;
+    let initialZoom = calculateZoomLevel(positions, { width: 400, height: 300 }) ?? zoom ?? 10;
 
     if (positions && positions.length > 0) {
       try {
