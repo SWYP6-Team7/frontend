@@ -112,7 +112,7 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
       script.removeEventListener("load", handleLoad);
       document.head.removeChild(script);
     };
-  }, [lat, lng, zoom, JSON.stringify(positions)]);
+  }, [lat, lng, zoom, JSON.stringify(positions), JSON.stringify(initialCenter), initialZoom]);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>

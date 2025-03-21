@@ -36,7 +36,7 @@ const MapContainer = (props: MapContainerProps) => {
   if (props.locationName.mapType === "google") {
     return (
       <Container key={props.locationName.mapType} isMapFull={props.isMapFull}>
-        <GoogleMap lat={props.lat} lng={props.lng} zoom={props.zoom}>
+        <GoogleMap lat={props.lat} lng={props.lng} zoom={props.zoom} positions={positions}>
           {/* Google Map의 PoiMarkers 컴포넌트 사용 */}
           <PoiMarkers
             pois={positions.map((pos, idx) => ({
