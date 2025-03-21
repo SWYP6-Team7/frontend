@@ -18,6 +18,7 @@ interface MapContainerProps {
 }
 
 const MapContainer = (props: MapContainerProps) => {
+  console.log("props", props);
   // 현재 선택된 계획(plan) 가져오기
   const currentPlan =
     props.index !== null && props.index !== undefined
