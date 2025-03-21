@@ -124,7 +124,7 @@ const GoogleMap = ({
   };
 
   const { initialCenter, initialZoom } = getInitialSettings();
-
+  console.log(initialCenter, initialZoom, "init");
   if (typeof window === "undefined") {
     return <></>;
   }
