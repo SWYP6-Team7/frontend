@@ -146,7 +146,7 @@ const CreateTripDetail = () => {
       setIsToastShow(true);
     }
   }, [isMapFull]);
-  console.log(plans, "plans");
+  console.log(plans, "plans", locationName);
   return (
     <>
       <CreateTripDetailWrapper>
