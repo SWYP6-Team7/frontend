@@ -23,9 +23,20 @@ interface ContainerProps {
   borderColor: string;
 }
 
-const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInputProps) => {
+const CodeInput = ({
+  refs,
+  onBlur,
+  onFocus,
+  onValueChange,
+  ...props
+}: CodeInputProps) => {
   const [focused, setFocused] = useState(-1);
-  const bgColor = focused >= 0 ? palette.greenVariant : props.value === "" ? palette.검색창 : palette.비강조4;
+  const bgColor =
+    focused >= 0
+      ? palette.greenVariant
+      : props.value === ""
+        ? palette.검색창
+        : palette.비강조4;
   const borderColor = focused >= 0 ? palette.keycolor : bgColor;
 
   const isValidIndex = (index: number): boolean => {
@@ -100,7 +111,10 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
     updateValues();
   };
 
-  const handlePaste = (index: number, e: React.ClipboardEvent<HTMLInputElement>) => {
+  const handlePaste = (
+    index: number,
+    e: React.ClipboardEvent<HTMLInputElement>
+  ) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData("text").slice(0, 6 - index);
 
@@ -120,7 +134,11 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
   };
 
   return (
-    <Container bgColor={bgColor} borderColor={borderColor} onClick={clickContainer}>
+    <Container
+      bgColor={bgColor}
+      borderColor={borderColor}
+      onClick={clickContainer}
+    >
       {[...Array(6)].map((_, index) => (
         <InputContainer key={index}>
           <StyledLabel>
@@ -200,6 +218,17 @@ const Input = styled.input`
   font-size: 30px;
   line-height: 16px;
   color: #000;
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox  */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
   letter-spacing: -0.025em;
   background-color: transparent;
   &::placeholder {
