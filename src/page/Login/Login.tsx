@@ -107,7 +107,7 @@ const Skip = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  pading: 13px 0;
+  padding: 13px 0;
   padding-left: 10px;
   padding-right: 9px;
   line-height: 16px;
