@@ -62,6 +62,7 @@ const Button = styled.button`
 const Container = styled.div`
   height: 100svh;
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -100,7 +101,7 @@ const LoginIconContainer = styled.div`
 `;
 
 const Skip = styled.div`
-  position: fixed;
+  position: absolute;
   top: 16px;
   right: 24px;
   display: flex;
