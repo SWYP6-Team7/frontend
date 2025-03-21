@@ -32,7 +32,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
   return (
     <Container onClick={onclickLink}>
       <TopContainer>
-        {data?.title === "신고 접수 경고" && (
+        {data?.title === "신고 접수 경고" ? (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="24" height="24" rx="12" fill="#3E8D00" />
             <path
@@ -45,8 +45,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
               fill="#FDFDFD"
             />
           </svg>
-        )}
-        {data.title === "커뮤니티" ? (
+        ) : data.title === "커뮤니티" ? (
           <CommunityNotification />
         ) : Boolean(data.travelHostUser) ? (
           <TripNotificationIcon heartColor={palette.keycolorBG} circleColor={palette.keycolor} />

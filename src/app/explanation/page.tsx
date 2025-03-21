@@ -1,7 +1,8 @@
+import Explanation from "@/page/Explanation";
 import React from "react";
 
 const ExplanationPage = () => {
-  return <div></div>;
+  return <Explanation />;
 };
 
 export default ExplanationPage;
