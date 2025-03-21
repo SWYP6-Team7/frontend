@@ -1,3 +1,4 @@
+"use client";
 import { postContact } from "@/api/contact";
 import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
