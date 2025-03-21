@@ -1,5 +1,4 @@
 "use client";
-import { calculateZoomLevel } from "@/utils/trip";
 import { APIProvider, Map, MapCameraChangedEvent, useMap } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 
@@ -88,8 +87,8 @@ interface GoogleMapProps {
 
 const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps) => {
   const getInitialSettings = () => {
-    let initialCenter = { lat: lat || 0, lng: lng || 0 };
-    let initialZoom = calculateZoomLevel(positions, { width: 400, height: 300 }) ?? zoom ?? 10;
+    let initialCenter = { lat: 0, lng: 0 };
+    let initialZoom = 10; // 기본 줌 레벨
 
     if (positions && positions.length > 0) {
       try {
@@ -100,11 +99,21 @@ const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps)
           lat: (Math.min(...lats) + Math.max(...lats)) / 2,
           lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
         };
+
+        // 위도와 경도의 범위 계산
+        const latDiff = Math.max(...lats) - Math.min(...lats);
+        const lngDiff = Math.max(...lngs) - Math.min(...lngs);
+        const maxDiff = Math.max(latDiff, lngDiff);
+
+        // zoom 레벨 계산 (대략적인 값)
+        initialZoom = Math.floor(14 - Math.log2(maxDiff));
+
+        // zoom 레벨의 범위를 3에서 20 사이로 제한
+        initialZoom = Math.min(Math.max(initialZoom, 3), 20);
       } catch (error) {
         console.error("좌표 계산 오류:", error);
       }
     }
-
     return { initialCenter, initialZoom };
   };
 
