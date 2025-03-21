@@ -1,19 +1,12 @@
 "use client";
-import {
-  APIProvider,
-  Map,
-  MapCameraChangedEvent,
-  useMap,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, MapCameraChangedEvent, useMap } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 
 type Poi = { key: string; location: google.maps.LatLngLiteral };
 
 export const PoiMarkers = (props: { pois: Poi[] }) => {
   const map = useMap();
-  const [markers, setMarkers] = useState<{ [key: string]: google.maps.Marker }>(
-    {}
-  );
+  const [markers, setMarkers] = useState<{ [key: string]: google.maps.Marker }>({});
 
   useEffect(() => {
     // 기존 마커 제거
@@ -25,10 +18,7 @@ export const PoiMarkers = (props: { pois: Poi[] }) => {
     const linePath: google.maps.LatLng[] = [];
 
     props.pois.forEach((poi, index) => {
-      const position = new google.maps.LatLng(
-        poi.location.lat,
-        poi.location.lng
-      );
+      const position = new google.maps.LatLng(poi.location.lat, poi.location.lng);
       linePath.push(position);
 
       // Custom 마커 생성
@@ -92,24 +82,18 @@ interface GoogleMapProps {
   lng: number;
   zoom: number;
   children?: React.ReactNode;
-  positions?: Poi[];
+  positions?: any[];
 }
 
-const GoogleMap = ({
-  lat,
-  lng,
-  zoom,
-  positions = [],
-  children,
-}: GoogleMapProps) => {
+const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps) => {
   const getInitialSettings = () => {
     let initialCenter = { lat: lat || 0, lng: lng || 0 };
     let initialZoom = zoom || 10;
 
     if (positions && positions.length > 0) {
       try {
-        const lats = positions.map((pos) => pos.location.lat);
-        const lngs = positions.map((pos) => pos.location.lng);
+        const lats = positions.map((pos) => pos.lat);
+        const lngs = positions.map((pos) => pos.lng);
 
         initialCenter = {
           lat: (Math.min(...lats) + Math.max(...lats)) / 2,
@@ -138,9 +122,7 @@ const GoogleMap = ({
           defaultZoom={initialZoom}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
           disableDefaultUI
-          onCameraChanged={(ev: MapCameraChangedEvent) =>
-            console.log("camera changed:", ev.detail.center)
-          }
+          onCameraChanged={(ev: MapCameraChangedEvent) => console.log("camera changed:", ev.detail.center)}
         >
           {children}
         </Map>
