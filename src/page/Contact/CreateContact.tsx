@@ -52,14 +52,9 @@ const CreateContact = () => {
     },
     mutationKey: ["createContact"],
     onSuccess: (data) => {
-      if (data.success) {
-        setIsResultModalOpen(true);
-        setTitle("");
-        setContent("");
-      } else {
-        console.error(data.error.reason);
-        throw new RequestError(data.error.reason);
-      }
+      setIsResultModalOpen(true);
+      setTitle("");
+      setContent("");
     },
     onError: (error: any) => {
       console.error(error);

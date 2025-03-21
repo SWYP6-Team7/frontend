@@ -64,6 +64,7 @@ const ROUTES = {
   HOME: "/",
   REPORT: "/report",
   BLOCK: "/block",
+  EXPLANATION: "/explanation",
 };
 
 export const useHeaderNavigation = () => {
@@ -81,14 +82,7 @@ export const useHeaderNavigation = () => {
     setTravelDetail,
   } = useBackPathStore();
   const pathname = usePathname() || "/";
-  const {
-    resetAge,
-    resetForm,
-    resetGender,
-    resetName,
-    socialLogin,
-    setSocialLogin,
-  } = userStore();
+  const { resetAge, resetForm, resetGender, resetName, socialLogin, setSocialLogin } = userStore();
   const { resetTripDetail } = tripDetailStore();
   const checkRoute = {
     startsWith: (route: string) => pathname?.startsWith(route),
@@ -106,7 +100,7 @@ export const useHeaderNavigation = () => {
       [ROUTES.SEARCH.TRAVEL]: "여행검색",
       [ROUTES.SEARCH.COMMUNITY]: "검색",
       [ROUTES.CREATE_TRIP.INDEX]: "여행 만들기",
-
+      [ROUTES.EXPLANATION]: "신고 소명",
       [ROUTES.TRIP.APPLY]: "참가 신청",
       [ROUTES.TRIP.ENROLLMENT_LIST]: "참가 신청 목록",
       [ROUTES.TRIP.COMMENT]: "멤버 댓글",
@@ -186,8 +180,7 @@ export const useHeaderNavigation = () => {
         },
       },
       {
-        condition: () =>
-          pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
+        condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
         action: () => {
           originalRouter.push(ROUTES.REGISTER_PROCESS.AGE);
         },
@@ -356,6 +349,11 @@ export const useHeaderNavigation = () => {
         condition: () => pathname.startsWith(ROUTES.COMMUNITY.DETAIL),
         action: () => router.push(ROUTES.COMMUNITY.INDEX),
       },
+      // 신고 소명
+      {
+        condition: () => pathname.startsWith(ROUTES.EXPLANATION),
+        action: () => router.push(ROUTES.NOTIFICATION),
+      },
 
       // 커뮤니티 수정
       {
@@ -373,9 +371,7 @@ export const useHeaderNavigation = () => {
   const handleBack = () => {
     const rules = createNavigationRules(pathname);
     const matchedRule = rules.find((rule) => rule.condition());
-    document.documentElement.style.viewTransitionName = checkRoute.startsWith(
-      ROUTES.CREATE_TRIP.INDEX
-    )
+    document.documentElement.style.viewTransitionName = checkRoute.startsWith(ROUTES.CREATE_TRIP.INDEX)
       ? "instant"
       : "back";
 
@@ -387,13 +383,9 @@ export const useHeaderNavigation = () => {
     router.back();
   };
 
-  const shouldShowAlarmIcon = () =>
-    checkRoute.startsWith(ROUTES.MY.TRIP) ||
-    checkRoute.startsWith(ROUTES.MY.PAGE);
+  const shouldShowAlarmIcon = () => checkRoute.startsWith(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.MY.PAGE);
 
-  const shouldShowSkip = () =>
-    pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE ||
-    pathname === ROUTES.CREATE_TRIP.TAG;
+  const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE || pathname === ROUTES.CREATE_TRIP.TAG;
 
   return {
     ROUTES,

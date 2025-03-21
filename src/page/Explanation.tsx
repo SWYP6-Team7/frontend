@@ -28,13 +28,8 @@ const Explanation = () => {
 
     mutationKey: ["createContact"],
     onSuccess: (data) => {
-      if (data.success) {
-        setText("");
-        router.push("/notification");
-      } else {
-        console.error(data.error.reason);
-        throw new RequestError(data.error.reason);
-      }
+      setText("");
+      router.push("/notification");
     },
     onError: (error: any) => {
       console.error(error);
@@ -61,7 +56,6 @@ const Explanation = () => {
         placeholder="직접 입력 (최대 500자)"
         height="120px"
         placeholderColor={palette.비강조}
-        isReport
         padding={"12px 16px"}
         lineHeight="20px"
         fontSize="14px"
