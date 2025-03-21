@@ -218,14 +218,14 @@ const Input = styled.input`
   font-size: 30px;
   line-height: 16px;
   color: #000;
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
 
   /* Firefox  */
-  input[type="number"] {
+  &[type="number"] {
     -moz-appearance: textfield;
   }
 
