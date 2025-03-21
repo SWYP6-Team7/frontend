@@ -20,7 +20,7 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
     const MAP_WIDTH = 400;
     const MAP_HEIGHT = 300;
     let initialCenter = { lat, lng };
-    let initialZoom = zoom ?? 8; // 기본 줌 레벨
+    let initialZoom = zoom ?? 9; // 기본 줌 레벨
 
     if (positions?.length > 0) {
       try {
@@ -38,14 +38,14 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
         // 위도, 경도 범위 중 큰 값 사용
         const maxRange = Math.max(latRange, lngRange);
 
-        // 줌 레벨 계산 (로그 스케일 사용, 맵 크기 고려)
-        const zoomLevel = Math.log2((360 * Math.min(MAP_WIDTH, MAP_HEIGHT)) / (maxRange * 256)) + 1;
+        // 줌 레벨 계산 (로그 스케일 사용)
+        const zoomLevel = Math.log2(360 / maxRange);
 
-        // 카카오 지도 레벨로 변환 (1~14)
+        // 카카오 지도 줌 레벨 범위: 1-14
         initialZoom = Math.min(14, Math.max(1, Math.round(14 - zoomLevel)));
 
         // 추가 여유 공간을 위해 줌 레벨 조정
-        initialZoom = Math.min(14, initialZoom + 2);
+        initialZoom = Math.min(14, initialZoom + 3);
       } catch (error) {
         console.error("좌표 계산 오류:", error);
       }
