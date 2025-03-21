@@ -36,6 +36,7 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
         const lngDiff = Math.max(...lngs) - Math.min(...lngs);
         const maxDiff = Math.max(latDiff, lngDiff);
 
+        console.log("maxDiff", maxDiff);
         // 카카오 지도 줌 레벨 계산 (1: 가장 확대, 14: 가장 축소)
         if (maxDiff > 2) initialZoom = 14;
         else if (maxDiff > 1) initialZoom = 12;
