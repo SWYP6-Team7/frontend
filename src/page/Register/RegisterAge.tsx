@@ -133,6 +133,7 @@ const RegisterAgeWrapper = styled.div`
   padding: 0px 24px;
 
   min-height: calc(100svh - 68px - 30px);
+  padding-bottom: 89px;
 `;
 const StepIconContainer = styled.div`
   margin-top: 30px;
