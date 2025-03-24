@@ -20,10 +20,10 @@ const Block = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["block", token],
     queryFn: () => {
-      return getBlock(token!);
+      return getBlock(token!) as any;
     },
   });
-  const { blockPeriod, userEmail, userName } = data as any;
+
   return (
     <div>
       <HeaderContainer>
@@ -72,19 +72,19 @@ const Block = () => {
             style={{ borderRadius: "50%" }}
           />
           <ProfileTextContainer>
-            <ProfileName>{userName}</ProfileName>
-            <ProfileEmail>{userEmail}</ProfileEmail>
+            <ProfileName>{data?.userName}</ProfileName>
+            <ProfileEmail>{data?.userEmail}</ProfileEmail>
           </ProfileTextContainer>
         </ProfileContainer>
         <Description>
-          신고가 10회 이상 접수되었습니다. 이에 따라 회원님의 계정 접속을 차단하였습니다. 계정 차단은 {blockPeriod}까지
-          적용됩니다.
+          신고가 10회 이상 접수되었습니다. 이에 따라 회원님의 계정 접속을 차단하였습니다. 계정 차단은{" "}
+          {data?.blockPeriod}까지 적용됩니다.
           <br /> <br /> 문의가 있으실 경우,
           <br /> 문의하기를 통해 접수해주시기 바랍니다.
         </Description>
       </Container>
       <ButtonContainer>
-        <Button onClick={() => router.replace(`/contact?type=block&email=${userEmail}`)} text={"문의하기"} />
+        <Button onClick={() => router.replace(`/contact?type=block&email=${data?.userEmail}`)} text={"문의하기"} />
       </ButtonContainer>
     </div>
   );
