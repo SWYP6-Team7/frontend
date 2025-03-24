@@ -21,7 +21,7 @@ const NotificationItem = ({ data }: NotificationItemProps) => {
     if (data.title === "멤버 댓글 알림") {
       router.push(`/trip/comment/${data.travelNumber}`);
     } else if (data.title === "커뮤니티") {
-      router.push(`/community/detail/${data.travelNumber}`);
+      router.push(`/community/detail/${data.communityNumber}`);
     } else if (data?.title === "신고 접수 경고") {
       return;
     } else {
