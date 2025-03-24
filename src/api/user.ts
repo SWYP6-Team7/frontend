@@ -86,7 +86,7 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
       },
     });
 
-    if (response.data.status === "BLOCK") {
+    if (response.data.success.status === "BLOCK") {
       window.location.href = response.data.success.redirectUrl;
     }
 

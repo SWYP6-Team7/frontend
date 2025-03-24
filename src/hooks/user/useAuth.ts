@@ -53,7 +53,7 @@ const useAuth = () => {
         email,
         password,
       });
-      if (response.data.status === "BLOCK") {
+      if (response.data.success.status === "BLOCK") {
         window.location.href = response.data.success.redirectUrl;
       }
       return handleApiResponse(response) as any;
