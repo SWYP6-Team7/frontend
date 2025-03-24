@@ -1,5 +1,4 @@
 "use client";
-import FirstStepIcon from "@/components/icons/FirstStepIcon";
 import Button from "@/components/designSystem/Buttons/Button";
 import styled from "@emotion/styled";
 import { userStore } from "@/store/client/userStore";
@@ -12,6 +11,7 @@ import ButtonContainer from "@/components/ButtonContainer";
 import useViewTransition from "@/hooks/useViewTransition";
 import { usePathname, useRouter } from "next/navigation";
 import ValidationInputField from "@/components/designSystem/input/ValidationInputField";
+import RegisterFirstStepIcon from "@/components/icons/step/register/RegisterFirstStepIcon";
 // 한글만 허용하고 최대 10자로 제한.
 const koreanOnly = z
   .string()
@@ -61,7 +61,7 @@ const RegisterName = () => {
   return (
     <RegisterNameWrapper>
       <StepIconContainer>
-        <FirstStepIcon />
+        <RegisterFirstStepIcon />
       </StepIconContainer>
       <StepContent>
         환영합니다! <br />

@@ -9,7 +9,7 @@ import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
 import { createTripStore } from "@/store/client/createTripStore";
 import CalendarIcon from "@/components/icons/Calendar";
-import SecondStepIcon from "@/components/icons/SecondStepIcon";
+import SecondStepIcon from "@/components/icons/step/trip/SecondStepIcon";
 import useViewTransition from "@/hooks/useViewTransition";
 import CalendarModal from "./CalendarModal";
 interface CalendarClientProps {

@@ -1,10 +1,8 @@
 "use client";
-import ThirdStepIcon from "@/components/icons/ThirdStepIcon";
 import Button from "@/components/designSystem/Buttons/Button";
 import styled from "@emotion/styled";
 import { userStore } from "@/store/client/userStore";
 import { MouseEventHandler, useEffect, useState } from "react";
-import CategoryButton from "@/components/CategoryButton";
 import Spacing from "@/components/Spacing";
 import useAuth from "@/hooks/user/useAuth";
 
@@ -12,6 +10,7 @@ import { palette } from "@/styles/palette";
 import { IRegisterGoogle, IRegisterKakao } from "@/model/auth";
 import { useRouter } from "next/navigation";
 import SearchFilterTag from "@/components/designSystem/tag/SearchFilterTag";
+import RegisterThirdStepIcon from "@/components/icons/step/register/RegisterThirdStepIcon";
 
 const TAGCOUNT = 18;
 const categoryButtonTextArray = [
@@ -210,7 +209,7 @@ const RegisterTripStyle = () => {
   return (
     <RegisterTripStyleWrapper>
       <StepIconContainer>
-        <ThirdStepIcon />
+        <RegisterThirdStepIcon />
       </StepIconContainer>
       <TripStyleStep>
         <ContentName>

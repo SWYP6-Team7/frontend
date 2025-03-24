@@ -3,7 +3,7 @@ import { createTrip } from "@/api/trip";
 import ButtonContainer from "@/components/ButtonContainer";
 import Button from "@/components/designSystem/Buttons/Button";
 import SearchFilterTag from "@/components/designSystem/tag/SearchFilterTag";
-import FourthStepIcon from "@/components/icons/FourthStepIcon";
+import FourthStepIcon from "@/components/icons/step/trip/FourthStepIcon";
 import Spacing from "@/components/Spacing";
 import { TAG_LIST } from "@/constants/tags";
 import useViewTransition from "@/hooks/useViewTransition";

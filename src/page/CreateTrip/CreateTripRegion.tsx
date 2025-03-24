@@ -2,7 +2,7 @@
 import Button from "@/components/designSystem/Buttons/Button";
 import ButtonContainer from "@/components/ButtonContainer";
 import InputField from "@/components/designSystem/input/InputField";
-import FirstStepIcon from "@/components/icons/FirstStepIcon";
+import FirstStepIcon from "@/components/icons/step/trip/FirstStepIcon";
 import PlaceIcon from "@/components/icons/PlaceIcon";
 import RelationKeywordList from "@/components/relationKeyword/RelationKeywordList";
 import Spacing from "@/components/Spacing";
@@ -42,11 +42,7 @@ export default function CreateTripRegion() {
       <StepIconContainer>
         <FirstStepIcon />
       </StepIconContainer>
-      <TripRegion
-        addLocationName={addLocationName}
-        initLocationName={locationName}
-        nextFunc={handleNext}
-      />
+      <TripRegion addLocationName={addLocationName} initLocationName={locationName} nextFunc={handleNext} />
     </Container>
   );
 }

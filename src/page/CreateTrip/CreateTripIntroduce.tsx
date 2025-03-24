@@ -2,7 +2,7 @@
 import Button from "@/components/designSystem/Buttons/Button";
 import InputField from "@/components/designSystem/input/InputField";
 import TextareaField from "@/components/designSystem/input/TextareaField";
-import FifthStepIcon from "@/components/icons/FifthStopIcon";
+import FifthStepIcon from "@/components/icons/step/trip/FifthStopIcon";
 import Spacing from "@/components/Spacing";
 import useViewTransition from "@/hooks/useViewTransition";
 import { createTripStore } from "@/store/client/createTripStore";

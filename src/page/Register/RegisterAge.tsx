@@ -1,5 +1,4 @@
 "use client";
-import SecondStepIcon from "@/components/icons/SecondStepIcon";
 import Button from "@/components/designSystem/Buttons/Button";
 import styled from "@emotion/styled";
 import { userStore } from "@/store/client/userStore";
@@ -9,6 +8,7 @@ import { palette } from "@/styles/palette";
 import ButtonContainer from "@/components/ButtonContainer";
 import useViewTransition from "@/hooks/useViewTransition";
 import { useRouter } from "next/navigation";
+import RegisterSecondStepIcon from "@/components/icons/step/register/RegisterSecondStepIcon";
 
 type RegisterAgeContextType = {
   genderCheck: boolean;
@@ -70,7 +70,7 @@ const RegisterAge = ({ children }: { children: React.ReactNode }) => {
     <RegisterAgeContext.Provider value={{ genderCheck, setGenderCheck }}>
       <RegisterAgeWrapper>
         <StepIconContainer>
-          <SecondStepIcon />
+          <RegisterSecondStepIcon />
         </StepIconContainer>
 
         <AgeStep>

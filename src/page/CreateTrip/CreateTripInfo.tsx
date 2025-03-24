@@ -1,5 +1,5 @@
 "use client";
-import ThirdStepIcon from "@/components/icons/ThirdStepIcon";
+import ThirdStepIcon from "@/components/icons/step/trip/ThirdStepIcon";
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
 import React, { ReactNode, useEffect } from "react";
