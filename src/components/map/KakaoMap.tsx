@@ -38,11 +38,21 @@ const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
 
         const zoomLevel = Math.log2(360 / maxRange);
 
-        console.log("zoomLefvel", zoomLevel);
-        // 카카오 지도 줌 레벨 범위: 1-14
-        initialZoom = Math.min(14, Math.max(1, Math.round(zoomLevel)));
+        initialZoom = Math.min(21, Math.max(1, Math.round(zoomLevel)));
+
+        const originalRange = Array.from({ length: 22 }, (_, i) => i); // 0에서 21까지
+        const targetRange = Array.from(
+          { length: 22 },
+          (_, i) => 14 - (13 * i) / 21
+        );
+
+        const mapping = {};
+        originalRange.forEach((value, index) => {
+          mapping[value] = targetRange[index];
+        });
+        console.log("zoomLefvel", zoomLevel, mapping[initialZoom]);
+        initialZoom = Math.max(1, Math.min(12, mapping[initialZoom]));
         // 추가 여유 공간을 위해 줌 레벨 조정
-        initialZoom = Math.max(1, initialZoom - 1);
       } catch (error) {
         console.error("좌표 계산 오류:", error);
       }
