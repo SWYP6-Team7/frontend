@@ -41,7 +41,7 @@ const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
         // 줌 레벨 계산 (로그 스케일 사용)
         // 카카오 지도는 1도에 약 111km이므로, 약 111km/도 * 360도 = 약 40000km
         const zoomLevel = Math.log2(40000 / (maxRange * 111000)); // 1도는 약 111km
-
+        console.log("zoomLefvel", zoomLevel);
         // 카카오 지도 줌 레벨 범위: 1-14
         initialZoom = Math.min(14, Math.max(1, Math.round(zoomLevel)));
 
