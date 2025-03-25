@@ -128,10 +128,7 @@ const GoogleMap = ({
         const zoomLevel = Math.log2(360 / maxRange);
 
         // 구글 지도 줌 레벨 범위: 0-21
-        initialZoom = Math.min(21, Math.max(4, Math.round(zoomLevel)));
-
-        // 추가 여유 공간을 위해 줌 레벨 조정
-        initialZoom = Math.max(0, initialZoom - 1);
+        initialZoom = Math.min(21, Math.max(8, Math.round(zoomLevel)));
       } catch (error) {
         console.error("좌표 계산 오류:", error);
       }
