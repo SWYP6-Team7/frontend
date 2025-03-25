@@ -51,9 +51,9 @@ const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
           mapping[value] = targetRange[index];
         });
         console.log("zoomLefvel", zoomLevel, mapping[initialZoom]);
-        initialZoom = Math.max(
-          1,
-          Math.min(10, Math.round(mapping[initialZoom]) + 2)
+        initialZoom = Math.min(
+          14,
+          Math.max(4, Math.round(mapping[initialZoom]) + 2)
         );
         // 추가 여유 공간을 위해 줌 레벨 조정
       } catch (error) {
