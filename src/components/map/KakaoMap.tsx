@@ -51,7 +51,10 @@ const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
           mapping[value] = targetRange[index];
         });
         console.log("zoomLefvel", zoomLevel, mapping[initialZoom]);
-        initialZoom = Math.max(1, Math.min(12, mapping[initialZoom]));
+        initialZoom = Math.max(
+          1,
+          Math.min(12, Math.round(mapping[initialZoom]))
+        );
         // 추가 여유 공간을 위해 줌 레벨 조정
       } catch (error) {
         console.error("좌표 계산 오류:", error);
