@@ -34,17 +34,21 @@ const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
 
         const latRange = Math.max(...lats) - Math.min(...lats);
         const lngRange = Math.max(...lngs) - Math.min(...lngs);
+        let maxRange = Math.max(latRange, lngRange);
 
-        // 위도, 경도 범위 중 큰 값 사용
-        const maxRange = Math.max(latRange, lngRange);
+        // 최소값 설정
+        const minRange = 0.0001;
+        if (maxRange < minRange) {
+          maxRange = minRange;
+        }
 
         // 줌 레벨 계산 (로그 스케일 사용)
         // 카카오 지도는 1도에 약 111km이므로, 약 111km/도 * 360도 = 약 40000km
-        const zoomLevel = Math.log2(40000 / (maxRange * 111000)); // 1도는 약 111km
+        const zoomLevel = Math.log2(Math.max(1, 40000 / (maxRange * 111000)));
+
         console.log("zoomLefvel", zoomLevel);
         // 카카오 지도 줌 레벨 범위: 1-14
         initialZoom = Math.min(14, Math.max(1, Math.round(zoomLevel)));
-
         // 추가 여유 공간을 위해 줌 레벨 조정
         initialZoom = Math.max(1, initialZoom - 1);
       } catch (error) {
