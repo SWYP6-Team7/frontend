@@ -6,15 +6,19 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { isGuestUser } from "@/utils/user";
 
 interface CreateTripButtonProps {
   type?: "trip" | "community";
 }
 
-export default function CreateTripButton({ type = "trip" }: CreateTripButtonProps) {
+export default function CreateTripButton({
+  type = "trip",
+}: CreateTripButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
   const addRef = useRef<HTMLButtonElement>(null); // 버튼 참조
   const pathname = usePathname();
+  const router = useRouter();
   const { setCreateTripPlace } = useBackPathStore();
   const createButtonRef = useRef<HTMLButtonElement>(null); // 버튼 참조
   const toggleRotation = () => {
@@ -73,6 +77,9 @@ export default function CreateTripButton({ type = "trip" }: CreateTripButtonProp
   }, []);
 
   const onClickCreate = () => {
+    if (isGuestUser()) {
+      router.push("/login");
+    }
     setCreateTripPlace(pathname === "/trip/list" ? "/trip/list" : "/");
     document.documentElement.style.viewTransitionName = "forward";
 
@@ -84,16 +91,30 @@ export default function CreateTripButton({ type = "trip" }: CreateTripButtonProp
   };
   return (
     <CreatedTripWrapper>
-      <CreateBtn isClicked={isClicked} right={newRightPosition} onClick={onClickCreate} ref={createButtonRef}>
+      <CreateBtn
+        isClicked={isClicked}
+        right={newRightPosition}
+        onClick={onClickCreate}
+        ref={createButtonRef}
+      >
         <img
-          src={type === "community" ? "/images/createCommunityBtn.png" : "/images/createTripBtn.png"}
+          src={
+            type === "community"
+              ? "/images/createCommunityBtn.png"
+              : "/images/createTripBtn.png"
+          }
           alt=""
           style={{ marginRight: "13px" }}
         />
         {type === "trip" ? "여행 만들기" : "글쓰기"}
       </CreateBtn>
 
-      <IconContainer ref={addRef} onClick={toggleRotation} rotated={isClicked} right={newRightPosition}>
+      <IconContainer
+        ref={addRef}
+        onClick={toggleRotation}
+        rotated={isClicked}
+        right={newRightPosition}
+      >
         <AddIcon />
       </IconContainer>
       {isClicked && <Hide></Hide>}
@@ -144,7 +165,8 @@ const CreateBtn = styled.button<{ right: string; isClicked: boolean }>`
   color: ${palette.기본};
   z-index: 1003;
   opacity: ${(props) => (props.isClicked ? 1 : 0)};
-  transform: ${(props) => (props.isClicked ? "translateY(-5px)" : "translateY(35px)")};
+  transform: ${(props) =>
+    props.isClicked ? "translateY(-5px)" : "translateY(35px)"};
 
   transition:
     transform 0.2s ease,
