@@ -1,12 +1,19 @@
 "use client";
-import { APIProvider, Map, MapCameraChangedEvent, useMap } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  MapCameraChangedEvent,
+  useMap,
+} from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 
 type Poi = { key: string; location: google.maps.LatLngLiteral };
 
 export const PoiMarkers = (props: { pois: Poi[] }) => {
   const map = useMap();
-  const [markers, setMarkers] = useState<{ [key: string]: google.maps.Marker }>({});
+  const [markers, setMarkers] = useState<{ [key: string]: google.maps.Marker }>(
+    {}
+  );
 
   useEffect(() => {
     // 기존 마커 제거
@@ -18,7 +25,10 @@ export const PoiMarkers = (props: { pois: Poi[] }) => {
     const linePath: google.maps.LatLng[] = [];
 
     props.pois.forEach((poi, index) => {
-      const position = new google.maps.LatLng(poi.location.lat, poi.location.lng);
+      const position = new google.maps.LatLng(
+        poi.location.lat,
+        poi.location.lng
+      );
       linePath.push(position);
 
       // Custom 마커 생성
@@ -85,7 +95,13 @@ interface GoogleMapProps {
   positions?: any[];
 }
 
-const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps) => {
+const GoogleMap = ({
+  lat,
+  lng,
+  zoom,
+  positions = [],
+  children,
+}: GoogleMapProps) => {
   const getInitialSettings = () => {
     const MAP_WIDTH = 400;
     const MAP_HEIGHT = 300;
@@ -112,7 +128,7 @@ const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps)
         const zoomLevel = Math.log2(360 / maxRange);
 
         // 구글 지도 줌 레벨 범위: 0-21
-        initialZoom = Math.min(21, Math.max(0, Math.round(zoomLevel)));
+        initialZoom = Math.min(21, Math.max(4, Math.round(zoomLevel)));
 
         // 추가 여유 공간을 위해 줌 레벨 조정
         initialZoom = Math.max(0, initialZoom - 1);
@@ -138,7 +154,9 @@ const GoogleMap = ({ lat, lng, zoom, positions = [], children }: GoogleMapProps)
           defaultZoom={initialZoom}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
           disableDefaultUI
-          onCameraChanged={(ev: MapCameraChangedEvent) => console.log("camera changed:", ev.detail.center)}
+          onCameraChanged={(ev: MapCameraChangedEvent) =>
+            console.log("camera changed:", ev.detail.center)
+          }
         >
           {children}
         </Map>

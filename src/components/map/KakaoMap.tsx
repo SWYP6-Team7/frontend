@@ -13,14 +13,14 @@ interface KakaoMapProps {
   positions?: { lat: number; lng: number }[];
 }
 
-const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
+const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_MAP_KEY;
 
-  const getInitialSettings = (positions) => {
+  const getInitialSettings = () => {
     const MAP_WIDTH = 400;
     const MAP_HEIGHT = 300;
     let initialCenter = { lat, lng };
-    let initialZoom = zoom ?? 9; // 기본 줌 레벨
+    let initialZoom = zoom ?? 7; // 기본 줌 레벨
 
     if (positions?.length > 0) {
       try {
@@ -32,19 +32,21 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
           lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
         };
 
-        const latDiff = Math.max(...lats) - Math.min(...lats);
-        const lngDiff = Math.max(...lngs) - Math.min(...lngs);
-        const maxDiff = Math.max(latDiff, lngDiff);
+        const latRange = Math.max(...lats) - Math.min(...lats);
+        const lngRange = Math.max(...lngs) - Math.min(...lngs);
 
-        console.log("maxDiff", maxDiff);
-        // 카카오 지도 줌 레벨 계산 (1: 가장 확대, 14: 가장 축소)
-        if (maxDiff > 2) initialZoom = 14;
-        else if (maxDiff > 1) initialZoom = 12;
-        else if (maxDiff > 0.5) initialZoom = 10;
-        else if (maxDiff > 0.25) initialZoom = 8;
-        else if (maxDiff > 0.1) initialZoom = 6;
-        else if (maxDiff > 0.05) initialZoom = 4;
-        else initialZoom = 2;
+        // 위도, 경도 범위 중 큰 값 사용
+        const maxRange = Math.max(latRange, lngRange);
+
+        // 줌 레벨 계산 (로그 스케일 사용)
+        // 카카오 지도는 1도에 약 111km이므로, 약 111km/도 * 360도 = 약 40000km
+        const zoomLevel = Math.log2(40000 / (maxRange * 111000)); // 1도는 약 111km
+
+        // 카카오 지도 줌 레벨 범위: 1-14
+        initialZoom = Math.min(14, Math.max(1, Math.round(zoomLevel)));
+
+        // 추가 여유 공간을 위해 줌 레벨 조정
+        initialZoom = Math.max(1, initialZoom - 1);
       } catch (error) {
         console.error("좌표 계산 오류:", error);
       }
@@ -53,7 +55,7 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
     return { initialCenter, initialZoom };
   };
 
-  const { initialCenter, initialZoom } = getInitialSettings(positions);
+  const { initialCenter, initialZoom } = getInitialSettings();
   useEffect(() => {
     const script: HTMLScriptElement = document.createElement("script");
     script.async = true;
@@ -61,7 +63,10 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
     document.head.appendChild(script);
     const handleLoad = () => {
       window.kakao.maps.load(() => {
-        let coords = new window.kakao.maps.LatLng(initialCenter.lat, initialCenter.lng);
+        let coords = new window.kakao.maps.LatLng(
+          initialCenter.lat,
+          initialCenter.lng
+        );
 
         // 지도를 담을 영역의 DOM 레퍼런스
         let container = document.getElementById("map");
@@ -96,7 +101,10 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
             // Create a custom overlay to display the marker
             let customOverlay = new window.kakao.maps.CustomOverlay({
               map: map,
-              position: new window.kakao.maps.LatLng(positions[i].lat, positions[i].lng),
+              position: new window.kakao.maps.LatLng(
+                positions[i].lat,
+                positions[i].lng
+              ),
               content: markerContent,
               yAnchor: 1, // Adjust the anchor to properly position the marker
             });
@@ -105,7 +113,9 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
           // Dashed Polyline
           var linePath: any[] = [];
           for (var i = 0; i < positions.length; i++) {
-            linePath.push(new window.kakao.maps.LatLng(positions[i].lat, positions[i].lng));
+            linePath.push(
+              new window.kakao.maps.LatLng(positions[i].lat, positions[i].lng)
+            );
           }
 
           var polyline = new window.kakao.maps.Polyline({
@@ -128,7 +138,14 @@ const KakaoMap = ({ lat, lng, zoom, positions }: KakaoMapProps) => {
       script.removeEventListener("load", handleLoad);
       document.head.removeChild(script);
     };
-  }, [lat, lng, zoom, JSON.stringify(positions), JSON.stringify(initialCenter), initialZoom]);
+  }, [
+    lat,
+    lng,
+    zoom,
+    JSON.stringify(positions),
+    JSON.stringify(initialCenter),
+    initialZoom,
+  ]);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
