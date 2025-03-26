@@ -149,7 +149,7 @@ const Container = styled.div<{ width: "fit-content" | "100%" }>`
   &::-webkit-scrollbar {
     display: none;
   }
-  z-index: 2;
+  z-index: 1002;
   width: ${(props) => props.width};
   border-radius: 20px;
   background-color: ${palette.BG};
