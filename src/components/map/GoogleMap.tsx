@@ -126,7 +126,7 @@ const GoogleMap = ({
 
         // 줌 레벨 계산 (로그 스케일 사용)
         const zoomLevel = Math.log2(360 / maxRange);
-
+        console.log("google zoom level", initialZoom);
         // 구글 지도 줌 레벨 범위: 0-21
         initialZoom = Math.min(21, Math.max(8, Math.round(zoomLevel)));
       } catch (error) {
