@@ -118,6 +118,10 @@ const GoogleMap = ({
           lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
         };
 
+        if (positions?.length === 1) {
+          initialZoom = 6;
+          return;
+        }
         const latRange = Math.max(...lats) - Math.min(...lats);
         const lngRange = Math.max(...lngs) - Math.min(...lngs);
 
@@ -128,7 +132,7 @@ const GoogleMap = ({
         const zoomLevel = Math.log2(360 / maxRange);
         console.log("google zoom level", initialZoom);
         // 구글 지도 줌 레벨 범위: 0-21
-        initialZoom = Math.min(21, Math.max(8, Math.round(zoomLevel)));
+        initialZoom = Math.min(21, Math.max(4, Math.round(zoomLevel)));
       } catch (error) {
         console.error("좌표 계산 오류:", error);
       }
