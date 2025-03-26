@@ -120,7 +120,7 @@ const GoogleMap = ({
 
         if (positions?.length === 1) {
           initialZoom = 6;
-          return;
+          return { initialCenter, initialZoom };
         }
         const latRange = Math.max(...lats) - Math.min(...lats);
         const lngRange = Math.max(...lngs) - Math.min(...lngs);
