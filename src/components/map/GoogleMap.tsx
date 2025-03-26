@@ -119,7 +119,7 @@ const GoogleMap = ({
         };
 
         if (positions?.length === 1) {
-          initialZoom = 9;
+          initialZoom = 11;
           return { initialCenter, initialZoom };
         }
         const latRange = Math.max(...lats) - Math.min(...lats);
