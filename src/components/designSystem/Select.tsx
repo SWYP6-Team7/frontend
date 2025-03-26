@@ -18,7 +18,14 @@ interface SelectProps {
 // none value는 일종의 label값 같은 느낌
 // value가 undefined인 초깃값일 때 보여주기 위한 값
 
-const Select = ({ list, id, width = "fit-content", value, setValue, noneValue }: SelectProps) => {
+const Select = ({
+  list,
+  id,
+  width = "fit-content",
+  value,
+  setValue,
+  noneValue,
+}: SelectProps) => {
   const [active, setActive] = useState(false);
   const [animatedItems, setAnimatedItems] = useState<boolean[]>([]);
   const changeValue = (element: string) => {
@@ -54,7 +61,11 @@ const Select = ({ list, id, width = "fit-content", value, setValue, noneValue }:
       <Container width={width}>
         <OptionList active={active}>
           <Label value={value} onClick={() => setActive(!active)}>
-            {value ? value : <div style={{ color: palette.비강조 }}>{noneValue}</div>}
+            {value ? (
+              value
+            ) : (
+              <div style={{ color: palette.비강조 }}>{noneValue}</div>
+            )}
             <div style={{ transform: active ? "rotate(180deg)" : "rotate(0)" }}>
               <SelectArrow />
             </div>
@@ -95,7 +106,7 @@ const Background = styled.div`
   position: fixed;
   width: 100%;
   height: 100svh;
-  z-index: 1;
+  z-index: 1001;
   top: 0;
   left: 0;
   right: 0;
