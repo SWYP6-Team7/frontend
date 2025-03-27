@@ -16,9 +16,7 @@ export default function Providers({ children }: { children: ReactNode }) {
           <QueryClientBoundary>
             <ErrorCatcher />
 
-            <RootStyleRegistry>
-              <AutoRefresh /> {children}
-            </RootStyleRegistry>
+            <RootStyleRegistry>{children}</RootStyleRegistry>
           </QueryClientBoundary>
         </PageNavigationProvider>
       </ViewTransitions>
