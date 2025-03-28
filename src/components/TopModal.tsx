@@ -310,6 +310,7 @@ const TopModal = ({
   return (
     <ContentContainer
       ref={contentRef}
+      height={modalHeight}
       onClick={handleContentClick}
       isClosing={isClosing}
     >
@@ -334,9 +335,10 @@ const ChildrenContainer = styled.div`
   overscroll-behavior: none;
 `;
 
-const ContentContainer = styled.div<{ isClosing: boolean }>`
+const ContentContainer = styled.div<{ isClosing: boolean; height: number }>`
   width: 100%;
-
+  max-height: 480px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -369,6 +371,7 @@ const Bar = styled.div`
   width: 54px;
   position: absolute;
   top: 50%;
+
   left: 50%;
   transform: translate(-50%);
   background-color: rgba(205, 205, 205, 1);
