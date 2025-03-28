@@ -70,7 +70,6 @@ const TopModal = ({
       const isScrollingUp = event.deltaY < 0;
 
       if (modalHeight === 0 && isAtTop && isScrollingUp) {
-        event.preventDefault(); // 기본 스크롤 동작 방지
         scrollAttempts.current += Math.abs(event.deltaY);
 
         if (scrollAttempts.current > SCROLL_THRESHOLD) {
