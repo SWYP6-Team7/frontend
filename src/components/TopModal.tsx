@@ -34,6 +34,7 @@ const TopModal = ({
   const [contentHeight, setContentHeight] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const firstTop = useRef(false);
+
   const SCROLL_THRESHOLD = 30; // 픽셀 단위
   const scrollAttempts = useRef(0);
   const handleInteraction = useCallback(
@@ -301,6 +302,14 @@ const TopModal = ({
     },
     [isDragging, windowHeight, startY, contentHeight, onHeightChange]
   );
+
+  useEffect(() => {
+    if (childrenRef.current) {
+      childrenRef.current.addEventListener("scroll", (e) => {
+        e.stopPropagation();
+      });
+    }
+  }, [childrenRef.current]);
 
   if (!isClient) return null;
   if (typeof window === "undefined") {

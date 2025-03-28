@@ -71,7 +71,7 @@ export default function TripDetail() {
   const [modalTextForLogin, setModalTextForLogin] = useState(
     LOGIN_ASKING_FOR_WATCHING_COMMENT
   );
-
+  const detailRef = useRef<HTMLDivElement | null>(null);
   const [isApplyToast, setIsApplyToast] = useState(false);
   const [isCancelToast, setIsCancelToast] = useState(false);
 
@@ -207,6 +207,14 @@ export default function TripDetail() {
       handleLoad();
     }
   }, [isKakaoMapLoad, location]);
+
+  useEffect(() => {
+    if (detailRef.current) {
+      detailRef.current.addEventListener("scroll", (e) => {
+        e.stopPropagation();
+      });
+    }
+  }, [detailRef.current]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -392,7 +400,7 @@ export default function TripDetail() {
               {/* 제목  */}
               <Title>{title}</Title>
               {/* 내용 */}
-              <Details>{details}</Details>
+              <Details ref={detailRef}>{details}</Details>
               {/*태그   */}
               <TagContainer>
                 {tags.map((tag, idx) => (
