@@ -79,6 +79,7 @@ export default function CreateTripButton({
   const onClickCreate = () => {
     if (isGuestUser()) {
       router.push("/login");
+      return;
     }
     setCreateTripPlace(pathname === "/trip/list" ? "/trip/list" : "/");
     document.documentElement.style.viewTransitionName = "forward";
