@@ -342,7 +342,7 @@ const ContentContainer = styled.div<{ isClosing: boolean; height: number }>`
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+
   @media (min-width: 440px) {
     width: 390px;
     left: 50%;
@@ -350,7 +350,7 @@ const ContentContainer = styled.div<{ isClosing: boolean; height: number }>`
   }
   z-index: 1000;
   position: fixed;
-  max-height: 100%;
+
   min-height: 48px;
   left: 0;
   border-bottom-left-radius: 20px;
