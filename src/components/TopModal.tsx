@@ -332,13 +332,15 @@ const TopModal = ({
 };
 
 const ChildrenContainer = styled.div`
+  max-height: 452px;
+  overflow-y: auto;
   overscroll-behavior: none;
 `;
 
 const ContentContainer = styled.div<{ isClosing: boolean; height: number }>`
   width: 100%;
   max-height: 480px;
-  overflow-y: auto;
+  overflow:hidden
   display: flex;
   flex-direction: column;
   position: relative;
