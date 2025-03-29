@@ -36,7 +36,6 @@ export default function TripEnrollmentList() {
     addDetails,
     addMaxPerson,
     addGenderType,
-    addDueDate,
     addPeriodType,
     addTags,
     addPostStatus,
@@ -67,7 +66,6 @@ export default function TripEnrollmentList() {
         details,
         maxPerson,
         genderType,
-        dueDate,
         periodType,
         tags,
         postStatus,
@@ -80,12 +78,6 @@ export default function TripEnrollmentList() {
         loginMemberRelatedInfo,
       } = tripInfos;
 
-      const [year, month, day] = dueDate.split("-").map((v: string) => +v);
-      const DUEDATE = {
-        year,
-        month,
-        day,
-      };
       if (!loginMemberRelatedInfo) {
         addHostUserCheck(false);
         addEnrollmentNumber(null);
@@ -107,7 +99,6 @@ export default function TripEnrollmentList() {
       addDetails(details);
       addMaxPerson(maxPerson);
       addGenderType(genderType);
-      addDueDate(DUEDATE);
       addPeriodType(periodType);
       addTags(tags);
       addPostStatus(postStatus);
