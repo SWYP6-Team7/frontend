@@ -314,14 +314,14 @@ const TopModal = ({
 };
 
 const ChildrenContainer = styled.div<{ maxHeight: number }>`
-  max-height: ${(props) => props.maxHeight}px;
+  //max-height: ${(props) => props.maxHeight}px;
   overflow-y: auto;
   overscroll-behavior: none;
 `;
 
 const ContentContainer = styled.div<{ maxHeight: number; isClosing: boolean; height: number }>`
   width: 100%;
-  max-height: ${(props) => props.maxHeight}px;
+  // max-height: ${(props) => props.maxHeight}px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
