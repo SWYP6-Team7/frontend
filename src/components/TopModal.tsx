@@ -281,6 +281,7 @@ const TopModal = ({
   useEffect(() => {
     if (childrenRef.current) {
       childrenRef.current.addEventListener("scroll", (e) => {
+        console.log("1");
         e.stopPropagation();
       });
     }
