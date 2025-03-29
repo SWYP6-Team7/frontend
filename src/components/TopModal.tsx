@@ -296,7 +296,7 @@ const TopModal = ({
   return (
     <ContentContainer ref={contentRef} maxHeight={windowHeight - 60} onClick={handleContentClick} isClosing={isClosing}>
       <ChildrenContainer maxHeight={windowHeight - 88} ref={childrenRef}>
-        {children}
+        <div style={{ overflow: "auto" }}>{children}</div>
       </ChildrenContainer>
 
       <BarContainer
@@ -316,7 +316,6 @@ const TopModal = ({
 
 const ChildrenContainer = styled.div<{ maxHeight: number }>`
   max-height: ${(props) => props.maxHeight}px;
-  overflow-y: auto;
   overscroll-behavior: none;
 `;
 
