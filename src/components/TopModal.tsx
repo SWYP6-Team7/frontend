@@ -179,17 +179,17 @@ const TopModal = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   useEffect(() => {
-    console.log("children", contentRef.current?.getBoundingClientRect());
+    console.log("children", childrenRef.current?.getBoundingClientRect());
     setModalHeight(
-      contentRef.current?.getBoundingClientRect().height ? contentRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
     );
     setContentHeight(
-      contentRef.current?.getBoundingClientRect().height ? contentRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
     );
     onHeightChange(
-      contentRef.current?.getBoundingClientRect().height ? contentRef.current?.getBoundingClientRect().height + 48 : 0
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
     );
-  }, [contentRef.current?.getBoundingClientRect().height]);
+  }, [childrenRef.current?.getBoundingClientRect().height]);
   // 드래그 중이 아닐 때만 contentHeight 업데이트
   useEffect(() => {
     if (contentRef.current) {
