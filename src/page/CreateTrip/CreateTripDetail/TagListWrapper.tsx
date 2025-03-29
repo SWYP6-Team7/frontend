@@ -134,7 +134,8 @@ const ModalWrapper = styled.div`
   flex-direction: column;
   height: 100%;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const ModalContainer = styled.div`
