@@ -63,6 +63,7 @@ const TopModal = ({
       const isScrollingUp = event.deltaY < 0;
 
       if (modalHeight === 0 && isAtTop && isScrollingUp) {
+        event.preventDefault();
         scrollAttempts.current += Math.abs(event.deltaY);
 
         if (scrollAttempts.current > SCROLL_THRESHOLD) {
@@ -113,6 +114,7 @@ const TopModal = ({
 
   const handleScroll = useCallback(
     (e: any) => {
+      e.preventDefault();
       const container = containerRef.current;
       if (!container) return;
 
