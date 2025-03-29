@@ -221,8 +221,8 @@ export default function EditMyInfo() {
         <Spacing size={8} />
 
         {!isGuestUser() && (
-          <LogoutBox onClick={() => setCheckingLogoutModalClicked(true)}>
-            <LogoutButton>로그아웃</LogoutButton>
+          <LogoutBox>
+            <LogoutButton onClick={() => setCheckingLogoutModalClicked(true)}>로그아웃</LogoutButton>
             <VerticalLine>|</VerticalLine>
             <DrawalButton
               onClick={() => {
