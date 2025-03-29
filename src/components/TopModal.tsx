@@ -296,11 +296,11 @@ const TopModal = ({
   return (
     <ContentContainer
       ref={contentRef}
-      maxHeight={window.innerHeight - 60}
+      maxHeight={window.innerHeight - 280}
       onClick={handleContentClick}
       isClosing={isClosing}
     >
-      <ChildrenContainer maxHeight={window.innerHeight - 88} ref={childrenRef}>
+      <ChildrenContainer maxHeight={window.innerHeight - 308} ref={childrenRef}>
         {children}
       </ChildrenContainer>
 
