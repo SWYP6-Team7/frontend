@@ -179,17 +179,29 @@ const TopModal = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   useEffect(() => {
-    console.log("children", childrenRef.current?.firstChild);
-    setModalHeight(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
-    );
-    setContentHeight(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
-    );
-    onHeightChange(
-      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
-    );
-  }, [childrenRef.current?.getBoundingClientRect().height]);
+    if (childrenRef.current?.firstChild) {
+      console.log(
+        "children",
+        childrenRef.current?.firstChild,
+        (childrenRef.current?.firstChild as HTMLDivElement)?.getBoundingClientRect().height
+      );
+      setModalHeight(
+        (childrenRef.current?.firstChild as HTMLDivElement)?.getBoundingClientRect().height
+          ? (childrenRef.current?.firstChild as HTMLDivElement)?.getBoundingClientRect().height + 48
+          : 0
+      );
+      setContentHeight(
+        (childrenRef.current?.firstChild as HTMLDivElement)?.getBoundingClientRect().height
+          ? (childrenRef.current?.firstChild as HTMLDivElement)?.getBoundingClientRect().height + 48
+          : 0
+      );
+      onHeightChange(
+        (childrenRef.current?.firstChild as HTMLDivElement)?.getBoundingClientRect().height
+          ? (childrenRef.current?.firstChild as HTMLDivElement)?.getBoundingClientRect().height + 48
+          : 0
+      );
+    }
+  }, [(childrenRef.current?.firstChild as HTMLDivElement)?.getBoundingClientRect().height]);
   // 드래그 중이 아닐 때만 contentHeight 업데이트
   useEffect(() => {
     if (contentRef.current) {
