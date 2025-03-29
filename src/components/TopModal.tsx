@@ -1,12 +1,5 @@
 "use client";
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo,
-  RefObject,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo, RefObject } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
@@ -128,14 +121,10 @@ const TopModal = ({
       const clientHeight = container.clientHeight;
       const modalHeightPercentage = (modalHeight / clientHeight) * 100;
       // 스크롤 진행률 계산
-      const scrollPercentage =
-        (currentScrollTop / (scrollHeight - clientHeight)) * 100;
+      const scrollPercentage = (currentScrollTop / (scrollHeight - clientHeight)) * 100;
 
       if (scrollPercentage >= modalHeightPercentage) {
-        contentRef.current?.style.setProperty(
-          "transition",
-          "height 0.3s ease-in-out, transform 0.3s ease-in-out"
-        );
+        contentRef.current?.style.setProperty("transition", "height 0.3s ease-in-out, transform 0.3s ease-in-out");
         setModalHeight(0);
 
         setIsMapFull(true);
@@ -152,14 +141,8 @@ const TopModal = ({
       } else if (scrollPercentage < modalHeightPercentage) {
         // 스크롤 진행률이 modalHeightPercentage% 미만일 때 modalHeight를 점진적으로 줄임
         if (firstTop.current) firstTop.current = false;
-        contentRef.current?.style.setProperty(
-          "transition",
-          "transform 0.3s ease-in-out"
-        );
-        const newHeight = Math.max(
-          0,
-          modalHeight * (1 - scrollPercentage / modalHeightPercentage)
-        );
+        contentRef.current?.style.setProperty("transition", "transform 0.3s ease-in-out");
+        const newHeight = Math.max(0, modalHeight * (1 - scrollPercentage / modalHeightPercentage));
         console.log(newHeight);
         setModalHeight(newHeight);
         // setIsMapFull(false);
@@ -195,19 +178,13 @@ const TopModal = ({
   }, []);
   useEffect(() => {
     setModalHeight(
-      childrenRef.current?.getBoundingClientRect().height
-        ? childrenRef.current?.getBoundingClientRect().height + 48
-        : 0
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
     );
     setContentHeight(
-      childrenRef.current?.getBoundingClientRect().height
-        ? childrenRef.current?.getBoundingClientRect().height + 48
-        : 0
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
     );
     onHeightChange(
-      childrenRef.current?.getBoundingClientRect().height
-        ? childrenRef.current?.getBoundingClientRect().height + 48
-        : 0
+      childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
     );
   }, [childrenRef.current?.getBoundingClientRect().height]);
   // 드래그 중이 아닐 때만 contentHeight 업데이트
@@ -239,10 +216,7 @@ const TopModal = ({
 
   const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
     setIsDragging(true);
-    contentRef.current?.style.setProperty(
-      "transition",
-      "height 0.3s ease-in-out, transform 0.3s ease-in-out"
-    );
+    contentRef.current?.style.setProperty("transition", "height 0.3s ease-in-out, transform 0.3s ease-in-out");
 
     if ("touches" in e) {
       setStartY(e.touches[0].pageY);
@@ -318,11 +292,14 @@ const TopModal = ({
   return (
     <ContentContainer
       ref={contentRef}
+      maxHeight={windowHeight - 60}
       height={modalHeight}
       onClick={handleContentClick}
       isClosing={isClosing}
     >
-      <ChildrenContainer ref={childrenRef}>{children}</ChildrenContainer>
+      <ChildrenContainer maxHeight={windowHeight - 88} ref={childrenRef}>
+        {children}
+      </ChildrenContainer>
 
       <BarContainer
         onTouchStart={handleDragStart}
@@ -339,16 +316,16 @@ const TopModal = ({
   );
 };
 
-const ChildrenContainer = styled.div`
-  max-height: 452px;
+const ChildrenContainer = styled.div<{ maxHeight: number }>`
+  max-height: ${(props) => props.maxHeight}px;
   overflow-y: auto;
   overscroll-behavior: none;
 `;
 
-const ContentContainer = styled.div<{ isClosing: boolean; height: number }>`
+const ContentContainer = styled.div<{ maxHeight: number; isClosing: boolean; height: number }>`
   width: 100%;
-  max-height: 480px;
-  overflow:hidden
+  max-height: ${(props) => props.maxHeight}px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
