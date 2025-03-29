@@ -294,8 +294,13 @@ const TopModal = ({
   }
 
   return (
-    <ContentContainer ref={contentRef} maxHeight={windowHeight - 60} onClick={handleContentClick} isClosing={isClosing}>
-      <ChildrenContainer maxHeight={windowHeight - 88} ref={childrenRef}>
+    <ContentContainer
+      ref={contentRef}
+      maxHeight={window.innerHeight - 60}
+      onClick={handleContentClick}
+      isClosing={isClosing}
+    >
+      <ChildrenContainer maxHeight={window.innerHeight - 88} ref={childrenRef}>
         {children}
       </ChildrenContainer>
 
