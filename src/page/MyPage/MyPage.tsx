@@ -30,7 +30,7 @@ export default function MyPage() {
           <RoundedImage src={isGuestUser() ? "/images/defaultProfile.png" : profileUrl} size={80} />
         </ProfileImg>
         <div style={{ width: "100%" }}>
-          {true ? (
+          {!isGuestUser() ? (
             <div
               onClick={() => {
                 document.documentElement.style.viewTransitionName = "forward";
@@ -229,21 +229,7 @@ const Title = styled.div`
   text-align: left;
   margin-bottom: 8px;
 `;
-const SmallTitle = styled.div`
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 16px;
-  cursor: pointer;
-  text-align: center;
-  color: ${palette.기본};
-  height: 52px;
-  padding: 14px 0px 22px 0px;
-  gap: 8px;
-  opacity: 0px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-`;
+
 const Box = styled.div`
   border-bottom: 1px solid #e7e7e7;
   padding-top: 14px;
