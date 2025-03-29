@@ -13,6 +13,8 @@ const TAG_LIST = [
   {
     title: "태그 설정",
     tags: [
+      "🇰🇷 국내",
+      "🌎 해외",
       "⏱️ 단기",
       "✊ 즉흥",
       "📝 계획",
@@ -38,15 +40,12 @@ export default function EditMyTag() {
   const { agegroup, addPreferredTags, addAgegroup, preferredTags, addIsTagUpdated } = myPageStore();
   console.log(agegroup, preferredTags, "나이, 태그");
   const { updateMyPageMutation, isUpdatedSuccess } = useMyPage();
-  const tempArray = preferredTags.filter((v) => v === "국내" || v === "해외");
-  const tagArrayExceptLocation = preferredTags.filter((v) => v !== "국내" && v !== "해외");
-  // 국내 해외 태그는 제외해두고 저장. 수정해서 전송시에는 포함 예정.
-  const [taggedArray, setTaggedArray] = useState<string[]>(tagArrayExceptLocation);
+  const [taggedArray, setTaggedArray] = useState<string[]>(preferredTags);
   const [age, setAge] = useState(agegroup);
   const router = useRouter();
 
   const completeClickHandler = () => {
-    addPreferredTags([...taggedArray, ...tempArray]);
+    addPreferredTags([...taggedArray]);
     addAgegroup(age);
     updateMyPageMutation();
   };
