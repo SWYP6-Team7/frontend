@@ -179,6 +179,7 @@ const TopModal = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   useEffect(() => {
+    console.log("children", childrenRef.current?.getBoundingClientRect());
     setModalHeight(
       childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
     );
@@ -314,14 +315,14 @@ const TopModal = ({
 };
 
 const ChildrenContainer = styled.div<{ maxHeight: number }>`
-  //max-height: ${(props) => props.maxHeight}px;
+  max-height: ${(props) => props.maxHeight}px;
   overflow-y: auto;
   overscroll-behavior: none;
 `;
 
 const ContentContainer = styled.div<{ maxHeight: number; isClosing: boolean; height: number }>`
   width: 100%;
-  // max-height: ${(props) => props.maxHeight}px;
+  max-height: ${(props) => props.maxHeight}px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
