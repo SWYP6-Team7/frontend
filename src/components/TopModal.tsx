@@ -179,11 +179,7 @@ const TopModal = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   useEffect(() => {
-    console.log(
-      "children",
-      childrenRef.current?.firstChild,
-      (childrenRef.current?.firstChild as HTMLDivElement).getBoundingClientRect()
-    );
+    console.log("children", childrenRef.current?.firstChild);
     setModalHeight(
       childrenRef.current?.getBoundingClientRect().height ? childrenRef.current?.getBoundingClientRect().height + 48 : 0
     );
