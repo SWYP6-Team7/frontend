@@ -29,7 +29,10 @@ const Navbar = () => {
   const getIsActive = (page: string) => {
     if (
       page === "/myPage" &&
-      (pathname === "/editMyInfo" || pathname === "/announcement" || pathname === "/requestedTrip")
+      (pathname === "/editMyInfo" ||
+        pathname === "/announcement" ||
+        pathname === "/requestedTrip" ||
+        pathname === "/myCommunity")
     ) {
       return true;
     }
