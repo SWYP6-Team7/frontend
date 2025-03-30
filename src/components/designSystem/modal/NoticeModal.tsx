@@ -2,7 +2,7 @@
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useEffect, useRef, useState } from "react";
-import { styleText } from "util";
+import { createPortal } from "react-dom";
 interface ResultModalProps {
   isModalOpen: boolean;
   modalMsg: string;
@@ -34,7 +34,9 @@ export default function NoticeModal({ isModalOpen, modalMsg, modalTitle, setModa
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isModalOpen, isListening]); // isModalOpen이 변경될 때마다 실행
-  return (
+
+  if (!isListening) return null;
+  return createPortal(
     <ModalContainer isModalOpen={isModalOpen}>
       <Modal ref={modalRef} isModalOpen={isModalOpen}>
         <ContentBox>
@@ -64,7 +66,8 @@ export default function NoticeModal({ isModalOpen, modalMsg, modalTitle, setModa
       </Modal>
 
       <DarkWrapper></DarkWrapper>
-    </ModalContainer>
+    </ModalContainer>,
+    document.getElementById("checking-modal") as HTMLElement
   );
 }
 const Title = styled.div`
