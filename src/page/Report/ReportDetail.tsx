@@ -94,7 +94,7 @@ const ReportDetail = () => {
     if (type?.query === "etc") {
       mutate({
         reportedUserNumber: userNumber,
-        reportReasonId: 15,
+        reportReasonId: Number(id),
         reportReasonExtra: text,
       });
     } else {
@@ -103,7 +103,7 @@ const ReportDetail = () => {
       }
       mutate({
         reportedUserNumber: userNumber,
-        reportReasonId: type?.item?.[checkIndex].id,
+        reportReasonId: Number(id),
       });
     }
   };
