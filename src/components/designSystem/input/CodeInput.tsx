@@ -75,10 +75,10 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
     e.stopPropagation();
     const firstEmptyRef = refs.current?.find((ref) => ref?.value === "");
     if (firstEmptyRef) {
-      firstEmptyRef.focus();
+      firstEmptyRef.focus({ preventScroll: true });
     } else {
       // 빈 값이 없으면 원래 클릭한 input에 포커스
-      refs.current[refs.current.length - 1]?.focus();
+      refs.current[refs.current.length - 1]?.focus({ preventScroll: true });
     }
   };
 
@@ -94,7 +94,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
         if (prevInput) {
           prevInput.value = "";
         }
-        prevInput?.focus();
+        prevInput?.focus({ preventScroll: true });
       }
     }
     updateValues();
@@ -116,7 +116,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
       }
     });
     updateValues();
-    refs.current[Math.min(pastedData.length + index, 5)]?.focus();
+    refs.current[Math.min(pastedData.length + index, 5)]?.focus({ preventScroll: true });
   };
 
   return (
