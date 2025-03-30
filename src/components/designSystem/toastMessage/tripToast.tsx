@@ -5,18 +5,29 @@ import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 interface tripToastProps {
   isShow: boolean;
-  setIsShow: React.Dispatch<React.SetStateAction<boolean>> | ((bool: boolean) => void);
   setIsMapFull: React.Dispatch<React.SetStateAction<boolean>> | ((bool: boolean) => void);
-
+  setModalHeight: React.Dispatch<React.SetStateAction<number>> | ((number: number) => void);
   bottom?: string;
   height?: number;
 }
 
-export default function TripToast({ setIsMapFull, bottom = "120px", isShow, setIsShow, height = 36 }: tripToastProps) {
+export default function TripToast({
+  setIsMapFull,
+  setModalHeight,
+  bottom = "120px",
+  isShow,
+  height = 36,
+}: tripToastProps) {
   if (!document?.getElementById("trip-toast")) return null;
   return createPortal(
     <Container isShow={isShow} bottom={bottom}>
-      <ToastMsg onClick={() => setIsMapFull(true)} height={height}>
+      <ToastMsg
+        onClick={() => {
+          setModalHeight(0);
+          setIsMapFull(true);
+        }}
+        height={height}
+      >
         <Text>✨ 여행 일정을 추가해 보세요</Text>
         <svg width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.5 1L4.5 5L0.5 1" stroke="white" strokeLinecap="round" />
@@ -47,6 +58,7 @@ const ToastMsg = styled.div<{ height: number }>`
   background-color: ${palette.기본};
   padding: 8px 16px;
   display: flex;
+  pointer-events: auto;
   justify-content: center;
   align-items: center;
 `;

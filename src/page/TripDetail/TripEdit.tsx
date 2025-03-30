@@ -281,7 +281,12 @@ const TripEdit = () => {
     <>
       <CreateTripDetailWrapper>
         <CreateTripDetailContainer ref={containerRef}>
-          <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
+          <TopModal
+            isToastShow={isToastShow}
+            containerRef={containerRef}
+            setIsMapFull={setIsMapFull}
+            onHeightChange={setTopModalHeight}
+          >
             <ModalContainer>
               <RegionWrapper
                 locationName={locationName}
@@ -365,7 +370,6 @@ const TripEdit = () => {
           />
         </ButtonContainer>
       </CreateTripDetailWrapper>
-      <TripToast setIsMapFull={setIsMapFull} isShow={isToastShow} setIsShow={setIsToastShow} />
     </>
   );
 };
