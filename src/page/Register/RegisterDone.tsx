@@ -13,20 +13,14 @@ export default function RegisterDone() {
     setTimeout(() => {
       reset();
       setSocialLogin(null, null);
-      router.replace("/login"); // refresh 토큰 받을려면 로그인으로 접속해야함.
+      router.replace("/login"); // refresh 토큰 받을려면 로그인으로 접속해야함. // qa 요청 들어옴 백엔드와 협의 필요
     }, 2000);
   }, []);
   return (
     <Container>
       <div></div>
       <Img>
-        <svg
-          width="200"
-          height="200"
-          viewBox="0 0 200 200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clipPath="url(#clip0_2307_12382)">
             <path
               d="M94.9549 167.207C131.687 167.207 161.465 137.336 161.465 100.488C161.465 63.64 131.687 33.7687 94.9549 33.7687C58.2224 33.7687 28.4448 63.64 28.4448 100.488C28.4448 137.336 58.2224 167.207 94.9549 167.207Z"
@@ -87,12 +81,7 @@ export default function RegisterDone() {
           </g>
           <defs>
             <clipPath id="clip0_2307_12382">
-              <rect
-                width="159"
-                height="169"
-                fill="white"
-                transform="translate(21 16)"
-              />
+              <rect width="159" height="169" fill="white" transform="translate(21 16)" />
             </clipPath>
           </defs>
         </svg>
