@@ -2,17 +2,20 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, RefObject } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
+import TripToast from "./designSystem/toastMessage/tripToast";
 
 const TopModal = ({
   children,
   onHeightChange,
   setIsMapFull,
   containerRef,
+  isToastShow,
 }: {
   children: React.ReactNode;
   onHeightChange: (height: number) => void;
   setIsMapFull: (bool: boolean) => void;
   containerRef: RefObject<HTMLDivElement | null>;
+  isToastShow: boolean;
 }) => {
   const touchStartY = useRef(null);
 
@@ -306,28 +309,31 @@ const TopModal = ({
   }
 
   return (
-    <ContentContainer
-      ref={contentRef}
-      maxHeight={window.innerHeight - 280}
-      onClick={handleContentClick}
-      isClosing={isClosing}
-    >
-      <ChildrenContainer maxHeight={window.innerHeight - 308} ref={childrenRef}>
-        {children}
-      </ChildrenContainer>
-
-      <BarContainer
-        onTouchStart={handleDragStart}
-        onTouchMove={handleDragMove}
-        onTouchEnd={handleDragEnd}
-        onMouseDown={handleDragStart}
-        onMouseMove={handleDragMove}
-        onMouseUp={handleDragEnd}
-        onMouseLeave={handleDragEnd}
+    <>
+      <ContentContainer
+        ref={contentRef}
+        maxHeight={window.innerHeight - 280}
+        onClick={handleContentClick}
+        isClosing={isClosing}
       >
-        <Bar />
-      </BarContainer>
-    </ContentContainer>
+        <ChildrenContainer maxHeight={window.innerHeight - 308} ref={childrenRef}>
+          {children}
+        </ChildrenContainer>
+
+        <BarContainer
+          onTouchStart={handleDragStart}
+          onTouchMove={handleDragMove}
+          onTouchEnd={handleDragEnd}
+          onMouseDown={handleDragStart}
+          onMouseMove={handleDragMove}
+          onMouseUp={handleDragEnd}
+          onMouseLeave={handleDragEnd}
+        >
+          <Bar />
+        </BarContainer>
+      </ContentContainer>
+      <TripToast setModalHeight={setModalHeight} isShow={isToastShow} setIsMapFull={setIsMapFull} />
+    </>
   );
 };
 
