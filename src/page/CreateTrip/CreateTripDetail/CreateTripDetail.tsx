@@ -232,7 +232,7 @@ const CreateTripDetail = () => {
           />
         </ButtonContainer>
       </CreateTripDetailWrapper>
-      <TripToast isShow={isToastShow} setIsShow={setIsToastShow} />
+      <TripToast isShow={isToastShow} setIsMapFull={setIsMapFull} setIsShow={setIsToastShow} />
     </>
   );
 };

@@ -5,13 +5,7 @@ import Vector from "@/components/icons/Vector";
 import Spacing from "@/components/Spacing";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import {
-  ChangeEvent,
-  FocusEventHandler,
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FocusEventHandler, FormEvent, useEffect, useState } from "react";
 import RecruitingPickerView from "./RecruitingPickerView";
 import Button from "@/components/designSystem/Buttons/Button";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
@@ -51,9 +45,7 @@ export default function RecruitingWrapper() {
     if (type === "plus") {
       addMaxPerson(maxPersonForCreateTrip + 1);
     } else {
-      addMaxPerson(
-        maxPersonForCreateTrip === 0 ? 0 : maxPersonForCreateTrip - 1
-      );
+      addMaxPerson(maxPersonForCreateTrip === 0 ? 0 : maxPersonForCreateTrip - 1);
     }
   };
 
@@ -84,10 +76,7 @@ export default function RecruitingWrapper() {
         </RecruitingBtn>
       </RecruitingContainer>
       {showModal && (
-        <BottomModal
-          initialHeight={27} // height 비율이 짧아 진다면 58%로 맞추기.
-          closeModal={handleCloseModal}
-        >
+        <BottomModal initialHeight={"224px"} closeModal={handleCloseModal}>
           <ModalWrapper>
             <ModalContainer>
               <CountContainer>

@@ -13,7 +13,7 @@ const BottomModal = ({
   children: React.ReactNode;
   closeModal: () => void;
   backdropClick?: () => void;
-  initialHeight: number;
+  initialHeight: number | string;
 }) => {
   const [touchY, setTouchY] = useState(0);
   const [modalHeight, setModalHeight] = useState(initialHeight);
@@ -35,7 +35,7 @@ const BottomModal = ({
 
   useEffect(() => {
     if (contentRef.current) {
-      contentRef.current.style.height = `${modalHeight}%`;
+      contentRef.current.style.height = typeof modalHeight === "string" ? modalHeight : `${modalHeight}%`;
     }
   }, [modalHeight]);
 

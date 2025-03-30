@@ -73,15 +73,7 @@ const TripEdit = () => {
     genderType: initGenderType,
   } = tripDetailStore();
 
-  const {
-    data,
-    isLoading,
-    error,
-    fetchNextPage,
-    refetch,
-    isFetching,
-    hasNextPage,
-  } = useInfiniteQuery({
+  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
       return getPlans(Number(travelNumber), pageParam) as any;
@@ -143,9 +135,7 @@ const TripEdit = () => {
       addDetails(initDetails || "");
       addTags(initTags || []);
       addLocationName(initLocationName || { locationName: "" });
-      addInitGeometry(
-        initInitGeometry || { lat: 37.57037778, lng: 126.9816417 }
-      );
+      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
       addDate({ startDate: initStartDate || "", endDate: initEndDate || "" });
       addGenderType(initGenderType || "");
       addMaxPerson(initMaxPerson || 0);
@@ -182,16 +172,12 @@ const TripEdit = () => {
         dateRange.push(start.add(i, "day").format("YYYY-MM-DD"));
       }
 
-      if (
-        plans.length !== dayDiff ||
-        !dateRange.every((date) => plans.some((p) => p.date === date))
-      ) {
+      if (plans.length !== dayDiff || !dateRange.every((date) => plans.some((p) => p.date === date))) {
         const newPlans = dateRange.map((currentDate, index) => {
           // 1. 현재 plans에서 먼저 조회
           // 2. 없으면 originalPlans에서 조회
           const existingPlan =
-            plans.find((p) => p.date === currentDate) ||
-            originalPlans?.find((p) => p.date === currentDate);
+            plans.find((p) => p.date === currentDate) || originalPlans?.find((p) => p.date === currentDate);
 
           return existingPlan
             ? {
@@ -209,13 +195,7 @@ const TripEdit = () => {
         addPlans(newPlans);
       }
     }
-  }, [
-    date?.startDate,
-    date?.endDate,
-    dataInitialized,
-    plans.length,
-    originalPlans,
-  ]);
+  }, [date?.startDate, date?.endDate, dataInitialized, plans.length, originalPlans]);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -268,10 +248,7 @@ const TripEdit = () => {
       genderType: genderType!,
       startDate: date?.startDate || "",
       endDate: date?.endDate || "",
-      periodType: getDateRangeCategory(
-        date?.startDate ?? "",
-        date?.endDate ?? ""
-      ),
+      periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
       planChanges: trackPlanChanges(originalPlans, plans),
@@ -304,11 +281,7 @@ const TripEdit = () => {
     <>
       <CreateTripDetailWrapper>
         <CreateTripDetailContainer ref={containerRef}>
-          <TopModal
-            containerRef={containerRef}
-            setIsMapFull={setIsMapFull}
-            onHeightChange={setTopModalHeight}
-          >
+          <TopModal containerRef={containerRef} setIsMapFull={setIsMapFull} onHeightChange={setTopModalHeight}>
             <ModalContainer>
               <RegionWrapper
                 locationName={locationName}
@@ -347,10 +320,7 @@ const TripEdit = () => {
               />
             </ModalContainer>
           </TopModal>
-          <BottomContainer
-            isMapFull={isMapFull}
-            topModalHeight={topModalHeight}
-          >
+          <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
             <MapContainer
               index={openItemIndex}
               plans={plans}
@@ -395,7 +365,7 @@ const TripEdit = () => {
           />
         </ButtonContainer>
       </CreateTripDetailWrapper>
-      <TripToast isShow={isToastShow} setIsShow={setIsToastShow} />
+      <TripToast setIsMapFull={setIsMapFull} isShow={isToastShow} setIsShow={setIsToastShow} />
     </>
   );
 };
@@ -448,8 +418,7 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) =>
-    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;

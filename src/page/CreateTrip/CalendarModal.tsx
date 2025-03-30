@@ -97,17 +97,26 @@ const CalendarModal = ({ showModal, setShowModal, addDate }: CalendarModalProps)
 
       setStartTime(clickedDayjs.format("YYYY-MM-DD HH:mm:ss"));
     } else {
+      const startDayjs = dayjs(startTime);
       if (isMoreThan90DaysApart(startTime, clickedDayjs)) {
         setIsToastShow(true);
         return;
       }
-      newPost = {
-        calendarId: Math.random().toString(36).substr(2, 9),
-        startTime: startTime,
-        endTime: clickedDayjs.format("YYYY-MM-DD HH:mm:ss"),
-
-        content: ` ${clickedDayjs.format("YYYY-MM-DD")}`,
-      };
+      if (clickedDayjs.isBefore(startDayjs)) {
+        newPost = {
+          calendarId: Math.random().toString(36).substr(2, 9),
+          startTime: clickedDayjs.format("YYYY-MM-DD HH:mm:ss"),
+          endTime: startDayjs.format("YYYY-MM-DD HH:mm:ss"),
+          content: `${clickedDayjs.format("YYYY-MM-DD")} ~ ${startDayjs.format("YYYY-MM-DD")}`,
+        };
+      } else {
+        newPost = {
+          calendarId: Math.random().toString(36).substr(2, 9),
+          startTime: startTime,
+          endTime: clickedDayjs.format("YYYY-MM-DD HH:mm:ss"),
+          content: `${startDayjs.format("YYYY-MM-DD")} ~ ${clickedDayjs.format("YYYY-MM-DD")}`,
+        };
+      }
       setStartTime(undefined);
     }
     const updatedPosts = [newPost];
