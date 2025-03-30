@@ -163,6 +163,7 @@ export default function TripDetail() {
   );
   const bookmarkClickHandler = () => {
     if (isGuestUser()) {
+      setShowLoginModal(true);
       return;
     }
     if (bookmarked) {

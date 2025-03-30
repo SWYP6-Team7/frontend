@@ -41,7 +41,7 @@ const useTripDetail = (travelNumber: number) => {
       return updateTripDetail(travelNumber, data, accessToken);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: ["tripDetail", travelNumber],
       });
     },

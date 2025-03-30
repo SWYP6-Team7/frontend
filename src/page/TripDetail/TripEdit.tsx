@@ -71,6 +71,7 @@ const TripEdit = () => {
     initGeometry: initInitGeometry,
     maxPerson: initMaxPerson,
     genderType: initGenderType,
+    resetTripDetail,
   } = tripDetailStore();
 
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
@@ -127,9 +128,8 @@ const TripEdit = () => {
     }
   }, [hasNextPage, isFetching, fetchNextPage]);
 
-  // Initial trip details setup - only run once for static data
   useEffect(() => {
-    // Only initialize if not already done
+    console.log(title, "title");
     if (title === "" && initTitle) {
       addTitle(initTitle);
       addDetails(initDetails || "");
@@ -151,14 +151,6 @@ const TripEdit = () => {
     initGenderType,
     initMaxPerson,
     title,
-    addTitle,
-    addDetails,
-    addTags,
-    addLocationName,
-    addInitGeometry,
-    addDate,
-    addGenderType,
-    addMaxPerson,
   ]);
 
   useEffect(() => {
@@ -257,7 +249,7 @@ const TripEdit = () => {
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetEditTripDetail();
-
+        resetTripDetail();
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
         } else {
