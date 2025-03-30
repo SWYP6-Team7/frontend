@@ -115,7 +115,7 @@ const ModalContainer = styled.div<{ isModalOpen: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1001;
+  z-index: 1005;
   display: flex;
   align-items: center;
   justify-content: center;
