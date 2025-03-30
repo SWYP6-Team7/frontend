@@ -92,7 +92,13 @@ const TripRegion = ({
     <>
       <Title>어디로 떠나볼까요?</Title>
       <Spacing size={8} />
-      <InputField value={keyword} handleRemoveValue={handleRemoveValue} onChange={changeKeyword} icon={<PlaceIcon />} />
+      <InputField
+        value={keyword}
+        placeholder="여행지를 입력하세요."
+        handleRemoveValue={handleRemoveValue}
+        onChange={changeKeyword}
+        icon={<PlaceIcon />}
+      />
       {keyword.length > 0 && (
         <>
           {showRelationList && (
