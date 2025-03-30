@@ -130,7 +130,14 @@ const TripEdit = () => {
 
   useEffect(() => {
     console.log(title, "title");
-    if (title === "" && initTitle) {
+    if (
+      title === "" &&
+      initTitle &&
+      locationName.locationName === "" &&
+      initLocationName.locationName &&
+      details === "" &&
+      initDetails
+    ) {
       addTitle(initTitle);
       addDetails(initDetails || "");
       addTags(initTags || []);
