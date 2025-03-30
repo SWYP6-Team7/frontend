@@ -126,7 +126,7 @@ const AgeList = styled.div`
   flex-wrap: wrap;
   display: flex;
   gap: 16px;
-  width: 70%;
+  width: 77%;
 `;
 
 const RegisterAgeWrapper = styled.div`
