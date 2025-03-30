@@ -51,7 +51,14 @@ const Select = ({ list, id, width = "fit-content", value, initOpen = false, setV
   }, [active, list]);
   return (
     <AllContainer id={id}>
-      {active && <Background />}
+      {active && (
+        <Background
+          onClick={(e) => {
+            e.preventDefault();
+            setActive(false);
+          }}
+        />
+      )}
       <Container width={width}>
         <OptionList active={active}>
           <Label value={value} onClick={() => setActive(!active)}>
