@@ -11,6 +11,7 @@ interface SelectProps {
   list: string[];
   setValue: (element: string) => void;
   value?: string | number;
+  initOpen?: boolean;
   noneValue?: string;
   width?: "fit-content" | "100%";
 }
@@ -18,15 +19,8 @@ interface SelectProps {
 // none value는 일종의 label값 같은 느낌
 // value가 undefined인 초깃값일 때 보여주기 위한 값
 
-const Select = ({
-  list,
-  id,
-  width = "fit-content",
-  value,
-  setValue,
-  noneValue,
-}: SelectProps) => {
-  const [active, setActive] = useState(false);
+const Select = ({ list, id, width = "fit-content", value, initOpen = false, setValue, noneValue }: SelectProps) => {
+  const [active, setActive] = useState(initOpen);
   const [animatedItems, setAnimatedItems] = useState<boolean[]>([]);
   const changeValue = (element: string) => {
     setValue(element);
@@ -61,11 +55,7 @@ const Select = ({
       <Container width={width}>
         <OptionList active={active}>
           <Label value={value} onClick={() => setActive(!active)}>
-            {value ? (
-              value
-            ) : (
-              <div style={{ color: palette.비강조 }}>{noneValue}</div>
-            )}
+            {value ? value : <div style={{ color: palette.비강조 }}>{noneValue}</div>}
             <div style={{ transform: active ? "rotate(180deg)" : "rotate(0)" }}>
               <SelectArrow />
             </div>
