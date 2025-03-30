@@ -44,28 +44,26 @@ export const REPORT_LIST = [
     item: [
       {
         id: 9,
-        title:
-          "다른 사람이 만든 콘텐츠(사진, 글, 영상 등)를 허락 없이 사용했어요.",
+        title: "다른 사람이 만든 콘텐츠(사진, 글, 영상 등)를 허락 없이 사용했어요.",
       },
       { id: 10, title: "법적으로 금지된 상품이나 서비스를 거래하려고 해요." },
-      { id: 11, title: "선불금 요구, 환전, 위험한 거래를 유도해요." },
     ],
   },
   {
     title: "개인정보 관련 및 안전 위협",
     query: "privacy",
     item: [
-      { id: 12, title: "계좌번호, 신분증, 여권 등 개인정보가 노출되었어요." },
-      { id: 13, title: "개인정보를 과도하게 요구해요." },
+      { id: 11, title: "계좌번호, 신분증, 여권 등 개인정보가 노출되었어요." },
+
       {
-        id: 14,
+        id: 12,
         title: "성희롱, 협박, 스토킹 등 불쾌하거나 위협적인 경험을 했어요.",
       },
     ],
   },
   {
     title: "기타",
-    id: 15,
+    id: 13,
     query: "etc",
   },
 ];
@@ -76,20 +74,16 @@ const Report = () => {
   const { setReportSuccess } = reportStore();
   const router = useRouter();
   const pathname = usePathname();
-  const handleClick =
-    (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
-      console.log(idx);
-      router.push(`${pathname}/${REPORT_LIST[idx].query}`);
-    };
+  const handleClick = (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log(idx);
+    router.push(`${pathname}/${REPORT_LIST[idx].query}`);
+  };
 
   const submitReport = () => {
     setReportSuccess(true);
     router.back();
   };
-  console.log(
-    checkItem,
-    checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false
-  );
+  console.log(checkItem, checkItem === -1 || checkItem === 5 ? (text === "" ? true : false) : false);
   return (
     <Container>
       <Title>신고 유형을 선택해 주세요.</Title>
@@ -102,20 +96,8 @@ const Report = () => {
         <Description onClick={handleClick(idx)} isFirst={idx === 0}>
           <Text>{item.title}</Text>
           <ArrowIconContainer>
-            <svg
-              width="10"
-              height="18"
-              viewBox="0 0 10 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1 17L9 9L1 1"
-                stroke="#ABABAB"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 17L9 9L1 1" stroke="#ABABAB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </ArrowIconContainer>
         </Description>
