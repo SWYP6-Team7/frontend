@@ -88,6 +88,7 @@ const TopModal = ({
 
   const handleTouchMove = useCallback(
     (event) => {
+      event.preventDefault();
       if (touchStartY.current === null) return;
 
       const deltaY = touchStartY.current - event.touches[0].clientY;
