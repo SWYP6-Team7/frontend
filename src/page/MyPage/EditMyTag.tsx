@@ -9,6 +9,7 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import WarningToast from "@/components/designSystem/toastMessage/WarningToast";
 const TAG_LIST = [
   {
     title: "태그 설정",
@@ -41,6 +42,8 @@ export default function EditMyTag() {
   console.log(agegroup, preferredTags, "나이, 태그");
   const { updateMyPageMutation, isUpdatedSuccess } = useMyPage();
   const [taggedArray, setTaggedArray] = useState<string[]>(preferredTags);
+  const [limitCountToastShow, setLimitCountToastShow] = useState(false);
+
   const [age, setAge] = useState(agegroup);
   const router = useRouter();
 
@@ -68,6 +71,7 @@ export default function EditMyTag() {
       //이미 5개.
 
       if (!isActive(tag)) {
+        setLimitCountToastShow(true);
         return;
       }
     }
@@ -87,6 +91,12 @@ export default function EditMyTag() {
 
   return (
     <Container>
+      <WarningToast
+        height={120}
+        isShow={limitCountToastShow}
+        setIsShow={setLimitCountToastShow}
+        text="최대 5개까지 설정할 수 있어요"
+      />
       <AgeStep>
         <Content>연령대를 선택해주세요</Content>
         <AgeList>
