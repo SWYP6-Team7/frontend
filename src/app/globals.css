@@ -35,6 +35,10 @@
   font-weight: 700; /* Semi-Bold */
 }
 
+html {
+  overscroll-behavior: none;
+}
+
 body {
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
