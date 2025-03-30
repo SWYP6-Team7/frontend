@@ -65,7 +65,7 @@ const useAuth = () => {
       });
       const loginPath = localStorage.getItem("loginPath");
       console.log("login", loginPath);
-      router.push(loginPath ? loginPath : "/");
+      router.push("/");
       localStorage.removeItem("loginPath");
     },
     onError: (error: any) => {
@@ -91,7 +91,7 @@ const useAuth = () => {
       });
       const loginPath = localStorage.getItem("loginPath");
       console.log("login", loginPath);
-      router.push(loginPath ? loginPath : "/");
+      router.push("/");
       localStorage.removeItem("loginPath");
     },
     onError: (error: any) => {
