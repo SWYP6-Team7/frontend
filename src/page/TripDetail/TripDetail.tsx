@@ -316,7 +316,7 @@ export default function TripDetail() {
           localStorage.setItem("loginPath", pathname);
           router.replace("/login");
         }}
-        modalMsg={"로그인 후 여행을 즐겨찾기 해보세요.”"}
+        modalMsg={"로그인 후 여행을 즐겨찾기 해보세요."}
         modalTitle="로그인 안내"
         modalButtonText="로그인"
         setModalOpen={setShowLoginModal}
