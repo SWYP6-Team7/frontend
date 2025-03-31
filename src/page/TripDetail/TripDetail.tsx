@@ -511,9 +511,7 @@ export default function TripDetail() {
                   ? nowEnrollmentCount > 0
                     ? palette.keycolor
                     : palette.비강조3
-                  : alreadyApplied
-                    ? palette.비강조3
-                    : palette.keycolor,
+                  : palette.keycolor,
             color: isClosed
               ? palette.비강조4
               : !verifyGenderType(genderType, gender)
@@ -522,9 +520,7 @@ export default function TripDetail() {
                   ? nowEnrollmentCount > 0
                     ? palette.비강조4
                     : palette.비강조
-                  : alreadyApplied
-                    ? palette.비강조
-                    : palette.비강조4,
+                  : palette.비강조4,
           }}
           text={
             hostUserCheck
