@@ -24,9 +24,6 @@ interface ApiResponse<T> {
 export const handleApiResponse = <T>(
   response: AxiosResponse<ApiResponse<T | null>>
 ): T | null => {
-  if (response.data.resultType !== "SUCCESS") {
-    throw new Error("API call failed: Unexpected resultType");
-  }
   if (response.status === 401) {
     axiosInstance.post("/api/token/refresh", {}).then(() => {
       axiosInstance.request(response.config).then((retryResponse) => {
@@ -34,6 +31,10 @@ export const handleApiResponse = <T>(
       });
     });
   }
+  if (response.data.resultType !== "SUCCESS") {
+    throw new Error("API call failed: Unexpected resultType");
+  }
+
   if (response.data?.error != null) {
     throw new Error(response.data.error?.reason || "Unknown error occurred");
   }
