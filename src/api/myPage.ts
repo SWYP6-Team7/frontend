@@ -7,6 +7,15 @@ export const getMyPage = async (accessToken: string) => {
     const response = await axiosInstance.get("/api/profile/me", {
       headers: getJWTHeader(accessToken),
     });
+    console.log("me response", response);
+    if (response.status === 401) {
+      axiosInstance.post("/api/token/refresh", {}).then(() => {
+        console.log(123);
+        axiosInstance.request(response.config).then((retryResponse) => {
+          return handleApiResponse(retryResponse);
+        });
+      });
+    }
     return handleApiResponse(response);
   } catch (err: any) {
     throw new RequestError(err);
@@ -15,7 +24,8 @@ export const getMyPage = async (accessToken: string) => {
 // 프로필 이미지
 export const intialPostMyProfileImage = async (accessToken: string) => {
   try {
-    if (!accessToken) throw new Error("프로필 초기 등록 실패. 로그인을 해주세요.");
+    if (!accessToken)
+      throw new Error("프로필 초기 등록 실패. 로그인을 해주세요.");
     const response = await axiosInstance.post("/api/profile/image", null, {
       headers: getJWTHeader(accessToken),
     });
@@ -26,15 +36,23 @@ export const intialPostMyProfileImage = async (accessToken: string) => {
   }
 };
 // 임시저장 Post요청
-export const postTempMyProfileImage = async (accessToken: string, formData: FormData) => {
+export const postTempMyProfileImage = async (
+  accessToken: string,
+  formData: FormData
+) => {
   try {
-    if (!accessToken) throw new Error("임시 저장 등록 실패. 로그인을 해주세요.");
-    const response = await axiosInstance.post("/api/profile/image/temp", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    if (!accessToken)
+      throw new Error("임시 저장 등록 실패. 로그인을 해주세요.");
+    const response = await axiosInstance.post(
+      "/api/profile/image/temp",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     return handleApiResponse(response);
   } catch (err: any) {
     console.log(err, "임시 등록 오류");
@@ -54,7 +72,10 @@ export const getMyProfileImage = async (accessToken: string) => {
     throw new RequestError(err);
   }
 };
-export const putMyProfileImage = async (accessToken: string, formData: FormData) => {
+export const putMyProfileImage = async (
+  accessToken: string,
+  formData: FormData
+) => {
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
     const response = await axiosInstance.put("/api/profile/image", formData, {
@@ -69,7 +90,10 @@ export const putMyProfileImage = async (accessToken: string, formData: FormData)
   }
 };
 // 프로필 이미지 정식 저장 요청.
-export const putRealMyProfileImage = async (accessToken: string, imageUrl: string) => {
+export const putRealMyProfileImage = async (
+  accessToken: string,
+  imageUrl: string
+) => {
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
     const response = await axiosInstance.put(
@@ -97,7 +121,10 @@ export const deleteMyProfileImage = async (accessToken: string) => {
 };
 
 // 임시 저장 프로필 삭제
-export const deleteTempProfileImage = async (accessToken: string, deletedTempUrl: string) => {
+export const deleteTempProfileImage = async (
+  accessToken: string,
+  deletedTempUrl: string
+) => {
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
     const response = await axiosInstance.delete("/api/profile/image/temp", {
@@ -110,7 +137,10 @@ export const deleteTempProfileImage = async (accessToken: string, deletedTempUrl
   }
 };
 
-export const putMyProfileDefaultImage = async (accessToken: string, defaultNumber: number) => {
+export const putMyProfileDefaultImage = async (
+  accessToken: string,
+  defaultNumber: number
+) => {
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
     const response = await axiosInstance.put(
@@ -169,7 +199,10 @@ export async function deleteMyAccount(accessToken: string) {
   }
 }
 // 비번 확인 조회
-export async function postVerifyPassword(accessToken: string, password: string) {
+export async function postVerifyPassword(
+  accessToken: string,
+  password: string
+) {
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
     const response = await axiosInstance.post(
@@ -187,7 +220,11 @@ export async function postVerifyPassword(accessToken: string, password: string) 
   }
 }
 
-export async function putPassword(accessToken: string, newPassword: string, newPasswordConfirm: string) {
+export async function putPassword(
+  accessToken: string,
+  newPassword: string,
+  newPasswordConfirm: string
+) {
   try {
     if (!accessToken) throw new Error("로그인을 해주세요.");
     const response = await axiosInstance.put(
