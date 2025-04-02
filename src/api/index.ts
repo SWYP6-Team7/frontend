@@ -21,16 +21,18 @@ interface ApiResponse<T> {
   success: T | null;
 }
 
-export const handleApiResponse = async <T>(
+export const handleApiResponse = <T>(
   response: AxiosResponse<ApiResponse<T | null>>
-): Promise<T | null> => {
+): T | null => {
   if (response.data.resultType !== "SUCCESS") {
     throw new Error("API call failed: Unexpected resultType");
   }
   if (response.status === 401) {
-    await axiosInstance.post("/api/token/refresh", {});
-    const retryResponse = await axiosInstance.request(response.config);
-    return handleApiResponse(retryResponse);
+    axiosInstance.post("/api/token/refresh", {}).then(() => {
+      axiosInstance.request(response.config).then((retryResponse) => {
+        return handleApiResponse(retryResponse);
+      });
+    });
   }
   if (response.data?.error != null) {
     throw new Error(response.data.error?.reason || "Unknown error occurred");
