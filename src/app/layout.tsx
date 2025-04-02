@@ -1,16 +1,14 @@
 import Layout from "@/components/Layout";
 import Providers from "./providers";
 import "./globals.css";
+import { MSWComponent } from "@/context/MSWComponent";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body>
         <Providers>
+          <MSWComponent />
           <Layout>{children}</Layout>
           <div id="checking-modal" />
           <div id="trip-toast" />
