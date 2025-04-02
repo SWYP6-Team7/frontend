@@ -15,6 +15,7 @@ import { useBackPathStore } from "@/store/client/backPathStore";
 import { isGuestUser } from "@/utils/user";
 
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const Home = () => {
   const { name } = myPageStore();
