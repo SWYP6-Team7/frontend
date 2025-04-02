@@ -24,8 +24,10 @@ interface ApiResponse<T> {
 export const handleApiResponse = <T>(
   response: AxiosResponse<ApiResponse<T | null>>
 ): T | null => {
+  console.log("response", response);
   if (response.status === 401) {
     axiosInstance.post("/api/token/refresh", {}).then(() => {
+      console.log(123);
       axiosInstance.request(response.config).then((retryResponse) => {
         return handleApiResponse(retryResponse);
       });
