@@ -20,6 +20,35 @@ interface ApiResponse<T> {
   } | null;
   success: T | null;
 }
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const refreshResponse = await axiosInstance.post(
+          "/api/token/refresh",
+          {}
+        );
+        const newAccessToken = refreshResponse.data.accessToken;
+
+        axiosInstance.defaults.headers.common["Authorization"] =
+          `Bearer ${newAccessToken}`;
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
+        throw refreshError;
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export const handleApiResponse = <T>(
   response: AxiosResponse<ApiResponse<T | null>>

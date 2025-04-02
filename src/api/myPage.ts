@@ -7,15 +7,7 @@ export const getMyPage = async (accessToken: string) => {
     const response = await axiosInstance.get("/api/profile/me", {
       headers: getJWTHeader(accessToken),
     });
-    console.log("me response", response);
-    if (response.status === 401) {
-      axiosInstance.post("/api/token/refresh", {}).then(() => {
-        console.log(123);
-        axiosInstance.request(response.config).then((retryResponse) => {
-          return handleApiResponse(retryResponse);
-        });
-      });
-    }
+
     return handleApiResponse(response);
   } catch (err: any) {
     throw new RequestError(err);
