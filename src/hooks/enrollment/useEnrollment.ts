@@ -97,7 +97,11 @@ const useEnrollment = (travelNumber: number) => {
 
   const apply = (data: IPostEnrollment) => {
     return applyMutation.mutateAsync(data, {
-      onSuccess: () => {},
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["enrollment", travelNumber],
+        });
+      },
     });
   };
 
@@ -110,6 +114,9 @@ const useEnrollment = (travelNumber: number) => {
       onSuccess: () => {
         queryClient.refetchQueries({
           queryKey: ["tripDetail", travelNumber],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["enrollment", travelNumber],
         });
       },
     });
