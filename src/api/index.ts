@@ -29,14 +29,10 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshResponse = await axiosInstance.post(
-          "/api/token/refresh",
-          {}
-        );
-        const newAccessToken = refreshResponse.data.accessToken;
+        const refreshResponse = await axiosInstance.post("/api/token/refresh", {});
+        const newAccessToken = refreshResponse.data.success.accessToken;
 
-        axiosInstance.defaults.headers.common["Authorization"] =
-          `Bearer ${newAccessToken}`;
+        axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
         return axiosInstance(originalRequest);
@@ -50,9 +46,7 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export const handleApiResponse = <T>(
-  response: AxiosResponse<ApiResponse<T | null>>
-): T | null => {
+export const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T | null>>): T | null => {
   console.log("response", response);
 
   if (response.data.resultType !== "SUCCESS") {
