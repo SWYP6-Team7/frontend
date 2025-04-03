@@ -26,7 +26,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     console.log("error console", error);
-    if (error.response?.status === 401 && error.response?.status === 403) {
+    if (error.response?.status === 401 || error.response?.status === 403) {
       try {
         const refreshResponse = await axiosInstance.post("/api/token/refresh", {});
         const newAccessToken = refreshResponse.data.success.accessToken;
