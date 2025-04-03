@@ -1,3 +1,4 @@
+import { getJWTHeader } from "@/utils/user";
 import axios, { AxiosResponse } from "axios";
 
 export const axiosInstance = axios.create({
@@ -25,16 +26,15 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && error.response?.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         const refreshResponse = await axiosInstance.post("/api/token/refresh", {});
         const newAccessToken = refreshResponse.data.success.accessToken;
+        console.log("new AccessToken", newAccessToken, refreshResponse);
 
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-
-        return axiosInstance(originalRequest);
+        return axiosInstance({ ...originalRequest, headers: getJWTHeader(newAccessToken) });
       } catch (refreshError) {
         console.error("Token refresh failed:", refreshError);
         throw refreshError;
