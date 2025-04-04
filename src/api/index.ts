@@ -2,7 +2,7 @@ import { getJWTHeader } from "@/utils/user";
 import axios, { AxiosResponse } from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_LIVE_BASE_URL || process.env.API_LIVE_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || process.env.API_BASE_URL,
   timeout: 5000,
 
   headers: {
@@ -28,11 +28,17 @@ axiosInstance.interceptors.response.use(
     console.log("error console", error);
     if (error.response?.status === 401 || error.response?.status === 403) {
       try {
-        const refreshResponse = await axiosInstance.post("/api/token/refresh", {});
+        const refreshResponse = await axiosInstance.post(
+          "/api/token/refresh",
+          {}
+        );
         const newAccessToken = refreshResponse.data.success.accessToken;
         console.log("new AccessToken", newAccessToken, refreshResponse);
 
-        return axiosInstance({ ...originalRequest, headers: getJWTHeader(newAccessToken) });
+        return axiosInstance({
+          ...originalRequest,
+          headers: getJWTHeader(newAccessToken),
+        });
       } catch (refreshError) {
         console.error("Token refresh failed:", refreshError);
         throw refreshError;
@@ -43,7 +49,9 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T | null>>): T | null => {
+export const handleApiResponse = <T>(
+  response: AxiosResponse<ApiResponse<T | null>>
+): T | null => {
   console.log("response", response);
 
   if (response.data.resultType !== "SUCCESS") {
