@@ -24,12 +24,18 @@ interface myPageStoreState {
   addIsTagUpdated: (isTagUpdated: boolean) => void;
   isPasswordUpdated: boolean;
   addIsPasswordUpdated: (isPasswordUpdated: boolean) => void;
+  userSocialTF: boolean;
+  addUserSocialTF: (userSocialTF: boolean) => void;
 }
 
 export const myPageStore = create<myPageStoreState>((set) => ({
   name: "",
   addName: (name) => {
     set((state) => ({ name: name }));
+  },
+  userSocialTF: false,
+  addUserSocialTF: (userSocialTF) => {
+    set((state) => ({ userSocialTF: userSocialTF }));
   },
   profileUrl: "",
   addProfileUrl: (profileUrl) => {

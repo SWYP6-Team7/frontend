@@ -4,19 +4,24 @@ import { userStore } from "@/store/client/userStore";
 import { ReactNode } from "react";
 import { useBackPathStore } from "@/store/client/backPathStore";
 import { useTransitionRouter } from "next-view-transitions";
+import { tripDetailStore } from "@/store/client/tripDetailStore";
 
 const ROUTES = {
   REGISTER: "/register",
   VERIFYCODE: "/verifyEmail",
   CREATE_TRIP: {
-    INDEX: "/createTrip",
-    PLACE: "/createTripPlace",
-    INTRODUCE: "/createTripIntroduce",
-    DETAIL: "/createTripDetail",
+    INDEX: "/create/trip",
+    REGION: "/create/trip/region",
+    DATE: "/create/trip/date",
+    INFO: "/create/trip/info",
+    TAG: "/create/trip/tag",
+    INTRODUCE: "/create/trip/introduce",
+    DETAIL: "/create/trip/detail",
   },
   SEARCH: {
     TRAVEL: "/search/travel",
     COMMUNITY: "/search/community",
+    PLACE: "/search/place",
   },
   TRIP: {
     DETAIL: "/trip/detail",
@@ -57,6 +62,9 @@ const ROUTES = {
   REQUESTED_TRIP: "/requestedTrip",
   MY_COMMUNITY: "/myCommunity",
   HOME: "/",
+  REPORT: "/report",
+  BLOCK: "/block",
+  EXPLANATION: "/explanation",
 };
 
 export const useHeaderNavigation = () => {
@@ -75,7 +83,7 @@ export const useHeaderNavigation = () => {
   } = useBackPathStore();
   const pathname = usePathname() || "/";
   const { resetAge, resetForm, resetGender, resetName, socialLogin, setSocialLogin } = userStore();
-
+  const { resetTripDetail } = tripDetailStore();
   const checkRoute = {
     startsWith: (route: string) => pathname?.startsWith(route),
     exact: (route: string) => pathname === route,
@@ -85,12 +93,14 @@ export const useHeaderNavigation = () => {
     const titleMap: { [key: string]: ReactNode } = {
       [ROUTES.MY.TRIP]: "내 여행",
       [ROUTES.MY_COMMUNITY]: "작성한 글",
+      [ROUTES.REPORT]: "신고하기",
       [ROUTES.MY.PAGE]: "마이 페이지",
       [ROUTES.REGISTER]: "회원가입",
       [ROUTES.VERIFYCODE]: "회원가입",
       [ROUTES.SEARCH.TRAVEL]: "여행검색",
       [ROUTES.SEARCH.COMMUNITY]: "검색",
       [ROUTES.CREATE_TRIP.INDEX]: "여행 만들기",
+      [ROUTES.EXPLANATION]: "신고 소명",
       [ROUTES.TRIP.APPLY]: "참가 신청",
       [ROUTES.TRIP.ENROLLMENT_LIST]: "참가 신청 목록",
       [ROUTES.TRIP.COMMENT]: "멤버 댓글",
@@ -201,16 +211,34 @@ export const useHeaderNavigation = () => {
 
       // 여행 만들기
       {
-        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.PLACE),
+        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.REGION),
         action: () => {
           setCreateTripPlace("/");
           router.push(createTripPlace);
         },
       },
       {
+        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.DATE),
+        action: () => {
+          router.push(ROUTES.CREATE_TRIP.REGION);
+        },
+      },
+      {
+        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.INFO),
+        action: () => {
+          router.push(ROUTES.CREATE_TRIP.DATE);
+        },
+      },
+      {
+        condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.TAG),
+        action: () => {
+          router.push(ROUTES.CREATE_TRIP.INFO);
+        },
+      },
+      {
         condition: () => pathname.startsWith(ROUTES.CREATE_TRIP.INTRODUCE),
         action: () => {
-          router.push(ROUTES.CREATE_TRIP.PLACE);
+          router.push(ROUTES.CREATE_TRIP.TAG);
         },
       },
       {
@@ -224,6 +252,7 @@ export const useHeaderNavigation = () => {
       {
         condition: () => pathname.startsWith(ROUTES.TRIP.DETAIL),
         action: () => {
+          resetTripDetail();
           router.push(travelDetail);
           setTravelDetail("/");
         },
@@ -320,6 +349,11 @@ export const useHeaderNavigation = () => {
         condition: () => pathname.startsWith(ROUTES.COMMUNITY.DETAIL),
         action: () => router.push(ROUTES.COMMUNITY.INDEX),
       },
+      // 신고 소명
+      {
+        condition: () => pathname.startsWith(ROUTES.EXPLANATION),
+        action: () => router.push(ROUTES.NOTIFICATION),
+      },
 
       // 커뮤니티 수정
       {
@@ -337,7 +371,9 @@ export const useHeaderNavigation = () => {
   const handleBack = () => {
     const rules = createNavigationRules(pathname);
     const matchedRule = rules.find((rule) => rule.condition());
-    document.documentElement.style.viewTransitionName = "back";
+    document.documentElement.style.viewTransitionName = checkRoute.startsWith(ROUTES.CREATE_TRIP.INDEX)
+      ? "instant"
+      : "back";
 
     if (matchedRule) {
       matchedRule.action();
@@ -349,7 +385,7 @@ export const useHeaderNavigation = () => {
 
   const shouldShowAlarmIcon = () => checkRoute.startsWith(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.MY.PAGE);
 
-  const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE;
+  const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE || pathname === ROUTES.CREATE_TRIP.TAG;
 
   return {
     ROUTES,

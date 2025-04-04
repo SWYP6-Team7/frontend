@@ -45,10 +45,8 @@ export default function ApplyTripIconBtns({ bookmarked, travelNumber }: ApplyTri
 
   useEffect(() => {
     if (bookmarked && bookmarkCancelClicked) {
-      deleteBookmarkMutation().then((res) => {
-        if (res?.data.status === 200) {
-          setBookmarkCancelToast(true);
-        }
+      deleteBookmarkMutation().then((res: any) => {
+        setBookmarkCancelToast(true);
       });
     }
   }, [bookmarked, bookmarkCancelClicked]);
@@ -63,9 +61,7 @@ export default function ApplyTripIconBtns({ bookmarked, travelNumber }: ApplyTri
     if (checkingModalClicked) {
       // 삭제 요청.
       deleteMyApplyTripsMutation(travelNumber).then((res) => {
-        if (res?.data.status === 200) {
-          setIsToastShow(true);
-        }
+        setIsToastShow(true);
       });
     }
   }, [isDeleteBtnClicked, isEditBtnClicked, checkingModalClicked]);

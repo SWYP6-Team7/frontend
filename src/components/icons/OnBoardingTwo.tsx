@@ -1,5 +1,5 @@
-'use client'
-import React from 'react'
+"use client";
+import React from "react";
 
 export default function OnBoardingTwo() {
   return (
@@ -8,23 +8,21 @@ export default function OnBoardingTwo() {
       height="248"
       viewBox="0 0 250 248"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <mask
         id="mask0_2391_14031"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="0"
         y="0"
         width="250"
-        height="248">
-        <rect
-          width="250"
-          height="248"
-          fill="url(#paint0_linear_2391_14031)"
-        />
+        height="248"
+      >
+        <rect width="250" height="248" fill="url(#paint0_linear_2391_14031)" />
       </mask>
       <g mask="url(#mask0_2391_14031)">
-        <g clip-path="url(#clip0_2391_14031)">
+        <g clipPath="url(#clip0_2391_14031)">
           <path
             d="M197.084 4.84412H52.9157C36.4171 4.84412 23.0424 17.8567 23.0424 33.9085V354.092C23.0424 370.143 36.4171 383.156 52.9157 383.156H197.084C213.583 383.156 226.958 370.143 226.958 354.092V33.9085C226.958 17.8567 213.583 4.84412 197.084 4.84412Z"
             fill="#F5F5F5"
@@ -105,12 +103,13 @@ export default function OnBoardingTwo() {
         />
         <mask
           id="mask1_2391_14031"
-          style={{ maskType: 'luminance' }}
+          style={{ maskType: "luminance" }}
           maskUnits="userSpaceOnUse"
           x="117"
           y="92"
           width="124"
-          height="104">
+          height="104"
+        >
           <path
             d="M126.623 129.343C123.868 126.965 121.077 124.54 119.189 121.428C117.3 118.317 116.447 114.366 117.848 111.014C119.582 106.861 124.416 104.639 128.916 104.794C137.108 105.071 144.75 111.326 150.185 116.98C155.114 122.109 159.079 127.567 162.936 133.519C161.638 130.541 160.327 127.477 160.106 124.239C159.885 121.002 160.967 117.467 163.63 115.597C165.808 114.063 168.713 113.873 171.305 114.495C173.734 115.083 175.875 116.355 178.033 117.525C175.61 114.915 173.907 111.5 174.595 108.076C175.727 102.427 183.399 100.945 188.234 102.289C190.124 102.82 191.859 103.68 193.686 104.381C192.567 102.823 191.906 100.548 191.729 98.8038C191.477 96.3095 193.37 93.9621 195.701 93.0295C202.894 90.1592 211.11 96.3166 216.52 100.319C231.062 111.059 238.988 127.337 240.244 145.162C241.38 161.245 231.175 177.106 217.888 186.237C208.119 192.953 196.05 195.783 184.19 195.79C164.448 195.801 144.607 187.969 131.047 173.548C129.493 171.893 128.553 169.701 128.663 167.435C128.954 161.487 135.317 160.207 140.364 160.586C147.593 161.127 153.406 165.089 159.892 167.216C161.815 167.845 163.622 165.947 162.931 164.051C162.531 162.959 161.957 161.916 161.382 161.004C157.496 154.831 151.216 150.407 145.8 145.67C139.482 140.148 132.988 134.829 126.632 129.348L126.623 129.343Z"
             fill="white"
@@ -130,13 +129,10 @@ export default function OnBoardingTwo() {
           y1="194.5"
           x2="125"
           y2="248"
-          gradientUnits="userSpaceOnUse">
+          gradientUnits="userSpaceOnUse"
+        >
           <stop />
-          <stop
-            offset="1"
-            stopColor="white"
-            stopOpacity="0"
-          />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2391_14031"
@@ -144,15 +140,10 @@ export default function OnBoardingTwo() {
           y1="60.4688"
           x2="173.519"
           y2="230.94"
-          gradientUnits="userSpaceOnUse">
-          <stop
-            stopColor="white"
-            stopOpacity="0"
-          />
-          <stop
-            offset="0.71"
-            stopColor="#EEBB89"
-          />
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="white" stopOpacity="0" />
+          <stop offset="0.71" stopColor="#EEBB89" />
         </linearGradient>
         <clipPath id="clip0_2391_14031">
           <rect
@@ -164,5 +155,5 @@ export default function OnBoardingTwo() {
         </clipPath>
       </defs>
     </svg>
-  )
+  );
 }

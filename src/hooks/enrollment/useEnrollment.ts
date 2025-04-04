@@ -20,14 +20,14 @@ const useEnrollment = (travelNumber: number) => {
   // 주최자 - 목록 조회
   const enrollmentList = useQuery({
     queryKey: ["enrollment", travelNumber],
-    queryFn: () => getEnrollments(travelNumber, accessToken),
+    queryFn: () => getEnrollments(travelNumber, accessToken) as any,
     enabled: !!travelNumber && !!accessToken && hostUserCheck,
   });
   // 주최자 - 가장 최근에 봤던 글.
 
   const enrollmentsLastViewed = useQuery({
     queryKey: ["enrollmentLastViewed", travelNumber],
-    queryFn: () => getLastViewed(travelNumber, accessToken),
+    queryFn: () => getLastViewed(travelNumber, accessToken) as any,
     enabled: !!travelNumber && !!accessToken,
   });
 
@@ -97,7 +97,11 @@ const useEnrollment = (travelNumber: number) => {
 
   const apply = (data: IPostEnrollment) => {
     return applyMutation.mutateAsync(data, {
-      onSuccess: () => {},
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["enrollment", travelNumber],
+        });
+      },
     });
   };
 
@@ -110,6 +114,9 @@ const useEnrollment = (travelNumber: number) => {
       onSuccess: () => {
         queryClient.refetchQueries({
           queryKey: ["tripDetail", travelNumber],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["enrollment", travelNumber],
         });
       },
     });

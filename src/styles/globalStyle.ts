@@ -1,42 +1,46 @@
-import { css } from '@emotion/react'
+import { css } from "@emotion/react";
 
 // css reset 및 추후 color palette나 글자 규격 정해지면 아래에 추가
 export default css`
-  @import url('https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap'); // 이모지 일관되게 보이도록 하는 오픈소스.
+  @import url("https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"); // 이모지 일관되게 보이도록 하는 오픈소스.
   @font-face {
-    font-family: 'Pretendard';
+    font-family: "Pretendard";
     src:
-      url('/fonts/Pretendard-Regular.woff2') format('woff2'),
-      url('/fonts/Pretendard-Regular.woff') format('woff');
+      url("/fonts/Pretendard-Regular.woff2") format("woff2"),
+      url("/fonts/Pretendard-Regular.woff") format("woff");
     font-weight: 400; /* Regular */
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'Pretendard';
+    font-family: "Pretendard";
     src:
-      url('/fonts/Pretendard-Regular.woff2') format('woff2'),
-      url('/fonts/Pretendard-Regular.woff') format('woff');
+      url("/fonts/Pretendard-Regular.woff2") format("woff2"),
+      url("/fonts/Pretendard-Regular.woff") format("woff");
     font-weight: 500; /* Regular */
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'Pretendard';
+    font-family: "Pretendard";
     src:
-      url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
-      url('/fonts/Pretendard-SemiBold.woff') format('woff');
+      url("/fonts/Pretendard-SemiBold.woff2") format("woff2"),
+      url("/fonts/Pretendard-SemiBold.woff") format("woff");
     font-weight: 600; /* Semi-Bold */
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'Pretendard';
+    font-family: "Pretendard";
     src:
-      url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
-      url('/fonts/Pretendard-SemiBold.woff') format('woff');
+      url("/fonts/Pretendard-SemiBold.woff2") format("woff2"),
+      url("/fonts/Pretendard-SemiBold.woff") format("woff");
     font-weight: 700; /* Semi-Bold */
+  }
+
+  html {
+    overscroll-behavior: none;
   }
 
   :root {
@@ -151,7 +155,7 @@ export default css`
   }
   body {
     line-height: 1;
-    font-family: 'Pretendard', sans-serif;
+    font-family: "Pretendard", sans-serif;
     letter-spacing: -0.4px !important;
   }
   ol,
@@ -166,7 +170,7 @@ export default css`
   blockquote:after,
   q:before,
   q:after {
-    content: '';
+    content: "";
     content: none;
   }
   table {
@@ -194,7 +198,7 @@ export default css`
   }
   * {
     box-sizing: border-box;
-    font-family: 'Noto Color Emoji', sans-serif; // 이모지가 모든 운영체제에서 일관되게 보이도록.
+    font-family: "Noto Color Emoji", sans-serif; // 이모지가 모든 운영체제에서 일관되게 보이도록.
   }
 
   @keyframes slide-from-right {
@@ -285,4 +289,4 @@ export default css`
       animation: none;
     }
   }
-`
+`;

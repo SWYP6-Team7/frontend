@@ -1,12 +1,12 @@
-'use client'
-import styled from '@emotion/styled'
-import React from 'react'
-import SearchFilterTag from '../designSystem/tag/SearchFilterTag'
-import { palette } from '@/styles/palette'
-import EmptyHeartIcon from '../icons/EmptyHeartIcon'
-import CommentIcon from '../icons/CommentIcon'
-import { ICommunityItem } from '@/model/community'
-import { daysAgoFormatted } from '@/utils/time'
+"use client";
+import styled from "@emotion/styled";
+import React from "react";
+import SearchFilterTag from "../designSystem/tag/SearchFilterTag";
+import { palette } from "@/styles/palette";
+import EmptyHeartIcon from "../icons/EmptyHeartIcon";
+import CommentIcon from "../icons/CommentIcon";
+import { ICommunityItem } from "@/model/community";
+import { daysAgoFormatted } from "@/utils/time";
 
 const CommunityItem = ({ data }: { data: ICommunityItem }) => {
   return (
@@ -20,14 +20,16 @@ const CommunityItem = ({ data }: { data: ICommunityItem }) => {
               addStyle={{
                 backgroundColor: palette.비강조4,
                 color: palette.비강조,
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '12px',
-                padding: '4px 10px',
-                fontWeight: '400'
+                border: "none",
+                borderRadius: "20px",
+                fontSize: "12px",
+                lineHeight: "14px",
+                padding: "4px 10px",
+                fontWeight: "400",
               }}
             />
           </div>
+
           <Title>{data.title}</Title>
           <Content>{data.content}</Content>
         </TopContent>
@@ -44,28 +46,21 @@ const CommunityItem = ({ data }: { data: ICommunityItem }) => {
         <InfoContainer>
           <IconContainer>
             <Icon>
-              <EmptyHeartIcon
-                width={17.42}
-                height={15.19}
-                stroke={palette.비강조2}
-              />
+              <EmptyHeartIcon width={17.42} height={15.19} stroke={palette.비강조2} />
             </Icon>
             <span>{data.likeCount}</span>
           </IconContainer>
           <IconContainer>
             <Icon>
-              <CommentIcon
-                size={15}
-                stroke={palette.비강조2}
-              />
+              <CommentIcon size={15} stroke={palette.비강조2} />
             </Icon>
             <span>{data.commentCount}</span>
           </IconContainer>
         </InfoContainer>
       </BottomContainer>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   display: flex;
@@ -75,13 +70,13 @@ const Container = styled.div`
   justify-content: center;
   border-bottom: 1px solid ${palette.비강조4};
   padding: 11px 0 16px 0;
-`
+`;
 
 const TopContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 26px;
-`
+`;
 
 const TopContent = styled.div`
   flex: 1;
@@ -90,36 +85,39 @@ const TopContent = styled.div`
   overflow: hidden;
   justify-content: center;
   gap: 8px;
-`
+`;
 
 const ImgDiv = styled.div<{ src: string }>`
   border-radius: 20px;
-  background-image: url(${props => props.src});
+  background-image: url(${(props) => props.src});
   background-size: cover;
   height: 100%;
   width: 74px;
   aspect-ratio: 1;
-`
+`;
 
 const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
+  padding-left: 4px;
   line-height: 19.09px;
-`
+`;
 const Content = styled.div`
   font-size: 14px;
   font-weight: 400;
+  padding-left: 4px;
   line-height: 16.71px;
   white-space: nowrap; //텍스트가 한 줄로 유지되도록 설정
   overflow: hidden;
   text-overflow: ellipsis; // 텍스트가 잘릴 때 줄임표(...)를 표시
   color: ${palette.비강조};
-`
+`;
 
 const BottomContainer = styled.div`
   display: flex;
   align-items: center;
-`
+  padding-left: 4px;
+`;
 
 const UserBox = styled.div`
   display: flex;
@@ -131,20 +129,20 @@ const UserBox = styled.div`
   line-height: 16.71px;
   font-weight: 400;
   flex: 1;
-`
+`;
 const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-`
+  width: 24px;
+  height: 24px;
+`;
 
 const Dot = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: ${palette.비강조3};
-`
+`;
 
 const InfoContainer = styled.div`
   display: flex;
@@ -156,12 +154,11 @@ const InfoContainer = styled.div`
   line-height: 14.32px;
 
   gap: 8px;
-`
+`;
 
 const IconContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
-`
+`;
 
-export default CommunityItem
+export default CommunityItem;

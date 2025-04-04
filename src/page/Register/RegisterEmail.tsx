@@ -86,10 +86,10 @@ const RegisterEmail = () => {
   };
 
   useEffect(() => {
-    if (!verifyEmailSend.isPending && verifyEmailSend.isError) {
-      updateError(new Error("이메일 발송 과정에서 에러가 발생했어요"));
-      setIsMutationError(true);
-    }
+    // if (!verifyEmailSend.isPending && verifyEmailSend.isError) {
+    //   updateError(new Error("이메일 발송 과정에서 에러가 발생했어요"));
+    //   setIsMutationError(true);
+    // }
     if (verifyEmailSend.isSuccess) {
       addEmail(formData.email);
       document.documentElement.style.viewTransitionName = "forward";

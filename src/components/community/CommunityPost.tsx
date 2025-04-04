@@ -113,7 +113,8 @@ const CommunityPost = () => {
               <SearchFilterTag
                 addStyle={{
                   padding: "11px 16px",
-                  fontSize: "16px",
+                  fontSize: "14px",
+                  lineHeight: "20px",
                   backgroundColor: data.liked ? palette.keycolorBG : palette.검색창,
                   color: data.liked ? palette.keycolor : palette.비강조,
                   border: data.liked ? `1px solid ${palette.keycolor}` : `1px solid ${palette.비강조3}`,
@@ -173,9 +174,8 @@ const ProfileContainer = styled.div`
 `;
 const Title = styled.div`
   margin-top: 3.8svh;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
-  line-height: 26.25px;
   text-align: left;
 `;
 const Details = styled.div`

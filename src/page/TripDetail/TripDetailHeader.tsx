@@ -1,6 +1,7 @@
 "use client";
 import CheckingModal from "@/components/designSystem/modal/CheckingModal";
 import EditAndDeleteModal from "@/components/designSystem/modal/EditAndDeleteModal";
+import NoticeModal from "@/components/designSystem/modal/NoticeModal";
 import ReportModal from "@/components/designSystem/modal/ReportModal";
 import ResultToast from "@/components/designSystem/toastMessage/resultToast";
 import AlarmIcon from "@/components/icons/AlarmIcon";
@@ -11,6 +12,7 @@ import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 import useViewTransition from "@/hooks/useViewTransition";
 import { authStore } from "@/store/client/authStore";
 import { useBackPathStore } from "@/store/client/backPathStore";
+import { reportStore } from "@/store/client/reportStore";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import { palette } from "@/styles/palette";
 import { isGuestUser } from "@/utils/user";
@@ -54,15 +56,18 @@ export default function TripDetailHeader() {
     addBookmarkCount,
     addHostUserCheck,
     addViewCount,
+    addStartDate,
+    addEndDate,
     addTravelNumber,
     addEnrollmentNumber,
     hostUserCheck,
+    userNumber,
     addUserAgeGroup,
     addBookmarked,
     bookmarked,
   } = tripDetailStore();
   const { setNotification } = useBackPathStore();
-  const tripInfos = tripDetail.data?.data;
+  const tripInfos = tripDetail.data as any;
   useEffect(() => {
     console.log(tripInfos);
     if (tripDetail.isFetched) {
@@ -76,7 +81,7 @@ export default function TripDetailHeader() {
         details,
         maxPerson,
         genderType,
-        dueDate,
+
         periodType,
         tags,
         postStatus,
@@ -85,16 +90,18 @@ export default function TripDetailHeader() {
         viewCount,
         enrollCount,
         userAgeGroup,
+        startDate,
+        endDate,
         profileUrl,
         loginMemberRelatedInfo,
       } = tripInfos;
-
-      const [year, month, day] = dueDate.split("-").map((v: string) => +v);
-      const DUEDATE = {
-        year,
-        month,
-        day,
-      };
+      console.log("location2", location);
+      // const [year, month, day] = dueDate.split("-").map((v: string) => +v);
+      // const DUEDATE = {
+      //   year,
+      //   month,
+      //   day,
+      // };
       if (!loginMemberRelatedInfo) {
         addHostUserCheck(false);
         addEnrollmentNumber(null);
@@ -106,7 +113,8 @@ export default function TripDetailHeader() {
       }
       addProfileUrl(profileUrl);
       addTravelNumber(travelNumber);
-
+      addStartDate(startDate);
+      addEndDate(endDate);
       addEnrollCount(enrollCount);
       addCreatedAt(createdAt);
       addUserNumber(userNumber);
@@ -116,7 +124,7 @@ export default function TripDetailHeader() {
       addDetails(details);
       addMaxPerson(maxPerson);
       addGenderType(genderType);
-      addDueDate(DUEDATE);
+      // addDueDate(DUEDATE);
       addPeriodType(periodType);
       addTags(tags);
       addPostStatus(postStatus);
@@ -131,6 +139,8 @@ export default function TripDetailHeader() {
   const navigateWithTransition = useViewTransition();
   const { deleteTripDetailMutation } = useTripDetail(parseInt(travelNumber!));
   const [isToastShow, setIsToastShow] = useState(false); // 삭제 완료 메시지.
+  const { reportSuccess, setReportSuccess, setUserNumber } = reportStore();
+
   const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
     accessToken!,
     userId!,
@@ -138,9 +148,7 @@ export default function TripDetailHeader() {
   );
 
   const handleNotification = () => {
-    setNotification(
-      travelNumber ? `/trip/detail/${travelNumber}` : "/trip/list"
-    );
+    setNotification(travelNumber ? `/trip/detail/${travelNumber}` : "/trip/list");
     router.push(`/notification`);
   };
   useEffect(() => {
@@ -156,26 +164,23 @@ export default function TripDetailHeader() {
     }
     if (isReportBtnClicked) {
       setIsReportBtnClicked(false);
+      setUserNumber(userNumber);
+      document.documentElement.style.viewTransitionName = "forward";
+      navigateWithTransition(`/report/travel/${travelNumber}`);
     }
     if (checkingModalClicked) {
       // 삭제 요청.
 
       deleteTripDetailMutation().then((res) => {
         console.log("result", res);
-        if (res?.status === 204) {
-          setIsToastShow(true);
-          setTimeout(() => {
-            router.push("/");
-          }, 1800);
-        }
+
+        setIsToastShow(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 1800);
       });
     }
-  }, [
-    isDeleteBtnClicked,
-    isReportBtnClicked,
-    isEditBtnClicked,
-    checkingModalClicked,
-  ]);
+  }, [isDeleteBtnClicked, isReportBtnClicked, isEditBtnClicked, checkingModalClicked]);
 
   // 북마크
   const bookmarkClickHandler = () => {
@@ -196,22 +201,20 @@ export default function TripDetailHeader() {
   };
 
   return (
-    <Container
-      hostUserCheck={hostUserCheck}
-      isTripDetailEdit={Boolean(isTripDetailEdit)}
-    >
+    <Container hostUserCheck={hostUserCheck} isTripDetailEdit={Boolean(isTripDetailEdit)}>
       {!isGuestUser() && (
-        <div onClick={handleNotification}>
+        <IconContainer onClick={handleNotification}>
           <AlarmIcon size={23} stroke={palette.기본} />
-        </div>
+        </IconContainer>
       )}
+      <IconContainer>
+        <ShareIcon />
+      </IconContainer>
 
-      <ShareIcon />
-
-      {hostUserCheck && (
-        <div onClick={onClickThreeDots}>
+      {!isGuestUser() && (
+        <IconContainer onClick={onClickThreeDots}>
           <MoreIcon />
-        </div>
+        </IconContainer>
       )}
 
       <EditAndDeleteModal
@@ -225,6 +228,12 @@ export default function TripDetailHeader() {
         isOpen={reportThreeDotsClick}
         setIsOpen={setReportThreeDotsClick}
       />
+      <NoticeModal
+        isModalOpen={reportSuccess}
+        modalMsg={"소중한 의견 감사합니다."}
+        modalTitle={"신고 완료"}
+        setModalOpen={setReportSuccess}
+      />
       <CheckingModal
         isModalOpen={isResultModalOpen}
         modalMsg={`여행 멤버나 관심을 가진 분들이 \n 당황할 수 있어요.`}
@@ -233,15 +242,19 @@ export default function TripDetailHeader() {
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
-      <ResultToast
-        bottom="80px"
-        isShow={isToastShow}
-        setIsShow={setIsToastShow}
-        text="여행 게시글이 삭제되었어요."
-      />
+      <ResultToast bottom="80px" isShow={isToastShow} setIsShow={setIsToastShow} text="여행 게시글이 삭제되었어요." />
     </Container>
   );
 }
+
+const IconContainer = styled.div`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Container = styled.div<{
   hostUserCheck: boolean;
   isTripDetailEdit: boolean;
@@ -249,6 +262,6 @@ const Container = styled.div<{
   display: ${(props) => (props.isTripDetailEdit ? "none" : "flex")};
   align-items: center;
   justify-content: space-around;
-  gap: 17.5px;
+
   width: ${(props) => (props.hostUserCheck ? "136px" : "auto")};
 `;

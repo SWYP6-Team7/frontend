@@ -21,10 +21,7 @@ interface Companion {
   profileUrl: string;
 }
 
-export default function CompanionsView({
-  isOpen,
-  setIsOpen,
-}: CompanionsViewProps) {
+export default function CompanionsView({ isOpen, setIsOpen }: CompanionsViewProps) {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -37,10 +34,9 @@ export default function CompanionsView({
   if (isNaN(parseInt(travelNumber))) {
     router.replace("/");
   }
-  const { profileUrl, userName, userAgeGroup, nowPerson, maxPerson } =
-    tripDetailStore();
+  const { profileUrl, userName, userAgeGroup, nowPerson, maxPerson } = tripDetailStore();
   const { companions } = useTripDetail(parseInt(travelNumber));
-  const allCompanions = companions.data?.data.companions;
+  const allCompanions = (companions as any)?.data?.companions;
   const [windowSize, setWindowSize] = useState({
     width: 0,
     height: 0,
@@ -119,16 +115,10 @@ export default function CompanionsView({
                 </Title>
                 <CompanionsBox>
                   {allCompanions?.map((person: Companion) => (
-                    <OwnerBox
-                      key={person.userName}
-                      style={{ marginRight: "16px" }}
-                    >
+                    <OwnerBox key={person.userName} style={{ marginRight: "16px" }}>
                       <div>
                         <div>
-                          <RoundedImage
-                            size={64}
-                            src={person?.profileUrl ? person?.profileUrl : ""}
-                          />
+                          <RoundedImage size={64} src={person?.profileUrl ? person?.profileUrl : ""} />
                         </div>
                         <OwnerInfo>
                           <OwnerName>{person.userName}</OwnerName>

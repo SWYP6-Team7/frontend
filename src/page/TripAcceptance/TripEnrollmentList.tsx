@@ -36,7 +36,6 @@ export default function TripEnrollmentList() {
     addDetails,
     addMaxPerson,
     addGenderType,
-    addDueDate,
     addPeriodType,
     addTags,
     addPostStatus,
@@ -53,7 +52,7 @@ export default function TripEnrollmentList() {
     bookmarked,
   } = tripDetailStore();
 
-  const tripInfos = tripDetail.data?.data;
+  const tripInfos = tripDetail.data as any;
   useEffect(() => {
     console.log(tripInfos);
     if (tripDetail.isFetched) {
@@ -67,7 +66,6 @@ export default function TripEnrollmentList() {
         details,
         maxPerson,
         genderType,
-        dueDate,
         periodType,
         tags,
         postStatus,
@@ -80,12 +78,6 @@ export default function TripEnrollmentList() {
         loginMemberRelatedInfo,
       } = tripInfos;
 
-      const [year, month, day] = dueDate.split("-").map((v: string) => +v);
-      const DUEDATE = {
-        year,
-        month,
-        day,
-      };
       if (!loginMemberRelatedInfo) {
         addHostUserCheck(false);
         addEnrollmentNumber(null);
@@ -107,7 +99,6 @@ export default function TripEnrollmentList() {
       addDetails(details);
       addMaxPerson(maxPerson);
       addGenderType(genderType);
-      addDueDate(DUEDATE);
       addPeriodType(periodType);
       addTags(tags);
       addPostStatus(postStatus);
@@ -122,11 +113,11 @@ export default function TripEnrollmentList() {
   const { enrollmentsLastViewed, updateLastViewed, enrollmentList } = useEnrollment(parseInt(travelNumber!));
 
   // 최근에 본 시점.
-  const list = enrollmentList.data?.data;
+  const list = enrollmentList.data;
 
   // 처음에는 null 값이니, 생성했을 때 시간 으로 두기.
   const lastViewed =
-    enrollmentsLastViewed.data?.lastViewedAt === null ? createdAt : enrollmentsLastViewed.data?.lastViewedAt;
+    enrollmentsLastViewed?.data?.lastViewedAt === null ? createdAt : enrollmentsLastViewed.data?.lastViewedAt;
 
   useEffect(() => {
     // 컴포넌트가 언마운트될 때 최근 열람 시간 put API 요청 보내기.

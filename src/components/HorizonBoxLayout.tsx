@@ -9,7 +9,7 @@ import PlaceIcon from "./icons/PlaceIcon";
 import FullHeartIcon from "./icons/FullHeartIcon";
 import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { authStore } from "@/store/client/authStore";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import CheckingModal from "./designSystem/modal/CheckingModal";
 import { usePathname, useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
@@ -64,32 +64,60 @@ const HorizonBoxLayout = ({
   bookmarkNeed = true,
   travelNumber,
 }: HorizonBoxProps) => {
-  const cutTags = tags.length > 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
+  const tagRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
+  const cutTags = tags.length >= 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
+
+  const [tagsCount, setTagsCount] = useState(cutTags);
+  console.log(tagsCount, "tagsCount");
+  useEffect(() => {
+    if (showTag && tagRef.current) {
+      if (tagRef.current.getBoundingClientRect().height >= 24) {
+        setTagsCount((prev) => (prev.length > 1 ? prev.slice(0, -1) : []));
+      }
+    }
+  }, [tagRef.current, showTag, tagsCount.length, containerRef?.current?.getBoundingClientRect().width]);
   return (
-    <HorizonBoxContainer>
+    <HorizonBoxContainer ref={containerRef}>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
 
       <PostInfo>
         <TopContainer>
-          <Badge
-            text={"마감"}
-            backgroundColor={"rgba(227, 239, 217, 1)"}
-            color={`${palette.keycolor}`}
-            daysLeft={daysLeft >= 0 ? daysLeft : undefined}
-            isClose={!Boolean(daysLeft >= 0)}
-            isDueDate={Boolean(daysLeft >= 0)}
-          />
+          <BadgeContainer isMargin={bookmarkPosition === "middle" || bookmarkNeed === false}>
+            <Badge
+              height={"22px"}
+              text={
+                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M11.75 5.49259C11.75 9.31077 6.75 12.5835 6.75 12.5835C6.75 12.5835 1.75 9.31077 1.75 5.49259C1.75 4.19062 2.27678 2.94197 3.21447 2.02134C4.15215 1.1007 5.42392 0.583496 6.75 0.583496C8.07608 0.583496 9.34785 1.1007 10.2855 2.02134C11.2232 2.94197 11.75 4.19062 11.75 5.49259Z"
+                      stroke="#3E8D00"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M6.75 7.0835C7.57843 7.0835 8.25 6.41192 8.25 5.5835C8.25 4.75507 7.57843 4.0835 6.75 4.0835C5.92157 4.0835 5.25 4.75507 5.25 5.5835C5.25 6.41192 5.92157 7.0835 6.75 7.0835Z"
+                      stroke="#3E8D00"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <div>{location}</div>
+                </div>
+              }
+              backgroundColor={palette.keycolorBG}
+              color={`${palette.keycolor}`}
+              isDueDate={false}
+            />
+          </BadgeContainer>
           {bookmarkPosition === "top" && bookmarkNeed && (
-            <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
+            <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} bookmarkPosition={bookmarkPosition} />
           )}
         </TopContainer>
-        <div>
+        <div style={{ paddingLeft: 4 }}>
           <TitleBox>
             <Title>{title}</Title>
-            {bookmarkPosition === "middle" && bookmarkNeed && (
-              <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} />
-            )}
           </TitleBox>
           {/* <Description>{description}</Description> */}
           <UserBox>
@@ -110,6 +138,7 @@ const HorizonBoxLayout = ({
         {showTag && (
           <Tags>
             <BoxLayoutTag
+              ref={tagRef}
               text={
                 <Location>
                   <PlaceIcon height={12} width={10} />
@@ -117,10 +146,10 @@ const HorizonBoxLayout = ({
                 </Location>
               }
             />
-            {cutTags.map((text: string, idx) => (
+            {tagsCount.map((text: string, idx) => (
               <BoxLayoutTag key={idx} text={text} />
             ))}
-            {tags.length > cutTags.length ? (
+            {tags.length > tagsCount.length ? (
               <BoxLayoutTag
                 addStyle={{
                   backgroundColor: `${palette.비강조4}`,
@@ -130,20 +159,24 @@ const HorizonBoxLayout = ({
                   borderRadius: "20px",
                   fontSize: "12px",
                 }}
-                text={`+${tags.length - cutTags.length}`}
+                text={`+${tags.length - tagsCount.length}`}
               />
             ) : null}
           </Tags>
         )}
       </PostInfo>
+      {bookmarkPosition === "middle" && bookmarkNeed && (
+        <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} bookmarkPosition={bookmarkPosition} />
+      )}
     </HorizonBoxContainer>
   );
 };
 interface BookmarkButtonProps {
   bookmarked: boolean;
   travelNumber: number;
+  bookmarkPosition?: "top" | "middle";
 }
-const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
+const BookmarkButton = ({ bookmarked, travelNumber, bookmarkPosition }: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
@@ -177,13 +210,13 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
         modalButtonText="로그인"
         setModalOpen={setShowLoginModal}
       />
-      <button onClick={bookmarkClickHandler}>
+      <Button isMargin={bookmarkPosition === "middle"} onClick={bookmarkClickHandler}>
         {bookmarked ? (
           <FullHeartIcon width={24} height={21.4} />
         ) : (
           <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
         )}
-      </button>
+      </Button>
     </>
   );
 };
@@ -195,12 +228,24 @@ const Bar = styled.div`
   background-color: ${palette.비강조4};
 `;
 
+const Button = styled.button<{ isMargin: boolean }>`
+  width: 32px;
+  height: 32px;
+  display: flex;
+
+  margin-top: ${(props) => (props.isMargin ? "11px" : 0)};
+  margin-bottom: ${(props) => (props.isMargin ? "4px" : "3px")};
+  align-items: center;
+  justify-content: center;
+`;
+
 const HorizonBoxContainer = styled.div`
   width: 100%;
   /* height: 120px; */
+  display: flex;
+  align-items: center;
 `;
 const TitleBox = styled.div`
-  margin-top: 8px;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -208,10 +253,10 @@ const TitleBox = styled.div`
   margin-bottom: 8px;
 `;
 const Title = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   margin-right: 8px;
-  line-height: 21.48px;
+  line-height: 19px;
 `;
 
 const Location = styled.div`
@@ -236,6 +281,7 @@ const RecruitingBox = styled.div`
 const TopContainer = styled.div`
   display: flex;
   width: 100%;
+
   justify-content: space-between;
   align-items: center;
 `;
@@ -245,6 +291,7 @@ const Recruiting = styled.div`
 `;
 const PostInfo = styled.div`
   width: 100%;
+  flex: 1;
 `;
 const UserBox = styled.div`
   display: flex;
@@ -253,18 +300,23 @@ const UserBox = styled.div`
   color: ${palette.비강조};
   font-size: 12px;
   text-align: center;
-  line-height: 16.71px;
+  line-height: 17px;
   font-weight: 400;
 `;
 const UserName = styled.div`
   font-size: 14px;
   font-weight: 400;
-  line-height: 16.71px;
+  line-height: 17px;
 
   color: ${palette.기본};
 `;
 const Tags = styled.div`
   display: flex;
   justify-content: space-betweens;
+`;
+
+const BadgeContainer = styled.div<{ isMargin: boolean }>`
+  margin-top: ${(props) => (props.isMargin ? "8px" : 0)};
+  margin-bottom: ${(props) => (props.isMargin ? "8px" : 0)};
 `;
 export default HorizonBoxLayout;

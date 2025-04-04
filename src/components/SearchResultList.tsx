@@ -1,24 +1,15 @@
 "use client";
 import { ISearchData } from "@/model/search";
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Spacing from "./Spacing";
 import HorizonBoxLayout from "./HorizonBoxLayout";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { searchStore } from "@/store/client/searchStore";
 import SortHeader from "./SortHeader";
-import { palette } from "@/styles/palette";
-import EmptyHeartIcon from "./icons/EmptyHeartIcon";
-import FullHeartIcon from "./icons/FullHeartIcon";
-import { authStore } from "@/store/client/authStore";
-import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { formatTime } from "@/utils/time";
-import CustomLink from "./CustomLink";
-import { isGuestUser } from "@/utils/user";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import CheckingModal from "./designSystem/modal/CheckingModal";
-import useSearch from "@/hooks/search/useSearch";
+import { useSearchParams } from "next/navigation";
 import { useBackPathStore } from "@/store/client/backPathStore";
 import useViewTransition from "@/hooks/useViewTransition";
 dayjs.extend(customParseFormat);
@@ -57,13 +48,13 @@ const SearchResultList = ({
           총&nbsp;<Count>{searchResult[0].page.totalElements}건</Count>
         </CountContainer>
       </SortHeader>
-
+      <Spacing size={16} />
       {searchResult.map((page) =>
         page.content.map((content) => (
           <BoxContainer key={content.travelNumber}>
             <div onClick={() => clickTrip(content.travelNumber)}>
               <HorizonBoxLayout
-                bookmarkNeed={false}
+                bookmarkNeed={true}
                 bookmarked={content.bookmarked}
                 travelNumber={content.travelNumber}
                 userName={content.userName}
@@ -76,76 +67,10 @@ const SearchResultList = ({
                 recruits={content.nowPerson}
               />
             </div>
-            <BookmarkButton
-              setBookmarked={setBookmarked}
-              travelNumber={content.travelNumber}
-              bookmarked={content.bookmarked}
-              page={page.page.number ?? 0}
-            />
           </BoxContainer>
         ))
       )}
     </Container>
-  );
-};
-// 아래 북마크 버튼은 Link에 구속되지 않도록 하는 버튼.
-interface BookmarkButtonProps {
-  bookmarked: boolean;
-  travelNumber: number;
-  page: number;
-  setBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
-}
-const BookmarkButton = ({ bookmarked, travelNumber, page, setBookmarked }: BookmarkButtonProps) => {
-  const { accessToken, userId } = authStore();
-  const pathname = usePathname();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const router = useRouter();
-  const { postBookmarkMutation, deleteBookmarkMutation, isBookmarkDeleteSuccess, isBookmarkPostSuccess } =
-    useUpdateBookmark(accessToken!, userId!, travelNumber);
-  const searchParams = useSearchParams();
-  const keyword = searchParams?.get("keyword") ?? "";
-  const { refetch, data } = useSearch({ keyword });
-  useEffect(() => {
-    if (isBookmarkDeleteSuccess || isBookmarkPostSuccess) {
-      refetch();
-      setBookmarked(true);
-    }
-  }, [isBookmarkDeleteSuccess, isBookmarkPostSuccess, refetch]);
-  const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    if (isGuestUser()) {
-      setShowLoginModal(true);
-      return;
-    }
-    if (bookmarked) {
-      deleteBookmarkMutation();
-    } else {
-      // 북마크 추가.
-      postBookmarkMutation();
-    }
-  };
-  console.log("data12", data);
-  return (
-    <>
-      <CheckingModal
-        isModalOpen={showLoginModal}
-        onClick={() => {
-          localStorage.setItem("loginPath", pathname);
-          router.push("/login");
-        }}
-        modalMsg={`로그인 후 이용할 수 있어요.\n로그인 하시겠어요?`}
-        modalTitle="로그인 안내"
-        modalButtonText="로그인"
-        setModalOpen={setShowLoginModal}
-      />
-      <BookmarkBtn onClick={bookmarkClickHandler}>
-        {bookmarked ? (
-          <FullHeartIcon width={24} height={21.4} />
-        ) : (
-          <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
-        )}
-      </BookmarkBtn>
-    </>
   );
 };
 const BookmarkBtn = styled.button`
@@ -154,7 +79,7 @@ const BookmarkBtn = styled.button`
   right: 6px;
 `;
 const BoxContainer = styled.div`
-  padding: 20px 0;
+  padding: 11px 0;
   border-bottom: 1px solid rgb(240, 240, 240);
   position: relative;
 `;

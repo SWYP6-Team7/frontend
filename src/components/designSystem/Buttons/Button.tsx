@@ -1,18 +1,18 @@
-'use client'
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
+"use client";
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
 interface ButtonProps {
-  text: string
+  text: string;
   addStyle?: {
-    backgroundColor?: string
-    color?: string
-    boxShadow?: string
-    weight?: 'regular' | 'medium' | 'semiBold' | 'bold'
-  }
-  type?: 'button' | 'reset' | 'submit' | undefined
-  children?: React.ReactNode
-  disabled?: boolean
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+    backgroundColor?: string;
+    color?: string;
+    boxShadow?: string;
+    weight?: "regular" | "medium" | "semiBold" | "bold";
+  };
+  type?: "button" | "reset" | "submit" | undefined;
+  children?: React.ReactNode;
+  disabled?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 // 사용 방식
 {
@@ -24,17 +24,17 @@ interface ButtonProps {
 // 다음, 로그인 등에 쓰이는 버튼.
 
 const Button = ({
-  text = '다음',
-  type = 'submit',
+  text = "다음",
+  type = "submit",
   addStyle = {
-    backgroundColor: 'rgba(62, 141, 0, 1)',
-    color: 'white',
-    boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.14)',
-    weight: 'semiBold'
+    backgroundColor: "rgba(62, 141, 0, 1)",
+    color: "white",
+    boxShadow: "-2px 4px 5px 0px rgba(170, 170, 170, 0.14)",
+    weight: "semiBold",
   },
   onClick = () => {},
   disabled = false,
-  children
+  children,
 }: ButtonProps) => {
   return (
     <ButtonContainer
@@ -42,12 +42,13 @@ const Button = ({
       disabled={disabled}
       onClick={onClick}
       className={`Button--weight-${addStyle.weight}`}
-      style={!disabled ? addStyle : {}}>
+      style={!disabled ? addStyle : {}}
+    >
       {text}
       {children}
     </ButtonContainer>
-  )
-}
+  );
+};
 
 const ButtonContainer = styled.button<{ disabled: boolean }>`
   @media (max-width: 390px) {
@@ -57,6 +58,7 @@ const ButtonContainer = styled.button<{ disabled: boolean }>`
     width: 342px;
   }
   height: 48px;
+
   border-radius: 40px;
   cursor: pointer;
   justify-content: center;
@@ -65,9 +67,9 @@ const ButtonContainer = styled.button<{ disabled: boolean }>`
   display: flex;
 
   align-items: center;
-  background-color: ${props => props.disabled && 'rgba(220, 220, 220, 1)'};
-  color: ${props => props.disabled && palette.비강조};
+  background-color: ${(props) => props.disabled && "rgba(220, 220, 220, 1)"};
+  color: ${(props) => props.disabled && palette.비강조};
   border: none;
-`
+`;
 
-export default Button
+export default Button;

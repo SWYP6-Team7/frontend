@@ -11,9 +11,11 @@ import { useBackPathStore } from "@/store/client/backPathStore";
 import { isGuestUser } from "@/utils/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { createTripStore } from "@/store/client/createTripStore";
 
 const Header = () => {
   const { getPageTitle, shouldShowAlarmIcon, shouldShowSkip, ROUTES, checkRoute, handleBack } = useHeaderNavigation();
+  const { addTags } = createTripStore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const { setNotification } = useBackPathStore();
@@ -24,10 +26,7 @@ const Header = () => {
 
   const headerBackgroundColorIsGrey = () => {
     return (
-      checkRoute.exact(ROUTES.HOME) ||
-      checkRoute.exact(ROUTES.MY.TRIP) ||
-      checkRoute.startsWith(ROUTES.TRIP.DETAIL) ||
-      checkRoute.startsWith(ROUTES.REQUESTED_TRIP)
+      checkRoute.exact(ROUTES.HOME) || checkRoute.exact(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.REQUESTED_TRIP)
     );
   };
   return (
@@ -47,11 +46,27 @@ const Header = () => {
       )}
 
       <Title>{getPageTitle()}</Title>
-      {shouldShowSkip() && <Skip onClick={() => router.push("/")}>건너뛰기</Skip>}
-      {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) && <VoidArea />}
+      {shouldShowSkip() && (
+        <Skip
+          onClick={() => {
+            if (checkRoute.exact(ROUTES.CREATE_TRIP.TAG)) {
+              addTags([]);
+              router.push(ROUTES.CREATE_TRIP.INTRODUCE);
+              return;
+            }
+            router.push("/");
+          }}
+        >
+          건너뛰기
+        </Skip>
+      )}
+      {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) && !checkRoute.exact(ROUTES.CREATE_TRIP.TAG) && (
+        <VoidArea />
+      )}
       {checkRoute.startsWith(ROUTES.TRIP.DETAIL) && <TripDetailHeader />}
       {checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL) && <CommunityHeader />}
       {shouldShowAlarmIcon() &&
+        !shouldShowSkip() &&
         (isGuestUser() ? (
           <Alarm></Alarm>
         ) : (
@@ -70,7 +85,7 @@ const ButtonContainer = styled.button`
 
 // header container
 // 상단 헤더 스타일
-const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean }>`
+const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean; isBottomBorder: boolean }>`
   display: flex;
   padding: 52px 24px 16px 24px;
   height: 116px;
@@ -82,6 +97,7 @@ const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean }>`
   z-index: 1000;
   justify-content: space-between;
   width: 100%;
+  border-bottom: ${(props) => (props.isBottomBorder ? "1px" : "0")} solid ${palette.비강조3};
 `;
 
 const RightFlex = styled.div`
@@ -92,7 +108,6 @@ const RightFlex = styled.div`
 const Title = styled.h2`
   font-size: 20px;
   font-weight: 700;
-  line-height: 23.87px;
 `;
 
 // 레이아웃을 맞추기 위한 빈 공간 할당

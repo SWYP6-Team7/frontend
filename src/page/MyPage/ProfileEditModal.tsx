@@ -86,7 +86,7 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
       // 갤러리 이미지로 선택.
       if (active === "custom") {
         updateRealProfileImgMutation(showImage)
-          .then((res) => {
+          .then((res: any) => {
             console.log("프로필 업데이트 후, res", res);
             setShowImage(res.url);
 
@@ -99,7 +99,7 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
       } // 카메라 이미지로 선택
       else {
         updateRealProfileImgMutation(showImageCamera)
-          .then((res) => {
+          .then((res: any) => {
             console.log("카메라프로필 업데이트 후, res", res);
             setShowImage(res.url);
             setChanged(true);
@@ -126,7 +126,7 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
 
       //이 아래 부분은 미리보기 추가 되면 지울고 미리보기 api로 교체 예정.
       tempProfileImageMutation(formData)
-        .then((res) => {
+        .then((res: any) => {
           console.log("카메라 프로필 임시 등록 요청 후, res", res);
           setShowImageCamera(res.tempUrl);
 
@@ -152,7 +152,7 @@ export default function ProfileEditModal({ showModal, setShowModal }: ModalProps
       // post 요청 후 받은 url로 보여주기
 
       tempProfileImageMutation(formData)
-        .then((res) => {
+        .then((res: any) => {
           console.log("갤러리 프로필 임시 등록 요청 후, res", res);
           setShowImage(res.tempUrl);
 

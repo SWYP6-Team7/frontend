@@ -96,7 +96,13 @@ const ThreeRowCarousel = ({
   };
   return (
     <ContentBox isOnboarding={pathname === "/onBoardingOne"}>
-      <div style={{ width: "100%", marginBottom: "32px" }}>
+      <div
+        style={{
+          width: "100%",
+          marginBottom: pathname === "/onBoardingOne" ? "32px" : "0",
+          paddingTop: pathname === "/onBoardingOne" ? "0px" : "6px",
+        }}
+      >
         <Slider
           beforeChange={(currentSlide: number, nextSlide: number) => setCurrentSlideNumber(nextSlide)}
           ref={slickRef}
@@ -135,12 +141,12 @@ const ThreeRowCarousel = ({
 };
 
 const ContentBox = styled.div<{ isOnboarding: boolean }>`
-  margin-top: ${(props) => (props.isOnboarding ? "0px" : "22px")};
+  margin-top: ${(props) => (props.isOnboarding ? "0px" : "12px")};
   display: flex;
   align-items: center;
   background-color: white;
   border-radius: 20px;
-  padding-bottom: 16px;
+  padding-bottom: 24px;
   margin-right: -24px;
   width: 100%;
 

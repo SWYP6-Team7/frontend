@@ -55,7 +55,7 @@ const TripInfiniteList = () => {
               <BoxContainer key={content.travelNumber}>
                 <div onClick={() => clickTrip(content.travelNumber)}>
                   <HorizonBoxLayout
-                    bookmarkNeed={false}
+                    bookmarkNeed={true}
                     bookmarked={content.bookmarked}
                     travelNumber={content.travelNumber}
                     userName={content.userName}
@@ -68,7 +68,6 @@ const TripInfiniteList = () => {
                     recruits={content.nowPerson}
                   />
                 </div>
-                <BookmarkButton travelNumber={content.travelNumber} bookmarked={content.bookmarked} />
               </BoxContainer>
             ))}
           </React.Fragment>
@@ -143,7 +142,7 @@ const Title = styled.div`
 `;
 
 const BoxContainer = styled.div`
-  padding: 20px 0;
+  padding: 11px 0;
   border-bottom: 1px solid rgb(240, 240, 240);
   position: relative;
 `;

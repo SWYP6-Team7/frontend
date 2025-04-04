@@ -45,12 +45,12 @@ const useCommunity = (
   >({
     queryKey: ["community", { categoryName: categoryName, sortingTypeName, keyword }, isMine],
     enabled: isMine ? !!accessToken : isGuestUser || !!accessToken,
-    queryFn: ({ pageParam }) => {
+    queryFn: async ({ pageParam }) => {
       if (isMine && accessToken) {
         return getMyCommunities(accessToken, {
           ...params,
           page: pageParam as number,
-        });
+        }) as any;
       }
       return getCommunities(accessToken, {
         ...params,
@@ -58,6 +58,7 @@ const useCommunity = (
       });
     },
     initialPageParam: 0,
+    staleTime: 0,
     getNextPageParam: (lastPage) => {
       if (lastPage?.page?.number + 1 === lastPage?.page?.totalPages) {
         return undefined;

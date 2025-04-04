@@ -1,7 +1,7 @@
 "use client";
 import { authStore } from "@/store/client/authStore";
 
-import { axiosInstance } from "@/api";
+import { axiosInstance, handleApiResponse } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import RequestError from "@/context/ReqeustError";
@@ -53,7 +53,10 @@ const useAuth = () => {
         email,
         password,
       });
-      return response.data;
+      if (response.data.success.status === "BLOCK") {
+        window.location.href = response.data.success.redirectUrl;
+      }
+      return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
       setLoginData({
@@ -62,7 +65,7 @@ const useAuth = () => {
       });
       const loginPath = localStorage.getItem("loginPath");
       console.log("login", loginPath);
-      router.push(loginPath ? loginPath : "/");
+      router.push("/");
       localStorage.removeItem("loginPath");
     },
     onError: (error: any) => {
@@ -79,7 +82,7 @@ const useAuth = () => {
         email,
         socialLoginId,
       });
-      return response.data;
+      return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
       setLoginData({
@@ -88,7 +91,7 @@ const useAuth = () => {
       });
       const loginPath = localStorage.getItem("loginPath");
       console.log("login", loginPath);
-      router.push(loginPath ? loginPath : "/");
+      router.push("/");
       localStorage.removeItem("loginPath");
     },
     onError: (error: any) => {
@@ -107,7 +110,7 @@ const useAuth = () => {
       if (!checkNetworkConnection()) return;
 
       const response = await axiosInstance.post("/api/users/sign-up", formData);
-      return response.data;
+      return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
       setLoginData({
@@ -130,7 +133,7 @@ const useAuth = () => {
         formData.social === "google" ? "/api/social/google/complete-signup" : "/api/social/kakao/complete-signup";
 
       const response = await axiosInstance.put(path, finalData);
-      return response.data;
+      return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
       setLoginData({
@@ -172,7 +175,7 @@ const useAuth = () => {
   const refreshTokenMutation = useMutation({
     mutationFn: async () => {
       const response = await axiosInstance.post("/api/token/refresh", {});
-      return response.data;
+      return handleApiResponse(response) as any;
     },
     onSuccess: (data) => {
       setLoginData({

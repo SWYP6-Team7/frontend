@@ -37,12 +37,13 @@ const TripAvailable = () => {
         }
         minWidth="143px"
       />
+
       <ThreeRowCarousel>
         {cutTrips &&
           cutTrips?.map((post, idx) => {
             return (
               <BoxContainer key={post.travelNumber}>
-                <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : {}}>
+                <Box style={(idx + 1) % 3 === 0 || cutTrips.length === idx + 1 ? { borderBottom: 0 } : {}}>
                   <div onClick={() => clickTrip(post.travelNumber)}>
                     <HorizonBoxLayout
                       travelNumber={post.travelNumber}
@@ -70,14 +71,15 @@ const TripAvailable = () => {
 export default TripAvailable;
 
 const Container = styled.div`
-  margin-top: 40px;
+  margin-top: 32px;
   width: 100%;
 `;
 const BoxContainer = styled.div``;
 
 const Box = styled.div`
   border-bottom: 1px solid ${palette.비강조4};
-
+  height: 90px;
+  box-sizing: content-box;
   margin: 0 16px;
-  padding: 18px 0;
+  padding: 10px 0;
 `;

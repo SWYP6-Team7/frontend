@@ -51,6 +51,10 @@ interface tripDetailState {
   bookmarkCount: number;
   addBookmarkCount: (bookmarkCount: number) => void;
   viewCount: number;
+  startDate: string | null;
+  endDate: string | null;
+  addStartDate: (date: string | null) => void;
+  addEndDate: (date: string | null) => void;
   addViewCount: (viewCount: number) => void;
   hostUserCheck: boolean;
   addHostUserCheck: (hostUserCheck: boolean) => void;
@@ -61,13 +65,33 @@ interface tripDetailState {
   bookmarked: boolean;
   addBookmarked: (status: boolean) => void;
   commentLength: number;
+  initGeometry: { lng: number; lat: number } | null;
+  addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   addCommentLength: (status: number) => void;
+  locationName: { locationName: string; mapType: "google" | "kakao" };
+  addLocationName: ({
+    locationName,
+    mapType,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+  }) => void;
+
+  resetTripDetail: () => void;
 }
 
 export const tripDetailStore = create<tripDetailState>((set) => ({
   bookmarked: false,
   addBookmarked: (status) => {
     set({ bookmarked: status });
+  },
+  locationName: { locationName: "", mapType: "google" },
+  addLocationName: (locationName) => {
+    set({ locationName });
+  },
+  initGeometry: null,
+  addInitGeometry: (geo) => {
+    set({ initGeometry: geo });
   },
   applySuccess: false,
   setApplySuccess: (status) => {
@@ -99,7 +123,14 @@ export const tripDetailStore = create<tripDetailState>((set) => ({
 
   details: "",
   addDetails: (details: string) => set({ details }),
-
+  startDate: null,
+  addStartDate: (date) => {
+    set({ startDate: date });
+  },
+  endDate: null,
+  addEndDate: (date) => {
+    set({ endDate: date });
+  },
   maxPerson: 1,
   addMaxPerson: (maxPerson: number) => set({ maxPerson }),
   nowPerson: 0,
@@ -133,8 +164,41 @@ export const tripDetailStore = create<tripDetailState>((set) => ({
   addHostUserCheck: (hostUserCheck: boolean) => set({ hostUserCheck }),
 
   enrollmentNumber: null,
-  addEnrollmentNumber: (enrollmentNumber: number | null) => set({ enrollmentNumber }),
+  addEnrollmentNumber: (enrollmentNumber: number | null) =>
+    set({ enrollmentNumber }),
 
   commentLength: 0,
   addCommentLength: (commentLength: number) => set({ commentLength }),
+  resetTripDetail: () => {
+    set({
+      bookmarked: false,
+      locationName: { locationName: "", mapType: "google" },
+      initGeometry: null,
+      applySuccess: false,
+      travelNumber: 0,
+      userAgeGroup: "",
+      profileUrl: "",
+      userNumber: 0,
+      userName: "",
+      createdAt: "",
+      location: "",
+      title: "",
+      details: "",
+      startDate: null,
+      endDate: null,
+      maxPerson: 1,
+      nowPerson: 0,
+      genderType: "여자만",
+      dueDate: { year, month, day },
+      periodType: "",
+      tags: [],
+      postStatus: "",
+      enrollCount: 0,
+      bookmarkCount: 0,
+      viewCount: 0,
+      hostUserCheck: false,
+      enrollmentNumber: null,
+      commentLength: 0,
+    });
+  },
 }));
