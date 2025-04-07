@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 || error.response?.status === 403) {
       try {
         const refreshResponse = await axiosInstance.post("/api/token/refresh", {});
-        const newAccessToken = refreshResponse.data.success.accessToken;
+        const newAccessToken = refreshResponse.data.success?.accessToken;
         console.log("new AccessToken", newAccessToken, refreshResponse);
 
         return axiosInstance({ ...originalRequest, headers: getJWTHeader(newAccessToken) });
