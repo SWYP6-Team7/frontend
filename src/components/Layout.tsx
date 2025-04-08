@@ -153,8 +153,10 @@ const Body = styled.div<{ pathname: string | null }>`
   position: relative;
 
   background-color: ${(props) =>
-    props.pathname === "/"
-      ? "#f0f0f0"
+    props.pathname === "/" ||
+    props.pathname?.exact("/create/trip/detail") ||
+    props.pathname?.startsWith("/notification")
+      ? "#f5f5f5"
       : props.pathname?.startsWith("/trip/detail") ||
           props.pathname?.startsWith("/myTrip") ||
           props.pathname?.startsWith("/requestedTrip")

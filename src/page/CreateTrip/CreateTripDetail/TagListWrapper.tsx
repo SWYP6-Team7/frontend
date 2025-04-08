@@ -19,6 +19,7 @@ const TagListWrapper = ({ taggedArray, addTags }: TagListWrapperProps) => {
   const [showModal, setShowModal] = useState(false);
   const [tempTaggedArray, setTampTaggedArray] = useState(taggedArray);
   const clickTag = (index: number) => {
+    if (tempTaggedArray.length === 5) return;
     const newArray = taggedArray.includes(TAG_LIST.value[index])
       ? taggedArray.filter((v) => v !== TAG_LIST.value[index])
       : [...taggedArray, TAG_LIST.value[index]];
@@ -53,7 +54,13 @@ const TagListWrapper = ({ taggedArray, addTags }: TagListWrapperProps) => {
           />
         ))}
         <EditContainer onClick={() => setShowModal(true)}>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M8.18693 0.719026C8.40571 0.500309 8.7024 0.377441 9.01176 0.377441C9.32112 0.377441 9.61781 0.500309 9.83659 0.719026L11.2803 2.16278C11.3887 2.27112 11.4747 2.39975 11.5334 2.54133C11.592 2.6829 11.6222 2.83465 11.6222 2.9879C11.6222 3.14115 11.592 3.2929 11.5334 3.43447C11.4747 3.57605 11.3887 3.70468 11.2803 3.81303L4.34276 10.7506L0.621094 11.3783L1.24934 7.65661L8.18693 0.719026ZM8.05334 2.50228L9.49709 3.94603L10.4555 2.98761L9.01176 1.54444L8.05334 2.50228ZM8.67168 4.77144L7.22851 3.32769L2.33784 8.21836L2.04443 9.95494L3.78101 9.66211L8.67168 4.77144Z"
               fill="white"
