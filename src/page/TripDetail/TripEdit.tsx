@@ -37,13 +37,14 @@ const TripEdit = () => {
   const travelNumber = params?.travelNumber as string;
   const { tripDetail } = useTripDetail(parseInt(travelNumber!));
   const tripInfos = tripDetail.data as any;
+  const [isKakaoMapLoad, setIsKakaooMapLoad] = useState(false);
   const {
     title: initTitle,
     startDate: initStartDate,
     endDate: initEndDate,
     details: initDetails,
     tags: initTags,
-    locationName: initLocationName,
+    location,
     initGeometry: initInitGeometry,
     maxPerson: initMaxPerson,
     genderType: initGenderType,
@@ -112,7 +113,40 @@ const TripEdit = () => {
       addTags(tags);
     }
   }, [tripDetail.isFetched, tripInfos]);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
 
+    script.addEventListener("load", () => {
+      setIsKakaooMapLoad(true);
+    });
+    document.head.appendChild(script);
+
+    return () => {
+      script.removeEventListener("load", () => {
+        setIsKakaooMapLoad(false);
+      });
+      document.head.removeChild(script);
+    };
+  }, []);
+  useEffect(() => {
+    const handleLoad = () => {
+      window.kakao.maps.load(() => {
+        const geocoder = new window.kakao.maps.services.Geocoder();
+        geocoder.addressSearch(location, (result, status) => {
+          if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
+            addLocationName({ locationName: location, mapType: "kakao" });
+          } else {
+            addLocationName({ locationName: location, mapType: "google" });
+          }
+        });
+      });
+    };
+    if (isKakaoMapLoad) {
+      handleLoad();
+    }
+  }, [isKakaoMapLoad, location]);
   const {
     data,
     isLoading,
@@ -181,14 +215,12 @@ const TripEdit = () => {
       title === "" &&
       initTitle &&
       locationName.locationName === "" &&
-      initLocationName.locationName &&
       details === "" &&
       initDetails
     ) {
       addTitle(initTitle);
       addDetails(initDetails || "");
       addTags(initTags || []);
-      addLocationName(initLocationName || { locationName: "" });
       addInitGeometry(
         initInitGeometry || { lat: 37.57037778, lng: 126.9816417 }
       );
@@ -200,7 +232,7 @@ const TripEdit = () => {
     initTitle,
     initDetails,
     initTags,
-    initLocationName,
+
     initInitGeometry,
     initStartDate,
     initEndDate,
