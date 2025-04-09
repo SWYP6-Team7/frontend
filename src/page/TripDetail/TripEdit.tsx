@@ -34,7 +34,7 @@ dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
 
 const TripEdit = () => {
-  const { scrollTop, isChange, planIndex, addPlanIndex } = tripPlanStore();
+  const { addIsChange, isChange, planIndex, addPlanIndex } = tripPlanStore();
 
   const params = useParams();
   const travelNumber = params?.travelNumber as string;
@@ -176,6 +176,7 @@ const TripEdit = () => {
     if (isChange) {
       setOpenItemIndex(planIndex);
       addPlanIndex(0);
+      addIsChange(false);
     }
   }, [planIndex, isChange]);
 
