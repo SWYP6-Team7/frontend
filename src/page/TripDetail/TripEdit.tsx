@@ -28,11 +28,14 @@ import { getPlans } from "@/api/trip";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 import { trackPlanChanges } from "@/utils/trip";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
 
 const TripEdit = () => {
+  const { scrollTop, addScrollTop, planIndex, addPlanIndex } = tripPlanStore();
+
   const params = useParams();
   const travelNumber = params?.travelNumber as string;
   const { tripDetail } = useTripDetail(parseInt(travelNumber!));
@@ -48,7 +51,7 @@ const TripEdit = () => {
     initGeometry: initInitGeometry,
     maxPerson: initMaxPerson,
     genderType: initGenderType,
-  } = tripInfos;
+  } = tripInfos ?? {};
 
   const {
     locationName,
@@ -169,6 +172,22 @@ const TripEdit = () => {
       }
     },
   });
+  useEffect(() => {
+    if (scrollTop !== 0) {
+      setOpenItemIndex(planIndex);
+      addPlanIndex(0);
+    }
+  }, [planIndex, scrollTop]);
+
+  useEffect(() => {
+    if (scrollTop > 0) {
+      console.log("scrollTop", scrollTop);
+      document.getElementById("container-scroll")?.scrollTo({
+        top: scrollTop,
+      });
+      addScrollTop(0);
+    }
+  }, [scrollTop]);
 
   // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {

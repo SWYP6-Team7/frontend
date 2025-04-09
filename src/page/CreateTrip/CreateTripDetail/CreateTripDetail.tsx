@@ -80,7 +80,7 @@ const CreateTripDetail = () => {
   const handleItemToggle = (index) => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
-  const { scrollTop, planIndex, addPlanIndex } = tripPlanStore();
+  const { scrollTop, addScrollTop, planIndex, addPlanIndex } = tripPlanStore();
 
   useEffect(() => {
     if (scrollTop !== 0) {
@@ -88,6 +88,16 @@ const CreateTripDetail = () => {
       addPlanIndex(0);
     }
   }, [planIndex, scrollTop]);
+
+  useEffect(() => {
+    if (scrollTop > 0) {
+      console.log("scrollTop", scrollTop);
+      document.getElementById("container-scroll")?.scrollTo({
+        top: scrollTop,
+      });
+      addScrollTop(0);
+    }
+  }, [scrollTop]);
   const newPlan = plans.map((plan) => {
     return {
       ...plan,
