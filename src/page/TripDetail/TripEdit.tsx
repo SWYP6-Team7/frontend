@@ -187,7 +187,7 @@ const TripEdit = () => {
       const allPlans = data.pages.flatMap((page) => page.plans || []);
       console.log("allPlans", allPlans);
       const formattedPlans = allPlans.map((plan) => {
-        const planDate = dayjs(initStartDate)
+        const planDate = dayjs(date?.startDate)
           .add(plan.planOrder - 1, "day")
           .format("YYYY-MM-DD");
 
@@ -215,7 +215,7 @@ const TripEdit = () => {
     JSON.stringify(data),
     isLoading,
     dataInitialized,
-    initStartDate,
+    date?.startDate,
     hasNextPage,
   ]);
   useEffect(() => {
@@ -234,7 +234,8 @@ const TripEdit = () => {
       initTitle &&
       locationName.locationName === "" &&
       details === "" &&
-      initDetails
+      initDetails &&
+      initStartDate
     ) {
       addTitle(initTitle);
       addDetails(initDetails || "");
