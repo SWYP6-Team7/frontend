@@ -312,6 +312,7 @@ const TopModal = ({
   return (
     <>
       <ContentContainer
+        id="top-scroll"
         ref={contentRef}
         maxHeight={window.innerHeight - 280}
         onClick={handleContentClick}
