@@ -183,7 +183,14 @@ const TripEdit = () => {
   useEffect(() => {
     console.log("data", data, dataInitialized, hasNextPage);
 
-    if (!isLoading && data && !dataInitialized && !hasNextPage) {
+    if (
+      !isLoading &&
+      data &&
+      !dataInitialized &&
+      !hasNextPage &&
+      date?.startDate &&
+      
+    ) {
       const allPlans = data.pages.flatMap((page) => page.plans || []);
       console.log("allPlans", allPlans);
       const formattedPlans = allPlans.map((plan) => {
