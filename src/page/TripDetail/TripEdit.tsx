@@ -204,6 +204,8 @@ const TripEdit = () => {
           })),
         };
       });
+
+      console.log("formattedPlans", formattedPlans);
       setOriginalPlans(formattedPlans);
 
       addPlans(formattedPlans);
@@ -318,7 +320,7 @@ const TripEdit = () => {
   };
 
   const { updateTripDetailMutate } = useTripDetail(Number(travelNumber));
-
+  console.log("originalPlans", originalPlans);
   const completeClickHandler = () => {
     if (
       title === "" ||
