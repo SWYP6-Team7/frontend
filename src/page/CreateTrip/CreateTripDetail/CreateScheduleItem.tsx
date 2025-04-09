@@ -70,6 +70,7 @@ const CreateScheduleItem = ({
   };
 
   useEffect(() => {
+    console.log("scrollTop", scrollTop);
     if (scrollTop > 0) {
       document.getElementById("container-scroll")?.scrollTo({
         top: scrollTop,
