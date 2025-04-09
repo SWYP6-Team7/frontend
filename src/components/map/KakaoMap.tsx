@@ -69,13 +69,13 @@ const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
   // 지도 상에서 스크롤했을 때 이벤트 전파 막기
   useEffect(() => {
     if (mapRef.current) {
-      mapRef.current.addEventListener("scroll", (event) => {
+      mapRef.current.addEventListener("wheel", (event) => {
         event.stopPropagation();
       });
     }
     return () => {
       if (mapRef.current) {
-        mapRef.current.removeEventListener("scroll", (event) => {
+        mapRef.current.removeEventListener("wheel", (event) => {
           event.stopPropagation();
           return;
         });
