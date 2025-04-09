@@ -102,10 +102,9 @@ const TopModal = ({
 
   useEffect(() => {
     if (isChange) {
-      firstTop.current = true;
       setModalHeight(0);
       setIsMapFull(true);
-      onHeightChange(48);
+      onHeightChange(0);
     }
   }, [isChange]);
 
