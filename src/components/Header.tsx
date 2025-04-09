@@ -14,32 +14,60 @@ import Link from "next/link";
 import { createTripStore } from "@/store/client/createTripStore";
 
 const Header = () => {
-  const { getPageTitle, shouldShowAlarmIcon, shouldShowSkip, ROUTES, checkRoute, handleBack } = useHeaderNavigation();
+  const {
+    getPageTitle,
+    shouldShowAlarmIcon,
+    shouldShowSkip,
+    ROUTES,
+    checkRoute,
+    handleBack,
+  } = useHeaderNavigation();
   const { addTags } = createTripStore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const { setNotification } = useBackPathStore();
   const handleNotification = () => {
-    setNotification(checkRoute.exact(ROUTES.MY.PAGE) ? ROUTES.MY.PAGE : ROUTES.MY.TRIP);
+    setNotification(
+      checkRoute.exact(ROUTES.MY.PAGE) ? ROUTES.MY.PAGE : ROUTES.MY.TRIP
+    );
     router.push("/notification");
   };
 
   const headerBackgroundColorIsGrey = () => {
     return (
-      checkRoute.exact(ROUTES.HOME) || checkRoute.exact(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.REQUESTED_TRIP)
+      checkRoute.exact(ROUTES.MY.TRIP) ||
+      checkRoute.startsWith(ROUTES.REQUESTED_TRIP)
+    );
+  };
+
+  const headerBackgroundColorIsF5 = () => {
+    return (
+      checkRoute.exact(ROUTES.HOME) ||
+      checkRoute?.exact(ROUTES.CREATE_TRIP.DETAIL) ||
+      checkRoute?.startsWith(ROUTES.NOTIFICATION) ||
+      checkRoute?.startsWith(ROUTES.COMMUNITY.DETAIL)
     );
   };
   return (
-    <HeaderContainer isBackGroundColorIsGrey={Boolean(headerBackgroundColorIsGrey())}>
+    <HeaderContainer
+      isHeaderBackgroundColorIsF5={Boolean(headerBackgroundColorIsF5())}
+      isBackGroundColorIsGrey={Boolean(headerBackgroundColorIsGrey())}
+    >
       {!shouldShowAlarmIcon() && (
         <RightFlex>
           <ButtonContainer onClick={handleBack}>
             <BackIcon />
           </ButtonContainer>
-          {(checkRoute.startsWith(ROUTES.TRIP.DETAIL) || checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL)) &&
+          {(checkRoute.startsWith(ROUTES.TRIP.DETAIL) ||
+            checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL)) &&
             searchParams?.get("share") === "true" && (
               <Link href="/" style={{ marginLeft: 14 }}>
-                <img src={"/images/homeLogo.png"} width={96} height={24} alt="홈 모잉의 로고입니다" />
+                <img
+                  src={"/images/homeLogo.png"}
+                  width={96}
+                  height={24}
+                  alt="홈 모잉의 로고입니다"
+                />
               </Link>
             )}
         </RightFlex>
@@ -60,9 +88,8 @@ const Header = () => {
           건너뛰기
         </Skip>
       )}
-      {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) && !checkRoute.exact(ROUTES.CREATE_TRIP.TAG) && (
-        <VoidArea />
-      )}
+      {!checkRoute.exact(ROUTES.REGISTER_PROCESS.TRIP_STYLE) &&
+        !checkRoute.exact(ROUTES.CREATE_TRIP.TAG) && <VoidArea />}
       {checkRoute.startsWith(ROUTES.TRIP.DETAIL) && <TripDetailHeader />}
       {checkRoute.startsWith(ROUTES.COMMUNITY.DETAIL) && <CommunityHeader />}
       {shouldShowAlarmIcon() &&
@@ -85,7 +112,11 @@ const ButtonContainer = styled.button`
 
 // header container
 // 상단 헤더 스타일
-const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean; isBottomBorder: boolean }>`
+const HeaderContainer = styled.header<{
+  isBackGroundColorIsGrey: boolean;
+  isHeaderBackgroundColorIsF5: boolean;
+  isBottomBorder: boolean;
+}>`
   display: flex;
   padding: 52px 24px 16px 24px;
   height: 116px;
@@ -93,11 +124,17 @@ const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean; isBott
   gap: 22px;
   position: sticky;
   top: 0px;
-  background-color: ${(props) => (props.isBackGroundColorIsGrey ? palette.검색창 : palette.BG)};
+  background-color: ${(props) =>
+    props.isHeaderBackgroundColorIsF5
+      ? "#F5F5F5"
+      : props.isBackGroundColorIsGrey
+        ? palette.검색창
+        : palette.BG};
   z-index: 1000;
   justify-content: space-between;
   width: 100%;
-  border-bottom: ${(props) => (props.isBottomBorder ? "1px" : "0")} solid ${palette.비강조3};
+  border-bottom: ${(props) => (props.isBottomBorder ? "1px" : "0")} solid
+    ${palette.비강조3};
 `;
 
 const RightFlex = styled.div`
