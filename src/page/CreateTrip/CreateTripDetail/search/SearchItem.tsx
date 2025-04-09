@@ -25,7 +25,7 @@ const SearchItem = ({
 }) => {
   const router = useRouter();
   const { planOrder } = useParams();
-  const { addScrollTop } = tripPlanStore();
+  const { addIsChange } = tripPlanStore();
   const searchParams = useSearchParams();
   const paramsType = searchParams?.get("type") ?? "create";
   const travelNumber = searchParams?.get("travelNumber") ?? "";
@@ -85,7 +85,7 @@ const SearchItem = ({
     }
     console.log("new plan", newPlans, targetPlanIndex, plans);
     addPlans(newPlans);
-    addScrollTop(document.getElementById("container-scroll")?.scrollTop ?? 0);
+    addIsChange(true);
     if (paramsType === "create") {
       router.push("/create/trip/detail");
     } else {

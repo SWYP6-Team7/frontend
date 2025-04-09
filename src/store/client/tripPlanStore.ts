@@ -6,6 +6,8 @@ interface ITripPlanStore {
   addScrollTop: (num: number) => void;
   planIndex: number;
   addPlanIndex: (num: number) => void;
+  isChange: boolean;
+  addIsChange: (bool: boolean) => void;
 }
 
 export const tripPlanStore = create<ITripPlanStore>((set) => ({
@@ -16,5 +18,9 @@ export const tripPlanStore = create<ITripPlanStore>((set) => ({
   planIndex: 0,
   addPlanIndex: (planIndex) => {
     set({ planIndex });
+  },
+  isChange: false,
+  addIsChange: (isChange) => {
+    set({ isChange });
   },
 }));

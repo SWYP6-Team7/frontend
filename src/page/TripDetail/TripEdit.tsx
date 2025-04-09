@@ -181,6 +181,8 @@ const TripEdit = () => {
 
   // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {
+    console.log("data", data);
+
     if (!isLoading && data && !dataInitialized) {
       const allPlans = data.pages.flatMap((page) => page.plans || []);
 

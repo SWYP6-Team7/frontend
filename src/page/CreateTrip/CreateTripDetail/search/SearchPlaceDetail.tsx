@@ -33,7 +33,7 @@ const SearchPlaceDetail = () => {
   const router = useRouter();
   const placesLib = useMapsLibrary("places");
   const [isClient, setIsClient] = useState(false);
-  const { addScrollTop } = tripPlanStore();
+  const { addIsChange } = tripPlanStore();
   const searchParams = useSearchParams();
   const paramsType = searchParams?.get("type") ?? "create";
   const travelNumber = searchParams?.get("travelNumber") ?? "";
@@ -193,7 +193,7 @@ const SearchPlaceDetail = () => {
         },
       ];
     }
-    addScrollTop(document.getElementById("container-scroll")?.scrollTop ?? 0);
+    addIsChange(true);
     addPlans(newPlans);
     if (paramsType === "create") {
       router.push("/create/trip/detail");

@@ -42,7 +42,14 @@ const CreateScheduleItem = ({
     }[]
   ) => void;
 }) => {
-  const { scrollTop, addScrollTop, planIndex, addPlanIndex } = tripPlanStore();
+  const {
+    scrollTop,
+    addScrollTop,
+    planIndex,
+    addPlanIndex,
+    isChange,
+    addIsChange,
+  } = tripPlanStore();
   const [contentHeight, setContentHeight] = useState(0);
   const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null); // 콘텐츠 참조 추가
@@ -57,13 +64,14 @@ const CreateScheduleItem = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (scrollTop > 0) {
+    if (scrollTop > 0 && isChange) {
       console.log("scrollTop", scrollTop);
       document.getElementById("container-scroll")?.scrollTo({
         top: scrollTop,
       });
       setTimeout(() => {
         addScrollTop(0);
+        addIsChange(false);
       }, 1000);
     }
   }, [scrollTop]);
@@ -74,6 +82,7 @@ const CreateScheduleItem = ({
       idx,
       document.getElementById("container-scroll")?.scrollTop
     );
+    addScrollTop(document.getElementById("container-scroll")?.scrollTop ?? 0);
     addPlanIndex(idx);
     router.push(
       `/search/place/${idx}?type=${type}${type === "edit" ? `&travelNumber=${travelNumber}` : ""}`

@@ -23,7 +23,7 @@ const SearchPlace = () => {
   const [keyword, setKeyword] = useState("");
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const { locationName } = createTripStore();
-  const { addPlanIndex, addScrollTop } = tripPlanStore();
+  const { addIsChange } = tripPlanStore();
   const [ref, inView] = useInView();
   const router = useRouter();
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -197,9 +197,7 @@ const SearchPlace = () => {
       <HeaderContainer>
         <IconContainer
           onClick={() => {
-            addScrollTop(
-              document.getElementById("container-scroll")?.scrollTop ?? 0
-            );
+            addIsChange(true);
             router.back();
           }}
         >
