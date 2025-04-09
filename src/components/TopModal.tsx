@@ -102,11 +102,12 @@ const TopModal = ({
 
   useEffect(() => {
     if (isChange) {
+      console.log("modalHeight", isChange, modalHeight);
       setModalHeight(0);
       setIsMapFull(true);
       onHeightChange(0);
     }
-  }, [isChange]);
+  }, [isChange, setIsMapFull, onHeightChange]);
 
   useEffect(() => {
     const container = containerRef.current;
