@@ -103,9 +103,11 @@ const TopModal = ({
   useEffect(() => {
     if (isChange) {
       console.log("modalHeight", isChange, modalHeight);
-      setModalHeight(0);
-      setIsMapFull(true);
-      onHeightChange(0);
+      setTimeout(() => {
+        setModalHeight(0);
+        setIsMapFull(true);
+        onHeightChange(0);
+      }, 200);
     }
   }, [isChange, setIsMapFull, onHeightChange]);
 
