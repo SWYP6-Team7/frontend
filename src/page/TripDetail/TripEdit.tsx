@@ -34,7 +34,7 @@ dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
 
 const TripEdit = () => {
-  const { scrollTop, addScrollTop, planIndex, addPlanIndex } = tripPlanStore();
+  const { scrollTop, isChange, planIndex, addPlanIndex } = tripPlanStore();
 
   const params = useParams();
   const travelNumber = params?.travelNumber as string;
@@ -173,11 +173,11 @@ const TripEdit = () => {
     },
   });
   useEffect(() => {
-    if (scrollTop !== 0) {
+    if (isChange) {
       setOpenItemIndex(planIndex);
       addPlanIndex(0);
     }
-  }, [planIndex, scrollTop]);
+  }, [planIndex, isChange]);
 
   // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {
