@@ -7,6 +7,7 @@ import MapBottomModal from "@/components/MapBottomModal";
 import Spacing from "@/components/Spacing";
 import { createTripStore } from "@/store/client/createTripStore";
 import { editTripStore } from "@/store/client/editTripStore";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import {
@@ -32,7 +33,7 @@ const SearchPlaceDetail = () => {
   const router = useRouter();
   const placesLib = useMapsLibrary("places");
   const [isClient, setIsClient] = useState(false);
-
+  const { addScrollTop } = tripPlanStore();
   const searchParams = useSearchParams();
   const paramsType = searchParams?.get("type") ?? "create";
   const travelNumber = searchParams?.get("travelNumber") ?? "";
@@ -192,6 +193,7 @@ const SearchPlaceDetail = () => {
         },
       ];
     }
+    addScrollTop(document.getElementById("container-scroll")?.scrollTop ?? 0);
     addPlans(newPlans);
     if (paramsType === "create") {
       router.push("/create/trip/detail");

@@ -179,16 +179,6 @@ const TripEdit = () => {
     }
   }, [planIndex, scrollTop]);
 
-  useEffect(() => {
-    if (scrollTop > 0) {
-      console.log("scrollTop", scrollTop);
-      document.getElementById("container-scroll")?.scrollTo({
-        top: scrollTop,
-      });
-      addScrollTop(0);
-    }
-  }, [scrollTop]);
-
   // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {
     if (!isLoading && data && !dataInitialized) {

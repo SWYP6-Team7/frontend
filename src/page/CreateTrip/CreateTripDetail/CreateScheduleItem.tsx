@@ -56,6 +56,18 @@ const CreateScheduleItem = ({
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (scrollTop > 0) {
+      console.log("scrollTop", scrollTop);
+      document.getElementById("container-scroll")?.scrollTo({
+        top: scrollTop,
+      });
+      setTimeout(() => {
+        addScrollTop(0);
+      }, 1000);
+    }
+  }, [scrollTop]);
+
   const clickPlans = () => {
     console.log(
       "plancheck",
@@ -63,7 +75,6 @@ const CreateScheduleItem = ({
       document.getElementById("container-scroll")?.scrollTop
     );
     addPlanIndex(idx);
-    addScrollTop(document.getElementById("container-scroll")?.scrollTop ?? 0);
     router.push(
       `/search/place/${idx}?type=${type}${type === "edit" ? `&travelNumber=${travelNumber}` : ""}`
     );

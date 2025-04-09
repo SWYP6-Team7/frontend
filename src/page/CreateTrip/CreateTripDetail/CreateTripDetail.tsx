@@ -89,15 +89,6 @@ const CreateTripDetail = () => {
     }
   }, [planIndex, scrollTop]);
 
-  useEffect(() => {
-    if (scrollTop > 0) {
-      console.log("scrollTop", scrollTop);
-      document.getElementById("container-scroll")?.scrollTo({
-        top: scrollTop,
-      });
-      addScrollTop(0);
-    }
-  }, [scrollTop]);
   const newPlan = plans.map((plan) => {
     return {
       ...plan,

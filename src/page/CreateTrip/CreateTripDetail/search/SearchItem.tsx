@@ -1,6 +1,7 @@
 "use client";
 import { createTripStore } from "@/store/client/createTripStore";
 import { editTripStore } from "@/store/client/editTripStore";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -24,7 +25,7 @@ const SearchItem = ({
 }) => {
   const router = useRouter();
   const { planOrder } = useParams();
-
+  const { addScrollTop } = tripPlanStore();
   const searchParams = useSearchParams();
   const paramsType = searchParams?.get("type") ?? "create";
   const travelNumber = searchParams?.get("travelNumber") ?? "";
@@ -38,12 +39,15 @@ const SearchItem = ({
     console.log("plan2", plans);
     if (!planOrder) return;
     const targetPlanIndex = plans.findIndex(
-      (plan) => plan.planOrder === (paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1)
+      (plan) =>
+        plan.planOrder ===
+        (paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1)
     );
     let newPlans: any[] = [];
     if (targetPlanIndex > -1) {
       newPlans = plans.map((plan) =>
-        plan.planOrder === (paramsType === "create" ? targetPlanIndex : targetPlanIndex + 1)
+        plan.planOrder ===
+        (paramsType === "create" ? targetPlanIndex : targetPlanIndex + 1)
           ? {
               ...plan,
               spots: [
@@ -64,7 +68,8 @@ const SearchItem = ({
       newPlans = [
         ...plans,
         {
-          planOrder: paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1,
+          planOrder:
+            paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1,
           spots: [
             {
               id: uuidv4(),
@@ -80,6 +85,7 @@ const SearchItem = ({
     }
     console.log("new plan", newPlans, targetPlanIndex, plans);
     addPlans(newPlans);
+    addScrollTop(document.getElementById("container-scroll")?.scrollTop ?? 0);
     if (paramsType === "create") {
       router.push("/create/trip/detail");
     } else {
@@ -94,7 +100,13 @@ const SearchItem = ({
         )
       }
     >
-      <svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        width="32"
+        height="33"
+        viewBox="0 0 32 33"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <path
           d="M25 14.4091C25 21.7273 16 28 16 28C16 28 7 21.7273 7 14.4091C7 11.9136 7.94821 9.52041 9.63604 7.75586C11.3239 5.99131 13.6131 5 16 5C18.3869 5 20.6761 5.99131 22.364 7.75586C24.0518 9.52041 25 11.9136 25 14.4091Z"
           fill="#CDCDCD"
