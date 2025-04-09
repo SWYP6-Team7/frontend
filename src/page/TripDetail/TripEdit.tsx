@@ -188,8 +188,7 @@ const TripEdit = () => {
       data &&
       !dataInitialized &&
       !hasNextPage &&
-      date?.startDate &&
-      
+      date?.startDate
     ) {
       const allPlans = data.pages.flatMap((page) => page.plans || []);
       console.log("allPlans", allPlans);
