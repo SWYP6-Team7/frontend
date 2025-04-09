@@ -67,7 +67,7 @@ const CreateScheduleItem = ({
     if (scrollTop > 0 && isChange) {
       console.log("scrollTop", scrollTop);
       document.getElementById("container-scroll")?.scrollTo({
-        top: scrollTop,
+        top: scrollTop + 400,
       });
       setTimeout(() => {
         addScrollTop(0);

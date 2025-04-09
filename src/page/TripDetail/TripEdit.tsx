@@ -52,7 +52,7 @@ const TripEdit = () => {
     maxPerson: initMaxPerson,
     genderType: initGenderType,
   } = tripInfos ?? {};
-
+  const [dataInitialized, setDataInitialized] = useState(false);
   const {
     locationName,
     title,
@@ -74,8 +74,7 @@ const TripEdit = () => {
     addInitGeometry,
     periodType,
     addCompletionStatus,
-    dataInitialized,
-    setDataInitialized,
+
     originalPlans,
     setOriginalPlans,
     resetEditTripDetail,
@@ -181,7 +180,7 @@ const TripEdit = () => {
 
   // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {
-    console.log("data", data);
+    console.log("data", data, dataInitialized);
 
     if (!isLoading && data && !dataInitialized) {
       const allPlans = data.pages.flatMap((page) => page.plans || []);
