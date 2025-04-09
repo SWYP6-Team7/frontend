@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo, RefObject } f
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import TripToast from "./designSystem/toastMessage/tripToast";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 
 const TopModal = ({
   children,
@@ -18,7 +19,7 @@ const TopModal = ({
   isToastShow: boolean;
 }) => {
   const touchStartY = useRef(null);
-
+  const { isChange } = tripPlanStore();
   const [startY, setStartY] = useState(0);
   const [modalHeight, setModalHeight] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
@@ -98,6 +99,14 @@ const TopModal = ({
     },
     [handleInteraction]
   );
+
+  useEffect(() => {
+    if (isChange) {
+      setModalHeight(0);
+
+      setIsMapFull(true);
+    }
+  }, [isChange]);
 
   useEffect(() => {
     const container = containerRef.current;
