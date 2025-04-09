@@ -53,7 +53,6 @@ const TripEdit = () => {
     maxPerson: initMaxPerson,
     genderType: initGenderType,
   } = tripInfos ?? {};
-  const [dataInitialized, setDataInitialized] = useState(false);
   const {
     locationName,
     title,
@@ -75,7 +74,8 @@ const TripEdit = () => {
     addInitGeometry,
     periodType,
     addCompletionStatus,
-
+    dataInitialized,
+    setDataInitialized,
     originalPlans,
     setOriginalPlans,
     resetEditTripDetail,
