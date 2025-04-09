@@ -119,7 +119,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     >
       <Container pathname={pathname}>
         <Splash />
-        <Body pathname={pathname}>
+        <Body pathname={checkRoute}>
           {/* {isSignup && <Header />} */}
           {/* 홈 화면 헤더는 다른 형태. */}
           {pathname !== "/" &&
@@ -153,9 +153,10 @@ const Body = styled.div<{ pathname: string | null }>`
   position: relative;
 
   background-color: ${(props) =>
-    props.pathname === "/" ||
+    props.pathname.exact("/") ||
     props.pathname?.exact("/create/trip/detail") ||
-    props.pathname?.startsWith("/notification")
+    props.pathname?.startsWith("/notification") ||
+    props.pathname?.startsWith("/community/detail")
       ? "#f5f5f5"
       : props.pathname?.startsWith("/trip/detail") ||
           props.pathname?.startsWith("/myTrip") ||
