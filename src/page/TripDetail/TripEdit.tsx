@@ -185,7 +185,7 @@ const TripEdit = () => {
 
     if (!isLoading && data && !dataInitialized && !hasNextPage) {
       const allPlans = data.pages.flatMap((page) => page.plans || []);
-
+      console.log("allPlans", allPlans);
       const formattedPlans = allPlans.map((plan) => {
         const planDate = dayjs(initStartDate)
           .add(plan.planOrder - 1, "day")
