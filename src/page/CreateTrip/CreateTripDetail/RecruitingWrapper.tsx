@@ -5,7 +5,13 @@ import Vector from "@/components/icons/Vector";
 import Spacing from "@/components/Spacing";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { ChangeEvent, FocusEventHandler, FormEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FocusEventHandler,
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
 import RecruitingPickerView from "./RecruitingPickerView";
 import Button from "@/components/designSystem/Buttons/Button";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
@@ -19,7 +25,7 @@ export default function RecruitingWrapper() {
   const { maxPerson: maxPersonForCreateTrip, addMaxPerson } = createTripStore();
   const [showModal, setShowModal] = useState(false);
   const [focused, setFocused] = useState(false);
-
+  const [isCountSeleted, setIsCountSelected] = useState(false);
   const bgColor = focused ? palette.keycolorBG : palette.검색창;
 
   const borderColor = focused ? palette.keycolor : bgColor;
@@ -39,19 +45,24 @@ export default function RecruitingWrapper() {
     console.log(value);
     e.target.value = value.toString();
     addMaxPerson(value);
+    setIsCountSelected(true);
   };
 
   const onClickButton = (type: "plus" | "minus") => {
     if (type === "plus") {
       addMaxPerson(maxPersonForCreateTrip + 1);
     } else {
-      addMaxPerson(maxPersonForCreateTrip === 0 ? 0 : maxPersonForCreateTrip - 1);
+      addMaxPerson(
+        maxPersonForCreateTrip === 0 ? 0 : maxPersonForCreateTrip - 1
+      );
     }
+    setIsCountSelected(true);
   };
 
   const handleCloseModal = () => {
     if (maxPersonForCreateTrip <= 0) return;
     setShowModal(false);
+    setIsCountSelected(true);
   };
 
   return (
@@ -69,7 +80,7 @@ export default function RecruitingWrapper() {
             <div>
               <PersonIcon stroke={palette.keycolor} width={24} height={20} />
             </div>
-            <Count>{maxPersonForCreateTrip}</Count>
+            <Count isSelected={isCountSeleted}>{maxPersonForCreateTrip}</Count>
 
             <Vector />
           </div>
@@ -229,13 +240,14 @@ const DetailTitle = styled.div`
   padding: 0px 6px;
   gap: 8px;
 `;
-const Count = styled.div`
+const Count = styled.div<{ isSelected: boolean }>`
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
   text-align: center;
   margin-left: 4px;
-  color: ${palette.비강조2};
+  color: ${(props) => (props.isSelected ? palette.기본 : palette.비강조2)};
+
   margin-right: 8px;
 `;
 

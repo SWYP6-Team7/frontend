@@ -99,9 +99,12 @@ const CreateTripDetail = () => {
     details,
     maxPerson,
     genderType: genderType!,
-    startDate: date!.startDate ?? "",
-    endDate: date!.endDate ?? "",
-    periodType: getDateRangeCategory(date!.startDate ?? "", date!.endDate ?? ""),
+    startDate: date?.startDate ?? "",
+    endDate: date?.endDate ?? "",
+    periodType: getDateRangeCategory(
+      date?.startDate ?? "",
+      date?.endDate ?? ""
+    ),
     locationName: locationName.locationName,
     tags,
     plans: newPlan,
@@ -195,7 +198,10 @@ const CreateTripDetail = () => {
               />
             </ModalContainer>
           </TopModal>
-          <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
+          <BottomContainer
+            isMapFull={isMapFull}
+            topModalHeight={topModalHeight}
+          >
             <MapContainer
               index={openItemIndex}
               plans={plans}
@@ -209,17 +215,19 @@ const CreateTripDetail = () => {
               <Title>여행 일정</Title>
               <ScheduleList>
                 {date &&
-                  getDatesArray(date.startDate, date.endDate).map((item, idx) => (
-                    <CreateScheduleItem
-                      plans={plans}
-                      idx={idx}
-                      addPlans={addPlans}
-                      type="create"
-                      title={item}
-                      isOpen={openItemIndex === idx}
-                      onToggle={() => handleItemToggle(idx)}
-                    />
-                  ))}
+                  getDatesArray(date?.startDate ?? "", date?.endDate ?? "").map(
+                    (item, idx) => (
+                      <CreateScheduleItem
+                        plans={plans}
+                        idx={idx}
+                        addPlans={addPlans}
+                        type="create"
+                        title={item}
+                        isOpen={openItemIndex === idx}
+                        onToggle={() => handleItemToggle(idx)}
+                      />
+                    )
+                  )}
               </ScheduleList>
             </ScheduleContainer>
           </BottomContainer>
@@ -294,7 +302,8 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) =>
+    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;

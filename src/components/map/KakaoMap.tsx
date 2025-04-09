@@ -15,7 +15,7 @@ interface KakaoMapProps {
 
 const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_MAP_KEY;
-
+  const mapRef = useRef<HTMLDivElement>(null);
   const getInitialSettings = () => {
     const MAP_WIDTH = 400;
     const MAP_HEIGHT = 300;
@@ -65,6 +65,23 @@ const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
   };
 
   const { initialCenter, initialZoom } = getInitialSettings();
+
+  // 지도 상에서 스크롤했을 때 이벤트 전파 막기
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.addEventListener("scroll", (event) => {
+        event.stopPropagation();
+      });
+    }
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.removeEventListener("scroll", (event) => {
+          event.stopPropagation();
+          return;
+        });
+      }
+    };
+  }, [mapRef.current]);
   useEffect(() => {
     const script: HTMLScriptElement = document.createElement("script");
     script.async = true;
@@ -158,7 +175,7 @@ const KakaoMap = ({ lat, lng, zoom, positions = [] }: KakaoMapProps) => {
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <div id="map" style={{ height: "100%", width: "100%" }} />
+      <div ref={mapRef} id="map" style={{ height: "100%", width: "100%" }} />
     </div>
   );
 };
