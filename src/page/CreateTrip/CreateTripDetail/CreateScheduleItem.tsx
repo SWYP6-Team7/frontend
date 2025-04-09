@@ -57,7 +57,11 @@ const CreateScheduleItem = ({
   }, [isOpen]);
 
   const clickPlans = () => {
-    console.log("plancheck", idx, window.scrollY);
+    console.log(
+      "plancheck",
+      idx,
+      document.getElementById("container-scroll")?.scrollTop
+    );
     addPlanIndex(idx);
     addScrollTop(document.getElementById("container-scroll")?.scrollTop ?? 0);
     router.push(
