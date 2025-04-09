@@ -340,7 +340,7 @@ const TripEdit = () => {
   return (
     <>
       <CreateTripDetailWrapper>
-        <CreateTripDetailContainer ref={containerRef}>
+        <CreateTripDetailContainer id="container-scroll" ref={containerRef}>
           <TopModal
             isToastShow={isToastShow}
             containerRef={containerRef}
