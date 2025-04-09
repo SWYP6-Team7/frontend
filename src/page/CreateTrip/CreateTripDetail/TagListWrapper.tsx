@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import TagList from "../component/TagList";
 import Spacing from "@/components/Spacing";
 import { TAG_LIST } from "@/constants/tags";
+import WarningToast from "@/components/designSystem/toastMessage/WarningToast";
 
 interface TagListWrapperProps {
   taggedArray: string[];
@@ -18,8 +19,18 @@ interface TagListWrapperProps {
 const TagListWrapper = ({ taggedArray, addTags }: TagListWrapperProps) => {
   const [showModal, setShowModal] = useState(false);
   const [tempTaggedArray, setTampTaggedArray] = useState(taggedArray);
+  const [limitCountToastShow, setLimitCountToastShow] = useState(false);
+
+  const isActive = (tag: string) => {
+    return taggedArray.includes(tag);
+  };
   const clickTag = (index: number) => {
-    if (tempTaggedArray.length === 5) return;
+    if (tempTaggedArray.length === 5) {
+      if (!isActive(TAG_LIST.value[index])) {
+        setLimitCountToastShow(true);
+        return;
+      }
+    }
     const newArray = taggedArray.includes(TAG_LIST.value[index])
       ? taggedArray.filter((v) => v !== TAG_LIST.value[index])
       : [...taggedArray, TAG_LIST.value[index]];
@@ -37,6 +48,12 @@ const TagListWrapper = ({ taggedArray, addTags }: TagListWrapperProps) => {
   };
   return (
     <>
+      <WarningToast
+        height={120}
+        isShow={limitCountToastShow}
+        setIsShow={setLimitCountToastShow}
+        text="최대 5개까지 설정할 수 있어요"
+      />
       <Container>
         {taggedArray.map((tag) => (
           <BoxLayoutTag
