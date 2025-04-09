@@ -24,6 +24,7 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CreateScheduleItem from "./CreateScheduleItem";
 import TripToast from "@/components/designSystem/toastMessage/tripToast";
 import { getDateRangeCategory } from "@/utils/time";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
@@ -79,6 +80,14 @@ const CreateTripDetail = () => {
   const handleItemToggle = (index) => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
+  const { scrollTop, planIndex, addPlanIndex } = tripPlanStore();
+
+  useEffect(() => {
+    if (scrollTop !== 0) {
+      setOpenItemIndex(planIndex);
+      addPlanIndex(0);
+    }
+  }, [planIndex, scrollTop]);
   const newPlan = plans.map((plan) => {
     return {
       ...plan,

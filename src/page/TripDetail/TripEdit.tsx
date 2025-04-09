@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import Button from "@/components/designSystem/Buttons/Button";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { authStore } from "@/store/client/authStore";
 import ButtonContainer from "@/components/ButtonContainer";
@@ -33,6 +33,22 @@ dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
 
 const TripEdit = () => {
+  const params = useParams();
+  const travelNumber = params?.travelNumber as string;
+  const { tripDetail } = useTripDetail(parseInt(travelNumber!));
+  const tripInfos = tripDetail.data as any;
+  const {
+    title: initTitle,
+    startDate: initStartDate,
+    endDate: initEndDate,
+    details: initDetails,
+    tags: initTags,
+    locationName: initLocationName,
+    initGeometry: initInitGeometry,
+    maxPerson: initMaxPerson,
+    genderType: initGenderType,
+  } = tripInfos;
+
   const {
     locationName,
     title,
@@ -60,21 +76,52 @@ const TripEdit = () => {
     setOriginalPlans,
     resetEditTripDetail,
   } = editTripStore();
-  const {
-    travelNumber,
-    title: initTitle,
-    startDate: initStartDate,
-    endDate: initEndDate,
-    details: initDetails,
-    tags: initTags,
-    locationName: initLocationName,
-    initGeometry: initInitGeometry,
-    maxPerson: initMaxPerson,
-    genderType: initGenderType,
-    resetTripDetail,
-  } = tripDetailStore();
+  useEffect(() => {
+    console.log(tripInfos);
+    if (tripDetail.isFetched) {
+      const {
+        travelNumber,
+        userNumber,
+        userName,
+        createdAt,
+        location,
+        title,
+        details,
+        maxPerson,
+        genderType,
 
-  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
+        periodType,
+        tags,
+        postStatus,
+        nowPerson,
+        bookmarkCount,
+        viewCount,
+        enrollCount,
+        userAgeGroup,
+        startDate,
+        endDate,
+        profileUrl,
+        loginMemberRelatedInfo,
+      } = tripInfos;
+
+      addTitle(title);
+      addDetails(details);
+      addMaxPerson(maxPerson);
+      addGenderType(genderType);
+
+      addTags(tags);
+    }
+  }, [tripDetail.isFetched, tripInfos]);
+
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    refetch,
+    isFetching,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
       return getPlans(Number(travelNumber), pageParam) as any;
@@ -142,7 +189,9 @@ const TripEdit = () => {
       addDetails(initDetails || "");
       addTags(initTags || []);
       addLocationName(initLocationName || { locationName: "" });
-      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
+      addInitGeometry(
+        initInitGeometry || { lat: 37.57037778, lng: 126.9816417 }
+      );
       addDate({ startDate: initStartDate || "", endDate: initEndDate || "" });
       addGenderType(initGenderType || "");
       addMaxPerson(initMaxPerson || 0);
@@ -171,12 +220,16 @@ const TripEdit = () => {
         dateRange.push(start.add(i, "day").format("YYYY-MM-DD"));
       }
 
-      if (plans.length !== dayDiff || !dateRange.every((date) => plans.some((p) => p.date === date))) {
+      if (
+        plans.length !== dayDiff ||
+        !dateRange.every((date) => plans.some((p) => p.date === date))
+      ) {
         const newPlans = dateRange.map((currentDate, index) => {
           // 1. 현재 plans에서 먼저 조회
           // 2. 없으면 originalPlans에서 조회
           const existingPlan =
-            plans.find((p) => p.date === currentDate) || originalPlans?.find((p) => p.date === currentDate);
+            plans.find((p) => p.date === currentDate) ||
+            originalPlans?.find((p) => p.date === currentDate);
 
           return existingPlan
             ? {
@@ -194,7 +247,13 @@ const TripEdit = () => {
         addPlans(newPlans);
       }
     }
-  }, [date?.startDate, date?.endDate, dataInitialized, plans.length, originalPlans]);
+  }, [
+    date?.startDate,
+    date?.endDate,
+    dataInitialized,
+    plans.length,
+    originalPlans,
+  ]);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -210,7 +269,7 @@ const TripEdit = () => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
 
-  const { updateTripDetailMutate } = useTripDetail(travelNumber);
+  const { updateTripDetailMutate } = useTripDetail(Number(travelNumber));
 
   const completeClickHandler = () => {
     if (
@@ -247,7 +306,10 @@ const TripEdit = () => {
       genderType: genderType!,
       startDate: date?.startDate || "",
       endDate: date?.endDate || "",
-      periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
+      periodType: getDateRangeCategory(
+        date?.startDate ?? "",
+        date?.endDate ?? ""
+      ),
       locationName: locationName.locationName,
       tags,
       planChanges: trackPlanChanges(originalPlans, plans),
@@ -256,7 +318,6 @@ const TripEdit = () => {
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetEditTripDetail();
-        resetTripDetail();
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
         } else {
@@ -324,7 +385,10 @@ const TripEdit = () => {
               />
             </ModalContainer>
           </TopModal>
-          <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
+          <BottomContainer
+            isMapFull={isMapFull}
+            topModalHeight={topModalHeight}
+          >
             <MapContainer
               index={openItemIndex}
               plans={plans}
@@ -344,7 +408,7 @@ const TripEdit = () => {
                       key={item.id || idx}
                       addPlans={addPlans}
                       type="edit"
-                      travelNumber={travelNumber}
+                      travelNumber={Number(travelNumber)}
                       idx={idx}
                       plans={plans}
                       title={item?.date ?? ""}
@@ -421,7 +485,8 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) =>
+    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
