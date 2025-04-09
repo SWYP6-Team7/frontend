@@ -17,6 +17,7 @@ interface InfoWrapperProps {
   maxPerson: number;
   addMaxPerson: (person: number) => void;
   addGenderType: (type: string) => void;
+  nowPerson?: number;
 }
 
 const InfoWrapper = ({
@@ -24,6 +25,7 @@ const InfoWrapper = ({
   maxPerson,
   addMaxPerson,
   addGenderType,
+  nowPerson = 0,
 }: InfoWrapperProps) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -82,7 +84,9 @@ const InfoWrapper = ({
             )}
             <Title>{genderType}</Title>
           </TitleContainer>
-          <Content>0 / {maxPerson}</Content>
+          <Content>
+            {nowPerson} / {maxPerson}
+          </Content>
         </TextContainer>
         <ArrowIconContainer>
           <ArrowIcon />

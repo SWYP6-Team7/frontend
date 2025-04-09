@@ -47,6 +47,7 @@ const TripEdit = () => {
     endDate: initEndDate,
     details: initDetails,
     tags: initTags,
+    nowPerson,
     location,
     initGeometry: initInitGeometry,
     maxPerson: initMaxPerson,
@@ -80,7 +81,7 @@ const TripEdit = () => {
     resetEditTripDetail,
   } = editTripStore();
   useEffect(() => {
-    console.log(tripInfos);
+    console.log("trip", tripInfos);
     if (tripDetail.isFetched) {
       const {
         travelNumber,
@@ -420,6 +421,7 @@ const TripEdit = () => {
               <CalendarWrapper addDate={addDate} date={date} />
               <Bar />
               <InfoWrapper
+                nowPerson={nowPerson}
                 addGenderType={addGenderType}
                 genderType={genderType}
                 maxPerson={maxPerson}
