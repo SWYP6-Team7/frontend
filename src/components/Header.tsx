@@ -43,7 +43,6 @@ const Header = () => {
   const headerBackgroundColorIsF5 = () => {
     return (
       checkRoute.exact(ROUTES.HOME) ||
-      checkRoute?.exact(ROUTES.CREATE_TRIP.DETAIL) ||
       checkRoute?.startsWith(ROUTES.NOTIFICATION) ||
       checkRoute?.startsWith(ROUTES.COMMUNITY.DETAIL)
     );
