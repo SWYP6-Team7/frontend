@@ -190,7 +190,7 @@ const TripEdit = () => {
         const planDate = dayjs(date?.startDate)
           .add(plan.planOrder - 1, "day")
           .format("YYYY-MM-DD");
-
+        console.log("date", date, planDate);
         return {
           ...plan,
           planOrder: plan.planOrder,
