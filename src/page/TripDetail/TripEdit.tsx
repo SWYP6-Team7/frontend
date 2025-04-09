@@ -181,9 +181,9 @@ const TripEdit = () => {
 
   // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {
-    console.log("data", data, dataInitialized);
+    console.log("data", data, dataInitialized, hasNextPage);
 
-    if (!isLoading && data && !dataInitialized) {
+    if (!isLoading && data && !dataInitialized && !hasNextPage) {
       const allPlans = data.pages.flatMap((page) => page.plans || []);
 
       const formattedPlans = allPlans.map((plan) => {
@@ -209,7 +209,13 @@ const TripEdit = () => {
       addPlans(formattedPlans);
       setDataInitialized(true);
     }
-  }, [JSON.stringify(data), isLoading, dataInitialized, initStartDate]);
+  }, [
+    JSON.stringify(data),
+    isLoading,
+    dataInitialized,
+    initStartDate,
+    hasNextPage,
+  ]);
   useEffect(() => {
     if (hasNextPage && !isFetching) {
       const timer = setTimeout(() => {
@@ -221,7 +227,6 @@ const TripEdit = () => {
   }, [hasNextPage, isFetching, fetchNextPage]);
 
   useEffect(() => {
-    console.log(title, "title");
     if (
       title === "" &&
       initTitle &&
