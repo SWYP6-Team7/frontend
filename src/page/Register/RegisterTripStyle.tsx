@@ -1,10 +1,8 @@
 "use client";
-import ThirdStepIcon from "@/components/icons/ThirdStepIcon";
 import Button from "@/components/designSystem/Buttons/Button";
 import styled from "@emotion/styled";
 import { userStore } from "@/store/client/userStore";
 import { MouseEventHandler, useEffect, useState } from "react";
-import CategoryButton from "@/components/CategoryButton";
 import Spacing from "@/components/Spacing";
 import useAuth from "@/hooks/user/useAuth";
 
@@ -12,6 +10,7 @@ import { palette } from "@/styles/palette";
 import { IRegisterGoogle, IRegisterKakao } from "@/model/auth";
 import { useRouter } from "next/navigation";
 import SearchFilterTag from "@/components/designSystem/tag/SearchFilterTag";
+import RegisterThirdStepIcon from "@/components/icons/step/register/RegisterThirdStepIcon";
 
 const TAGCOUNT = 18;
 const categoryButtonTextArray = [
@@ -39,11 +38,8 @@ const RegisterTripStyle = () => {
   const router = useRouter();
   const {
     registerEmail,
-    registerEmailMutation: { isSuccess },
-    registerSocialMutation: {
-      isSuccess: isSocialSuccess,
-      isError: isSocialError,
-    },
+    registerEmailMutation: { isSuccess, isPending },
+    registerSocialMutation: { isSuccess: isSocialSuccess, isError: isSocialError, isPaused: isSocialPending },
     registerSocial,
   } = useAuth();
 
@@ -118,11 +114,7 @@ const RegisterTripStyle = () => {
       resetGender();
       router.push("/login");
     } else {
-      if (
-        isRegisterEmail &&
-        !isSuccess &&
-        (!email || !name || !agegroup || !sex)
-      ) {
+      if (isRegisterEmail && !isSuccess && (!email || !name || !agegroup || !sex)) {
         resetName();
         sessionStorage.removeItem("sessionToken");
         resetForm();
@@ -160,20 +152,15 @@ const RegisterTripStyle = () => {
   }, [isSocialError, isSocialSuccess]);
 
   // 버튼 활성화상태.
-  const [activeStates, setActiveStates] = useState<boolean[]>(
-    new Array(TAGCOUNT).fill(false)
-  );
+  const [activeStates, setActiveStates] = useState<boolean[]>(new Array(TAGCOUNT).fill(false));
 
   // 최종적으로 선택된 여행 스타일 담은 배열
-  const tripStyleArray = categoryButtonTextArray
-    .filter((_, idx) => activeStates[idx])
-    .map((item) => item.value);
+  const tripStyleArray = categoryButtonTextArray.filter((_, idx) => activeStates[idx]).map((item) => item.value);
 
   // 버튼 클릭 핸들러
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     const newActiveStates = [...activeStates];
-    newActiveStates[parseInt(e.currentTarget.id)] =
-      !newActiveStates[parseInt(e.currentTarget.id)]; // 토글
+    newActiveStates[parseInt(e.currentTarget.id)] = !newActiveStates[parseInt(e.currentTarget.id)]; // 토글
 
     const activeArray = newActiveStates.filter((v) => v === true);
     if (activeArray.length <= 5) {
@@ -222,7 +209,7 @@ const RegisterTripStyle = () => {
   return (
     <RegisterTripStyleWrapper>
       <StepIconContainer>
-        <ThirdStepIcon />
+        <RegisterThirdStepIcon />
       </StepIconContainer>
       <TripStyleStep>
         <ContentName>
@@ -239,16 +226,12 @@ const RegisterTripStyle = () => {
               key={item.label}
               idx={idx}
               addStyle={{
-                backgroundColor: isActive(idx)
-                  ? "rgba(227, 239, 217, 1)"
-                  : " rgba(240, 240, 240, 1)",
-                color: isActive(idx)
-                  ? `${palette.keycolor}`
-                  : "rgba(52, 52, 52, 1)",
-                border: isActive(idx)
-                  ? `1px solid ${palette.keycolor}`
-                  : `1px solid ${palette.검색창}`,
+                backgroundColor: isActive(idx) ? "rgba(227, 239, 217, 1)" : " rgba(240, 240, 240, 1)",
+                color: isActive(idx) ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
+                border: isActive(idx) ? `1px solid ${palette.keycolor}` : `1px solid ${palette.검색창}`,
                 borderRadius: "30px",
+                fontSize: "16",
+                lineHeight: "22px",
                 padding: "10px 20px",
                 fontWeight: isActive(idx) ? "600" : "400",
               }}
@@ -261,18 +244,12 @@ const RegisterTripStyle = () => {
       <Spacing size={120} />
       <ButtonWrapper width={newRightPosition}>
         <Button
-          disabled={tripStyleArray.length === 0}
+          disabled={tripStyleArray.length === 0 || isPending || isSocialPending}
           text="다음"
           onClick={completeHandler}
           addStyle={{
-            backgroundColor:
-              tripStyleArray.length > 0
-                ? "rgba(62, 141, 0, 1)"
-                : "rgba(220, 220, 220, 1)",
-            color:
-              tripStyleArray.length > 0
-                ? "rgba(240, 240, 240, 1)"
-                : palette.비강조,
+            backgroundColor: tripStyleArray.length > 0 ? "rgba(62, 141, 0, 1)" : "rgba(220, 220, 220, 1)",
+            color: tripStyleArray.length > 0 ? "rgba(240, 240, 240, 1)" : palette.비강조,
             boxShadow: "rgba(170, 170, 170, 0.1)",
           }}
         />

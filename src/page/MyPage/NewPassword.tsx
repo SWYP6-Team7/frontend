@@ -24,6 +24,7 @@ export default function NewPassword() {
     password: "",
     confirmPassword: "",
   });
+  const { userSocialTF } = myPageStore();
   const [success, setSuccess] = useState({
     password: false,
     confirmPassword: false,
@@ -41,6 +42,12 @@ export default function NewPassword() {
   const router = useRouter();
 
   const allSuccess = Object.values(success).every((value) => value);
+
+  useEffect(() => {
+    if (userSocialTF) {
+      router.replace("/editMyInfo");
+    }
+  }, [userSocialTF]);
 
   const handleRemoveValue = (name: "password" | "confirmPassword") => {
     if (name === "password") {

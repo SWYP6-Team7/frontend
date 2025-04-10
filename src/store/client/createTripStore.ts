@@ -1,27 +1,37 @@
 "use client";
+import { SpotType } from "@/model/trip";
 import { getCurrentFormattedDate } from "@/utils/time";
 import { create } from "zustand";
 
 type Gender = "F" | "M" | "";
 
 interface CreateTripState {
-  location: string;
-  addLocation: (location: string) => void;
+  locationName: { locationName: string; mapType: "google" | "kakao" };
+  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
   title: string;
   addTitle: (title: string) => void;
   details: string;
   addDetails: (details: string) => void;
   maxPerson: number;
   addMaxPerson: (maxPerson: number) => void;
-  genderType: string;
+  genderType: string | null;
   addGenderType: (genderType: string) => void;
   dueDate: string;
   addDueDate: (dueDate: string) => void;
+  date: { startDate: string; endDate: string } | null;
+  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
   periodType: string;
   addPeriodType: (periodType: string) => void;
   tags: string[];
   addTags: (tags: string[]) => void;
+  initGeometry: { lng: number; lat: number } | null;
+  addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   completionStatus: boolean;
+  plans: {
+    planOrder: number;
+    spots: SpotType[];
+  }[];
+  addPlans: (plans: { planOrder: number; spots: SpotType[] }[]) => void;
   addCompletionStatus: (completionStatus: boolean) => void;
   resetCreateTripDetail: () => void;
 }
@@ -31,9 +41,9 @@ export const createTripStore = create<CreateTripState>((set) => ({
   addTitle: (title) => {
     set({ title });
   },
-  location: "",
-  addLocation: (location) => {
-    set({ location });
+  locationName: { locationName: "", mapType: "google" },
+  addLocationName: (locationName) => {
+    set({ locationName });
   },
   details: "",
   addDetails: (details) => {
@@ -43,7 +53,11 @@ export const createTripStore = create<CreateTripState>((set) => ({
   addMaxPerson: (maxPerson) => {
     set({ maxPerson });
   },
-  genderType: "모두",
+  initGeometry: null,
+  addInitGeometry: (geo) => {
+    set({ initGeometry: geo });
+  },
+  genderType: null,
   addGenderType: (genderType) => {
     set({ genderType });
   },
@@ -55,9 +69,17 @@ export const createTripStore = create<CreateTripState>((set) => ({
 
     set({ dueDate: `${year}-${formattedMonth}-${formattedDay}` });
   },
+  date: null,
+  addDate: (date) => {
+    set({ date });
+  },
   periodType: "",
   addPeriodType: (periodType) => {
     set({ periodType });
+  },
+  plans: [],
+  addPlans: (plans) => {
+    set({ plans });
   },
   tags: [],
   addTags: (tags) => {
@@ -71,7 +93,10 @@ export const createTripStore = create<CreateTripState>((set) => ({
   resetCreateTripDetail: () => {
     set({
       title: "",
-      location: "",
+      locationName: {
+        locationName: "",
+        mapType: "google",
+      },
       details: "",
       maxPerson: 1,
       genderType: "",

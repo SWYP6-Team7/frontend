@@ -17,6 +17,7 @@ import { isGuestUser } from "@/utils/user";
 import LoginButtonForGuest from "@/components/LoginButtonForGuest";
 import { useRouter } from "next/navigation";
 import { useBackPathStore } from "@/store/client/backPathStore";
+import HorizonBoxLayout from "@/components/HorizonBoxLayout";
 
 export default function ApplyTrip() {
   const [ref, inView] = useInView();
@@ -78,8 +79,13 @@ export default function ApplyTrip() {
               }) => (
                 <BoxContainer key={travelNumber}>
                   <div onClick={() => clickTrip(travelNumber)}>
-                    <MyTripHorizonBoxLayout
+                    <HorizonBoxLayout
+                      isBookmark={true}
+                      bookmarked={bookmarked}
                       travelNumber={travelNumber}
+                      bookmarkNeed={false}
+                      isBar={true}
+                      bookmarkPosition="top"
                       userName={userName}
                       title={title}
                       tags={tags}
@@ -88,7 +94,6 @@ export default function ApplyTrip() {
                       daysAgo={daysAgo(createdAt)}
                       daysLeft={dayjs(registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                       recruits={nowPerson}
-                      bookmarked={bookmarked}
                     />
                   </div>
                   <ApplyTripIconBtns travelNumber={travelNumber} bookmarked={bookmarked} />
@@ -135,8 +140,9 @@ const Container = styled.div<{ isNodata: boolean | undefined }>`
   align-items: center;
 `;
 const BoxContainer = styled.div`
-  padding: 11px 16px;
+  padding: 16px;
   gap: 8px;
+  padding-top: 11px;
   border-radius: 20px;
   opacity: 0px;
   box-shadow: 0px 2px 4px 3px #aaaaaa14;

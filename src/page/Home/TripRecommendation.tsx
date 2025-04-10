@@ -23,7 +23,7 @@ const TripRecommendation = () => {
 
     router.push(`/trip/detail/${travelNumber}`);
   };
-
+  console.log("cut", cutTrips);
   return (
     <Container>
       <TitleContainer
@@ -35,11 +35,12 @@ const TripRecommendation = () => {
         }
         minWidth="102px"
       />
+
       <ThreeRowCarousel>
         {cutTrips &&
           cutTrips?.map((post, idx) => (
             <BoxContainer key={post.travelNumber}>
-              <Box style={idx === cutTrips.length - 1 ? { borderBottom: 0 } : {}}>
+              <Box style={(idx + 1) % 3 === 0 || cutTrips.length === idx + 1 ? { borderBottom: 0 } : {}}>
                 <div onClick={() => clickTrip(post.travelNumber)}>
                   <HorizonBoxLayout
                     bookmarked={post.bookmarked}
@@ -66,16 +67,13 @@ const TripRecommendation = () => {
 export default TripRecommendation;
 
 const Container = styled.div`
-  margin-top: 40px;
+  margin-top: 32px;
 `;
 const BoxContainer = styled.div``;
 const Box = styled.div`
-  &:last-of-type {
-    border-bottom: 0px;
-  }
-
   border-bottom: 1px solid ${palette.비강조4};
-
+  height: 90px;
+  box-sizing: content-box;
   margin: 0 16px;
-  padding: 18px 16px;
+  padding: 10px 0;
 `;

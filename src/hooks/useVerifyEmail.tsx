@@ -2,10 +2,12 @@
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { checkNetworkConnection } from "./user/useAuth";
-import { axiosInstance } from "@/api";
+import { axiosInstance, handleApiResponse } from "@/api";
 import RequestError from "@/context/ReqeustError";
+import { errorStore } from "@/store/client/errorStore";
 
 const useVerifyEmail = () => {
+  const { updateError, setIsMutationError } = errorStore();
   const verifyEmailSend = useMutation({
     mutationFn: async ({ email }: { email: string }) => {
       if (!checkNetworkConnection()) return;
@@ -13,15 +15,18 @@ const useVerifyEmail = () => {
       const response = await axiosInstance.post("/api/verify/email/send", {
         email,
       });
-      return response.data;
+      if (!response.data?.success) {
+        throw new Error(response.data?.error.reason);
+      }
+      return response?.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       console.log(data, "data");
       if (data.success) {
         sessionStorage.setItem("sessionToken", data.success.sessionToken);
       } else {
-        console.error(data.error.reason);
-        throw new RequestError(data.error.reason);
+        updateError(data.error.reason);
+        setIsMutationError(true);
       }
     },
     onError: (error: any) => {
@@ -39,15 +44,19 @@ const useVerifyEmail = () => {
         verifyCode,
         sessionToken,
       });
-      return response.data;
+      if (!response.data?.success) {
+        throw new RequestError(response.data?.error.reason);
+      }
+      return response?.data;
     },
     mutationKey: ["verifyEmailCode"],
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       console.log(data, "data");
       if (data.success) {
       } else {
         console.error(data.error.reason);
-        throw new RequestError(data.error.reason);
+        updateError(data.error.reason);
+        setIsMutationError(true);
       }
     },
     onError: (error: any) => {

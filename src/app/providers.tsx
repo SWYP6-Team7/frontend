@@ -5,16 +5,20 @@ import { ReactNode } from "react";
 import RootStyleRegistry from "./RootStyleRegistry";
 import { GlobalErrorBoundary } from "@/components/errorHandling/GlobalErrorBoundary";
 import { ViewTransitions } from "next-view-transitions";
+import PageNavigationProvider from "@/context/PageNavigationProvider";
+import AutoRefresh from "@/context/AutoRefresh";
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <GlobalErrorBoundary>
       <ViewTransitions>
-        <QueryClientBoundary>
-          <ErrorCatcher />
+        <PageNavigationProvider>
+          <QueryClientBoundary>
+            <ErrorCatcher />
 
-          <RootStyleRegistry> {children}</RootStyleRegistry>
-        </QueryClientBoundary>
+            <RootStyleRegistry>{children}</RootStyleRegistry>
+          </QueryClientBoundary>
+        </PageNavigationProvider>
       </ViewTransitions>
     </GlobalErrorBoundary>
   );

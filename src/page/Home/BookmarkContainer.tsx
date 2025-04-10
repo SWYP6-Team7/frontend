@@ -75,7 +75,7 @@ const BookmarkContainer = () => {
                   post.bookmarked && (
                     <BookmarkPreviewBox onClick={() => clickTrip(post.travelNumber)} key={idx}>
                       <HorizonBoxLayout
-                        isBookmark={true}
+                        isBookmark={bookmarks.length > 1}
                         bookmarked={post.bookmarked}
                         travelNumber={post.travelNumber}
                         bookmarkNeed={false}
@@ -106,6 +106,7 @@ const BookmarkPreviewBox = styled.div`
   align-items: center;
   border-radius: 20px;
   padding: 16px;
+  padding-top: 11px;
   background-color: white;
   margin-right: 16px;
 `;
@@ -137,8 +138,10 @@ const Empty = styled.div`
     font-weight: 400;
     line-height: 22.4px;
   }
+  img {
+    height: 62px;
+    width: 62px;
+  }
 `;
 
-const ContentList = styled.div`
-  margin-top: 16px;
-`;
+const ContentList = styled.div``;

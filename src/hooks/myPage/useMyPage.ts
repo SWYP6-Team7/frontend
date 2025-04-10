@@ -79,10 +79,10 @@ const useMyPage = () => {
 
   const { mutateAsync: firstProfileImageMutation, isSuccess: isFirstProfileImagePostSuccess } = useMutation({
     mutationFn: (accessToken: string) => {
-      return intialPostMyProfileImage(accessToken!);
+      return intialPostMyProfileImage(accessToken!) as any;
     },
     mutationKey: ["firstProfileImage"],
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       queryClient.refetchQueries({
         queryKey: ["profileImg"],
       });

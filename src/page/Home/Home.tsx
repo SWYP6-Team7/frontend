@@ -15,6 +15,7 @@ import { useBackPathStore } from "@/store/client/backPathStore";
 import { isGuestUser } from "@/utils/user";
 
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const Home = () => {
   const { name } = myPageStore();
@@ -99,7 +100,7 @@ const Home = () => {
         <TripAvailable />
         {/* 추천 여행 부분 */}
         <TripRecommendation />
-        <Spacing size={92} />
+        <Spacing size={62} />
         <Footer />
       </ContentWrapper>
       <CreateTripButton />
@@ -115,15 +116,15 @@ const ContentWrapper = styled.div`
   width: 100%;
   padding: 0px 24px;
 
-  margin-top: calc(100px);
+  margin-top: calc(116px);
 `;
 const SearchBox = styled.div`
-  padding-top: 40px;
+  padding-top: 16px;
 `;
 const Greeting = styled.div`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
-  line-height: 30.8px;
+  line-height: 28px;
   letter-spacing: -0.025em;
   text-align: left;
   margin-bottom: 8px;
@@ -158,7 +159,7 @@ const HeaderTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
+  height: 48px;
 `;
 const Text = styled.div`
   font-size: 24px;

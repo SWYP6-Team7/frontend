@@ -2,7 +2,7 @@
 
 import { getJWTHeader } from "@/utils/user";
 import axios from "axios";
-import { axiosInstance } from ".";
+import { axiosInstance, handleApiResponse } from ".";
 
 //
 export async function getUser(userId: number, accessToken: string) {
@@ -10,8 +10,8 @@ export async function getUser(userId: number, accessToken: string) {
     const response = await axiosInstance.get(`/api/user/${userId}`, {
       headers: getJWTHeader(accessToken),
     });
-    const data = response.data;
-    return data;
+
+    return handleApiResponse(response);
   } catch (error: any) {
     console.error(error);
   }
@@ -22,9 +22,9 @@ export const kakaoLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/kakao", {
       maxRedirects: 0,
     });
-    console.log("res", response.data);
-    if (response.data) {
-      window.location.href = response.data.redirectUrl;
+    const data = handleApiResponse(response) as any;
+    if (data?.redirectUrl) {
+      window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
     console.log("kakao login error", error);
@@ -36,9 +36,9 @@ export const googleLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/google", {
       maxRedirects: 0,
     });
-
-    if (response.data) {
-      window.location.href = response.data.redirectUrl;
+    const data = handleApiResponse(response) as any;
+    if (data?.redirectUrl) {
+      window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
     console.log("google login error", error);
@@ -50,9 +50,9 @@ export const naverLogin = async () => {
     const response = await axiosInstance.get("/api/login/oauth/naver", {
       maxRedirects: 0,
     });
-
-    if (response.data) {
-      window.location.href = response.data.redirectUrl;
+    const data = handleApiResponse(response) as any;
+    if (data?.redirectUrl) {
+      window.location.href = data.redirectUrl;
     }
   } catch (error: any) {
     console.log("naver login error", error);
@@ -64,8 +64,7 @@ export async function checkEmail(email: string) {
     const response = await axiosInstance.get("/api/users-email", {
       params: { email: email },
     });
-    console.log("response", response);
-    return true;
+    return handleApiResponse(response);
   } catch (error: any) {
     console.log(error);
     return false;
@@ -87,9 +86,11 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
       },
     });
 
-    const user = response.data;
+    if (response.data.success.status === "BLOCK") {
+      window.location.href = response.data.success.redirectUrl;
+    }
 
-    return user;
+    return handleApiResponse(response);
   } catch (error) {
     console.error("토큰 요청 실패:", error);
   }

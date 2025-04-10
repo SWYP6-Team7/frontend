@@ -8,7 +8,7 @@ interface CheckingModalProps {
   modalMsg: string;
   modalTitle: string;
   modalButtonText: string;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>> | ((bool: boolean) => void);
   setIsSelected?: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => void;
 }
@@ -71,6 +71,9 @@ const Msg = styled.div`
   font-weight: 400;
   line-height: 22.4px;
   text-align: center;
+  margin-left: 32px;
+  margin-right: 32px;
+  word-break: keep-all;
   color: ${palette.비강조};
   white-space: pre-line;
 `;

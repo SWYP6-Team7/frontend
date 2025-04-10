@@ -14,22 +14,40 @@ import { ImyPage, IProfileImg } from "@/model/myPages";
 import Splash from "@/page/Splash";
 import { splashOnStore } from "@/store/client/splashOnOffStore";
 import { usePathname } from "next/navigation";
+import { APIProvider } from "@vis.gl/react-google-maps";
+import { useHeaderNavigation } from "@/hooks/useHeaderNavigation";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { userPostRefreshToken } = useAuth();
   const { userId, accessToken, logoutCheck } = authStore();
   // 유저 프로필 정보 불러오기
-  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl } = myPageStore();
+  const {
+    addEmail,
+    addProfileUrl,
+    addName,
+    addGender,
+    addAgegroup,
+    addPreferredTags,
+    profileUrl,
+    addUserSocialTF,
+  } = myPageStore();
 
-  const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
-    useMyPage();
-
+  const {
+    data,
+    isLoading,
+    profileImage,
+    isLoadingImage,
+    firstProfileImageMutation,
+    isFirstProfileImagePostSuccess,
+  } = useMyPage();
+  console.log(data, "user data");
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
   const isCommunityDetail = pathname?.startsWith("/community/detail");
+  const { ROUTES, checkRoute } = useHeaderNavigation();
 
-  const myPageData: ImyPage = data?.data;
-  const profileImg: IProfileImg = profileImage;
+  const myPageData: ImyPage = data as any;
+  const profileImg: IProfileImg = profileImage as IProfileImg;
   console.log(profileImg, profileImage, "프로필 이미지 get");
   useEffect(() => {
     if (!isLoading && myPageData) {
@@ -38,6 +56,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       addEmail(myPageData.email);
       addPreferredTags(myPageData.preferredTags);
       addGender(myPageData.gender);
+      addUserSocialTF(myPageData.userSocialTF);
       const tags: string[] = [];
       for (const tag of myPageData.preferredTags) {
         const text = tag.split(" ");
@@ -65,7 +84,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
-    if (!accessToken && !logoutCheck) {
+    if (
+      !accessToken &&
+      !logoutCheck &&
+      !checkRoute.startsWith("/login/oauth")
+    ) {
       // 토큰이 없으면 리프레쉬 토큰 api 요청.
       const refreshAccessToken = async () => {
         userPostRefreshToken();
@@ -82,33 +105,43 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     if (splashOn === true) return;
     let themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
     if (themeColorMetaTag) {
-      themeColorMetaTag.setAttribute("content", backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`);
+      themeColorMetaTag.setAttribute(
+        "content",
+        backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`
+      );
     }
   }, [pathname]);
 
   return (
-    <Container pathname={pathname}>
-      <Splash />
-      <Body pathname={pathname}>
-        {/* {isSignup && <Header />} */}
-        {/* 홈 화면 헤더는 다른 형태. */}
-        {pathname !== "/" &&
-          !isOnboarding &&
-          pathname !== "/registerDone" &&
-          pathname !== "/login" &&
-          pathname !== "/trip/list" &&
-          pathname !== "/community" && <Header />}
-        {children}
-        {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
+    <APIProvider
+      apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}
+      onLoad={() => console.log("google map load")}
+    >
+      <Container pathname={pathname}>
+        <Splash />
+        <Body pathname={pathname}>
+          {/* {isSignup && <Header />} */}
+          {/* 홈 화면 헤더는 다른 형태. */}
+          {pathname !== "/" &&
+            !isOnboarding &&
+            pathname !== "/registerDone" &&
+            pathname !== "/login" &&
+            pathname !== "/trip/list" &&
+            pathname !== "/community" &&
+            !checkRoute.exact(ROUTES.BLOCK) &&
+            !checkRoute.startsWith(ROUTES.SEARCH.PLACE) && <Header />}
+          {children}
+          {/* {accessToken || isAccessTokenNoNeedpages(pathname) ? (
           <Outlet />
         ) : (
           <Navigate to="/login" />
         )} */}
 
-        {/* 로그인을 해야만 보이는거 처리. */}
-        <Navbar />
-      </Body>
-    </Container>
+          {/* 로그인을 해야만 보이는거 처리. */}
+          <Navbar />
+        </Body>
+      </Container>
+    </APIProvider>
   );
 };
 
@@ -134,6 +167,31 @@ const Body = styled.div<{ pathname: string | null }>`
   @media (min-width: 440px) {
     width: 390px;
     overflow-x: hidden;
+  }
+
+  /* &::-webkit-scrollbar {
+    // scrollbar 자체의 설정
+    // 너비를 작게 설정
+    width: 3px;
+  } */
+  overscroll-behavior: none;
+  &::-webkit-scrollbar-track {
+    // scrollbar의 배경부분 설정
+    // 부모와 동일하게 함(나중에 절전모드, 밤모드 추가되면 수정하기 번거로우니까... 미리 보이는 노동은 최소화)
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    // scrollbar의 bar 부분 설정
+    // 동글동글한 회색 바를 만든다.
+    border-radius: 1rem;
+    height: 80px;
+    background: rgba(217, 217, 217, 1);
+  }
+  &::-webkit-scrollbar-button {
+    // scrollbar의 상하단 위/아래 이동 버튼
+    // 크기를 안줘서 안보이게 함.
+    width: 0;
+    height: 0;
   }
   &::-webkit-scrollbar {
     display: none;

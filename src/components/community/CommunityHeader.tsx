@@ -16,11 +16,18 @@ import React, { useEffect, useState } from "react";
 import ShareIcon from "../icons/ShareIcon";
 import { useParams, useRouter } from "next/navigation";
 import ReportModal from "../designSystem/modal/ReportModal";
+import useViewTransition from "@/hooks/useViewTransition";
+import { reportStore } from "@/store/client/reportStore";
+import NoticeModal from "../designSystem/modal/NoticeModal";
+import { isGuestUser } from "@/utils/user";
 
 export default function CommunityHeader() {
   const { userId, accessToken } = authStore();
   const params = useParams();
+  const { reportSuccess, setReportSuccess, setUserNumber } = reportStore();
+
   const communityNumber = params?.communityNumber as string;
+  const navigateWithTransition = useViewTransition();
 
   const router = useRouter();
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
@@ -56,6 +63,9 @@ export default function CommunityHeader() {
     }
     if (isReportBtnClicked) {
       setIsReportBtnClicked(false);
+      setUserNumber(data?.userNumber || null);
+      document.documentElement.style.viewTransitionName = "forward";
+      navigateWithTransition(`/report/community/${communityNumber}`);
     }
     if (checkingModalClicked) {
       remove({ communityNumber: Number(communityNumber) });
@@ -81,16 +91,18 @@ export default function CommunityHeader() {
   return (
     <Container>
       {userId && (
-        <div onClick={handleNotification}>
+        <IconContainer onClick={handleNotification}>
           <AlarmIcon size={23} stroke={palette.기본} />
-        </div>
+        </IconContainer>
       )}
-      <ShareIcon />
+      <IconContainer>
+        <ShareIcon />
+      </IconContainer>
 
-      {data?.userNumber === userId && (
-        <div onClick={onClickThreeDots}>
+      {!isGuestUser() && (
+        <IconContainer onClick={onClickThreeDots}>
           <MoreIcon />
-        </div>
+        </IconContainer>
       )}
 
       <EditAndDeleteModal
@@ -107,6 +119,12 @@ export default function CommunityHeader() {
         setIsSelected={setCheckingModalClicked}
         setModalOpen={setIsResultModalOpen}
       />
+      <NoticeModal
+        isModalOpen={reportSuccess}
+        modalMsg={"소중한 의견 감사합니다."}
+        modalTitle={"신고 완료"}
+        setModalOpen={setReportSuccess}
+      />
       <ReportModal
         setIsReportBtnClicked={setIsReportBtnClicked}
         isOpen={reportThreeDotsClick}
@@ -115,9 +133,17 @@ export default function CommunityHeader() {
     </Container>
   );
 }
+
+const IconContainer = styled.div`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: 17.5px;
 `;

@@ -50,6 +50,42 @@ export function formatTime(date: string) {
   }
 }
 
+export function getDateRangeCategory(startDate, endDate) {
+  const start = dayjs(startDate, "YYYY-MM-DD");
+  const end = dayjs(endDate, "YYYY-MM-DD");
+
+  const deltaDays = end.diff(start, "day");
+
+  if (deltaDays < 0) {
+    throw new Error("startDate는 endDate보다 이전이어야 합니다.");
+  }
+
+  // 기간에 따른 카테고리 분류
+  if (deltaDays <= 7) {
+    return "일주일 이하";
+  } else if (deltaDays <= 14) {
+    return "1~2주";
+  } else if (deltaDays <= 28) {
+    return "3~4주";
+  } else {
+    return "한 달 이상";
+  }
+}
+
+export function getDateByPlanOrder(startDate, planOrder) {
+  if (typeof planOrder !== "number") {
+    throw new Error("planOrder는 숫자여야 합니다.");
+  }
+
+  // startDate를 dayjs 객체로 변환
+  const start = dayjs(startDate, "YYYY-MM-DD");
+
+  // planOrder에 따라 날짜 계산 (planOrder가 1이면 startDate 그대로 반환)
+  const calculatedDate = start.add(planOrder - 1, "day");
+
+  // 계산된 날짜를 "YYYY-MM-DD" 형식으로 반환
+  return calculatedDate.format("YYYY-MM-DD");
+}
 export function formatTimeOnContact(date: string) {
   const now = dayjs().utcOffset(9);
   const inputDate = dayjs.utc(date).utcOffset(9);

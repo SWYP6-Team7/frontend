@@ -90,17 +90,8 @@ const Community = () => {
 
         <Spacing size={24} />
         <SortContainer>
-          <SortHeader
-            list={LIST}
-            clickSort={onClickSort}
-            setFixed={handleFixed}
-            sort={sort}
-          >
-            <CategoryList
-              type={category}
-              setType={onClickCategory}
-              list={COMMUNITY_CATEGORY}
-            />
+          <SortHeader list={LIST} clickSort={onClickSort} setFixed={handleFixed} sort={sort}>
+            <CategoryList type={category} setType={onClickCategory} list={COMMUNITY_CATEGORY} />
           </SortHeader>
         </SortContainer>
         <CommunityInfinite />
@@ -137,9 +128,8 @@ const SortContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
-  line-height: 26.25px;
   flex: 1;
 `;
 const IconContainer = styled.div`

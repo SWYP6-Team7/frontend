@@ -1,7 +1,17 @@
 "use client";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { FocusEventHandler, FormEvent, KeyboardEvent, RefObject, useState } from "react";
+import {
+  FocusEvent,
+  FocusEventHandler,
+  FormEvent,
+  KeyboardEvent,
+  MouseEvent,
+  RefObject,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 interface CodeInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   refs: RefObject<(HTMLInputElement | null)[]>;
@@ -14,9 +24,9 @@ interface ContainerProps {
 }
 
 const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInputProps) => {
-  const [focused, setFocused] = useState(false);
-  const bgColor = focused ? palette.greenVariant : props.value === "" ? palette.검색창 : palette.비강조4;
-  const borderColor = focused ? palette.keycolor : bgColor;
+  const [focused, setFocused] = useState(-1);
+  const bgColor = focused >= 0 ? palette.greenVariant : props.value === "" ? palette.검색창 : palette.비강조4;
+  const borderColor = focused >= 0 ? palette.keycolor : bgColor;
 
   const isValidIndex = (index: number): boolean => {
     return index >= 0 && index < 6;
@@ -28,13 +38,18 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
     onValueChange(newValues);
   };
 
-  const handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
-    setFocused(true);
-    onFocus?.(event);
-  };
+  const handleFocus = useCallback(
+    (event: FocusEvent<HTMLInputElement>, index: number) => {
+      event.stopPropagation();
+      setFocused(index);
+
+      onFocus?.(event);
+    },
+    [focused]
+  );
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
-    setFocused(false);
+    setFocused(-1);
     onBlur?.(event);
   };
 
@@ -51,9 +66,20 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
     }
 
     if (currentInput?.value.length === 1 && isValidIndex(index + 1)) {
-      refs.current[index + 1]?.focus();
+      refs.current[index + 1]?.focus({ preventScroll: true });
     }
     updateValues();
+  };
+
+  const clickContainer = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const firstEmptyRef = refs.current?.find((ref) => ref?.value === "");
+    if (firstEmptyRef) {
+      firstEmptyRef.focus({ preventScroll: true });
+    } else {
+      // 빈 값이 없으면 원래 클릭한 input에 포커스
+      refs.current[refs.current.length - 1]?.focus({ preventScroll: true });
+    }
   };
 
   const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
@@ -68,7 +94,7 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
         if (prevInput) {
           prevInput.value = "";
         }
-        prevInput?.focus();
+        prevInput?.focus({ preventScroll: true });
       }
     }
     updateValues();
@@ -90,19 +116,20 @@ const CodeInput = ({ refs, onBlur, onFocus, onValueChange, ...props }: CodeInput
       }
     });
     updateValues();
-    refs.current[Math.min(pastedData.length + index, 5)]?.focus();
+    refs.current[Math.min(pastedData.length + index, 5)]?.focus({ preventScroll: true });
   };
 
   return (
-    <Container bgColor={bgColor} borderColor={borderColor}>
+    <Container bgColor={bgColor} borderColor={borderColor} onClick={clickContainer}>
       {[...Array(6)].map((_, index) => (
         <InputContainer key={index}>
           <StyledLabel>
             <Input
               placeholder=""
               onBlur={handleBlur}
-              onFocus={handleFocus}
+              onFocus={(e) => handleFocus(e, index)}
               {...props}
+              type="number"
               id={String(index)}
               ref={(el) => {
                 if (refs.current) {
@@ -141,7 +168,7 @@ const InputContainer = styled.div`
   height: 42px;
 `;
 
-const StyledLabel = styled.label`
+const StyledLabel = styled.div`
   position: relative;
   display: block;
   width: 100%;
@@ -169,9 +196,16 @@ const Input = styled.input`
   font-weight: 600;
   outline: none;
   display: block;
+  padding: 0;
   font-size: 30px;
   line-height: 16px;
   color: #000;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
   letter-spacing: -0.025em;
   background-color: transparent;
   &::placeholder {

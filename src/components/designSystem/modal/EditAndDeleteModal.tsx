@@ -36,12 +36,14 @@ export default function EditAndDeleteModal({
     setIsEditBtnClicked(true);
     setIsOpen(false);
   };
-  if (typeof window === "undefined") {
-    return null;
-  }
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsListening(true);
+    }
+  }, []);
 
+  if (!isListening) return null;
   return createPortal(
     <Container isOpen={isOpen}>
       <Modal ref={modalRef} isOpen={isOpen} nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
@@ -76,15 +78,15 @@ const Modal = styled.div<{ isOpen: boolean; nowWidth: number }>`
   position: absolute;
   pointer-events: auto;
   padding-top: 24px;
-
   z-index: 1003;
   bottom: 40px;
-
   gap: 16px;
   border-radius: 20px;
-  opacity: 0px;
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(30%)")};
-  transition: transform 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
 `;
 const Container = styled.div<{ isOpen: boolean }>`
   height: 100svh;

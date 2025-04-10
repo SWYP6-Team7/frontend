@@ -18,6 +18,7 @@ import LoginButtonForGuest from "@/components/LoginButtonForGuest";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useBackPathStore } from "@/store/client/backPathStore";
+import HorizonBoxLayout from "@/components/HorizonBoxLayout";
 
 export default function Bookmark() {
   const [ref, inView] = useInView();
@@ -81,8 +82,13 @@ export default function Bookmark() {
               }) => (
                 <BoxContainer key={travelNumber}>
                   <div onClick={() => clickTrip(travelNumber)}>
-                    <MyTripHorizonBoxLayout
+                    <HorizonBoxLayout
+                      isBookmark={true}
+                      bookmarked={bookmarked}
                       travelNumber={travelNumber}
+                      bookmarkNeed={false}
+                      isBar={true}
+                      bookmarkPosition="top"
                       userName={userName}
                       location={location}
                       title={title}
@@ -91,7 +97,6 @@ export default function Bookmark() {
                       daysAgo={daysAgo(createdAt)}
                       daysLeft={dayjs(registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                       recruits={nowPerson}
-                      bookmarked={bookmarked}
                     />
                   </div>
                   <BookmarkIconBtns travelNumber={travelNumber} bookmarked={bookmarked} />
@@ -140,9 +145,10 @@ const Container = styled.div<{ isNodata: boolean | undefined }>`
 `;
 const BoxContainer = styled.div`
   position: relative;
-  padding: 11px 16px;
+  padding: 16px;
   gap: 8px;
   border-radius: 20px;
+  padding-top: 11px;
   opacity: 0px;
   box-shadow: 0px 2px 4px 3px #aaaaaa14;
   margin-bottom: 16px;

@@ -1,5 +1,4 @@
 "use client";
-import SecondStepIcon from "@/components/icons/SecondStepIcon";
 import Button from "@/components/designSystem/Buttons/Button";
 import styled from "@emotion/styled";
 import { userStore } from "@/store/client/userStore";
@@ -9,6 +8,7 @@ import { palette } from "@/styles/palette";
 import ButtonContainer from "@/components/ButtonContainer";
 import useViewTransition from "@/hooks/useViewTransition";
 import { useRouter } from "next/navigation";
+import RegisterSecondStepIcon from "@/components/icons/step/register/RegisterSecondStepIcon";
 
 type RegisterAgeContextType = {
   genderCheck: boolean;
@@ -70,7 +70,7 @@ const RegisterAge = ({ children }: { children: React.ReactNode }) => {
     <RegisterAgeContext.Provider value={{ genderCheck, setGenderCheck }}>
       <RegisterAgeWrapper>
         <StepIconContainer>
-          <SecondStepIcon />
+          <RegisterSecondStepIcon />
         </StepIconContainer>
 
         <AgeStep>
@@ -81,7 +81,10 @@ const RegisterAge = ({ children }: { children: React.ReactNode }) => {
                 addStyle={{
                   backgroundColor: agegroup === age ? "rgba(227, 239, 217, 1)" : " rgba(240, 240, 240, 1)",
                   color: agegroup === age ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
-
+                  borderRadius: "30px",
+                  fontSize: "16",
+                  lineHeight: "22px",
+                  padding: "10px 20px",
                   border: agegroup === age ? `1px solid ${palette.keycolor}` : "none",
                 }}
                 idx={idx}
@@ -123,13 +126,14 @@ const AgeList = styled.div`
   flex-wrap: wrap;
   display: flex;
   gap: 16px;
-  width: 70%;
+  width: 77%;
 `;
 
 const RegisterAgeWrapper = styled.div`
   padding: 0px 24px;
 
   min-height: calc(100svh - 68px - 30px);
+  padding-bottom: 89px;
 `;
 const StepIconContainer = styled.div`
   margin-top: 30px;

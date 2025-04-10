@@ -31,13 +31,13 @@ export default function MyPage() {
         </ProfileImg>
         <div style={{ width: "100%" }}>
           {!isGuestUser() ? (
-            <>
-              <MoreBox
-                onClick={() => {
-                  document.documentElement.style.viewTransitionName = "forward";
-                  navigateWithTransition("/editMyInfo");
-                }}
-              >
+            <div
+              onClick={() => {
+                document.documentElement.style.viewTransitionName = "forward";
+                navigateWithTransition("/editMyInfo");
+              }}
+            >
+              <MoreBox>
                 <UserName>{name}</UserName>
                 <div style={{ display: "flex", padding: "8px 5px" }}>
                   <RightVector />
@@ -45,7 +45,7 @@ export default function MyPage() {
               </MoreBox>
               <Email>{email}</Email>
               <Tags>
-                <div style={{ marginRight: "8px" }}>
+                <div>
                   <Badge
                     isDueDate={false}
                     fontWeight="600"
@@ -56,7 +56,7 @@ export default function MyPage() {
                 </div>
 
                 {cutTags.map((text: string) => (
-                  <div style={{ marginRight: "8px" }}>
+                  <div>
                     <Badge
                       key={text}
                       isDueDate={false}
@@ -77,7 +77,7 @@ export default function MyPage() {
                   />
                 ) : null}
               </Tags>
-            </>
+            </div>
           ) : (
             <>
               <MoreBox onClick={() => setShowLoginModal(true)}>
@@ -187,6 +187,8 @@ const UserName = styled.div`
 
 const Tags = styled.div`
   display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 `;
 const LoginInfo = styled.div`
   font-size: 14px;
@@ -208,7 +210,6 @@ const Email = styled.div`
   margin-bottom: 9px;
 `;
 const UserInfo = styled.div`
-  height: 128px;
   width: 100%;
   background-color: ${palette.검색창};
   padding: 24px 16px;
@@ -228,21 +229,7 @@ const Title = styled.div`
   text-align: left;
   margin-bottom: 8px;
 `;
-const SmallTitle = styled.div`
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 16px;
-  cursor: pointer;
-  text-align: center;
-  color: ${palette.기본};
-  height: 52px;
-  padding: 14px 0px 22px 0px;
-  gap: 8px;
-  opacity: 0px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-`;
+
 const Box = styled.div`
   border-bottom: 1px solid #e7e7e7;
   padding-top: 14px;

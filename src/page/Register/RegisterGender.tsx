@@ -7,7 +7,6 @@ import { useRegisterAge } from "./RegisterAge";
 import { useRouter } from "next/navigation";
 
 const RegisterGender = () => {
-  // Outlet으로 렌더링 될 하위 컴포넌트에 Props로 성별 선택확인 변수 전달.
   const { setGenderCheck } = useRegisterAge();
   const { sex, addSex, name, email, agegroup, resetAge, resetName, resetForm, socialLogin, setSocialLogin } =
     userStore();
@@ -113,8 +112,8 @@ const fadeIn = keyframes`
   }
 `;
 const GenderContainer = styled.div`
-  height: 281px;
-  margin-top: 40px;
+  height: 249px;
+  margin-top: 54px;
   animation: ${fadeIn} 0.5s;
 `;
 const StepContent = styled.p`
@@ -124,18 +123,18 @@ const StepContent = styled.p`
   text-align: left;
 `;
 const GenderImgContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 32px;
   display: flex;
   justify-content: center;
 `;
 const MaleBox = styled.div`
-  margin-right: 58px;
+  margin-right: 54px;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-weight: 500;
   p {
-    margin-top: 18px;
+    margin-top: 8px;
     font-size: 18px;
   }
 `;
@@ -145,16 +144,16 @@ const FemaleBox = styled.div`
   align-items: center;
   font-weight: 500;
   p {
-    margin-top: 18px;
+    margin-top: 8px;
     font-size: 18px;
   }
 `;
 
 const Male = styled.img`
-  width: 102px;
-  height: 102px;
+  width: 96px;
+  height: 96px;
 `;
 const Female = styled.img`
-  width: 102px;
-  height: 102px;
+  width: 96px;
+  height: 96px;
 `;

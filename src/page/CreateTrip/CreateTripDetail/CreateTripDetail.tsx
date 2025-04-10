@@ -1,283 +1,301 @@
-'use client'
-import React, { useState, useEffect } from 'react'
-import styled from '@emotion/styled'
-import ThirdStepIcon from '@/components/icons/ThirdStepIcon'
-import { palette } from '@/styles/palette'
-import Button from '@/components/designSystem/Buttons/Button'
-import { useRouter } from 'next/navigation'
-import Spacing from '@/components/Spacing'
-import RecruitingWrapper from './RecruitingWrapper'
-import DuedateWrapper from './DuedateWrapper'
-import GreenCheckIcon from '@/components/icons/GreenCheckIcon'
-import Accordion from '@/components/Accordion'
-import SearchFilterTag from '@/components/designSystem/tag/SearchFilterTag'
-import { createTripStore } from '@/store/client/createTripStore'
-import { useCreateTrip } from '@/hooks/createTrip/useCreateTrip'
-import { authStore } from '@/store/client/authStore'
-import ButtonContainer from '@/components/ButtonContainer'
-import { TAG_LIST } from '@/constants/tags'
+"use client";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import styled from "@emotion/styled";
+import Button from "@/components/designSystem/Buttons/Button";
+import { useRouter } from "next/navigation";
+
+import { createTripStore } from "@/store/client/createTripStore";
+import { useCreateTrip } from "@/hooks/createTrip/useCreateTrip";
+import { authStore } from "@/store/client/authStore";
+import ButtonContainer from "@/components/ButtonContainer";
+import TopModal from "@/components/TopModal";
+import RegionWrapper from "./RegionWrapper";
+import InputField from "@/components/designSystem/input/InputField";
+import Spacing from "@/components/Spacing";
+import TextareaField from "@/components/designSystem/input/TextareaField";
+import TagListWrapper from "./TagListWrapper";
+import CalendarWrapper from "./CalendarWrapper";
+import InfoWrapper from "./InfoWrapper";
+import MapContainer from "./MapContainer";
+import { useInView } from "react-intersection-observer";
+import "dayjs/locale/ko"; // 한국어 로케일 추가
+import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import CreateScheduleItem from "./CreateScheduleItem";
+import TripToast from "@/components/designSystem/toastMessage/tripToast";
+import { getDateRangeCategory } from "@/utils/time";
+
+dayjs.locale("ko"); // 한국어 설정
+dayjs.extend(isSameOrBefore);
+export function getDatesArray(startDate, endDate) {
+  const dates: string[] = [];
+  let currentDate = dayjs(startDate);
+  const lastDate = dayjs(endDate);
+
+  while (currentDate.isSameOrBefore(lastDate)) {
+    dates.push(currentDate.format("M월D일(ddd)"));
+    currentDate = currentDate.add(1, "day");
+  }
+
+  return dates;
+}
 
 const CreateTripDetail = () => {
   const {
+    locationName,
     title,
-    location,
     details,
-    maxPerson,
-    genderType,
-    dueDate,
-    periodType,
-    completionStatus,
+    addTitle,
+    addDetails,
     tags,
-    addCompletionStatus,
+    initGeometry,
     addTags,
-    addPeriodType,
-    resetCreateTripDetail
-  } = createTripStore()
+    date,
+    plans,
+    genderType,
+    addDate,
+    addGenderType,
+    addMaxPerson,
+    maxPerson,
+    addPlans,
+    addLocationName,
+    addInitGeometry,
+    periodType,
+    addCompletionStatus,
+    resetCreateTripDetail,
+  } = createTripStore();
 
-  const tripDuration = ['일주일 이하', '1~2주', '3~4주', '한 달 이상']
-  const [activeDuration, setActiveDuration] = useState<boolean[]>(
-    new Array(4).fill(false)
-  )
-
-  const [taggedArray, setTaggedArray] = useState<string[]>(tags)
-  const getTaggedCount = () => {
-    return taggedArray.length
-  }
-
-  const { accessToken } = authStore()
-
-  const router = useRouter()
+  const [topModalHeight, setTopModalHeight] = useState(0);
+  const handleRemoveValue = () => addTitle("");
+  const [isMapFull, setIsMapFull] = useState(false);
+  const [isToastShow, setIsToastShow] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const changeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    addTitle(e.target.value);
+  };
+  const { accessToken } = authStore();
+  const [openItemIndex, setOpenItemIndex] = useState(0);
+  const router = useRouter();
+  const handleItemToggle = (index) => {
+    setOpenItemIndex(openItemIndex === index ? null : index);
+  };
+  const newPlan = plans.map((plan) => {
+    return {
+      ...plan,
+      planOrder: plan.planOrder + 1,
+      spots: plan.spots.map((spot) => {
+        const { id, ...newSpots } = {
+          ...spot,
+          latitude: Number(spot.latitude.toFixed(9)),
+          longitude: Number(spot.longitude.toFixed(9)),
+        };
+        return newSpots;
+      }),
+    };
+  });
 
   const travelData = {
     title,
-    location,
     details,
     maxPerson,
-    genderType,
-    dueDate,
-    periodType,
+    genderType: genderType!,
+    startDate: date!.startDate ?? "",
+    endDate: date!.endDate ?? "",
+    periodType: getDateRangeCategory(date!.startDate ?? "", date!.endDate ?? ""),
+    locationName: locationName.locationName,
     tags,
-    completionStatus
-  }
-  const { createTripMutate } = useCreateTrip(travelData, accessToken as string) // 여행 생성 api 요청.
+    plans: newPlan,
+  };
+  const { createTripMutate } = useCreateTrip(travelData, accessToken as string); // 여행 생성 api 요청.
 
   const completeClickHandler = () => {
     if (
-      title === '' ||
-      location === '' ||
-      details === '' ||
+      title === "" ||
+      details === "" ||
+      details === "" ||
       maxPerson === 0 ||
-      genderType === '' ||
-      dueDate === '' ||
-      periodType === '' ||
-      tags.length === 0
+      genderType === "" ||
+      !date?.startDate ||
+      !date?.endDate ||
+      periodType === "" ||
+      tags.length === 0 ||
+      locationName.locationName === ""
     ) {
-      addCompletionStatus(false)
+      addCompletionStatus(false);
     }
+
     createTripMutate(undefined, {
-      onSuccess: () => {
-        resetCreateTripDetail()
-        router.push('/')
+      onSuccess: (data: any) => {
+        resetCreateTripDetail();
+        if (data) {
+          router.push(`/trip/detail/${data.travelNumber}`);
+        } else {
+          router.push(`/`);
+        }
       },
-      onError: e => {
-        console.log(e, '여행 생성에 오류 발생.')
-      }
-    })
-  }
-
-  const durationClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newActiveStates = [false, false, false, false]
-
-    newActiveStates[parseInt(e.currentTarget.id)] = true
-    addPeriodType(tripDuration[parseInt(e.currentTarget.id)])
-    setActiveDuration(newActiveStates) // 상태 업데이트
-  }
-
-  const isActive = (tag: string) => {
-    return taggedArray.includes(tag)
-  }
-
-  const clickTag = (tag: string) => {
-    const newArray = taggedArray.includes(tag)
-      ? taggedArray.filter(v => v !== tag)
-      : [...taggedArray, tag]
-    addTags(newArray)
-    setTaggedArray(newArray)
-  }
-
-  const [initialChecked, setInitialChecked] = useState(false)
+      onError: (e) => {
+        console.log(e, "여행 생성에 오류 발생.");
+      },
+    });
+  };
 
   useEffect(() => {
-    // 제출시에 값이 지정이 안된 부분은 false로 할당.
-    addCompletionStatus(true)
-  }, [])
-
-  useEffect(() => {
-    if (periodType === '일주일 이하') {
-      setActiveDuration([true, false, false, false])
-    } else if (periodType === '1~2주') {
-      setActiveDuration([false, true, false, false])
-    } else if (periodType === '3~4주') {
-      setActiveDuration([false, false, true, false])
-    } else if (periodType === '한 달 이상') {
-      setActiveDuration([false, false, false, true])
+    if (isMapFull) {
+      setIsToastShow(false);
+    } else {
+      setIsToastShow(true);
     }
-  }, [periodType])
+  }, [isMapFull]);
+  console.log(plans, "plans", locationName);
   return (
-    <CreateTripDetailWrapper>
-      <CreateTripDetailContainer>
-        <StepIconContainer>
-          <ThirdStepIcon />
-        </StepIconContainer>
-        <ContentTitle>
-          여행 상세 정보를
-          <br /> 입력해주세요.
-        </ContentTitle>
+    <>
+      <CreateTripDetailWrapper>
+        <CreateTripDetailContainer ref={containerRef}>
+          <TopModal
+            isToastShow={isToastShow}
+            containerRef={containerRef}
+            setIsMapFull={setIsMapFull}
+            onHeightChange={setTopModalHeight}
+          >
+            <ModalContainer>
+              <RegionWrapper
+                locationName={locationName}
+                addInitGeometry={addInitGeometry}
+                addLocationName={addLocationName}
+              />
+              <Spacing size={16} />
+              <InputField
+                value={title}
+                placeholder="제목을 입력해주세요. (최대 20자)"
+                handleRemoveValue={handleRemoveValue}
+                onChange={changeKeyword}
+              />
 
-        {/* 모집 인원 부분 */}
-        <Spacing size={48} />
-        <RecruitingWrapper />
-        {/* 모집 마감일 부분 */}
+              <Spacing size={16} />
+              <TextareaField
+                minRows={3}
+                maxRows={6}
+                isFlexible
+                value={details}
+                onChange={(e) => addDetails(e.target.value)}
+                placeholder="어떤 여행을 떠나실 예정인가요?
+자유롭게 소개해보세요. (최대 2,000자)"
+              />
+              <Spacing size={16} />
+              <TagListWrapper addTags={addTags} taggedArray={tags} />
+              <Spacing size={16} />
+              <Bar />
+              <CalendarWrapper addDate={addDate} date={date} />
+              <Bar />
+              <InfoWrapper
+                addGenderType={addGenderType}
+                addMaxPerson={addMaxPerson}
+                maxPerson={maxPerson}
+                genderType={genderType}
+              />
+            </ModalContainer>
+          </TopModal>
+          <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
+            <MapContainer
+              index={openItemIndex}
+              plans={plans}
+              locationName={locationName}
+              isMapFull={isMapFull}
+              lat={initGeometry?.lat || 37.57037778}
+              lng={initGeometry?.lng || 126.9816417}
+              zoom={locationName.mapType === "google" ? 11 : 9}
+            />
+            <ScheduleContainer>
+              <Title>여행 일정</Title>
+              <ScheduleList>
+                {date &&
+                  getDatesArray(date.startDate, date.endDate).map((item, idx) => (
+                    <CreateScheduleItem
+                      plans={plans}
+                      idx={idx}
+                      addPlans={addPlans}
+                      type="create"
+                      title={item}
+                      isOpen={openItemIndex === idx}
+                      onToggle={() => handleItemToggle(idx)}
+                    />
+                  ))}
+              </ScheduleList>
+            </ScheduleContainer>
+          </BottomContainer>
+        </CreateTripDetailContainer>
 
-        <DuedateWrapper />
+        <ButtonContainer>
+          <Button
+            text="완료"
+            onClick={completeClickHandler}
+            addStyle={{
+              backgroundColor: "rgba(62, 141, 0, 1)",
+              color: "rgba(240, 240, 240, 1)",
+              boxShadow: "rgba(170, 170, 170, 0.1)",
+            }}
+          />
+        </ButtonContainer>
+      </CreateTripDetailWrapper>
+    </>
+  );
+};
 
-        <DurationContainer>
-          <DetailTitle>여행 기간</DetailTitle>
-
-          <DurationBox>
-            {tripDuration.map((duration, idx) => (
-              <DurationBtn
-                isActive={activeDuration[idx]}
-                key={duration}
-                id={idx.toString()}
-                onClick={durationClickHandler}>
-                {duration}
-                {activeDuration[idx] && <GreenCheckIcon />}
-              </DurationBtn>
-            ))}
-          </DurationBox>
-        </DurationContainer>
-        {/* 회색 끝 선 표시 */}
-        <div></div>
-        <div style={{ marginTop: '29.5px' }}>
-          {TAG_LIST.map(item => (
-            <Accordion
-              count={getTaggedCount()}
-              id="태그 설정"
-              title="태그 설정"
-              initialChecked={initialChecked}
-              key={item.title}>
-              <TagContainer>
-                {item.tags?.map((tag, idx) => (
-                  <SearchFilterTag
-                    key={tag}
-                    idx={idx}
-                    addStyle={{
-                      backgroundColor: isActive(tag)
-                        ? 'rgba(227, 239, 217, 1)'
-                        : ' rgba(240, 240, 240, 1)',
-                      color: isActive(tag)
-                        ? `${palette.keycolor}`
-                        : 'rgba(52, 52, 52, 1)',
-
-                      border: isActive(tag)
-                        ? `1px solid ${palette.keycolor}`
-                        : `1px solid ${palette.검색창}`,
-                      borderRadius: '30px',
-                      padding: '10px 20px',
-                      fontWeight: isActive(tag) ? '600' : '400'
-                    }}
-                    text={tag}
-                    onClick={() => clickTag(tag)}
-                  />
-                ))}
-              </TagContainer>
-            </Accordion>
-          ))}
-        </div>
-        {/* 회색 끝 선 표시 */}
-
-        <Spacing size={120} />
-        <div></div>
-      </CreateTripDetailContainer>
-
-      <ButtonContainer>
-        <Button
-          text="완료"
-          onClick={completeClickHandler}
-          addStyle={{
-            backgroundColor: 'rgba(62, 141, 0, 1)',
-            color: 'rgba(240, 240, 240, 1)',
-            boxShadow: 'rgba(170, 170, 170, 0.1)'
-          }}
-        />
-      </ButtonContainer>
-    </CreateTripDetailWrapper>
-  )
-}
-
-export default CreateTripDetail
-
-const TagContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-`
-const DurationBtn = styled.button<{ isActive: boolean }>`
-  width: 48%;
-  height: 48px;
-  padding: 0px 24px;
-  gap: 0px;
-  border-radius: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: ${props => (props.isActive ? palette.keycolor : palette.비강조)};
-  background-color: ${props =>
-    props.isActive ? palette.keycolorBG : palette.검색창};
-  border: ${props =>
-    props.isActive
-      ? `1px solid ${palette.keycolor}`
-      : `1px solid ${palette.검색창}`};
-`
-
-const DurationContainer = styled.div`
-  margin-top: 24px;
-`
-const DurationBox = styled.div`
-  margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`
-const DetailTitle = styled.div`
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 25.2px;
-  text-align: left;
-  color: ${palette.기본};
-  height: 25px;
-  padding: 0px 6px;
-  gap: 8px;
-  opacity: 0px;
-`
+export default CreateTripDetail;
 
 const CreateTripDetailWrapper = styled.div`
   position: relative;
-`
-const CreateTripDetailContainer = styled.div`
-  padding: 0px 24px;
-`
-const StepIconContainer = styled.div`
+`;
+
+const ScheduleContainer = styled.div`
   margin-top: 24px;
-`
-const ContentTitle = styled.div`
-  margin-top: 40px;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 33.6px;
-  color: ${palette.기본};
-  text-align: left;
-  min-width: 176px;
-`
+`;
+const Title = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+  line-height: 21px;
+`;
+
+const ScheduleList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const CreateTripDetailContainer = styled.div<{ topModalHeight: number }>`
+  padding: 0px 24px;
+  overflow-y: auto;
+  position: relative;
+  height: calc(100svh - 116px);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  overscroll-behavior: none;
+  padding-bottom: 104px;
+
+  /* margin-top: ${(props) => `${props.topModalHeight + 32}px`};
+  transition:
+    margin-top 0.3s ease-out,
+    transform 0.3s ease-out; */
+`;
+
+const ModalContainer = styled.div`
+  padding: 0 24px;
+`;
+
+const Bar = styled.div`
+  background-color: #e7e7e7;
+  width: 100%;
+  height: 1px;
+`;
+
+const BottomContainer = styled.div<{
+  topModalHeight: number;
+  isMapFull: boolean;
+}>`
+  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  min-height: 100svh;
+  transition: padding-top 0.3s ease-out;
+  overscroll-behavior: none;
+`;
