@@ -90,7 +90,7 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
       <CommentInput setReset={setReset} placeholder="로그인 후 댓글을 달아보세요." readOnly />
     </Container>
   ) : (
-    <Container onSubmit={submitComment} paddingBottom={paddingBottom} paddingTop={paddingTop}>
+    <Container relatedType={relatedType} onSubmit={submitComment} paddingBottom={paddingBottom} paddingTop={paddingTop}>
       <CommentInput
         setReset={setReset}
         onFocus={() => setFocused(true)}
