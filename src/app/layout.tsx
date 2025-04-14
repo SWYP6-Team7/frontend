@@ -13,7 +13,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <MSWComponent />
-          {/* <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} /> */}
+          <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} />
           <Layout>{children}</Layout>
           <div id="checking-modal" />
           <div id="trip-toast" />
