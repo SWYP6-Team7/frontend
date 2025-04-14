@@ -51,7 +51,7 @@ const CommunityComment = () => {
 
 const Container = styled.div`
   padding: 28px 0;
-
+  background-color: #f5f5f5;
   overflow-y: auto;
 `;
 const Title = styled.div`
