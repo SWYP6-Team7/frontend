@@ -16,6 +16,10 @@ interface CalendarModalProps {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
+  initDate?: {
+    startDate: string;
+    endDate: string;
+  } | null;
 }
 
 function isMoreThan90DaysApart(date1, date2) {
@@ -28,7 +32,7 @@ function isMoreThan90DaysApart(date1, date2) {
   return diffInDays > 90;
 }
 
-const CalendarModal = ({ showModal, setShowModal, addDate }: CalendarModalProps) => {
+const CalendarModal = ({ showModal, setShowModal, addDate, initDate }: CalendarModalProps) => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const [startTime, setStartTime] = useState<string | undefined>();
@@ -40,6 +44,38 @@ const CalendarModal = ({ showModal, setShowModal, addDate }: CalendarModalProps)
   const [calendarDataArray, setCalendarDataArray] = useState<
     { year: number; month: number; calendarData: CalendarDay[][] }[]
   >([]);
+
+  useEffect(() => {
+    if (initDate?.startDate) {
+      setPosts([
+        {
+          calendarId: Math.random().toString(36).substr(2, 9),
+          startTime: dayjs(initDate.startDate).format("YYYY-MM-DD HH:mm:ss"),
+          endTime: dayjs(initDate.endDate).format("YYYY-MM-DD HH:mm:ss"),
+          content: `${dayjs(initDate.startDate).format("YYYY-MM-DD")} ~ ${dayjs(initDate.endDate).format("YYYY-MM-DD")}`,
+        },
+      ]);
+      const updatedCalendarDataArray = calendarDataArray.map(({ year, month, calendarData }) => ({
+        year,
+        month,
+        calendarData: setCalendarArray(
+          year,
+          month,
+          holidaysArray.find((h) => h.year === year && h.month === month)?.holidays || [],
+          [
+            {
+              calendarId: Math.random().toString(36).substr(2, 9),
+              startTime: dayjs(initDate.startDate).format("YYYY-MM-DD HH:mm:ss"),
+              endTime: dayjs(initDate.endDate).format("YYYY-MM-DD HH:mm:ss"),
+              content: `${dayjs(initDate.startDate).format("YYYY-MM-DD")} ~ ${dayjs(initDate.endDate).format("YYYY-MM-DD")}`,
+            },
+          ]
+        ),
+      }));
+
+      setCalendarDataArray(updatedCalendarDataArray);
+    }
+  }, [initDate?.startDate, initDate?.endDate]);
 
   useEffect(() => {
     for (let i = 0; i < 6; i++) {

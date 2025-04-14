@@ -15,23 +15,13 @@ const CalendarWrapper = ({
     startDate: string;
     endDate: string;
   } | null;
-  addDate: ({
-    startDate,
-    endDate,
-  }: {
-    startDate: string;
-    endDate: string;
-  }) => void;
+  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
 }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
     <>
-      <CalendarModal
-        addDate={addDate}
-        showModal={showModal}
-        setShowModal={setShowModal}
-      />
+      <CalendarModal addDate={addDate} showModal={showModal} initDate={date} setShowModal={setShowModal} />
       <Container onClick={() => setShowModal(true)}>
         <TextContainer>
           <TitleContainer>
@@ -39,11 +29,7 @@ const CalendarWrapper = ({
             <Title>여행 날짜</Title>
           </TitleContainer>
 
-          <Content>
-            {date
-              ? formatDateRange(date?.startDate ?? "", date?.endDate ?? "")
-              : "날짜를 선택하세요."}
-          </Content>
+          <Content>{date ? formatDateRange(date?.startDate ?? "", date?.endDate ?? "") : "날짜를 선택하세요."}</Content>
         </TextContainer>
         <ArrowIconContainer>
           <ArrowIcon />
