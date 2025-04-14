@@ -125,9 +125,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 // 그렇기 때문에 440px 이상이면 모바일 환경이 아니라고 생각하고 max-width를 figma layout에 맞춤
 const Body = styled.div<{ pathname: string | null }>`
   width: 100svw;
-  min-height: 100%;
   position: relative;
-
+  height: 100%;
   background-color: ${(props) =>
     props.pathname.exact("/") ||
     props.pathname?.exact("/create/trip/detail") ||
