@@ -7,10 +7,14 @@ import { GlobalErrorBoundary } from "@/components/errorHandling/GlobalErrorBound
 import { ViewTransitions } from "next-view-transitions";
 import PageNavigationProvider from "@/context/PageNavigationProvider";
 import AutoRefresh from "@/context/AutoRefresh";
+import GoogleAnalytics from "@/context/GoogleAnalytics";
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <GlobalErrorBoundary>
+      {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+      ) : null}
       <ViewTransitions>
         <PageNavigationProvider>
           <QueryClientBoundary>
