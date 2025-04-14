@@ -116,6 +116,7 @@ const TripEdit = () => {
       addTags(tags);
     }
   }, [tripDetail.isFetched, tripInfos]);
+
   useEffect(() => {
     const script = document.createElement("script");
     script.async = true;
@@ -150,15 +151,7 @@ const TripEdit = () => {
       handleLoad();
     }
   }, [isKakaoMapLoad, location]);
-  const {
-    data,
-    isLoading,
-    error,
-    fetchNextPage,
-    refetch,
-    isFetching,
-    hasNextPage,
-  } = useInfiniteQuery({
+  const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
       return getPlans(Number(travelNumber), pageParam) as any;
@@ -184,13 +177,7 @@ const TripEdit = () => {
   useEffect(() => {
     console.log("data", data, dataInitialized, hasNextPage);
 
-    if (
-      !isLoading &&
-      data &&
-      !dataInitialized &&
-      !hasNextPage &&
-      date?.startDate
-    ) {
+    if (!isLoading && data && !dataInitialized.isInitialized && !hasNextPage && date?.startDate) {
       const allPlans = data.pages.flatMap((page) => page.plans || []);
       console.log("allPlans", allPlans);
       const formattedPlans = allPlans.map((plan) => {
@@ -216,16 +203,18 @@ const TripEdit = () => {
       setOriginalPlans(formattedPlans);
 
       addPlans(formattedPlans);
-      setDataInitialized(true);
+      setDataInitialized({ isInitialized: true, travelNumber: Number(travelNumber) });
     }
-  }, [
-    JSON.stringify(data),
-    isLoading,
-    dataInitialized,
-    date?.startDate,
-    hasNextPage,
-  ]);
+  }, [JSON.stringify(data), isLoading, dataInitialized, date?.startDate, hasNextPage]);
+
   useEffect(() => {
+    if (dataInitialized.travelNumber !== Number(travelNumber)) {
+      setDataInitialized({ isInitialized: false, travelNumber: Number(travelNumber) });
+    }
+  }, [dataInitialized.isInitialized, dataInitialized.travelNumber]);
+
+  useEffect(() => {
+    console.log(hasNextPage);
     if (hasNextPage && !isFetching) {
       const timer = setTimeout(() => {
         fetchNextPage();
@@ -247,9 +236,7 @@ const TripEdit = () => {
       addTitle(initTitle);
       addDetails(initDetails || "");
       addTags(initTags || []);
-      addInitGeometry(
-        initInitGeometry || { lat: 37.57037778, lng: 126.9816417 }
-      );
+      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
       addDate({ startDate: initStartDate || "", endDate: initEndDate || "" });
       addGenderType(initGenderType || "");
       addMaxPerson(initMaxPerson || 0);
@@ -278,16 +265,12 @@ const TripEdit = () => {
         dateRange.push(start.add(i, "day").format("YYYY-MM-DD"));
       }
 
-      if (
-        plans.length !== dayDiff ||
-        !dateRange.every((date) => plans.some((p) => p.date === date))
-      ) {
+      if (plans.length !== dayDiff || !dateRange.every((date) => plans.some((p) => p.date === date))) {
         const newPlans = dateRange.map((currentDate, index) => {
           // 1. 현재 plans에서 먼저 조회
           // 2. 없으면 originalPlans에서 조회
           const existingPlan =
-            plans.find((p) => p.date === currentDate) ||
-            originalPlans?.find((p) => p.date === currentDate);
+            plans.find((p) => p.date === currentDate) || originalPlans?.find((p) => p.date === currentDate);
 
           return existingPlan
             ? {
@@ -305,13 +288,7 @@ const TripEdit = () => {
         addPlans(newPlans);
       }
     }
-  }, [
-    date?.startDate,
-    date?.endDate,
-    dataInitialized,
-    plans.length,
-    originalPlans,
-  ]);
+  }, [date?.startDate, date?.endDate, dataInitialized, plans.length, originalPlans]);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -364,10 +341,7 @@ const TripEdit = () => {
       genderType: genderType!,
       startDate: date?.startDate || "",
       endDate: date?.endDate || "",
-      periodType: getDateRangeCategory(
-        date?.startDate ?? "",
-        date?.endDate ?? ""
-      ),
+      periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       tags,
       planChanges: trackPlanChanges(originalPlans, plans),
@@ -444,10 +418,7 @@ const TripEdit = () => {
               />
             </ModalContainer>
           </TopModal>
-          <BottomContainer
-            isMapFull={isMapFull}
-            topModalHeight={topModalHeight}
-          >
+          <BottomContainer isMapFull={isMapFull} topModalHeight={topModalHeight}>
             <MapContainer
               index={openItemIndex}
               plans={plans}
@@ -544,8 +515,7 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  margin-top: ${(props) =>
-    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  margin-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
