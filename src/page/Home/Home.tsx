@@ -21,6 +21,7 @@ const Home = () => {
   const { name } = myPageStore();
   const { setSearchTravel, setNotification } = useBackPathStore();
   const router = useRouter();
+  console.log();
   // console.log(`
   //   ███╗   ███╗ ██████╗ ██╗███╗   ██╗ ██████╗     ██╗
   //   ████╗ ████║██╔═══██╗██║████╗  ██║██╔════╝    ███║

@@ -3,46 +3,46 @@ import { APIProvider, Map, MapCameraChangedEvent, useMap } from "@vis.gl/react-g
 import React, { useEffect, useRef } from "react";
 import sigoonGeoJsonData from "../../../public/geojson/korea.json";
 import countryGeoJsonData from "../../../public/geojson/country.json";
-function createAttribution() {
-  const attributionLabel = document.createElement("div");
-  // Define CSS styles.
-  attributionLabel.style.backgroundColor = "#fff";
-  attributionLabel.style.opacity = "0.7";
-  attributionLabel.style.fontFamily = "Roboto,Arial,sans-serif";
-  attributionLabel.style.fontSize = "10px";
-  attributionLabel.style.padding = "2px";
-  attributionLabel.style.margin = "2px";
-  attributionLabel.textContent = "Data source: NYC Open Data";
-  return attributionLabel;
-}
+import { cityDistricts, getMapLocation } from "@/utils/travellog/travelLog";
 
-const TravelLogMap = ({ type }: { type: "country" | "sigoon" }) => {
+const TravelLogMap = ({
+  target,
+  type,
+  highlightedRegions = [],
+}: {
+  target: string | null;
+  type: "세계" | "국내";
+  highlightedRegions?: string[];
+}) => {
+  const { center, zoom } = getMapLocation(target, type);
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
       <Map
-        defaultCenter={
-          type === "sigoon"
-            ? { lat: 35.8, lng: 127.99041015624999 }
-            : { lat: 35.95985150233884, lng: 164.13703818135662 }
-        }
-        defaultZoom={type === "sigoon" ? 6 : 0.579}
+        key={`${type} ${center} ${zoom} `}
+        defaultCenter={center}
+        defaultZoom={zoom}
         id="travel-map"
-        mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
-        renderingType="VECTOR"
-        style={{ width: 400, height: 300 }}
+        mapId={process.env.NEXT_PUBLIC_LOG_GOOGLE_MAP_ID || ""}
+        style={
+          type === "국내"
+            ? { width: "100%", height: 418 }
+            : target
+              ? { width: "100%", height: 400 }
+              : { width: "100%", height: 192 }
+        }
+        mapTypeId={"roadmap"}
         disableDefaultUI
         onCameraChanged={(ev: MapCameraChangedEvent) =>
           console.log("camera changed:", ev.detail.center, ev.detail.zoom)
         }
       >
-        <TravelLog type={type} />
+        <TravelLog type={type} highlightedRegions={highlightedRegions} />
       </Map>
-      <div id={`${type}-text`}></div>
     </APIProvider>
   );
 };
 
-const TravelLog = ({ type }: { type: "country" | "sigoon" }) => {
+const TravelLog = ({ type, highlightedRegions = [] }: { type: "세계" | "국내"; highlightedRegions?: string[] }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -50,63 +50,81 @@ const TravelLog = ({ type }: { type: "country" | "sigoon" }) => {
 
     const geoJsonLayer = new google.maps.Data({ map });
 
-    geoJsonLayer.addGeoJson(type === "sigoon" ? sigoonGeoJsonData : countryGeoJsonData);
+    geoJsonLayer.addGeoJson(type === "국내" ? sigoonGeoJsonData : countryGeoJsonData);
 
     geoJsonLayer.setStyle({
-      strokeColor: "green",
-      strokeWeight: 2,
+      strokeColor: "#fff",
+      strokeWeight: 1,
       strokeOpacity: 1,
       fillOpacity: 0, // 투명한 채우기
     });
-    const textElem = document.getElementById(`${type}-text`) as HTMLDivElement;
-    geoJsonLayer.addListener("click", (event) => {
-      if (type === "sigoon") {
-        const regionName = event.feature.getProperty("SIG_KOR_NM");
-        const regionCode = event.feature.getProperty("SIG_CD");
 
-        console.log("클릭한 지역:", regionName, regionCode);
-        textElem.innerHTML = regionName;
-        geoJsonLayer.revertStyle(); // 이전 스타일 초기화
-        geoJsonLayer.overrideStyle(event.feature, {
-          fillColor: "#FF5733", // 클릭한 지역 색상 변경
-          fillOpacity: 0.9,
-          strokeWeight: 2,
-          strokeColor: "#C70039",
-        });
-      } else if (type === "country") {
-        const regionName = event.feature.getProperty("name_ko");
+    geoJsonLayer.addGeoJson(type === "국내" ? sigoonGeoJsonData : countryGeoJsonData);
 
-        console.log("클릭한 지역:", textElem, regionName);
-        textElem.innerHTML = regionName;
+    geoJsonLayer.setStyle((feature) => {
+      const regionName: any =
+        feature.getProperty("name_ko") || // 대륙/국가에 사용될 수 있는 속성명
+        feature.getProperty("CTP_KOR_NM") || // 한국 시도 속성명
+        feature.getProperty("SIG_KOR_NM"); // 한국 시군구 속성명
 
-        geoJsonLayer.revertStyle(); // 이전 스타일 초기화
-        geoJsonLayer.overrideStyle(event.feature, {
-          fillColor: "#FF5733", // 클릭한 지역 색상 변경
-          fillOpacity: 0.9,
-          strokeWeight: 2,
-          strokeColor: "#C70039",
-        });
-      }
+      // 하이랑이트 함수
+
+      const shouldHighlight = () => {
+        // 1. 직접 일치 (시/군/구명)
+        if (highlightedRegions.includes(regionName)) return true;
+
+        // 2. cityDistricts의 key(예: "서울")가 하이라이트 대상인 경우
+        for (const region of highlightedRegions) {
+          if (cityDistricts[region]?.includes(regionName)) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+      const isHighlighted = shouldHighlight();
+
+      return {
+        strokeColor: "#fff",
+        strokeWeight: 1,
+        strokeOpacity: 1,
+        fillColor: isHighlighted ? "#3366FF" : "#FFFFFF", // 하이라이트된 지역은 파란색
+        fillOpacity: isHighlighted ? 0.6 : 0, // 하이라이트된 지역만 채우기 표시
+      };
     });
-  }, [map]);
-  useEffect(() => {
-    if (!map) return;
-
-    const attributionControl = createAttribution();
-
-    if (google && google.maps && google.maps.ControlPosition) {
-      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(attributionControl);
-    }
-
-    return () => {
-      const index = map?.controls[google.maps.ControlPosition.LEFT_BOTTOM].getArray().indexOf(attributionControl);
-      if (index !== -1 && index) {
-        map?.controls[google.maps.ControlPosition.RIGHT_BOTTOM].removeAt(index);
-      }
-    };
   }, [map]);
 
   return null;
 };
+
+// function createAttribution() {
+//   const attributionLabel = document.createElement("div");
+//   // Define CSS styles.
+//   attributionLabel.style.backgroundColor = "#fff";
+//   attributionLabel.style.opacity = "0.7";
+//   attributionLabel.style.fontFamily = "Roboto,Arial,sans-serif";
+//   attributionLabel.style.fontSize = "10px";
+//   attributionLabel.style.padding = "2px";
+//   attributionLabel.style.margin = "2px";
+//   attributionLabel.textContent = "Data source: NYC Open Data";
+//   return attributionLabel;
+// }
+
+// useEffect(() => {
+//   if (!map) return;
+
+//   const attributionControl = createAttribution();
+
+//   if (google && google.maps && google.maps.ControlPosition) {
+//     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(attributionControl);
+//   }
+
+//   return () => {
+//     const index = map?.controls[google.maps.ControlPosition.LEFT_BOTTOM].getArray().indexOf(attributionControl);
+//     if (index !== -1 && index) {
+//       map?.controls[google.maps.ControlPosition.RIGHT_BOTTOM].removeAt(index);
+//     }
+//   };
+// }, [map]);
 
 export default TravelLogMap;

@@ -65,6 +65,7 @@ const ROUTES = {
   REPORT: "/report",
   BLOCK: "/block",
   EXPLANATION: "/explanation",
+  USER_TRAVEL_LOG: "/userProfile/:userId/log",
 };
 
 export const useHeaderNavigation = () => {
@@ -84,11 +85,22 @@ export const useHeaderNavigation = () => {
   const pathname = usePathname() || "/";
   const { resetAge, resetForm, resetGender, resetName, socialLogin, setSocialLogin } = userStore();
   const { resetTripDetail } = tripDetailStore();
-  const checkRoute = {
-    startsWith: (route: string) => pathname?.startsWith(route),
-    exact: (route: string) => pathname === route,
-  };
+  const pathToRegex = (path) => new RegExp("^" + path.replace(/:[^/]+/g, "[^/]+") + "$");
 
+  const checkRoute = {
+    startsWith: (route) => pathname?.startsWith(route),
+    exact: (route) => {
+      if (route.includes(":")) {
+        // 동적 파라미터가 있을 때
+
+        const regex = pathToRegex(route);
+        console.log("regex", regex);
+        return regex.test(pathname);
+      }
+      // 일반 라우트는 기존대로
+      return pathname === route;
+    },
+  };
   const getPageTitle = () => {
     const titleMap: { [key: string]: ReactNode } = {
       [ROUTES.MY.TRIP]: "내 여행",
@@ -119,6 +131,10 @@ export const useHeaderNavigation = () => {
 
     for (const [route, title] of Object.entries(titleMap)) {
       if (checkRoute.startsWith(route)) return title;
+    }
+
+    if (checkRoute.exact(ROUTES.USER_TRAVEL_LOG)) {
+      return "방문한 국가";
     }
 
     return "";
