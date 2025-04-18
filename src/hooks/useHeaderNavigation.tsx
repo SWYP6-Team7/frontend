@@ -5,6 +5,8 @@ import { ReactNode } from "react";
 import { useBackPathStore } from "@/store/client/backPathStore";
 import { useTransitionRouter } from "next-view-transitions";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
+import { createTripStore } from "@/store/client/createTripStore";
+import { editTripStore } from "@/store/client/editTripStore";
 
 const ROUTES = {
   REGISTER: "/register",
@@ -70,7 +72,8 @@ const ROUTES = {
 export const useHeaderNavigation = () => {
   const originalRouter = useRouter();
   const router = useTransitionRouter();
-
+  const { resetCreateTripDetail } = createTripStore();
+  const { resetEditTripDetail } = editTripStore();
   const {
     searchTravel,
     setSearchTravel,
@@ -82,7 +85,14 @@ export const useHeaderNavigation = () => {
     setTravelDetail,
   } = useBackPathStore();
   const pathname = usePathname() || "/";
-  const { resetAge, resetForm, resetGender, resetName, socialLogin, setSocialLogin } = userStore();
+  const {
+    resetAge,
+    resetForm,
+    resetGender,
+    resetName,
+    socialLogin,
+    setSocialLogin,
+  } = userStore();
   const { resetTripDetail } = tripDetailStore();
   const checkRoute = {
     startsWith: (route: string) => pathname?.startsWith(route),
@@ -180,7 +190,8 @@ export const useHeaderNavigation = () => {
         },
       },
       {
-        condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
+        condition: () =>
+          pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
         action: () => {
           originalRouter.push(ROUTES.REGISTER_PROCESS.AGE);
         },
@@ -371,10 +382,17 @@ export const useHeaderNavigation = () => {
   const handleBack = () => {
     const rules = createNavigationRules(pathname);
     const matchedRule = rules.find((rule) => rule.condition());
-    document.documentElement.style.viewTransitionName = checkRoute.startsWith(ROUTES.CREATE_TRIP.INDEX)
+    document.documentElement.style.viewTransitionName = checkRoute.startsWith(
+      ROUTES.CREATE_TRIP.INDEX
+    )
       ? "instant"
       : "back";
 
+    if (checkRoute.startsWith(ROUTES.CREATE_TRIP.DETAIL)) {
+      resetCreateTripDetail();
+    } else if (checkRoute.startsWith(ROUTES.TRIP.EDIT)) {
+      resetEditTripDetail();
+    }
     if (matchedRule) {
       matchedRule.action();
       return;
@@ -383,9 +401,13 @@ export const useHeaderNavigation = () => {
     router.back();
   };
 
-  const shouldShowAlarmIcon = () => checkRoute.startsWith(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.MY.PAGE);
+  const shouldShowAlarmIcon = () =>
+    checkRoute.startsWith(ROUTES.MY.TRIP) ||
+    checkRoute.startsWith(ROUTES.MY.PAGE);
 
-  const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE || pathname === ROUTES.CREATE_TRIP.TAG;
+  const shouldShowSkip = () =>
+    pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE ||
+    pathname === ROUTES.CREATE_TRIP.TAG;
 
   return {
     ROUTES,
