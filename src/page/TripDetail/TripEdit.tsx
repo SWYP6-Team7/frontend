@@ -90,6 +90,7 @@ const TripEdit = () => {
       addMaxPerson(maxPerson);
       addGenderType(genderType);
       addDate({ startDate, endDate });
+      addLocationName({ locationName: location, mapType: "google" });
       addTags(tags);
       addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
     }
@@ -121,7 +122,7 @@ const TripEdit = () => {
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
-
+  console.log("init locationName", locationName);
   useEffect(() => {
     console.log("locationName kakao", locationName);
     const handleLoad = () => {
@@ -314,7 +315,7 @@ const TripEdit = () => {
 
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
-        resetEditTripDetail(); // 만약 Promise를 반환한다면
+        resetEditTripDetail();
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
         } else {
