@@ -1,10 +1,5 @@
 "use client";
-import {
-  APIProvider,
-  Map,
-  MapCameraChangedEvent,
-  useMap,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, MapCameraChangedEvent, useMap } from "@vis.gl/react-google-maps";
 import React, { useEffect, useRef } from "react";
 import sigoonGeoJsonData from "../../../public/geojson/korea.json";
 import countryGeoJsonData from "../../../public/geojson/country.json";
@@ -48,13 +43,7 @@ const TravelLogMap = ({
   );
 };
 
-const TravelLog = ({
-  type,
-  highlightedRegions = [],
-}: {
-  type: "세계" | "국내";
-  highlightedRegions?: string[];
-}) => {
+const TravelLog = ({ type, highlightedRegions = [] }: { type: "세계" | "국내"; highlightedRegions?: string[] }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -62,9 +51,7 @@ const TravelLog = ({
 
     const geoJsonLayer = new google.maps.Data({ map });
 
-    geoJsonLayer.addGeoJson(
-      type === "국내" ? sigoonGeoJsonData : countryGeoJsonData
-    );
+    geoJsonLayer.addGeoJson(type === "국내" ? sigoonGeoJsonData : countryGeoJsonData);
 
     geoJsonLayer.setStyle({
       strokeColor: "#fff",
@@ -73,9 +60,7 @@ const TravelLog = ({
       fillOpacity: 0, // 투명한 채우기
     });
 
-    geoJsonLayer.addGeoJson(
-      type === "국내" ? sigoonGeoJsonData : countryGeoJsonData
-    );
+    geoJsonLayer.addGeoJson(type === "국내" ? sigoonGeoJsonData : countryGeoJsonData);
 
     geoJsonLayer.setStyle((feature) => {
       const regionName: any =

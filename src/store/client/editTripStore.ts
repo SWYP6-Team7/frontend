@@ -29,13 +29,7 @@ interface EditTripStore {
   dueDate: string;
   addDueDate: (dueDate: string) => void;
   date: { startDate: string; endDate: string } | null;
-  addDate: ({
-    startDate,
-    endDate,
-  }: {
-    startDate: string;
-    endDate: string;
-  }) => void;
+  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
   periodType: string;
   addPeriodType: (periodType: string) => void;
   tags: string[];
@@ -64,8 +58,8 @@ interface EditTripStore {
     planOrder: number;
     spots: SpotType[];
   }[];
-  dataInitialized: boolean;
-  setDataInitialized: (bool: boolean) => void;
+  dataInitialized: { isInitialized: boolean; travelNumber: number };
+  setDataInitialized: (data: { isInitialized: boolean; travelNumber: number }) => void;
   addPlans: (plans: { planOrder: number; spots: SpotType[] }[]) => void;
   addCompletionStatus: (completionStatus: boolean) => void;
   resetEditTripDetail: () => void;
@@ -76,7 +70,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
   addTitle: (title) => {
     set({ title });
   },
-  dataInitialized: false,
+  dataInitialized: { isInitialized: false, travelNumber: -1 },
   setDataInitialized: (dataInitialized) => {
     set({ dataInitialized });
   },
@@ -149,7 +143,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
       tags: [],
       plans: [],
       originalPlans: [],
-      dataInitialized: false,
+      dataInitialized: { isInitialized: false, travelNumber: -1 },
       completionStatus: false,
     });
   },

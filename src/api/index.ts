@@ -41,6 +41,7 @@ axiosInstance.interceptors.response.use(
       }
 
       try {
+        // 토큰 갱신 요청
         const refreshResponse = await axiosInstance.post("/api/token/refresh", {});
         const newAccessToken = refreshResponse.data.success.accessToken;
 
