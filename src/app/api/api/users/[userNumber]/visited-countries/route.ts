@@ -1,10 +1,12 @@
+import { NextResponse } from "next/server";
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ userNumber: string }> }
 ) {
   const { userNumber } = await params;
 
-  return Response.json({
+  return NextResponse.json({
     userNumber: 3,
     visitedCountriesCount: 8,
     internationalLogs: {
