@@ -365,6 +365,7 @@ const TripEdit = () => {
 
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
+        tripDetail.refetch();
         resetEditTripDetail();
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
