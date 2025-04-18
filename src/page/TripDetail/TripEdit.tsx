@@ -313,12 +313,15 @@ const TripEdit = () => {
 
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
-        resetEditTripDetail();
-        if (data) {
-          router.push(`/trip/detail/${data.travelNumber}`);
-        } else {
-          router.push(`/`);
-        }
+        resetEditTripDetail(); // 만약 Promise를 반환한다면
+
+        setTimeout(() => {
+          if (data) {
+            router.push(`/trip/detail/${data.travelNumber}`);
+          } else {
+            router.push(`/`);
+          }
+        }, 0);
       },
       onError: (e) => {
         console.log(e, "여행 수정 오류 발생.");

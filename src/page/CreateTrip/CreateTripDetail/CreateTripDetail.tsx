@@ -138,11 +138,13 @@ const CreateTripDetail = () => {
     createTripMutate(undefined, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
-        if (data) {
-          router.push(`/trip/detail/${data.travelNumber}`);
-        } else {
-          router.push(`/`);
-        }
+        setTimeout(() => {
+          if (data) {
+            router.push(`/trip/detail/${data.travelNumber}`);
+          } else {
+            router.push(`/`);
+          }
+        }, 0);
       },
       onError: (e) => {
         console.log(e, "여행 생성에 오류 발생.");
