@@ -82,11 +82,11 @@ const TripEdit = () => {
       }
       if (maxPerson === -1) addMaxPerson(tripInfos.maxPerson);
 
-      if (genderType === null) addGenderType(tripInfos.genderType);
-      if (date === null) addDate({ startDate: tripInfos.startDate, endDate: tripInfos.endDate });
+      if (!genderType) addGenderType(tripInfos.genderType);
+      if (!date) addDate({ startDate: tripInfos.startDate, endDate: tripInfos.endDate });
       if (locationName.locationName === "") addLocationName({ locationName: location, mapType: "google" });
       if (!tags) addTags(tripInfos.tags);
-      if (initGeometry === null) addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
+      if (!initGeometry) addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
     }
   }, [
     tripDetail.isFetched,
