@@ -70,7 +70,7 @@ const TripEdit = () => {
     resetEditTripDetail,
   } = editTripStore();
   useEffect(() => {
-    console.log("trip", tripInfos);
+    console.log("trip", tripInfos, genderType);
     if (tripDetail.isFetched) {
       if (title === "") {
         addTitle(tripInfos.title);
