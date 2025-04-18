@@ -41,18 +41,7 @@ const TripEdit = () => {
   const { tripDetail } = useTripDetail(parseInt(travelNumber!));
   const tripInfos = tripDetail.data as any;
   const [isKakaoMapLoad, setIsKakaooMapLoad] = useState(false);
-  const {
-    title: initTitle,
-    startDate: initStartDate,
-    endDate: initEndDate,
-    details: initDetails,
-    tags: initTags,
-    nowPerson,
-    location,
-    initGeometry: initInitGeometry,
-    maxPerson: initMaxPerson,
-    genderType: initGenderType,
-  } = tripInfos ?? {};
+  const { nowPerson, location, initGeometry: initInitGeometry } = tripInfos ?? {};
   const {
     locationName,
     title,
@@ -83,18 +72,32 @@ const TripEdit = () => {
   useEffect(() => {
     console.log("trip", tripInfos);
     if (tripDetail.isFetched) {
-      const { title, details, maxPerson, genderType, startDate, endDate, tags } = tripInfos;
+      if (title === "") {
+        addTitle(tripInfos.title);
+      }
+      if (details === "") {
+        addDetails(tripInfos.details);
+      }
+      if (maxPerson === -1) addMaxPerson(tripInfos.maxPerson);
 
-      addTitle(title);
-      addDetails(details);
-      addMaxPerson(maxPerson);
-      addGenderType(genderType);
-      addDate({ startDate, endDate });
-      addLocationName({ locationName: location, mapType: "google" });
-      addTags(tags);
-      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
+      if (genderType === null) addGenderType(tripInfos.genderType);
+      if (date === null) addDate({ startDate: tripInfos.startDate, endDate: tripInfos.endDate });
+      if (locationName.locationName === "") addLocationName({ locationName: location, mapType: "google" });
+      if (!tags) addTags(tripInfos.tags);
+      if (initGeometry === null) addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
     }
-  }, [tripDetail.isFetched, JSON.stringify(tripInfos)]);
+  }, [
+    tripDetail.isFetched,
+    JSON.stringify(tripInfos),
+    title,
+    details,
+    maxPerson,
+    genderType,
+    date,
+    locationName.locationName,
+    tags,
+    initGeometry,
+  ]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -280,7 +283,7 @@ const TripEdit = () => {
       genderType === "" ||
       !date?.startDate ||
       !date?.endDate ||
-      tags.length === 0 ||
+      tags?.length === 0 ||
       locationName.locationName === ""
     ) {
       console.log(
@@ -292,7 +295,7 @@ const TripEdit = () => {
         !date?.startDate,
         !date?.endDate,
         periodType,
-        tags.length,
+        tags?.length,
         locationName.locationName
       );
       addCompletionStatus(false);
@@ -309,7 +312,7 @@ const TripEdit = () => {
       endDate: date?.endDate || "",
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
-      tags,
+      tags: tags ?? [],
       planChanges: trackPlanChanges(originalPlans, plans),
     };
 
@@ -370,7 +373,7 @@ const TripEdit = () => {
 자유롭게 소개해보세요. (최대 2,000자)"
               />
               <Spacing size={16} />
-              <TagListWrapper addTags={addTags} taggedArray={tags} />
+              <TagListWrapper addTags={addTags} taggedArray={tags ?? []} />
               <Spacing size={16} />
               <Bar />
               <CalendarWrapper addDate={addDate} date={date} />
