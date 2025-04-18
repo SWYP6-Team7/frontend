@@ -84,28 +84,12 @@ const TripEdit = () => {
     console.log("trip", tripInfos);
     if (tripDetail.isFetched) {
       const {
-        travelNumber,
-        userNumber,
-        userName,
-        createdAt,
-        location,
         title,
         details,
         maxPerson,
         genderType,
 
-        periodType,
         tags,
-        postStatus,
-        nowPerson,
-        bookmarkCount,
-        viewCount,
-        enrollCount,
-        userAgeGroup,
-        startDate,
-        endDate,
-        profileUrl,
-        loginMemberRelatedInfo,
       } = tripInfos;
 
       addTitle(title);
@@ -241,6 +225,7 @@ const TripEdit = () => {
   }, [hasNextPage, isFetching, fetchNextPage]);
 
   useEffect(() => {
+    console.log("init", initStartDate, initEndDate);
     if (
       title === "" &&
       initTitle &&
@@ -365,7 +350,6 @@ const TripEdit = () => {
 
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
-        tripDetail.refetch();
         resetEditTripDetail();
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
