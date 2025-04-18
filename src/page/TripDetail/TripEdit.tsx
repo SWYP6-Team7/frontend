@@ -72,7 +72,7 @@ const TripEdit = () => {
     resetEditTripDetail,
   } = editTripStore();
   useEffect(() => {
-    console.log("trip", tripInfos, genderType, isEditSuccess);
+    console.log("trip", tripInfos, genderType, isEditSuccess, locationName);
     if (tripDetail.isFetched && !isEditSuccess) {
       if (title === "") {
         addTitle(tripInfos.title);
@@ -143,10 +143,10 @@ const TripEdit = () => {
         });
       });
     };
-    if (isKakaoMapLoad && locationName.locationName === "") {
+    if (isKakaoMapLoad && locationName.locationName === "" && !isEditSuccess) {
       handleLoad();
     }
-  }, [isKakaoMapLoad, location, locationName.locationName]);
+  }, [isKakaoMapLoad, location, locationName.locationName, isEditSuccess]);
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
