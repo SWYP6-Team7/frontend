@@ -123,14 +123,15 @@ const TripEdit = () => {
   }, []);
 
   useEffect(() => {
+    console.log("locationName kakao", locationName);
     const handleLoad = () => {
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.addressSearch(location.locationName, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
-            addLocationName({ locationName: location, mapType: "kakao" });
+            addLocationName({ locationName: location.locationName, mapType: "kakao" });
           } else {
-            addLocationName({ locationName: location, mapType: "google" });
+            addLocationName({ locationName: location.locationName, mapType: "google" });
           }
         });
       });
