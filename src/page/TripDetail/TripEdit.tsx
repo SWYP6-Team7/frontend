@@ -83,23 +83,17 @@ const TripEdit = () => {
   useEffect(() => {
     console.log("trip", tripInfos);
     if (tripDetail.isFetched) {
-      const {
-        title,
-        details,
-        maxPerson,
-        genderType,
-
-        tags,
-      } = tripInfos;
+      const { title, details, maxPerson, genderType, startDate, endDate, tags } = tripInfos;
 
       addTitle(title);
       addDetails(details);
       addMaxPerson(maxPerson);
       addGenderType(genderType);
-
+      addDate({ startDate, endDate });
       addTags(tags);
+      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
     }
-  }, [tripDetail.isFetched, tripInfos]);
+  }, [tripDetail.isFetched, JSON.stringify(tripInfos)]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -223,37 +217,6 @@ const TripEdit = () => {
       return () => clearTimeout(timer);
     }
   }, [hasNextPage, isFetching, fetchNextPage]);
-
-  useEffect(() => {
-    console.log("init", initStartDate, initEndDate);
-    if (
-      title === "" &&
-      initTitle &&
-      locationName.locationName === "" &&
-      details === "" &&
-      initDetails &&
-      initStartDate
-    ) {
-      addTitle(initTitle);
-      addDetails(initDetails || "");
-      addTags(initTags || []);
-      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
-      addDate({ startDate: initStartDate || "", endDate: initEndDate || "" });
-      addGenderType(initGenderType || "");
-      addMaxPerson(initMaxPerson || 0);
-    }
-  }, [
-    initTitle,
-    initDetails,
-    initTags,
-
-    initInitGeometry,
-    initStartDate,
-    initEndDate,
-    initGenderType,
-    initMaxPerson,
-    title,
-  ]);
 
   useEffect(() => {
     if (date?.startDate && date?.endDate && dataInitialized.isInitialized) {
