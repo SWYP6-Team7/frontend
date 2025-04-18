@@ -321,7 +321,7 @@ const TripEdit = () => {
           } else {
             router.push(`/`);
           }
-        }, 0);
+        }, 500);
       },
       onError: (e) => {
         console.log(e, "여행 수정 오류 발생.");

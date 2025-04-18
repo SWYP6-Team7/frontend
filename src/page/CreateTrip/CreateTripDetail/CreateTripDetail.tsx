@@ -144,7 +144,7 @@ const CreateTripDetail = () => {
           } else {
             router.push(`/`);
           }
-        }, 0);
+        }, 500);
       },
       onError: (e) => {
         console.log(e, "여행 생성에 오류 발생.");
