@@ -127,6 +127,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
       genderType: "",
       dueDate: getCurrentFormattedDate().split(" ")[0],
       periodType: "",
+      date: null,
       tags: [],
       plans: [],
       originalPlans: [],

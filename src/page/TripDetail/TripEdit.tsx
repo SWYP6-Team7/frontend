@@ -126,7 +126,7 @@ const TripEdit = () => {
     const handleLoad = () => {
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.addressSearch(location, (result, status) => {
+        geocoder.addressSearch(location.locationName, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
             addLocationName({ locationName: location, mapType: "kakao" });
           } else {
@@ -138,7 +138,7 @@ const TripEdit = () => {
     if (isKakaoMapLoad) {
       handleLoad();
     }
-  }, [isKakaoMapLoad, location]);
+  }, [isKakaoMapLoad, location.locationName]);
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
@@ -314,14 +314,11 @@ const TripEdit = () => {
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetEditTripDetail(); // 만약 Promise를 반환한다면
-
-        setTimeout(() => {
-          if (data) {
-            router.push(`/trip/detail/${data.travelNumber}`);
-          } else {
-            router.push(`/`);
-          }
-        }, 500);
+        if (data) {
+          router.push(`/trip/detail/${data.travelNumber}`);
+        } else {
+          router.push(`/`);
+        }
       },
       onError: (e) => {
         console.log(e, "여행 수정 오류 발생.");
