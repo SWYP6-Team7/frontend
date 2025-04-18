@@ -35,6 +35,7 @@ dayjs.extend(isSameOrBefore);
 
 const TripEdit = () => {
   const { addIsChange, isChange, planIndex, addPlanIndex } = tripPlanStore();
+  const { updateTripDetailMutate, isEditSuccess } = useTripDetail(Number(travelNumber));
 
   const params = useParams();
   const travelNumber = params?.travelNumber as string;
@@ -70,8 +71,8 @@ const TripEdit = () => {
     resetEditTripDetail,
   } = editTripStore();
   useEffect(() => {
-    console.log("trip", tripInfos, genderType);
-    if (tripDetail.isFetched) {
+    console.log("trip", tripInfos, genderType, isEditSuccess);
+    if (tripDetail.isFetched && !isEditSuccess) {
       if (title === "") {
         addTitle(tripInfos.title);
       }
@@ -97,6 +98,7 @@ const TripEdit = () => {
     locationName.locationName,
     tags,
     initGeometry,
+    isEditSuccess,
   ]);
 
   useEffect(() => {
@@ -273,7 +275,6 @@ const TripEdit = () => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
 
-  const { updateTripDetailMutate } = useTripDetail(Number(travelNumber));
   console.log("originalPlans", originalPlans);
   const completeClickHandler = () => {
     if (
