@@ -127,19 +127,19 @@ const TripEdit = () => {
     const handleLoad = () => {
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.addressSearch(location.locationName, (result, status) => {
+        geocoder.addressSearch(location, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
-            addLocationName({ locationName: location.locationName, mapType: "kakao" });
+            addLocationName({ locationName: location, mapType: "kakao" });
           } else {
-            addLocationName({ locationName: location.locationName, mapType: "google" });
+            addLocationName({ locationName: location, mapType: "google" });
           }
         });
       });
     };
-    if (isKakaoMapLoad) {
+    if (isKakaoMapLoad && locationName.locationName === "") {
       handleLoad();
     }
-  }, [isKakaoMapLoad, location.locationName]);
+  }, [isKakaoMapLoad, location, locationName.locationName]);
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
