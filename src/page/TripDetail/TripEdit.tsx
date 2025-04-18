@@ -35,10 +35,11 @@ dayjs.extend(isSameOrBefore);
 
 const TripEdit = () => {
   const { addIsChange, isChange, planIndex, addPlanIndex } = tripPlanStore();
-  const { updateTripDetailMutate, isEditSuccess } = useTripDetail(Number(travelNumber));
 
   const params = useParams();
   const travelNumber = params?.travelNumber as string;
+  const { updateTripDetailMutate, isEditSuccess } = useTripDetail(Number(travelNumber));
+
   const { tripDetail } = useTripDetail(parseInt(travelNumber!));
   const tripInfos = tripDetail.data as any;
   const [isKakaoMapLoad, setIsKakaooMapLoad] = useState(false);
