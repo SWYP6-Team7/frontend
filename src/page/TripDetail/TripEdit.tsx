@@ -84,7 +84,8 @@ const TripEdit = () => {
 
       if (!genderType) addGenderType(tripInfos.genderType);
       if (!date) addDate({ startDate: tripInfos.startDate, endDate: tripInfos.endDate });
-      if (locationName.locationName === "") addLocationName({ locationName: location, mapType: "google" });
+      if (locationName.locationName === "")
+        addLocationName({ locationName: location, mapType: "google", countryName: "" });
       if (!tags) addTags(tripInfos.tags);
       if (!initGeometry) addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
     }
