@@ -90,7 +90,7 @@ const TravelLog = ({ type, highlightedRegions = [] }: { type: "세계" | "국내
         strokeWeight: 1,
         strokeOpacity: 1,
         fillColor: isHighlighted ? "#3366FF" : "#FFFFFF", // 하이라이트된 지역은 파란색
-        fillOpacity: isHighlighted ? 0.6 : 0, // 하이라이트된 지역만 채우기 표시
+        fillOpacity: isHighlighted ? 1 : 0, // 하이라이트된 지역만 채우기 표시
       };
     });
   }, [map]);
@@ -98,6 +98,7 @@ const TravelLog = ({ type, highlightedRegions = [] }: { type: "세계" | "국내
   return null;
 };
 
+// 더미 함수 클릭이나 출처 표시 함수
 // function createAttribution() {
 //   const attributionLabel = document.createElement("div");
 //   // Define CSS styles.

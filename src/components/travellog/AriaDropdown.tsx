@@ -20,14 +20,12 @@ interface AriaDropdownProps {
 }
 
 const AriaDropdown = ({ data, setTarget }: AriaDropdownProps) => {
-  console.log("data", typeof data);
   const [showModal, setShowModal] = useState(false);
   const [targetData, setTargetData] = useState<{
     locationName?: string;
     countryName?: string;
     visitDates: string[];
   } | null>(null);
-  console.log("Data1", data[0]);
 
   const openModal = (data) => {
     setShowModal(true);
@@ -51,18 +49,18 @@ const AriaDropdown = ({ data, setTarget }: AriaDropdownProps) => {
                       <path
                         d="M12 23C15.866 23 19 19.866 19 16C19 12.134 15.866 9 12 9C8.13401 9 5 12.134 5 16C5 19.866 8.13401 23 12 23Z"
                         stroke="black"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M12 11.8003V16.0003L14.8 17.4003"
                         stroke="black"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </g>
                   </svg>
-                  <div>{dayjs(date).format("YY.MM.DD")}</div>
+                  <div>{dayjs(date).format("YY.MM.DD")} </div>
                 </VisitItem>
               ))}
             </VisitContainer>
@@ -95,7 +93,10 @@ const AriaDropdown = ({ data, setTarget }: AriaDropdownProps) => {
               <ItemContainer onClick={() => openModal(region)}>
                 <Index>{index + 1}</Index>
                 <Title>{region.locationName ?? region.countryName}</Title>
-                <Date>{dayjs(region.visitDates[0]).format("YY.MM.DD")}</Date>
+                <Date>
+                  {dayjs(region.visitDates[0]).format("YY.MM.DD")}{" "}
+                  {region.visitDates.length > 1 && <More>+{region.visitDates.length}</More>}
+                </Date>
               </ItemContainer>
             ))}
           </Accordion>
@@ -153,6 +154,18 @@ const ModalTitle = styled.div`
   padding: 12px 0;
   padding-left: 4px;
   border-bottom: 1px solid #e7e7e7;
+`;
+
+const More = styled.span`
+  padding: 1px 4px;
+  border-radius: 20px;
+  background-color: ${palette.비강조2};
+  color: white;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 600;
+  height: 16px;
+  margin-left: 4px;
 `;
 
 const VisitContainer = styled.div`
