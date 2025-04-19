@@ -9,14 +9,28 @@ import { palette } from "@/styles/palette";
 interface RegionModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
+  addLocationName: ({
+    locationName,
+    mapType,
+    countryName,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  }) => void;
   locationName: {
     locationName: string;
     mapType: "google" | "kakao";
+    countryName: string;
   };
 }
 
-const RegionModal = ({ isModalOpen, setIsModalOpen, addLocationName, locationName }: RegionModalProps) => {
+const RegionModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  addLocationName,
+  locationName,
+}: RegionModalProps) => {
   const handleClose = () => {
     console.log("testing");
     setIsModalOpen(false);
@@ -27,7 +41,13 @@ const RegionModal = ({ isModalOpen, setIsModalOpen, addLocationName, locationNam
     <Container>
       <Header>
         <CloseContainer onClick={handleClose}>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M17.7782 2.22202L2.22183 17.7784M17.7782 17.7784L2.22183 2.22202"
               stroke="#343434"
@@ -40,7 +60,11 @@ const RegionModal = ({ isModalOpen, setIsModalOpen, addLocationName, locationNam
       </Header>
       <Spacing size={8} />
 
-      <TripRegion addLocationName={addLocationName} initLocationName={locationName} nextFunc={handleClose} />
+      <TripRegion
+        addLocationName={addLocationName}
+        initLocationName={locationName}
+        nextFunc={handleClose}
+      />
     </Container>,
     document.getElementById("region-modal") as HTMLElement
   );

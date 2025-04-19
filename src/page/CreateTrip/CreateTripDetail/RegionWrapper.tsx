@@ -5,7 +5,12 @@ import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  useMap,
+  useMapsLibrary,
+} from "@vis.gl/react-google-maps";
 import RegionModal from "@/components/RegionModal";
 
 interface RegionInfo {
@@ -13,7 +18,14 @@ interface RegionInfo {
   adminArea: string | null;
 }
 
-const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometry, isLoad }) => {
+const InnerMap = ({
+  locationNameStr,
+  locationName,
+  setRegionInfo,
+  addInitGeometry,
+  addLocationName,
+  isLoad,
+}) => {
   const map = useMap();
   const placesLib = useMapsLibrary("places");
 
@@ -32,7 +44,10 @@ const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometr
     service.findPlaceFromQuery(request, (results, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
         console.log(results, "result");
-        if (results[0].geometry?.location?.lat() && results[0].geometry?.location?.lng()) {
+        if (
+          results[0].geometry?.location?.lat() &&
+          results[0].geometry?.location?.lng()
+        ) {
           addInitGeometry({
             lat: results[0].geometry?.location?.lat(),
             lng: results[0].geometry?.location?.lng(),
@@ -40,16 +55,28 @@ const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometr
         }
 
         if (results[0]) {
-          const parts = results[0].formatted_address?.split(",").map((part) => part.trim());
+          const parts = results[0].formatted_address
+            ?.split(",")
+            .map((part) => part.trim());
           setRegionInfo({
             country: parts ? parts[parts.length - 1] : null,
             adminArea: parts ? parts[parts.length - 2] : null,
+          });
+          addLocationName({
+            locationName: locationName.locationName,
+            mapType: "google",
+            countryName: parts ? parts[parts.length - 1] : "",
           });
         }
       } else {
         setRegionInfo({
           country: locationNameStr,
           adminArea: locationNameStr,
+        });
+        addLocationName({
+          locationName: locationName.locationName,
+          mapType: "google",
+          countryName: locationNameStr,
         });
       }
     });
@@ -62,7 +89,10 @@ const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometr
       geocoder.addressSearch(locationNameStr, (result, status) => {
         console.log(result, "result");
 
-        if (status === window.kakao.maps.services.Status.OK && result.length > 0) {
+        if (
+          status === window.kakao.maps.services.Status.OK &&
+          result.length > 0
+        ) {
           if (result[0].x && result[0].y) {
             addInitGeometry({
               lat: Number(result[0].y),
@@ -72,6 +102,11 @@ const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometr
           setRegionInfo({
             country: "한국",
             adminArea: result[0]?.address_name ?? locationNameStr,
+          });
+          addLocationName({
+            locationName: locationName.locationName,
+            mapType: "kakao",
+            countryName: "한국",
           });
         } else {
           addInitGeometry(null);
@@ -88,11 +123,26 @@ const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometr
       if (!isLoad) return;
       handleKakaoInfo();
     }
-  }, [locationName.mapType, map, placesLib, isLoad, fetchPlaceInfo, handleKakaoInfo]);
+  }, [
+    locationName.mapType,
+    map,
+    placesLib,
+    isLoad,
+    fetchPlaceInfo,
+    handleKakaoInfo,
+  ]);
 
   return (
     <Map
-      style={{ height: 1, width: 1, position: "fixed", top: -99, left: -99, opacity: 1, visibility: "hidden" }}
+      style={{
+        height: 1,
+        width: 1,
+        position: "fixed",
+        top: -99,
+        left: -99,
+        opacity: 1,
+        visibility: "hidden",
+      }}
       defaultZoom={13}
       mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
       disableDefaultUI
@@ -108,8 +158,20 @@ const RegionWrapper = ({
   location,
   isDetail = false,
 }: {
-  locationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
+  locationName: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  };
+  addLocationName: ({
+    locationName,
+    mapType,
+    countryName,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  }) => void;
   addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   location?: string;
   isDetail?: boolean;
@@ -147,6 +209,7 @@ const RegionWrapper = ({
             locationName={locationName}
             setRegionInfo={setRegionInfo}
             addInitGeometry={addInitGeometry}
+            addLocationName={addLocationName}
             isLoad={isLoad}
           />
         </APIProvider>
@@ -171,6 +234,7 @@ const RegionWrapper = ({
             locationName={locationName}
             setRegionInfo={setRegionInfo}
             addInitGeometry={addInitGeometry}
+            addLocationName={addLocationName}
             isLoad={isLoad}
           />
         </APIProvider>

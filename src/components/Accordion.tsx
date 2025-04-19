@@ -5,11 +5,13 @@ import SelectArrow from "./icons/SelectArrow";
 import { palette } from "@/styles/palette";
 import Vector from "./icons/Vector";
 import { usePathname } from "next/navigation";
+import { useHeaderNavigation } from "@/hooks/useHeaderNavigation";
 
 const Accordion = ({
   id,
   title,
   children,
+  travelCount,
   initialChecked,
   paddingTop = "1.7svh",
   paddingLeft = "1.7svh",
@@ -19,11 +21,16 @@ const Accordion = ({
   tabLineHeihgt = "19px",
   fontWeight = 600,
   tabBorder = true,
+  handleOpen,
+  handleClose,
   count,
 }: {
   id: string;
+  travelCount?: number;
   count: number;
   fontWeight?: number;
+  handleOpen?: () => void;
+  handleClose?: () => void;
   title: string | React.ReactNode;
   paddingTop?: string;
   paddingLeft?: string;
@@ -40,6 +47,8 @@ const Accordion = ({
   const contentRef = useRef<HTMLDivElement>(null); // 콘텐츠 참조 추가
   const pathname = usePathname();
   const isCreateTripPage = pathname === "/createTripDetail";
+  const { ROUTES, checkRoute } = useHeaderNavigation();
+  const isTravelLog = checkRoute.startsWith("/userProfile");
   const isEditTripPage = pathname?.startsWith("/trip/edit");
 
   useEffect(() => {
@@ -61,7 +70,10 @@ const Accordion = ({
         id={id}
         style={{ display: "none" }}
         checked={isChecked}
-        onChange={() => setIsChecked(!isChecked)}
+        onChange={() => {
+          handleOpen && handleClose && (isChecked ? handleClose() : handleOpen());
+          setIsChecked(!isChecked);
+        }}
       />
       <Tab
         tabPadding={tabPadding}
@@ -73,14 +85,23 @@ const Accordion = ({
         <TitleContainer>
           {isCreateTripPage ? (
             <TitleTextCreateTrip isCreateTripPage={isCreateTripPage || isEditTripPage}>{title}</TitleTextCreateTrip>
+          ) : isTravelLog ? (
+            <TravelLogTitleContainer>
+              <div>{title}</div>
+              <TravelCount>
+                {count}/{travelCount}개
+              </TravelCount>
+            </TravelLogTitleContainer>
           ) : (
             <div>{title}</div>
           )}
 
-          {count > 0 && <Count isCreateTripPage={isCreateTripPage || Boolean(isEditTripPage)}>{count}</Count>}
+          {count > 0 && !isTravelLog && (
+            <Count isCreateTripPage={isCreateTripPage || Boolean(isEditTripPage)}>{count}</Count>
+          )}
         </TitleContainer>
         <div style={{ transform: isChecked ? "rotate(180deg)" : "rotate(0)" }}>
-          {isCreateTripPage ? <Vector stroke={palette.비강조} /> : <SelectArrow width={12} height={6} />}
+          {isCreateTripPage || isTravelLog ? <Vector stroke={palette.비강조} /> : <SelectArrow width={12} height={6} />}
         </div>
       </Tab>
       <Content
@@ -144,6 +165,19 @@ const Count = styled.div<{ isCreateTripPage: boolean }>`
   color: ${palette.비강조4};
 
   opacity: 0px;
+`;
+
+const TravelLogTitleContainer = styled.div`
+  display: flex;
+
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const TravelCount = styled.div`
+  font-size: 14px;
+  line-height: 16px;
+  color: ${palette.비강조};
 `;
 
 const Tab = styled.label<{ tabLineHeight: string; tabPadding: string; fontWeight: number }>`

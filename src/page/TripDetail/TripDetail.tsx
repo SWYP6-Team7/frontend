@@ -197,9 +197,17 @@ export default function TripDetail() {
         const geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.addressSearch(location, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
-            addLocationName({ locationName: location, mapType: "kakao" });
+            addLocationName({
+              locationName: location,
+              mapType: "kakao",
+              countryName: "",
+            });
           } else {
-            addLocationName({ locationName: location, mapType: "google" });
+            addLocationName({
+              locationName: location,
+              mapType: "google",
+              countryName: "",
+            });
           }
         });
       });
