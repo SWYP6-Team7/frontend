@@ -41,11 +41,18 @@ axiosInstance.interceptors.response.use(
       }
 
       try {
+
         // 토큰 갱신 요청
         const refreshResponse = await axiosInstance.post("/api/token/refresh", {});
+
         const newAccessToken = refreshResponse.data.success.accessToken;
 
         console.log("new AccessToken", newAccessToken, refreshResponse);
+
+
+
+        // 갱신된 토큰으로 원래 요청 재시도
+
 
         return axiosInstance({
           ...originalRequest,
@@ -61,7 +68,9 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T | null>>): T | null => {
+export const handleApiResponse = <T>(
+  response: AxiosResponse<ApiResponse<T | null>>
+): T | null => {
   console.log("response", response);
 
   if (response.data.resultType !== "SUCCESS") {

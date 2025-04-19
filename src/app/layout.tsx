@@ -2,13 +2,18 @@ import Layout from "@/components/Layout";
 import Providers from "./providers";
 import "./globals.css";
 import { MSWComponent } from "@/context/MSWComponent";
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import { GoogleAnalytics } from "@next/third-parties/google";
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ko">
       <body>
         <Providers>
           <MSWComponent />
+          <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} />
           <Layout>{children}</Layout>
           <div id="checking-modal" />
           <div id="trip-toast" />
