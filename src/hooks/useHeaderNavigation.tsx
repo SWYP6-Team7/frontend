@@ -5,6 +5,8 @@ import { ReactNode } from "react";
 import { useBackPathStore } from "@/store/client/backPathStore";
 import { useTransitionRouter } from "next-view-transitions";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
+import { createTripStore } from "@/store/client/createTripStore";
+import { editTripStore } from "@/store/client/editTripStore";
 
 const ROUTES = {
   REGISTER: "/register",
@@ -70,7 +72,8 @@ const ROUTES = {
 export const useHeaderNavigation = () => {
   const originalRouter = useRouter();
   const router = useTransitionRouter();
-
+  const { resetCreateTripDetail } = createTripStore();
+  const { resetEditTripDetail } = editTripStore();
   const {
     searchTravel,
     setSearchTravel,
@@ -375,6 +378,11 @@ export const useHeaderNavigation = () => {
       ? "instant"
       : "back";
 
+    if (checkRoute.startsWith(ROUTES.CREATE_TRIP.REGION)) {
+      resetCreateTripDetail();
+    } else if (checkRoute.startsWith(ROUTES.TRIP.EDIT)) {
+      resetEditTripDetail();
+    }
     if (matchedRule) {
       matchedRule.action();
       return;

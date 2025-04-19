@@ -21,25 +21,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const { userPostRefreshToken } = useAuth();
   const { userId, accessToken, logoutCheck } = authStore();
   // 유저 프로필 정보 불러오기
-  const {
-    addEmail,
-    addProfileUrl,
-    addName,
-    addGender,
-    addAgegroup,
-    addPreferredTags,
-    profileUrl,
-    addUserSocialTF,
-  } = myPageStore();
+  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl, addUserSocialTF } =
+    myPageStore();
 
-  const {
-    data,
-    isLoading,
-    profileImage,
-    isLoadingImage,
-    firstProfileImageMutation,
-    isFirstProfileImagePostSuccess,
-  } = useMyPage();
+  const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
+    useMyPage();
   console.log(data, "user data");
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
@@ -84,11 +70,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
-    if (
-      !accessToken &&
-      !logoutCheck &&
-      !checkRoute.startsWith("/login/oauth")
-    ) {
+    if (!accessToken && !logoutCheck && !checkRoute.startsWith("/login/oauth")) {
       // 토큰이 없으면 리프레쉬 토큰 api 요청.
       const refreshAccessToken = async () => {
         userPostRefreshToken();
@@ -105,21 +87,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     if (splashOn === true) return;
     let themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
     if (themeColorMetaTag) {
-      themeColorMetaTag.setAttribute(
-        "content",
-        backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`
-      );
+      themeColorMetaTag.setAttribute("content", backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`);
     }
   }, [pathname]);
 
   return (
-    <APIProvider
-      apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}
-      onLoad={() => console.log("google map load")}
-    >
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""} onLoad={() => console.log("google map load")}>
       <Container pathname={pathname}>
         <Splash />
-        <Body pathname={pathname}>
+        <Body pathname={checkRoute}>
           {/* {isSignup && <Header />} */}
           {/* 홈 화면 헤더는 다른 형태. */}
           {pathname !== "/" &&
@@ -149,12 +125,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 // 그렇기 때문에 440px 이상이면 모바일 환경이 아니라고 생각하고 max-width를 figma layout에 맞춤
 const Body = styled.div<{ pathname: string | null }>`
   width: 100svw;
-  height: 100%;
   position: relative;
-
+  height: 100%;
   background-color: ${(props) =>
-    props.pathname === "/"
-      ? "#f0f0f0"
+    props.pathname.exact("/") ||
+    props.pathname?.exact("/create/trip/detail") ||
+    props.pathname?.startsWith("/notification") ||
+    props.pathname?.startsWith("/community/detail")
+      ? "#f5f5f5"
       : props.pathname?.startsWith("/trip/detail") ||
           props.pathname?.startsWith("/myTrip") ||
           props.pathname?.startsWith("/requestedTrip")

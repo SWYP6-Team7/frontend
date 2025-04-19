@@ -143,7 +143,7 @@ const CommunityPost = () => {
 const PostWrapper = styled.div`
   background-color: ${palette.BG};
   padding: 24px;
-
+  margin-bottom: 6px;
   top: 100px;
   left: 24px;
   gap: 32px;

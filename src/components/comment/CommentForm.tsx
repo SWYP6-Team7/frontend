@@ -79,6 +79,7 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
 
   return isGuestUser() ? (
     <Container
+      relatedType={relatedType}
       paddingBottom={paddingBottom}
       paddingTop={paddingTop}
       onClick={() => {
@@ -89,7 +90,7 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
       <CommentInput setReset={setReset} placeholder="로그인 후 댓글을 달아보세요." readOnly />
     </Container>
   ) : (
-    <Container onSubmit={submitComment} paddingBottom={paddingBottom} paddingTop={paddingTop}>
+    <Container relatedType={relatedType} onSubmit={submitComment} paddingBottom={paddingBottom} paddingTop={paddingTop}>
       <CommentInput
         setReset={setReset}
         onFocus={() => setFocused(true)}
@@ -106,6 +107,7 @@ const CommentForm = ({ paddingBottom = 40, paddingTop = 16, relatedType, related
 };
 
 const Container = styled.form<{
+  relatedType: "community" | "travel";
   paddingBottom: number;
   paddingTop: number;
 }>`
@@ -125,7 +127,7 @@ const Container = styled.form<{
 
   position: fixed;
   padding: 0 24px;
-  background-color: white;
+  background-color: ${(props) => (props.relatedType === "community" ? "#f5f5f5" : "white")};
   padding-top: ${(props) => Math.abs(props.paddingTop / 844) * 100}svh;
   padding-bottom: ${(props) => Math.abs(props.paddingBottom / 844) * 100}svh;
   width: 100%;

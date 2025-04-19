@@ -5,13 +5,7 @@ import { create } from "zustand";
 
 interface EditTripStore {
   locationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({
-    locationName,
-    mapType,
-  }: {
-    locationName: string;
-    mapType: "google" | "kakao";
-  }) => void;
+  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
   title: string;
   addTitle: (title: string) => void;
   details: string;
@@ -23,16 +17,10 @@ interface EditTripStore {
   dueDate: string;
   addDueDate: (dueDate: string) => void;
   date: { startDate: string; endDate: string } | null;
-  addDate: ({
-    startDate,
-    endDate,
-  }: {
-    startDate: string;
-    endDate: string;
-  }) => void;
+  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
   periodType: string;
   addPeriodType: (periodType: string) => void;
-  tags: string[];
+  tags: string[] | null;
   addTags: (tags: string[]) => void;
   initGeometry: { lng: number; lat: number } | null;
   addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
@@ -58,8 +46,8 @@ interface EditTripStore {
     planOrder: number;
     spots: SpotType[];
   }[];
-  dataInitialized: boolean;
-  setDataInitialized: (bool: boolean) => void;
+  dataInitialized: { isInitialized: boolean; travelNumber: number };
+  setDataInitialized: (data: { isInitialized: boolean; travelNumber: number }) => void;
   addPlans: (plans: { planOrder: number; spots: SpotType[] }[]) => void;
   addCompletionStatus: (completionStatus: boolean) => void;
   resetEditTripDetail: () => void;
@@ -70,7 +58,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
   addTitle: (title) => {
     set({ title });
   },
-  dataInitialized: false,
+  dataInitialized: { isInitialized: false, travelNumber: -1 },
   setDataInitialized: (dataInitialized) => {
     set({ dataInitialized });
   },
@@ -82,7 +70,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
   addDetails: (details) => {
     set({ details });
   },
-  maxPerson: 1,
+  maxPerson: -1,
   addMaxPerson: (maxPerson) => {
     set({ maxPerson });
   },
@@ -118,7 +106,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
   setOriginalPlans: (originalPlans) => {
     set({ originalPlans });
   },
-  tags: [],
+  tags: null,
   addTags: (tags) => {
     set({ tags });
   },
@@ -135,14 +123,15 @@ export const editTripStore = create<EditTripStore>((set) => ({
         mapType: "google",
       },
       details: "",
-      maxPerson: 1,
+      maxPerson: -1,
       genderType: "",
       dueDate: getCurrentFormattedDate().split(" ")[0],
       periodType: "",
-      tags: [],
+      date: null,
+      tags: null,
       plans: [],
       originalPlans: [],
-      dataInitialized: false,
+      dataInitialized: { isInitialized: false, travelNumber: -1 },
       completionStatus: false,
     });
   },
