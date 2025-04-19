@@ -86,14 +86,7 @@ export const useHeaderNavigation = () => {
     setTravelDetail,
   } = useBackPathStore();
   const pathname = usePathname() || "/";
-  const {
-    resetAge,
-    resetForm,
-    resetGender,
-    resetName,
-    socialLogin,
-    setSocialLogin,
-  } = userStore();
+  const { resetAge, resetForm, resetGender, resetName, socialLogin, setSocialLogin } = userStore();
   const { resetTripDetail } = tripDetailStore();
   const pathToRegex = (path) => new RegExp("^" + path.replace(/:[^/]+/g, "[^/]+") + "$");
 
@@ -206,8 +199,7 @@ export const useHeaderNavigation = () => {
         },
       },
       {
-        condition: () =>
-          pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
+        condition: () => pathname.startsWith(ROUTES.REGISTER_PROCESS.TRIP_STYLE),
         action: () => {
           originalRouter.push(ROUTES.REGISTER_PROCESS.AGE);
         },
@@ -398,13 +390,11 @@ export const useHeaderNavigation = () => {
   const handleBack = () => {
     const rules = createNavigationRules(pathname);
     const matchedRule = rules.find((rule) => rule.condition());
-    document.documentElement.style.viewTransitionName = checkRoute.startsWith(
-      ROUTES.CREATE_TRIP.INDEX
-    )
+    document.documentElement.style.viewTransitionName = checkRoute.startsWith(ROUTES.CREATE_TRIP.INDEX)
       ? "instant"
       : "back";
 
-    if (checkRoute.startsWith(ROUTES.CREATE_TRIP.DETAIL)) {
+    if (checkRoute.startsWith(ROUTES.CREATE_TRIP.REGION)) {
       resetCreateTripDetail();
     } else if (checkRoute.startsWith(ROUTES.TRIP.EDIT)) {
       resetEditTripDetail();
@@ -417,13 +407,9 @@ export const useHeaderNavigation = () => {
     router.back();
   };
 
-  const shouldShowAlarmIcon = () =>
-    checkRoute.startsWith(ROUTES.MY.TRIP) ||
-    checkRoute.startsWith(ROUTES.MY.PAGE);
+  const shouldShowAlarmIcon = () => checkRoute.startsWith(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.MY.PAGE);
 
-  const shouldShowSkip = () =>
-    pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE ||
-    pathname === ROUTES.CREATE_TRIP.TAG;
+  const shouldShowSkip = () => pathname === ROUTES.REGISTER_PROCESS.TRIP_STYLE || pathname === ROUTES.CREATE_TRIP.TAG;
 
   return {
     ROUTES,

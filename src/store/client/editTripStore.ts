@@ -32,7 +32,7 @@ interface EditTripStore {
   addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
   periodType: string;
   addPeriodType: (periodType: string) => void;
-  tags: string[];
+  tags: string[] | null;
   addTags: (tags: string[]) => void;
   initGeometry: { lng: number; lat: number } | null;
   addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
@@ -82,7 +82,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
   addDetails: (details) => {
     set({ details });
   },
-  maxPerson: 1,
+  maxPerson: -1,
   addMaxPerson: (maxPerson) => {
     set({ maxPerson });
   },
@@ -118,7 +118,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
   setOriginalPlans: (originalPlans) => {
     set({ originalPlans });
   },
-  tags: [],
+  tags: null,
   addTags: (tags) => {
     set({ tags });
   },
@@ -136,11 +136,12 @@ export const editTripStore = create<EditTripStore>((set) => ({
         mapType: "google",
       },
       details: "",
-      maxPerson: 1,
+      maxPerson: -1,
       genderType: "",
       dueDate: getCurrentFormattedDate().split(" ")[0],
       periodType: "",
-      tags: [],
+      date: null,
+      tags: null,
       plans: [],
       originalPlans: [],
       dataInitialized: { isInitialized: false, travelNumber: -1 },

@@ -109,6 +109,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
   },
 
   resetCreateTripDetail: () => {
+    console.log("reset");
     set({
       title: "",
       locationName: {
@@ -118,6 +119,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
       },
       details: "",
       maxPerson: 1,
+      date: null,
       genderType: "",
       dueDate: getCurrentFormattedDate().split(" ")[0],
       periodType: "",

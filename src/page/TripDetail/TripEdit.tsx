@@ -38,21 +38,12 @@ const TripEdit = () => {
 
   const params = useParams();
   const travelNumber = params?.travelNumber as string;
+  const { updateTripDetailMutate, isEditSuccess } = useTripDetail(Number(travelNumber));
+
   const { tripDetail } = useTripDetail(parseInt(travelNumber!));
   const tripInfos = tripDetail.data as any;
   const [isKakaoMapLoad, setIsKakaooMapLoad] = useState(false);
-  const {
-    title: initTitle,
-    startDate: initStartDate,
-    endDate: initEndDate,
-    details: initDetails,
-    tags: initTags,
-    nowPerson,
-    location,
-    initGeometry: initInitGeometry,
-    maxPerson: initMaxPerson,
-    genderType: initGenderType,
-  } = tripInfos ?? {};
+  const { nowPerson, location, initGeometry: initInitGeometry } = tripInfos ?? {};
   const {
     locationName,
     title,
@@ -81,41 +72,35 @@ const TripEdit = () => {
     resetEditTripDetail,
   } = editTripStore();
   useEffect(() => {
-    console.log("trip", tripInfos);
-    if (tripDetail.isFetched) {
-      const {
-        travelNumber,
-        userNumber,
-        userName,
-        createdAt,
-        location,
-        title,
-        details,
-        maxPerson,
-        genderType,
+    console.log("trip", tripInfos, genderType, isEditSuccess, locationName);
+    if (tripDetail.isFetched && !isEditSuccess) {
+      if (title === "") {
+        addTitle(tripInfos.title);
+      }
+      if (details === "") {
+        addDetails(tripInfos.details);
+      }
+      if (maxPerson === -1) addMaxPerson(tripInfos.maxPerson);
 
-        periodType,
-        tags,
-        postStatus,
-        nowPerson,
-        bookmarkCount,
-        viewCount,
-        enrollCount,
-        userAgeGroup,
-        startDate,
-        endDate,
-        profileUrl,
-        loginMemberRelatedInfo,
-      } = tripInfos;
-
-      addTitle(title);
-      addDetails(details);
-      addMaxPerson(maxPerson);
-      addGenderType(genderType);
-
-      addTags(tags);
+      if (!genderType) addGenderType(tripInfos.genderType);
+      if (!date) addDate({ startDate: tripInfos.startDate, endDate: tripInfos.endDate });
+      if (locationName.locationName === "") addLocationName({ locationName: location, mapType: "google" });
+      if (!tags) addTags(tripInfos.tags);
+      if (!initGeometry) addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
     }
-  }, [tripDetail.isFetched, tripInfos]);
+  }, [
+    tripDetail.isFetched,
+    JSON.stringify(tripInfos),
+    title,
+    details,
+    maxPerson,
+    genderType,
+    date,
+    locationName.locationName,
+    tags,
+    initGeometry,
+    isEditSuccess,
+  ]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -143,8 +128,9 @@ const TripEdit = () => {
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
-
+  console.log("init locationName", locationName);
   useEffect(() => {
+    console.log("locationName kakao", locationName);
     const handleLoad = () => {
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
@@ -165,10 +151,10 @@ const TripEdit = () => {
         });
       });
     };
-    if (isKakaoMapLoad) {
+    if (isKakaoMapLoad && locationName.locationName === "" && !isEditSuccess) {
       handleLoad();
     }
-  }, [isKakaoMapLoad, location]);
+  }, [isKakaoMapLoad, location, locationName.locationName, isEditSuccess]);
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
@@ -249,36 +235,6 @@ const TripEdit = () => {
   }, [hasNextPage, isFetching, fetchNextPage]);
 
   useEffect(() => {
-    if (
-      title === "" &&
-      initTitle &&
-      locationName.locationName === "" &&
-      details === "" &&
-      initDetails &&
-      initStartDate
-    ) {
-      addTitle(initTitle);
-      addDetails(initDetails || "");
-      addTags(initTags || []);
-      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
-      addDate({ startDate: initStartDate || "", endDate: initEndDate || "" });
-      addGenderType(initGenderType || "");
-      addMaxPerson(initMaxPerson || 0);
-    }
-  }, [
-    initTitle,
-    initDetails,
-    initTags,
-
-    initInitGeometry,
-    initStartDate,
-    initEndDate,
-    initGenderType,
-    initMaxPerson,
-    title,
-  ]);
-
-  useEffect(() => {
     if (date?.startDate && date?.endDate && dataInitialized.isInitialized) {
       const start = dayjs(date.startDate);
       const end = dayjs(date.endDate);
@@ -328,7 +284,6 @@ const TripEdit = () => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
 
-  const { updateTripDetailMutate } = useTripDetail(Number(travelNumber));
   console.log("originalPlans", originalPlans);
   const completeClickHandler = () => {
     if (
@@ -338,7 +293,7 @@ const TripEdit = () => {
       genderType === "" ||
       !date?.startDate ||
       !date?.endDate ||
-      tags.length === 0 ||
+      tags?.length === 0 ||
       locationName.locationName === ""
     ) {
       console.log(
@@ -350,7 +305,7 @@ const TripEdit = () => {
         !date?.startDate,
         !date?.endDate,
         periodType,
-        tags.length,
+        tags?.length,
         locationName.locationName
       );
       addCompletionStatus(false);
@@ -368,7 +323,7 @@ const TripEdit = () => {
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
       countryName: locationName.countryName,
-      tags,
+      tags: tags ?? [],
       planChanges: trackPlanChanges(originalPlans, plans),
     };
 
@@ -429,7 +384,7 @@ const TripEdit = () => {
 자유롭게 소개해보세요. (최대 2,000자)"
               />
               <Spacing size={16} />
-              <TagListWrapper addTags={addTags} taggedArray={tags} />
+              <TagListWrapper addTags={addTags} taggedArray={tags ?? []} />
               <Spacing size={16} />
               <Bar />
               <CalendarWrapper addDate={addDate} date={date} />

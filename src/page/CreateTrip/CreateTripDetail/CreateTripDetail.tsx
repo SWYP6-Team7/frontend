@@ -142,6 +142,7 @@ const CreateTripDetail = () => {
     createTripMutate(undefined, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
+
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
         } else {
