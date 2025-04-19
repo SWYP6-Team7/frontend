@@ -34,22 +34,22 @@ export default function TravelLog() {
   if (isError) {
     return null;
   }
-  return (
-    !isLoading && (
-      <div style={{ marginBottom: 80 }}>
-        <AriaFilter />
-        {logs && (
-          <TravelLogMap
-            target={target ? target[target.length - 1] : null}
-            highlightedRegions={Object.values(logs).flatMap((item: any) => {
-              return item.map((item) => item.countryName ?? item.locationName);
-            })}
-            type={filter}
-          />
-        )}
-        {data && Boolean(data?.visitedCountriesCount > 0) && <AllTravelCount count={data.visitedCountriesCount} />}
-        {logs && <AriaDropdown setTarget={setTarget} data={logs} />}
-      </div>
-    )
+  return !isLoading ? (
+    <div style={{ marginBottom: 80 }}>
+      <AriaFilter />
+      {logs && (
+        <TravelLogMap
+          target={target ? target[target.length - 1] : null}
+          highlightedRegions={Object.values(logs).flatMap((item: any) => {
+            return item.map((item) => item.countryName ?? item.locationName);
+          })}
+          type={filter}
+        />
+      )}
+      {data && Boolean(data?.visitedCountriesCount > 0) && <AllTravelCount count={data.visitedCountriesCount} />}
+      {logs && <AriaDropdown setTarget={setTarget} data={logs} />}
+    </div>
+  ) : (
+    <></>
   );
 }
