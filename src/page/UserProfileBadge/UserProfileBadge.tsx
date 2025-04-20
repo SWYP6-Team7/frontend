@@ -3,7 +3,7 @@
 import BadgeLockIcon from "@/components/icons/BadgeLockIcon";
 import { palette } from "@/styles/palette";
 import { useEffect } from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
 export function UserProfileBadge() {
   // API 요청. hooks 캐시 값 이용.
