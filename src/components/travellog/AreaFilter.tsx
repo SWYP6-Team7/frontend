@@ -10,7 +10,7 @@ const FILTER_LIST = [
   { value: "국내", title: "국내" },
 ] as const;
 
-export default function AriaFilter() {
+export default function AreaFilter() {
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter") ?? "세계";
   const router = useRouter();

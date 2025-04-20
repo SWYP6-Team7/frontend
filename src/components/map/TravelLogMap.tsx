@@ -61,36 +61,27 @@ const TravelLog = ({ type, highlightedRegions = [] }: { type: "세계" | "국내
     });
 
     geoJsonLayer.addGeoJson(type === "국내" ? sigoonGeoJsonData : countryGeoJsonData);
+    // 고차 함수로 사용
+    const createHighlighter = (highlightedRegions, cityDistricts) => (regionName) =>
+      highlightedRegions.includes(regionName) ||
+      highlightedRegions.some((region) => cityDistricts[region]?.includes(regionName));
 
+    // 하이라이트 함수 만들기
+    const isHighlighted = createHighlighter(highlightedRegions, cityDistricts);
+
+    //스타일 적용
     geoJsonLayer.setStyle((feature) => {
-      const regionName: any =
-        feature.getProperty("name_ko") || // 대륙/국가에 사용될 수 있는 속성명
-        feature.getProperty("CTP_KOR_NM") || // 한국 시도 속성명
-        feature.getProperty("SIG_KOR_NM"); // 한국 시군구 속성명
+      const regionName =
+        feature.getProperty("name_ko") || feature.getProperty("CTP_KOR_NM") || feature.getProperty("SIG_KOR_NM");
 
-      // 하이랑이트 함수
-
-      const shouldHighlight = () => {
-        // 1. 직접 일치 (시/군/구명)
-        if (highlightedRegions.includes(regionName)) return true;
-
-        // 2. cityDistricts의 key(예: "서울")가 하이라이트 대상인 경우
-        for (const region of highlightedRegions) {
-          if (cityDistricts[region]?.includes(regionName)) {
-            return true;
-          }
-        }
-        return false;
-      };
-
-      const isHighlighted = shouldHighlight();
+      const highlighted = isHighlighted(regionName);
 
       return {
         strokeColor: "#fff",
         strokeWeight: 1,
         strokeOpacity: 1,
-        fillColor: isHighlighted ? "#3366FF" : "#FFFFFF", // 하이라이트된 지역은 파란색
-        fillOpacity: isHighlighted ? 1 : 0, // 하이라이트된 지역만 채우기 표시
+        fillColor: highlighted ? "#3366FF" : "#FFFFFF",
+        fillOpacity: highlighted ? 1 : 0,
       };
     });
   }, [map]);

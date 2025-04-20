@@ -8,7 +8,7 @@ import BottomModal from "../BottomModal";
 import ButtonContainer from "../ButtonContainer";
 import Button from "../designSystem/Buttons/Button";
 
-interface AriaDropdownProps {
+interface AreaDropdownProps {
   data: {
     [key: string]: {
       locationName?: string;
@@ -19,7 +19,7 @@ interface AriaDropdownProps {
   setTarget: React.Dispatch<React.SetStateAction<string[] | null>>;
 }
 
-const AriaDropdown = ({ data, setTarget }: AriaDropdownProps) => {
+const AreaDropdown = ({ data, setTarget }: AreaDropdownProps) => {
   const [showModal, setShowModal] = useState(false);
   const [targetData, setTargetData] = useState<{
     locationName?: string;
@@ -44,22 +44,7 @@ const AriaDropdown = ({ data, setTarget }: AriaDropdownProps) => {
             <VisitContainer>
               {targetData?.visitDates.map((date) => (
                 <VisitItem>
-                  <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g opacity="0.3">
-                      <path
-                        d="M12 23C15.866 23 19 19.866 19 16C19 12.134 15.866 9 12 9C8.13401 9 5 12.134 5 16C5 19.866 8.13401 23 12 23Z"
-                        stroke="black"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M12 11.8003V16.0003L14.8 17.4003"
-                        stroke="black"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </g>
-                  </svg>
+                  <ClockIcon />
                   <div>{dayjs(date).format("YY.MM.DD")} </div>
                 </VisitItem>
               ))}
@@ -103,6 +88,22 @@ const AriaDropdown = ({ data, setTarget }: AriaDropdownProps) => {
         ))}
       </Container>
     </>
+  );
+};
+
+const ClockIcon = () => {
+  return (
+    <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity="0.3">
+        <path
+          d="M12 23C15.866 23 19 19.866 19 16C19 12.134 15.866 9 12 9C8.13401 9 5 12.134 5 16C5 19.866 8.13401 23 12 23Z"
+          stroke="black"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path d="M12 11.8003V16.0003L14.8 17.4003" stroke="black" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+    </svg>
   );
 };
 
@@ -183,4 +184,4 @@ const VisitItem = styled.div`
   line-height: 16px;
   font-weight: 400;
 `;
-export default AriaDropdown;
+export default AreaDropdown;

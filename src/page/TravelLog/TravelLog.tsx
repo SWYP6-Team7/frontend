@@ -2,8 +2,10 @@
 import { getUserTravelLog } from "@/api/user";
 import TravelLogMap from "@/components/map/TravelLogMap";
 import AllTravelCount from "@/components/travellog/AllTravelCount";
-import AriaDropdown from "@/components/travellog/AriaDropdown";
-import AriaFilter from "@/components/travellog/AriaFilter";
+import AreaDropdown from "@/components/travellog/AreaDropdown";
+
+import AreaFilter from "@/components/travellog/AreaFilter";
+
 import { authStore } from "@/store/client/authStore";
 import { groupRegionData } from "@/utils/travellog/travelLog";
 import { useQuery } from "@tanstack/react-query";
@@ -27,7 +29,8 @@ export default function TravelLog() {
 
   useEffect(() => {
     if (logs) {
-      setTarget([Object.keys(logs)[0]]);
+      const targetName = Object.keys(logs)[0];
+      setTarget([targetName]);
     }
   }, [JSON.stringify(logs)]);
 
@@ -36,7 +39,7 @@ export default function TravelLog() {
   }
   return !isLoading ? (
     <div style={{ marginBottom: 80 }}>
-      <AriaFilter />
+      <AreaFilter />
       {logs && (
         <TravelLogMap
           target={target ? target[target.length - 1] : null}
@@ -47,7 +50,7 @@ export default function TravelLog() {
         />
       )}
       {data && Boolean(data?.visitedCountriesCount > 0) && <AllTravelCount count={data.visitedCountriesCount} />}
-      {logs && <AriaDropdown setTarget={setTarget} data={logs} />}
+      {logs && <AreaDropdown setTarget={setTarget} data={logs} />}
     </div>
   ) : (
     <></>
