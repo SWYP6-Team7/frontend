@@ -17,6 +17,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@googlemaps/markerclusterer": "^2.5.3",
+    "@next/third-parties": "^15.3.0",
     "@nimpl/getters": "^2.1.1",
     "@sentry/react": "^8.48.0",
     "@sentry/tracing": "^7.120.3",
