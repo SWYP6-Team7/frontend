@@ -157,7 +157,7 @@ export default function UserTravelTabMenu() {
               <Empty>
                 <RoundedImage size={80} src="/images/noData.png" />
                 <NoData>
-                  <div>아직 만든 여행이 없어요</div>
+                  <div>아직 참가한 여행이 없어요</div>
                 </NoData>
               </Empty>
             )}

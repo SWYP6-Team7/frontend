@@ -20,20 +20,6 @@ interface UserProfileOverlayHeaderProps {
 }
 
 const UserProfileOverlayHeader = ({ setIsClickedCloseBtn }: UserProfileOverlayHeaderProps) => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const { setProfileShow } = userProfileOverlayStore();
-
-  //   const handleNotification = () => {
-  //     setNotification(checkRoute.exact(ROUTES.MY.PAGE) ? ROUTES.MY.PAGE : ROUTES.MY.TRIP);
-  //     router.push("/notification");
-  //   };
-
-  //   const headerBackgroundColorIsGrey = () => {
-  //     return (
-  //       checkRoute.exact(ROUTES.HOME) || checkRoute.exact(ROUTES.MY.TRIP) || checkRoute.startsWith(ROUTES.REQUESTED_TRIP)
-  //     );
-  //   };
   const closeOverlay = () => {
     setIsClickedCloseBtn(true);
   };
