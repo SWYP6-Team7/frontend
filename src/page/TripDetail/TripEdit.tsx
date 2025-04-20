@@ -140,7 +140,7 @@ const TripEdit = () => {
             addLocationName({
               locationName: location,
               mapType: "kakao",
-              countryName: "한국",
+              countryName: "대한민국",
             });
           } else {
             addLocationName({

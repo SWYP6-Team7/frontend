@@ -71,7 +71,7 @@ const TripRegion = ({
             addLocationName({
               locationName: keyword,
               mapType: "kakao",
-              countryName: "한국",
+              countryName: "대한민국",
             });
           } else {
             addLocationName({
@@ -124,10 +124,7 @@ const TripRegion = ({
           {showRelationList && (
             <>
               <Spacing size={16} />
-              <RelationKeywordList
-                onClick={clickRelationKeyword}
-                keyword={keyword}
-              />
+              <RelationKeywordList onClick={clickRelationKeyword} keyword={keyword} />
             </>
           )}
         </>
