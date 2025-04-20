@@ -1,5 +1,6 @@
 "use client";
 import CheckingModal from "@/components/designSystem/modal/CheckingModal";
+import RoundedImage from "@/components/designSystem/profile/RoundedImage";
 import TextButton from "@/components/designSystem/text/TextButton";
 import RightVector from "@/components/icons/RightVector";
 import Spacing from "@/components/Spacing";
@@ -24,21 +25,27 @@ export default function MyPage() {
       {!isGuestUser() ? (
         <UserProfileDetail isMyPage={true} />
       ) : (
-        <>
-          <MoreBox onClick={() => setShowLoginModal(true)}>
-            <UserName>로그인 & 회원가입</UserName>
-            <div style={{ display: "flex", padding: "8px 5px" }}>
-              <RightVector />
-            </div>
-          </MoreBox>
-          <LoginInfo>
-            로그인 후 모잉에서
-            <br /> 설레는 여행을 떠나보세요.
-          </LoginInfo>
-        </>
+        <UserInfo>
+          <ProfileImg>
+            <RoundedImage src={"/images/defaultProfile.png"} size={80} />
+          </ProfileImg>
+          <div style={{ width: "100%" }}>
+            <MoreBox onClick={() => setShowLoginModal(true)}>
+              <UserName>로그인 & 회원가입</UserName>
+              <div style={{ display: "flex", padding: "8px 5px" }}>
+                <RightVector />
+              </div>
+            </MoreBox>
+            <LoginInfo>
+              로그인 후 모잉에서
+              <br /> 설레는 여행을 떠나보세요.
+            </LoginInfo>
+          </div>
+        </UserInfo>
       )}
 
-      <SpaceBox></SpaceBox>
+      {!isGuestUser() && <SpaceBox></SpaceBox>}
+
       <Menu>
         <Box>
           <Title>내 활동 현황</Title>
@@ -117,6 +124,15 @@ const SpaceBox = styled.div`
   background-color: ${palette.검색창};
 `;
 const ProfileImg = styled.div``;
+
+const UserInfo = styled.div`
+  width: 100%;
+  background-color: ${palette.검색창};
+  padding: 24px 16px;
+  gap: 16px;
+  border-radius: 20px;
+  display: flex;
+`;
 const Container = styled.div`
   padding: 0px 24px;
   margin-top: 8px;
