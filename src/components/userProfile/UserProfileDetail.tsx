@@ -9,11 +9,10 @@ import CloverIcon from "../icons/CloverIcon";
 import RoundedImage from "../designSystem/profile/RoundedImage";
 import Badge from "../designSystem/Badge";
 import { formatNumberWithComma } from "@/utils/formatNumberWithComma";
-import ProfileRightVector from "../icons/ProfileRightVector";
 import WarningIcon from "../icons/WarningIcon";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 import useUserProfile from "@/hooks/userProfile/useUserProfile";
-import ArrowIcon from "../icons/ArrowIcon";
+import ProfileRightVectorIcon from "../icons/ProfileRightVectorIcon";
 
 interface UserProfileDetailProps {
   isMyPage?: boolean;
@@ -66,7 +65,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
           <UserNameBox>
             <Name onClick={isMyPage && editMyProfileInfo}>
               {name}
-              {isMyPage && <ProfileRightVector height={16} />}
+              {isMyPage && <ProfileRightVectorIcon height={16} />}
             </Name>
             <UserInfo>{isMyPage ? myEmail : userRegDate + "가입"}</UserInfo>
           </UserNameBox>
@@ -124,7 +123,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
             <NavigateBox>
               <CountryCount>{count}</CountryCount>
               <VectorBox>
-                <ProfileRightVector />
+                <ProfileRightVectorIcon />
               </VectorBox>
             </NavigateBox>
           </TravelMenu>
