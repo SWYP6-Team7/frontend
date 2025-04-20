@@ -4,13 +4,20 @@ import "./globals.css";
 import { MSWComponent } from "@/context/MSWComponent";
 import UserProfileOverlay from "@/components/userProfile/UserProfileOverlay";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import { GoogleAnalytics } from "@next/third-parties/google";
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ko">
       <body>
         <Providers>
           <MSWComponent />
           <UserProfileOverlay />
+          <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} />
+
           <Layout>{children}</Layout>
           <div id="checking-modal" />
           <div id="trip-toast" />

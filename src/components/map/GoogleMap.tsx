@@ -5,7 +5,7 @@ import {
   MapCameraChangedEvent,
   useMap,
 } from "@vis.gl/react-google-maps";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type Poi = { key: string; location: google.maps.LatLngLiteral };
 
@@ -102,6 +102,7 @@ const GoogleMap = ({
   positions = [],
   children,
 }: GoogleMapProps) => {
+  const mapRef = useRef<HTMLDivElement>(null);
   const getInitialSettings = () => {
     const MAP_WIDTH = 400;
     const MAP_HEIGHT = 300;
@@ -141,26 +142,45 @@ const GoogleMap = ({
     return { initialCenter, initialZoom };
   };
   const { initialCenter, initialZoom } = getInitialSettings();
+
+  // 지도 상에서 스크롤했을 때 이벤트 전파 막기
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.addEventListener("wheel", (event) => {
+        event.stopPropagation();
+        return;
+      });
+    }
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.removeEventListener("wheel", (event) => {
+          event.stopPropagation();
+          return;
+        });
+      }
+    };
+  }, [mapRef.current]);
+
   console.log(initialCenter, initialZoom, "init");
   if (typeof window === "undefined") {
     return <></>;
   }
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
-        <Map
-          key={`${initialCenter.lat},${initialCenter.lng},${initialZoom}`}
-          defaultCenter={initialCenter}
-          defaultZoom={initialZoom}
-          mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
-          disableDefaultUI
-          onCameraChanged={(ev: MapCameraChangedEvent) =>
-            console.log("camera changed:", ev.detail.center)
-          }
-        >
-          {children}
-        </Map>
+        <div ref={mapRef} style={{ width: "100%", height: "100%" }}>
+          <Map
+            key={`${initialCenter.lat},${initialCenter.lng},${initialZoom}`}
+            defaultCenter={initialCenter}
+            defaultZoom={initialZoom}
+            mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || ""}
+            disableDefaultUI
+          >
+            {children}
+          </Map>
+        </div>
       </APIProvider>
     </div>
   );

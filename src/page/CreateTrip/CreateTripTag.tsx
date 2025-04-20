@@ -14,18 +14,32 @@ import React, { useEffect, useState } from "react";
 import TagList from "./component/TagList";
 import { useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
+import WarningToast from "@/components/designSystem/toastMessage/WarningToast";
 
 const CreateTripTag = () => {
   const { tags, addTags } = createTripStore();
   const [taggedArray, setTaggedArray] = useState<string[]>(tags);
   const navigateWithTransition = useViewTransition();
+  const [limitCountToastShow, setLimitCountToastShow] = useState(false);
+
   const router = useRouter();
+
+  const isActive = (tag: string) => {
+    return taggedArray.includes(tag);
+  };
   useEffect(() => {
     if (isGuestUser()) {
       router.replace("/");
     }
   }, [isGuestUser()]);
   const clickTag = (index: number) => {
+    if (taggedArray.length === 5) {
+      if (!isActive(TAG_LIST.value[index])) {
+        setLimitCountToastShow(true);
+        return;
+      }
+    }
+
     const newArray = taggedArray.includes(TAG_LIST.value[index])
       ? taggedArray.filter((v) => v !== TAG_LIST.value[index])
       : [...taggedArray, TAG_LIST.value[index]];
@@ -38,6 +52,12 @@ const CreateTripTag = () => {
   };
   return (
     <Container>
+      <WarningToast
+        height={120}
+        isShow={limitCountToastShow}
+        setIsShow={setLimitCountToastShow}
+        text="최대 5개까지 설정할 수 있어요"
+      />
       <StepIconContainer>
         <FourthStepIcon />
       </StepIconContainer>

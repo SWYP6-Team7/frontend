@@ -21,11 +21,14 @@ const CalendarWrapper = ({
 
   return (
     <>
-      <CalendarModal addDate={addDate} showModal={showModal} setShowModal={setShowModal} />
+      <CalendarModal addDate={addDate} showModal={showModal} initDate={date} setShowModal={setShowModal} />
       <Container onClick={() => setShowModal(true)}>
         <TextContainer>
-          <Calendar />
-          <Title>여행 날짜</Title>
+          <TitleContainer>
+            <Calendar />
+            <Title>여행 날짜</Title>
+          </TitleContainer>
+
           <Content>{date ? formatDateRange(date?.startDate ?? "", date?.endDate ?? "") : "날짜를 선택하세요."}</Content>
         </TextContainer>
         <ArrowIconContainer>
@@ -57,8 +60,6 @@ const Title = styled.div`
   line-height: 20px;
   color: ${palette.비강조};
   font-weight: 600;
-  margin-left: 8px;
-  margin-right: 29px;
 `;
 
 const TextContainer = styled.div`
@@ -71,5 +72,13 @@ const Content = styled.div`
   line-height: 20px;
   color: ${palette.기본};
   font-weight: 500;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100px;
+  gap: 8px;
+  margin-right: 12px;
 `;
 export default CalendarWrapper;

@@ -112,7 +112,11 @@ const Comment = ({ comment, relatedType, relatedNumber, userNumber }: CommentPro
   };
 
   return (
-    <Container isEdit={isEdit && comment.commentNumber === commentNumber} isChild={comment.parentNumber !== 0}>
+    <Container
+      isEdit={isEdit && comment.commentNumber === commentNumber}
+      relatedType={relatedType}
+      isChild={comment.parentNumber !== 0}
+    >
       <TopContainer>
         <RoundedImage size={32} src={comment.imageUrl} />
         <UserBox onClick={() => moveToUserProfilePage(userNumber)}>
@@ -195,11 +199,12 @@ const Comment = ({ comment, relatedType, relatedNumber, userNumber }: CommentPro
   );
 };
 
-const Container = styled.div<{ isChild: boolean; isEdit: boolean }>`
+const Container = styled.div<{ isChild: boolean; isEdit: boolean; relatedType: "community" | "travel" }>`
   padding: 16px 0;
   padding-left: ${(props) => (props.isChild ? "40px" : "0")};
   border-bottom: 1px solid ${palette.비강조4};
-  background-color: ${(props) => (props.isEdit ? "rgba(227, 239, 217, 0.3)" : palette.BG)};
+  background-color: ${(props) =>
+    props.isEdit ? "rgba(227, 239, 217, 0.3)" : props.relatedType === "community" ? "#f5f5f5" : palette.BG};
 `;
 
 const TopContainer = styled.div`

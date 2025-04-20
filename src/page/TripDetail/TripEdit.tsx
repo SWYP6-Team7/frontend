@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import Button from "@/components/designSystem/Buttons/Button";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { authStore } from "@/store/client/authStore";
 import ButtonContainer from "@/components/ButtonContainer";
@@ -28,11 +28,22 @@ import { getPlans } from "@/api/trip";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import useTripDetail from "@/hooks/tripDetail/useTripDetail";
 import { trackPlanChanges } from "@/utils/trip";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
 
 const TripEdit = () => {
+  const { addIsChange, isChange, planIndex, addPlanIndex } = tripPlanStore();
+
+  const params = useParams();
+  const travelNumber = params?.travelNumber as string;
+  const { updateTripDetailMutate, isEditSuccess } = useTripDetail(Number(travelNumber));
+
+  const { tripDetail } = useTripDetail(parseInt(travelNumber!));
+  const tripInfos = tripDetail.data as any;
+  const [isKakaoMapLoad, setIsKakaooMapLoad] = useState(false);
+  const { nowPerson, location, initGeometry: initInitGeometry } = tripInfos ?? {};
   const {
     locationName,
     title,
@@ -60,20 +71,82 @@ const TripEdit = () => {
     setOriginalPlans,
     resetEditTripDetail,
   } = editTripStore();
-  const {
-    travelNumber,
-    title: initTitle,
-    startDate: initStartDate,
-    endDate: initEndDate,
-    details: initDetails,
-    tags: initTags,
-    locationName: initLocationName,
-    initGeometry: initInitGeometry,
-    maxPerson: initMaxPerson,
-    genderType: initGenderType,
-    resetTripDetail,
-  } = tripDetailStore();
+  useEffect(() => {
+    console.log("trip", tripInfos, genderType, isEditSuccess, locationName);
+    if (tripDetail.isFetched && !isEditSuccess) {
+      if (title === "") {
+        addTitle(tripInfos.title);
+      }
+      if (details === "") {
+        addDetails(tripInfos.details);
+      }
+      if (maxPerson === -1) addMaxPerson(tripInfos.maxPerson);
 
+      if (!genderType) addGenderType(tripInfos.genderType);
+      if (!date) addDate({ startDate: tripInfos.startDate, endDate: tripInfos.endDate });
+      if (locationName.locationName === "") addLocationName({ locationName: location, mapType: "google" });
+      if (!tags) addTags(tripInfos.tags);
+      if (!initGeometry) addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
+    }
+  }, [
+    tripDetail.isFetched,
+    JSON.stringify(tripInfos),
+    title,
+    details,
+    maxPerson,
+    genderType,
+    date,
+    locationName.locationName,
+    tags,
+    initGeometry,
+    isEditSuccess,
+  ]);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
+
+    script.addEventListener("load", () => {
+      setIsKakaooMapLoad(true);
+    });
+    document.head.appendChild(script);
+
+    return () => {
+      script.removeEventListener("load", () => {
+        setIsKakaooMapLoad(false);
+      });
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onPopState = (e) => {
+      // 뒤로가기 버튼 클릭 시 실행할 로직
+      resetEditTripDetail();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+  console.log("init locationName", locationName);
+  useEffect(() => {
+    console.log("locationName kakao", locationName);
+    const handleLoad = () => {
+      window.kakao.maps.load(() => {
+        const geocoder = new window.kakao.maps.services.Geocoder();
+        geocoder.addressSearch(location, (result, status) => {
+          if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
+            addLocationName({ locationName: location, mapType: "kakao" });
+          } else {
+            addLocationName({ locationName: location, mapType: "google" });
+          }
+        });
+      });
+    };
+    if (isKakaoMapLoad && locationName.locationName === "" && !isEditSuccess) {
+      handleLoad();
+    }
+  }, [isKakaoMapLoad, location, locationName.locationName, isEditSuccess]);
   const { data, isLoading, error, fetchNextPage, refetch, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["plans", travelNumber],
     queryFn: ({ pageParam }) => {
@@ -88,17 +161,26 @@ const TripEdit = () => {
       }
     },
   });
+  useEffect(() => {
+    if (isChange) {
+      setOpenItemIndex(planIndex);
+      addPlanIndex(0);
+      addIsChange(false);
+    }
+  }, [planIndex, isChange]);
 
   // 첫 번째 useEffect - 데이터 초기화와 날짜 추가
   useEffect(() => {
-    if (!isLoading && data && !dataInitialized) {
-      const allPlans = data.pages.flatMap((page) => page.plans || []);
+    console.log("data", data, dataInitialized, hasNextPage);
 
+    if (!isLoading && data && !dataInitialized.isInitialized && !hasNextPage && date?.startDate) {
+      const allPlans = data.pages.flatMap((page) => page.plans || []);
+      console.log("allPlans", allPlans);
       const formattedPlans = allPlans.map((plan) => {
-        const planDate = dayjs(initStartDate)
+        const planDate = dayjs(date?.startDate)
           .add(plan.planOrder - 1, "day")
           .format("YYYY-MM-DD");
-
+        console.log("date", date, planDate);
         return {
           ...plan,
           planOrder: plan.planOrder,
@@ -112,13 +194,29 @@ const TripEdit = () => {
           })),
         };
       });
+
+      console.log("formattedPlans", formattedPlans);
       setOriginalPlans(formattedPlans);
 
       addPlans(formattedPlans);
-      setDataInitialized(true);
+      setDataInitialized({
+        isInitialized: true,
+        travelNumber: Number(travelNumber),
+      });
     }
-  }, [JSON.stringify(data), isLoading, dataInitialized, initStartDate]);
+  }, [JSON.stringify(data), isLoading, dataInitialized, date?.startDate, hasNextPage]);
+
   useEffect(() => {
+    if (dataInitialized.travelNumber !== Number(travelNumber)) {
+      setDataInitialized({
+        isInitialized: false,
+        travelNumber: Number(travelNumber),
+      });
+    }
+  }, [dataInitialized.isInitialized, dataInitialized.travelNumber]);
+
+  useEffect(() => {
+    console.log(hasNextPage);
     if (hasNextPage && !isFetching) {
       const timer = setTimeout(() => {
         fetchNextPage();
@@ -129,39 +227,7 @@ const TripEdit = () => {
   }, [hasNextPage, isFetching, fetchNextPage]);
 
   useEffect(() => {
-    console.log(title, "title");
-    if (
-      title === "" &&
-      initTitle &&
-      locationName.locationName === "" &&
-      initLocationName.locationName &&
-      details === "" &&
-      initDetails
-    ) {
-      addTitle(initTitle);
-      addDetails(initDetails || "");
-      addTags(initTags || []);
-      addLocationName(initLocationName || { locationName: "" });
-      addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
-      addDate({ startDate: initStartDate || "", endDate: initEndDate || "" });
-      addGenderType(initGenderType || "");
-      addMaxPerson(initMaxPerson || 0);
-    }
-  }, [
-    initTitle,
-    initDetails,
-    initTags,
-    initLocationName,
-    initInitGeometry,
-    initStartDate,
-    initEndDate,
-    initGenderType,
-    initMaxPerson,
-    title,
-  ]);
-
-  useEffect(() => {
-    if (date?.startDate && date?.endDate && dataInitialized) {
+    if (date?.startDate && date?.endDate && dataInitialized.isInitialized) {
       const start = dayjs(date.startDate);
       const end = dayjs(date.endDate);
       const dayDiff = end.diff(start, "day") + 1;
@@ -194,7 +260,7 @@ const TripEdit = () => {
         addPlans(newPlans);
       }
     }
-  }, [date?.startDate, date?.endDate, dataInitialized, plans.length, originalPlans]);
+  }, [date?.startDate, date?.endDate, dataInitialized, plans.length, JSON.stringify(originalPlans)]);
   const [topModalHeight, setTopModalHeight] = useState(0);
   const handleRemoveValue = () => addTitle("");
   const [isMapFull, setIsMapFull] = useState(false);
@@ -210,8 +276,7 @@ const TripEdit = () => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
 
-  const { updateTripDetailMutate } = useTripDetail(travelNumber);
-
+  console.log("originalPlans", originalPlans);
   const completeClickHandler = () => {
     if (
       title === "" ||
@@ -220,7 +285,7 @@ const TripEdit = () => {
       genderType === "" ||
       !date?.startDate ||
       !date?.endDate ||
-      tags.length === 0 ||
+      tags?.length === 0 ||
       locationName.locationName === ""
     ) {
       console.log(
@@ -232,7 +297,7 @@ const TripEdit = () => {
         !date?.startDate,
         !date?.endDate,
         periodType,
-        tags.length,
+        tags?.length,
         locationName.locationName
       );
       addCompletionStatus(false);
@@ -249,14 +314,13 @@ const TripEdit = () => {
       endDate: date?.endDate || "",
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
-      tags,
+      tags: tags ?? [],
       planChanges: trackPlanChanges(originalPlans, plans),
     };
 
     updateTripDetailMutate(travelData, {
       onSuccess: (data: any) => {
         resetEditTripDetail();
-        resetTripDetail();
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
         } else {
@@ -279,7 +343,7 @@ const TripEdit = () => {
   return (
     <>
       <CreateTripDetailWrapper>
-        <CreateTripDetailContainer ref={containerRef}>
+        <CreateTripDetailContainer id="container-scroll" ref={containerRef}>
           <TopModal
             isToastShow={isToastShow}
             containerRef={containerRef}
@@ -311,12 +375,13 @@ const TripEdit = () => {
 자유롭게 소개해보세요. (최대 2,000자)"
               />
               <Spacing size={16} />
-              <TagListWrapper addTags={addTags} taggedArray={tags} />
+              <TagListWrapper addTags={addTags} taggedArray={tags ?? []} />
               <Spacing size={16} />
               <Bar />
               <CalendarWrapper addDate={addDate} date={date} />
               <Bar />
               <InfoWrapper
+                nowPerson={nowPerson}
                 addGenderType={addGenderType}
                 genderType={genderType}
                 maxPerson={maxPerson}
@@ -344,7 +409,7 @@ const TripEdit = () => {
                       key={item.id || idx}
                       addPlans={addPlans}
                       type="edit"
-                      travelNumber={travelNumber}
+                      travelNumber={Number(travelNumber)}
                       idx={idx}
                       plans={plans}
                       title={item?.date ?? ""}

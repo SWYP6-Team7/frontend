@@ -2,6 +2,7 @@
 import DnDList from "@/components/DnDList";
 import Spacing from "@/components/Spacing";
 import { SpotType } from "@/model/trip";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
@@ -34,6 +35,7 @@ const CreateScheduleItem = ({
     }[]
   ) => void;
 }) => {
+  const { scrollTop, addScrollTop, planIndex, addPlanIndex, isChange, addIsChange } = tripPlanStore();
   const [contentHeight, setContentHeight] = useState(0);
   const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null); // 콘텐츠 참조 추가
@@ -44,6 +46,27 @@ const CreateScheduleItem = ({
       setContentHeight(contentRef.current.scrollHeight + 32);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (scrollTop > 0 && isChange) {
+      console.log("scrollTop", scrollTop);
+      document.getElementById("container-scroll")?.scrollTo({
+        top: scrollTop + (document.getElementById("top-scroll")?.clientHeight ?? 0),
+      });
+      setTimeout(() => {
+        addScrollTop(0);
+        addIsChange(false);
+      }, 1000);
+    }
+  }, [scrollTop]);
+
+  const clickPlans = () => {
+    console.log("plancheck", idx, document.getElementById("container-scroll")?.scrollTop);
+    addScrollTop(document.getElementById("container-scroll")?.scrollTop ?? 0);
+    addPlanIndex(idx);
+    router.push(`/search/place/${idx}?type=${type}${type === "edit" ? `&travelNumber=${travelNumber}` : ""}`);
+  };
+
   return (
     <Container>
       <List>
@@ -69,13 +92,7 @@ const CreateScheduleItem = ({
         >
           {plan?.planOrder !== undefined && <DnDList plans={plans} addPlans={addPlans} planOrder={plan!.planOrder} />}
           <Spacing size={16} />
-          <Button
-            onClick={() =>
-              router.push(`/search/place/${idx}?type=${type}${type === "edit" ? `&travelNumber=${travelNumber}` : ""}`)
-            }
-          >
-            +장소추가
-          </Button>
+          <Button onClick={clickPlans}>+장소추가</Button>
         </Content>
       </List>
     </Container>
@@ -127,7 +144,11 @@ const RightContainer = styled.div`
   align-items: center;
 `;
 
-const Tab = styled.label<{ tabLineHeight: string; tabPadding: string; fontWeight: number }>`
+const Tab = styled.label<{
+  tabLineHeight: string;
+  tabPadding: string;
+  fontWeight: number;
+}>`
   display: flex;
   font-size: 16px;
   line-height: 16px;

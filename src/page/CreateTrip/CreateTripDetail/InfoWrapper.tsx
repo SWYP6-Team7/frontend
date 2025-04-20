@@ -17,9 +17,16 @@ interface InfoWrapperProps {
   maxPerson: number;
   addMaxPerson: (person: number) => void;
   addGenderType: (type: string) => void;
+  nowPerson?: number;
 }
 
-const InfoWrapper = ({ genderType, maxPerson, addMaxPerson, addGenderType }: InfoWrapperProps) => {
+const InfoWrapper = ({
+  genderType,
+  maxPerson,
+  addMaxPerson,
+  addGenderType,
+  nowPerson = 0,
+}: InfoWrapperProps) => {
   const [showModal, setShowModal] = useState(false);
 
   const [focused, setFocused] = useState(false);
@@ -67,15 +74,19 @@ const InfoWrapper = ({ genderType, maxPerson, addMaxPerson, addGenderType }: Inf
     <>
       <Container onClick={() => setShowModal(true)}>
         <TextContainer>
-          {genderType === "모두" ? (
-            <EveryBodyIcon selected size={24} />
-          ) : genderType === "남자만" ? (
-            <OnlyMaleIcon selected size={24} />
-          ) : (
-            <OnlyFemaleIcon selected size={24} />
-          )}
-          <Title>{genderType}</Title>
-          <Content>0 / {maxPerson}</Content>
+          <TitleContainer>
+            {genderType === "모두" ? (
+              <EveryBodyIcon selected size={24} />
+            ) : genderType === "남자만" ? (
+              <OnlyMaleIcon selected size={24} />
+            ) : (
+              <OnlyFemaleIcon selected size={24} />
+            )}
+            <Title>{genderType}</Title>
+          </TitleContainer>
+          <Content>
+            {nowPerson} / {maxPerson}
+          </Content>
         </TextContainer>
         <ArrowIconContainer>
           <ArrowIcon />
@@ -91,7 +102,10 @@ const InfoWrapper = ({ genderType, maxPerson, addMaxPerson, addGenderType }: Inf
               <Spacing size={24} />
               <GenderList>
                 {selections.map((item) => (
-                  <GenderItem isSelected={genderType === item.gender} onClick={() => clickGender(item.gender)}>
+                  <GenderItem
+                    isSelected={genderType === item.gender}
+                    onClick={() => clickGender(item.gender)}
+                  >
                     {item.icon(genderType === item.gender)}
                     <GenderText>{item.gender}</GenderText>
                   </GenderItem>
@@ -163,8 +177,10 @@ const GenderItem = styled.div<{ isSelected: boolean }>`
   align-items: center;
   gap: 4px;
   justify-content: center;
-  background-color: ${(props) => (props.isSelected ? palette.keycolorBG : palette.검색창)};
-  border: ${(props) => (props.isSelected ? `1px solid ${palette.keycolor}` : "0px")};
+  background-color: ${(props) =>
+    props.isSelected ? palette.keycolorBG : palette.검색창};
+  border: ${(props) =>
+    props.isSelected ? `1px solid ${palette.keycolor}` : "0px"};
   border-radius: 20px;
   width: 90px;
   height: 84px;
@@ -230,7 +246,19 @@ const MinusButton = styled.button`
   }
 `;
 
-const CountInput = styled.input<{ bgColor: string; borderColor: string; color: string }>`
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100px;
+  gap: 8px;
+  margin-right: 12px;
+`;
+
+const CountInput = styled.input<{
+  bgColor: string;
+  borderColor: string;
+  color: string;
+}>`
   border-radius: 40px;
   height: 48px;
   text-align: center;
@@ -293,8 +321,6 @@ const Title = styled.div`
   line-height: 20px;
   color: ${palette.비강조};
   font-weight: 600;
-  margin-left: 8px;
-  margin-right: 29px;
 `;
 
 const TextContainer = styled.div`
