@@ -15,7 +15,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
 import { useBackPathStore } from "@/store/client/backPathStore";
 interface HorizonBoxProps {
-  daysLeft: number;
+  daysLeft?: number;
   title: string;
   recruits: number;
   total: number;
@@ -31,6 +31,7 @@ interface HorizonBoxProps {
   bookmarkNeed?: boolean; // false면 필요 없거나, Link에 속하지 않는 버튼을 따로 사용.
   bookmarked: boolean;
   travelNumber: number;
+  userProfileType?: boolean;
 }
 // 사용 방식
 {
@@ -63,6 +64,7 @@ const HorizonBoxLayout = ({
   tags,
   bookmarkNeed = true,
   travelNumber,
+  userProfileType = false,
 }: HorizonBoxProps) => {
   const tagRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -85,31 +87,33 @@ const HorizonBoxLayout = ({
       <PostInfo>
         <TopContainer>
           <BadgeContainer isMargin={bookmarkPosition === "middle" || bookmarkNeed === false}>
-            <Badge
-              height={"22px"}
-              text={
-                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M11.75 5.49259C11.75 9.31077 6.75 12.5835 6.75 12.5835C6.75 12.5835 1.75 9.31077 1.75 5.49259C1.75 4.19062 2.27678 2.94197 3.21447 2.02134C4.15215 1.1007 5.42392 0.583496 6.75 0.583496C8.07608 0.583496 9.34785 1.1007 10.2855 2.02134C11.2232 2.94197 11.75 4.19062 11.75 5.49259Z"
-                      stroke="#3E8D00"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M6.75 7.0835C7.57843 7.0835 8.25 6.41192 8.25 5.5835C8.25 4.75507 7.57843 4.0835 6.75 4.0835C5.92157 4.0835 5.25 4.75507 5.25 5.5835C5.25 6.41192 5.92157 7.0835 6.75 7.0835Z"
-                      stroke="#3E8D00"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  <div>{location}</div>
-                </div>
-              }
-              backgroundColor={palette.keycolorBG}
-              color={`${palette.keycolor}`}
-              isDueDate={false}
-            />
+            {!userProfileType ? (
+              <Badge
+                height={"22px"}
+                text={
+                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M11.75 5.49259C11.75 9.31077 6.75 12.5835 6.75 12.5835C6.75 12.5835 1.75 9.31077 1.75 5.49259C1.75 4.19062 2.27678 2.94197 3.21447 2.02134C4.15215 1.1007 5.42392 0.583496 6.75 0.583496C8.07608 0.583496 9.34785 1.1007 10.2855 2.02134C11.2232 2.94197 11.75 4.19062 11.75 5.49259Z"
+                        stroke="#3E8D00"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M6.75 7.0835C7.57843 7.0835 8.25 6.41192 8.25 5.5835C8.25 4.75507 7.57843 4.0835 6.75 4.0835C5.92157 4.0835 5.25 4.75507 5.25 5.5835C5.25 6.41192 5.92157 7.0835 6.75 7.0835Z"
+                        stroke="#3E8D00"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <div>{location}</div>
+                  </div>
+                }
+                backgroundColor={palette.keycolorBG}
+                color={`${palette.keycolor}`}
+                isDueDate={false}
+              />
+            ) : null}
           </BadgeContainer>
           {bookmarkPosition === "top" && bookmarkNeed && (
             <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} bookmarkPosition={bookmarkPosition} />
@@ -137,15 +141,46 @@ const HorizonBoxLayout = ({
         {isBar && <Bar />}
         {showTag && (
           <Tags>
-            <BoxLayoutTag
-              ref={tagRef}
-              text={
-                <Location>
-                  <PlaceIcon height={12} width={10} />
-                  <div>{location}</div>
-                </Location>
-              }
-            />
+            {userProfileType ? (
+              <div style={{ marginRight: "8px" }}>
+                <Badge
+                  height={"22px"}
+                  text={
+                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M11.75 5.49259C11.75 9.31077 6.75 12.5835 6.75 12.5835C6.75 12.5835 1.75 9.31077 1.75 5.49259C1.75 4.19062 2.27678 2.94197 3.21447 2.02134C4.15215 1.1007 5.42392 0.583496 6.75 0.583496C8.07608 0.583496 9.34785 1.1007 10.2855 2.02134C11.2232 2.94197 11.75 4.19062 11.75 5.49259Z"
+                          stroke="#3E8D00"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M6.75 7.0835C7.57843 7.0835 8.25 6.41192 8.25 5.5835C8.25 4.75507 7.57843 4.0835 6.75 4.0835C5.92157 4.0835 5.25 4.75507 5.25 5.5835C5.25 6.41192 5.92157 7.0835 6.75 7.0835Z"
+                          stroke="#3E8D00"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      <div>{location}</div>
+                    </div>
+                  }
+                  backgroundColor={palette.keycolorBG}
+                  color={`${palette.keycolor}`}
+                  isDueDate={false}
+                />
+              </div>
+            ) : (
+              <BoxLayoutTag
+                ref={tagRef}
+                text={
+                  <Location>
+                    <PlaceIcon height={12} width={10} />
+                    <div>{location}</div>
+                  </Location>
+                }
+              />
+            )}
+
             {tagsCount.map((text: string, idx) => (
               <BoxLayoutTag key={idx} text={text} />
             ))}
