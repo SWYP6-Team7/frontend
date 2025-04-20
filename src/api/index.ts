@@ -4,7 +4,6 @@ import axios, { AxiosResponse } from "axios";
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || process.env.API_BASE_URL,
   timeout: 5000,
-
   headers: {
     "Content-Type": "application/json",
   },
@@ -21,19 +20,37 @@ interface ApiResponse<T> {
   } | null;
   success: T | null;
 }
+
+let retryCount = 0;
+const MAX_RETRY_COUNT = 50;
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+
     console.log("error console", error);
+
     if (error.response?.status === 401 || error.response?.status === 403) {
+      retryCount += 1;
+
+      // 재시도 횟수가 최대치를 초과하면 에러를 던지기
+      if (retryCount > MAX_RETRY_COUNT) {
+        console.error("Max retry attempts reached. Throwing error.");
+        throw new Error("Authentication failed after multiple attempts.");
+      }
+
       try {
-        const refreshResponse = await axiosInstance.post(
-          "/api/token/refresh",
-          {}
-        );
+
+        // 토큰 갱신 요청
+        const refreshResponse = await axiosInstance.post("/api/token/refresh", {});
+
         const newAccessToken = refreshResponse.data.success.accessToken;
+
         console.log("new AccessToken", newAccessToken, refreshResponse);
+
+
+        // 갱신된 토큰으로 원래 요청 재시도
 
         return axiosInstance({
           ...originalRequest,
@@ -61,10 +78,6 @@ export const handleApiResponse = <T>(
   if (response.data?.error != null) {
     throw new Error(response.data.error?.reason || "Unknown error occurred");
   }
-
-  // if (response.data.success === null) {
-  //   throw new Error("API call succeeded but no data was returned");
-  // }
 
   return response.data.success;
 };

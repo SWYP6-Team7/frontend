@@ -24,6 +24,7 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CreateScheduleItem from "./CreateScheduleItem";
 import TripToast from "@/components/designSystem/toastMessage/tripToast";
 import { getDateRangeCategory } from "@/utils/time";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 
 dayjs.locale("ko"); // 한국어 설정
 dayjs.extend(isSameOrBefore);
@@ -79,6 +80,16 @@ const CreateTripDetail = () => {
   const handleItemToggle = (index) => {
     setOpenItemIndex(openItemIndex === index ? null : index);
   };
+  const { isChange, addIsChange, planIndex, addPlanIndex } = tripPlanStore();
+
+  useEffect(() => {
+    if (isChange) {
+      setOpenItemIndex(planIndex);
+      addPlanIndex(0);
+      addIsChange(false);
+    }
+  }, [planIndex, isChange]);
+
   const newPlan = plans.map((plan) => {
     return {
       ...plan,
@@ -99,9 +110,9 @@ const CreateTripDetail = () => {
     details,
     maxPerson,
     genderType: genderType!,
-    startDate: date!.startDate ?? "",
-    endDate: date!.endDate ?? "",
-    periodType: getDateRangeCategory(date!.startDate ?? "", date!.endDate ?? ""),
+    startDate: date?.startDate ?? "",
+    endDate: date?.endDate ?? "",
+    periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
     locationName: locationName.locationName,
     tags,
     plans: newPlan,
@@ -127,6 +138,7 @@ const CreateTripDetail = () => {
     createTripMutate(undefined, {
       onSuccess: (data: any) => {
         resetCreateTripDetail();
+
         if (data) {
           router.push(`/trip/detail/${data.travelNumber}`);
         } else {
@@ -150,7 +162,7 @@ const CreateTripDetail = () => {
   return (
     <>
       <CreateTripDetailWrapper>
-        <CreateTripDetailContainer ref={containerRef}>
+        <CreateTripDetailContainer id="container-scroll" ref={containerRef}>
           <TopModal
             isToastShow={isToastShow}
             containerRef={containerRef}
@@ -209,7 +221,7 @@ const CreateTripDetail = () => {
               <Title>여행 일정</Title>
               <ScheduleList>
                 {date &&
-                  getDatesArray(date.startDate, date.endDate).map((item, idx) => (
+                  getDatesArray(date?.startDate ?? "", date?.endDate ?? "").map((item, idx) => (
                     <CreateScheduleItem
                       plans={plans}
                       idx={idx}

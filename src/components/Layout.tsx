@@ -26,6 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const { userProfileInfo } = useUserProfile("mine");
 
   // 유저 프로필 정보 불러오기
+
   const {
     addEmail,
     addProfileUrl,
@@ -39,6 +40,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     addVisitedCountryCount,
     addTravelBadgeCount,
   } = myPageStore();
+
+  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl, addUserSocialTF } =
+    myPageStore();
+
 
   const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
     useMyPage();
@@ -114,7 +119,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""} onLoad={() => console.log("google map load")}>
       <Container pathname={pathname}>
         <Splash />
-        <Body pathname={pathname}>
+        <Body pathname={checkRoute}>
           {/* {isSignup && <Header />} */}
           {/* 홈 화면 헤더는 다른 형태. */}
           {pathname !== "/" &&
@@ -144,12 +149,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 // 그렇기 때문에 440px 이상이면 모바일 환경이 아니라고 생각하고 max-width를 figma layout에 맞춤
 const Body = styled.div<{ pathname: string | null }>`
   width: 100svw;
-  height: 100%;
   position: relative;
-
+  height: 100%;
   background-color: ${(props) =>
-    props.pathname === "/"
-      ? "#f0f0f0"
+    props.pathname.exact("/") ||
+    props.pathname?.exact("/create/trip/detail") ||
+    props.pathname?.startsWith("/notification") ||
+    props.pathname?.startsWith("/community/detail")
+      ? "#f5f5f5"
       : props.pathname?.startsWith("/trip/detail") ||
           props.pathname?.startsWith("/myTrip") ||
           props.pathname?.startsWith("/requestedTrip")

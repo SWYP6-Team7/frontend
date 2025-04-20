@@ -7,9 +7,15 @@ import MapBottomModal from "@/components/MapBottomModal";
 import Spacing from "@/components/Spacing";
 import { createTripStore } from "@/store/client/createTripStore";
 import { editTripStore } from "@/store/client/editTripStore";
+import { tripPlanStore } from "@/store/client/tripPlanStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import { APIProvider, Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  useMap,
+  useMapsLibrary,
+} from "@vis.gl/react-google-maps";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -27,11 +33,12 @@ const SearchPlaceDetail = () => {
   const router = useRouter();
   const placesLib = useMapsLibrary("places");
   const [isClient, setIsClient] = useState(false);
-
+  const { addIsChange } = tripPlanStore();
   const searchParams = useSearchParams();
   const paramsType = searchParams?.get("type") ?? "create";
   const travelNumber = searchParams?.get("travelNumber") ?? "";
-  const { locationName, addPlans, plans } = paramsType === "create" ? createTripStore() : editTripStore();
+  const { locationName, addPlans, plans } =
+    paramsType === "create" ? createTripStore() : editTripStore();
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -96,13 +103,18 @@ const SearchPlaceDetail = () => {
               console.log(data[0]);
               setPlaceDetails({
                 name: data[0].place_name,
-                address: data[0].road_address_name,
+                address:
+                  data[0].address_name !== ""
+                    ? data[0].address_name
+                    : data[0].road_address_name,
                 region: data[0].address_name.split(" ")[0],
                 type: data[0].category_group_name,
                 openingHours: "",
                 location: { lat: Number(data[0].y), lng: Number(data[0].x) },
               });
-            } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+            } else if (
+              status === window.kakao.maps.services.Status.ZERO_RESULT
+            ) {
               console.log("zero result");
             } else if (status === window.kakao.maps.services.Status.ERROR) {
               console.error("검색 결과 중 오류가 발생했습니다.");
@@ -115,7 +127,10 @@ const SearchPlaceDetail = () => {
           const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
           console.log("placeId", decodeURIComponent(placeId as string));
           // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-          ps.keywordSearch(decodeURIComponent(placeId as string), placesSearchCB);
+          ps.keywordSearch(
+            decodeURIComponent(placeId as string),
+            placesSearchCB
+          );
         });
       });
     }
@@ -134,12 +149,15 @@ const SearchPlaceDetail = () => {
     if (!planOrder) return;
 
     const targetPlanIndex = plans.findIndex(
-      (plan) => plan.planOrder === (paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1)
+      (plan) =>
+        plan.planOrder ===
+        (paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1)
     );
     let newPlans: any[] = [];
     if (targetPlanIndex > -1) {
       newPlans = plans.map((plan) =>
-        plan.planOrder === (paramsType === "create" ? targetPlanIndex : targetPlanIndex + 1)
+        plan.planOrder ===
+        (paramsType === "create" ? targetPlanIndex : targetPlanIndex + 1)
           ? {
               ...plan,
               spots: [
@@ -160,7 +178,8 @@ const SearchPlaceDetail = () => {
       newPlans = [
         ...plans,
         {
-          planOrder: paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1,
+          planOrder:
+            paramsType === "create" ? Number(planOrder) : Number(planOrder) + 1,
           spots: [
             {
               id: uuidv4(),
@@ -174,6 +193,7 @@ const SearchPlaceDetail = () => {
         },
       ];
     }
+    addIsChange(true);
     addPlans(newPlans);
     if (paramsType === "create") {
       router.push("/create/trip/detail");
@@ -192,7 +212,13 @@ const SearchPlaceDetail = () => {
   return (
     <>
       <BackButton onClick={() => router.back()}>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
             d="M17.7782 2.22202L2.22183 17.7784M17.7782 17.7784L2.22183 2.22202"
             stroke="#1A1A1A"
@@ -223,7 +249,12 @@ const SearchPlaceDetail = () => {
             </GoogleMap>
           ) : (
             <KakaoMap
-              positions={[{ lat: placeDetails?.location.lat, lng: placeDetails?.location.lng }]}
+              positions={[
+                {
+                  lat: placeDetails?.location.lat,
+                  lng: placeDetails?.location.lng,
+                },
+              ]}
               lat={placeDetails?.location.lat - 0.013}
               lng={placeDetails?.location.lng}
               zoom={6}
@@ -242,7 +273,13 @@ const SearchPlaceDetail = () => {
             <Spacing size={4} />
             <Description>
               <IconContainer>
-                <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="12"
+                  height="16"
+                  viewBox="0 0 12 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M12 6.54545C12 11.6364 6 16 6 16C6 16 0 11.6364 0 6.54545C2.37122e-08 4.80949 0.632141 3.14463 1.75736 1.91712C2.88258 0.689608 4.4087 0 6 0C7.5913 0 9.11742 0.689608 10.2426 1.91712C11.3679 3.14463 12 4.80949 12 6.54545Z"
                     fill="#CDCDCD"
@@ -258,7 +295,13 @@ const SearchPlaceDetail = () => {
             {placeDetails?.openingHours !== "" && (
               <Description>
                 <IconContainer>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15Z"
                       stroke="black"

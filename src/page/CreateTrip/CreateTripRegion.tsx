@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 
 export default function CreateTripRegion() {
   const navigateWithTransition = useViewTransition();
-  const { addLocationName, locationName } = createTripStore();
+  const { addLocationName, locationName, resetCreateTripDetail } = createTripStore();
   // const isMatchedKeyword = useMemo(() => {
   //   if (data?.suggestions && Array.isArray(data.suggestions)) {
   //     return data.suggestions.includes(keyword)
@@ -32,6 +32,15 @@ export default function CreateTripRegion() {
       router.replace("/");
     }
   }, [isGuestUser()]);
+
+  useEffect(() => {
+    const onPopState = (e) => {
+      // 뒤로가기 버튼 클릭 시 실행할 로직
+      resetCreateTripDetail();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
   const handleNext = () => {
     document.documentElement.style.viewTransitionName = "instant";
