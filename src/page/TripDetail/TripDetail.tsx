@@ -41,6 +41,8 @@ import { useInView } from "react-intersection-observer";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import EmblaCarousel from "@/components/TripCarousel";
 import useComment from "@/hooks/comment/useComment";
+
+import { moveToUserProfilePage } from "@/hooks/userProfile/moveToUserProfilePage";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -107,6 +109,7 @@ export default function TripDetail() {
     setApplySuccess,
     profileUrl,
     bookmarked,
+    userNumber,
   } = tripDetailStore();
   const router = useRouter();
   if (isNaN(parseInt(travelNumber))) {
@@ -354,7 +357,7 @@ export default function TripDetail() {
         >
           <ModalContainer>
             <MainContent>
-              <ProfileContainer>
+              <ProfileContainer onClick={() => moveToUserProfilePage(userNumber)}>
                 {/* 프로필 */}
                 <RoundedImage src={profileUrl} size={40} />
                 <div style={{ marginLeft: "8px" }}>

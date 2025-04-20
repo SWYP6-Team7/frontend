@@ -21,6 +21,7 @@ import { isGuestUser } from "@/utils/user";
 import { reportStore } from "@/store/client/reportStore";
 import NoticeModal from "../designSystem/modal/NoticeModal";
 import useViewTransition from "@/hooks/useViewTransition";
+import { moveToUserProfilePage } from "@/hooks/userProfile/moveToUserProfilePage";
 
 interface CommentProps {
   comment: IComment;
@@ -114,7 +115,7 @@ const Comment = ({ comment, relatedType, relatedNumber, userNumber }: CommentPro
     <Container isEdit={isEdit && comment.commentNumber === commentNumber} isChild={comment.parentNumber !== 0}>
       <TopContainer>
         <RoundedImage size={32} src={comment.imageUrl} />
-        <UserBox>
+        <UserBox onClick={() => moveToUserProfilePage(userNumber)}>
           {relatedType === "travel" && comment.travelWriterNumber === comment.userNumber && (
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
