@@ -5,7 +5,6 @@ import Header from "./Header";
 
 import Navbar from "@/page/Home/Navbar";
 import { authStore } from "@/store/client/authStore";
-import path from "path";
 import { palette } from "@/styles/palette";
 import useAuth from "@/hooks/user/useAuth";
 import { myPageStore } from "@/store/client/myPageStore";
@@ -16,12 +15,10 @@ import { splashOnStore } from "@/store/client/splashOnOffStore";
 import { usePathname } from "next/navigation";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { useHeaderNavigation } from "@/hooks/useHeaderNavigation";
-import useUserProfile from "@/hooks/userProfile/useUserProfile";
-import { IUserProfileInfo } from "@/model/userProfile";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { userPostRefreshToken } = useAuth();
-  const { userId, accessToken, logoutCheck } = authStore();
+  const { accessToken, logoutCheck } = authStore();
 
   // 유저 프로필 정보 불러오기
 
@@ -32,23 +29,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     addGender,
     addAgegroup,
     addPreferredTags,
-    profileUrl,
     addUserSocialTF,
     addTravelDistance,
     addVisitedCountryCount,
     addTravelBadgeCount,
   } = myPageStore();
 
-  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl, addUserSocialTF } =
-    myPageStore();
-
-
   const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
     useMyPage();
   console.log(data, "user data");
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
-  const isCommunityDetail = pathname?.startsWith("/community/detail");
   const { ROUTES, checkRoute } = useHeaderNavigation();
 
   const myPageData: ImyPage = data as any;

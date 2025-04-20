@@ -9,11 +9,10 @@ import PlaceIcon from "./icons/PlaceIcon";
 import FullHeartIcon from "./icons/FullHeartIcon";
 import { useUpdateBookmark } from "@/hooks/bookmark/useUpdateBookmark";
 import { authStore } from "@/store/client/authStore";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CheckingModal from "./designSystem/modal/CheckingModal";
 import { usePathname, useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
-import { useBackPathStore } from "@/store/client/backPathStore";
 interface HorizonBoxProps {
   daysLeft?: number;
   title: string;

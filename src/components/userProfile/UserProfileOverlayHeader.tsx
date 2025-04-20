@@ -1,16 +1,9 @@
 "use client";
 import styled from "@emotion/styled";
-import TripDetailHeader from "@/page/TripDetail/TripDetailHeader";
 import { palette } from "@/styles/palette";
 
-import { useHeaderNavigation } from "@/hooks/useHeaderNavigation";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { createTripStore } from "@/store/client/createTripStore";
 import CloseIcon from "../icons/CloseIcon";
-import MoreIcon from "../icons/MoreIcon";
 import ProfileMoreIcon from "../icons/ProfileMoreIcon";
-import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 import ReportModal from "../designSystem/modal/ReportModal";
 import { useEffect, useState } from "react";
 import useViewTransition from "@/hooks/useViewTransition";

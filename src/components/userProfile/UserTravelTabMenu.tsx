@@ -1,17 +1,12 @@
 "use client";
-import { myPageStore } from "@/store/client/myPageStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 
 import useViewTransition from "@/hooks/useViewTransition";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
-import { keyframes } from "@emotion/react";
-import UserProfileOverlayHeader from "./UserProfileOverlayHeader";
-import UserProfileDetail from "./UserProfileDetail";
 import HorizonBoxLayout from "../HorizonBoxLayout";
 import { daysAgo } from "@/utils/time";
-import dayjs from "dayjs";
 import { useInView } from "react-intersection-observer";
 import useUserProfile from "@/hooks/userProfile/useUserProfile";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
@@ -19,7 +14,7 @@ import { IUserRelatedTravelList } from "@/model/userProfile";
 import RoundedImage from "../designSystem/profile/RoundedImage";
 
 export default function UserTravelTabMenu() {
-  const { setProfileShow, profileShow } = userProfileOverlayStore();
+  const { setProfileShow } = userProfileOverlayStore();
   const navigateWithTransition = useViewTransition();
   const [isClickedCloseBtn, setIsClickedCloseBtn] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);

@@ -2,7 +2,7 @@
 import { myPageStore } from "@/store/client/myPageStore";
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import useViewTransition from "@/hooks/useViewTransition";
 import CloverIcon from "../icons/CloverIcon";
@@ -19,7 +19,7 @@ interface UserProfileDetailProps {
 }
 export default function UserProfileDetail({ isMyPage = false }: UserProfileDetailProps) {
   const { setProfileShow, userProfileUserId } = userProfileOverlayStore();
-  const { userProfileInfo, isLoadingUserProfileInfo } = useUserProfile();
+  const { userProfileInfo } = useUserProfile();
   const navigateWithTransition = useViewTransition();
 
   if (!userProfileInfo) return null;
@@ -184,12 +184,6 @@ const ProfileImgContainer = styled.div`
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 12px;
-`;
-
-const ProfileImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 `;
 
 const UserTextInfoContainer = styled.div`

@@ -1,13 +1,10 @@
 "use client";
-import Badge from "@/components/designSystem/Badge";
 import CheckingModal from "@/components/designSystem/modal/CheckingModal";
-import RoundedImage from "@/components/designSystem/profile/RoundedImage";
 import TextButton from "@/components/designSystem/text/TextButton";
 import RightVector from "@/components/icons/RightVector";
 import Spacing from "@/components/Spacing";
 import UserProfileDetail from "@/components/userProfile/UserProfileDetail";
 import useViewTransition from "@/hooks/useViewTransition";
-import { myPageStore } from "@/store/client/myPageStore";
 import { palette } from "@/styles/palette";
 import { isGuestUser } from "@/utils/user";
 import styled from "@emotion/styled";
@@ -16,10 +13,8 @@ import { useState } from "react";
 
 export default function MyPage() {
   const navigateWithTransition = useViewTransition();
-  const { name, agegroup, email, preferredTags, profileUrl } = myPageStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-  const cutTags = preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
   const onLinkAnnouncement = () => {
     document.documentElement.style.viewTransitionName = "forward";
     navigateWithTransition("/announcement");
@@ -139,11 +134,6 @@ const UserName = styled.div`
   margin-right: 4px;
 `;
 
-const Tags = styled.div`
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-`;
 const LoginInfo = styled.div`
   font-size: 14px;
   font-weight: 400;
@@ -156,21 +146,6 @@ const LoginInfo = styled.div`
   color: ${palette.비강조};
 `;
 
-const Email = styled.div`
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 16px;
-  color: ${palette.비강조};
-  margin-bottom: 9px;
-`;
-const UserInfo = styled.div`
-  width: 100%;
-  background-color: ${palette.검색창};
-  padding: 24px 16px;
-  gap: 16px;
-  border-radius: 20px;
-  display: flex;
-`;
 const Menu = styled.div`
   margin-top: 24px;
   width: 100%;

@@ -1,10 +1,7 @@
 "use client";
-import { myPageStore } from "@/store/client/myPageStore";
-import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import React, { useEffect, useRef, useState } from "react";
 
-import useViewTransition from "@/hooks/useViewTransition";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 import { keyframes } from "@emotion/react";
 import UserProfileOverlayHeader from "./UserProfileOverlayHeader";
