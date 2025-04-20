@@ -5,10 +5,7 @@ import { authStore } from "@/store/client/authStore";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 import { useQuery, useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
 
-const useUserProfile = (): {
-  userProfileInfo: IUserProfileInfo | undefined | null;
-  isLoadingUserProfileInfo: boolean;
-} => {
+const useUserProfile = () => {
   const { accessToken } = authStore();
   const { userProfileUserId } = userProfileOverlayStore();
 

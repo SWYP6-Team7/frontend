@@ -23,8 +23,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const { userPostRefreshToken } = useAuth();
   const { userId, accessToken, logoutCheck } = authStore();
 
-  const { userProfileInfo } = useUserProfile("mine");
-
   // 유저 프로필 정보 불러오기
   const {
     addEmail,
