@@ -5,6 +5,7 @@ import RoundedImage from "@/components/designSystem/profile/RoundedImage";
 import TextButton from "@/components/designSystem/text/TextButton";
 import RightVector from "@/components/icons/RightVector";
 import Spacing from "@/components/Spacing";
+import UserProfileDetail from "@/components/userProfile/UserProfileDetail";
 import useViewTransition from "@/hooks/useViewTransition";
 import { myPageStore } from "@/store/client/myPageStore";
 import { palette } from "@/styles/palette";
@@ -25,92 +26,27 @@ export default function MyPage() {
   };
   return (
     <Container>
-      <UserInfo>
-        <ProfileImg>
-          <RoundedImage src={isGuestUser() ? "/images/defaultProfile.png" : profileUrl} size={80} />
-        </ProfileImg>
-        <div style={{ width: "100%" }}>
-          {!isGuestUser() ? (
-            <div
-              onClick={() => {
-                document.documentElement.style.viewTransitionName = "forward";
-                navigateWithTransition("/editMyInfo");
-              }}
-            >
-              <MoreBox>
-                <UserName>{name}</UserName>
-                <div style={{ display: "flex", padding: "8px 5px" }}>
-                  <RightVector />
-                </div>
-              </MoreBox>
-              <Email>{email}</Email>
-              <Tags>
-                <div>
-                  <Badge
-                    isDueDate={false}
-                    fontWeight="600"
-                    color={palette.keycolor}
-                    backgroundColor={palette.keycolorBG}
-                    text={agegroup}
-                  />
-                </div>
-
-                {cutTags.map((text: string) => (
-                  <div>
-                    <Badge
-                      key={text}
-                      isDueDate={false}
-                      fontWeight="500"
-                      color={palette.비강조}
-                      backgroundColor="white"
-                      text={text}
-                    />
-                  </div>
-                ))}
-                {preferredTags.length > cutTags.length ? (
-                  <Badge
-                    isDueDate={false}
-                    fontWeight="500"
-                    color={palette.비강조}
-                    backgroundColor="white"
-                    text={`+${preferredTags.length - cutTags.length}`}
-                  />
-                ) : null}
-              </Tags>
+      {!isGuestUser() ? (
+        <UserProfileDetail isMyPage={true} />
+      ) : (
+        <>
+          <MoreBox onClick={() => setShowLoginModal(true)}>
+            <UserName>로그인 & 회원가입</UserName>
+            <div style={{ display: "flex", padding: "8px 5px" }}>
+              <RightVector />
             </div>
-          ) : (
-            <>
-              <MoreBox onClick={() => setShowLoginModal(true)}>
-                <UserName>로그인 & 회원가입</UserName>
-                <div style={{ display: "flex", padding: "8px 5px" }}>
-                  <RightVector />
-                </div>
-              </MoreBox>
-              <LoginInfo>
-                로그인 후 모잉에서
-                <br /> 설레는 여행을 떠나보세요.
-              </LoginInfo>
-            </>
-          )}
-        </div>
-      </UserInfo>
+          </MoreBox>
+          <LoginInfo>
+            로그인 후 모잉에서
+            <br /> 설레는 여행을 떠나보세요.
+          </LoginInfo>
+        </>
+      )}
 
+      <SpaceBox></SpaceBox>
       <Menu>
         <Box>
-          <Title>모잉 소식</Title>
-          <Spacing size={8} />
-          <TextButton
-            isLeftVector
-            isRightVector={false}
-            onClick={onLinkAnnouncement}
-            text="공지사항"
-            leftIconSrc="/images/createTripBtn.png"
-          />
-          <Spacing size={8} />
-        </Box>
-
-        <Box>
-          <Title>내 여행 현황</Title>
+          <Title>내 활동 현황</Title>
 
           <TextButton
             onClick={() => {
@@ -136,7 +72,17 @@ export default function MyPage() {
           />
           <Spacing size={8} />
         </Box>
-        <div style={{ marginTop: "16px" }}>
+
+        <Box>
+          <Title>모잉 소식</Title>
+          <Spacing size={8} />
+          <TextButton
+            isLeftVector
+            isRightVector={false}
+            onClick={onLinkAnnouncement}
+            text="공지사항"
+            leftIconSrc="/images/createTripBtn.png"
+          />
           <TextButton
             onClick={(e: MouseEvent) => {
               router.push("/contact");
@@ -145,6 +91,10 @@ export default function MyPage() {
             isLeftVector={false}
             isRightVector={false}
           />
+          <Spacing size={8} />
+        </Box>
+
+        <div style={{ marginTop: "16px" }}>
           <a href="/pdf/service_terms(241115).pdf" target="_blank">
             <TextButton text="서비스이용약관" isLeftVector={false} isRightVector={false} />
           </a>
@@ -167,6 +117,10 @@ export default function MyPage() {
     </Container>
   );
 }
+const SpaceBox = styled.div`
+  height: 12px;
+  background-color: ${palette.검색창};
+`;
 const ProfileImg = styled.div``;
 const Container = styled.div`
   padding: 0px 24px;

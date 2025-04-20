@@ -16,10 +16,15 @@ import { splashOnStore } from "@/store/client/splashOnOffStore";
 import { usePathname } from "next/navigation";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { useHeaderNavigation } from "@/hooks/useHeaderNavigation";
+import useUserProfile from "@/hooks/userProfile/useUserProfile";
+import { IUserProfileInfo } from "@/model/userProfile";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { userPostRefreshToken } = useAuth();
   const { userId, accessToken, logoutCheck } = authStore();
+
+  const { userProfileInfo } = useUserProfile("mine");
+
   // 유저 프로필 정보 불러오기
   const {
     addEmail,
@@ -30,16 +35,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     addPreferredTags,
     profileUrl,
     addUserSocialTF,
+    addTravelDistance,
+    addVisitedCountryCount,
+    addTravelBadgeCount,
   } = myPageStore();
 
-  const {
-    data,
-    isLoading,
-    profileImage,
-    isLoadingImage,
-    firstProfileImageMutation,
-    isFirstProfileImagePostSuccess,
-  } = useMyPage();
+  const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
+    useMyPage();
   console.log(data, "user data");
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
@@ -48,7 +50,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const myPageData: ImyPage = data as any;
   const profileImg: IProfileImg = profileImage as IProfileImg;
-  console.log(profileImg, profileImage, "프로필 이미지 get");
+  const myProfileInfo: IUserProfileInfo = userProfileInfo as IUserProfileInfo;
+  console.log(profileImg, profileImage, myProfileInfo, "프로필");
   useEffect(() => {
     if (!isLoading && myPageData) {
       addName(myPageData.name);
@@ -57,6 +60,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       addPreferredTags(myPageData.preferredTags);
       addGender(myPageData.gender);
       addUserSocialTF(myPageData.userSocialTF);
+      addTravelDistance(myProfileInfo?.travelDistance);
+      addTravelBadgeCount(myProfileInfo?.travelBadgeCount);
+      addVisitedCountryCount(myProfileInfo?.visitedCountryCount);
       const tags: string[] = [];
       for (const tag of myPageData.preferredTags) {
         const text = tag.split(" ");
@@ -84,11 +90,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 토큰 갱신 시도(새로고침시 토큰 사라지는 문제해결 위해)
-    if (
-      !accessToken &&
-      !logoutCheck &&
-      !checkRoute.startsWith("/login/oauth")
-    ) {
+    if (!accessToken && !logoutCheck && !checkRoute.startsWith("/login/oauth")) {
       // 토큰이 없으면 리프레쉬 토큰 api 요청.
       const refreshAccessToken = async () => {
         userPostRefreshToken();
@@ -103,20 +105,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const backGroundGrey = ["/trip/detail", "/", "/myTrip", "/requestedTrip"];
   useEffect(() => {
     if (splashOn === true) return;
-    let themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
+    const themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
     if (themeColorMetaTag) {
-      themeColorMetaTag.setAttribute(
-        "content",
-        backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`
-      );
+      themeColorMetaTag.setAttribute("content", backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`);
     }
   }, [pathname]);
 
   return (
-    <APIProvider
-      apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}
-      onLoad={() => console.log("google map load")}
-    >
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""} onLoad={() => console.log("google map load")}>
       <Container pathname={pathname}>
         <Splash />
         <Body pathname={pathname}>
