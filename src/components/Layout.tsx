@@ -5,7 +5,6 @@ import Header from "./Header";
 
 import Navbar from "@/page/Home/Navbar";
 import { authStore } from "@/store/client/authStore";
-import path from "path";
 import { palette } from "@/styles/palette";
 import useAuth from "@/hooks/user/useAuth";
 import { myPageStore } from "@/store/client/myPageStore";
@@ -19,22 +18,33 @@ import { useHeaderNavigation } from "@/hooks/useHeaderNavigation";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { userPostRefreshToken } = useAuth();
-  const { userId, accessToken, logoutCheck } = authStore();
+  const { accessToken, logoutCheck } = authStore();
+
   // 유저 프로필 정보 불러오기
-  const { addEmail, addProfileUrl, addName, addGender, addAgegroup, addPreferredTags, profileUrl, addUserSocialTF } =
-    myPageStore();
+
+  const {
+    addEmail,
+    addProfileUrl,
+    addName,
+    addGender,
+    addAgegroup,
+    addPreferredTags,
+    addUserSocialTF,
+    addTravelDistance,
+    addVisitedCountryCount,
+    addTravelBadgeCount,
+  } = myPageStore();
 
   const { data, isLoading, profileImage, isLoadingImage, firstProfileImageMutation, isFirstProfileImagePostSuccess } =
     useMyPage();
   console.log(data, "user data");
   const isOnboarding = pathname?.startsWith("/onBoarding");
 
-  const isCommunityDetail = pathname?.startsWith("/community/detail");
   const { ROUTES, checkRoute } = useHeaderNavigation();
 
   const myPageData: ImyPage = data as any;
   const profileImg: IProfileImg = profileImage as IProfileImg;
-  console.log(profileImg, profileImage, "프로필 이미지 get");
+  console.log(profileImg, profileImage, "프로필");
   useEffect(() => {
     if (!isLoading && myPageData) {
       addName(myPageData.name);
@@ -43,6 +53,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       addPreferredTags(myPageData.preferredTags);
       addGender(myPageData.gender);
       addUserSocialTF(myPageData.userSocialTF);
+      addTravelDistance(myPageData.travelDistance);
+      addTravelBadgeCount(myPageData.travelBadgeCount);
+      addVisitedCountryCount(myPageData.visitedCountryCount);
       const tags: string[] = [];
       for (const tag of myPageData.preferredTags) {
         const text = tag.split(" ");
@@ -85,7 +98,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const backGroundGrey = ["/trip/detail", "/", "/myTrip", "/requestedTrip"];
   useEffect(() => {
     if (splashOn === true) return;
-    let themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
+    const themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
     if (themeColorMetaTag) {
       themeColorMetaTag.setAttribute("content", backGroundGrey.includes(pathname ?? "") ? "#F5F5F5" : `${palette.BG}`);
     }

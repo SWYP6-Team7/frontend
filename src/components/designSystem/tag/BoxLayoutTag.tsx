@@ -31,8 +31,8 @@ const BoxLayoutTag = forwardRef(
         color: `${palette.비강조}`,
         borderRadius: "20px",
         fontSize: "12px",
-        fontWeight: "600",
-        margin: "0 6px 0 0",
+        fontWeight: "400",
+        margin: "0 8px 0 0",
       },
     }: BoxLayoutTagProps,
     ref

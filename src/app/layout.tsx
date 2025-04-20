@@ -2,6 +2,8 @@ import Layout from "@/components/Layout";
 import Providers from "./providers";
 import "./globals.css";
 import { MSWComponent } from "@/context/MSWComponent";
+import UserProfileOverlay from "@/components/userProfile/UserProfileOverlay";
+
 import { GoogleAnalytics } from "@next/third-parties/google";
 export default function RootLayout({
   children,
@@ -13,7 +15,9 @@ export default function RootLayout({
       <body>
         <Providers>
           <MSWComponent />
+          <UserProfileOverlay />
           <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} />
+
           <Layout>{children}</Layout>
           <div id="checking-modal" />
           <div id="trip-toast" />
