@@ -27,7 +27,7 @@ export default function MyPage() {
       ) : (
         <UserInfo>
           <ProfileImg>
-            <RoundedImage src={isGuestUser() ? "/images/defaultProfile.png" : profileUrl} size={80} />
+            <RoundedImage src={"/images/defaultProfile.png"} size={80} />
           </ProfileImg>
           <div style={{ width: "100%" }}>
             <MoreBox onClick={() => setShowLoginModal(true)}>
