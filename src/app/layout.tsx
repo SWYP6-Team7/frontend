@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import Providers from "./providers";
 import "./globals.css";
 import { MSWComponent } from "@/context/MSWComponent";
+import UserProfileOverlay from "@/components/userProfile/UserProfileOverlay";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,6 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           <MSWComponent />
+          <UserProfileOverlay />
           <Layout>{children}</Layout>
           <div id="checking-modal" />
           <div id="trip-toast" />
