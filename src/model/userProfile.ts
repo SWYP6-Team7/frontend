@@ -11,6 +11,7 @@ export interface IUserProfileInfo {
   recentlyReported: boolean; // 최근(7일) 신고 여부
   totalReportCount: number; // 총 신고 횟수
   recentReportCount: number; // 최근(7일) 신고 횟수
+  ageGroup: string;
 }
 
 export interface IUserRelatedTravel {

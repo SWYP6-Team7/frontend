@@ -21,27 +21,46 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
   const { setProfileShow, userProfileUserId } = userProfileOverlayStore();
   const { userProfileInfo, isLoadingUserProfileInfo } = useUserProfile();
   const navigateWithTransition = useViewTransition();
-  const { agegroup: myAgeGroup, email: myEmail } = myPageStore();
+
   if (!userProfileInfo) return null;
-  const { name, recentReportCount, userRegDate, preferredTags, travelDistance, travelBadgeCount, visitedCountryCount } =
-    userProfileInfo;
+  const {
+    ageGroup,
+    name,
+    recentReportCount,
+    userRegDate,
+    preferredTags,
+    travelDistance,
+    travelBadgeCount,
+    visitedCountryCount,
+  } = userProfileInfo;
+  const {
+    name: myName,
+    agegroup: myAgeGroup,
+    email: myEmail,
+    preferredTags: myPreferredTags,
+    travelDistance: myTravelDistance,
+    travelBadgeCount: myTravelBageCount,
+    visitedCountryCount: myVisitedCountryCount,
+  } = myPageStore();
 
   const TravelMenuList = [
     {
       Icon: CloverIcon,
       label: "방문한 국가",
-      count: visitedCountryCount,
+      count: isMyPage ? myVisitedCountryCount : visitedCountryCount,
       nextLink: `/userProfile/${userProfileUserId}/log`,
     },
     {
       Icon: CloverIcon,
       label: "여행 배지",
-      count: travelBadgeCount,
+      count: isMyPage ? myTravelBageCount : travelBadgeCount,
       nextLink: `/userProfileBadge/${userProfileUserId}`,
     },
   ];
 
-  const cutTags = preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
+  const preferredTagsTarget = isMyPage ? myPreferredTags : preferredTags;
+
+  const cutTags = preferredTagsTarget.length > 2 ? preferredTagsTarget.slice(0, 2) : preferredTagsTarget;
 
   const moveToNextLink = (link: string) => {
     navigateWithTransition(link);
@@ -49,12 +68,12 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
       setProfileShow(false);
     }, 50);
   };
-  const IS_REPORTED = true;
+  const IS_REPORTED = recentReportCount > 0;
   const editMyProfileInfo = () => {
     document.documentElement.style.viewTransitionName = "forward";
     navigateWithTransition("/editMyInfo");
   };
-  const tempAgeGroup = "00대"; // 임시 값
+
   return (
     <Container>
       <UserInfoContainer>
@@ -64,7 +83,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
         <UserTextInfoContainer>
           <UserNameBox>
             <Name onClick={isMyPage && editMyProfileInfo}>
-              {name}
+              {isMyPage ? myName : name}
               {isMyPage && <ProfileRightVectorIcon height={16} />}
             </Name>
             <UserInfo>{isMyPage ? myEmail : userRegDate + "가입"}</UserInfo>
@@ -75,7 +94,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
               fontWeight="600"
               color={palette.keycolor}
               backgroundColor={palette.keycolorBG}
-              text={isMyPage ? myAgeGroup : tempAgeGroup}
+              text={isMyPage ? myAgeGroup : ageGroup}
             />
             {cutTags.map((text: string) => (
               <Badge
@@ -87,7 +106,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
                 text={text}
               />
             ))}
-            {preferredTags.length > cutTags.length ? (
+            {preferredTagsTarget.length > cutTags.length ? (
               <Badge
                 isDueDate={false}
                 fontWeight="500"
@@ -99,7 +118,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
           </UserTags>
         </UserTextInfoContainer>
 
-        {IS_REPORTED && (
+        {IS_REPORTED && !isMyPage && (
           <ReportedUser>
             <WarningIcon />
             최근 신고가 {recentReportCount}회 누적된 회원이에요
@@ -108,7 +127,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
       </UserInfoContainer>
       <TravelDistanceContainer>
         <Title>총 여행한 거리✨</Title>
-        <TravelDistance>{formatNumberWithComma(travelDistance)}km</TravelDistance>
+        <TravelDistance>{formatNumberWithComma(isMyPage ? myTravelDistance : travelDistance)}km</TravelDistance>
       </TravelDistanceContainer>
 
       <TravelMenuContainer>

@@ -5,21 +5,17 @@ import { authStore } from "@/store/client/authStore";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 import { useQuery, useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
 
-const useUserProfile = (
-  profileType: "mine" | "other" = "other"
-): {
+const useUserProfile = (): {
   userProfileInfo: IUserProfileInfo | undefined | null;
   isLoadingUserProfileInfo: boolean;
 } => {
-  const { accessToken, userId: myUserId } = authStore();
+  const { accessToken } = authStore();
   const { userProfileUserId } = userProfileOverlayStore();
 
-  const targetUserId = profileType === "mine" ? myUserId : userProfileUserId;
-
   const { data: userProfileInfo, isLoading: isLoadingUserProfileInfo } = useQuery<IUserProfileInfo | null>({
-    queryKey: ["userProfile", targetUserId],
-    queryFn: () => getUserProfile(accessToken!, targetUserId!),
-    enabled: !!accessToken && targetUserId !== -1,
+    queryKey: ["userProfile", userProfileUserId],
+    queryFn: () => getUserProfile(accessToken!, userProfileUserId!),
+    enabled: !!accessToken && userProfileUserId !== -1,
     retry: !!accessToken,
     staleTime: 0,
   });

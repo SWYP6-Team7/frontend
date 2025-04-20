@@ -50,8 +50,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const myPageData: ImyPage = data as any;
   const profileImg: IProfileImg = profileImage as IProfileImg;
-  const myProfileInfo: IUserProfileInfo = userProfileInfo as IUserProfileInfo;
-  console.log(profileImg, profileImage, myProfileInfo, "프로필");
+  console.log(profileImg, profileImage, "프로필");
   useEffect(() => {
     if (!isLoading && myPageData) {
       addName(myPageData.name);
@@ -60,9 +59,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       addPreferredTags(myPageData.preferredTags);
       addGender(myPageData.gender);
       addUserSocialTF(myPageData.userSocialTF);
-      addTravelDistance(myProfileInfo?.travelDistance);
-      addTravelBadgeCount(myProfileInfo?.travelBadgeCount);
-      addVisitedCountryCount(myProfileInfo?.visitedCountryCount);
+      addTravelDistance(myPageData.travelDistance);
+      addTravelBadgeCount(myPageData.travelBadgeCount);
+      addVisitedCountryCount(myPageData.visitedCountryCount);
       const tags: string[] = [];
       for (const tag of myPageData.preferredTags) {
         const text = tag.split(" ");
