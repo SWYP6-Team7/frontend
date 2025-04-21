@@ -216,6 +216,8 @@ const UserNameBox = styled.div`
 `;
 
 export const Name = styled.div`
+  display: flex;
+  align-items: center;
   font-weight: 600;
   font-size: 20px;
   line-height: 16px;
