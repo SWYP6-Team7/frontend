@@ -87,6 +87,7 @@ const slideDown = keyframes`
   }
 `;
 const OverlayWrapper = styled.div<{ isClickedCloseBtn: boolean; height: number }>`
+  width: 100%;
   min-height: 100vh;
   padding: 0px 24px;
   position: absolute;
