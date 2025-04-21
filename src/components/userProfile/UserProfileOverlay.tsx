@@ -27,8 +27,8 @@ export default function UserProfileOverlay() {
   useEffect(() => {
     console.log(bottomRef.current, "존재");
     if (bottomRef.current) {
-      const bottom = bottomRef.current.getBoundingClientRect().bottom;
-      setHeight(bottom);
+      const overLayWrapperHeight = bottomRef.current.parentElement!.scrollHeight;
+      setHeight(overLayWrapperHeight);
     }
   }, [profileShow]);
 

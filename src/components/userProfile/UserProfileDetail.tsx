@@ -185,6 +185,7 @@ const ReportedUser = styled.div`
 `;
 const Container = styled.div`
   margin-top: 4px;
+  background-color: white;
 `;
 
 const UserInfoContainer = styled.div`
