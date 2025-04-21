@@ -25,10 +25,16 @@ export default function UserProfileOverlay() {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [height, setHeight] = useState(0);
   useEffect(() => {
-    console.log(bottomRef.current, "존재");
-    if (bottomRef.current) {
-      const overLayWrapperHeight = bottomRef.current.parentElement!.scrollHeight;
-      setHeight(overLayWrapperHeight);
+    if (bottomRef.current?.parentElement) {
+      const scrollHeight = bottomRef.current.parentElement.scrollHeight;
+      const windowHeight = window.innerHeight;
+
+      const newHeight = Math.max(scrollHeight, windowHeight);
+
+      console.log("scrollHeight:", scrollHeight);
+      console.log("window.innerHeight:", windowHeight);
+
+      setHeight(newHeight);
     }
   }, [profileShow]);
 
@@ -68,6 +74,7 @@ const slideDown = keyframes`
   }
 `;
 const OverlayWrapper = styled.div<{ isClickedCloseBtn: boolean; height: number }>`
+  min-height: 100vh;
   padding: 0px 24px;
   position: absolute;
   z-index: 1001;
@@ -79,7 +86,6 @@ const OverlayWrapper = styled.div<{ isClickedCloseBtn: boolean; height: number }
   height: ${({ height }) => height}px;
   @media (min-width: 440px) {
     width: 390px;
-    left: 50%;
   }
   left: 50%;
   animation: ${(props) => (props.isClickedCloseBtn ? slideDown : slideUp)} 0.3s ease-out forwards;
