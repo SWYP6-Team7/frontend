@@ -67,26 +67,27 @@ export default function UserProfileOverlay() {
 
 const slideUp = keyframes`
   from {
-    transform: translateY(100%);
+    transform: translate(-50%, 100%);
     opacity: 0;
   }
   to {
-    transform: translateY(0%);
+    transform: translate(-50%, 0%);
     opacity: 1;
   }
 `;
 
 const slideDown = keyframes`
-   from {
-    transform: translateY(0%);
+  from {
+    transform: translate(-50%, 0%);
     opacity: 1;
   }
   to {
-    transform: translateY(100%);
+    transform: translate(-50%, 100%);
     opacity: 0;
   }
 `;
 const OverlayWrapper = styled.div<{ isClickedCloseBtn: boolean; height: number }>`
+  width: 100%;
   min-height: 100vh;
   padding: 0px 24px;
   position: absolute;
@@ -100,6 +101,5 @@ const OverlayWrapper = styled.div<{ isClickedCloseBtn: boolean; height: number }
     width: 390px;
   }
   left: 50%;
-  transform: translateX(-50%);
   animation: ${(props) => (props.isClickedCloseBtn ? slideDown : slideUp)} 0.3s ease-out forwards;
 `;
