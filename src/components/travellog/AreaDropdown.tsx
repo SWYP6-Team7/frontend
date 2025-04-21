@@ -173,6 +173,8 @@ const VisitContainer = styled.div`
   padding: 4px;
   display: flex;
   flex-direction: column;
+  max-height: calc(40svh - 212px);
+  overflow-y: auto;
   gap: 8px;
 `;
 const VisitItem = styled.div`
