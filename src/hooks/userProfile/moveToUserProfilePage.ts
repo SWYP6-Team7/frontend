@@ -1,8 +1,9 @@
 "use client";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 
-const { setProfileShow, setUserProfileUserId } = userProfileOverlayStore();
 export const moveToUserProfilePage = (userNumber: number) => {
+  const { setProfileShow, setUserProfileUserId } = userProfileOverlayStore();
+
   setUserProfileUserId(userNumber);
   setProfileShow(true);
 };
