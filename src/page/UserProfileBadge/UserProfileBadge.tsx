@@ -4,15 +4,35 @@ import BadgeLockIcon from "@/components/icons/BadgeLockIcon";
 import { palette } from "@/styles/palette";
 import { useEffect } from "react";
 import styled from "@emotion/styled";
+import { useParams } from "next/navigation";
+import { myPageStore } from "@/store/client/myPageStore";
+import { authStore } from "@/store/client/authStore";
+import useUserProfile from "@/hooks/userProfile/useUserProfile";
 
 export function UserProfileBadge() {
   // API 요청. hooks 캐시 값 이용.
   const tempBadgeArray = new Array(12).fill({ Icon: BadgeLockIcon, name: "배지 이름" });
+  const params = useParams();
+  const ID = params.userId as string; // 혹은 params['id'
+  const { userProfileInfo } = useUserProfile();
+
+  // params에서 userId가 내 꺼랑 같으면 배지 그거 쓰고, 아니라면 userProfile()쓰기.
+
+  const profileData =
+    ID === authStore().userId?.toString()
+      ? {
+          travelBadgeCount: myPageStore().travelBadgeCount,
+        }
+      : {
+          travelBadgeCount: userProfileInfo!.travelBadgeCount,
+        };
+
+  const { travelBadgeCount } = profileData;
   return (
     <Container>
       <Text>
         현재
-        <BadgeCount>4</BadgeCount>
+        <BadgeCount>{travelBadgeCount}</BadgeCount>
         개의 배지를 획득했어요.
       </Text>
       <BadgeGrid>
