@@ -108,7 +108,7 @@ export async function getUserTravelLog(
 ) {
   try {
     const response = await axiosInstance.get(
-      `/api/users//${userNumber}/visited-countries`,
+      `/api/users/${userNumber}/visited-countries`,
 
       {
         ...(accessToken && { headers: getJWTHeader(accessToken) }),
