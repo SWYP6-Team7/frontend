@@ -1,5 +1,4 @@
 "use client";
-import MyTripHorizonBoxLayout from "@/components/MyTripHorizonBoxLayout";
 import { useMyTrip } from "@/hooks/myTrip/useMyTrip";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { palette } from "@/styles/palette";
@@ -15,7 +14,6 @@ import { IMyTripList } from "@/model/myTrip";
 import { daysAgo } from "@/utils/time";
 import { isGuestUser } from "@/utils/user";
 import LoginButtonForGuest from "@/components/LoginButtonForGuest";
-import Link from "next/link";
 import { useBackPathStore } from "@/store/client/backPathStore";
 import { useRouter } from "next/navigation";
 import HorizonBoxLayout from "@/components/HorizonBoxLayout";

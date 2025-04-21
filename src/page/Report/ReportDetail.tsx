@@ -14,6 +14,7 @@ import { authStore } from "@/store/client/authStore";
 import { reportStore } from "@/store/client/reportStore";
 import { useMutation } from "@tanstack/react-query";
 import { errorStore } from "@/store/client/errorStore";
+import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 
 const ReportDetail = () => {
   const { reportType, id, type: backType } = useParams();
@@ -70,6 +71,14 @@ const ReportDetail = () => {
         case "community":
           router.replace(`/community/detail/${id}`);
           setDetailId(null);
+          setUserNumber(null);
+          setTimeout(() => {
+            setReportSuccess(true);
+          }, 300);
+          return;
+        case "userProfile":
+          const { setProfileShow } = userProfileOverlayStore();
+          setProfileShow(true);
           setUserNumber(null);
           setTimeout(() => {
             setReportSuccess(true);

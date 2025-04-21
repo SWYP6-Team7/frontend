@@ -26,6 +26,13 @@ interface myPageStoreState {
   addIsPasswordUpdated: (isPasswordUpdated: boolean) => void;
   userSocialTF: boolean;
   addUserSocialTF: (userSocialTF: boolean) => void;
+
+  travelDistance: number;
+  addTravelDistance: (travelDistance: number) => void;
+  visitedCountryCount: number;
+  addVisitedCountryCount: (visitedCountryCount: number) => void;
+  travelBadgeCount: number;
+  addTravelBadgeCount: (travelBadgeCount: number) => void;
 }
 
 export const myPageStore = create<myPageStoreState>((set) => ({
@@ -76,5 +83,17 @@ export const myPageStore = create<myPageStoreState>((set) => ({
   isPasswordUpdated: false,
   addIsPasswordUpdated: (isPasswordUpdated) => {
     set((state) => ({ isPasswordUpdated }));
+  },
+  travelDistance: 0,
+  addTravelDistance: (travelDistance) => {
+    set((state) => ({ travelDistance }));
+  },
+  visitedCountryCount: 0,
+  addVisitedCountryCount: (visitedCountryCount) => {
+    set((state) => ({ visitedCountryCount }));
+  },
+  travelBadgeCount: 0,
+  addTravelBadgeCount: (travelBadgeCount) => {
+    set((state) => ({ travelBadgeCount }));
   },
 }));

@@ -6,6 +6,10 @@ export interface ImyPage {
   proIntroduce: string;
   userSocialTF: boolean;
   preferredTags: string[];
+  userRegDate: string;
+  travelDistance: number;
+  visitedCountryCount: number;
+  travelBadgeCount: number;
 }
 
 export interface IProfileImg {
