@@ -390,6 +390,7 @@ export const useHeaderNavigation = () => {
         // 상대방 프로필 화면의 여행 뱃지 화면
         condition: () => checkRoute.exact(ROUTES.USER_PROFILE_BADGE),
         action: () => {
+          router.back();
           setProfileShow(true);
         },
       },
@@ -397,6 +398,7 @@ export const useHeaderNavigation = () => {
         // 상대방 프로필 화면의 여행 로그 화면,
         condition: () => checkRoute.exact(ROUTES.USER_TRAVEL_LOG),
         action: () => {
+          router.back();
           setProfileShow(true);
         },
       },
