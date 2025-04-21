@@ -20,7 +20,7 @@ interface UserProfileDetailProps {
 }
 export default function UserProfileDetail({ isMyPage = false }: UserProfileDetailProps) {
   const { setProfileShow, userProfileUserId } = userProfileOverlayStore();
-  const { userProfileInfo } = useUserProfile();
+  
   const navigateWithTransition = useViewTransition();
 
   if (!isMyPage && !userProfileInfo) return null;
