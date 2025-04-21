@@ -391,7 +391,7 @@ export const useHeaderNavigation = () => {
         condition: () => checkRoute.exact(ROUTES.USER_PROFILE_BADGE),
         action: () => {
           router.back();
-          setProfileShow(true);
+          setTimeout(() => setProfileShow(true), 100);
         },
       },
       {
@@ -399,7 +399,7 @@ export const useHeaderNavigation = () => {
         condition: () => checkRoute.exact(ROUTES.USER_TRAVEL_LOG),
         action: () => {
           router.back();
-          setProfileShow(true);
+          setTimeout(() => setProfileShow(true), 100);
         },
       },
     ];
