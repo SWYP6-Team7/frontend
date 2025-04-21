@@ -845,7 +845,7 @@ const IconContainer = styled.button<{ rotated: boolean; right: string }>`
   align-items: center;
   color: white;
   background-color: ${palette.기본};
-  z-index: 1003;
+  z-index: 1000;
   font-size: 32px;
   @media (max-width: 390px) {
     right: ${(props) => props.right};
