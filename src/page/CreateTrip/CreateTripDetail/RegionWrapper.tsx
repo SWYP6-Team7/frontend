@@ -59,7 +59,7 @@ const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometr
         addLocationName({
           locationName: locationName.locationName,
           mapType: "google",
-          countryName: locationNameStr,
+          countryName: locationNameStr ? locationNameStr.split(" ")[0] : "",
         });
       }
     });
