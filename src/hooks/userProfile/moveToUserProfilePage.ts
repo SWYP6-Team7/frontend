@@ -1,3 +1,4 @@
+"use client";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 
 const { setProfileShow, setUserProfileUserId } = userProfileOverlayStore();
