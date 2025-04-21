@@ -73,7 +73,11 @@ export async function checkEmail(email: string) {
   }
 }
 
-export const getToken = async (domain: "naver" | "kakao" | "google", code: string, state: string) => {
+export const getToken = async (
+  domain: "naver" | "kakao" | "google",
+  code: string,
+  state: string
+) => {
   try {
     const url =
       domain === "kakao"
@@ -98,10 +102,13 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
   }
 };
 
-export async function getUserTravelLog(userNumber: number, accessToken: string | null) {
+export async function getUserTravelLog(
+  userNumber: number,
+  accessToken: string | null
+) {
   try {
-    const response = await axios.get(
-      `http://localhost:9999/api/users//${userNumber}/visited-countries`,
+    const response = await axiosInstance.get(
+      `/api/users//${userNumber}/visited-countries`,
 
       {
         ...(accessToken && { headers: getJWTHeader(accessToken) }),

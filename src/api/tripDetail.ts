@@ -17,7 +17,7 @@ export async function getTripDetail(
     );
     return handleApiResponse(response);
   } catch (err: any) {
-    // throw new RequestError(err);
+    throw new RequestError(err);
   }
 }
 
