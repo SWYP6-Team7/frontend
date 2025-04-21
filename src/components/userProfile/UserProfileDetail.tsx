@@ -13,6 +13,7 @@ import WarningIcon from "../icons/WarningIcon";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 import useUserProfile from "@/hooks/userProfile/useUserProfile";
 import ProfileRightVectorIcon from "../icons/ProfileRightVectorIcon";
+import { authStore } from "@/store/client/authStore";
 
 interface UserProfileDetailProps {
   isMyPage?: boolean;
@@ -22,7 +23,32 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
   const { userProfileInfo } = useUserProfile();
   const navigateWithTransition = useViewTransition();
 
-  if (!userProfileInfo) return null;
+  if (!isMyPage && !userProfileInfo) return null;
+
+  const profileData = isMyPage
+    ? {
+        ageGroup: myPageStore().agegroup,
+        name: myPageStore().name,
+        recentReportCount: 0,
+        userRegDate: "",
+        preferredTags: myPageStore().preferredTags,
+        travelDistance: myPageStore().travelDistance,
+        travelBadgeCount: myPageStore().travelBadgeCount,
+        visitedCountryCount: myPageStore().visitedCountryCount,
+        profileImageUrl: myPageStore().profileUrl,
+      }
+    : {
+        ageGroup: userProfileInfo!.ageGroup,
+        name: userProfileInfo!.name,
+        recentReportCount: userProfileInfo!.recentReportCount,
+        userRegDate: userProfileInfo!.userRegDate,
+        preferredTags: userProfileInfo!.preferredTags,
+        travelDistance: userProfileInfo!.travelDistance,
+        travelBadgeCount: userProfileInfo!.travelBadgeCount,
+        visitedCountryCount: userProfileInfo!.visitedCountryCount,
+        profileImageUrl: userProfileInfo!.profileImageUrl,
+      };
+
   const {
     ageGroup,
     name,
@@ -32,35 +58,25 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
     travelDistance,
     travelBadgeCount,
     visitedCountryCount,
-  } = userProfileInfo;
-  const {
-    name: myName,
-    agegroup: myAgeGroup,
-    email: myEmail,
-    preferredTags: myPreferredTags,
-    travelDistance: myTravelDistance,
-    travelBadgeCount: myTravelBageCount,
-    visitedCountryCount: myVisitedCountryCount,
-  } = myPageStore();
+    profileImageUrl,
+  } = profileData;
 
   const TravelMenuList = [
     {
       Icon: CloverIcon,
       label: "방문한 국가",
-      count: isMyPage ? myVisitedCountryCount : visitedCountryCount,
-      nextLink: `/userProfile/${userProfileUserId}/log`,
+      count: visitedCountryCount,
+      nextLink: `/userProfile/${isMyPage ? authStore().userId : userProfileUserId}/log`,
     },
     {
       Icon: CloverIcon,
       label: "여행 배지",
-      count: isMyPage ? myTravelBageCount : travelBadgeCount,
-      nextLink: `/userProfileBadge/${userProfileUserId}`,
+      count: travelBadgeCount,
+      nextLink: `/userProfileBadge/${isMyPage ? authStore().userId : userProfileUserId}`,
     },
   ];
 
-  const preferredTagsTarget = isMyPage ? myPreferredTags : preferredTags;
-
-  const cutTags = preferredTagsTarget.length > 2 ? preferredTagsTarget.slice(0, 2) : preferredTagsTarget;
+  const cutTags = preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
 
   const moveToNextLink = (link: string) => {
     navigateWithTransition(link);
@@ -78,15 +94,15 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
     <Container>
       <UserInfoContainer>
         <ProfileImgContainer>
-          <RoundedImage src="/images/defaultProfile.png" size={80} />
+          <RoundedImage src={profileImageUrl} size={80} />
         </ProfileImgContainer>
         <UserTextInfoContainer>
           <UserNameBox>
             <Name onClick={isMyPage && editMyProfileInfo}>
-              {isMyPage ? myName : name}
+              {name}
               {isMyPage && <ProfileRightVectorIcon height={16} />}
             </Name>
-            <UserInfo>{isMyPage ? myEmail : userRegDate + "가입"}</UserInfo>
+            <UserInfo>{isMyPage ? myPageStore().email : userRegDate + "가입"}</UserInfo>
           </UserNameBox>
           <UserTags>
             <Badge
@@ -94,7 +110,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
               fontWeight="600"
               color={palette.keycolor}
               backgroundColor={palette.keycolorBG}
-              text={isMyPage ? myAgeGroup : ageGroup}
+              text={ageGroup}
             />
             {cutTags.map((text: string) => (
               <Badge
@@ -106,7 +122,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
                 text={text}
               />
             ))}
-            {preferredTagsTarget.length > cutTags.length ? (
+            {preferredTags.length > cutTags.length ? (
               <Badge
                 isDueDate={false}
                 fontWeight="500"
@@ -127,7 +143,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
       </UserInfoContainer>
       <TravelDistanceContainer>
         <Title>총 여행한 거리✨</Title>
-        <TravelDistance>{formatNumberWithComma(isMyPage ? myTravelDistance : travelDistance)}km</TravelDistance>
+        <TravelDistance>{formatNumberWithComma(travelDistance)}km</TravelDistance>
       </TravelDistanceContainer>
 
       <TravelMenuContainer>
