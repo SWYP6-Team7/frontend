@@ -41,8 +41,8 @@ import { useInView } from "react-intersection-observer";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import EmblaCarousel from "@/components/TripCarousel";
 import useComment from "@/hooks/comment/useComment";
+import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 
-import { moveToUserProfilePage } from "@/hooks/userProfile/moveToUserProfilePage";
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function verifyGenderType(genderType: string | null, gender: string) {
@@ -76,6 +76,7 @@ export default function TripDetail() {
   const detailRef = useRef<HTMLDivElement | null>(null);
   const [isApplyToast, setIsApplyToast] = useState(false);
   const [isCancelToast, setIsCancelToast] = useState(false);
+  const { setProfileShow, setUserProfileUserId } = userProfileOverlayStore();
 
   // 신청 대기 모달
   const [noticeModal, setNoticeModal] = useState(false);
@@ -200,9 +201,17 @@ export default function TripDetail() {
         const geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.addressSearch(location, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
-            addLocationName({ locationName: location, mapType: "kakao" });
+            addLocationName({
+              locationName: location,
+              mapType: "kakao",
+              countryName: "대한민국",
+            });
           } else {
-            addLocationName({ locationName: location, mapType: "google" });
+            addLocationName({
+              locationName: location,
+              mapType: "google",
+              countryName: "",
+            });
           }
         });
       });
@@ -289,6 +298,12 @@ export default function TripDetail() {
       }
     }
   };
+
+  const moveToUserProfilePage = (userNumber: number) => {
+    setUserProfileUserId(userNumber);
+    setProfileShow(true);
+  };
+
   useEffect(() => {
     if (cancelMutation.isSuccess) {
       setIsCancelToast(true);
@@ -385,7 +400,9 @@ export default function TripDetail() {
         >
           <ModalContainer>
             <MainContent>
-              <ProfileContainer onClick={() => moveToUserProfilePage(userNumber)}>
+              <ProfileContainer
+                onClick={() => moveToUserProfilePage(userNumber)}
+              >
                 {/* 프로필 */}
                 <RoundedImage src={profileUrl} size={40} />
                 <div style={{ marginLeft: "8px" }}>

@@ -16,8 +16,20 @@ const TripRegion = ({
   initLocationName,
   isDetail = false,
 }: {
-  initLocationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
+  initLocationName: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  };
+  addLocationName: ({
+    locationName,
+    mapType,
+    countryName,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  }) => void;
   nextFunc: () => void;
   isDetail?: boolean;
 }) => {
@@ -56,9 +68,17 @@ const TripRegion = ({
         geocoder.addressSearch(keyword, (result, status) => {
           console.log("result", result, status);
           if (status === window.kakao.maps.services.Status.OK) {
-            addLocationName({ locationName: keyword, mapType: "kakao" });
+            addLocationName({
+              locationName: keyword,
+              mapType: "kakao",
+              countryName: "대한민국",
+            });
           } else {
-            addLocationName({ locationName: keyword, mapType: "google" });
+            addLocationName({
+              locationName: keyword,
+              mapType: "google",
+              countryName: "",
+            });
           }
         });
         setSubmit(false);

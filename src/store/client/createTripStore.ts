@@ -6,8 +6,20 @@ import { create } from "zustand";
 type Gender = "F" | "M" | "";
 
 interface CreateTripState {
-  locationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
+  locationName: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  };
+  addLocationName: ({
+    locationName,
+    mapType,
+    countryName,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  }) => void;
   title: string;
   addTitle: (title: string) => void;
   details: string;
@@ -19,7 +31,13 @@ interface CreateTripState {
   dueDate: string;
   addDueDate: (dueDate: string) => void;
   date: { startDate: string; endDate: string } | null;
-  addDate: ({ startDate, endDate }: { startDate: string; endDate: string }) => void;
+  addDate: ({
+    startDate,
+    endDate,
+  }: {
+    startDate: string;
+    endDate: string;
+  }) => void;
   periodType: string;
   addPeriodType: (periodType: string) => void;
   tags: string[];
@@ -41,7 +59,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
   addTitle: (title) => {
     set({ title });
   },
-  locationName: { locationName: "", mapType: "google" },
+  locationName: { locationName: "", mapType: "google", countryName: "" },
   addLocationName: (locationName) => {
     set({ locationName });
   },
@@ -95,6 +113,7 @@ export const createTripStore = create<CreateTripState>((set) => ({
     set({
       title: "",
       locationName: {
+        countryName: "",
         locationName: "",
         mapType: "google",
       },
