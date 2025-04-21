@@ -217,6 +217,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: white;
 `;
 
 const TabMenuContainer = styled.div`
