@@ -49,14 +49,7 @@ export default function UserTravelTabMenu() {
   }, [isClickedCloseBtn]);
 
   if (isUserProfileCreatedTravelsLoading || isUserProfileAppliedTravelsLoading) {
-    return (
-      <Empty>
-        <RoundedImage size={80} src="/images/noData.png" />
-        <NoData>
-          <div>데이터를 불러오는데 실패했어요.</div>
-        </NoData>
-      </Empty>
-    );
+    return null;
   }
 
   useInfiniteScroll(() => {

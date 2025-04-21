@@ -38,6 +38,19 @@ export default function UserProfileOverlay() {
     }
   }, [profileShow]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      // 뒤로가기 하면 프로필 모달 화면 닫기.
+      setProfileShow(false);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   return (
     <>
       {profileShow && (
@@ -54,22 +67,22 @@ export default function UserProfileOverlay() {
 
 const slideUp = keyframes`
   from {
-    transform: translate(-50%, 100%);
+    transform: translateY(100%);
     opacity: 0;
   }
   to {
-    transform: translate(-50%, 0%);
+    transform: translateY(0%);
     opacity: 1;
   }
 `;
 
 const slideDown = keyframes`
-  from {
-    transform: translate(-50%, 0%);
+   from {
+    transform: translateY(0%);
     opacity: 1;
   }
   to {
-    transform: translate(-50%, 100%);
+    transform: translateY(100%);
     opacity: 0;
   }
 `;
@@ -79,7 +92,6 @@ const OverlayWrapper = styled.div<{ isClickedCloseBtn: boolean; height: number }
   position: absolute;
   z-index: 1001;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
   background-color: white;
@@ -88,5 +100,6 @@ const OverlayWrapper = styled.div<{ isClickedCloseBtn: boolean; height: number }
     width: 390px;
   }
   left: 50%;
+  transform: translateX(-50%);
   animation: ${(props) => (props.isClickedCloseBtn ? slideDown : slideUp)} 0.3s ease-out forwards;
 `;
