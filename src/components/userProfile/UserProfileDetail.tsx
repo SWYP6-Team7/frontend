@@ -100,7 +100,7 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
           <UserNameBox>
             <Name onClick={isMyPage && editMyProfileInfo}>
               {name}
-              {isMyPage && <ProfileRightVectorIcon height={16} />}
+              {isMyPage && <ProfileRightVectorIcon />}
             </Name>
             <UserInfo>{isMyPage ? myPageStore().email : userRegDate + "가입"}</UserInfo>
           </UserNameBox>
