@@ -48,10 +48,6 @@ export default function UserTravelTabMenu() {
     }
   }, [isClickedCloseBtn]);
 
-  if (isUserProfileCreatedTravelsLoading || isUserProfileAppliedTravelsLoading) {
-    return null;
-  }
-
   useInfiniteScroll(() => {
     if (createdTravelsInView) {
       !isUserProfileCreatedTravelsFetching &&
@@ -60,7 +56,7 @@ export default function UserTravelTabMenu() {
     }
   }, [
     createdTravelsInView,
-    !isUserProfileCreatedTravelsFetching,
+    isUserProfileCreatedTravelsFetching,
     fetchNextUserProfileCreatedTravelsPage,
     hasNextUserProfileCreatedTravelsPage,
   ]);
@@ -73,11 +69,14 @@ export default function UserTravelTabMenu() {
     }
   }, [
     appliedTravelsInView,
-    !isUserProfileAppliedTravelsFetching,
+    isUserProfileAppliedTravelsFetching,
     fetchNextUserProfileAppliedTravelsPage,
     hasNextUserProfileAppliedTravelsPage,
   ]);
 
+  if (isUserProfileCreatedTravelsLoading || isUserProfileAppliedTravelsLoading) {
+    return null;
+  }
   const userProfileCreatedTravels =
     (userProfileCreatedTravelsData?.pages[0].content as IUserRelatedTravelList["content"]) ?? [];
 
