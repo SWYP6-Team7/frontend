@@ -17,7 +17,7 @@ export const getUserProfile = async (accessToken: string, userNumber: number): P
 // 상대방의 만든 여행 조회
 export const getUserCreatedTravels = async (pageParam: number, accessToken: string, userNumber: number) => {
   try {
-    const response = await axiosInstance.get(`/api/users/${userNumber}/created-travel`, {
+    const response = await axiosInstance.get(`/api/users/${userNumber}/created-travels`, {
       headers: getJWTHeader(accessToken),
       params: {
         page: pageParam,
@@ -33,7 +33,7 @@ export const getUserCreatedTravels = async (pageParam: number, accessToken: stri
 
 export const getUserAppliedTravels = async (pageParam: number, accessToken: string, userNumber: number) => {
   try {
-    const response = await axiosInstance.get(`/api/users/${userNumber}/applied-travel`, {
+    const response = await axiosInstance.get(`/api/users/${userNumber}/applied-travels`, {
       headers: getJWTHeader(accessToken),
       params: {
         page: pageParam,
