@@ -8,6 +8,8 @@ import UserProfileOverlayHeader from "./UserProfileOverlayHeader";
 import UserProfileDetail from "./UserProfileDetail";
 import UserTravelTabMenu from "./UserTravelTabMenu";
 
+const HEADER_DETAIL_HEIGHT = 564;
+const TAB_NAVBAR_HEIGHT = 62;
 export default function UserProfileOverlay() {
   const { setProfileShow, profileShow } = userProfileOverlayStore();
   //   const navigateWithTransition = useViewTransition()
@@ -22,21 +24,28 @@ export default function UserProfileOverlay() {
     }
   }, [isClickedCloseBtn]);
 
-  const bottomRef = useRef<HTMLDivElement | null>(null);
+  // const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [tabHeight, setTabHeight] = useState(0);
+
   const [height, setHeight] = useState(0);
-  useEffect(() => {
-    if (bottomRef.current?.parentElement) {
-      const scrollHeight = bottomRef.current.parentElement.scrollHeight;
-      const windowHeight = window.innerHeight;
+  // useEffect(() => {
+  //   const parent = bottomRef.current?.parentElement;
+  //   if (!parent) return;
 
-      const newHeight = Math.max(scrollHeight, windowHeight);
+  //   const observer = new ResizeObserver(() => {
+  //     const scrollHeight = parent.scrollHeight;
+  //     const windowHeight = window.innerHeight;
+  //     const newHeight = Math.max(scrollHeight, windowHeight);
+  //     setHeight(newHeight);
+  //   });
 
-      console.log("scrollHeight:", scrollHeight);
-      console.log("window.innerHeight:", windowHeight);
+  //   observer.observe(parent);
 
-      setHeight(newHeight);
-    }
-  }, [profileShow]);
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, []);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -51,14 +60,18 @@ export default function UserProfileOverlay() {
     };
   }, []);
 
+  useEffect(() => {
+    setHeight(tabHeight + HEADER_DETAIL_HEIGHT + TAB_NAVBAR_HEIGHT);
+  }, [tabHeight]);
+
   return (
     <>
       {profileShow && (
         <OverlayWrapper isClickedCloseBtn={isClickedCloseBtn} height={height}>
           <UserProfileOverlayHeader setIsClickedCloseBtn={setIsClickedCloseBtn} />
           <UserProfileDetail />
-          <UserTravelTabMenu />
-          <div ref={bottomRef} style={{ height: "1px" }}></div> {/* 마지막 요소 */}
+          <UserTravelTabMenu selectedTab={selectedTab} setSelectedTab={setSelectedTab} setTabHeight={setTabHeight} />
+          {/* <div ref={bottomRef} style={{ height: "1px" }}></div>  */}
         </OverlayWrapper>
       )}
     </>
