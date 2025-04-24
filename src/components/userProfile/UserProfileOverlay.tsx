@@ -26,23 +26,28 @@ export default function UserProfileOverlay() {
   }, [isClickedCloseBtn]);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  const [height, setHeight] = useState(0);
   const [selectedTab, setSelectedTab] = useState(0);
   const [tabHeight, setTabHeight] = useState(0);
 
+  const [height, setHeight] = useState(0);
+
   useEffect(() => {
-    if (bottomRef.current?.parentElement) {
-      const scrollHeight = bottomRef.current.parentElement.scrollHeight;
+    const parent = bottomRef.current?.parentElement;
+    if (!parent) return;
+
+    const observer = new ResizeObserver(() => {
+      const scrollHeight = parent.scrollHeight;
       const windowHeight = window.innerHeight;
-
       const newHeight = Math.max(scrollHeight, windowHeight);
-
-      console.log("scrollHeight:", scrollHeight);
-      console.log("window.innerHeight:", windowHeight);
-
       setHeight(newHeight);
-    }
-  }, [profileShow]);
+    });
+
+    observer.observe(parent);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {

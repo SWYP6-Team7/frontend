@@ -55,12 +55,12 @@ export default function UserTravelTabMenu({ setTabHeight, selectedTab, setSelect
   }, [isClickedCloseBtn]);
 
   useEffect(() => {
-    if (selectedTab === 0 && hasNextUserProfileCreatedTravelsPage && userProfileInfo) {
+    if (selectedTab === 0 && userProfileInfo) {
       setTabHeight(userProfileInfo?.createdTravelCount * BOX_LAYOUT_HEIGHT);
-    } else if (selectedTab === 1 && hasNextUserProfileAppliedTravelsPage && userProfileInfo) {
+    } else if (selectedTab === 1 && userProfileInfo) {
       setTabHeight(userProfileInfo?.participatedTravelCount * BOX_LAYOUT_HEIGHT);
     }
-  }, [selectedTab, isUserProfileAppliedTravelsLoading, isUserProfileCreatedTravelsLoading]);
+  }, [selectedTab, hasNextUserProfileCreatedTravelsPage, hasNextUserProfileAppliedTravelsPage]);
 
   useInfiniteScroll(() => {
     if (createdTravelsInView) {
