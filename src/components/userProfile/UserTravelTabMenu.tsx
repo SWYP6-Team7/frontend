@@ -13,11 +13,16 @@ import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { IUserRelatedTravelList } from "@/model/userProfile";
 import RoundedImage from "../designSystem/profile/RoundedImage";
 
-export default function UserTravelTabMenu() {
+interface UserTravelTabMenu {
+  setTabHeight: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedTab: React.Dispatch<React.SetStateAction<number>>;
+  selectedTab: number;
+}
+const BOX_LAYOUT_HEIGHT = 115;
+export default function UserTravelTabMenu({ setTabHeight, selectedTab, setSelectedTab }: UserTravelTabMenu) {
   const { setProfileShow } = userProfileOverlayStore();
   const navigateWithTransition = useViewTransition();
   const [isClickedCloseBtn, setIsClickedCloseBtn] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0);
 
   // 스크롤 감지 ref 선언
   const [createdTravelsRef, createdTravelsInView] = useInView();
@@ -47,6 +52,14 @@ export default function UserTravelTabMenu() {
       }, 300);
     }
   }, [isClickedCloseBtn]);
+
+  useEffect(() => {
+    if (selectedTab === 0 && userProfileInfo) {
+      setTabHeight(userProfileInfo?.createdTravelCount * BOX_LAYOUT_HEIGHT);
+    } else if (selectedTab === 1 && userProfileInfo) {
+      setTabHeight(userProfileInfo?.participatedTravelCount * BOX_LAYOUT_HEIGHT);
+    }
+  }, [selectedTab, isUserProfileAppliedTravelsLoading, isUserProfileCreatedTravelsLoading]);
 
   useInfiniteScroll(() => {
     if (createdTravelsInView) {

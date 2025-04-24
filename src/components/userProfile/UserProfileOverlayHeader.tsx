@@ -59,8 +59,8 @@ const ButtonContainer = styled.button`
 // 상단 헤더 스타일
 const HeaderContainer = styled.header<{ isBackGroundColorIsGrey: boolean; isBottomBorder: boolean }>`
   display: flex;
-  padding: 52px 0px 16px 0px;
-  height: 116px;
+  padding: 40px 0px 16px 0px;
+  height: 100px;
   align-items: center;
   gap: 22px;
   position: sticky;
