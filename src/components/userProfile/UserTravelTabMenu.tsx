@@ -14,12 +14,13 @@ import { IUserRelatedTravelList } from "@/model/userProfile";
 import RoundedImage from "../designSystem/profile/RoundedImage";
 
 interface UserTravelTabMenu {
+  tabHeight: number;
   setTabHeight: React.Dispatch<React.SetStateAction<number>>;
   setSelectedTab: React.Dispatch<React.SetStateAction<number>>;
   selectedTab: number;
 }
 const BOX_LAYOUT_HEIGHT = 115;
-export default function UserTravelTabMenu({ setTabHeight, selectedTab, setSelectedTab }: UserTravelTabMenu) {
+export default function UserTravelTabMenu({ tabHeight, setTabHeight, selectedTab, setSelectedTab }: UserTravelTabMenu) {
   const { setProfileShow } = userProfileOverlayStore();
   const navigateWithTransition = useViewTransition();
   const [isClickedCloseBtn, setIsClickedCloseBtn] = useState(false);
@@ -59,7 +60,7 @@ export default function UserTravelTabMenu({ setTabHeight, selectedTab, setSelect
     } else if (selectedTab === 1 && userProfileInfo) {
       setTabHeight(userProfileInfo?.participatedTravelCount * BOX_LAYOUT_HEIGHT);
     }
-  }, [selectedTab, isUserProfileAppliedTravelsLoading, isUserProfileCreatedTravelsLoading]);
+  }, [selectedTab, hasNextUserProfileCreatedTravelsPage, hasNextUserProfileAppliedTravelsPage]);
 
   useInfiniteScroll(() => {
     if (createdTravelsInView) {
@@ -120,7 +121,7 @@ export default function UserTravelTabMenu({ setTabHeight, selectedTab, setSelect
       </TabMenuContainer>
       {/* 조건부 */}
       {/* 0 이 되면 왼쪽으로 이동 1이 되면 오른쪽으로 이동. */}
-      <TravelListBox>
+      <TravelListBox listBoxHeight={tabHeight}>
         <InnerSlider selectedTab={selectedTab}>
           <HostTravelList>
             {isCreatedTravelsNoData && (
@@ -274,13 +275,14 @@ const Count = styled.div<TabMenuProps>`
 `;
 
 interface TravelListBoxProps {
-  selectedTab: number;
+  listBoxHeight: number;
 }
 
 export const TravelListBox = styled.div<TravelListBoxProps>`
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
+  height: ${({ listBoxHeight }) => listBoxHeight}px;
 `;
 
 export const InnerSlider = styled.div<TravelListBoxProps>`
