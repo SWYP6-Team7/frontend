@@ -20,7 +20,7 @@ interface UserTravelTabMenu {
   selectedTab: number;
 }
 const BOX_LAYOUT_HEIGHT = 115;
-export default function UserTravelTabMenu({ setTabHeight, selectedTab, setSelectedTab }: UserTravelTabMenu) {
+export default function UserTravelTabMenu({ tabHeight, setTabHeight, selectedTab, setSelectedTab }: UserTravelTabMenu) {
   const { setProfileShow } = userProfileOverlayStore();
   const navigateWithTransition = useViewTransition();
   const [isClickedCloseBtn, setIsClickedCloseBtn] = useState(false);
@@ -121,7 +121,7 @@ export default function UserTravelTabMenu({ setTabHeight, selectedTab, setSelect
       </TabMenuContainer>
       {/* 조건부 */}
       {/* 0 이 되면 왼쪽으로 이동 1이 되면 오른쪽으로 이동. */}
-      <TravelListBox listBoxHeight={setTabHeight}>
+      <TravelListBox listBoxHeight={tabHeight}>
         <InnerSlider selectedTab={selectedTab}>
           <HostTravelList>
             {isCreatedTravelsNoData && (
