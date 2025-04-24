@@ -8,6 +8,9 @@ import UserProfileOverlayHeader from "./UserProfileOverlayHeader";
 import UserProfileDetail from "./UserProfileDetail";
 import UserTravelTabMenu from "./UserTravelTabMenu";
 
+const HEADER_DETAIL_HEIGHT = 529;
+const TAB_NAVBAR_HEIGHT = 52;
+
 export default function UserProfileOverlay() {
   const { setProfileShow, profileShow } = userProfileOverlayStore();
   //   const navigateWithTransition = useViewTransition()
@@ -24,6 +27,9 @@ export default function UserProfileOverlay() {
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [height, setHeight] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [tabHeight, setTabHeight] = useState(0);
+
   useEffect(() => {
     if (bottomRef.current?.parentElement) {
       const scrollHeight = bottomRef.current.parentElement.scrollHeight;
@@ -51,13 +57,22 @@ export default function UserProfileOverlay() {
     };
   }, []);
 
+  useEffect(() => {
+    setHeight(tabHeight + HEADER_DETAIL_HEIGHT + TAB_NAVBAR_HEIGHT);
+  }, [tabHeight]);
+
   return (
     <>
       {profileShow && (
         <OverlayWrapper isClickedCloseBtn={isClickedCloseBtn} height={height}>
           <UserProfileOverlayHeader setIsClickedCloseBtn={setIsClickedCloseBtn} />
           <UserProfileDetail />
-          <UserTravelTabMenu />
+          <UserTravelTabMenu
+            selectedTab={selectedTab}
+            setSelectedTab={setSelectedTab}
+            setTabHeight={setTabHeight}
+            tabHeight={tabHeight}
+          />
           <div ref={bottomRef} style={{ height: "1px" }}></div> {/* 마지막 요소 */}
         </OverlayWrapper>
       )}
