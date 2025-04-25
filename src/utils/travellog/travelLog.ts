@@ -1,4 +1,4 @@
-export function groupRegionData(regionList, filter) {
+export function groupRegionData(regionList: any[] = [], filter: string) {
   // 한국의 도/광역시/시군구 정보
   const koreaRegions = {
     // 서울특별시
