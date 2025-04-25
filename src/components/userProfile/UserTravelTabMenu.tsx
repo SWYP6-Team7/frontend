@@ -13,11 +13,17 @@ import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { IUserRelatedTravelList } from "@/model/userProfile";
 import RoundedImage from "../designSystem/profile/RoundedImage";
 
-export default function UserTravelTabMenu() {
+interface UserTravelTabMenu {
+  tabHeight: number;
+  setTabHeight: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedTab: React.Dispatch<React.SetStateAction<number>>;
+  selectedTab: number;
+}
+const BOX_LAYOUT_HEIGHT = 115;
+export default function UserTravelTabMenu({ tabHeight, setTabHeight, selectedTab, setSelectedTab }: UserTravelTabMenu) {
   const { setProfileShow } = userProfileOverlayStore();
   const navigateWithTransition = useViewTransition();
   const [isClickedCloseBtn, setIsClickedCloseBtn] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0);
 
   // 스크롤 감지 ref 선언
   const [createdTravelsRef, createdTravelsInView] = useInView();
@@ -48,9 +54,13 @@ export default function UserTravelTabMenu() {
     }
   }, [isClickedCloseBtn]);
 
-  if (isUserProfileCreatedTravelsLoading || isUserProfileAppliedTravelsLoading) {
-    return null;
-  }
+  useEffect(() => {
+    if (selectedTab === 0 && userProfileInfo) {
+      setTabHeight(userProfileInfo?.createdTravelCount * BOX_LAYOUT_HEIGHT);
+    } else if (selectedTab === 1 && userProfileInfo) {
+      setTabHeight(userProfileInfo?.participatedTravelCount * BOX_LAYOUT_HEIGHT);
+    }
+  }, [selectedTab, hasNextUserProfileCreatedTravelsPage, hasNextUserProfileAppliedTravelsPage]);
 
   useInfiniteScroll(() => {
     if (createdTravelsInView) {
@@ -60,7 +70,7 @@ export default function UserTravelTabMenu() {
     }
   }, [
     createdTravelsInView,
-    !isUserProfileCreatedTravelsFetching,
+    isUserProfileCreatedTravelsFetching,
     fetchNextUserProfileCreatedTravelsPage,
     hasNextUserProfileCreatedTravelsPage,
   ]);
@@ -73,11 +83,14 @@ export default function UserTravelTabMenu() {
     }
   }, [
     appliedTravelsInView,
-    !isUserProfileAppliedTravelsFetching,
+    isUserProfileAppliedTravelsFetching,
     fetchNextUserProfileAppliedTravelsPage,
     hasNextUserProfileAppliedTravelsPage,
   ]);
 
+  if (isUserProfileCreatedTravelsLoading || isUserProfileAppliedTravelsLoading) {
+    return null;
+  }
   const userProfileCreatedTravels =
     (userProfileCreatedTravelsData?.pages[0].content as IUserRelatedTravelList["content"]) ?? [];
 
@@ -108,7 +121,7 @@ export default function UserTravelTabMenu() {
       </TabMenuContainer>
       {/* 조건부 */}
       {/* 0 이 되면 왼쪽으로 이동 1이 되면 오른쪽으로 이동. */}
-      <TravelListBox>
+      <TravelListBox listBoxHeight={tabHeight}>
         <InnerSlider selectedTab={selectedTab}>
           <HostTravelList>
             {isCreatedTravelsNoData && (
@@ -217,6 +230,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: white;
 `;
 
 const TabMenuContainer = styled.div`
@@ -261,13 +275,14 @@ const Count = styled.div<TabMenuProps>`
 `;
 
 interface TravelListBoxProps {
-  selectedTab: number;
+  listBoxHeight: number;
 }
 
 export const TravelListBox = styled.div<TravelListBoxProps>`
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
+  height: ${({ listBoxHeight }) => listBoxHeight}px;
 `;
 
 export const InnerSlider = styled.div<TravelListBoxProps>`

@@ -48,7 +48,7 @@ const InnerMap = ({ locationNameStr, locationName, setRegionInfo, addInitGeometr
           addLocationName({
             locationName: locationName.locationName,
             mapType: "google",
-            countryName: parts ? parts[parts.length - 1] : "",
+            countryName: parts ? parts[parts.length - 1].split(" ")[0] : "",
           });
         }
       } else {

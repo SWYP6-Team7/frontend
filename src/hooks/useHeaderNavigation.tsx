@@ -7,6 +7,7 @@ import { useTransitionRouter } from "next-view-transitions";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import { createTripStore } from "@/store/client/createTripStore";
 import { editTripStore } from "@/store/client/editTripStore";
+import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 
 const ROUTES = {
   REGISTER: "/register",
@@ -68,6 +69,7 @@ const ROUTES = {
   BLOCK: "/block",
   EXPLANATION: "/explanation",
   USER_TRAVEL_LOG: "/userProfile/:userId/log",
+  USER_PROFILE_BADGE: "/userProfileBadge/:userId",
 };
 
 export const useHeaderNavigation = () => {
@@ -75,6 +77,7 @@ export const useHeaderNavigation = () => {
   const router = useTransitionRouter();
   const { resetCreateTripDetail } = createTripStore();
   const { resetEditTripDetail } = editTripStore();
+  const { setProfileShow } = userProfileOverlayStore();
   const {
     searchTravel,
     setSearchTravel,
@@ -381,6 +384,22 @@ export const useHeaderNavigation = () => {
           const parts = pathname.split("/");
           const id = parts[parts.length - 1];
           router.push(`/community/detail/${id}`);
+        },
+      },
+      {
+        // 상대방 프로필 화면의 여행 뱃지 화면
+        condition: () => checkRoute.exact(ROUTES.USER_PROFILE_BADGE),
+        action: () => {
+          router.back();
+          setTimeout(() => setProfileShow(true), 100);
+        },
+      },
+      {
+        // 상대방 프로필 화면의 여행 로그 화면,
+        condition: () => checkRoute.exact(ROUTES.USER_TRAVEL_LOG),
+        action: () => {
+          router.back();
+          setTimeout(() => setProfileShow(true), 100);
         },
       },
     ];

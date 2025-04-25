@@ -17,9 +17,11 @@ import { isGuestUser } from "@/utils/user";
 import { useState } from "react";
 import CheckingModal from "../designSystem/modal/CheckingModal";
 import { useBackPathStore } from "@/store/client/backPathStore";
+import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 
 const CommunityPost = () => {
   const params = useParams();
+  const { setProfileShow, setUserProfileUserId } = userProfileOverlayStore();
   const communityNumber = params?.communityNumber as string;
   const { editToastShow, setEditToastShow } = editStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -48,6 +50,11 @@ const CommunityPost = () => {
     }
   };
   console.log("date", daysAgoFormatted(data?.regDate));
+
+  const moveToUserProfilePage = (userNumber: number) => {
+    setUserProfileUserId(userNumber);
+    setProfileShow(true);
+  };
   return (
     <>
       <CheckingModal
@@ -79,7 +86,7 @@ const CommunityPost = () => {
               fontWeight="600"
             />
           </BadgeContainer>
-          <ProfileContainer>
+          <ProfileContainer onClick={() => moveToUserProfilePage(data.userNumber)}>
             {/* 프로필 */}
             <RoundedImage src={data.profileImageUrl} size={40} />
             <div style={{ marginLeft: "8px" }}>
