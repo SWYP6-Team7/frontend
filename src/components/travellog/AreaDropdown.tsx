@@ -40,9 +40,11 @@ const AreaDropdown = ({ data, setTarget }: AreaDropdownProps) => {
       {showModal && (
         <BottomModal initialHeight={40} closeModal={closeModal}>
           <ModalContainer>
-            <ModalTitle>{targetData?.locationName ?? targetData?.countryName}</ModalTitle>
+            <ModalTitle>
+              {targetData?.locationName ?? targetData?.countryName}
+            </ModalTitle>
             <VisitContainer>
-              {targetData?.visitDates.map((date) => (
+              {[...(targetData?.visitDates ?? [])].reverse().map((date) => (
                 <VisitItem>
                   <ClockIcon />
                   <div>{dayjs(date).format("YY.MM.DD")} </div>
@@ -63,9 +65,15 @@ const AreaDropdown = ({ data, setTarget }: AreaDropdownProps) => {
             count={data[item].length}
             id={item}
             key={item}
-            handleOpen={() => setTarget((prev) => (prev ? [...prev, item] : [item]))}
+            handleOpen={() =>
+              setTarget((prev) => (prev ? [...prev, item] : [item]))
+            }
             handleClose={() =>
-              setTarget((prev) => (prev && prev?.length > 1 ? prev.filter((prevItem) => prevItem !== item) : null))
+              setTarget((prev) =>
+                prev && prev?.length > 1
+                  ? prev.filter((prevItem) => prevItem !== item)
+                  : null
+              )
             }
             paddingTop="0"
             paddingBottom="13px"
@@ -79,8 +87,12 @@ const AreaDropdown = ({ data, setTarget }: AreaDropdownProps) => {
                 <Index>{index + 1}</Index>
                 <Title>{region.locationName ?? region.countryName}</Title>
                 <Date>
-                  {dayjs(region.visitDates[0]).format("YY.MM.DD")}{" "}
-                  {region.visitDates.length > 1 && <More>+{region.visitDates.length}</More>}
+                  {dayjs(
+                    region.visitDates[region.visitDates.length - 1]
+                  ).format("YY.MM.DD")}
+                  {region.visitDates.length > 1 && (
+                    <More>+{region.visitDates.length}</More>
+                  )}
                 </Date>
               </ItemContainer>
             ))}
@@ -93,7 +105,13 @@ const AreaDropdown = ({ data, setTarget }: AreaDropdownProps) => {
 
 const ClockIcon = () => {
   return (
-    <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="24"
+      height="32"
+      viewBox="0 0 24 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g opacity="0.3">
         <path
           d="M12 23C15.866 23 19 19.866 19 16C19 12.134 15.866 9 12 9C8.13401 9 5 12.134 5 16C5 19.866 8.13401 23 12 23Z"
@@ -101,7 +119,12 @@ const ClockIcon = () => {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path d="M12 11.8003V16.0003L14.8 17.4003" stroke="black" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M12 11.8003V16.0003L14.8 17.4003"
+          stroke="black"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </g>
     </svg>
   );
