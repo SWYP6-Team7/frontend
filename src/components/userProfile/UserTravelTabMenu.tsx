@@ -115,6 +115,12 @@ export default function UserTravelTabMenu({ tabHeight, setTabHeight, selectedTab
     }, 50);
   };
 
+  const travelListHeight = () => {
+    const MINIMUM_HEIGHT = 200;
+    const isTravelCountZero = tabHeight === 0;
+    return isTravelCountZero ? MINIMUM_HEIGHT : tabHeight;
+  };
+
   return (
     <Container>
       <TabMenuContainer>
@@ -129,7 +135,7 @@ export default function UserTravelTabMenu({ tabHeight, setTabHeight, selectedTab
       </TabMenuContainer>
       {/* 조건부 */}
       {/* 0 이 되면 왼쪽으로 이동 1이 되면 오른쪽으로 이동. */}
-      <TravelListBox listBoxHeight={tabHeight}>
+      <TravelListBox listBoxHeight={travelListHeight()}>
         <InnerSlider selectedTab={selectedTab}>
           <HostTravelList>
             {isCreatedTravelsNoData && (
@@ -232,7 +238,7 @@ const Empty = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100svh;
+  margin-top: 80px;
 `;
 const Container = styled.div`
   width: 100%;
@@ -295,7 +301,6 @@ export const TravelListBox = styled.div<TravelListBoxProps>`
 
 export const InnerSlider = styled.div<TravelListBoxProps>`
   display: flex;
-  width: 200%; // 두 개 탭이니까 두 배
   transition: transform 0.3s ease-in-out;
   transform: ${({ selectedTab }) => (selectedTab === 0 ? "translateX(0%)" : "translateX(-100%)")};
 `;
