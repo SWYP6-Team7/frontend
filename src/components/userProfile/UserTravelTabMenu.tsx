@@ -100,6 +100,14 @@ export default function UserTravelTabMenu({ tabHeight, setTabHeight, selectedTab
   const isCreatedTravelsNoData = userProfileCreatedTravels.length === 0;
   const isAppliedTravelsNoData = userProfileAppliedTravels.length === 0;
 
+  console.log(
+    "만든 여행, 참가한 여행 데이 존재 여부",
+    isCreatedTravelsNoData,
+    isAppliedTravelsNoData,
+    userProfileCreatedTravelsData,
+    userProfileCreatedTravels,
+    userProfileAppliedTravels
+  );
   const clickTrip = (travelNumber: number) => {
     navigateWithTransition(`/trip/detail/${travelNumber}`);
     setTimeout(() => {
