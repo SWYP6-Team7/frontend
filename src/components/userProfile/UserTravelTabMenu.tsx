@@ -116,7 +116,7 @@ export default function UserTravelTabMenu({ tabHeight, setTabHeight, selectedTab
   };
 
   const travelListHeight = () => {
-    const MINIMUM_HEIGHT = 200;
+    const MINIMUM_HEIGHT = 256;
     const isTravelCountZero = tabHeight === 0;
     return isTravelCountZero ? MINIMUM_HEIGHT : tabHeight;
   };
@@ -239,6 +239,7 @@ const Empty = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 80px;
+  margin-bottom: 88px;
 `;
 const Container = styled.div`
   width: 100%;

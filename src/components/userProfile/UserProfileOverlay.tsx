@@ -10,6 +10,7 @@ import UserTravelTabMenu from "./UserTravelTabMenu";
 
 const HEADER_DETAIL_HEIGHT = 529;
 const TAB_NAVBAR_HEIGHT = 52;
+const NO_DATA_COMPONENT_HEIGHT = 256;
 
 export default function UserProfileOverlay() {
   const { setProfileShow, profileShow } = userProfileOverlayStore();
@@ -63,7 +64,14 @@ export default function UserProfileOverlay() {
   }, []);
 
   useEffect(() => {
-    setHeight(tabHeight + HEADER_DETAIL_HEIGHT + TAB_NAVBAR_HEIGHT);
+    const BASIC_HEIGHT = tabHeight + HEADER_DETAIL_HEIGHT + TAB_NAVBAR_HEIGHT;
+    const NO_DATA_INCLUDE_HEIGHT = BASIC_HEIGHT + NO_DATA_COMPONENT_HEIGHT;
+    const isNoData = tabHeight === 0;
+    if (isNoData) {
+      setHeight(NO_DATA_INCLUDE_HEIGHT);
+    } else {
+      setHeight(BASIC_HEIGHT);
+    }
   }, [tabHeight]);
 
   return (
