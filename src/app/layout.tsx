@@ -3,20 +3,16 @@ import Providers from "./providers";
 import "./globals.css";
 import { MSWComponent } from "@/context/MSWComponent";
 import UserProfileOverlay from "@/components/userProfile/UserProfileOverlay";
+import GoogleAnalytics from "@/context/GoogleAnalytics";
 
-import { GoogleAnalytics } from "@next/third-parties/google";
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body>
         <Providers>
           <MSWComponent />
           <UserProfileOverlay />
-          <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} />
+          <GoogleAnalytics />
 
           <Layout>{children}</Layout>
           <div id="checking-modal" />

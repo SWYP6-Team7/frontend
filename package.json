@@ -58,6 +58,7 @@
     "@storybook/nextjs": "^8.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
+    "@types/gtag.js": "^0.0.20",
     "@types/node": "^20.17.12",
     "@types/react": "^19.0.5",
     "@types/react-copy-to-clipboard": "^5.0.7",
