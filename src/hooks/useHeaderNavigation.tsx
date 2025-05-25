@@ -8,6 +8,7 @@ import { tripDetailStore } from "@/store/client/tripDetailStore";
 import { createTripStore } from "@/store/client/createTripStore";
 import { editTripStore } from "@/store/client/editTripStore";
 import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
+import { authStore } from "@/store/client/authStore";
 
 const ROUTES = {
   REGISTER: "/register",
@@ -77,7 +78,8 @@ export const useHeaderNavigation = () => {
   const router = useTransitionRouter();
   const { resetCreateTripDetail } = createTripStore();
   const { resetEditTripDetail } = editTripStore();
-  const { setProfileShow } = userProfileOverlayStore();
+  const { userId } = authStore();
+  const { setProfileShow, userProfileUserId } = userProfileOverlayStore();
   const {
     searchTravel,
     setSearchTravel,
@@ -391,7 +393,10 @@ export const useHeaderNavigation = () => {
         condition: () => checkRoute.exact(ROUTES.USER_PROFILE_BADGE),
         action: () => {
           router.back();
-          setTimeout(() => setProfileShow(true), 100);
+          if (userProfileUserId !== userId) {
+            // 마이페이지가 아닌 페이지에서 접속 했을시, 뒤로 가기 해도 프로필 overlay화면
+            setTimeout(() => setProfileShow(true), 100);
+          }
         },
       },
       {
@@ -399,7 +404,9 @@ export const useHeaderNavigation = () => {
         condition: () => checkRoute.exact(ROUTES.USER_TRAVEL_LOG),
         action: () => {
           router.back();
-          setTimeout(() => setProfileShow(true), 100);
+          if (userProfileUserId !== userId) {
+            setTimeout(() => setProfileShow(true), 100);
+          }
         },
       },
     ];
