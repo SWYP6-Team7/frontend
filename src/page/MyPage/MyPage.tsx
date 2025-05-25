@@ -6,11 +6,13 @@ import RightVector from "@/components/icons/RightVector";
 import Spacing from "@/components/Spacing";
 import UserProfileDetail from "@/components/userProfile/UserProfileDetail";
 import useViewTransition from "@/hooks/useViewTransition";
+import { authStore } from "@/store/client/authStore";
+import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
 import { palette } from "@/styles/palette";
 import { isGuestUser } from "@/utils/user";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MyPage() {
   const navigateWithTransition = useViewTransition();
@@ -20,6 +22,11 @@ export default function MyPage() {
     document.documentElement.style.viewTransitionName = "forward";
     navigateWithTransition("/announcement");
   };
+  const { userId } = authStore();
+  const { setUserProfileUserId } = userProfileOverlayStore();
+  useEffect(() => {
+    setUserProfileUserId(userId!);
+  }, []);
   return (
     <Container>
       {!isGuestUser() ? (
