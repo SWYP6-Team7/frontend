@@ -404,6 +404,7 @@ export const useHeaderNavigation = () => {
         condition: () => checkRoute.exact(ROUTES.USER_TRAVEL_LOG),
         action: () => {
           router.back();
+          console.log(userProfileUserId);
           if (userProfileUserId !== userId) {
             setTimeout(() => setProfileShow(true), 100);
           }
