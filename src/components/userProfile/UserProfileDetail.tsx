@@ -14,17 +14,16 @@ import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore"
 import useUserProfile from "@/hooks/userProfile/useUserProfile";
 import ProfileRightVectorIcon from "../icons/ProfileRightVectorIcon";
 import { authStore } from "@/store/client/authStore";
+import { usePathname } from "next/navigation";
 
 interface UserProfileDetailProps {
   isMyPage?: boolean;
 }
-export default function UserProfileDetail({
-  isMyPage = false,
-}: UserProfileDetailProps) {
+export default function UserProfileDetail({ isMyPage = false }: UserProfileDetailProps) {
   const { setProfileShow, userProfileUserId } = userProfileOverlayStore();
   const { userProfileInfo } = useUserProfile();
   const navigateWithTransition = useViewTransition();
-
+  const pathname = usePathname();
   if (!isMyPage && !userProfileInfo) return null;
 
   const profileData = isMyPage
@@ -78,10 +77,11 @@ export default function UserProfileDetail({
     },
   ];
 
-  const cutTags =
-    preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
+  const cutTags = preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
 
   const moveToNextLink = (link: string) => {
+    localStorage.setItem("profilePath", pathname);
+
     navigateWithTransition(link);
     setTimeout(() => {
       setProfileShow(false);
@@ -105,9 +105,7 @@ export default function UserProfileDetail({
               {name}
               {isMyPage && <ProfileRightVectorIcon />}
             </Name>
-            <UserInfo>
-              {isMyPage ? myPageStore().email : userRegDate + "가입"}
-            </UserInfo>
+            <UserInfo>{isMyPage ? myPageStore().email : userRegDate + "가입"}</UserInfo>
           </UserNameBox>
           <UserTags>
             <Badge
@@ -148,9 +146,7 @@ export default function UserProfileDetail({
       </UserInfoContainer>
       <TravelDistanceContainer>
         <Title>총 여행한 거리✨</Title>
-        <TravelDistance>
-          {formatNumberWithComma(Math.ceil(travelDistance))}km
-        </TravelDistance>
+        <TravelDistance>{formatNumberWithComma(Math.ceil(travelDistance))}km</TravelDistance>
       </TravelDistanceContainer>
 
       <TravelMenuContainer>
