@@ -392,14 +392,7 @@ export const useHeaderNavigation = () => {
         // 상대방 프로필 화면의 여행 뱃지 화면
         condition: () => checkRoute.exact(ROUTES.USER_PROFILE_BADGE),
         action: () => {
-          const profilePath = localStorage.getItem("profilePath");
-          if (profilePath) {
-            router.push(profilePath);
-          } else {
-            router.back();
-          }
-          localStorage.removeItem("profilePath");
-
+          router.back();
           if (userProfileUserId !== userId) {
             // 마이페이지가 아닌 페이지에서 접속 했을시, 뒤로 가기 해도 프로필 overlay화면
             setTimeout(() => setProfileShow(true), 100);
@@ -410,7 +403,14 @@ export const useHeaderNavigation = () => {
         // 상대방 프로필 화면의 여행 로그 화면,
         condition: () => checkRoute.exact(ROUTES.USER_TRAVEL_LOG),
         action: () => {
-          router.back();
+          const profilePath = localStorage.getItem("profilePath");
+          if (profilePath) {
+            router.push(profilePath);
+          } else {
+            router.back();
+          }
+          localStorage.removeItem("profilePath");
+
           console.log(userProfileUserId);
           if (userProfileUserId !== userId) {
             setTimeout(() => setProfileShow(true), 100);

@@ -92,6 +92,7 @@ const SearchFilterTagContainer = styled.button<{ isCreateTrip: boolean }>`
   align-items: center;
   box-sizing: border-box;
   gap: 8px;
+  cursor: pointer;
   transition:
     width,
     background-color 0.3s ease-in-out;

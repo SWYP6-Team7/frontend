@@ -171,6 +171,7 @@ const Alarm = styled.div`
   width: 48px;
   height: 48px;
   display: flex;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
 `;
