@@ -7,7 +7,11 @@ interface TitleContainerProps {
   minWidth?: string;
   detailLink?: string;
 }
-const TitleContainer = ({ text, minWidth = "auto", detailLink = "/" }: TitleContainerProps) => {
+const TitleContainer = ({
+  text,
+  minWidth = "auto",
+  detailLink = "/",
+}: TitleContainerProps) => {
   const router = useRouter();
   const clickHandler = () => router.push(`${detailLink}`); // 후에 보여줄 페이지 부분.
   return (
@@ -36,6 +40,7 @@ const More = styled.div`
   width: 48px;
   height: 48px;
   display: flex;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
 `;

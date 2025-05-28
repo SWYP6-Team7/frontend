@@ -331,6 +331,7 @@ const HeaderTitle = styled.div`
 
 const IconContainer = styled.div`
   width: 48px;
+  cursor: pointer;
   height: 48px;
   display: flex;
   align-items: center;

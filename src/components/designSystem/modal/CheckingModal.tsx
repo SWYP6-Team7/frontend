@@ -8,7 +8,9 @@ interface CheckingModalProps {
   modalMsg: string;
   modalTitle: string;
   modalButtonText: string;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>> | ((bool: boolean) => void);
+  setModalOpen:
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | ((bool: boolean) => void);
   setIsSelected?: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => void;
 }
@@ -44,7 +46,11 @@ export default function CheckingModal({
   return createPortal(
     <ModalContainer isModalOpen={isModalOpen}>
       <DarkWrapper onClick={handleClickOutside}></DarkWrapper>
-      <Modal onClick={(e: any) => e.stopPropagation()} ref={modalRef} isModalOpen={isModalOpen}>
+      <Modal
+        onClick={(e: any) => e.stopPropagation()}
+        ref={modalRef}
+        isModalOpen={isModalOpen}
+      >
         <ContentBox>
           <Title>{modalTitle}</Title>
           <Msg>{modalMsg}</Msg>
@@ -91,6 +97,7 @@ const CloseBtn = styled.button`
   text-align: center;
   color: ${palette.비강조2};
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
   width: 50%;
@@ -102,6 +109,7 @@ const SelectBtn = styled.button`
   font-size: 16px;
   font-weight: 600;
   line-height: 16px;
+  cursor: pointer;
   text-align: center;
   color: ${palette.keycolor};
   display: flex;
@@ -151,7 +159,8 @@ const Modal = styled.div<{ isModalOpen: boolean }>`
   gap: 16px;
   border-radius: 20px;
   opacity: 0px;
-  transform: ${({ isModalOpen }) => (isModalOpen ? "translateY(0)" : "translateY(30%)")};
+  transform: ${({ isModalOpen }) =>
+    isModalOpen ? "translateY(0)" : "translateY(30%)"};
   transition: transform 0.3s ease-in-out;
 `;
 const DarkWrapper = styled.div`

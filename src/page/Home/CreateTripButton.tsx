@@ -156,6 +156,7 @@ const CreateBtn = styled.button<{ right: string; isClicked: boolean }>`
   height: 48px;
   padding: 14px 24px;
   border-radius: 20px;
+  cursor: pointer;
   background-color: white;
   display: flex;
   justify-content: center;
@@ -181,6 +182,7 @@ const IconContainer = styled.button<{ rotated: boolean; right: string }>`
   pointer-events: auto;
   right: 24px;
   bottom: 124px;
+  cursor: pointer;
   width: 70px;
   height: 70px;
   border-radius: 50%;

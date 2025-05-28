@@ -38,7 +38,13 @@ const TAG_LIST = [
 const AGE_LIST = ["10대", "20대", "30대", "40대", "50대 이상"];
 export default function EditMyTag() {
   const [isChanged, setIsChanged] = useState(false);
-  const { agegroup, addPreferredTags, addAgegroup, preferredTags, addIsTagUpdated } = myPageStore();
+  const {
+    agegroup,
+    addPreferredTags,
+    addAgegroup,
+    preferredTags,
+    addIsTagUpdated,
+  } = myPageStore();
   console.log(agegroup, preferredTags, "나이, 태그");
   const { updateMyPageMutation, isUpdatedSuccess } = useMyPage();
   const [taggedArray, setTaggedArray] = useState<string[]>(preferredTags);
@@ -75,7 +81,9 @@ export default function EditMyTag() {
         return;
       }
     }
-    const newArray = taggedArray.includes(tag) ? taggedArray.filter((v) => v !== tag) : [...taggedArray, tag];
+    const newArray = taggedArray.includes(tag)
+      ? taggedArray.filter((v) => v !== tag)
+      : [...taggedArray, tag];
     if (JSON.stringify(newArray) !== JSON.stringify(taggedArray)) {
       setIsChanged(true);
     }
@@ -103,19 +111,27 @@ export default function EditMyTag() {
           {AGE_LIST.map((ageValue, idx) => (
             <SearchFilterTag
               addStyle={{
-                backgroundColor: age === ageValue ? "rgba(227, 239, 217, 1)" : " rgba(240, 240, 240, 1)",
-                color: age === ageValue ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
+                backgroundColor:
+                  age === ageValue
+                    ? "rgba(227, 239, 217, 1)"
+                    : " rgba(240, 240, 240, 1)",
+                color:
+                  age === ageValue
+                    ? `${palette.keycolor}`
+                    : "rgba(52, 52, 52, 1)",
                 fontWeight: age === ageValue ? "600" : "400",
                 borderRadius: "30px",
                 fontSize: "16",
                 lineHeight: "22px",
                 padding: "10px 20px",
-                border: age === ageValue ? `1px solid ${palette.keycolor}` : "none",
+                border:
+                  age === ageValue ? `1px solid ${palette.keycolor}` : "none",
               }}
               idx={idx}
               onClick={() => handleClickage(ageValue)}
               text={ageValue}
               key={ageValue}
+              style={{ cursor: "pointer" }}
             />
           ))}
         </AgeList>
@@ -133,8 +149,12 @@ export default function EditMyTag() {
                   key={tag}
                   idx={idx}
                   addStyle={{
-                    backgroundColor: isActive(tag.split(" ")[1]) ? "rgba(227, 239, 217, 1)" : " rgba(240, 240, 240, 1)",
-                    color: isActive(tag.split(" ")[1]) ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
+                    backgroundColor: isActive(tag.split(" ")[1])
+                      ? "rgba(227, 239, 217, 1)"
+                      : " rgba(240, 240, 240, 1)",
+                    color: isActive(tag.split(" ")[1])
+                      ? `${palette.keycolor}`
+                      : "rgba(52, 52, 52, 1)",
                     border: isActive(tag.split(" ")[1])
                       ? `1px solid ${palette.keycolor}`
                       : `1px solid ${palette.검색창}`,
@@ -144,6 +164,7 @@ export default function EditMyTag() {
                     padding: "10px 20px",
                     fontWeight: isActive(tag.split(" ")[1]) ? "600" : "400",
                   }}
+                  style={{ cursor: "pointer" }}
                   text={tag}
                   onClick={() => clickTag(tag.split(" ")[1])}
                 />
@@ -159,8 +180,14 @@ export default function EditMyTag() {
           text="완료"
           onClick={completeClickHandler}
           addStyle={{
-            backgroundColor: taggedArray.length > 0 ? "rgba(62, 141, 0, 1)" : "rgba(220, 220, 220, 1)",
-            color: taggedArray.length > 0 ? "rgba(240, 240, 240, 1)" : palette.비강조,
+            backgroundColor:
+              taggedArray.length > 0
+                ? "rgba(62, 141, 0, 1)"
+                : "rgba(220, 220, 220, 1)",
+            color:
+              taggedArray.length > 0
+                ? "rgba(240, 240, 240, 1)"
+                : palette.비강조,
             boxShadow: "rgba(170, 170, 170, 0.1)",
           }}
         />

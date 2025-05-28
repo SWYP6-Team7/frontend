@@ -15,7 +15,9 @@ type RegisterAgeContextType = {
   setGenderCheck: (value: boolean) => void;
 };
 
-export const RegisterAgeContext = createContext<RegisterAgeContextType | undefined>(undefined);
+export const RegisterAgeContext = createContext<
+  RegisterAgeContextType | undefined
+>(undefined);
 
 export const useRegisterAge = () => {
   const context = useContext(RegisterAgeContext);
@@ -29,7 +31,16 @@ const AGE_LIST = ["10대", "20대", "30대", "40대", "50대 이상"];
 
 const RegisterAge = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const { agegroup, addAgegroup, email, name, resetForm, resetName, socialLogin, setSocialLogin } = userStore();
+  const {
+    agegroup,
+    addAgegroup,
+    email,
+    name,
+    resetForm,
+    resetName,
+    socialLogin,
+    setSocialLogin,
+  } = userStore();
   const [genderCheck, setGenderCheck] = useState(false);
   const isEmailRegister = socialLogin === null;
   const isSocialLoginKakao = socialLogin === "kakao";
@@ -40,7 +51,10 @@ const RegisterAge = ({ children }: { children: React.ReactNode }) => {
       if (location.pathname == "/registerAge") {
         console.log(1);
         router.push("/registerAge/registerGender");
-      } else if (genderCheck && location.pathname == "/registerAge/registerGender") {
+      } else if (
+        genderCheck &&
+        location.pathname == "/registerAge/registerGender"
+      ) {
         document.documentElement.style.viewTransitionName = "forward";
         navigateWithTransition("/registerTripStyle");
       }
@@ -79,14 +93,22 @@ const RegisterAge = ({ children }: { children: React.ReactNode }) => {
             {AGE_LIST.map((age, idx) => (
               <SearchFilterTag
                 addStyle={{
-                  backgroundColor: agegroup === age ? "rgba(227, 239, 217, 1)" : " rgba(240, 240, 240, 1)",
-                  color: agegroup === age ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
+                  backgroundColor:
+                    agegroup === age
+                      ? "rgba(227, 239, 217, 1)"
+                      : " rgba(240, 240, 240, 1)",
+                  color:
+                    agegroup === age
+                      ? `${palette.keycolor}`
+                      : "rgba(52, 52, 52, 1)",
                   borderRadius: "30px",
                   fontSize: "16",
                   lineHeight: "22px",
                   padding: "10px 20px",
-                  border: agegroup === age ? `1px solid ${palette.keycolor}` : "none",
+                  border:
+                    agegroup === age ? `1px solid ${palette.keycolor}` : "none",
                 }}
+                style={{ cursor: "pointer" }}
                 idx={idx}
                 onClick={() => handleClickage(age)}
                 text={age}

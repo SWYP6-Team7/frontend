@@ -1,6 +1,6 @@
 "use client";
 import { APIProvider, Map, MapCameraChangedEvent, useMap } from "@vis.gl/react-google-maps";
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import sigoonGeoJsonData from "../../../public/geojson/korea.json";
 import countryGeoJsonData from "../../../public/geojson/country.json";
 import { cityDistricts, getMapLocation } from "@/utils/travellog/travelLog";
@@ -16,26 +16,29 @@ const TravelLogMap = ({
 }) => {
   const { center, zoom } = getMapLocation(target, type);
 
+  const mapStyle = useMemo(() => {
+    if (type === "국내") {
+      return { width: "100%", height: 418 };
+    }
+    return target ? { width: "100%", height: 400 } : { width: "100%", height: 192 };
+  }, [type, target]);
+
+  const onCameraChanged = useCallback((ev: MapCameraChangedEvent) => {
+    console.log("camera changed:", ev.detail.center, ev.detail.zoom);
+  }, []);
+
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}>
       <Map
-        key={`${type} ${center} ${zoom} `}
+        key={`${type}-${center?.lat}-${center?.lng}-${zoom}`}
         defaultCenter={center}
         defaultZoom={zoom}
         id="travel-map"
         mapId={process.env.NEXT_PUBLIC_LOG_GOOGLE_MAP_ID || ""}
-        style={
-          type === "국내"
-            ? { width: "100%", height: 418 }
-            : target
-              ? { width: "100%", height: 400 }
-              : { width: "100%", height: 192 }
-        }
-        mapTypeId={"roadmap"}
+        style={mapStyle}
+        mapTypeId="roadmap"
         disableDefaultUI
-        onCameraChanged={(ev: MapCameraChangedEvent) =>
-          console.log("camera changed:", ev.detail.center, ev.detail.zoom)
-        }
+        onCameraChanged={onCameraChanged}
       >
         <TravelLog type={type} highlightedRegions={highlightedRegions} />
       </Map>
@@ -46,35 +49,16 @@ const TravelLogMap = ({
 const TravelLog = ({ type, highlightedRegions = [] }: { type: "세계" | "국내"; highlightedRegions?: string[] }) => {
   const map = useMap();
 
-  useEffect(() => {
-    if (!map) return;
+  const geoJsonData = useMemo(() => (type === "국내" ? sigoonGeoJsonData : countryGeoJsonData), [type]);
 
-    const geoJsonLayer = new google.maps.Data({ map });
+  const isHighlighted = useMemo(() => createHighlighter(highlightedRegions, cityDistricts), [highlightedRegions]);
 
-    geoJsonLayer.addGeoJson(type === "국내" ? sigoonGeoJsonData : countryGeoJsonData);
-
-    geoJsonLayer.setStyle({
-      strokeColor: "#fff",
-      strokeWeight: 1,
-      strokeOpacity: 1,
-      fillOpacity: 0, // 투명한 채우기
-    });
-
-    geoJsonLayer.addGeoJson(type === "국내" ? sigoonGeoJsonData : countryGeoJsonData);
-    // 고차 함수로 사용
-    const createHighlighter = (highlightedRegions, cityDistricts) => (regionName) =>
-      highlightedRegions.includes(regionName) ||
-      highlightedRegions.some((region) => cityDistricts[region]?.includes(regionName));
-
-    // 하이라이트 함수 만들기
-    const isHighlighted = createHighlighter(highlightedRegions, cityDistricts);
-
-    //스타일 적용
-    geoJsonLayer.setStyle((feature) => {
+  const getFeatureStyle = useCallback(
+    (feature: google.maps.Data.Feature) => {
       const regionName =
         feature.getProperty("name_ko") || feature.getProperty("CTP_KOR_NM") || feature.getProperty("SIG_KOR_NM");
 
-      const highlighted = isHighlighted(regionName);
+      const highlighted = isHighlighted(regionName as string);
 
       return {
         strokeColor: "#fff",
@@ -83,11 +67,31 @@ const TravelLog = ({ type, highlightedRegions = [] }: { type: "세계" | "국내
         fillColor: highlighted ? "#3366FF" : "#FFFFFF",
         fillOpacity: highlighted ? 1 : 0,
       };
-    });
-  }, [map]);
+    },
+    [isHighlighted]
+  );
+
+  useEffect(() => {
+    if (!map) return;
+
+    const geoJsonLayer = new google.maps.Data({ map });
+
+    geoJsonLayer.addGeoJson(geoJsonData);
+
+    geoJsonLayer.setStyle(getFeatureStyle);
+
+    return () => {
+      geoJsonLayer.setMap(null);
+    };
+  }, [map, geoJsonData, getFeatureStyle]);
 
   return null;
 };
+
+const createHighlighter =
+  (highlightedRegions: string[], cityDistricts: Record<string, string[]>) => (regionName: string) =>
+    highlightedRegions.includes(regionName) ||
+    highlightedRegions.some((region) => cityDistricts[region]?.includes(regionName));
 
 // 더미 함수 클릭이나 출처 표시 함수
 // function createAttribution() {

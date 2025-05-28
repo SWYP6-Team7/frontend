@@ -68,7 +68,12 @@ const HorizonBoxLayout = ({
   const tagRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const cutTags = tags.length >= 2 ? (isBookmark ? tags.slice(0, 1) : tags.slice(0, 2)) : tags;
+  const cutTags =
+    tags.length >= 2
+      ? isBookmark
+        ? tags.slice(0, 1)
+        : tags.slice(0, 2)
+      : tags;
 
   const [tagsCount, setTagsCount] = useState(cutTags);
   console.log(tagsCount, "tagsCount");
@@ -78,20 +83,35 @@ const HorizonBoxLayout = ({
         setTagsCount((prev) => (prev.length > 1 ? prev.slice(0, -1) : []));
       }
     }
-  }, [tagRef.current, showTag, tagsCount.length, containerRef?.current?.getBoundingClientRect().width]);
+  }, [
+    tagRef.current,
+    showTag,
+    tagsCount.length,
+    containerRef?.current?.getBoundingClientRect().width,
+  ]);
   return (
     <HorizonBoxContainer ref={containerRef}>
       {/* <Thumbnail src={imgSrc}></Thumbnail> */}
 
       <PostInfo>
         <TopContainer>
-          <BadgeContainer isMargin={bookmarkPosition === "middle" || bookmarkNeed === false}>
+          <BadgeContainer
+            isMargin={bookmarkPosition === "middle" || bookmarkNeed === false}
+          >
             {!userProfileType ? (
               <Badge
                 height={"22px"}
                 text={
-                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 4 }}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <path
                         d="M11.75 5.49259C11.75 9.31077 6.75 12.5835 6.75 12.5835C6.75 12.5835 1.75 9.31077 1.75 5.49259C1.75 4.19062 2.27678 2.94197 3.21447 2.02134C4.15215 1.1007 5.42392 0.583496 6.75 0.583496C8.07608 0.583496 9.34785 1.1007 10.2855 2.02134C11.2232 2.94197 11.75 4.19062 11.75 5.49259Z"
                         stroke="#3E8D00"
@@ -115,7 +135,11 @@ const HorizonBoxLayout = ({
             ) : null}
           </BadgeContainer>
           {bookmarkPosition === "top" && bookmarkNeed && (
-            <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} bookmarkPosition={bookmarkPosition} />
+            <BookmarkButton
+              travelNumber={travelNumber}
+              bookmarked={bookmarked}
+              bookmarkPosition={bookmarkPosition}
+            />
           )}
         </TopContainer>
         <div style={{ paddingLeft: 4 }}>
@@ -145,8 +169,16 @@ const HorizonBoxLayout = ({
                 <Badge
                   height={"22px"}
                   text={
-                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 4 }}
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
                         <path
                           d="M11.75 5.49259C11.75 9.31077 6.75 12.5835 6.75 12.5835C6.75 12.5835 1.75 9.31077 1.75 5.49259C1.75 4.19062 2.27678 2.94197 3.21447 2.02134C4.15215 1.1007 5.42392 0.583496 6.75 0.583496C8.07608 0.583496 9.34785 1.1007 10.2855 2.02134C11.2232 2.94197 11.75 4.19062 11.75 5.49259Z"
                           stroke="#3E8D00"
@@ -200,7 +232,11 @@ const HorizonBoxLayout = ({
         )}
       </PostInfo>
       {bookmarkPosition === "middle" && bookmarkNeed && (
-        <BookmarkButton travelNumber={travelNumber} bookmarked={bookmarked} bookmarkPosition={bookmarkPosition} />
+        <BookmarkButton
+          travelNumber={travelNumber}
+          bookmarked={bookmarked}
+          bookmarkPosition={bookmarkPosition}
+        />
       )}
     </HorizonBoxContainer>
   );
@@ -210,11 +246,19 @@ interface BookmarkButtonProps {
   travelNumber: number;
   bookmarkPosition?: "top" | "middle";
 }
-const BookmarkButton = ({ bookmarked, travelNumber, bookmarkPosition }: BookmarkButtonProps) => {
+const BookmarkButton = ({
+  bookmarked,
+  travelNumber,
+  bookmarkPosition,
+}: BookmarkButtonProps) => {
   const { accessToken, userId } = authStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber);
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    travelNumber
+  );
   const pathname = usePathname();
 
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -244,11 +288,18 @@ const BookmarkButton = ({ bookmarked, travelNumber, bookmarkPosition }: Bookmark
         modalButtonText="로그인"
         setModalOpen={setShowLoginModal}
       />
-      <Button isMargin={bookmarkPosition === "middle"} onClick={bookmarkClickHandler}>
+      <Button
+        isMargin={bookmarkPosition === "middle"}
+        onClick={bookmarkClickHandler}
+      >
         {bookmarked ? (
           <FullHeartIcon width={24} height={21.4} />
         ) : (
-          <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
+          <EmptyHeartIcon
+            width={24}
+            height={21.4}
+            stroke={`${palette.비강조3}`}
+          />
         )}
       </Button>
     </>
@@ -266,7 +317,7 @@ const Button = styled.button<{ isMargin: boolean }>`
   width: 32px;
   height: 32px;
   display: flex;
-
+  cursor: pointer;
   margin-top: ${(props) => (props.isMargin ? "11px" : 0)};
   margin-bottom: ${(props) => (props.isMargin ? "4px" : "3px")};
   align-items: center;
@@ -277,6 +328,7 @@ const HorizonBoxContainer = styled.div`
   width: 100%;
   /* height: 120px; */
   display: flex;
+  cursor: pointer;
   align-items: center;
 `;
 const TitleBox = styled.div`

@@ -1,17 +1,18 @@
-'use client'
-import { palette } from '@/styles/palette'
-import styled from '@emotion/styled'
-import React from 'react'
+"use client";
+import { palette } from "@/styles/palette";
+import styled from "@emotion/styled";
+import React from "react";
 
 interface CloseButtonProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function CloseButton({ setIsOpen }: CloseButtonProps) {
-  return <CloseBtn onClick={() => setIsOpen(false)}>닫기</CloseBtn>
+  return <CloseBtn onClick={() => setIsOpen(false)}>닫기</CloseBtn>;
 }
 
 const CloseBtn = styled.button`
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
   @media (max-width: 390px) {
@@ -34,4 +35,4 @@ const CloseBtn = styled.button`
   &:active {
     background-color: ${palette.비강조3};
   }
-`
+`;
