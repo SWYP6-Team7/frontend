@@ -562,13 +562,7 @@ export default function TripDetail() {
       <CommentWrapper>
         <IconContainer onClick={commentClickHandler}>
           {isCommentUpdated ? (
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 28 28"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clipPath="url(#clip0_5570_2993)">
                 <path
                   d="M25 18.6667C25 19.315 24.7425 19.9367 24.284 20.3952C23.8256 20.8536 23.2039 21.1111 22.5556 21.1111H7.88889L3 26V6.44444C3 5.79614 3.25754 5.17438 3.71596 4.71596C4.17438 4.25754 4.79614 4 5.44444 4H22.5556C23.2039 4 23.8256 4.25754 24.284 4.71596C24.7425 5.17438 25 5.79614 25 6.44444V18.6667Z"
@@ -669,8 +663,7 @@ const BottomContainer = styled.div<{
   topModalHeight: number;
   isMapFull: boolean;
 }>`
-  padding-top: ${(props) =>
-    `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
+  padding-top: ${(props) => `${props.isMapFull ? 32 : props.topModalHeight + 32}px`};
   min-height: 100svh;
   transition: padding-top 0.3s ease-out;
   overscroll-behavior: none;
@@ -835,6 +828,7 @@ const PlaceIconContainer = styled.div`
 const InfoContainer = styled.div`
   padding: 11px 0;
   padding-left: 8px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
