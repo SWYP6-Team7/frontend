@@ -15,9 +15,18 @@ import useViewTransition from "@/hooks/useViewTransition";
 import { useRouter } from "next/navigation";
 import { isGuestUser } from "@/utils/user";
 export const selections = [
-  { gender: "모두", icon: (isSelect: boolean) => <EveryBodyIcon selected={isSelect} /> },
-  { gender: "남자만", icon: (isSelect: boolean) => <OnlyMaleIcon selected={isSelect} /> },
-  { gender: "여자만", icon: (isSelect: boolean) => <OnlyFemaleIcon selected={isSelect} /> },
+  {
+    gender: "모두",
+    icon: (isSelect: boolean) => <EveryBodyIcon selected={isSelect} />,
+  },
+  {
+    gender: "남자만",
+    icon: (isSelect: boolean) => <OnlyMaleIcon selected={isSelect} />,
+  },
+  {
+    gender: "여자만",
+    icon: (isSelect: boolean) => <OnlyFemaleIcon selected={isSelect} />,
+  },
 ];
 
 const CreateTripInfo = () => {
@@ -52,7 +61,10 @@ const CreateTripInfo = () => {
         <DetailTitle>성별 선택</DetailTitle>
         <GenderList>
           {selections.map((item) => (
-            <GenderItem isSelected={genderType === item.gender} onClick={() => clickGender(item.gender)}>
+            <GenderItem
+              isSelected={genderType === item.gender}
+              onClick={() => clickGender(item.gender)}
+            >
               {item.icon(genderType === item.gender)}
               <GenderText>{item.gender}</GenderText>
             </GenderItem>
@@ -109,12 +121,15 @@ const GenderList = styled.div`
 
 const GenderItem = styled.div<{ isSelected: boolean }>`
   display: flex;
+  cursor: pointer;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   justify-content: center;
-  background-color: ${(props) => (props.isSelected ? palette.keycolorBG : palette.검색창)};
-  border: ${(props) => (props.isSelected ? `1px solid ${palette.keycolor}` : "0px")};
+  background-color: ${(props) =>
+    props.isSelected ? palette.keycolorBG : palette.검색창};
+  border: ${(props) =>
+    props.isSelected ? `1px solid ${palette.keycolor}` : "0px"};
   border-radius: 20px;
   width: 90px;
   height: 84px;

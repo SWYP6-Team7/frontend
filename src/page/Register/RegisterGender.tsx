@@ -8,8 +8,18 @@ import { useRouter } from "next/navigation";
 
 const RegisterGender = () => {
   const { setGenderCheck } = useRegisterAge();
-  const { sex, addSex, name, email, agegroup, resetAge, resetName, resetForm, socialLogin, setSocialLogin } =
-    userStore();
+  const {
+    sex,
+    addSex,
+    name,
+    email,
+    agegroup,
+    resetAge,
+    resetName,
+    resetForm,
+    socialLogin,
+    setSocialLogin,
+  } = userStore();
   const [maleClicked, setMaleClicked] = useState(sex == "M" ? true : false);
   const [femaleClicked, setFemaleClicked] = useState(sex == "F" ? true : false);
   const router = useRouter();
@@ -78,18 +88,40 @@ const RegisterGender = () => {
           <MaleBox>
             <Male
               onClick={clickedMale}
-              src={maleClicked ? "/images/activeMale.png" : "/images/defaultMale.png"}
+              src={
+                maleClicked
+                  ? "/images/activeMale.png"
+                  : "/images/defaultMale.png"
+              }
               alt=""
             />
-            <p style={maleClicked ? { color: "black", fontWeight: 700 } : { color: "rgba(171, 171, 171, 1)" }}>남자</p>
+            <p
+              style={
+                maleClicked
+                  ? { color: "black", fontWeight: 700 }
+                  : { color: "rgba(171, 171, 171, 1)" }
+              }
+            >
+              남자
+            </p>
           </MaleBox>
           <FemaleBox>
             <Female
               onClick={clickedFemale}
-              src={femaleClicked ? "/images/activeFemale.png" : "/images/defaultFemale.png"}
+              src={
+                femaleClicked
+                  ? "/images/activeFemale.png"
+                  : "/images/defaultFemale.png"
+              }
               alt=""
             />
-            <p style={femaleClicked ? { color: "black", fontWeight: 700 } : { color: "rgba(171, 171, 171, 1)" }}>
+            <p
+              style={
+                femaleClicked
+                  ? { color: "black", fontWeight: 700 }
+                  : { color: "rgba(171, 171, 171, 1)" }
+              }
+            >
               여자
             </p>
           </FemaleBox>
@@ -133,6 +165,7 @@ const MaleBox = styled.div`
   flex-direction: column;
   align-items: center;
   font-weight: 500;
+  cursor: pointer;
   p {
     margin-top: 8px;
     font-size: 18px;
@@ -143,6 +176,7 @@ const FemaleBox = styled.div`
   flex-direction: column;
   align-items: center;
   font-weight: 500;
+  cursor: pointer;
   p {
     margin-top: 8px;
     font-size: 18px;

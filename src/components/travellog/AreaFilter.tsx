@@ -31,10 +31,15 @@ export default function AreaFilter() {
       {FILTER_LIST.map(({ title, value }, idx) => (
         <SearchFilterTag
           addStyle={{
-            backgroundColor: isActive(value) ? "rgba(227, 239, 217, 1)" : " rgba(240, 240, 240, 1)",
-            color: isActive(value) ? `${palette.keycolor}` : "rgba(52, 52, 52, 1)",
-
-            border: isActive(value) ? `1px solid ${palette.keycolor}` : `1px solid ${palette.검색창}`,
+            backgroundColor: isActive(value)
+              ? "rgba(227, 239, 217, 1)"
+              : " rgba(240, 240, 240, 1)",
+            color: isActive(value)
+              ? `${palette.keycolor}`
+              : "rgba(52, 52, 52, 1)",
+            border: isActive(value)
+              ? `1px solid ${palette.keycolor}`
+              : `1px solid ${palette.검색창}`,
             borderRadius: "30px",
             padding: "10px 20px",
             fontWeight: isActive(value) ? "600" : "400",
@@ -43,6 +48,7 @@ export default function AreaFilter() {
           text={title}
           onClick={clickTag(value)}
           idx={idx}
+          style={{ cursor: "pointer" }}
         />
       ))}
     </Container>

@@ -11,14 +11,23 @@ interface ResultModalProps {
   modalTitle: string;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export default function ResultModal({ isModalOpen, modalMsg, modalTitle, setModalOpen }: ResultModalProps) {
+export default function ResultModal({
+  isModalOpen,
+  modalMsg,
+  modalTitle,
+  setModalOpen,
+}: ResultModalProps) {
   const modalRef = useRef<HTMLDivElement>(null); // 모달 참조
 
   const [isListening, setIsListening] = useState(false); // 모달 창이 열리고, 이벤트 등록이 동기적으로 일어나도록 제한.
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (isListening && modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        isListening &&
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         setModalOpen(false); // 외부 클릭 시 모달 닫기
       }
     };
@@ -87,6 +96,7 @@ const CloseBtn = styled.button`
   font-weight: 400;
   line-height: 16px;
   text-align: center;
+  cursor: pointer;
   color: ${palette.비강조2};
   display: flex;
   justify-content: center;
@@ -138,7 +148,8 @@ const Modal = styled.div<{ isModalOpen: boolean }>`
   gap: 16px;
   border-radius: 20px;
   opacity: 0px;
-  transform: ${({ isModalOpen }) => (isModalOpen ? "translateY(0)" : "translateY(30%)")};
+  transform: ${({ isModalOpen }) =>
+    isModalOpen ? "translateY(0)" : "translateY(30%)"};
   transition: transform 0.3s ease-in-out;
 `;
 const DarkWrapper = styled.div`

@@ -44,7 +44,10 @@ const Calendar: React.FC<CalendarProps> = ({
                     isEnd={
                       date.posts &&
                       date.posts[0]?.endTime &&
-                      dayjs(date.dayFormat).isSame(dayjs(date.posts[0].endTime), "day")
+                      dayjs(date.dayFormat).isSame(
+                        dayjs(date.posts[0].endTime),
+                        "day"
+                      )
                     }
                     isMultiple={date.posts && date.posts[0]?.multiple}
                     isPrevDay={dayjs(date.dayFormat).isBefore(dayjs(), "day")}
@@ -61,7 +64,10 @@ const Calendar: React.FC<CalendarProps> = ({
                     isEnd={
                       date.posts &&
                       date.posts[0]?.endTime &&
-                      dayjs(date.dayFormat).isSame(dayjs(date.posts[0].endTime), "day")
+                      dayjs(date.dayFormat).isSame(
+                        dayjs(date.posts[0].endTime),
+                        "day"
+                      )
                     }
                     isSelect={date.posts && date.posts[0]?.startTime}
                     isMultiple={date.posts && date.posts[0]?.multiple}
@@ -71,7 +77,10 @@ const Calendar: React.FC<CalendarProps> = ({
                     isEnd={
                       date.posts &&
                       date.posts[0]?.endTime &&
-                      dayjs(date.dayFormat).isSame(dayjs(date.posts[0].endTime), "day")
+                      dayjs(date.dayFormat).isSame(
+                        dayjs(date.posts[0].endTime),
+                        "day"
+                      )
                     }
                     isMultiple={date.posts && date.posts[0]?.multiple}
                   />
@@ -86,7 +95,11 @@ const Calendar: React.FC<CalendarProps> = ({
   );
 };
 
-const MultipleBorder = styled.div<{ isMultiple: boolean; isStart: boolean; isEnd: boolean }>`
+const MultipleBorder = styled.div<{
+  isMultiple: boolean;
+  isStart: boolean;
+  isEnd: boolean;
+}>`
   width: 50%;
   position: absolute;
   height: 42px;
@@ -128,7 +141,12 @@ const CalendarContainer = styled.div`
   justify-content: center;
 `;
 
-const PostContainer = styled.div<{ isMultiple: boolean; isSelect: boolean; isStart: boolean; isEnd: boolean }>`
+const PostContainer = styled.div<{
+  isMultiple: boolean;
+  isSelect: boolean;
+  isStart: boolean;
+  isEnd: boolean;
+}>`
   position: absolute;
 
   width: 100%;
@@ -233,6 +251,7 @@ const DateNumber = styled.div<{
   line-height: 42px;
   text-align: center;
 
+  cursor: ${(props) => (props.isPrevDay ? "auto" : "pointer")};
   ${(props) =>
     props.isToday &&
     `

@@ -133,6 +133,7 @@ const Container = styled.div`
   height: 69px;
   width: 100%;
   gap: 4px;
+  cursor: pointer;
   border-bottom: 1px solid #e7e7e7;
 `;
 
@@ -160,6 +161,7 @@ const AddButton = styled.button`
   background-color: ${palette.비강조5};
   color: ${palette.기본};
   line-height: 14px;
+  cursor: pointer;
   font-size: 12px;
   font-weight: 600;
   padding: 6px 10px;

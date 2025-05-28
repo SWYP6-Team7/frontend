@@ -1,39 +1,39 @@
-'use client'
-import styled from '@emotion/styled'
-import React, { useState } from 'react'
-import WhiteXIcon from './icons/WhiteXIcon'
-import { keyframes } from '@emotion/react'
-import Spacing from './Spacing'
-import CheckIcon from './icons/CheckIcon'
-import Button from './designSystem/Buttons/Button'
-import { palette } from '@/styles/palette'
-import ResultToast from './designSystem/toastMessage/resultToast'
-import { useRouter } from 'next/navigation'
+"use client";
+import styled from "@emotion/styled";
+import React, { useState } from "react";
+import WhiteXIcon from "./icons/WhiteXIcon";
+import { keyframes } from "@emotion/react";
+import Spacing from "./Spacing";
+import CheckIcon from "./icons/CheckIcon";
+import Button from "./designSystem/Buttons/Button";
+import { palette } from "@/styles/palette";
+import ResultToast from "./designSystem/toastMessage/resultToast";
+import { useRouter } from "next/navigation";
 
 interface TermsProps {
-  closeShowTerms: () => void
+  closeShowTerms: () => void;
 }
 
 const Terms = ({ closeShowTerms }: TermsProps) => {
   const [check, setCheck] = useState({
     service: true,
-    privacy: true
-  })
-  const [isToastShow, setIsToastShow] = useState(false)
-  const router = useRouter()
+    privacy: true,
+  });
+  const [isToastShow, setIsToastShow] = useState(false);
+  const router = useRouter();
   const handleBackButton = () => {
-    router.push('/login')
-  }
+    router.push("/login");
+  };
 
-  const handleCheck = (item: 'privacy' | 'service') => {
+  const handleCheck = (item: "privacy" | "service") => {
     if (check[item]) {
-      setIsToastShow(true)
+      setIsToastShow(true);
     }
-    setCheck(prev => ({
+    setCheck((prev) => ({
       ...prev,
-      [item]: !prev[item]
-    }))
-  }
+      [item]: !prev[item],
+    }));
+  };
   return (
     <Container>
       <BackButotn onClick={handleBackButton}>
@@ -48,56 +48,49 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
 
         <Bar />
         <TermContainer>
-          <button onClick={() => handleCheck('service')}>
+          <button
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCheck("service")}
+          >
             {check.service ? (
-              <CheckIcon
-                status="done"
-                size={18}
-              />
+              <CheckIcon status="done" size={18} />
             ) : (
               <CheckIcon size={18} />
             )}
           </button>
           <TermTitle>(필수) 서비스 이용 약관</TermTitle>
-          <a
-            href="/pdf/service_terms(241115).pdf"
-            target="_blank">
+          <a href="/pdf/service_terms(241115).pdf" target="_blank">
             <TermMore>보기</TermMore>
           </a>
         </TermContainer>
         <Spacing size={24} />
         <TermContainer>
-          <button onClick={() => handleCheck('privacy')}>
+          <button
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCheck("privacy")}
+          >
             {check.privacy ? (
-              <CheckIcon
-                status="done"
-                size={18}
-              />
+              <CheckIcon status="done" size={18} />
             ) : (
               <CheckIcon size={18} />
             )}
           </button>
           <TermTitle>(필수) 개인정보 수집, 이용 동의</TermTitle>
-          <a
-            href="/pdf/privacy_terms(241006).pdf"
-            target="_blank">
+          <a href="/pdf/privacy_terms(241006).pdf" target="_blank">
             <TermMore>보기</TermMore>
           </a>
         </TermContainer>
         <Spacing size={111} />
         {check.privacy && check.service ? (
-          <Button
-            text="동의합니다"
-            onClick={closeShowTerms}
-          />
+          <Button text="동의합니다" onClick={closeShowTerms} />
         ) : (
           <Button
             text="동의합니다"
             disabled
             addStyle={{
-              backgroundColor: 'rgba(220, 220, 220, 1)',
-              color: 'rgba(132, 132, 132, 1)',
-              boxShadow: '-2px 4px 5px 0px rgba(170, 170, 170, 0.1)'
+              backgroundColor: "rgba(220, 220, 220, 1)",
+              color: "rgba(132, 132, 132, 1)",
+              boxShadow: "-2px 4px 5px 0px rgba(170, 170, 170, 0.1)",
             }}
           />
         )}
@@ -110,15 +103,15 @@ const Terms = ({ closeShowTerms }: TermsProps) => {
         text="필수 항목은 반드시 동의해야 해요."
       />
     </Container>
-  )
-}
+  );
+};
 
 const Bar = styled.div`
   height: 1px;
   width: 100%;
   margin: 30px 0;
   background-color: rgba(205, 205, 205, 1);
-`
+`;
 
 const Container = styled.div`
   height: 100svh;
@@ -135,13 +128,13 @@ const Container = styled.div`
   }
 
   background-color: rgba(0, 0, 0, 0.6);
-`
+`;
 
 const BackButotn = styled.button`
   position: absolute;
   top: 24px;
   left: 24px;
-`
+`;
 const slideUp = keyframes`
   from {
     transform: translateY(100%);
@@ -151,7 +144,7 @@ const slideUp = keyframes`
     transform: translateY(9);
     opacity: 1;
   }
-`
+`;
 
 const TermsContainer = styled.div`
   width: 100%;
@@ -172,42 +165,42 @@ const TermsContainer = styled.div`
   border-top-right-radius: 18px;
   background-color: white;
   animation: ${slideUp} 0.5s ease-out forwards;
-`
+`;
 
 const GreenText = styled.span`
   color: ${palette.keycolor};
-`
+`;
 
 const Title = styled.h2`
   font-size: 24px;
   letter-spacing: -0.04px;
   font-weight: 600;
-`
+`;
 
 const AllContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-`
+`;
 
 const AllText = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`
+`;
 
 const AllTitle = styled.h4`
   font-weight: 500;
   font-size: 20px;
   letter-spacing: -0.04px;
-`
+`;
 
 const TermTitle = styled.h4`
   font-size: 16px;
   font-weight: 600;
   flex: 1;
   line-height: 16px;
-`
+`;
 
 const TermMore = styled.div`
   color: rgba(171, 171, 171, 1);
@@ -217,19 +210,19 @@ const TermMore = styled.div`
   line-height: 16px;
 
   text-decoration: underline;
-`
+`;
 
 const AllDescription = styled.div`
   font-size: 14px;
   letter-spacing: -0.04px;
   color: rgba(171, 171, 171, 1);
-`
+`;
 
 const TermContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-`
+`;
 
-export default Terms
+export default Terms;

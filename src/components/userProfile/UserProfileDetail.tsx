@@ -18,7 +18,9 @@ import { authStore } from "@/store/client/authStore";
 interface UserProfileDetailProps {
   isMyPage?: boolean;
 }
-export default function UserProfileDetail({ isMyPage = false }: UserProfileDetailProps) {
+export default function UserProfileDetail({
+  isMyPage = false,
+}: UserProfileDetailProps) {
   const { setProfileShow, userProfileUserId } = userProfileOverlayStore();
   const { userProfileInfo } = useUserProfile();
   const navigateWithTransition = useViewTransition();
@@ -76,7 +78,8 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
     },
   ];
 
-  const cutTags = preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
+  const cutTags =
+    preferredTags.length > 2 ? preferredTags.slice(0, 2) : preferredTags;
 
   const moveToNextLink = (link: string) => {
     navigateWithTransition(link);
@@ -102,7 +105,9 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
               {name}
               {isMyPage && <ProfileRightVectorIcon />}
             </Name>
-            <UserInfo>{isMyPage ? myPageStore().email : userRegDate + "가입"}</UserInfo>
+            <UserInfo>
+              {isMyPage ? myPageStore().email : userRegDate + "가입"}
+            </UserInfo>
           </UserNameBox>
           <UserTags>
             <Badge
@@ -143,7 +148,9 @@ export default function UserProfileDetail({ isMyPage = false }: UserProfileDetai
       </UserInfoContainer>
       <TravelDistanceContainer>
         <Title>총 여행한 거리✨</Title>
-        <TravelDistance>{formatNumberWithComma(travelDistance)}km</TravelDistance>
+        <TravelDistance>
+          {formatNumberWithComma(Math.ceil(travelDistance))}km
+        </TravelDistance>
       </TravelDistanceContainer>
 
       <TravelMenuContainer>
@@ -224,6 +231,7 @@ export const Name = styled.div`
   line-height: 16px;
   letter-spacing: -0.25px;
   text-align: center;
+  cursor: pointer;
   color: ${palette.기본};
 `;
 

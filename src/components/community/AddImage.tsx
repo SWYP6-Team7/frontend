@@ -19,7 +19,12 @@ const AddImage = ({ isEdit }: AddImageProps) => {
   const communityNumber = params?.communityNumber as string;
   const imageRef = useRef<HTMLInputElement>(null);
   const { images, addImage, removeImage } = useUploadStore();
-  const { images: editImages, initializeImages, updateImageStatus, updateImage } = useEditStore();
+  const {
+    images: editImages,
+    initializeImages,
+    updateImageStatus,
+    updateImage,
+  } = useEditStore();
   const { images: detailImages } = useCommunity(Number(communityNumber));
   const { accessToken } = authStore();
   const onUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,15 +83,16 @@ const AddImage = ({ isEdit }: AddImageProps) => {
           </div>
         </ImageInput>
       )}
-      {(isEdit ? editImages.filter((img) => img.status !== "d") : images.filter((img) => img.isSelected)).map(
-        (image) => (
-          <ImageDiv key={image.imageNumber} src={image.url}>
-            <RemoveButton onClick={() => onRemoveImage(image.imageNumber)}>
-              <ImageRemoveIcon />
-            </RemoveButton>
-          </ImageDiv>
-        )
-      )}
+      {(isEdit
+        ? editImages.filter((img) => img.status !== "d")
+        : images.filter((img) => img.isSelected)
+      ).map((image) => (
+        <ImageDiv key={image.imageNumber} src={image.url}>
+          <RemoveButton onClick={() => onRemoveImage(image.imageNumber)}>
+            <ImageRemoveIcon />
+          </RemoveButton>
+        </ImageDiv>
+      ))}
     </Container>
   );
 };
@@ -127,6 +133,7 @@ const RemoveButton = styled.button`
   display: block;
   position: absolute;
   top: -4px;
+  cursor: pointer;
   width: 16px;
   height: 16px;
   right: -4px;

@@ -147,6 +147,7 @@ const PlusButton = styled.button`
   width: 42px;
   height: 42px;
   border-radius: 50%;
+  cursor: pointer;
   position: relative;
   background-color: ${palette.비강조};
   &::after {
@@ -180,7 +181,7 @@ const MinusButton = styled.button`
   border-radius: 50%;
   position: relative;
   background-color: ${palette.비강조};
-
+  cursor: pointer;
   &::before {
     content: "";
     width: 16px;
@@ -257,7 +258,7 @@ const RecruitingBtn = styled.button`
   align-items: center;
   justify-content: space-between;
   margin-top: 8px;
-
+  cursor: pointer;
   height: 48px;
   padding: 12px 16px;
   gap: 0px;
