@@ -68,13 +68,19 @@ interface tripDetailState {
   initGeometry: { lng: number; lat: number } | null;
   addInitGeometry: (obj: { lat: number; lng: number } | null) => void;
   addCommentLength: (status: number) => void;
-  locationName: { locationName: string; mapType: "google" | "kakao" };
+  locationName: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  };
   addLocationName: ({
     locationName,
     mapType,
+    countryName,
   }: {
     locationName: string;
     mapType: "google" | "kakao";
+    countryName: string;
   }) => void;
 
   resetTripDetail: () => void;
@@ -85,7 +91,7 @@ export const tripDetailStore = create<tripDetailState>((set) => ({
   addBookmarked: (status) => {
     set({ bookmarked: status });
   },
-  locationName: { locationName: "", mapType: "google" },
+  locationName: { locationName: "", mapType: "google", countryName: "" },
   addLocationName: (locationName) => {
     set({ locationName });
   },
@@ -172,7 +178,7 @@ export const tripDetailStore = create<tripDetailState>((set) => ({
   resetTripDetail: () => {
     set({
       bookmarked: false,
-      locationName: { locationName: "", mapType: "google" },
+      locationName: { locationName: "", mapType: "google", countryName: "" },
       initGeometry: null,
       applySuccess: false,
       travelNumber: 0,

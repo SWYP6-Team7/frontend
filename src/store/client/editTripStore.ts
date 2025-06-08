@@ -4,8 +4,20 @@ import { getCurrentFormattedDate } from "@/utils/time";
 import { create } from "zustand";
 
 interface EditTripStore {
-  locationName: { locationName: string; mapType: "google" | "kakao" };
-  addLocationName: ({ locationName, mapType }: { locationName: string; mapType: "google" | "kakao" }) => void;
+  locationName: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  };
+  addLocationName: ({
+    locationName,
+    mapType,
+    countryName,
+  }: {
+    locationName: string;
+    mapType: "google" | "kakao";
+    countryName: string;
+  }) => void;
   title: string;
   addTitle: (title: string) => void;
   details: string;
@@ -62,7 +74,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
   setDataInitialized: (dataInitialized) => {
     set({ dataInitialized });
   },
-  locationName: { locationName: "", mapType: "google" },
+  locationName: { locationName: "", mapType: "google", countryName: "" },
   addLocationName: (locationName) => {
     set({ locationName });
   },
@@ -119,6 +131,7 @@ export const editTripStore = create<EditTripStore>((set) => ({
     set({
       title: "",
       locationName: {
+        countryName: "",
         locationName: "",
         mapType: "google",
       },

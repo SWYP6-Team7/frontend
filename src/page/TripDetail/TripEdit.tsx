@@ -84,7 +84,8 @@ const TripEdit = () => {
 
       if (!genderType) addGenderType(tripInfos.genderType);
       if (!date) addDate({ startDate: tripInfos.startDate, endDate: tripInfos.endDate });
-      if (locationName.locationName === "") addLocationName({ locationName: location, mapType: "google" });
+      if (locationName.locationName === "")
+        addLocationName({ locationName: location, mapType: "google", countryName: "" });
       if (!tags) addTags(tripInfos.tags);
       if (!initGeometry) addInitGeometry(initInitGeometry || { lat: 37.57037778, lng: 126.9816417 });
     }
@@ -136,9 +137,17 @@ const TripEdit = () => {
         const geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.addressSearch(location, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK && result?.[0]) {
-            addLocationName({ locationName: location, mapType: "kakao" });
+            addLocationName({
+              locationName: location,
+              mapType: "kakao",
+              countryName: "대한민국",
+            });
           } else {
-            addLocationName({ locationName: location, mapType: "google" });
+            addLocationName({
+              locationName: location,
+              mapType: "google",
+              countryName: "",
+            });
           }
         });
       });
@@ -314,6 +323,7 @@ const TripEdit = () => {
       endDate: date?.endDate || "",
       periodType: getDateRangeCategory(date?.startDate ?? "", date?.endDate ?? ""),
       locationName: locationName.locationName,
+      countryName: locationName.countryName,
       tags: tags ?? [],
       planChanges: trackPlanChanges(originalPlans, plans),
     };

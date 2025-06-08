@@ -46,7 +46,11 @@ export default function EditAndDeleteModal({
   if (!isListening) return null;
   return createPortal(
     <Container isOpen={isOpen}>
-      <Modal ref={modalRef} isOpen={isOpen} nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}>
+      <Modal
+        ref={modalRef}
+        isOpen={isOpen}
+        nowWidth={window.innerWidth > 390 ? 390 : window.innerWidth}
+      >
         {!isMyApplyTrip ? (
           <EditAndDeleteButton
             isOpen={isOpen}

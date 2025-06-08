@@ -32,7 +32,8 @@ const TripInfiniteList = () => {
     return value;
   })();
 
-  const { data, isFetching, hasNextPage, fetchNextPage, isLoading } = useTripList(engSort);
+  const { data, isFetching, hasNextPage, fetchNextPage, isLoading } =
+    useTripList(engSort);
   useInfiniteScroll(() => {
     if (inView) {
       !isFetching && hasNextPage && fetchNextPage();
@@ -53,7 +54,10 @@ const TripInfiniteList = () => {
           <React.Fragment key={pageIndex}>
             {page.content.map((content, itemIndex) => (
               <BoxContainer key={content.travelNumber}>
-                <div onClick={() => clickTrip(content.travelNumber)}>
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => clickTrip(content.travelNumber)}
+                >
                   <HorizonBoxLayout
                     bookmarkNeed={true}
                     bookmarked={content.bookmarked}
@@ -64,7 +68,10 @@ const TripInfiniteList = () => {
                     total={content.maxPerson}
                     location={content.location}
                     daysAgo={daysAgo(content.createdAt)}
-                    daysLeft={dayjs(content.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
+                    daysLeft={dayjs(content.registerDue, "YYYY-MM-DD").diff(
+                      dayjs().startOf("day"),
+                      "day"
+                    )}
                     recruits={content.nowPerson}
                   />
                 </div>
@@ -85,7 +92,11 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(accessToken!, userId!, travelNumber);
+  const { postBookmarkMutation, deleteBookmarkMutation } = useUpdateBookmark(
+    accessToken!,
+    userId!,
+    travelNumber
+  );
   const bookmarkClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (isGuestUser()) {
@@ -117,7 +128,11 @@ const BookmarkButton = ({ bookmarked, travelNumber }: BookmarkButtonProps) => {
         {bookmarked ? (
           <FullHeartIcon width={24} height={21.4} />
         ) : (
-          <EmptyHeartIcon width={24} height={21.4} stroke={`${palette.비강조3}`} />
+          <EmptyHeartIcon
+            width={24}
+            height={21.4}
+            stroke={`${palette.비강조3}`}
+          />
         )}
       </BookmarkBtn>
     </>

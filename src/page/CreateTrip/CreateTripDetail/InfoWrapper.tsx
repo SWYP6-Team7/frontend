@@ -175,6 +175,7 @@ const GenderItem = styled.div<{ isSelected: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
   gap: 4px;
   justify-content: center;
   background-color: ${(props) =>
@@ -198,6 +199,7 @@ const CountContainer = styled.div`
 const PlusButton = styled.button`
   width: 42px;
   height: 42px;
+  cursor: pointer;
   border-radius: 50%;
   position: relative;
   background-color: ${palette.비강조};
@@ -232,7 +234,7 @@ const MinusButton = styled.button`
   border-radius: 50%;
   position: relative;
   background-color: ${palette.비강조};
-
+  cursor: pointer;
   &::before {
     content: "";
     width: 16px;
@@ -302,6 +304,7 @@ const Count = styled.div`
 
 const Container = styled.div`
   padding: 11px 0;
+  cursor: pointer;
   padding-left: 8px;
   display: flex;
   align-items: center;

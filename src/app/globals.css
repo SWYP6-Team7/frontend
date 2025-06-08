@@ -166,6 +166,7 @@ body {
   line-height: 1;
   font-family: "Pretendard", sans-serif;
   letter-spacing: -0.4px !important;
+  overflow-x: hidden;
 }
 ol,
 ul {

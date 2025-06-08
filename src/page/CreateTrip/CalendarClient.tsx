@@ -49,7 +49,11 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ holidaysArray }) => {
 
   return (
     <>
-      <CalendarModal addDate={addDate} showModal={showModal} setShowModal={setShowModal} />
+      <CalendarModal
+        addDate={addDate}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
       <Container>
         <StepIconContainer>
           <SecondStepIcon />
@@ -67,7 +71,9 @@ const CalendarClient: React.FC<CalendarClientProps> = ({ holidaysArray }) => {
             <CalendarIcon />
 
             <DueDateValue isDate={Boolean(date)}>
-              {date ? formatDateRange(date.startDate, date.endDate) : "날짜를 선택하세요."}
+              {date
+                ? formatDateRange(date.startDate, date.endDate)
+                : "날짜를 선택하세요."}
             </DueDateValue>
           </div>
         </DuedateBtn>
@@ -150,7 +156,7 @@ const DuedateBtn = styled.button`
   padding: 12px 16px;
   gap: 0px;
   border-radius: 20px;
-
+  cursor: pointer;
   opacity: 0px;
 `;
 

@@ -31,13 +31,15 @@ const BtnBox = styled.div<{ isOpen: boolean }>`
   border-radius: 20px;
   height: 52px;
 
-  transform: ${(props) => (props.isOpen ? "translateY(-5%)" : "translateY(20%)")};
+  transform: ${(props) =>
+    props.isOpen ? "translateY(-5%)" : "translateY(20%)"};
 
   transition: transform 0.5s ease;
 `;
 
 const ReportBtn = styled.button`
   height: 100%;
+  cursor: pointer;
   @media (max-width: 390px) {
     width: 100%;
   }

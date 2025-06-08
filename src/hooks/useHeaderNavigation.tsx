@@ -7,6 +7,8 @@ import { useTransitionRouter } from "next-view-transitions";
 import { tripDetailStore } from "@/store/client/tripDetailStore";
 import { createTripStore } from "@/store/client/createTripStore";
 import { editTripStore } from "@/store/client/editTripStore";
+import { userProfileOverlayStore } from "@/store/client/userProfileOverlayStore";
+import { authStore } from "@/store/client/authStore";
 
 const ROUTES = {
   REGISTER: "/register",
@@ -67,6 +69,8 @@ const ROUTES = {
   REPORT: "/report",
   BLOCK: "/block",
   EXPLANATION: "/explanation",
+  USER_TRAVEL_LOG: "/userProfile/:userId/log",
+  USER_PROFILE_BADGE: "/userProfileBadge/:userId",
 };
 
 export const useHeaderNavigation = () => {
@@ -74,6 +78,8 @@ export const useHeaderNavigation = () => {
   const router = useTransitionRouter();
   const { resetCreateTripDetail } = createTripStore();
   const { resetEditTripDetail } = editTripStore();
+  const { userId } = authStore();
+  const { setProfileShow, userProfileUserId } = userProfileOverlayStore();
   const {
     searchTravel,
     setSearchTravel,
@@ -87,11 +93,22 @@ export const useHeaderNavigation = () => {
   const pathname = usePathname() || "/";
   const { resetAge, resetForm, resetGender, resetName, socialLogin, setSocialLogin } = userStore();
   const { resetTripDetail } = tripDetailStore();
-  const checkRoute = {
-    startsWith: (route: string) => pathname?.startsWith(route),
-    exact: (route: string) => pathname === route,
-  };
+  const pathToRegex = (path) => new RegExp("^" + path.replace(/:[^/]+/g, "[^/]+") + "$");
 
+  const checkRoute = {
+    startsWith: (route) => pathname?.startsWith(route),
+    exact: (route) => {
+      if (route.includes(":")) {
+        // 동적 파라미터가 있을 때
+
+        const regex = pathToRegex(route);
+        console.log("regex", regex);
+        return regex.test(pathname);
+      }
+      // 일반 라우트는 기존대로
+      return pathname === route;
+    },
+  };
   const getPageTitle = () => {
     const titleMap: { [key: string]: ReactNode } = {
       [ROUTES.MY.TRIP]: "내 여행",
@@ -122,6 +139,10 @@ export const useHeaderNavigation = () => {
 
     for (const [route, title] of Object.entries(titleMap)) {
       if (checkRoute.startsWith(route)) return title;
+    }
+
+    if (checkRoute.exact(ROUTES.USER_TRAVEL_LOG)) {
+      return "방문한 국가";
     }
 
     return "";
@@ -365,6 +386,35 @@ export const useHeaderNavigation = () => {
           const parts = pathname.split("/");
           const id = parts[parts.length - 1];
           router.push(`/community/detail/${id}`);
+        },
+      },
+      {
+        // 상대방 프로필 화면의 여행 뱃지 화면
+        condition: () => checkRoute.exact(ROUTES.USER_PROFILE_BADGE),
+        action: () => {
+          router.back();
+          if (userProfileUserId !== userId) {
+            // 마이페이지가 아닌 페이지에서 접속 했을시, 뒤로 가기 해도 프로필 overlay화면
+            setTimeout(() => setProfileShow(true), 100);
+          }
+        },
+      },
+      {
+        // 상대방 프로필 화면의 여행 로그 화면,
+        condition: () => checkRoute.exact(ROUTES.USER_TRAVEL_LOG),
+        action: () => {
+          const profilePath = localStorage.getItem("profilePath");
+          if (profilePath) {
+            router.push(profilePath);
+          } else {
+            router.back();
+          }
+          localStorage.removeItem("profilePath");
+
+          console.log(userProfileUserId);
+          if (userProfileUserId !== userId) {
+            setTimeout(() => setProfileShow(true), 100);
+          }
         },
       },
     ];

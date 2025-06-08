@@ -3,6 +3,8 @@
 import { getJWTHeader } from "@/utils/user";
 import axios from "axios";
 import { axiosInstance, handleApiResponse } from ".";
+import RequestError from "@/context/ReqeustError";
+import { TravelLog } from "@/model/profile";
 
 //
 export async function getUser(userId: number, accessToken: string) {
@@ -71,7 +73,11 @@ export async function checkEmail(email: string) {
   }
 }
 
-export const getToken = async (domain: "naver" | "kakao" | "google", code: string, state: string) => {
+export const getToken = async (
+  domain: "naver" | "kakao" | "google",
+  code: string,
+  state: string
+) => {
   try {
     const url =
       domain === "kakao"
@@ -95,3 +101,21 @@ export const getToken = async (domain: "naver" | "kakao" | "google", code: strin
     console.error("토큰 요청 실패:", error);
   }
 };
+
+export async function getUserTravelLog(
+  userNumber: number,
+  accessToken: string | null
+) {
+  try {
+    const response = await axiosInstance.get(
+      `/api/users/${userNumber}/visited-countries`,
+
+      {
+        ...(accessToken && { headers: getJWTHeader(accessToken) }),
+      }
+    );
+    return handleApiResponse(response) as TravelLog;
+  } catch (err: any) {
+    throw new RequestError(err);
+  }
+}
