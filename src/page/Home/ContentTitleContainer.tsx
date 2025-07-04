@@ -2,18 +2,19 @@
 import styled from "@emotion/styled";
 import ArrowIcon from "@/components/icons/ArrowIcon";
 import { useRouter } from "next/navigation";
+import { useClickTracking } from "@/hooks/useClickTracking";
 interface TitleContainerProps {
   text: React.ReactNode;
   minWidth?: string;
   detailLink?: string;
 }
-const TitleContainer = ({
-  text,
-  minWidth = "auto",
-  detailLink = "/",
-}: TitleContainerProps) => {
+const TitleContainer = ({ text, minWidth = "auto", detailLink = "/" }: TitleContainerProps) => {
   const router = useRouter();
-  const clickHandler = () => router.push(`${detailLink}`); // 후에 보여줄 페이지 부분.
+  const { track } = useClickTracking();
+  const clickHandler = () => {
+    track(`${text} 버튼 클릭`);
+    router.push(`${detailLink}`);
+  }; // 후에 보여줄 페이지 부분.
   return (
     <ContentTitle>
       <span style={{ minWidth }}>{text}</span>
