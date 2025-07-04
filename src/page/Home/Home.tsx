@@ -16,9 +16,13 @@ import { isGuestUser } from "@/utils/user";
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { usePageTracking } from "@/hooks/usePageTracking";
+import { useClickTracking } from "@/hooks/useClickTracking";
 
 const Home = () => {
   const { name } = myPageStore();
+  usePageTracking("home");
+  const { track } = useClickTracking();
   const { setSearchTravel, setNotification } = useBackPathStore();
   const router = useRouter();
   console.log();
@@ -41,6 +45,7 @@ const Home = () => {
 
   // 이 부분 추후 유저 id로 대채해야함
   const onClickAlarm = () => {
+    track("알림 링크", { link_text: "알림 페이지" });
     setNotification("/");
     router.push(`/notification`);
   };
