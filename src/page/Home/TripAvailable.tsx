@@ -30,6 +30,7 @@ const TripAvailable = () => {
     <Container>
       <TitleContainer
         detailLink={`/trip/list?sort=recent`}
+        linkText="참가 가능한 여행 "
         text={
           <>
             지금 참가 가능한 <br /> 여행을 소개해요.
@@ -43,13 +44,7 @@ const TripAvailable = () => {
           cutTrips?.map((post, idx) => {
             return (
               <BoxContainer key={post.travelNumber}>
-                <Box
-                  style={
-                    (idx + 1) % 3 === 0 || cutTrips.length === idx + 1
-                      ? { borderBottom: 0 }
-                      : {}
-                  }
-                >
+                <Box style={(idx + 1) % 3 === 0 || cutTrips.length === idx + 1 ? { borderBottom: 0 } : {}}>
                   <div onClick={() => clickTrip(post.travelNumber)}>
                     <HorizonBoxLayout
                       travelNumber={post.travelNumber}
@@ -60,10 +55,7 @@ const TripAvailable = () => {
                       userName={post.userName}
                       tags={post.tags}
                       daysAgo={daysAgo(post?.createdAt)}
-                      daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(
-                        dayjs().startOf("day"),
-                        "day"
-                      )}
+                      daysLeft={dayjs(post.registerDue, "YYYY-MM-DD").diff(dayjs().startOf("day"), "day")}
                       title={post.title}
                       recruits={post.nowPerson}
                       total={post.maxPerson}

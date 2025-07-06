@@ -28,6 +28,7 @@ const TripRecommendation = () => {
     <Container>
       <TitleContainer
         detailLink={`/trip/list?sort=recommend`}
+        linkText="여행 추천"
         text={
           <>
             이런 여행은 <br /> 어떠세요?
