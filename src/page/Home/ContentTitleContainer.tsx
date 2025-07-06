@@ -7,12 +7,13 @@ interface TitleContainerProps {
   text: React.ReactNode;
   minWidth?: string;
   detailLink?: string;
+  linkText?: string;
 }
-const TitleContainer = ({ text, minWidth = "auto", detailLink = "/" }: TitleContainerProps) => {
+const TitleContainer = ({ text, minWidth = "auto", detailLink = "/", linkText = "" }: TitleContainerProps) => {
   const router = useRouter();
   const { track } = useClickTracking();
   const clickHandler = () => {
-    track(`${text} 버튼 클릭`);
+    track(`${linkText} 버튼 클릭`);
     router.push(`${detailLink}`);
   }; // 후에 보여줄 페이지 부분.
   return (

@@ -5,16 +5,19 @@ import HomeIcon from "@/components/icons/HomeIcon";
 import NavCommunityIcon from "@/components/icons/NavCommunityIcon";
 import NavPersonIcon from "@/components/icons/NavPersonIcon";
 import SearchIcon from "@/components/icons/SearchIcon";
+import { useClickTracking } from "@/hooks/useClickTracking";
 
 import { palette } from "@/styles/palette";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import path from "path";
 import React, { MouseEventHandler, useState } from "react";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { track } = useClickTracking();
   // const pages = ['/', '/search/travel', '/myTrip', '/community', '/mypage']
   const pages = ["/", "/trip/list", "/myTrip", "/community", "/myPage"];
   const icons = [
@@ -56,6 +59,10 @@ const Navbar = () => {
     return false;
   };
 
+  const handleNavClick = (page: string) => {
+    track(`하단 네비게이션 ${page} 버튼 클릭`);
+    router.push(page);
+  };
   return condition() ? (
     <Container>
       <Box>
@@ -67,12 +74,13 @@ const Navbar = () => {
             fill: isLinkActive ? `${palette.기본}` : "none",
           };
           return (
-            <Link
+            <button
               key={page}
-              href={page}
+              onClick={() => handleNavClick(page)}
               style={{
                 width: "49px",
                 height: "48px",
+                cursor: "pointer",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -81,7 +89,7 @@ const Navbar = () => {
             >
               {React.cloneElement(Icon, iconProps)}
               <PageName color={isLinkActive ? `${palette.기본}` : `${palette.비강조3}`}>{iconNames[idx]}</PageName>
-            </Link>
+            </button>
           );
         })}
       </Box>
