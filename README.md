@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✈️ MOING (모잉)
 
-## Getting Started
+> **여행의 설렘을 잇다, 취향 맞춤 여행 동행 모집 플랫폼**
+> 혼자 떠나기 망설여질 때, 내 취향과 꼭 맞는 여행 메이트를 찾아보세요.
+> **MOING**은 신뢰할 수 있는 동행 모집과 간편한 소통을 연결하는 커뮤니티 서비스입니다.
 
-First, run the development server:
+## 📖 Service Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**"나와 딱 맞는 여행 친구, 어디서 구하지?"**
+MOING은 여행을 계획하는 **주최자(Host)**와 동행을 원하는 **참여자(Guest)**를 안전하고 직관적으로 연결합니다. 복잡한 절차 없이 여행 스타일 태그를 통해 서로의 성향을 확인하고, 승인 시스템을 통해 믿을 수 있는 동행을 시작할 수 있습니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 💡 Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. 쉽고 간편한 여행 모집 (Trip Creation)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+여행 계획이 있다면 누구나 쉽게 동행을 모집할 수 있습니다. 사용자의 작성 피로도를 줄이기 위해 단계별 입력 방식(Step-by-Step)을 도입했습니다.
 
-## Learn More
+* **직관적인 3단계 작성:** 여행지 선택 → 소개글 작성 → 일정 및 인원 설정의 물 흐르는 듯한 UX를 제공합니다.
+* **취향 태그(Tags):** `맛집탐방`, `계획형`, `인생사진` 등 여행 스타일을 태그로 설정하여, 나와 결이 맞는 사람을 모을 수 있습니다.
 
-To learn more about Next.js, take a look at the following resources:
+### 2. 주최자 & 신청자 매칭 시스템 (Matching Flow)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+단순한 채팅방 초대가 아닌, 체계적인 신청 및 수락 프로세스를 통해 안전한 여행을 보장합니다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* **주최자(Host):** 신청자의 프로필을 확인하고 `수락` 또는 `거절`할 수 있습니다. 모집 인원 관리가 자동으로 이루어집니다.
+* **신청자(Guest):** 마음에 들면 `참가 신청` 버튼 하나로 의사를 전달하고, 나의 신청 상태(대기/확정)를 실시간으로 확인할 수 있습니다.
 
-## Deploy on Vercel
+### 3. 여행 탐색 및 커뮤니티 (Discovery & Community)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* **맞춤형 탐색:** 여행지 검색은 물론, `마감 임박순` 필터링 등을 통해 현재 참여 가능한 여행을 빠르게 찾을 수 있습니다.
+* **정보 공유:** 동행 모집 외에도 여행 정보를 나누거나 궁금한 점을 물어볼 수 있는 커뮤니티 공간을 제공합니다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 4. 사용자 배려 UX (User Experience)
+
+* **비로그인 탐색:** 회원가입 전에도 진행 중인 여행 목록을 둘러볼 수 있으며, 참여 시 자연스럽게 가입을 유도합니다.
+* **공유하기:** 친구들에게 여행 정보를 쉽게 알릴 수 있도록 URL 공유 시 맞춤형 미리보기 카드를 제공합니다.
+
+## 📱 Service Preview
+
+| 여행 둘러보기 & 검색 | 여행 모집글 작성 | 신청 및 참가 관리 |
+| :---: | :---: | :---: |
+| <img width="187" alt="image" src="https://github.com/user-attachments/assets/e6c8d6e0-440c-4062-87c1-92386fa5cc22" /> | <img width="203" alt="image" src="https://github.com/user-attachments/assets/5c0f3bbe-39bd-4bfb-ba34-46a45621adfa" /> | <img width="172" alt="image" src="https://github.com/user-attachments/assets/aa0850fe-c172-4ecb-8481-0a18391ea503" /> |
+| 원하는 여행을 태그와 지역으로<br>손쉽게 탐색합니다. | 복잡한 정보도 단계별로<br>쉽게 입력합니다. | 호스트 권한으로 멤버를<br>직접 관리합니다. |
+
+
+---
+
+*기술 스택 및 상세 개발 문서는 추후 업데이트될 예정입니다.*
